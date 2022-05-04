@@ -1,0 +1,40 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="level"
+}}
+  {{#>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+  }}
+    {{>
+    "systems/animabf-guote/templates/common/ui/add-item-button.hbs"
+      data="add-level"
+    }}
+    {{>
+    "systems/animabf-guote/templates/common/ui/group-header-title.hbs"
+      title=(localize 'anima.ui.levelSection.title')
+    }}
+    <input type='number' class='input' />
+  {{/"systems/animabf-guote/templates/common/ui/group-header.hbs"}}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="level"
+  }}
+    {{#each data.data.general.levels}}
+      <div data-item-id='{{this._id}}' class='level-row'>
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          class="name"
+          hideTitle=true
+          inputType="text"
+          inputName=(concat "data.dynamic.levels." this._id ".name")
+          inputValue=this.name
+        }}
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          class="level"
+          hideTitle=true
+          inputName=(concat "data.dynamic.levels." this._id ".data.level")
+          inputValue=this.data.level
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

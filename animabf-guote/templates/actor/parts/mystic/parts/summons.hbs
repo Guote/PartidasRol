@@ -1,0 +1,23 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="summons"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.mystic.summon.title")
+    addRowButtonData="add-summon"
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="summons"
+  }}
+    {{#each data.data.mystic.summons}}
+      <div data-item-id='{{this._id}}' class='summon-row'>
+        <input
+          name='data.dynamic.summons.{{this._id}}.name'
+          type='text'
+          class='input'
+          value='{{this.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

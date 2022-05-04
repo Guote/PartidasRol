@@ -1,0 +1,23 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="psychic-disciplines"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.psychic.psychicDiscipline.title")
+    addRowButtonData="add-psychic-discipline"
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="psychic-disciplines"
+  }}
+    {{#each data.data.psychic.psychicDisciplines}}
+      <div data-item-id='{{this._id}}' class='psychic-discipline-row'>
+        <input
+          name='data.dynamic.psychicDisciplines.{{this._id}}.name'
+          type='text'
+          class='input'
+          value='{{this.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

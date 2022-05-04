@@ -1,0 +1,35 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="martial-arts"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.domine.martialArts.title")
+    addRowButtonData="add-martial-art"
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="martial-arts"
+  }}
+    {{#each data.data.domine.martialArts}}
+      <div data-item-id='{{this._id}}' class='martial-art-row'>
+        {{>
+        "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+          class="name"
+          title=(localize "anima.ui.domine.martialArts.name.title")
+          hideTitle=(is "gt" @index 0)
+          inputType="text"
+          inputName=(concat "data.dynamic.martialArts." this._id ".name")
+          inputValue=this.name
+        }}
+        {{>
+        "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+          class="grade"
+          title=(localize "anima.ui.domine.martialArts.grade.title")
+          hideTitle=(is "gt" @index 0)
+          inputType="text"
+          inputName=(concat "data.dynamic.martialArts." this._id ".data.grade.value")
+          inputValue=this.data.grade.value
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

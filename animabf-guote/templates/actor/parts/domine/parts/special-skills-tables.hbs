@@ -1,0 +1,23 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="special-skills"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.domine.specialSkills.title")
+    addRowButtonData="add-special-skill"
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="special-skills"
+  }}
+    {{#each data.data.domine.specialSkills}}
+      <div data-item-id='{{this._id}}' class='special-skill-row'>
+        <input
+          name='data.dynamic.specialSkills.{{this._id}}.name'
+          type='text'
+          class='input'
+          value='{{this.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

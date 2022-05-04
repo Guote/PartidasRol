@@ -1,0 +1,18 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="_notes"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize 'anima.ui.notesSection.title')
+    addRowButtonData="add-note"
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="_notes"
+  }}
+    {{#each data.data.general.notes}}
+      <div data-item-id='{{this._id}}' class='note-row'>
+        {{editor content=this.name target=(concat "data.dynamic.notes." this._id ".name") button=true owner=true editable=true}}
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

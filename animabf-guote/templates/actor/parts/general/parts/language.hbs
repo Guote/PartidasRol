@@ -1,0 +1,43 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="languages"
+}}
+  {{#>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+  }}
+    {{>
+    "systems/animabf-guote/templates/common/ui/add-item-button.hbs"
+      data="add-language"
+    }}
+    {{>
+    "systems/animabf-guote/templates/common/ui/group-header-title.hbs"
+      title=(localize 'anima.ui.languageSection.title')
+    }}
+    <input type='number' class='input' />
+  {{/"systems/animabf-guote/templates/common/ui/group-header.hbs"}}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="languages"
+  }}
+    <div class='base-language'>
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        class="name"
+        title=(localize 'anima.ui.languageSection.base')
+        inputType="text"
+        inputName="data.general.languages.base.value"
+        inputValue=data.data.general.languages.base.value
+      }}
+    </div>
+    {{#each data.data.general.languages.others}}
+      <div data-item-id='{{this._id}}' class='language-row'>
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          class="name"
+          hideTitle=true
+          inputType="text"
+          inputName=(concat "data.dynamic.languages." this._id ".name")
+          inputValue=this.name
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

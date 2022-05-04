@@ -1,0 +1,23 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="disadvantages"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize 'anima.ui.disadvantageSection.title')
+    addRowButtonData="add-disadvantage"
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="disadvantages"
+  }}
+    {{#each data.data.general.disadvantages}}
+      <div data-item-id='{{this._id}}' class='disadvantage-row'>
+        <input
+          name='data.dynamic.disadvantages.{{this._id}}.name'
+          type='text'
+          class='input'
+          value='{{this.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

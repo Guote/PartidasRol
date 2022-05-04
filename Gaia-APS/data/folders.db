@@ -1,0 +1,69 @@
+{"_id":"03CXAptRswQwnrHg","name":"Golden Sun","type":"Playlist","parent":"il0YALlGrD6ZsYl6","sorting":"a","sort":0,"color":"#d1af05","flags":{}}
+{"name":"Dwänholf","type":"JournalEntry","parent":"i9ftdp7t1hZh3i8G","sorting":"a","sort":0,"color":"#adc01b","flags":{},"_id":"0itjyiNfEUrwM4UY"}
+{"name":"Exploration/ Tense","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"092d7d720cd011ae34c34b8aa532633228a85061"}},"_id":"2DaLVKRwXTwMsxoh"}
+{"_id":"3oRhhhbsyLpvnwTR","name":"Octopath","type":"Playlist","parent":"il0YALlGrD6ZsYl6","sorting":"a","sort":0,"color":"#0a20cd","flags":{}}
+{"name":"13","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"4DPftsE9V5Q2nwpW"}
+{"_id":"4a5dl5IH4rRRqTD3","name":"Gabriel","type":"Scene","parent":null,"sorting":"a","sort":500000,"color":"#cfcfcf","flags":{}}
+{"_id":"4pK9m5jqLn9Ivqhb","name":"Phaion","type":"Actor","parent":null,"sorting":"a","sort":418750,"color":"#ef764e","flags":{}}
+{"_id":"6RcHvKwCYfdFSQwI","name":"Personajes Comunes","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":475000,"color":null,"flags":{}}
+{"_id":"6hQGSEJvDCDi81RO","name":"TemplateFolder","type":"JournalEntry","parent":null,"sorting":"m","sort":500000,"color":null,"flags":{}}
+{"_id":"6pbGz5M6yLTcD4dX","name":"Gabriel","type":"JournalEntry","parent":"i9ftdp7t1hZh3i8G","sorting":"a","sort":0,"color":"#cfcfcf","flags":{}}
+{"_id":"7NypIshCqtLWbNIO","name":"Lore","type":"JournalEntry","parent":null,"sorting":"a","sort":300000,"color":null,"flags":{}}
+{"_id":"89W7xQNvs0x5yDTu","name":"Aldea de Corvinus","type":"Actor","parent":"dR4iKyBkx21Ng0rx","sorting":"a","sort":100000,"color":null,"flags":{}}
+{"_id":"9gKsucLLM2KrdIlE","name":"Exploration/ Calm","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":"","flags":{"scene-packer":{"hash":"1d4aeb29686369c81f48dc1522e435417ef41596"}}}
+{"_id":"AuZdl8U0HumIQd1n","name":"Dwänholf","type":"Scene","parent":null,"sorting":"a","sort":600000,"color":"#adc01b","flags":{}}
+{"_id":"B5nUNEQeJDxLDT9L","name":"La party","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"m","sort":-100000,"color":"#ff0000","flags":{}}
+{"name":"7","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"BkGhOyOzNpubnlT0"}
+{"_id":"BkjuE439ZndLunEJ","name":"Abel","type":"Actor","parent":null,"sorting":"a","sort":406250,"color":"#cfcfcf","flags":{}}
+{"_id":"EAWozD8EQq2qsZ7F","name":"Data","type":"JournalEntry","parent":"6hQGSEJvDCDi81RO","sorting":"a","sort":0,"color":"","flags":{}}
+{"_id":"FJ0ABOrrRGewPpzn","name":"Jugadores","type":"Actor","parent":null,"sorting":"m","sort":200000,"color":"#ff0000","flags":{}}
+{"name":"Tabletop RPG","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"6d4059be24ddeb15c8a304bc50bc19acf6e430b3"}},"_id":"GGUmXEXIbC8JrvHW"}
+{"name":"Saulxerotte","type":"Actor","parent":"zpZ7V6jCJEjrJCc9","sorting":"a","sort":0,"color":null,"flags":{},"_id":"GrVanAvkfy2YT4s4"}
+{"_id":"J5Bc8QzPCnvSGEKw","name":"Puerto Rue","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":100000,"color":null,"flags":{}}
+{"name":"8","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"JxNmlPBemwRIJ0UU"}
+{"name":"Public","type":"JournalEntry","parent":"6pbGz5M6yLTcD4dX","sorting":"a","sort":0,"color":null,"flags":{},"_id":"KbtZufOeTXfCgCQd"}
+{"_id":"KonFiQ4pPPpYKRZV","name":"Comunes","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":200000,"color":null,"flags":{}}
+{"name":"11","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"LIrBJwIV3IrSRUrJ"}
+{"name":"14","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"M3Qn3JdWHTLivBYc"}
+{"name":"5","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"M3sBZnSSDCSFjni4"}
+{"name":"Themes","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"34427a9d8e4a66c958576c3a452236c0414ca1fe"}},"_id":"NQkarsS5PxBPhSsQ"}
+{"name":"Saulxerotte","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"OYlNUi1pScJTessZ"}
+{"name":"10","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"P2PuPS2tHTkobLMA"}
+{"name":"PJ temporales","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":0,"color":null,"flags":{},"_id":"SBzRyJ8V1pJxluSc"}
+{"_id":"SSm28JtHLJUQymwL","name":"Oponentes","type":"Actor","parent":"dR4iKyBkx21Ng0rx","sorting":"a","sort":200000,"color":null,"flags":{}}
+{"_id":"SZNaTtaNEfuhRqoh","name":"Manuales","type":"JournalEntry","parent":null,"sorting":"a","sort":200000,"color":"#000000","flags":{}}
+{"_id":"TWsglSfzRnFIBihJ","name":"Dwänholf","type":"Actor","parent":null,"sorting":"a","sort":600000,"color":"#adc01b","flags":{}}
+{"name":"2","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"TfHWzkYezOOPTPxR"}
+{"_id":"UtEYrTNXFgYvuV1F","name":"Bestiario","type":"Actor","parent":null,"sorting":"a","sort":800000,"color":"#09d32a","flags":{}}
+{"name":"4","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"Wq5aeElgSMS5CjNR"}
+{"name":"1","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"XJiGLsgBT4fHY0DC"}
+{"name":"Combat","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"ade5b9ad548d801b53188f0dc7257024986d0fa5"}},"_id":"XVSLUntt4TwmaUIx"}
+{"name":"PJ","type":"JournalEntry","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"XxQP2GmdSfqazl09"}
+{"name":"3","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"Z8iKTOp0ZAHBtFyH"}
+{"_id":"cxv0906yitfoEWld","name":"Random Encounter","type":"Scene","parent":null,"sorting":"a","sort":700000,"color":"","flags":{}}
+{"_id":"dIAJJY3TOr1hXZZS","name":"Herramientas","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":-75000,"color":"#ca09ce","flags":{}}
+{"_id":"dR4iKyBkx21Ng0rx","name":"Corvinus","type":"Actor","parent":"zpZ7V6jCJEjrJCc9","sorting":"a","sort":100000,"color":null,"flags":{}}
+{"name":"Data","type":"JournalEntry","parent":"6pbGz5M6yLTcD4dX","sorting":"a","sort":0,"color":null,"flags":{},"_id":"dcvmYNmoNtMYUbhH"}
+{"name":"Cascarón Rojo","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"238fa053021e2fcda10ff414b557d413301d47b1"}},"_id":"fmZ600IWfBEOZ4Ba"}
+{"_id":"hrSe3CWr6geCAzMQ","name":"_fql_quests","type":"JournalEntry","parent":null,"sorting":"a","sort":100000,"flags":{}}
+{"_id":"i9ftdp7t1hZh3i8G","name":"Regiones","type":"JournalEntry","parent":null,"sorting":"m","sort":400000,"color":"#ff0000","flags":{}}
+{"name":"Data","type":"JournalEntry","parent":"0itjyiNfEUrwM4UY","sorting":"a","sort":0,"color":null,"flags":{},"_id":"ieJD2KSjvPLaGrDq"}
+{"name":"Library","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"il0YALlGrD6ZsYl6"}
+{"_id":"iuUavpvdc4tATE6l","name":"Criaturas","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":575000,"color":null,"flags":{}}
+{"name":"6","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"jE23ENvfDr28HVL1"}
+{"name":"9","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"jrI2ZfWAXm9ql5Og"}
+{"_id":"kYlY0tuTdDXguMlB","name":"Místicos","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":400000,"color":null,"flags":{}}
+{"_id":"kfeY14JYSsPDBDmN","name":"0 - Plantillas por nivel","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":450000,"color":"#c70000","flags":{}}
+{"_id":"lVXedtoijnD3Fiaq","name":"Intro","type":"Scene","parent":null,"sorting":"a","sort":300000,"color":null,"flags":{}}
+{"_id":"lkC7YB53Jry0MBlU","name":"CHANCHAN","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":-87500,"color":"#2b00ff","flags":{}}
+{"name":"Common","type":"Scene","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"lvlOB21OsqS7fjWr"}
+{"_id":"n01TIF7SeTxuxmf6","name":"Remo","type":"Actor","parent":null,"sorting":"a","sort":700000,"color":"#4f94c9","flags":{}}
+{"name":"Puerto Rue","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"nKafkINSVHOZd1QK"}
+{"_id":"nyM2TPOUp9eyzxgN","name":"Luchadores y Soldados","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":700000,"color":null,"flags":{}}
+{"_id":"q6aA4Bp1u7of5FXm","name":"Pure NPC","type":"Actor","parent":"GrVanAvkfy2YT4s4","sorting":"a","sort":100000,"color":"","flags":{}}
+{"_id":"uK6Dfu3lYHusmRbk","name":"Pregenerados","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":600000,"color":null,"flags":{}}
+{"_id":"v3UvlvYulMJ7gE5S","name":"Animales","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":500000,"color":null,"flags":{}}
+{"_id":"xYq7nHh7UJiYgh24","name":"Maleantes","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":300000,"color":null,"flags":{}}
+{"_id":"yw9P0RhDeGPGNpW7","name":"Ilmora","type":"Actor","parent":null,"sorting":"a","sort":412500,"color":"#cfcfcf","flags":{}}
+{"name":"Cascarón Rojo","type":"Scene","parent":"AuZdl8U0HumIQd1n","sorting":"a","sort":0,"color":null,"flags":{},"_id":"zD0MQbkVdR6CRaEa"}
+{"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","parent":null,"sorting":"a","sort":415625,"color":"#ef764e","flags":{}}

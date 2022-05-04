@@ -1,0 +1,35 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="modifiers"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.general.modifiers.title")
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="modifiers"
+  }}
+    <div class='first-row'>
+      {{>
+      "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+        class="physical"
+        title=(localize "anima.ui.general.modifiers.physicalActions.title")
+        inputName="data.general.modifiers.physicalActions.value"
+        inputValue=data.data.general.modifiers.physicalActions.value
+      }}
+      {{>
+      "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+        class="all-actions"
+        title=(localize "anima.ui.general.modifiers.allActions.title")
+        inputName="data.general.modifiers.allActions.base.value"
+        inputValue=data.data.general.modifiers.allActions.base.value
+      }}
+      {{>
+      "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+        class="natural-penalty"
+        disabled=true
+        title=(localize 'anima.ui.general.naturalPenalty.title')
+        inputValue=data.data.general.modifiers.naturalPenalty.byWearArmorRequirement.value
+      }}
+    </div>
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

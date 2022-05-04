@@ -1,0 +1,27 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="psychic-projection"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.psychic.psychicProjection.title")
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="psychic-projection"
+  }}
+    {{>
+    "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      class="projection"
+      title=(localize "anima.ui.psychic.psychicProjection.projection.title")
+      rollable=true
+      rollableMessage=(manipulateString "toLowerCase" (localize "anima.ui.psychic.psychicProjection.title"))
+      inputName="data.psychic.psychicProjection.base.value"
+      inputValue=data.data.psychic.psychicProjection.base.value
+      hasSecondaryInput=true
+      addTooltips=true
+      disableSecondaryInput=true
+      rollSecondaryInput=true
+      secondaryInputName="data.psychic.psychicProjection.final.value"
+      secondaryInputValue=data.data.psychic.psychicProjection.final.value
+    }}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}
