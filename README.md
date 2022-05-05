@@ -1,0 +1,1 @@
+En esta carpeta se ha clonado el repositorio con animabf-guote (system) y Gaia-APS (world). De aquí, se hace un symlink a la carpeta correspondiente de Foundry
