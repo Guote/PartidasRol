@@ -3,7 +3,7 @@
   "title": "Anima Beyond Fantasy",
   "description": "",
   "version": "1.14.0",
-  "authors": [{ "name": "Linkaynn", "url": "https://www.jeseromero.com" }],
+  "authors": [{"name": "Guote"}, { "name": "Linkaynn", "url": "https://www.jeseromero.com" }],
   "scripts": [],
   "esmodules": ["animabf-guote.js"],
   "styles": ["animabf-guote.css"],
@@ -54,13 +54,13 @@
     }
   ],
   "primaryTokenAttribute": "characteristics.secondaries.lifePoints",
-  "gridDistance": 1,
+  "gridDistance": 1.5,
   "gridUnits": "m",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "0.8.9",
-  "url": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry",
-  "manifest": "https://raw.githubusercontent.com/AnimaBeyondDevelop/AnimaBeyondFoundry/main/src/system.json",
+  "url": "",
+  "manifest": "",
   "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v1.14.0",
-  "download": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/download/v1.14.0/animabf-guote.zip",
+  "download": "",
   "bugs": "https://docs.google.com/forms/d/e/1FAIpQLSeUTdTOjxMKarAd1eoHfpswyoIs-mvSElVGmv7sZGrEuBHWKA/viewform?usp=sf_link"
 }

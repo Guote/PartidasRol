@@ -3,6 +3,7 @@
 {"name":"Exploration/ Tense","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"092d7d720cd011ae34c34b8aa532633228a85061"}},"_id":"2DaLVKRwXTwMsxoh"}
 {"_id":"3oRhhhbsyLpvnwTR","name":"Octopath","type":"Playlist","parent":"il0YALlGrD6ZsYl6","sorting":"a","sort":0,"color":"#0a20cd","flags":{}}
 {"name":"13","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"4DPftsE9V5Q2nwpW"}
+{"name":"Tripulaciones Pirata","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"781431e6cd92c03f6bbb667a7839dcc6b03d26a6"}},"_id":"4Sl1qfUGhUhXLdJb"}
 {"_id":"4a5dl5IH4rRRqTD3","name":"Gabriel","type":"Scene","parent":null,"sorting":"a","sort":500000,"color":"#cfcfcf","flags":{}}
 {"_id":"4pK9m5jqLn9Ivqhb","name":"Phaion","type":"Actor","parent":null,"sorting":"a","sort":418750,"color":"#ef764e","flags":{}}
 {"_id":"6RcHvKwCYfdFSQwI","name":"Personajes Comunes","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":475000,"color":null,"flags":{}}
@@ -67,3 +68,6 @@
 {"_id":"yw9P0RhDeGPGNpW7","name":"Ilmora","type":"Actor","parent":null,"sorting":"a","sort":412500,"color":"#cfcfcf","flags":{}}
 {"name":"Cascarón Rojo","type":"Scene","parent":"AuZdl8U0HumIQd1n","sorting":"a","sort":0,"color":null,"flags":{},"_id":"zD0MQbkVdR6CRaEa"}
 {"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","parent":null,"sorting":"a","sort":415625,"color":"#ef764e","flags":{}}
+{"name":"Magus","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"6181db7efab0e12b5a837f12b83268f060b0e428"}},"_id":"J0HPRt4RLvGt64Wg"}
+{"name":"Yahudah","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"e74644745c3d65c58c8dac510123fa6daa3c5f3e"}},"_id":"qKEfHIPnGpfuFEHU"}
+{"name":"Chess","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"44f7c75fe2341264f87da0fa11b5ef7397c66ce3"}},"_id":"dmKl1QP4Heiod9Rr"}
