@@ -1,16 +1,18 @@
 import { Templates } from "../../utils/constants.js";
 import ABFFoundryRoll from "../../rolls/ABFFoundryRoll.js";
-import { WeaponCritic } from "../../types/combat/WeaponItemConfig.js";
+import { NoneWeaponCritic, WeaponCritic } from "../../types/combat/WeaponItemConfig.js";
 import { ABFSettingsKeys } from "../../../utils/registerSettings.js";
 const getInitialData = (attacker, defender) => {
     const showRollByDefault = !!game.settings.get('animabf-guote', ABFSettingsKeys.SEND_ROLL_MESSAGES_ON_COMBAT_BY_DEFAULT);
     const isGM = !!game.user?.isGM;
     const attackerActor = attacker.token.actor;
     const defenderActor = defender.actor;
+    const activeTab = (defenderActor.data.data.general.settings.defenseType.value === 'resistance') ? 'damageResistance' : 'combat';
     return {
         ui: {
             isGM,
-            hasFatiguePoints: defenderActor.data.data.characteristics.secondaries.fatigue.value > 0
+            hasFatiguePoints: defenderActor.data.data.characteristics.secondaries.fatigue.value > 0,
+            activeTab: activeTab
         },
         attacker: {
             token: attacker.token,
@@ -22,6 +24,7 @@ const getInitialData = (attacker, defender) => {
             token: defender,
             actor: defenderActor,
             showRoll: !isGM || showRollByDefault,
+            withoutRoll: (defenderActor.data.data.general.settings.defenseType.value === 'mass') ? true : false,
             combat: {
                 fatigue: 0,
                 multipleDefensesPenalty: 0,
@@ -43,8 +46,11 @@ const getInitialData = (attacker, defender) => {
             psychic: {
                 modifier: 0,
                 psychicPotential: { special: 0, final: defenderActor.data.data.psychic.psychicPotential.final.value },
-                psychicProjection: defenderActor.data.data.psychic.psychicProjection.final.value,
+                psychicProjection: defenderActor.data.data.psychic.psychicProjection.imbalance.defensive.final.value,
                 powerUsed: undefined
+            },
+            resistance: {
+                surprised: false
             }
         },
         defenseSent: false
@@ -55,6 +61,10 @@ export class CombatDefenseDialog extends FormApplication {
         super(getInitialData(attacker, defender));
         this.hooks = hooks;
         this.data = getInitialData(attacker, defender);
+        this._tabs[0].callback = (event, tabs, tabName) => {
+            this.data.ui.activeTab = tabName;
+            this.render(true);
+        };
         const weapons = this.defenderActor.data.data.combat.weapons;
         if (weapons.length > 0) {
             this.data.defender.combat.weaponUsed = weapons[0]._id;
@@ -101,14 +111,22 @@ export class CombatDefenseDialog extends FormApplication {
         html.find('.send-defense').click(e => {
             const { fatigue, modifier, weapon, multipleDefensesPenalty, at } = this.data.defender.combat;
             const type = e.currentTarget.dataset.type === 'dodge' ? 'dodge' : 'block';
-            let value;
+            let value, baseDefense;
             if (e.currentTarget.dataset.type === 'dodge') {
                 value = this.defenderActor.data.data.combat.dodge.final.value;
+                baseDefense = this.defenderActor.data.data.combat.dodge.base.value;
             }
             else {
                 value = weapon ? weapon.data.block.final.value : this.defenderActor.data.data.combat.block.final.value;
+                baseDefense = this.defenderActor.data.data.combat.block.base.value;
             }
-            const roll = new ABFFoundryRoll(`1d100xa + ${modifier ?? 0} + ${fatigue ?? 0} * 15 - ${(multipleDefensesPenalty ?? 0) * -1} + ${value}`);
+            let formula = `1d100xa + ${modifier ?? 0} + ${fatigue ?? 0} * 15 - ${(multipleDefensesPenalty ?? 0) * -1} + ${value}`;
+            if (this.data.defender.withoutRoll) { //Remove the dice from the formula
+                formula = formula.replace('1d100xa', '0');
+            }
+            if (baseDefense >= 200) //Mastery reduces the fumble range
+                formula = formula.replace('xa', 'xamastery');
+            const roll = new ABFFoundryRoll(formula, this.defenderActor.data.data);
             roll.roll();
             if (this.data.defender.showRoll) {
                 const { i18n } = game;
@@ -129,6 +147,7 @@ export class CombatDefenseDialog extends FormApplication {
                     modifier,
                     fatigue,
                     at: at.final,
+                    defense: value,
                     roll: rolled,
                     total: roll.total
                 }
@@ -136,13 +155,33 @@ export class CombatDefenseDialog extends FormApplication {
             this.data.defenseSent = true;
             this.render();
         });
+        html.find('.send-defense-damage-resistance').click(e => {
+            const at = this.data.defender.combat.at;
+            const surprised = this.data.defender.resistance.surprised;
+            this.hooks.onDefense({
+                type: 'resistance',
+                values: {
+                    at: at.final,
+                    surprised: surprised,
+                    total: 0
+                }
+            });
+            this.data.defenseSent = true;
+            this.render();
+        });
         html.find('.send-mystic-defense').click(() => {
-            const { modifier, spellUsed, spellGrade, magicProjectionType } = this.data.defender.mystic;
+            const { modifier, spellUsed, spellGrade } = this.data.defender.mystic;
+            const at = this.data.defender.combat.at;
             if (spellUsed) {
-                const magicProjection = magicProjectionType === 'normal'
-                    ? this.defenderActor.data.data.mystic.magicProjection.final.value
-                    : this.defenderActor.data.data.mystic.magicProjection.imbalance.defensive.final.value;
-                const roll = new ABFFoundryRoll(`1d100xa + ${magicProjection} + ${modifier ?? 0}`);
+                let magicProjection = this.defenderActor.data.data.mystic.magicProjection.imbalance.defensive.final.value;
+                let baseMagicProjection = this.defenderActor.data.data.mystic.magicProjection.imbalance.defensive.base.value;
+                let formula = `1d100xa + ${magicProjection} + ${modifier ?? 0}`;
+                if (this.data.defender.withoutRoll) { //Remove the dice from the formula
+                    formula = formula.replace('1d100xa', '0');
+                }
+                if (baseMagicProjection >= 200) //Mastery reduces the fumble range
+                    formula = formula.replace('xa', 'xamastery');
+                const roll = new ABFFoundryRoll(formula, this.attackerActor.data.data);
                 roll.roll();
                 if (this.data.defender.showRoll) {
                     const { i18n } = game;
@@ -165,6 +204,7 @@ export class CombatDefenseDialog extends FormApplication {
                         magicProjection,
                         spellGrade,
                         spellUsed,
+                        at: at.final,
                         roll: rolled,
                         total: roll.total
                     }
@@ -175,8 +215,15 @@ export class CombatDefenseDialog extends FormApplication {
         });
         html.find('.send-psychic-defense').click(() => {
             const { psychicProjection, psychicPotential, powerUsed, modifier } = this.data.defender.psychic;
+            const at = this.data.defender.combat.at;
             if (powerUsed) {
-                const roll = new ABFFoundryRoll(`1d100xa + ${psychicProjection} + ${modifier ?? 0}`);
+                let formula = `1d100xa + ${psychicProjection} + ${modifier ?? 0}`;
+                if (this.data.defender.withoutRoll) { //Remove the dice from the formula
+                    formula = formula.replace('1d100xa', '0');
+                }
+                if (this.defenderActor.data.data.psychic.psychicProjection.base.value >= 200) //Mastery reduces the fumble range
+                    formula = formula.replace('xa', 'xamastery');
+                const roll = new ABFFoundryRoll(formula, this.defenderActor.data.data);
                 roll.roll();
                 if (this.data.defender.showRoll) {
                     const { i18n } = game;
@@ -199,6 +246,7 @@ export class CombatDefenseDialog extends FormApplication {
                         powerUsed,
                         psychicProjection,
                         psychicPotential: psychicPotential.final,
+                        at: at.final,
                         roll: rolled,
                         total: roll.total
                     }
@@ -214,7 +262,7 @@ export class CombatDefenseDialog extends FormApplication {
             this.data.defender.psychic.psychicPotential.special +
                 this.defenderActor.data.data.psychic.psychicPotential.final.value;
         let at;
-        if (this.data.attacker.attackType === 'combat') {
+        if (this.data.attacker.critic !== NoneWeaponCritic.NONE) {
             switch (this.data.attacker.critic) {
                 case WeaponCritic.CUT:
                     at = this.defenderActor.data.data.combat.totalArmor.at.cut.value;

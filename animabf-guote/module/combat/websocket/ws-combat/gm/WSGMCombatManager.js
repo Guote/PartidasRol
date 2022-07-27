@@ -34,7 +34,7 @@ export class WSGMCombatManager extends WSCombatManager {
         if (this.combat) {
             this.combat.updateAttackerData(msg.payload);
             const { attackerToken, defenderToken, defenderActor } = this.combat;
-            const critic = msg.payload.type === 'combat' ? msg.payload.values.criticSelected : undefined;
+            const { critic } = msg.payload.values;
             if (canOwnerReceiveMessage(defenderActor)) {
                 const newMsg = {
                     type: GMMessageTypes.Attack,
@@ -192,7 +192,7 @@ export class WSGMCombatManager extends WSCombatManager {
                         this.emit(newMsg);
                     }
                     else {
-                        const critic = result.type === 'combat' ? result.values.criticSelected : undefined;
+                        const { critic } = result.values;
                         try {
                             this.manageDefense(attacker, defender, result.type, critic);
                         }

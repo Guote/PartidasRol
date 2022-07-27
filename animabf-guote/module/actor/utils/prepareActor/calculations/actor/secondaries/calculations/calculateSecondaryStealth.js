@@ -6,5 +6,5 @@ export const calculateSecondaryStealth = (data) => {
     const wearArmorNaturalPenalty = calculateWearArmorNaturalPenalty(data);
     const naturalPenaltyWithoutEquippedArmorsPenalty = calculateNonHelmetArmorsNaturalPenalty(data);
     const armorPenalty = Math.min(wearArmorNaturalPenalty + naturalPenaltyWithoutEquippedArmorsPenalty, naturalPenaltyWithoutEquippedArmorsPenalty / 2) + equippedArmorsPenalty;
-    return data.secondaries.subterfuge.stealth.base.value + data.general.modifiers.allActions.final.value + armorPenalty;
+    return Math.round(data.secondaries.subterfuge.stealth.base.value + data.general.modifiers.allActions.final.value + armorPenalty);
 };

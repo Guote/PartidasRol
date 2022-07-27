@@ -24,6 +24,7 @@ export const PsychicPowerItemConfig = {
             content: i18n.localize('dialogs.items.psychicPower.content')
         });
         const data = {
+            description: { value: '' },
             level: { value: 0 },
             effects: {
                 20: { value: '' },

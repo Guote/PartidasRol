@@ -6,20 +6,6 @@
   inputValue=this.defender.combat.modifier
 }}
 
-{{#if (is "eq" this.attacker.attackType "combat")}}
-  {{>
-  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-    title=(localize 'macros.combat.dialog.at.title')
-    disabled=this.defenseSent
-    inputName="defender.combat.at.special"
-    inputValue=this.defender.combat.at.special
-    hasSecondaryInput=true
-    disableSecondaryInput=true
-    secondaryInputName="defender.combat.at.final"
-    secondaryInputValue=this.defender.combat.at.final
-  }}
-{{/if}}
-
 {{!-- {{#if this.ui.hasFatiguePoints}}
   {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
     title=(localize 'macros.combat.dialog.fatigue.title')
@@ -56,19 +42,18 @@
   {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{/if}}
 
-{{!-- {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
   class="defense-count"
   title=(localize 'macros.combat.dialog.defenseCount.title')
   disabled=this.defenseSent
   inputName='defender.combat.multipleDefensesPenalty'
   inputValue=this.defender.combat.multipleDefensesPenalty
 }}
-  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -0)}}selected{{/if}} value="-0">1ª {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
-  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -30)}}selected{{/if}} value="-30">2ª {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
-  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -50)}}selected{{/if}} value="-50">3ª {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
-  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -70)}}selected{{/if}} value="-70">4ª {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
-  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -90)}}selected{{/if}} value="-90">5ª {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}} --}}
+  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -0)}}selected{{/if}} value="-0">1ª o extra {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
+  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -30)}}selected{{/if}} value="-20">2ª {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
+  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -50)}}selected{{/if}} value="-40">3ª {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
+  <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -70)}}selected{{/if}} value="-80">4ª+ {{localize 'macros.combat.dialog.defending.defend.title'}}</option>
+{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 
 {{#if this.defenseSent}}
   <div class='defense-sent'>

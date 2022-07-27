@@ -2,13 +2,13 @@ import { WeaponSize } from "../../../../../types/combat/WeaponItemConfig.js";
 export const mutateInitiative = (data) => {
     const combat = data.combat;
     const { general } = data;
-    const penalty = Math.ceil(general.modifiers.allActions.final.value / 2) + general.modifiers.naturalPenalty.byArmors.value;
+    const penalty = Math.ceil(Math.min(general.modifiers.allActions.final.value + general.modifiers.physicalActions.value, 0) / 2) + general.modifiers.naturalPenalty.byArmors.value;
     const { initiative } = data.characteristics.secondaries;
     initiative.final.value = initiative.base.value + penalty;
     const equippedWeapons = combat.weapons.filter(weapon => weapon.data.equipped.value);
     const firstTwoWeapons = equippedWeapons.filter(weapon => !weapon.data.isShield.value).slice(0, 2);
     const equippedShield = equippedWeapons.find(weapon => weapon.data.isShield.value);
-    // We rest 20 because people is used to put as base unarmed initiative
+    // We subtract 20 because people are used to put as base unarmed initiative
     initiative.final.value -= 20;
     if (equippedShield) {
         if (equippedShield.data.size.value === WeaponSize.SMALL) {

@@ -33,6 +33,12 @@ export default class ABFFoundryRoll extends Roll {
     get lastResult() {
         return this.getResults()[this.getResults().length - 1];
     }
+    get fumbled() {
+        if (this.abfRoll instanceof ABFExploderRoll)
+            return this.abfRoll?.fumbled || false;
+        else
+            return false;
+    }
     recalculateTotal(mod = 0) {
         this._total = this._evaluateTotal() + mod;
     }

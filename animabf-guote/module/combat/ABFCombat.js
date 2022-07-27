@@ -20,11 +20,20 @@ export default class ABFCombat extends Combat {
         for (const id of ids) {
             const combatant = this.data.combatants.get(id);
             await super.rollInitiative(id, {
-                formula: `1d100xaturn + ${combatant?.actor?.data.data.characteristics.secondaries.initiative.final.value} + ${mod}`,
+                formula: `1d100Initiative + ${combatant?.actor?.data.data.characteristics.secondaries.initiative.final.value} + ${mod}`,
                 updateTurn,
                 messageOptions
             });
         }
         return this;
+    }
+    _sortCombatants(a, b) {
+        let initiativeA = a.initiative || -9999;
+        let initiativeB = b.initiative || -9999;
+        if (initiativeA < (a?.actor?.data.data.characteristics.secondaries.initiative.final.value || 0))
+            initiativeA -= 2000;
+        if (initiativeB < (b?.actor?.data.data.characteristics.secondaries.initiative.final.value || 0))
+            initiativeB -= 2000;
+        return initiativeB - initiativeA;
     }
 }
