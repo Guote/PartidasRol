@@ -106,7 +106,7 @@ export class CombatAttackDialog extends FormApplication {
             if (typeof damage !== 'undefined') {
                 const attack = weapon ? weapon.data.attack.final.value : this.attackerActor.data.data.combat.attack.final.value;
                 const counterAttackBonus = this.data.attacker.counterAttackBonus ?? 0;
-                const roll = new ABFFoundryRoll(`1d100xa + ${counterAttackBonus} + ${attack} + ${modifier ?? 0} + ${fatigueUsed ?? 0}* 15`);
+                const roll = new ABFFoundryRoll(`1d100xa + ${counterAttackBonus} + ${attack} + ${modifier ?? 0}`);
                 roll.roll();
                 if (this.data.attacker.showRoll) {
                     const { i18n } = game;
@@ -124,7 +124,7 @@ export class CombatAttackDialog extends FormApplication {
                     });
                 }
                 const critic = criticSelected ?? WeaponCritic.IMPACT;
-                const rolled = roll.total - counterAttackBonus - attack - (modifier ?? 0) - (fatigueUsed ?? 0) * 15;
+                const rolled = roll.total - counterAttackBonus - attack - (modifier ?? 0);
                 this.hooks.onAttack({
                     type: 'combat',
                     values: {

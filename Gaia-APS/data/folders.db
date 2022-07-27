@@ -1,6 +1,7 @@
 {"_id":"03CXAptRswQwnrHg","name":"Golden Sun","type":"Playlist","parent":"il0YALlGrD6ZsYl6","sorting":"a","sort":0,"color":"#d1af05","flags":{}}
 {"name":"Dwänholf","type":"JournalEntry","parent":"i9ftdp7t1hZh3i8G","sorting":"a","sort":0,"color":"#adc01b","flags":{},"_id":"0itjyiNfEUrwM4UY"}
 {"name":"Exploration/ Tense","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"092d7d720cd011ae34c34b8aa532633228a85061"}},"_id":"2DaLVKRwXTwMsxoh"}
+{"name":"Suspense","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"079f8765bc6f93092b23f40de27d893f52b0ea22"}},"_id":"2oYf9FWoWFljf2GP"}
 {"_id":"3oRhhhbsyLpvnwTR","name":"Octopath","type":"Playlist","parent":"il0YALlGrD6ZsYl6","sorting":"a","sort":0,"color":"#0a20cd","flags":{}}
 {"name":"13","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"4DPftsE9V5Q2nwpW"}
 {"name":"Tripulaciones Pirata","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"781431e6cd92c03f6bbb667a7839dcc6b03d26a6"}},"_id":"4Sl1qfUGhUhXLdJb"}
@@ -9,7 +10,8 @@
 {"_id":"6RcHvKwCYfdFSQwI","name":"Personajes Comunes","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":475000,"color":null,"flags":{}}
 {"_id":"6hQGSEJvDCDi81RO","name":"TemplateFolder","type":"JournalEntry","parent":null,"sorting":"m","sort":500000,"color":null,"flags":{}}
 {"_id":"6pbGz5M6yLTcD4dX","name":"Gabriel","type":"JournalEntry","parent":"i9ftdp7t1hZh3i8G","sorting":"a","sort":0,"color":"#cfcfcf","flags":{}}
-{"_id":"7NypIshCqtLWbNIO","name":"Lore","type":"JournalEntry","parent":null,"sorting":"a","sort":300000,"color":null,"flags":{}}
+{"_id":"7NypIshCqtLWbNIO","name":"Lore","type":"JournalEntry","parent":null,"sorting":"a","sort":300000,"color":"#00a8e0","flags":{}}
+{"name":"Baileywiki Maps","type":"JournalEntry","parent":null,"sorting":"a","sort":0,"color":"#000000","flags":{"scene-packer":{"hash":"76009fad44ae8ba8e33c54cf98679008a3ff8cb9"}},"_id":"7yRSjxpDZAYJEO6a"}
 {"_id":"89W7xQNvs0x5yDTu","name":"Aldea de Corvinus","type":"Actor","parent":"dR4iKyBkx21Ng0rx","sorting":"a","sort":100000,"color":null,"flags":{}}
 {"_id":"9gKsucLLM2KrdIlE","name":"Exploration/ Calm","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":"","flags":{"scene-packer":{"hash":"1d4aeb29686369c81f48dc1522e435417ef41596"}}}
 {"_id":"AuZdl8U0HumIQd1n","name":"Dwänholf","type":"Scene","parent":null,"sorting":"a","sort":600000,"color":"#adc01b","flags":{}}
@@ -18,8 +20,10 @@
 {"_id":"BkjuE439ZndLunEJ","name":"Abel","type":"Actor","parent":null,"sorting":"a","sort":406250,"color":"#cfcfcf","flags":{}}
 {"_id":"EAWozD8EQq2qsZ7F","name":"Data","type":"JournalEntry","parent":"6hQGSEJvDCDi81RO","sorting":"a","sort":0,"color":"","flags":{}}
 {"_id":"FJ0ABOrrRGewPpzn","name":"Jugadores","type":"Actor","parent":null,"sorting":"m","sort":200000,"color":"#ff0000","flags":{}}
-{"name":"Tabletop RPG","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"6d4059be24ddeb15c8a304bc50bc19acf6e430b3"}},"_id":"GGUmXEXIbC8JrvHW"}
+{"name":"Maps","type":"Scene","parent":"SKwBfJrEWGWJriwk","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"4041c9e08eff03ee137ecb888173dd283bcf7fc6"}},"_id":"FfvOpKquO9p8OlWb"}
+{"_id":"GGUmXEXIbC8JrvHW","name":"Tabletop RPG","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"6d4059be24ddeb15c8a304bc50bc19acf6e430b3"}}}
 {"name":"Saulxerotte","type":"Actor","parent":"zpZ7V6jCJEjrJCc9","sorting":"a","sort":0,"color":null,"flags":{},"_id":"GrVanAvkfy2YT4s4"}
+{"name":"Magus","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"6181db7efab0e12b5a837f12b83268f060b0e428"}},"_id":"J0HPRt4RLvGt64Wg"}
 {"_id":"J5Bc8QzPCnvSGEKw","name":"Puerto Rue","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":100000,"color":null,"flags":{}}
 {"name":"8","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"JxNmlPBemwRIJ0UU"}
 {"name":"Public","type":"JournalEntry","parent":"6pbGz5M6yLTcD4dX","sorting":"a","sort":0,"color":null,"flags":{},"_id":"KbtZufOeTXfCgCQd"}
@@ -28,23 +32,29 @@
 {"name":"14","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"M3Qn3JdWHTLivBYc"}
 {"name":"5","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"M3sBZnSSDCSFjni4"}
 {"name":"Themes","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"34427a9d8e4a66c958576c3a452236c0414ca1fe"}},"_id":"NQkarsS5PxBPhSsQ"}
-{"name":"Saulxerotte","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"OYlNUi1pScJTessZ"}
+{"name":"Maps for Adventure Path 2","type":"Scene","parent":"cyWlwiNOeq6q9Bdo","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"f787d17e18372097533207ad8cf7fa4d95f4cc3e"}},"_id":"NfjlV209sg08ULId"}
 {"name":"10","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"P2PuPS2tHTkobLMA"}
+{"name":"Atmosphere","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"e7634cab291325b8d198d2e323f47da3bc46edd8"}},"_id":"Q4Yo3t8AHVqveNU1"}
 {"name":"PJ temporales","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":0,"color":null,"flags":{},"_id":"SBzRyJ8V1pJxluSc"}
+{"name":"Bobours","type":"Scene","parent":"U5YpfxOe50aETvIW","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"8699eed92d15eeb50df1bd6b8f21064e8ad3b35c"}},"_id":"SKwBfJrEWGWJriwk"}
 {"_id":"SSm28JtHLJUQymwL","name":"Oponentes","type":"Actor","parent":"dR4iKyBkx21Ng0rx","sorting":"a","sort":200000,"color":null,"flags":{}}
 {"_id":"SZNaTtaNEfuhRqoh","name":"Manuales","type":"JournalEntry","parent":null,"sorting":"a","sort":200000,"color":"#000000","flags":{}}
 {"_id":"TWsglSfzRnFIBihJ","name":"Dwänholf","type":"Actor","parent":null,"sorting":"a","sort":600000,"color":"#adc01b","flags":{}}
 {"name":"2","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"TfHWzkYezOOPTPxR"}
+{"name":"Moulinette","type":"Scene","parent":null,"sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"abc68ff189e372809dfaac0a51af0dd46d4b0af9"}},"_id":"U5YpfxOe50aETvIW"}
 {"_id":"UtEYrTNXFgYvuV1F","name":"Bestiario","type":"Actor","parent":null,"sorting":"a","sort":800000,"color":"#09d32a","flags":{}}
 {"name":"4","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"Wq5aeElgSMS5CjNR"}
 {"name":"1","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"XJiGLsgBT4fHY0DC"}
 {"name":"Combat","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"ade5b9ad548d801b53188f0dc7257024986d0fa5"}},"_id":"XVSLUntt4TwmaUIx"}
 {"name":"PJ","type":"JournalEntry","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"XxQP2GmdSfqazl09"}
 {"name":"3","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"Z8iKTOp0ZAHBtFyH"}
+{"name":"Module Journals","type":"JournalEntry","parent":"7yRSjxpDZAYJEO6a","sorting":"a","sort":0,"color":"#000000","flags":{"scene-packer":{"hash":"e33caa907e0ab1704e0971c0b23e24efabd92569"}},"_id":"coYASr8xzuDx9p2i"}
 {"_id":"cxv0906yitfoEWld","name":"Random Encounter","type":"Scene","parent":null,"sorting":"a","sort":700000,"color":"","flags":{}}
+{"name":"SteelRat RPGMapShare","type":"Scene","parent":"U5YpfxOe50aETvIW","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"9695006bb06ef5bc5cbc7103c06cd9beb7e4b0c4"}},"_id":"cyWlwiNOeq6q9Bdo"}
 {"_id":"dIAJJY3TOr1hXZZS","name":"Herramientas","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":-75000,"color":"#ca09ce","flags":{}}
 {"_id":"dR4iKyBkx21Ng0rx","name":"Corvinus","type":"Actor","parent":"zpZ7V6jCJEjrJCc9","sorting":"a","sort":100000,"color":null,"flags":{}}
 {"name":"Data","type":"JournalEntry","parent":"6pbGz5M6yLTcD4dX","sorting":"a","sort":0,"color":null,"flags":{},"_id":"dcvmYNmoNtMYUbhH"}
+{"name":"Chess","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"44f7c75fe2341264f87da0fa11b5ef7397c66ce3"}},"_id":"dmKl1QP4Heiod9Rr"}
 {"name":"Cascarón Rojo","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"238fa053021e2fcda10ff414b557d413301d47b1"}},"_id":"fmZ600IWfBEOZ4Ba"}
 {"_id":"hrSe3CWr6geCAzMQ","name":"_fql_quests","type":"JournalEntry","parent":null,"sorting":"a","sort":100000,"flags":{}}
 {"_id":"i9ftdp7t1hZh3i8G","name":"Regiones","type":"JournalEntry","parent":null,"sorting":"m","sort":400000,"color":"#ff0000","flags":{}}
@@ -62,12 +72,13 @@
 {"name":"Puerto Rue","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"nKafkINSVHOZd1QK"}
 {"_id":"nyM2TPOUp9eyzxgN","name":"Luchadores y Soldados","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":700000,"color":null,"flags":{}}
 {"_id":"q6aA4Bp1u7of5FXm","name":"Pure NPC","type":"Actor","parent":"GrVanAvkfy2YT4s4","sorting":"a","sort":100000,"color":"","flags":{}}
+{"name":"Yahudah","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"e74644745c3d65c58c8dac510123fa6daa3c5f3e"}},"_id":"qKEfHIPnGpfuFEHU"}
+{"name":"0. Music folder","type":"Playlist","parent":"il0YALlGrD6ZsYl6","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"3dd65b385bef29a2032b11aab46755c65ca9f9d5"}},"_id":"segrNuowa2CYXoET"}
+{"name":"The Hideout","type":"JournalEntry","parent":"coYASr8xzuDx9p2i","sorting":"a","sort":0,"color":"#000000","flags":{"scene-packer":{"hash":"6adcf2c9bebe69b7c4d9e4f3e463dfccfebb0a38"}},"_id":"u4mw19JyrSiQZXh2"}
 {"_id":"uK6Dfu3lYHusmRbk","name":"Pregenerados","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":600000,"color":null,"flags":{}}
 {"_id":"v3UvlvYulMJ7gE5S","name":"Animales","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":500000,"color":null,"flags":{}}
+{"name":"Generic","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"8052b28141ef977fe383942989a3c5c933a6e4d6"}},"_id":"wjm9HqxBHvGoJpr0"}
 {"_id":"xYq7nHh7UJiYgh24","name":"Maleantes","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":300000,"color":null,"flags":{}}
 {"_id":"yw9P0RhDeGPGNpW7","name":"Ilmora","type":"Actor","parent":null,"sorting":"a","sort":412500,"color":"#cfcfcf","flags":{}}
 {"name":"Cascarón Rojo","type":"Scene","parent":"AuZdl8U0HumIQd1n","sorting":"a","sort":0,"color":null,"flags":{},"_id":"zD0MQbkVdR6CRaEa"}
 {"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","parent":null,"sorting":"a","sort":415625,"color":"#ef764e","flags":{}}
-{"name":"Magus","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"6181db7efab0e12b5a837f12b83268f060b0e428"}},"_id":"J0HPRt4RLvGt64Wg"}
-{"name":"Yahudah","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"e74644745c3d65c58c8dac510123fa6daa3c5f3e"}},"_id":"qKEfHIPnGpfuFEHU"}
-{"name":"Chess","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"44f7c75fe2341264f87da0fa11b5ef7397c66ce3"}},"_id":"dmKl1QP4Heiod9Rr"}

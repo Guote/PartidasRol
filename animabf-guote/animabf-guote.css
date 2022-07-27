@@ -711,6 +711,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 25px;
 }
 .actor-sheet .sheet-tabs .item[data-tab=settings],
 .actor-sheet .mystic-tabs .item[data-tab=settings],
@@ -2571,6 +2572,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 50px;
 }
 .combat-attack-dialog .sheet-tabs .active {
   text-shadow: none;

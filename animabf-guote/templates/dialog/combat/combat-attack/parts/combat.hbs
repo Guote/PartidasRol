@@ -5,7 +5,7 @@
   inputName="attacker.combat.modifier"
   inputValue=this.attacker.combat.modifier
 }}
-{{#if this.ui.hasFatiguePoints}}
+{{!-- {{#if this.ui.hasFatiguePoints}}
   {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
     title=(localize 'macros.combat.dialog.fatigue.title')
     disabled=this.attackSent
@@ -20,7 +20,7 @@
   {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{else}}
   <p class='label no-fatigue'>{{localize 'macros.combat.dialog.notEnoughFatigue.title'}}</p>
-{{/if}}
+{{/if}} --}}
 
 {{#if this.attacker.combat.unarmed}}
   {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
