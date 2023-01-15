@@ -88,3 +88,4 @@ Handlebars.JavaScriptCompiler.prototype.nameLookup = function (parent, name) {
     }
     return `${parent}['${name}']`;
 };
+

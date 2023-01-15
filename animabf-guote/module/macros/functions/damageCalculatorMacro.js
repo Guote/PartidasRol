@@ -50,11 +50,19 @@ export const damageCalculatorMacro = async () => {
         final = `${final}<h2>Daño final: <span style='color:#ff1515'>${result.damage}</span></h2>`;
     }
     const typedGame = game;
-    ChatMessage.create({
-        content: final,
-        whisper: typedGame.collections
-            ?.get('User')
-            ?.filter(u => u.isGM)
-            ?.map(u => u.id)
-    });
+    const user = typedGame.collections?.get('User');
+    if (user !== undefined) {
+        const isGM = u => u.isGM;
+        const hasId = u => u.id !== null;
+        const gmIds = user
+            .filter(isGM)
+            .filter(hasId)
+            .map(u => u.id);
+        if (gmIds.length > 0) {
+            ChatMessage.create({
+                content: final,
+                whisper: gmIds
+            });
+        }
+    }
 };

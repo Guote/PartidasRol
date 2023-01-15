@@ -9,6 +9,7 @@ export const preloadTemplates = () => {
         Templates.Dialog.Combat.CombatAttackDialog.parts.psychic,
         Templates.Dialog.Combat.CombatDefenseDialog.main,
         Templates.Dialog.Combat.CombatDefenseDialog.parts.combat,
+        Templates.Dialog.Combat.CombatDefenseDialog.parts.damageResistance,
         Templates.Dialog.Combat.CombatDefenseDialog.parts.mystic,
         Templates.Dialog.Combat.CombatDefenseDialog.parts.psychic,
         Templates.Dialog.Combat.CombatRequestDialog,
@@ -66,6 +67,7 @@ export const preloadTemplates = () => {
         'systems/animabf-guote/templates/actor/parts/general/parts/disadvantages.hbs',
         'systems/animabf-guote/templates/actor/parts/general/parts/aspect.hbs',
         'systems/animabf-guote/templates/actor/parts/general/parts/description.hbs',
+        'systems/animabf-guote/templates/actor/parts/general/parts/regeneration.hbs',
         'systems/animabf-guote/templates/actor/parts/general/parts/contacts.hbs',
         'systems/animabf-guote/templates/actor/parts/general/parts/notes.hbs',
         'systems/animabf-guote/templates/actor/parts/general/parts/inventory-items.hbs',
@@ -80,6 +82,8 @@ export const preloadTemplates = () => {
         'systems/animabf-guote/templates/actor/parts/secondaries/parts/social.hbs',
         'systems/animabf-guote/templates/actor/parts/secondaries/parts/creative.hbs',
         'systems/animabf-guote/templates/actor/parts/secondaries/parts/secondary-special-skills.hbs',
+        'systems/animabf-guote/templates/actor/parts/secondaries/parts/guote-cundarias-1.hbs',
+        'systems/animabf-guote/templates/actor/parts/secondaries/parts/guote-cundarias-2.hbs',
         'systems/animabf-guote/templates/actor/parts/combat/combat.hbs',
         'systems/animabf-guote/templates/actor/parts/combat/parts/base-values.hbs',
         'systems/animabf-guote/templates/actor/parts/combat/parts/combat-special-skills.hbs',
@@ -121,7 +125,8 @@ export const preloadTemplates = () => {
         'systems/animabf-guote/templates/actor/parts/psychic/parts/psychic-disciplines.hbs',
         'systems/animabf-guote/templates/actor/parts/psychic/parts/psychic-powers.hbs',
         'systems/animabf-guote/templates/actor/parts/settings/settings.hbs',
-        'systems/animabf-guote/templates/actor/parts/settings/parts/tabVisibility.hbs'
+        'systems/animabf-guote/templates/actor/parts/settings/parts/tabVisibility.hbs',
+        'systems/animabf-guote/templates/actor/parts/settings/parts/advancedSettings.hbs'
     ];
     return loadTemplates(templatePaths);
 };

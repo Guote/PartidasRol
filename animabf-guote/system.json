@@ -1,9 +1,9 @@
 {
   "name": "animabf-guote",
   "title": "Anima Beyond Fantasy",
-  "description": "",
-  "version": "1.14.0",
-  "authors": [{"name": "Guote"}, { "name": "Linkaynn", "url": "https://www.jeseromero.com" }],
+  "description": "Unofficial Anima Beyond Fantasy system for Foundry VTT",
+  "version": "1.15.1",
+  "authors": [{ "name": "Linkaynn", "url": "https://www.jeseromero.com" }],
   "scripts": [],
   "esmodules": ["animabf-guote.js"],
   "styles": ["animabf-guote.css"],
@@ -14,28 +14,35 @@
       "label": "(ES) Armas",
       "system": "animabf-guote",
       "path": "./packs/weapons_es.db",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "name": "armors",
       "label": "(ES) Armaduras",
       "system": "animabf-guote",
       "path": "./packs/armors_es.db",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "name": "magic",
       "label": "(ES) Magia",
       "system": "animabf-guote",
       "path": "./packs/magic_es.db",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "name": "psychic",
       "label": "(ES) Mentalismo",
       "system": "animabf-guote",
       "path": "./packs/psychic_powers_es.db",
-      "entity": "Item"
+      "type": "Item"
+    },
+    {
+      "name": "fichasComunes",
+      "label": "(ES) Fichas Comunes",
+      "system": "animabf-guote",
+      "path": "./packs/fichas-comunes.db",
+      "type": "Item"
     }
   ],
   "languages": [
@@ -57,10 +64,10 @@
   "gridDistance": 1.5,
   "gridUnits": "m",
   "minimumCoreVersion": "0.8.8",
-  "compatibleCoreVersion": "0.8.9",
-  "url": "",
-  "manifest": "",
-  "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v1.14.0",
-  "download": "",
+  "compatibleCoreVersion": "9",
+  "url": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry",
+  "manifest": "https://raw.githubusercontent.com/AnimaBeyondDevelop/AnimaBeyondFoundry/main/src/system.json",
+  "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v1.15.1",
+  "download": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/download/v1.15.1/animabf-guote.zip",
   "bugs": "https://docs.google.com/forms/d/e/1FAIpQLSeUTdTOjxMKarAd1eoHfpswyoIs-mvSElVGmv7sZGrEuBHWKA/viewform?usp=sf_link"
 }

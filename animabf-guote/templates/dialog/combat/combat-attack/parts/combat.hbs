@@ -5,7 +5,7 @@
   inputName="attacker.combat.modifier"
   inputValue=this.attacker.combat.modifier
 }}
-{{!-- {{#if this.ui.hasFatiguePoints}}
+{{#if this.ui.hasFatiguePoints}}
   {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
     title=(localize 'macros.combat.dialog.fatigue.title')
     disabled=this.attackSent
@@ -20,7 +20,7 @@
   {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{else}}
   <p class='label no-fatigue'>{{localize 'macros.combat.dialog.notEnoughFatigue.title'}}</p>
-{{/if}} --}}
+{{/if}}
 
 {{#if this.attacker.combat.unarmed}}
   {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
@@ -49,7 +49,14 @@
       inputName='attacker.combat.criticSelected'
     }}
       <option {{#if (is "eq" this.attacker.combat.weapon.data.critic.primary.value this.attacker.combat.criticSelected)}}selected{{/if}} value='{{this.attacker.combat.weapon.data.critic.primary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.' this.attacker.combat.weapon.data.critic.primary.value '.title')}}</option>
-      <option {{#if (is "eq" this.attacker.combat.weapon.data.critic.secondary.value this.attacker.combat.criticSelected)}}selected{{/if}} value='{{this.attacker.combat.weapon.data.critic.secondary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.' this.attacker.combat.weapon.data.critic.secondary.value '.title')}}</option>
+      <option value='impact'>{{localize 'anima.ui.combat.armors.at.impact.title'}}</option>
+      <option value='cut'>{{localize 'anima.ui.combat.armors.at.cut.title'}}</option>  
+      <option value='thrust'>{{localize 'anima.ui.combat.armors.at.thrust.title'}}</option>  
+      <option value='heat'>{{localize 'anima.ui.combat.armors.at.heat.title'}}</option>  
+      <option value='electricity'>{{localize 'anima.ui.combat.armors.at.electricity.title'}}</option>  
+      <option value='cold'>{{localize 'anima.ui.combat.armors.at.cold.title'}}</option>  
+      <option value='energy'>{{localize 'anima.ui.combat.armors.at.energy.title'}}</option>  
+
     {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
   {{else}}
     {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'

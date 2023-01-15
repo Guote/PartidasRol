@@ -1,3 +1,4 @@
+import { NoneWeaponCritic } from "../../types/combat/WeaponItemConfig.js";
 import { Templates } from "../../utils/constants.js";
 import { calculateCombatResult } from "../../combat/utils/calculateCombatResult.js";
 import { calculateATReductionByQuality } from "../../combat/utils/calculateATReductionByQuality.js";
@@ -79,8 +80,14 @@ export class GMCombatDialog extends FormApplication {
         });
         html.find('.show-results').click(async () => {
             const data = {
-                attacker: this.attackerActor,
-                defender: this.defenderActor,
+                attacker: {
+                    name: this.attackerToken.name,
+                    img: this.attackerToken.data.img
+                },
+                defender: {
+                    name: this.defenderToken.name,
+                    img: this.defenderToken.data.img
+                },
                 result: this.data.calculations?.difference,
                 canCounter: this.data.calculations?.canCounter
             };
@@ -97,14 +104,22 @@ export class GMCombatDialog extends FormApplication {
             });
         });
     }
+    get isDamagingCombat() {
+        const { attacker } = this.data;
+        const isPhysicalDamagingCombat = attacker.result?.type === 'combat';
+        const isMysticDamagingCombat = attacker.result?.type === 'mystic' && attacker.result.values.critic !== NoneWeaponCritic.NONE;
+        const isPsychicDamagingCombat = attacker.result?.type === 'psychic' && attacker.result.values.critic !== NoneWeaponCritic.NONE;
+        return (isPhysicalDamagingCombat || isMysticDamagingCombat || isPsychicDamagingCombat);
+    }
     get canApplyDamage() {
-        return (this.data.attacker.result?.type === 'combat' &&
-            this.data.defender.result?.type === 'combat' &&
-            this.data.calculations &&
-            this.data.calculations.difference > 0 &&
-            !this.data.calculations.canCounter &&
-            this.data.calculations.damage !== undefined &&
-            this.data.calculations?.damage > 0);
+        const { calculations } = this.data;
+        if (!calculations)
+            return false;
+        if (calculations.canCounter)
+            return false;
+        const attackOverpassDefense = calculations.difference > 0;
+        const hasDamage = calculations.damage !== undefined && calculations?.damage > 0;
+        return this.isDamagingCombat && attackOverpassDefense && hasDamage;
     }
     applyValuesIfBeAble() {
         if (this.data.attacker.result?.type === 'combat') {
@@ -148,11 +163,11 @@ export class GMCombatDialog extends FormApplication {
         attacker.isReady = !!attacker.result;
         defender.isReady = !!defender.result;
         if (attacker.result && defender.result) {
-            const attackerTotal = Math.max(attacker.result.values.total + this.data.attacker.customModifier, 0);
-            const defenderTotal = Math.max(defender.result.values.total + this.data.defender.customModifier, 0);
+            const attackerTotal = attacker.result.values.total + this.data.attacker.customModifier;
+            const defenderTotal = defender.result.values.total + this.data.defender.customModifier;
             const winner = attackerTotal > defenderTotal ? attacker.token : defender.token;
-            if (attacker.result.type === 'combat' && defender.result.type === 'combat') {
-                const combatResult = calculateCombatResult(Math.max(attackerTotal, 0), Math.max(defenderTotal, 0), Math.max(defender.result.values.at - calculateATReductionByQuality(attacker.result.weapon?.data.quality.value ?? 0), 0), attacker.result.values.damage);
+            if (this.isDamagingCombat) {
+                const combatResult = calculateCombatResult(Math.max(attackerTotal, 0), Math.max(defenderTotal, 0), Math.max(defender.result.values.at - calculateATReductionByQuality(attacker.result), 0), attacker.result.values.damage, (defender.result.type === 'resistance') ? defender.result.values.surprised : false);
                 if (combatResult.canCounterAttack) {
                     this.data.calculations = {
                         difference: attackerTotal - defenderTotal,

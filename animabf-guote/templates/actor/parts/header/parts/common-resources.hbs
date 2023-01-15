@@ -19,16 +19,6 @@
       }}
       {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-        class="fatigue"
-        title=(localize 'anima.ui.general.fatigue.title')
-        inputName="data.characteristics.secondaries.fatigue.value"
-        inputValue=data.data.characteristics.secondaries.fatigue.value
-        hasSecondaryInput=true
-        secondaryInputName="data.characteristics.secondaries.fatigue.max"
-        secondaryInputValue=data.data.characteristics.secondaries.fatigue.max
-      }}
-      {{>
-      "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="initiative-base"
         rollable=true
         title=(localize 'anima.ui.general.initiative.base.title')
@@ -41,8 +31,16 @@
         secondaryInputName="data.characteristics.secondaries.initiative.final.value"
         secondaryInputValue=data.data.characteristics.secondaries.initiative.final.value
       }}
-    </div>
-    <div class='movements'>
+      {{>
+      "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+        class="fatigue"
+        title=(localize 'anima.ui.general.fatigue.title')
+        inputName="data.characteristics.secondaries.fatigue.value"
+        inputValue=data.data.characteristics.secondaries.fatigue.value
+        hasSecondaryInput=true
+        secondaryInputName="data.characteristics.secondaries.fatigue.max"
+        secondaryInputValue=data.data.characteristics.secondaries.fatigue.max
+      }}
       {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="movement"
@@ -54,7 +52,7 @@
         secondaryInputName="data.characteristics.secondaries.movementType.final.value"
         secondaryInputValue=data.data.characteristics.secondaries.movementType.final.value
       }}
-      {{>
+      {{!-- {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="movement"
         title=(localize 'anima.ui.general.movement.maximum.title')
@@ -76,7 +74,8 @@
         title=(localize 'anima.ui.general.movement.quarter.title')
         disabled=true
         inputValue=(math data.data.characteristics.secondaries.movement.maximum.value "/" 4)
-      }}
+      }} --}}
     </div>
+     
   {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
 {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

@@ -9,11 +9,24 @@
         "tabVisibility": { "mystic": { "value": false }, "domine": { "value": false }, "psychic": { "value": false } }
       },
       "general": {
+        "settings": {
+          "openRolls": { "value": 0 },
+          "fumbles": { "value": 0 },
+          "openOnDoubles": { "value": false },
+          "defenseType": { "value": "" }
+        },
         "modifiers": {
           "physicalActions": { "value": 0 },
           "allActions": { "base": { "value": 0 }, "final": { "value": 0 } },
           "naturalPenalty": { "byArmors": { "value": 0 }, "byWearArmorRequirement": { "value": 0 } },
-          "criticos": { "value": 0 }
+          "extraDamage": { "value": 0 },
+          "modFisico": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } },
+          "modSobrenatural": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } },
+          "modOtros": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } },
+          "modManiobras": { "ha": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } }, "hd": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } } },
+          "defenseCounter": {"value": 0},
+          "combatPosture": "normal",
+          "previousPosture": "normal"
         },
         "destinyPoints": { "base": { "value": 0 }, "final": { "value": 0 } },
         "presence": { "value": 0 },
@@ -39,7 +52,14 @@
         "languages": { "base": { "value": "" }, "others": [] },
         "levels": [],
         "notes": [],
-        "titles": []
+        "titles": [],
+        "customResources": {
+          "customResource_1": {"value": 0, "max": 0},
+          "customResource_2": {"value": 0, "max": 0},
+          "customResource_3": {"value": 0, "max": 0},
+          "customResource_4": {"value": 0, "max": 0},
+          "customResource_5": {"value": 0, "max": 0}
+        }
       },
       "characteristics": {
         "primaries": {
@@ -55,7 +75,13 @@
         "secondaries": {
           "lifePoints": { "value": 100, "max": 100 },
           "initiative": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "fatigue": { "value": 5, "max": 5 },
+          "fatigue": { "value": 0, "max": 0 },
+          "regenerationType": { "mod": { "value": 0 }, "final": { "value": 0 } },
+          "regeneration": {
+            "normal": { "value": 0, "period": "" },
+            "resting": { "value": 0, "period": "" },
+            "recovery": { "value": 0, "period": "" }
+          },
           "movementType": { "mod": { "value": 0 }, "final": { "value": 0 } },
           "movement": { "maximum": { "value": 0 }, "running": { "value": 0 } },
           "resistances": {
@@ -257,7 +283,14 @@
       },
       "psychic": {
         "psychicPotential": { "base": { "value": 0 }, "final": { "value": 0 } },
-        "psychicProjection": { "base": { "value": 0 }, "final": { "value": 0 } },
+        "psychicProjection": {
+          "base": { "value": 0 },
+          "final": { "value": 0 },
+          "imbalance": {
+            "offensive": { "base": { "value": 0 }, "final": { "value": 0 } },
+            "defensive": { "base": { "value": 0 }, "final": { "value": 0 } }
+          }
+        },
         "psychicPoints": { "value": 0, "max": 0 },
         "psychicPowers": [],
         "psychicDisciplines": [],

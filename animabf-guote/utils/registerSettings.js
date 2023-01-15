@@ -1,8 +1,10 @@
 export var ABFSettingsKeys;
 (function (ABFSettingsKeys) {
     ABFSettingsKeys["AUTO_ACCEPT_COMBAT_REQUESTS"] = "AUTO_ACCEPT_COMBAT_REQUESTS";
+    ABFSettingsKeys["IGNORE_BASE_ABSORPTION"] = "IGNORE_BASE_ABSORPTION";
     ABFSettingsKeys["ROUND_DAMAGE_IN_MULTIPLES_OF_5"] = "ROUND_DAMAGE_IN_MULTIPLES_OF_5";
     ABFSettingsKeys["SEND_ROLL_MESSAGES_ON_COMBAT_BY_DEFAULT"] = "SEND_ROLL_MESSAGES_ON_COMBAT_BY_DEFAULT";
+    ABFSettingsKeys["USE_DAMAGE_TABLE"] = "USE_DAMAGE_TABLE";
     ABFSettingsKeys["DEVELOP_MODE"] = "DEVELOP_MODE";
 })(ABFSettingsKeys || (ABFSettingsKeys = {}));
 export const registerSettings = () => {
@@ -10,6 +12,14 @@ export const registerSettings = () => {
     typedGame.settings.register('animabf-guote', ABFSettingsKeys.AUTO_ACCEPT_COMBAT_REQUESTS, {
         name: 'anima.ui.systemSettings.autoAcceptCombatRequests.title',
         hint: 'anima.ui.systemSettings.autoAcceptCombatRequests.hint.title',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean
+    });
+    typedGame.settings.register('animabf-guote', ABFSettingsKeys.IGNORE_BASE_ABSORPTION, {
+        name: 'anima.ui.systemSettings.ignoreBaseAbsorption.title',
+        hint: 'anima.ui.systemSettings.ignoreBaseAbsorption.hint.title',
         scope: 'world',
         config: true,
         default: false,
@@ -29,6 +39,14 @@ export const registerSettings = () => {
         scope: 'world',
         config: true,
         default: true,
+        type: Boolean
+    });
+    typedGame.settings.register('animabf-guote', ABFSettingsKeys.USE_DAMAGE_TABLE, {
+        name: 'anima.ui.systemSettings.useCombatTable.title',
+        hint: 'anima.ui.systemSettings.useCombatTable.hint.title',
+        scope: 'world',
+        config: true,
+        default: false,
         type: Boolean
     });
     typedGame.settings.register('animabf-guote', ABFSettingsKeys.DEVELOP_MODE, {

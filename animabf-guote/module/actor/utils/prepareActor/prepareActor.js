@@ -13,10 +13,12 @@ import { mutateMysticData } from "./calculations/actor/mystic/mutateMysticData.j
 import { mutatePsychicData } from "./calculations/actor/psychic/mutatePsychicData.js";
 import { mutateDomineData } from "./calculations/actor/domine/mutateDomineData.js";
 import { mutateInitiative } from "./calculations/actor/mutateInitiative.js";
+import { mutateRegenerationType } from "./calculations/actor/general/mutateRegenerationType.js";
 // Be careful with order of this functions, some derived data functions could be dependent of another
 const DERIVED_DATA_FUNCTIONS = [
     mutatePrimaryModifiers,
     mutateMovementType,
+    mutateRegenerationType,
     mutatePenalties,
     mutateCombatData,
     mutateArmorsData,

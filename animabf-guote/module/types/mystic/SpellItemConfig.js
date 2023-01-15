@@ -29,6 +29,7 @@ export const SpellItemConfig = {
             name,
             type: ABFItems.SPELL,
             data: {
+                description: { value: '' },
                 level: { value: 0 },
                 via: { value: '' },
                 hasDailyMaintenance: { value: false },

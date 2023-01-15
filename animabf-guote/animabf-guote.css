@@ -635,6 +635,22 @@ img {
   color: white;
   width: 4rem;
   margin-left: -2rem;
+  z-index: 2;
+}
+
+.common-titled-input .tertiary-input {
+  width: 5rem;
+  margin-left: -1rem;
+  padding-left: 1rem;
+  text-align: left;
+}
+
+.tertiary-without-secondary-input {
+  margin-left: -130px !important;
+  font-size: 0.8rem;
+}
+.modManiobras {
+  font-size: 0.7rem;
 }
 
 .animabf-guote-loading-indicator.white {
@@ -803,8 +819,9 @@ img {
 }
 .actor-header .modifiers .first-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 0.3rem;
+  grid-row-gap: 0.2rem;
 }
 .actor-header .characteristics {
   height: 100%;
@@ -852,7 +869,7 @@ img {
 }
 .actor-header .common-resources .group-body .first-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-column-gap: 0.5rem;
   margin-top: 0.5rem;
 }

@@ -1,4 +1,4 @@
-<div class='{{this.class}} common-titled-input'>
+<div class='{{this.class}} common-titled-input {{#if this.extraClass}}{{this.extraClass}}{{/if}}'>
   {{#unless this.hideTitle}}
     <p
       class='label
@@ -8,6 +8,7 @@
             '
             {{#if this.rollable}}
       data-roll="{{#if this.rollableDice}}{{this.rollableDice}}{{else}}1d100xa{{/if}}+{{#if (and this.rollSecondaryInput this.hasSecondaryInput)}}{{this.secondaryInputValue}}{{else}}{{this.inputValue}}{{/if}}"
+      data-extra="{{this.inputValue}}"
               data-label="
               {{#if this.rollableMessage}}
                 {{this.rollableMessage}}
@@ -37,6 +38,16 @@
         type='{{#if this.secondaryInputType}}{{this.secondaryInputType}}{{else}}number{{/if}}'
         class='input secondary-input'
         value='{{this.secondaryInputValue}}'
+      />
+    {{/if}}
+    {{#if this.hasTertiaryInput}}
+      <input
+        {{#if this.addTooltips}}title='Final'{{/if}}
+        {{#if this.disableTertiaryInput}}disabled{{/if}}
+        name='{{this.tertiaryInputName}}'
+        type='{{#if this.tertiaryInputType}}{{this.tertiaryInputType}}{{else}}number{{/if}}'
+        class='{{#if this.hasSecondaryInput}}input tertiary-input{{else}}input tertiary-without-secondary-input{{/if}}'
+        value='{{this.tertiaryInputValue}}'
       />
     {{/if}}
   </div>
