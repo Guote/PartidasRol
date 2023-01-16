@@ -1,0 +1,4 @@
+{
+	"BAILEYWIKIMAPSFREECOMPENDIUM.ImportCompendiums": "Would you like to import the Baileywiki compendiums into your Compendiums tab?",
+	"BAILEYWIKIMAPSFREECOMPENDIUM.UpdateModule": "<p>The module has been updated.</p><p>Would you like to import the updated compendiums into your compendiums tab?</p><p><i class='fas fa-exclamation-triangle'></i> This will replace and refresh the previous compendiums generated from this module!</p>"
+}

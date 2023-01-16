@@ -1,0 +1,29 @@
+{
+  "name": "_sortablejs",
+  "title": "SortableJS",
+  "description": "LIBRARY: SortableJS - This module is just a dependency for other modules and does not offer any functionality on its own. This module includes the popular SortableJS library.",
+  "version": "1.14.0-fvtt1",
+  "library": true,
+  "authors": [
+    {
+      "name": "The League of Extraordinary FVTT Developers",
+      "url": "https://github.com/League-of-Foundry-Developers"
+    },
+    {
+      "name": "SortableJS",
+      "url": "https://sortablejs.github.io/sortablejs/"
+    }
+  ],
+  "minimumCoreVersion": "0.0.0",
+  "compatibleCoreVersion": "9",
+  "scripts": ["Sortable.min.js"],
+  "manifest": "https://raw.githubusercontent.com/League-of-Foundry-Developers/sortablejs-lib/main/module.json",
+  "url": "https://github.com/League-of-Foundry-Developers/sortablejs-lib",
+  "download": "https://github.com/League-of-Foundry-Developers/sortablejs-lib/releases/download/v1.14.0-fvtt1/_sortablejs.zip",
+  "media": [
+    {
+			"type": "icon",
+			"link": "https://sortablejs.github.io/sortablejs/st/og-image.png"
+		}
+  ]
+}
