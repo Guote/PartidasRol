@@ -1,0 +1,77 @@
+.resource-input input[type="text"] {
+    width: 40%;
+    height: 30px;
+    font-size: 20px;
+    margin: 2px;
+    min-width: 40px;
+}
+
+.resource-input input:disabled {
+    color: #aaa;
+}
+
+.token-sheet .tab[data-tab="resources"] label,
+.brawlbar-configuration label {
+    white-space: nowrap;
+}
+
+.token-sheet .tab[data-tab="resources"] .form-fields label,
+.brawlbar-configuration .form-fields label {
+    display: flex;
+}
+
+input.indent-input {
+    text-align: right;
+    width: 32px;
+    margin-right: 1px;
+}
+
+.bar-modifiers {
+    visibility: hidden;
+}
+
+.bar-summary:hover .bar-modifiers {
+    visibility: visible;
+}
+
+.bar-modifiers a.disabled {
+    color: #999;
+    pointer-events: none;
+}
+
+.bar-modifiers span.bar-id {
+    color: #666;
+    font-size: smaller;
+}
+
+.bar-controls {
+    margin: 0 5%;
+}
+
+.bar-controls button.brawlbar-add {
+    flex: 1 1 100%;
+}
+
+form .form-group .form-fields button.barbrawl-reset {
+    flex: 1;
+}
+
+#token-hud .attribute.left-bars {
+    position: absolute;
+    right: 100%;
+    z-index: -1;
+}
+
+#token-hud .attribute.right-bars {
+    position: absolute;
+    left: 100%;
+    z-index: -1;
+}
+
+#token-hud .attribute.bar1 {
+    margin-top: auto;
+}
+
+.token-sheet nav.sheet-tabs {
+    flex-grow: 0;
+}

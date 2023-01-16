@@ -1,0 +1,86 @@
+<input type="hidden" name="flags.barbrawl.resourceBars.{{this.id}}.id" value="{{this.id}}" />
+<div class="form-group">
+    <label>{{localize "barbrawl.config.attribute"}}:</label>
+    <div class="form-fields">
+        <select class="brawlbar-attribute" name="flags.barbrawl.resourceBars.{{this.id}}.attribute">
+            {{#select this.attribute}}
+            <option value="">{{localize "barbrawl.attribute.none"}}</option>
+            <option value="custom">{{localize "barbrawl.attribute.custom"}}</option>
+            {{#each barAttributes as |attrs label|}}
+            <optgroup label="{{ label }}">
+                {{#each attrs}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </optgroup>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label>{{localize "barbrawl.config.value"}}:</label>
+    <div class="form-fields">
+        <input type="number" class="{{this.id}}-value" name="flags.barbrawl.resourceBars.{{this.id}}.value"
+            value="{{this.value}}" {{#if (ne this.attribute "custom" )}}disabled{{/if}} />
+        <span class="sep">/</span>
+        <input type="number" class="{{this.id}}-max" name="flags.barbrawl.resourceBars.{{this.id}}.max"
+            value="{{this.max}}" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label>{{localize "barbrawl.config.color"}}:</label>
+    <div class="form-fields">
+        <input class="color" style="min-width: 64px;" type="text"
+            name="flags.barbrawl.resourceBars.{{this.id}}.mincolor" value="{{this.mincolor}}" />
+        <input type="color" data-edit="flags.barbrawl.resourceBars.{{this.id}}.mincolor" value="{{this.mincolor}}">
+        <span class="sep">-</span>
+        <input class="color" style="min-width: 64px;" type="text"
+            name="flags.barbrawl.resourceBars.{{this.id}}.maxcolor" value="{{this.maxcolor}}" />
+        <input type="color" data-edit="flags.barbrawl.resourceBars.{{this.id}}.maxcolor" value="{{this.maxcolor}}">
+    </div>
+</div>
+
+<div class="form-group">
+    <label>{{localize "barbrawl.config.position"}}:</label>
+    <div class="form-fields">
+        <select name="flags.barbrawl.resourceBars.{{this.id}}.position">
+            {{#select this.position}}
+            <option value="top-inner">{{localize "barbrawl.position.top-inner"}}</option>
+            <option value="top-outer">{{localize "barbrawl.position.top-outer"}}</option>
+            <option value="bottom-inner">{{localize "barbrawl.position.bottom-inner"}}</option>
+            <option value="bottom-outer">{{localize "barbrawl.position.bottom-outer"}}</option>
+            <option value="left-inner">{{localize "barbrawl.position.left-inner"}}</option>
+            <option value="left-outer">{{localize "barbrawl.position.left-outer"}}</option>
+            <option value="right-inner">{{localize "barbrawl.position.right-inner"}}</option>
+            <option value="right-outer">{{localize "barbrawl.position.right-outer"}}</option>
+            {{/select}}
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label>{{localize "barbrawl.config.otherVisibility"}}:</label>
+    <div class="form-fields">
+        <select name="flags.barbrawl.resourceBars.{{this.id}}.otherVisibility" data-dtype="Number">
+            <option value="50" {{#if (eq this.otherVisibility 50)}}selected{{/if}}>{{localize "barbrawl.visibility.always"}}</option>
+            <option value="30" {{#if (eq this.otherVisibility 30)}}selected{{/if}}>{{localize "barbrawl.visibility.hover"}}</option>
+            <option value="0" {{#if (eq this.otherVisibility 0)}}selected{{/if}}>{{localize "barbrawl.visibility.none"}}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label>{{localize "barbrawl.config.ownerVisibility"}}:</label>
+    <div class="form-fields">
+        <select name="flags.barbrawl.resourceBars.{{this.id}}.ownerVisibility" data-dtype="Number">
+            <option value="-1" {{#if (eq this.ownerVisibility -1)}}selected{{/if}}>{{localize "barbrawl.visibility.inheritFromOther"}}</option>
+            <option value="50" {{#if (eq this.ownerVisibility 50)}}selected{{/if}}>{{localize "barbrawl.visibility.always"}}</option>
+            <option value="35" {{#if (eq this.ownerVisibility 35)}}selected{{/if}}>{{localize "barbrawl.visibility.hoverOrControl"}}</option>
+            <option value="30" {{#if (eq this.ownerVisibility 30)}}selected{{/if}}>{{localize "barbrawl.visibility.hover"}}</option>
+            <option value="10" {{#if (eq this.ownerVisibility 10)}}selected{{/if}}>{{localize "barbrawl.visibility.control"}}</option>
+            <option value="0" {{#if (eq this.ownerVisibility 0)}}selected{{/if}}>{{localize "barbrawl.visibility.none"}}</option>
+        </select>
+    </div>
+</div>

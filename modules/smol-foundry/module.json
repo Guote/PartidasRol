@@ -1,0 +1,26 @@
+{
+    "name": "smol-foundry",
+    "title": "smol-foundry",
+    "description": "",
+    "version": "0.1.04",
+    "library": "false",
+    "manifestPlusVersion": "1.0.0",
+    "minimumCoreVersion": "9",
+    "compatibleCoreVersion": "9",
+    "authors": [
+        {
+            "name": "Kandashi",
+            "url": "https://github.com/kandashi",
+            "discord": "Kandashi (He/Him)#6698"
+        }
+    ],
+    "scripts": [
+        "/scripts/condenser.js"
+    ],
+    "styles": [
+        "/styles/condenser.css"
+    ],
+    "url": "https://github.com/kandashi/smol-foundry",
+    "manifest": "https://github.com/kandashi/smol-foundry/releases/latest/download/module.json",
+    "download": "https://github.com/kandashi/smol-foundry/releases/download/0.1.04/module.zip"
+}

@@ -1,0 +1,96 @@
+{
+    "barbrawl": {
+        "translatedBy": "DJ Addi",
+        "barStyle": {
+            "name": "Bar style",
+            "hint": "Changes how bars are displayed.",
+            "minimal": "Minimalistic (slim, no border)",
+            "default": "Foundry default",
+            "large": "Large (wide, thin border)",
+            "legacy": "Legacy (thick border)"
+        },
+        "textStyle": {
+            "name": "Bar label",
+            "hint": "Changes the number displayed on the bar.",
+            "user": "User default",
+            "none": "None",
+            "fraction": "Fraction (value / max)",
+            "percent": "Percentage (%)"
+        },
+        "config": {
+            "attribute": "Attribute",
+            "ownerVisibility": "Visibility (owner)",
+            "otherVisibility": "Visibility (everyone)",
+            "gmVisibility": "Visibility (GM)",
+            "hide": "Hide bar",
+            "hideHint": "Don't display the bar when any of the checked conditions are met.",
+            "hideFull": "Full",
+            "hideEmpty": "Empty",
+            "hideCombat": "In combat",
+            "hideNoCombat": "Out of combat",
+            "value": "Value (current/max)",
+            "color": "Color (min/max)",
+            "position": "Position",
+            "advanced": "Advanced configuration",
+            "advancedButton": "Show more settings",
+            "indent": "Indentation",
+            "indentHint": "Additional space on the side of the bar in percent of the token's width.",
+            "indentLeft": "Left",
+            "indentRight": "Right",
+            "shareHeight": "Share height",
+            "shareHeightHint": "Prevents the bar from reserving any vertical space, which moves the following bar to the same line.",
+            "style": "Label",
+            "ignoreLimits": "Ignore limits",
+            "ignoreLimitsHint": "Disables clamping of input values between 0 (lower) and the maximum (upper). This is only applied to custom bars as clamping for other attributes is handled by the system.",
+            "ignoreMin": "Lower limit",
+            "ignoreMax": "Upper limit",
+            "invert": "Invert values",
+            "invertHint": "Displays 0 as a full bar and the maximum value as an empty bar.",
+            "label": "Label prefix",
+            "labelHint": "Displays the configured text on the bar.",
+            "approximate": "Approximation",
+            "approximateHint": "Shows an approximate value on the bar and its label. This configures the number of segments to display.",
+            "approximateOwner": "Approximation for owner",
+            "approximateOwnerHint": "Indicates whether the approximated value is also displayed for the owner of the token.",
+            "fgImage": "Foreground image",
+            "fgImageHint": "Replaces the usual bar with an image that is clipped based on the fill percentage.",
+            "bgImage": "Background image",
+            "bgImageHint": "Replaces the usual bar background with an image. It is recommended that both images have the same width as the scene's grid size.",
+            "opacity": "Opacity",
+            "save": "Update bar"
+        },
+        "attribute": {
+            "none": "None (remove)",
+            "custom": "Custom (values below)"
+        },
+        "visibility": {
+            "inheritFromOwner": "Inherit from owner",
+            "inheritFromOther": "Inherit from everyone",
+            "none": "Never",
+            "always": "Always",
+            "hover": "When hovered",
+            "control": "When selected",
+            "hoverOrControl": "When hovered or selected"
+        },
+        "position": {
+            "top-inner": "Top (inside)",
+            "top-outer": "Top (outside)",
+            "bottom-inner": "Bottom (inside)",
+            "bottom-outer": "Bottom (outside)",
+            "left-inner": "Left (inside)",
+            "left-outer": "Left (outside)",
+            "right-inner": "Right (inside)",
+            "right-outer": "Right (outside)"
+        },
+        "add": "Add resource",
+        "defaults": {
+            "save": "Save as default",
+            "saveConfirmation": "Saved default token resources.",
+            "load": "Load defaults",
+            "storePerType": {
+                "name": "Defaults per type",
+                "hint": "Stores the default token resources separately for each actor type."
+            }
+        }
+    }
+}

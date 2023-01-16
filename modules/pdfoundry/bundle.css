@@ -1,0 +1,168 @@
+/* Copyright 2020 Andrew Cuccinello
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+div.pdf-app section.window-content {
+  background: url(../../ui/parchment.jpg) repeat !important;
+}
+div.pdf-app section.window-content select,
+div.pdf-app section.window-content input,
+div.pdf-app section.window-content textarea {
+  max-width: 100%;
+  border: 0;
+}
+div.pdf-app div.row {
+  display: flex;
+  flex: 1;
+}
+div.pdf-app div.row label {
+  flex-shrink: 1;
+  align-self: center;
+  white-space: nowrap;
+  padding-right: 0.5em;
+}
+div.pdf-app div.row input,
+div.pdf-app div.row select,
+div.pdf-app div.row textarea {
+  flex-grow: 1;
+}
+div.pdf-app div.flex {
+  position: relative;
+  display: flex;
+}
+div.pdf-app div.flex > * {
+  line-height: 2em;
+  height: 2em;
+  margin: 0;
+}
+div.pdf-app div.flex > p {
+  line-height: 1em;
+}
+div.pdf-app div.flex label {
+  white-space: nowrap;
+  font-weight: bold;
+}
+div.pdf-app div.flex label:first-child {
+  padding-right: 4px;
+}
+div.pdf-app div.flex button {
+  width: unset;
+  min-width: unset;
+  white-space: nowrap;
+}
+div.pdf-app div.flex .grow {
+  flex-grow: 1;
+}
+div.pdf-app div.flex .shrink {
+  flex-shrink: 1;
+}
+div.pdf-app input {
+  min-width: 20px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1px 3px;
+  margin: 0;
+  color: #191813;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: inherit;
+  line-height: inherit;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+#journal .pdf-thumbnail {
+  margin: 0;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+div.pdf-inspect p {
+  text-align: justify;
+}
+div.pdf-inspect table thead {
+  text-align: center;
+}
+div.pdf-inspect table tbody td:first-child {
+  background: black;
+  color: white;
+}
+div.pdf-inspect table tbody td:not(:last-child) {
+  border-right: 1px solid black;
+}
+div.pdf-inspect table tbody tr:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+div.pdf-inspect table td:not(:first-child) {
+  padding: 0 0.5em;
+}
+div.pdf-inspect table tr.danger-0 {
+  background: lightgreen;
+}
+div.pdf-inspect table tr.danger-1 {
+  background: lightyellow;
+}
+div.pdf-inspect table tr.danger-2 {
+  background: lightsalmon;
+}
+div.pdf-inspect table tr.danger-3 {
+  background: darkred;
+  color: white;
+}
+div.pdf-inspect table i {
+  display: block;
+  text-align: center;
+  cursor: help;
+}
+div.pdf-inspect table i.copy {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+div.pdf-inspect table i.copy:hover {
+  color: orangered;
+}
+
+a.pdf-sheet-manual {
+  color: orangered;
+}
+
+.pdfoundry-link {
+  background: #ddd;
+  color: black;
+  padding: 1px 4px;
+  border: 1px solid #4b4a44;
+  border-radius: 2px;
+  white-space: nowrap;
+  word-break: break-all;
+}
+.pdfoundry-link:before {
+  content: "\f1c1";
+  font-family: "Font Awesome 5 Free";
+  padding-right: 4px;
+}
+
+div.pdfoundry-viewer section.window-content {
+  padding: 0;
+}
+div.pdfoundry-viewer iframe {
+  border: 0;
+}
+div.pdfoundry-viewer form,
+div.pdfoundry-viewer form iframe {
+  width: 100%;
+  height: 100%;
+}
+/*# sourceMappingURL=bundle.css.map */

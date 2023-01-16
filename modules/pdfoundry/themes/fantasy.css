@@ -1,0 +1,283 @@
+/* Copyright 2020 Andrew Cuccinello
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* Copyright 2020 Andrew Cuccinello
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+:root {
+  --toolbar-icon-opacity: 0.7;
+  --doorhanger-icon-opacity: 0.9;
+  --main-color: rgba(12, 12, 13, 1);
+  --body-bg-color: rgba(237, 237, 240, 1);
+  --errorWrapper-bg-color: rgba(255, 74, 74, 1);
+  --progressBar-color: rgba(10, 132, 255, 1);
+  --progressBar-indeterminate-bg-color: rgba(221, 221, 222, 1);
+  --progressBar-indeterminate-blend-color: rgba(116, 177, 239, 1);
+  --scrollbar-color: auto;
+  --scrollbar-bg-color: auto;
+  --toolbar-icon-bg-color: rgba(0, 0, 0, 1);
+  --sidebar-bg-color: rgba(245, 246, 247, 1);
+  --toolbar-bg-color: rgba(249, 249, 250, 1);
+  --toolbar-border-color: rgba(204, 204, 204, 1);
+  --button-hover-color: rgba(221, 222, 223, 1);
+  --toggled-btn-bg-color: rgba(0, 0, 0, 0.3);
+  --dropdown-btn-bg-color: rgba(215, 215, 219, 1);
+  --separator-color: rgba(0, 0, 0, 0.3);
+  --field-color: rgba(6, 6, 6, 1);
+  --field-bg-color: rgba(255, 255, 255, 1);
+  --field-border-color: rgba(187, 187, 188, 1);
+  --findbar-nextprevious-btn-bg-color: rgba(227, 228, 230, 1);
+  --treeitem-color: rgba(0, 0, 0, 0.8);
+  --treeitem-hover-color: rgba(0, 0, 0, 0.9);
+  --treeitem-active-color: rgba(0, 0, 0, 0.08);
+  --treeitem-active-bg-color: rgba(0, 0, 0, 1);
+  --sidebaritem-bg-color: rgba(0, 0, 0, 0.15);
+  --doorhanger-bg-color: rgba(255, 255, 255, 1);
+  --doorhanger-border-color: rgba(12, 12, 13, 0.2);
+  --doorhanger-hover-color: rgba(237, 237, 237, 1);
+  --doorhanger-separator-color: rgba(222, 222, 222, 1);
+  --overlay-button-bg-color: rgba(12, 12, 13, 0.1);
+  --overlay-button-hover-color: rgba(12, 12, 13, 0.3);
+}
+
+#viewerContainer::-webkit-scrollbar,
+#thumbnailView::-webkit-scrollbar,
+#outlineView::-webkit-scrollbar,
+#attachmentsView::-webkit-scrollbar {
+  background: var(--doorhanger-bg-color);
+}
+#viewerContainer::-webkit-scrollbar:vertical, #viewerContainer::-webkit-scrollbar:horizontal,
+#thumbnailView::-webkit-scrollbar:vertical,
+#thumbnailView::-webkit-scrollbar:horizontal,
+#outlineView::-webkit-scrollbar:vertical,
+#outlineView::-webkit-scrollbar:horizontal,
+#attachmentsView::-webkit-scrollbar:vertical,
+#attachmentsView::-webkit-scrollbar:horizontal {
+  border-left: 1px solid var(--toolbar-border-color);
+}
+#viewerContainer::-webkit-scrollbar-thumb,
+#thumbnailView::-webkit-scrollbar-thumb,
+#outlineView::-webkit-scrollbar-thumb,
+#attachmentsView::-webkit-scrollbar-thumb {
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  background: var(--outline-active-bg-color);
+}
+#viewerContainer::-webkit-scrollbar-thumb:hover,
+#thumbnailView::-webkit-scrollbar-thumb:hover,
+#outlineView::-webkit-scrollbar-thumb:hover,
+#attachmentsView::-webkit-scrollbar-thumb:hover {
+  background: var(--outline-hover-color);
+}
+
+body {
+  background: url(/ui/parchment.jpg) repeat;
+}
+
+#toolbarContainer,
+#toolbarSidebar,
+.doorHanger,
+.doorHangerRight {
+  background: url(/ui/parchment.jpg) repeat;
+}
+#toolbarContainer input,
+#toolbarContainer select,
+#toolbarContainer button,
+#toolbarContainer div.splitToolbarButton button.toolbarButton,
+#toolbarContainer span.dropdownToolbarButton,
+#toolbarSidebar input,
+#toolbarSidebar select,
+#toolbarSidebar button,
+#toolbarSidebar div.splitToolbarButton button.toolbarButton,
+#toolbarSidebar span.dropdownToolbarButton,
+.doorHanger input,
+.doorHanger select,
+.doorHanger button,
+.doorHanger div.splitToolbarButton button.toolbarButton,
+.doorHanger span.dropdownToolbarButton,
+.doorHangerRight input,
+.doorHangerRight select,
+.doorHangerRight button,
+.doorHangerRight div.splitToolbarButton button.toolbarButton,
+.doorHangerRight span.dropdownToolbarButton {
+  background: rgba(0, 0, 0, 0.05);
+}
+#toolbarContainer input:hover,
+#toolbarContainer select:hover,
+#toolbarContainer button:hover,
+#toolbarContainer div.splitToolbarButton button.toolbarButton:hover,
+#toolbarContainer span.dropdownToolbarButton:hover,
+#toolbarSidebar input:hover,
+#toolbarSidebar select:hover,
+#toolbarSidebar button:hover,
+#toolbarSidebar div.splitToolbarButton button.toolbarButton:hover,
+#toolbarSidebar span.dropdownToolbarButton:hover,
+.doorHanger input:hover,
+.doorHanger select:hover,
+.doorHanger button:hover,
+.doorHanger div.splitToolbarButton button.toolbarButton:hover,
+.doorHanger span.dropdownToolbarButton:hover,
+.doorHangerRight input:hover,
+.doorHangerRight select:hover,
+.doorHangerRight button:hover,
+.doorHangerRight div.splitToolbarButton button.toolbarButton:hover,
+.doorHangerRight span.dropdownToolbarButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+#toolbarContainer input:focus, #toolbarContainer input.toggled,
+#toolbarContainer select:focus,
+#toolbarContainer select.toggled,
+#toolbarContainer button:focus,
+#toolbarContainer button.toggled,
+#toolbarContainer div.splitToolbarButton button.toolbarButton:focus,
+#toolbarContainer div.splitToolbarButton button.toolbarButton.toggled,
+#toolbarContainer span.dropdownToolbarButton:focus,
+#toolbarContainer span.dropdownToolbarButton.toggled,
+#toolbarSidebar input:focus,
+#toolbarSidebar input.toggled,
+#toolbarSidebar select:focus,
+#toolbarSidebar select.toggled,
+#toolbarSidebar button:focus,
+#toolbarSidebar button.toggled,
+#toolbarSidebar div.splitToolbarButton button.toolbarButton:focus,
+#toolbarSidebar div.splitToolbarButton button.toolbarButton.toggled,
+#toolbarSidebar span.dropdownToolbarButton:focus,
+#toolbarSidebar span.dropdownToolbarButton.toggled,
+.doorHanger input:focus,
+.doorHanger input.toggled,
+.doorHanger select:focus,
+.doorHanger select.toggled,
+.doorHanger button:focus,
+.doorHanger button.toggled,
+.doorHanger div.splitToolbarButton button.toolbarButton:focus,
+.doorHanger div.splitToolbarButton button.toolbarButton.toggled,
+.doorHanger span.dropdownToolbarButton:focus,
+.doorHanger span.dropdownToolbarButton.toggled,
+.doorHangerRight input:focus,
+.doorHangerRight input.toggled,
+.doorHangerRight select:focus,
+.doorHangerRight select.toggled,
+.doorHangerRight button:focus,
+.doorHangerRight button.toggled,
+.doorHangerRight div.splitToolbarButton button.toolbarButton:focus,
+.doorHangerRight div.splitToolbarButton button.toolbarButton.toggled,
+.doorHangerRight span.dropdownToolbarButton:focus,
+.doorHangerRight span.dropdownToolbarButton.toggled {
+  background: rgba(0, 0, 0, 0.15);
+}
+#toolbarContainer input > select > option,
+#toolbarContainer select > select > option,
+#toolbarContainer button > select > option,
+#toolbarContainer div.splitToolbarButton button.toolbarButton > select > option,
+#toolbarContainer span.dropdownToolbarButton > select > option,
+#toolbarSidebar input > select > option,
+#toolbarSidebar select > select > option,
+#toolbarSidebar button > select > option,
+#toolbarSidebar div.splitToolbarButton button.toolbarButton > select > option,
+#toolbarSidebar span.dropdownToolbarButton > select > option,
+.doorHanger input > select > option,
+.doorHanger select > select > option,
+.doorHanger button > select > option,
+.doorHanger div.splitToolbarButton button.toolbarButton > select > option,
+.doorHanger span.dropdownToolbarButton > select > option,
+.doorHangerRight input > select > option,
+.doorHangerRight select > select > option,
+.doorHangerRight button > select > option,
+.doorHangerRight div.splitToolbarButton button.toolbarButton > select > option,
+.doorHangerRight span.dropdownToolbarButton > select > option {
+  background: url(/ui/parchment.jpg) repeat;
+  border: 2px groove #eeede0;
+}
+
+.doorHanger:before,
+.doorHangerRight:before {
+  border-bottom: none;
+}
+.doorHanger:after,
+.doorHangerRight:after {
+  border-bottom-color: #eeede0;
+}
+
+#findInput::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+#toolbarViewer,
+#toolbarSidebar {
+  background: rgba(0, 0, 0, 0.05);
+  border-bottom: 2px groove #eeede0;
+}
+
+#toolbarSidebar {
+  border: 2px groove #eeede0;
+}
+
+#viewerContainer div.sidebar-content,
+#thumbnailView div.sidebar-content,
+#outlineView div.sidebar-content,
+#attachmentsView div.sidebar-content {
+  border-right: 2px groove #eeede0;
+}
+#viewerContainer::-webkit-scrollbar,
+#thumbnailView::-webkit-scrollbar,
+#outlineView::-webkit-scrollbar,
+#attachmentsView::-webkit-scrollbar {
+  background: none;
+  width: 6px;
+}
+#viewerContainer::-webkit-scrollbar:vertical, #viewerContainer::-webkit-scrollbar:horizontal,
+#thumbnailView::-webkit-scrollbar:vertical,
+#thumbnailView::-webkit-scrollbar:horizontal,
+#outlineView::-webkit-scrollbar:vertical,
+#outlineView::-webkit-scrollbar:horizontal,
+#attachmentsView::-webkit-scrollbar:vertical,
+#attachmentsView::-webkit-scrollbar:horizontal {
+  border-left: 2px groove #eeede0;
+}
+#viewerContainer::-webkit-scrollbar-track,
+#thumbnailView::-webkit-scrollbar-track,
+#outlineView::-webkit-scrollbar-track,
+#attachmentsView::-webkit-scrollbar-track {
+  box-shadow: 0 0 1px #999 inset;
+  border-radius: 4px;
+}
+#viewerContainer::-webkit-scrollbar-thumb,
+#thumbnailView::-webkit-scrollbar-thumb,
+#outlineView::-webkit-scrollbar-thumb,
+#attachmentsView::-webkit-scrollbar-thumb {
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  outline: none;
+  border-radius: 3px;
+  background: #782e22;
+  border: 1px solid #ff6400;
+}
+#viewerContainer::-webkit-scrollbar-thumb:hover,
+#thumbnailView::-webkit-scrollbar-thumb:hover,
+#outlineView::-webkit-scrollbar-thumb:hover,
+#attachmentsView::-webkit-scrollbar-thumb:hover {
+  background: var(--outline-hover-color);
+}
+/*# sourceMappingURL=fantasy.css.map */

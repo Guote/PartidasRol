@@ -1,0 +1,20 @@
+{
+  "wd.setting.gmOnly.title" : "GM Only Access",
+  "wd.setting.gmOnly.hint" : "Restricts access to gm accounts only to prevent malicious use.",
+
+  "wd.setting.icon.title" : "Render Chat Window Icon",
+  "wd.setting.icon.hint" : "Disallows Icon on Chat Window",
+
+  "wd.setting.response.title" : "Allow Response",
+  "wd.setting.response.hint" : "When sending a dialog to a player, when the player accepts or rejects, it sends back a response to the sender.",
+
+  "wd.dialog.noUserError" : "No other user is connected.",
+  "wd.dialog.notGMError" : "This module is restricted to GM use only.",
+
+  "wd.dialog.content.chooseUser" : "Whisper Users:",
+  "wd.dialog.content.chatWhisper" : "Log to chat",
+  "wd.dialog.content.message" : "Message:",
+
+  "wd.dialog.button.submit" : "Submit",
+  "wd.dialog.button.cancel" : "Cancel"
+}

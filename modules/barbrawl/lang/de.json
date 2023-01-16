@@ -1,0 +1,96 @@
+{
+    "barbrawl": {
+        "translatedBy": "DJ Addi",
+        "barStyle": {
+            "name": "Bar Stil",
+            "hint": "Verändert, wie die Balken angezeigt werden.",
+            "minimal": "Minimalistisch (dünn, kein Rand)",
+            "default": "Foundry-Standard",
+            "large": "Groß (breit, dünner Rand)",
+            "legacy": "Alt (dicker Rand)"
+        },
+        "textStyle": {
+            "name": "Bar Beschriftung",
+            "hint": "Ändert die Zahl, die auf dem Balken angezeigt wird.",
+            "user": "Benutzereinstellung",
+            "none": "Keine",
+            "fraction": "Bruch (Wert / Max.)",
+            "percent": "Prozent (%)"
+        },
+        "config": {
+            "attribute": "Attribut",
+            "ownerVisibility": "Sichtbarkeit (Besitzer)",
+            "otherVisibility": "Sichtbarkeit (alle)",
+            "gmVisibility": "Sichtbarkeit (SL)",
+            "hide": "Bar verstecken",
+            "hideHint": "Die Bar wird nicht angezeigt, wenn eine der ausgewählten Konditionen zutrifft.",
+            "hideFull": "Voll",
+            "hideEmpty": "Leer",
+            "hideCombat": "Im Kampf",
+            "hideNoCombat": "Außerhalb des Kampfes",
+            "value": "Wert (aktuell/max)",
+            "color": "Farbe (min/max)",
+            "position": "Position",
+            "advanced": "Erweiterte Einstellungen",
+            "advancedButton": "Mehr Optionen anzeigen",
+            "indent": "Einzug",
+            "indentHint": "Zusätzlicher Abstand an der Seite der Bar in Prozent der Breite des Tokens.",
+            "indentLeft": "Links",
+            "indentRight": "Rechts",
+            "shareHeight": "Höhe teilen",
+            "shareHeightHint": "Verhindert, dass die Bar vertikalen Platz reserviert, so dass die nächste Bar dieselbe Zeile verwendet.",
+            "style": "Beschriftung",
+            "ignoreLimits": "Limits ignorieren",
+            "ignoreLimitsHint": "Deaktiviert die Begrenzung von Werten zwischen 0 (Untergrenze) und dem Maximalwert (Obergrenze). Dies gilt nur für benutzerdefinierte Bars - andere Attribute werden vom System begrenzt.",
+            "ignoreMin": "Untergrenze",
+            "ignoreMax": "Obergrenze",
+            "invert": "Werte umkehren",
+            "invertHint": "Zeigt 0 als leere Bar und den Maximalwert als volle Bar an.",
+            "label": "Beschriftungspräfix",
+            "labelHint": "Zeit den konfigurierten Text auf der Bar an.",
+            "approximate": "Näherungswert",
+            "approximateHint": "Zeigt einen angenäherten Wert auf der Bar und deren Beschriftung an. Die Einstellung bestimmt, wie viele Segmente angezeigt werden.",
+            "approximateOwner": "Näherung für Besitzer",
+            "approximateOwnerHint": "Gibt an, ob der angenäherte Wert auch für den Besitzer des Tokens angezeigt wird.",
+            "fgImage": "Vordergrundbild",
+            "fgImageHint": "Ersetzt die übliche Bar mit einem Bild, das entsprechend der Füllung abgeschnitten ist.",
+            "bgImage": "Hintergrundbild",
+            "bgImageHint": "Ersetzt den üblichen Hintergrund der Bar mit einem Bild. Es wird empfohlen, dass beide Bilder dieselbe Breite wie das Gitter der Szene haben.",
+            "opacity": "Deckkraft",
+            "save": "Bar aktualisieren"
+        },
+        "attribute": {
+            "none": "Keins (entfernen)",
+            "custom": "Benutzerdefiniert (Werte unten)"
+        },
+        "visibility": {
+            "inheritFromOwner": "Von Besitzer erben",
+            "inheritFromOther": "Von allen erben",
+            "none": "Nie",
+            "always": "Immer",
+            "hover": "Wenn Mauszeiger darüber",
+            "control": "Wenn ausgewählt",
+            "hoverOrControl": "Wenn Mauszeiger darüber oder ausgewählt"
+        },
+        "position": {
+            "top-inner": "Oben (innen)",
+            "top-outer": "Oben (außen)",
+            "bottom-inner": "Unten (innen)",
+            "bottom-outer": "Unten (außen)",
+            "left-inner": "Links (innen)",
+            "left-outer": "Links (außen)",
+            "right-inner": "Rechts (innen)",
+            "right-outer": "Rechts (außen)"
+        },
+        "add": "Ressource hinzufügen",
+        "defaults": {
+            "save": "Als Standard speichern",
+            "saveConfirmation": "Standard-Ressourcen gespeichert.",
+            "load": "Standards laden",
+            "storePerType": {
+                "name": "Standards pro Typ",
+                "hint": "Speichert die Standard-Ressourcen separat für jeden Charaktertyp."
+            }
+        }
+    }
+}

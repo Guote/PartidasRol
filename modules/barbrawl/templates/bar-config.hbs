@@ -1,0 +1,26 @@
+{{#each brawlBars}}
+<details {{#if @last}}open{{/if}}>
+    <summary class="bar-summary">
+        <span>{{this.attribute}}</span>
+        <span class="bar-modifiers">
+            <a class="fas fa-chevron-up {{#if @first}}disabled{{/if}}"></a>
+            <a class="fas fa-chevron-down {{#if @last}}disabled{{/if}}"></a>
+            <a class="fas fa-trash"></a>
+            <span class="bar-id">{{this.id}}</span>
+        </span>
+    </summary>
+    <div id="{{this.id}}">
+        <input type="number" style="display: none;" name="flags.barbrawl.resourceBars.{{this.id}}.order" value="{{@index}}" />
+        {{> "modules/barbrawl/templates/bar-config-minimal.hbs" displayModes=../displayModes
+        barAttributes=../barAttributes}}
+
+        <div class="form-group">
+            <label>{{localize "barbrawl.config.advanced"}}:</label>
+            <button type="button" class="brawlbar-extend">
+                <i class="fas fa-cogs"></i>
+                <label>{{localize "barbrawl.config.advancedButton"}}</label>
+            </button>
+        </div>
+    </div>
+</details>
+{{/each}}
