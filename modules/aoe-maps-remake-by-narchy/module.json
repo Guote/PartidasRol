@@ -1,0 +1,74 @@
+{
+  "name": "aoe-maps-remake-by-narchy",
+  "title": "Agents of Edgewatch maps remake",
+  "description": "<p>My collection of maps for Paizo Publishing's Pathfinder Second Edition AGENTS OF EDGEWATCH Adventure Path.</p>",
+  "author": "Narchy",
+  "authors": [],
+  "url": "https://gitlab.com/narchy-maps/agents-of-edgewatch-remade-maps",
+  "flags": {},
+  "version": "1.6.0",
+  "minimumCoreVersion": "0.7.5",
+  "compatibleCoreVersion": "9",
+  "scripts": [],
+  "esmodules": [],
+  "styles": [],
+  "languages": [],
+  "packs": [
+    {
+      "name": "agents-of-edgewatch-remake-maps-book-1-by-narchy",
+      "label": "Agents of Edgewatch remake - Book 1 by Narchy",
+      "path": "/packs/agents-of-edgewatch-remake-maps-book-1-by-narchy.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    },
+    {
+      "name": "agents-of-edgewatch-remake-maps-book-2-by-narchy",
+      "label": "Agents of Edgewatch remake - Book 2 by Narchy",
+      "path": "/packs/agents-of-edgewatch-remake-maps-book-2-by-narchy.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    },
+    {
+      "name": "agents-of-edgewatch-remake-maps-book-3-by-narchy",
+      "label": "Agents of Edgewatch remake - Book 3 by Narchy",
+      "path": "/packs/agents-of-edgewatch-remake-maps-book-3-by-narchy.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    },
+    {
+      "name": "agents-of-edgewatch-remake-maps-book-4-by-narchy",
+      "label": "Agents of Edgewatch remake - Book 4 by Narchy",
+      "path": "/packs/agents-of-edgewatch-remake-maps-book-4-by-narchy.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    },
+    {
+      "name": "agents-of-edgewatch-remake-maps-book-5-by-narchy",
+      "label": "Agents of Edgewatch remake - Book 5 by Narchy",
+      "path": "/packs/agents-of-edgewatch-remake-maps-book-5-by-narchy.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    },
+    {
+      "name": "agents-of-edgewatch-remake-maps-book-6-by-narchy",
+      "label": "Agents of Edgewatch remake - Book 6 by Narchy",
+      "path": "/packs/agents-of-edgewatch-remake-maps-book-6-by-narchy.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    }
+  ],
+  "system": [],
+  "dependencies": [],
+  "socket": false,
+  "manifest": "https://gitlab.com/narchy-maps/agents-of-edgewatch-remade-maps/-/raw/master/module.json",
+  "download": "https://gitlab.com/narchy-maps/agents-of-edgewatch-remade-maps/-/archive/master/agents-of-edgewatch-remade-maps.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}
