@@ -1,0 +1,35 @@
+{
+  "name": "rise-of-the-runelords-maps-by-narchy",
+  "title": "Rise of the Runelords Maps by Narchy",
+  "description": "<p>My collection of maps for Paizo Publishing's Pathfinder RISE OF THE RUNELORDS adventure path.</p>",
+  "version": "3.0.2",
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "10",
+  "author": "Narchy",
+  "packs": [
+    {
+      "name": "rise-of-the-runelords-book-1",
+      "label": "Rise of the Runelords Book 1",
+      "path": "/packs/rise-of-the-runelords-book-1.db",
+      "entity": "Scene"
+    },
+
+        {
+      "name": "rise-of-the-runelords-book-2",
+      "label": "Rise of the Runelords Book 2",
+      "path": "/packs/rise-of-the-runelords-book-2.db",
+      "entity": "Scene"
+    },   
+    {
+      "name": "rise-of-the-runelords-book-3",
+      "label": "Rise of the Runelords Book 3",
+      "path": "/packs/rise-of-the-runelords-book-3.db",
+      "entity": "Scene"
+    }   
+  
+  ],
+  
+  "url": "https://gitlab.com/narchy-maps/rise-of-the-runelords",
+  "manifest": "https://gitlab.com/narchy-maps/rise-of-the-runelords/-/raw/main/module.json",
+  "download": "https://gitlab.com/narchy-maps/rise-of-the-runelords/-/archive/main/rise-of-the-runelords.zip"
+}

@@ -1,0 +1,36 @@
+{
+	"name": "reclusive-cartographer-maps",
+	"title": "The Reclusive Cartographer | Free Foundry Content",
+	"description": "<p>This free pack, from The Reclusive Cartographer, contains 30 scenes with pre-builts wall, lights and Multi-Level Token support. On top of that, I have also included 10 animated tokens for you to play around with. This pack is designed to give you a taster of the full range of content over on my Patreon. Enjoy!<p>",
+	"author": "The Reclusive Cartographer",
+	"version": "2.0.3",
+	"minimumCoreVersion": "0.6.0",
+	"compatibleCoreVersion": "10",
+	"packs": [{
+			"name": "rc-free-maps",
+			"label": "The Reclusive Cartographer | Maps",
+			"path": "/packs/rc-free-maps.db",
+			"entity": "Scene",
+			"type": "Scene"
+
+		},
+		{
+			"name": "rc-free-tokens",
+			"label": "The Reclusive Cartographer | Tokens",
+			"path": "/packs/rc-free-tokens.db",
+			"entity": "Actor",
+			"type": "Actor",
+			"system": "dnd5e"
+		},
+		{
+			"name": "rc-free-journals",
+			"label": "The Reclusive Cartographer | Journal",
+			"path": "/packs/rc-free-journals.db",
+			"entity": "JournalEntry",
+			"type": "JournalEntry"
+		}
+	],
+	"url": "https://www.patreon.com/thereclusivecartographer",
+	"manifest": "https://foundryvtt.s3.us-west-2.amazonaws.com/modules/reclusive-cartographer-maps/module.json",
+  	"download": "https://foundryvtt.s3.us-west-2.amazonaws.com/modules/reclusive-cartographer-maps/reclusive-cartographer-maps-2.0.3.zip"
+}
