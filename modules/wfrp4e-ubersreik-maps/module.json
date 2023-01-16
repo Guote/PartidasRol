@@ -1,0 +1,50 @@
+{
+  "name": "wfrp4e-ubersreik-maps",
+  "title": "WFRP4E - Fan-made maps for Ubersreik and its area",
+  "description": "Module for Starter Set, Adventures 1 &amp; 2",
+  "author": "LeRatierBretonnien",
+  "authors": [],
+  "url": "https://gitlab.com/LeRatierBretonnien/wfrp4e-ubersreik",
+  "flags": {},
+  "version": "5.0.2",
+  "minimumCoreVersion": "0.8.9",
+  "compatibleCoreVersion": "9",
+  "scripts": [],
+  "esmodules": [],
+  "styles": [],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "packs": [
+    {
+      "label": "Ubersreik - Bâtiments et Lieux",
+      "type": "Scene",
+      "name": "ubersreik-batiments-et-lieux",
+      "path": "./packs/ubersreik-batiments-et-lieux.db",
+      "package": "wfrp4e-ubersreik-maps",
+      "private": false,
+      "entity": "Scene"
+    },
+    {
+      "label": "Ubersreik Maps",
+      "type": "JournalEntry",
+      "name": "ubersreik-maps",
+      "path": "./packs/ubersreik-maps.db",
+      "package": "wfrp4e-ubersreik-maps",
+      "private": false,
+      "entity": "JournalEntry"
+    }
+  ],
+  "system": [],
+  "dependencies": [],
+  "socket": false,
+  "manifest": "https://gitlab.com/LeRatierBretonnien/wfrp4e-ubersreik/raw/master/module.json",
+  "download": "https://gitlab.com/LeRatierBretonnien/wfrp4e-ubersreik/-/archive/master/wfrp4e-ubersreik.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}

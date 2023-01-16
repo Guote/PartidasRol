@@ -1,0 +1,35 @@
+{
+  "name": "vtt-resource-tracker",
+  "title": "Resource Tracker",
+  "description": "Allows you to track resources on the token hud",
+  "version": "0.9",
+  "author": "CarnVanBeck",
+  "socket": false,
+  "languages": [
+    {
+      "lang": "de",
+      "name": "German",
+      "path": "lang/de.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packs": [],
+  "esmodules": [],
+  "scripts": [
+    "/scripts/resource-tracker.js"
+  ],
+  "styles": [
+    "/styles/resource-tracker.css"
+  ],
+  "url": "https://github.com/CarnVanBeck/vtt-resource-tracker",
+  "download": "https://github.com/CarnVanBeck/vtt-resource-tracker/archive/v0.9.zip",
+  "manifest": "https://raw.githubusercontent.com/CarnVanBeck/vtt-resource-tracker/master/module.json",
+  "bugs": "https://github.com/CarnVanBeck/vtt-resource-tracker/issues",
+  "allowBugReporter": true,
+  "minimumCoreVersion": "0.7.9",
+  "compatibleCoreVersion": "0.9"
+}
