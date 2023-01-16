@@ -1,0 +1,50 @@
+{
+  "name": "moonlight-maps-free",
+  "title": "Moonlight Maps",
+  "description": "<p>A collection of free, ready-to-play fantasy maps &amp; The City Tavern by Moonlight Maps. All maps are pre-configured for Foundry VTT with walls, doors and light sources, and ambient sounds!</p>",
+  "author": "Moonlight Maps",
+  "authors": [],
+  "url": "https://www.patreon.com/MoonlightMaps",
+  "flags": {},
+  "version": "1.1.0",
+  "minimumCoreVersion": "0.7.6",
+  "compatibleCoreVersion": "10",
+  "scripts": [],
+  "esmodules": [],
+  "styles": [],
+  "languages": [],
+  "packs": [
+    {
+      "name": "battlemaps",
+      "label": "Moonlight Maps - Battlemaps",
+      "path": "/packs/battlemaps.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    },
+    {
+      "name": "tavern",
+      "label": "Moonlight Maps - City Tavern",
+      "path": "/packs/tavern.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    },
+    {
+      "name": "ambience",
+      "label": "Moonlight Maps - Ambience",
+      "path": "/packs/ambience.db",
+      "entity": "Playlist",
+      "private": false,
+      "type": "Playlist"
+    }
+  ],
+  "system": [],
+  "dependencies": [],
+  "socket": false,
+  "manifest": "https://foundryvtt.s3-us-west-2.amazonaws.com/modules/moonlight-maps-free/module.json",
+  "download": "https://foundryvtt.s3-us-west-2.amazonaws.com/modules/moonlight-maps-free/moonlight-maps-free.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}
