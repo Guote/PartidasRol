@@ -26,6 +26,9 @@ export default class ABFExploderRoll extends ABFRoll {
     checkDoubles(result) {
         if (result % 11 === 0) {
             const newRoll = new ABFFoundryRoll('1d10').evaluate();
+            setTimeout(() => {
+                newRoll.toMessage({flavor: `El dado anterior se considera un 100 si este d10 = ${result / 11}`})
+            }, 500);
             return (newRoll.total === (result / 11));
         }
         return false;
