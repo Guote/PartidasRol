@@ -1,0 +1,24 @@
+Hey all!
+
+Thanks for downloading my map pack, I hope you all enjoy it! To get you started, if you've never installed a module before then here are some easy steps.
+
+1) Take the /mad-cartographer-free-maps/ folder and place it in your ".../AppData/Local/FoundryVTT/Data/modules/" folder
+
+2) Open up Foundry VTT and check "Add-on Modules" on the middle tab, it should list all your modules, including:
+"The MAD Cartographer | Theme Name | Battlemap Pack" if it's not there then see Step 1!
+
+3) Launch Foundry and enter your world. On the top right menus click the "Game Settings" icon (three gears) and click "Manage Modules"
+
+4) Find my module pack, tick the checkbox and click "Save Module Settings"
+
+5) On the top right click click the "Compendium Packs" tab next to the "Game Settings" menu), under the "JournalEntry" header you will find the Journal Entries compendium for this themed map pack, and under the "Scene" header you will find all the Map scenes with built in walls, lights and sounds.
+
+6) Open these compendiums and drag and drop the scenes/journals one by one into their respective "Scenes Directory" and "Journal Entries" tabs (top right). You can add them all so they are instantly available, or you can add them from the compendium as you need them (I'd recommend adding them all and putting them in their own folder)
+
+7) Note: If you drag all the Journal Entries in first, when you then drag in all the Scenes it will automatically open up the Scene "Configure" menu; at the top you can select the "Journal Notes" entry and find the Journal with the same name as the map. Save your changes then close the Configure window. Now if you right click a scene from the "Scenes Directory" you can check the "Scene Notes" to instantly bring up the relevant journal entry for that map.
+
+
+Hope that was easy enough to follow, thank you again for your support. If you have any problems with the map pack please get in touch over on the discord. Enjoy the Map Pack, and as ever...
+
+Keep rollin' those 20s!
+Alex

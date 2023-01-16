@@ -1,0 +1,34 @@
+{
+  "name": "malevolence-reimagined-maps-by-narchy",
+  "title": "Malevolence Reimagined Maps by Narchy",
+  "description": "<p>My collection of maps for Paizo Publishing's Pathfinder Second Edition MALEVOLENCE adventure.</p>",
+  "author": "Narchy",
+  "authors": [],
+  "url": "https://gitlab.com/narchy-maps/malevolence-reimagined",
+  "flags": {},
+  "version": "1.0.2",
+  "minimumCoreVersion": "0.8.0",
+  "compatibleCoreVersion": "9",
+  "scripts": [],
+  "esmodules": [],
+  "styles": [],
+  "languages": [],
+  "packs": [
+    {
+      "name": "malevolence-reimagined-maps-by-narchy",
+      "label": "Malevolence Reimagined Maps by Narchy",
+      "path": "/packs/malevolence-reimagined-maps-by-narchy.db",
+      "entity": "Scene",
+      "private": false,
+      "type": "Scene"
+    }
+  ],
+  "system": [],
+  "dependencies": [],
+  "socket": false,
+  "manifest": "https://gitlab.com/narchy-maps/malevolence-reimagined/-/raw/main/module.json",
+  "download": "https://gitlab.com/narchy-maps/malevolence-reimagined/-/archive/main/malevolence-reimagined.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}
