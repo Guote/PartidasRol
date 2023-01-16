@@ -1,0 +1,38 @@
+.control-icon.token-info-icon {
+	width: fit-content;
+	width: -moz-fit-content;
+	min-width: 42px;
+	flex-basis: auto;
+	padding: 0 8px;
+  margin: 8px 25px 8px 0 !important;
+}
+
+#token-hud .attribute.elevation {
+	width: 42px;
+	flex: 0 0 42px;
+}
+
+.token-info-container {
+	display: flex; 
+	flex-direction: row; 
+	justify-content: flex-end; 
+	align-items:center; 
+	margin-right: 75px;
+	flex: 0 !important;
+}
+
+.col.token-info-column-left {
+	left: -160px;
+	width: 120px;
+	padding-top: 13px;
+}
+.col.token-info-column-right {
+	right: -180px;
+	width: 120px;
+	padding-top: 13px;
+}
+
+.token-info-speed {
+	white-space: pre;
+	display: block;
+}

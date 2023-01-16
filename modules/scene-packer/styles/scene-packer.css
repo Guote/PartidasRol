@@ -1,0 +1,253 @@
+.asset-report .expand {
+  flex: 0 0 32px;
+  height: 30px;
+  margin: -6px 0 0 6px;
+  padding: 0;
+}
+.asset-report footer.options {
+  border-top: 1px solid #7a7971;
+}
+.asset-report #module-list {
+  margin-top: 5px;
+  border-top: 1px solid #7a7971;
+  height: 600px;
+}
+.asset-report #module-list .package-metadata {
+  flex: 0 0 100%;
+}
+.asset-report #module-list .package-title {
+  overflow: hidden;
+  font-weight: bold;
+}
+.asset-report #module-list .package-title,
+.asset-report #module-list .package-metadata,
+.asset-report #module-list .package-description {
+  color: #191813;
+}
+
+.asset-report .report-details {
+  height: 600px;
+  overflow: hidden auto;
+}
+.asset-report .asset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 5px 0 0;
+  overflow: hidden auto;
+}
+.asset-report .asset-list .location {
+   padding: 4px 0;
+   border-top: none;
+   border-bottom: 1px solid #b5b3a4;
+ }
+.asset-report .asset-list .location:last-child {
+  border-bottom: none;
+}
+.asset-report .overview .tag {
+  flex: none;
+  height: 20px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 0 3px;
+  margin: 0 0 0 2px;
+  font-size: 11px;
+  line-height: 18px;
+  text-decoration: none;
+  background: #333;
+  color: #f0f0e0;
+}
+.asset-report .hidden {
+  display: none;
+}
+.asset-report .dependencies * {
+  user-select: text;
+}
+.asset-report footer.footer {
+  margin-top: 5px;
+  border-top: 1px solid #7a7971;
+  padding-top: 5px;
+}
+.dialog.welcome-prompt .dialog-buttons button.dialog-button {
+  flex-basis: 43%;
+}
+.dialog.welcome-prompt .dialog-buttons button.dialog-button.close {
+  flex-basis: 75px;
+}
+#scene-packer-exporter nav {
+  border-bottom: 1px solid #000000;
+  padding-bottom: 5px;
+}
+#scene-packer-exporter section.directory {
+  height: 570px;
+  overflow-y: auto;
+}
+#scene-packer-exporter li.folder.collapsed > .folder-header {
+  background: inherit;
+}
+#scene-packer-exporter li.folder > .folder-header h3 {
+  color: inherit;
+}
+#scene-packer-exporter .entity label {
+  align-items: center;
+}
+#scene-packer-exporter .entity h4 {
+  line-height: 1.5em;
+  margin: 0;
+}
+#scene-packer-exporter .form-group {
+  align-items: baseline;
+  gap: 1em;
+}
+#scene-packer-exporter .form-group label {
+  align-self: flex-start;
+}
+#scene-packer-exporter .package-description,
+#sp-adventure-converter .textarea {
+  height: 300px;
+  flex: 4;
+  border: 1px solid #7a7971;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+#scene-packer-exporter .editor,
+#sp-adventure-converter .editor{
+  height: 100%;
+}
+#scene-packer-exporter .tox,
+#sp-adventure-converter .tox { height: 100%; min-height: 100%; }
+#scene-packer-exporter .adventure-categorisation .form-group label {
+  flex: 1;
+}
+#scene-packer-exporter .adventure-categorisation .form-group label > input[type="checkbox"] {
+  position: relative;
+  top: 5px;
+}
+#scene-packer-exporter .sp-player-levels .spacer {
+  flex: 0.5;
+}
+#scene-packer-exporter #SP-export-player-levels-add {
+  position: relative;
+  top: -1.5em;
+  right: 1em;
+  align-self: end;
+}
+#scene-packer-exporter .form-group.file-picker input {
+  margin-left: -3px;
+}
+#scene-packer-exporter-progress .app-footer {
+  flex: 0;
+  margin-top: auto;
+}
+#scene-packer-exporter-progress .app-footer progress {
+  flex-basis: 70%;
+  flex-shrink: 10;
+}
+#scene-packer-exporter-progress .app-footer .speed,
+#scene-packer-exporter-progress .app-footer .size {
+  text-align: right;
+}
+#scene-packer-exporter-progress .app-footer .info {
+  white-space: nowrap;
+  margin-left: 5px;
+}
+
+#scene-packer-importer .content {
+  display: flex;
+  flex-direction: column;
+  height: 625px;
+  user-select: text;
+  overflow: hidden auto;
+}
+
+#scene-packer-importer .content.loading {
+  justify-content: center;
+  text-align: center;
+}
+
+#scene-packer-importer .lds-ring {
+  margin: 0 auto;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+#scene-packer-importer .lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+#scene-packer-importer .lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+#scene-packer-importer .lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+#scene-packer-importer .lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#scene-packer-importer footer,
+#scene-packer-importer-unrelated-data footer{
+  margin-top: 5px;
+  border-top: 1px solid #7a7971;
+  padding-top: 5px;
+}
+
+#scene-packer-importer-unrelated-data .content {
+  height: 585px;
+  user-select: text;
+  overflow: hidden auto;
+}
+
+#scene-packer-importer-unrelated-data .content a.entity-link {
+  line-height: 1.6em;
+}
+
+#sp-adventure-converter .adventure-overview {
+  flex: 2;
+}
+#sp-adventure-converter .adventure-contents {
+  margin-left: 1rem;
+}
+
+.sp-welcome-journal.journal-sheet form .editor {
+  height: calc(100% - 55px);
+}
+.sp-welcome-journal input[name=name],
+.sp-welcome-journal select[name=folder] {
+  display: none;
+}
+
+.sp-welcome-journal .sp-footer {
+  max-height: 55px;
+  justify-content: space-around;
+  gap: 0 1em;
+  padding: 0 1em 10px 1em;
+  display: flex;
+  flex-wrap: wrap;
+}
+.sp-welcome-journal .sp-footer button {
+  flex: 1;
+}
+.sp-welcome-journal .sp-footer button.sp-import-close {
+  max-width: max-content;
+  padding: 0 10px;
+}
+.sp-welcome-journal .sp-footer hr {
+  width: 100%;
+}
