@@ -10,6 +10,7 @@
 {"_id":"6RcHvKwCYfdFSQwI","name":"Personajes Comunes","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":475000,"color":"#06b723","flags":{}}
 {"_id":"6hQGSEJvDCDi81RO","name":"TemplateFolder","type":"JournalEntry","parent":null,"sorting":"m","sort":500000,"color":null,"flags":{}}
 {"_id":"6pbGz5M6yLTcD4dX","name":"Gabriel","type":"JournalEntry","parent":"i9ftdp7t1hZh3i8G","sorting":"a","sort":0,"color":"#cfcfcf","flags":{}}
+{"name":"Deimos","type":"JournalEntry","parent":"i9ftdp7t1hZh3i8G","sorting":"a","sort":0,"color":"#f2ad97","flags":{},"_id":"7FUYlIQNVENERF8b"}
 {"_id":"7NypIshCqtLWbNIO","name":"Lore","type":"JournalEntry","parent":null,"sorting":"a","sort":300000,"color":"#00a8e0","flags":{}}
 {"_id":"89W7xQNvs0x5yDTu","name":"Aldea de Corvinus","type":"Actor","parent":"dR4iKyBkx21Ng0rx","sorting":"a","sort":100000,"color":null,"flags":{}}
 {"_id":"9gKsucLLM2KrdIlE","name":"Exploration/ Calm","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":"","flags":{"scene-packer":{"hash":"1d4aeb29686369c81f48dc1522e435417ef41596"}}}
@@ -51,8 +52,9 @@
 {"name":"Combat","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"ade5b9ad548d801b53188f0dc7257024986d0fa5"}},"_id":"XVSLUntt4TwmaUIx"}
 {"_id":"XxQP2GmdSfqazl09","name":"Diarios PJ","type":"JournalEntry","parent":null,"sorting":"a","sort":0,"color":"#c50202","flags":{}}
 {"name":"3","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"Z8iKTOp0ZAHBtFyH"}
+{"name":"Data","type":"JournalEntry","parent":"7FUYlIQNVENERF8b","sorting":"a","sort":0,"color":null,"flags":{},"_id":"ZA0eNm5nNJQOYYhq"}
+{"_id":"a2YLgpnSHUAhALCK","name":"Deimos","type":"Actor","parent":null,"sorting":"a","sort":414063,"color":"#f2ad97","flags":{}}
 {"name":"z- Magus","type":"Actor","parent":"yw9P0RhDeGPGNpW7","sorting":"a","sort":0,"color":"#1b5683","flags":{"scene-packer":{"hash":"0133bf9bfb2dc4c871bd7e6e80c2894c93c8de52"}},"_id":"bVokICa0OhYguNFH"}
-{"_id":"cQ290n2jZ0zeuRz4","name":"Puerto Tibas","type":"Actor","parent":"TWsglSfzRnFIBihJ","sorting":"a","sort":0,"color":"#adc01b","flags":{"scene-packer":{"hash":"f8aa539dbbeb3b5435d66c38ac57186a29432914"}}}
 {"_id":"cxv0906yitfoEWld","name":"Random Encounter","type":"Scene","parent":null,"sorting":"a","sort":700000,"color":"","flags":{}}
 {"name":"SteelRat RPGMapShare","type":"Scene","parent":"U5YpfxOe50aETvIW","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"9695006bb06ef5bc5cbc7103c06cd9beb7e4b0c4"}},"_id":"cyWlwiNOeq6q9Bdo"}
 {"_id":"dIAJJY3TOr1hXZZS","name":"Herramientas","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":-75000,"color":"#df4e4e","flags":{}}
@@ -77,6 +79,7 @@
 {"name":"Common","type":"Scene","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"lvlOB21OsqS7fjWr"}
 {"_id":"m8bkYN7b6YZMDLwp","name":"Año 0","type":"Actor","parent":null,"sorting":"a","sort":900000,"color":"#3e008a","flags":{"scene-packer":{"hash":"f4f6f2302d7002798df405538f5aa707316e9395"}}}
 {"_id":"n01TIF7SeTxuxmf6","name":"Remo","type":"Actor","parent":null,"sorting":"a","sort":700000,"color":"#4f94c9","flags":{}}
+{"name":"Deimos","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"nIFy7k1ALhIjNARv"}
 {"name":"Puerto Rue","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{},"_id":"nKafkINSVHOZd1QK"}
 {"_id":"q6aA4Bp1u7of5FXm","name":"Pure NPC","type":"Actor","parent":"GrVanAvkfy2YT4s4","sorting":"a","sort":100000,"color":"","flags":{}}
 {"_id":"qKEfHIPnGpfuFEHU","name":"z - Yehudah","type":"Actor","parent":"J5Bc8QzPCnvSGEKw","sorting":"a","sort":200000,"color":"#712281","flags":{"scene-packer":{"hash":"e74644745c3d65c58c8dac510123fa6daa3c5f3e"}}}
@@ -88,4 +91,4 @@
 {"name":"Generic","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"8052b28141ef977fe383942989a3c5c933a6e4d6"}},"_id":"wjm9HqxBHvGoJpr0"}
 {"_id":"yw9P0RhDeGPGNpW7","name":"Ilmora","type":"Actor","parent":null,"sorting":"a","sort":412500,"color":"#cfcfcf","flags":{}}
 {"name":"Cascarón Rojo","type":"Scene","parent":"AuZdl8U0HumIQd1n","sorting":"a","sort":0,"color":null,"flags":{},"_id":"zD0MQbkVdR6CRaEa"}
-{"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","parent":null,"sorting":"a","sort":415625,"color":"#ef764e","flags":{}}
+{"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","parent":null,"sorting":"a","sort":413282,"color":"#ef764e","flags":{}}
