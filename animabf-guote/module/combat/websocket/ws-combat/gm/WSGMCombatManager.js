@@ -95,14 +95,19 @@ export class WSGMCombatManager extends WSCombatManager {
         }
         const targetToken = getTargetToken(selectedToken, targets);
         if (selectedToken?.id) {
-            await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', { target: targetToken.name }), {
-                onConfirm: () => {
-                    if (selectedToken?.id && targetToken?.id) {
-                        this.combat = this.createNewCombat(selectedToken, targetToken);
-                        this.manageAttack(selectedToken, targetToken);
+            if (this.game.settings.get('animabf-guote', ABFSettingsKeys.AUTO_ACCEPT_COMBAT_REQUESTS)) {
+                this.combat = this.createNewCombat(selectedToken, targetToken);
+                this.manageAttack(selectedToken, targetToken);
+            } else {
+                await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', { target: targetToken.name }), {
+                    onConfirm: () => {
+                        if (selectedToken?.id && targetToken?.id) {
+                            this.combat = this.createNewCombat(selectedToken, targetToken);
+                            this.manageAttack(selectedToken, targetToken);
+                        }
                     }
-                }
-            });
+                });
+            }      
         }
         else {
             ABFDialogs.prompt(this.game.i18n.localize('macros.combat.dialog.error.noSelectedActor.title'));
