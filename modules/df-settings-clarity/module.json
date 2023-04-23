@@ -1,0 +1,31 @@
+{
+	"name": "df-settings-clarity",
+	"title": "DF Settings Clarity",
+	"description": "Displays a tag next to each module setting, indicating if it is a World setting (GM Only) or a client setting (Per User).",
+	"version": "3.2.1",
+	"author": "flamewave000#6766",
+	"minimumCoreVersion": "0.7.9",
+	"compatibleCoreVersion": "0.8.7",
+	"scripts": [ "src/lib/fuzzysort.js" ],
+	"dependencies": [ { "name": "lib-wrapper" } ],
+	"esmodules": ["src/df-settings-clarity.js"],
+	"styles": ["css/df-settings-clarity.css"],
+	"languages": [
+		{ "lang": "en", "name": "English", "path": "lang/en.json" },
+		{ "lang": "fr", "name": "French", "path": "lang/fr.json" },
+		{ "lang": "es", "name": "Español", "path": "lang/es.json" }
+	],
+	"url":		"https://github.com/flamewave000/dragonflagon-fvtt/tree/master/df-settings-clarity",
+	"license":	"https://raw.githubusercontent.com/flamewave000/dragonflagon-fvtt/master/df-settings-clarity/LICENSE",
+	"manifest":	"https://dragonflagon.cafe/mods/man/df-settings-clarity",
+	"download":	"https://dragonflagon.cafe/mods/pak/df-settings-clarity",
+	"readme":	"https://github.com/flamewave000/dragonflagon-fvtt/tree/master/df-settings-clarity/README.md",
+	"changelog":"https://github.com/flamewave000/dragonflagon-fvtt/tree/master/df-settings-clarity/CHANGELOG.md",
+	"manifestPlusVersion": "1.0.0",
+	"bugs": "https://github.com/flamewave000/dragonflagon-fvtt/issues/new/choose",
+	"authors": [ { "name": "flamewave000", "discord": "flamewave000#6766", "url": "https://github.com/flamewave000" } ],
+	"media": [
+		{ "type": "cover", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-fvtt/master/.assets/df-settings-clarity.png" },
+		{ "type": "icon", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-fvtt/master/.assets/logo.png" }
+	]
+}

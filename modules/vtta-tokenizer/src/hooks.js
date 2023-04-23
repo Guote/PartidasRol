@@ -132,7 +132,6 @@ function tokenizeSceneToken(doc) {
   };
 
   launchTokenizer(options, updateActor);
-
 }
 
 function tokenizeDoc(doc) {

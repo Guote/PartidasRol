@@ -1,3 +1,7 @@
+# 1.2.8
+ * (Fix) "getHistory is not a function" error
+ * (Fix) User names are now more visible against black fog background.
+
 # 1.2.7
  * Fix "User lacks permissions" error (#23)
 

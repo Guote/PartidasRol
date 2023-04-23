@@ -1,0 +1,45 @@
+<form class="mass-edit-preset-form">
+    <ol class="item-list preset-items">
+        <li class="items-header flexrow">
+            <h3 class="item-name flexrow">Presets</h3>
+            <div class="item-controls flexrow {{#unless createEnabled}}short{{/unless}}">
+                {{#if createEnabled}}
+                <a class="item-control preset-create" title="Create New Preset" data-type="objective">
+                    <i class="fas fa-plus"></i>
+                </a>
+                {{/if}}
+            </div>
+        </li>
+        {{#each presets as |preset|}}
+        <li class="item flexrow" name="{{preset.name}}">
+            <div class="item-name flexrow">
+                <button title="{{preset.title}}" name="{{preset.name}}">{{preset.name}}</button>
+            </div>
+
+            <div class="item-controls flexrow {{#unless ../createEnabled}}short{{/unless}}">
+                <div class="item-control up-down">
+                    <a class="preset-sort-up" title="Sort Up"><i class="fas fa-sort-up fa-lg"></i></a>
+                    <a class="preset-sort-down" title="Sort Down"><i class="fas fa-sort-down fa-lg"></i></a>
+                </div>
+                {{#if ../createEnabled}}
+                &nbsp;
+                <div class="item-control preset-update"><a title="Update Preset"><i class="fas fa-sync"></i></a></div>
+                {{#if ../v10}}
+                &nbsp;
+                <div class="item-control preset-keybind {{#if hasKeybind}}active{{/if}}"><a title="Register as a Mass Edit control"><i class="fas fa-gamepad"></i></a></div>
+                {{/if}}
+                &nbsp;
+                <div class="item-control preset-delete">
+                    <a title="Delete Preset"><i class="fas fa-trash"></i></a>
+                </div>
+                {{/if}}
+                {{#unless ../createEnabled}}
+                <div class="item-control preset-brush">
+                    <a title="Activate Brush"><i class="fas fa-paint-brush"></i></a>
+                </div>
+                {{/unless}}
+            </div>
+        </li>
+        {{/each}}
+    </ol>
+</form>

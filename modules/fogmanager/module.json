@@ -8,7 +8,7 @@
     "email":"tiwato@gmail.com",
     "discord":"ChrisF#4895"
     }],
-  "version": "v1.2.7",
+  "version": "v1.2.8",
   "minimumCoreVersion": "9.238",
   "compatibleCoreVersion": "100",
   "compatibility": {
@@ -34,7 +34,7 @@
 
   "url":"https://gitlab.com/tiwato/fogmanager",
   "manifest": "https://gitlab.com/tiwato/fogmanager/raw/master/module.json",
-  "download": "https://gitlab.com/tiwato/fogmanager/-/archive/v1.2.7/fogmanager.zip",
+  "download": "https://gitlab.com/tiwato/fogmanager/-/archive/v1.2.8/fogmanager.zip",
   "readme": "https://gitlab.com/tiwato/fogmanager/-/blob/master/README.md",
   "bugs": "https://gitlab.com/tiwato/fogmanager/-/issues",
   "allowBugReporter": true,

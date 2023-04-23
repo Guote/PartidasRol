@@ -1,0 +1,248 @@
+<form class="mass-edit-randomizer-form">
+
+    {{#if numberForm}}
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.common.range"}}</label>
+        <div class="form-fields">
+            <label>{{localize "multi-token-edit.common.min"}}</label>
+            <input type="number" value="{{min}}" step="any" name="min">
+            <label>{{localize "multi-token-edit.common.max"}}</label>
+            <input type="number" value="{{max}}" step="any" name="max">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Step Size</label>
+        <input type="number" value="{{step}}" step="any" name="step">
+    </div>
+    <div class="form-group">
+        <label>{{localize "multi-token-edit.common.random"}}</label>
+        <select name="method" data-dtype="string">
+            <option value="random" {{#if (eq method "random")}}selected="selected"{{/if}}>{{localize "multi-token-edit.common.random"}}</option>
+            <option value="interpolate" {{#if (eq method "interpolate")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.interpolate"}}</option>
+            <option value="interpolateReverse" {{#if (eq method "interpolateReverse")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.interpolateReverse"}}</option>
+        </select>
+    </div>
+    {{/if}}
+
+    {{#if rangeForm}}
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.common.min"}}</label>
+        <div class="form-fields">
+            <input type="range" name="min" value="{{minVal}}" min="{{min}}" max="{{max}}" step="{{step}}">
+            <span class="range-value">{{minVal}}</span>
+        </div>
+    </div>
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.common.max"}}</label>
+        <div class="form-fields">
+            <input type="range" name="max" value="{{maxVal}}" min="{{min}}" max="{{max}}" step="{{step}}">
+            <span class="range-value">{{maxVal}}</span>
+        </div>
+    </div>
+    <input type="hidden" value="{{step}}" name="step">
+    <div class="form-group">
+        <label>{{localize "multi-token-edit.common.method"}}</label>
+        <select name="method" data-dtype="string">
+            <option value="random" {{#if (eq method "random")}}selected="selected"{{/if}}>{{localize "multi-token-edit.common.random"}}</option>
+            <option value="interpolate" {{#if (eq method "interpolate")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.interpolate"}}</option>
+            <option value="interpolateReverse" {{#if (eq method "interpolateReverse")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.interpolateReverse"}}</option>
+        </select>
+    </div>
+    {{/if}}
+
+    {{#if selectForm}}
+    <select name="{{fieldName}}" data-dtype="{{dtype}}" multiple="multiple">
+        {{#each options as |option|}}
+            <option value="{{option.value}}" {{#if option.selected}}selected="selected"{{/if}}>{{option.label}}</option>
+        {{/each}}
+    </select>
+    {{/if}}
+
+    {{#if booleanForm}}
+    <p>Randomize <b>[</b> {{title}} <b>]</b> checkbox?</p>
+    {{/if}}
+
+    {{#if colorForm}}
+    <h3>{{localize "multi-token-edit.randomizer.pickRange"}}:</h3>
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.common.color"}} 1</label>
+        <div class="form-fields">
+            <input class="color" type="text" name="color1" value="{{color1}}">
+            <input type="color" value="{{color1}}" data-edit="color1">
+        </div>
+    </div>
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.common.color"}} 2</label>
+        <div class="form-fields">
+            <input class="color" type="text" name="color2" value="{{color2}}">
+            <input type="color" value="{{color2}}" data-edit="color2">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "multi-token-edit.common.method"}}</label>
+        <select name="method" data-dtype="string">
+            <option value="random" {{#if (eq method "random")}}selected="selected"{{/if}}>{{localize "multi-token-edit.common.random"}}</option>
+            <option value="interpolate" {{#if (eq method "interpolate")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.interpolate"}}</option>
+            <option value="interpolateReverse" {{#if (eq method "interpolateReverse")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.interpolateReverse"}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Space</label>
+        <select name="space" data-dtype="string">
+            <option value="hsl" {{#if (eq space "hsl")}}selected="selected"{{/if}}>HSL</option>
+            <option value="lch" {{#if (eq space "lch")}}selected="selected"{{/if}}>LCH</option>
+            <option value="srgb" {{#if (eq space "srgb")}}selected="selected"{{/if}}>sRGB</option>
+            <option value="srgb-linear" {{#if (eq space "srgb-linear")}}selected="selected"{{/if}}>sRGB Linear</option>
+            <option value="hwb" {{#if (eq space "hwb")}}selected="selected"{{/if}}>HWB</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Hue</label>
+        <select name="hue" data-dtype="string">
+            <option value="longer" {{#if (eq hue "longer")}}selected="selected"{{/if}}>Longer</option>
+            <option value="shorter" {{#if (eq hue "shorter")}}selected="selected"{{/if}}>Shorter</option>
+            <option value="increasing" {{#if (eq hue "increasing")}}selected="selected"{{/if}}>Decreasing</option>
+            <option value="raw" {{#if (eq hue "raw")}}selected="selected"{{/if}}>Raw</option>
+        </select>
+    </div>
+    <div class="colorStrip" style="height: 20px"></div>
+    {{/if}}
+
+    {{#if imageForm}}
+    <div class="image-controls">
+        <div class="form-group slim">
+            <label>{{localize "multi-token-edit.randomizer.addImagesToList"}}</label>
+            <div class="form-fields">
+                {{#if tokenVariantsActive}}
+                <button class="token-variants" type="button" title="Token Variant Art" tabindex="-1">
+                    <i class="fas fa-images"></i>
+                </button>
+                {{/if}}
+                <label>{{localize "multi-token-edit.randomizer.selectFolder"}}</label>
+                <button type="button" class="folder-picker" data-type="imagevideo" title="Browse Folders" tabindex="-1">
+                    <i class="fas fa-file-import fa-fw"></i>
+                </button>
+                <label>{{localize "multi-token-edit.randomizer.includeSubfolders"}}</label>
+                <input class="subfolders" type="checkbox" checked="checked">
+            </div>
+        </div>
+        <div><p class="notes">{{localize "multi-token-edit.randomizer.listOfImages"}}:</p></div>
+        <textarea class="images" name="images" rows="4" cols="50">{{images}}</textarea>
+    </div>
+    <div class="find-and-replace" hidden>
+        <div class="form-group">
+            <label>{{localize "multi-token-edit.common.find"}}</label>
+            <input name="find" type="text" value="{{find}}">
+        </div>
+        <div class="form-group">
+            <label>{{localize "multi-token-edit.common.replace"}}</label>
+            <input name="replace" type="text" value="{{replace}}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "multi-token-edit.common.method"}}</label>
+        <select name="method" data-dtype="string">
+            <option value="random" {{#if (eq method "random")}}selected="selected"{{/if}}>{{localize "multi-token-edit.common.random"}}</option>
+            <option value="sequential" {{#if (eq method "sequential")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.sequential"}}</option>
+            <option value="findAndReplace" {{#if (eq method "findAndReplace")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.findAndReplace"}}</option>
+        </select>
+    </div>
+    {{/if}}
+
+    {{#if textForm}}
+
+    <div class="form-group">
+        <label>{{localize "multi-token-edit.common.method"}}</label>
+        <select name="method" data-dtype="string">
+            <option value="list" {{#if (eq method "list")}}selected="selected"{{/if}}>{{localize "multi-token-edit.common.list"}}</option>
+            <option value="findAndReplace" {{#if (eq method "findAndReplace")}}selected="selected"{{/if}}>{{localize "multi-token-edit.randomizer.findAndReplace"}}</option>
+        </select>
+    </div>
+    <div class="find-and-replace" hidden>
+        <div class="form-group">
+            <label>{{localize "multi-token-edit.common.find"}}</label>
+            <input name="find" type="text" value="{{find}}">
+        </div>
+        <div class="form-group">
+            <label>{{localize "multi-token-edit.common.replace"}}</label>
+            <input name="replace" type="text" value="{{replace}}">
+        </div>
+    </div>
+    <div class="string-list">
+        <div class="form-group">
+            <label>{{localize "multi-token-edit.randomizer.generators"}}</label>
+            <select class="generator" data-dtype="String">
+                {{#each generators}}
+                <optgroup label="{{@key}}">
+                    {{#each this as |gen|}}
+                        <option value="{{gen.func}}">{{gen.label}}</option>
+                    {{/each}}
+                </optgroup>
+                {{/each}}
+            </select>
+            <button type="button" class="generate" title="{{localize "multi-token-edit.common.generate"}}" tabindex="-1">
+                <i class="fas fa-dice"></i>
+            </button>
+        </div>
+
+        <div><p class="notes">{{localize "multi-token-edit.randomizer.listOfStrings"}}:</p></div>
+        <textarea class="strings" name="strings" rows="4" cols="50">{{strings}}</textarea>
+
+        <div class="form-group slim">
+            <label>{{localize "multi-token-edit.randomizer.allowDuplicates"}}</label>
+            <input class="duplicates" type="checkbox" {{#if duplicates}}checked{{/if}}>
+        </div>
+    </div>
+
+    {{/if}}
+
+    {{#if coordinateForm}}
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.common.range"}} X</label>
+        <div class="form-fields">
+            <label>{{localize "multi-token-edit.common.min"}}</label>
+            <input type="number" value="{{minX}}" name="minX" step="any">
+            <label>{{localize "multi-token-edit.common.max"}}</label>
+            <input type="number" value="{{maxX}}" name="maxX" step="any">
+        </div>
+    </div>
+
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.common.range"}} Y</label>
+        <div class="form-fields">
+            <label>{{localize "multi-token-edit.common.min"}}</label>
+            <input type="number" value="{{minY}}" name="minY" step="any">
+            <label>{{localize "multi-token-edit.common.max"}}</label>
+            <input type="number" value="{{maxY}}" name="maxY" step="any">
+        </div>
+    </div>
+
+    <div class="form-group slim">
+        <label>{{localize "multi-token-edit.randomizer.stepSize"}}</label>
+        <div class="form-fields">
+            <label>X</label>
+            <input type="number" value="{{stepX}}" name="stepX" step="any">
+            <label>Y</label>
+            <input type="number" value="{{stepY}}" name="stepY" step="any">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "multi-token-edit.randomizer.pickRange"}}</label>
+        <button type="button" class="pickBounds" tabindex="-1"><i class="fas fa-crosshairs"></i></button>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "multi-token-edit.randomizer.snapToGrid"}}</label>
+        <button type="button" class="snapToGrid" tabindex="-1"><i class="fas fa-vector-square"></i></button>
+    </div>
+    
+    {{/if}}
+
+    <footer class="sheet-footer flexrow" style="margin-top: auto;">
+        <button type="submit"><i class="fas fa-dice"></i>{{localize "multi-token-edit.common.randomize"}}</button>
+        {{#if existing}}
+        <button type="submit" value="delete"><i class="fas fa-trash"></i>{{localize "multi-token-edit.common.delete"}}</button>
+        {{/if}}
+    </footer>
+</form>

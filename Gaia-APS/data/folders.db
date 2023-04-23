@@ -7,6 +7,7 @@
 {"name":"13","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"4DPftsE9V5Q2nwpW"}
 {"_id":"4a5dl5IH4rRRqTD3","name":"Gabriel","type":"Scene","parent":null,"sorting":"a","sort":500000,"color":"#cfcfcf","flags":{}}
 {"_id":"4pK9m5jqLn9Ivqhb","name":"Phaion","type":"Actor","parent":null,"sorting":"a","sort":418750,"color":"#ef764e","flags":{}}
+{"_id":"4wtF2LhjFVAiox4w","name":"Dead","type":"Actor","parent":"a2YLgpnSHUAhALCK","sorting":"a","sort":100000,"color":"","flags":{}}
 {"_id":"6RcHvKwCYfdFSQwI","name":"Personajes Comunes","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":475000,"color":"#06b723","flags":{}}
 {"_id":"6hQGSEJvDCDi81RO","name":"TemplateFolder","type":"JournalEntry","parent":null,"sorting":"m","sort":500000,"color":null,"flags":{}}
 {"_id":"6pbGz5M6yLTcD4dX","name":"Gabriel","type":"JournalEntry","parent":"i9ftdp7t1hZh3i8G","sorting":"a","sort":0,"color":"#cfcfcf","flags":{}}
@@ -36,6 +37,7 @@
 {"name":"Themes","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"34427a9d8e4a66c958576c3a452236c0414ca1fe"}},"_id":"NQkarsS5PxBPhSsQ"}
 {"name":"Maps for Adventure Path 2","type":"Scene","parent":"cyWlwiNOeq6q9Bdo","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"f787d17e18372097533207ad8cf7fa4d95f4cc3e"}},"_id":"NfjlV209sg08ULId"}
 {"name":"10","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"P2PuPS2tHTkobLMA"}
+{"_id":"Q0dfYaz4Li3XVHG2","name":"Winners","type":"Actor","parent":"a2YLgpnSHUAhALCK","sorting":"a","sort":900000,"color":"","flags":{}}
 {"name":"Atmosphere","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"e7634cab291325b8d198d2e323f47da3bc46edd8"}},"_id":"Q4Yo3t8AHVqveNU1"}
 {"_id":"QJ5cdNtlgTjMLzC4","name":"z. Data","type":"Actor","parent":"J5Bc8QzPCnvSGEKw","sorting":"a","sort":500000,"color":"#828282","flags":{"scene-packer":{"hash":"18c82ee0ae493ec8946a10eed1c4d7a7ecd7f704"}}}
 {"_id":"RyZW9rVYLKSRj5yO","name":"Reutilizables","type":"Scene","parent":null,"sorting":"a","sort":0,"color":"#484747","flags":{"scene-packer":{"hash":"e241f2df5486d99e83695dcf24113fac41e96055"}}}
@@ -51,13 +53,15 @@
 {"name":"1","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"XJiGLsgBT4fHY0DC"}
 {"name":"Combat","type":"Playlist","parent":"GGUmXEXIbC8JrvHW","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"ade5b9ad548d801b53188f0dc7257024986d0fa5"}},"_id":"XVSLUntt4TwmaUIx"}
 {"_id":"XxQP2GmdSfqazl09","name":"Diarios PJ","type":"JournalEntry","parent":null,"sorting":"a","sort":0,"color":"#c50202","flags":{}}
+{"_id":"Xy3Lp815CVEVdVYI","name":"Plantilla por nivel","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":675000,"color":null,"flags":{}}
+{"_id":"YEreJNaA3eIXYGFg","name":"Losers","type":"Actor","parent":"a2YLgpnSHUAhALCK","sorting":"a","sort":800000,"color":"","flags":{}}
 {"name":"3","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"Z8iKTOp0ZAHBtFyH"}
 {"name":"Data","type":"JournalEntry","parent":"7FUYlIQNVENERF8b","sorting":"a","sort":0,"color":null,"flags":{},"_id":"ZA0eNm5nNJQOYYhq"}
 {"_id":"a2YLgpnSHUAhALCK","name":"Deimos","type":"Actor","parent":null,"sorting":"a","sort":414063,"color":"#f2ad97","flags":{}}
 {"name":"z- Magus","type":"Actor","parent":"yw9P0RhDeGPGNpW7","sorting":"a","sort":0,"color":"#1b5683","flags":{"scene-packer":{"hash":"0133bf9bfb2dc4c871bd7e6e80c2894c93c8de52"}},"_id":"bVokICa0OhYguNFH"}
 {"_id":"cxv0906yitfoEWld","name":"Random Encounter","type":"Scene","parent":null,"sorting":"a","sort":700000,"color":"","flags":{}}
 {"name":"SteelRat RPGMapShare","type":"Scene","parent":"U5YpfxOe50aETvIW","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"9695006bb06ef5bc5cbc7103c06cd9beb7e4b0c4"}},"_id":"cyWlwiNOeq6q9Bdo"}
-{"_id":"dIAJJY3TOr1hXZZS","name":"Herramientas","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":-75000,"color":"#df4e4e","flags":{}}
+{"_id":"dIAJJY3TOr1hXZZS","name":"Summons, útiles","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":-75000,"color":"#df4e4e","flags":{}}
 {"_id":"dR4iKyBkx21Ng0rx","name":"Corvinus","type":"Actor","parent":"zpZ7V6jCJEjrJCc9","sorting":"a","sort":100000,"color":"#b5593b","flags":{}}
 {"name":"Data","type":"JournalEntry","parent":"6pbGz5M6yLTcD4dX","sorting":"a","sort":0,"color":null,"flags":{},"_id":"dcvmYNmoNtMYUbhH"}
 {"_id":"dmKl1QP4Heiod9Rr","name":"Ches","type":"Actor","parent":"J5Bc8QzPCnvSGEKw","sorting":"a","sort":400000,"color":"#929b55","flags":{"scene-packer":{"hash":"44f7c75fe2341264f87da0fa11b5ef7397c66ce3"}}}
@@ -72,7 +76,7 @@
 {"_id":"iuUavpvdc4tATE6l","name":"Criaturas","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":575000,"color":"#06891c","flags":{}}
 {"name":"6","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"jE23ENvfDr28HVL1"}
 {"name":"9","type":"Actor","parent":"iuUavpvdc4tATE6l","sorting":"a","sort":0,"color":null,"flags":{},"_id":"jrI2ZfWAXm9ql5Og"}
-{"_id":"kfeY14JYSsPDBDmN","name":"0 - Plantillas por nivel","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":450000,"color":"#808080","flags":{}}
+{"_id":"kfeY14JYSsPDBDmN","name":"Wildcards por nivel","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":775000,"color":"#808080","flags":{}}
 {"_id":"kssIKPsQhBbiqimu","name":"Kore - Reina Bruja (Leviathan)","type":"Actor","parent":"J5Bc8QzPCnvSGEKw","sorting":"a","sort":700000,"color":"#929b55","flags":{"scene-packer":{"hash":"39c59f5f633cd2f48cef35ae6a2c9dcd3300e647"}}}
 {"_id":"lVXedtoijnD3Fiaq","name":"Intro","type":"Scene","parent":null,"sorting":"m","sort":300000,"color":"","flags":{}}
 {"_id":"lkC7YB53Jry0MBlU","name":"Almas","type":"Actor","parent":"FJ0ABOrrRGewPpzn","sorting":"a","sort":-87500,"color":"#b12b2b","flags":{}}
@@ -86,9 +90,10 @@
 {"name":"Data NPC","type":"JournalEntry","parent":null,"sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"039a902274dcbcd3a0fb8c3144e7777e042505e2"}},"_id":"rrCXHgqekb8cQ8ei"}
 {"_id":"sSZ3gX76qH8l3z2H","name":"Rackham","type":"Actor","parent":"J5Bc8QzPCnvSGEKw","sorting":"a","sort":800000,"color":"#b5bf69","flags":{"scene-packer":{"hash":"3275a5a3014ca31f326c2b10515c13de34466628"}}}
 {"name":"0. Music folder","type":"Playlist","parent":"il0YALlGrD6ZsYl6","sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"3dd65b385bef29a2032b11aab46755c65ca9f9d5"}},"_id":"segrNuowa2CYXoET"}
-{"_id":"uK6Dfu3lYHusmRbk","name":"Pregenerados","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":600000,"color":"#808080","flags":{}}
+{"_id":"uK6Dfu3lYHusmRbk","name":"Pregenerados","type":"Actor","parent":"UtEYrTNXFgYvuV1F","sorting":"a","sort":875000,"color":"#808080","flags":{}}
 {"_id":"v3UvlvYulMJ7gE5S","name":"Animales","type":"Actor","parent":"6RcHvKwCYfdFSQwI","sorting":"a","sort":500000,"color":"#444444","flags":{}}
 {"name":"Generic","type":"Playlist","parent":null,"sorting":"a","sort":0,"color":null,"flags":{"scene-packer":{"hash":"8052b28141ef977fe383942989a3c5c933a6e4d6"}},"_id":"wjm9HqxBHvGoJpr0"}
 {"_id":"yw9P0RhDeGPGNpW7","name":"Ilmora","type":"Actor","parent":null,"sorting":"a","sort":412500,"color":"#cfcfcf","flags":{}}
 {"name":"Cascarón Rojo","type":"Scene","parent":"AuZdl8U0HumIQd1n","sorting":"a","sort":0,"color":null,"flags":{},"_id":"zD0MQbkVdR6CRaEa"}
+{"name":"Intros","type":"Playlist","parent":null,"sorting":"m","sort":0,"color":null,"flags":{},"_id":"zinKJTy20EAxqA24"}
 {"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","parent":null,"sorting":"a","sort":413282,"color":"#ef764e","flags":{}}

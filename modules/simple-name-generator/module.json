@@ -1,0 +1,24 @@
+{
+  "name": "simple-name-generator",
+  "title": "Simple Name Generator",
+  "description": "A little app to generate names for you.",
+  "version": "4.0.1",
+  "author": "megastruktur",
+  "scripts": [
+    "./simple-name-generator.js"
+  ],
+  "packs": [
+    {
+      "name": "macros",
+      "label": "Name Generators",
+      "path": "packs/macros.db",
+      "module": "simple-name-generator",
+      "entity": "Macro"
+    }
+  ],
+  "url": "https://github.com/megastruktur/foundryvtt-simple-name-generator",
+  "manifest": "https://raw.githubusercontent.com/megastruktur/foundryvtt-simple-name-generator/4.0.1/module.json",
+  "download": "https://github.com/megastruktur/foundryvtt-simple-name-generator/archive/4.0.1.zip",
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "9"
+}

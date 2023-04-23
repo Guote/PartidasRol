@@ -193,7 +193,16 @@ Hooks.on('init', () => {
                 return this.history[canvas.scene.id]
             }
             else {
-                return canvas.scene.getFlag(this.layername, "history");
+
+                let history =  canvas.scene.getFlag(this.layername, "history");
+                if (history){
+                    return history
+                }
+                return {
+                    events: [],
+                    pointer: 0
+                }
+
             }
 
         }
@@ -1703,7 +1712,7 @@ Hooks.on('ready', () => {
     }
 
     game.scenes.forEach(scene=>{
-        let history = scene.getHistory("fogmanager", "history")
+        let history = scene.getFlag("fogmanager", "history")
         let new_history = {}
 
         if (!history || history.events.length === 0) return // No history so skip it.

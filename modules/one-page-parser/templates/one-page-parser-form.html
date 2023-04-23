@@ -1,0 +1,45 @@
+<form name="one-page-parser-form">
+    <p>Import from <a href="https://watabou.itch.io/one-page-dungeon">One Page Dungeon</a> by right-clicking your One Page Dungeon to select "Export PNG" and "Export JSON", and upload the files here.</p>
+    <div class="form-group">
+        <label for="scene_name">Scene Name</label><br>
+        <div class="form-fields">
+        <input type="text" id="scene_name" name="name" placeholder="leave blank to import name"><br>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Background Image</label>
+        <div class="form-fields">
+            {{filePicker target="img" type="imagevideo"}}
+            <input class="image" type="text" name="img" placeholder="{{localize 'File Path'}}"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>JSON Import</label>
+        <div class="form-fields">
+            <input id="one-page-parser-json" type="file" name="json-file" accept=".json"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "SCENES.GridSize"}} <span class="units">({{localize "SCENES.Pixels"}})</span></label>
+        <div class="form-fields">
+            <input type="text" name="grid" placeholder="{{localize 'SCENES.Pixels'}}" value="70" data-dtype="Number"/>
+        </div>
+    </div>
+
+    <!-- DEBUG OPTION
+    <div class="form-group">
+        <label for="debug">Debug</label>
+        <div class="form-fields">
+            <input type="checkbox" name="debug" value="true"/>
+        </div>
+    </div>
+    -->
+
+    <!-- Form Submission -->
+    <button type="submit" name="submit">
+        <i class="far fa-save"></i> {{localize "Save Changes"}}
+    </button>
+</form>
