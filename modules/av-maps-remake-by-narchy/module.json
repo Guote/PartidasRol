@@ -2,32 +2,49 @@
   "name": "av-maps-remake-by-narchy",
   "title": "Abomination Vaults maps remake",
   "description": "<p>My collection of maps for Paizo Publishing's Pathfinder Second Edition ABOMINATION VAULTS Adventure Path.</p>",
+  "author": "Narchy",
+  "authors": [],
+  "url": "https://gitlab.com/narchy-maps/abomination-vaults-remade-maps",
+  "flags": {},
   "version": "2.3.1",
   "minimumCoreVersion": "0.8.0",
-  "compatibleCoreVersion": "9",
-  "author": "Narchy",
+  "compatibleCoreVersion": "10",
+  "scripts": [],
+  "esmodules": [],
+  "styles": [],
+  "languages": [],
   "packs": [
     {
       "name": "av-remake-maps-book-1-by-narchy",
       "label": "AV maps remake - Book 1 by Narchy",
       "path": "/packs/av-remake-maps-book-1-by-narchy.db",
-      "entity": "Scene"
-    },      
+      "entity": "Scene",
+      "type": "Scene",
+      "private": false
+    },
     {
       "name": "av-remake-maps-book-2-by-narchy",
       "label": "AV maps remake - Book 2 by Narchy",
       "path": "/packs/av-remake-maps-book-2-by-narchy.db",
-      "entity": "Scene"
-    },      
+      "entity": "Scene",
+      "type": "Scene",
+      "private": false
+    },
     {
       "name": "av-remake-maps-book-3-by-narchy",
       "label": "AV maps remake - Book 3 by Narchy",
       "path": "/packs/av-remake-maps-book-3-by-narchy.db",
-      "entity": "Scene"
-    }         
+      "entity": "Scene",
+      "type": "Scene",
+      "private": false
+    }
   ],
-  
-  "url": "https://gitlab.com/narchy-maps/abomination-vaults-remade-maps",
+  "system": [],
+  "dependencies": [],
+  "socket": false,
   "manifest": "https://gitlab.com/narchy-maps/abomination-vaults-remade-maps/-/raw/master/module.json",
-  "download": "https://gitlab.com/narchy-maps/abomination-vaults-remade-maps/-/archive/master/abomination-vaults-remade-maps.zip"
+  "download": "https://gitlab.com/narchy-maps/abomination-vaults-remade-maps/-/archive/master/abomination-vaults-remade-maps.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
 }

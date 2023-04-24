@@ -1,34 +1,26 @@
 {
-  "name": "tacticalmap-free",
-  "title": "TacticalMap Battlemaps",
-  "description": "This package presents 20 hand-picked maps from TacticalMap's collection, and provides them with walls and lighting for all Foundry VTT users.",
-  "author": "Tactical Master",
-  "authors": [],
-  "url": "https://www.patreon.com/tacticalmap",
-  "flags": {},
-  "version": "1.1.0",
-  "minimumCoreVersion": "0.6.0",
-  "compatibleCoreVersion": "10",
-  "scripts": [],
-  "esmodules": [],
-  "styles": [],
-  "languages": [],
-  "packs": [
-    {
-      "name": "maps",
-      "label": "TacticalMap Battlemaps",
-      "path": "packs/maps.db",
-      "entity": "Scene",
-      "type": "Scene",
-      "private": false
-    }
-  ],
-  "system": [],
-  "dependencies": [],
-  "socket": false,
-  "manifest": "https://foundryvtt.s3-us-west-2.amazonaws.com/modules/tacticalmap-free/module.json",
-  "download": "https://foundryvtt.s3-us-west-2.amazonaws.com/modules/tacticalmap-free/tacticalmap-free.zip",
-  "protected": false,
-  "coreTranslation": false,
-  "library": false
+	"id": "tacticalmap-free",
+	"name": "tacticalmap-free",
+	"title": "TacticalMap Battlemaps",
+	"description": "This package presents 20 hand-picked maps from TacticalMap's collection, and provides them with walls and lighting for all Foundry VTT users.",
+	"author": "Tactical Master",
+	"version": "1.1.1",
+	"minimumCoreVersion": "0.6.0",
+	"compatibleCoreVersion": "9",
+	"compatibility": {
+		"minimum": "0.6.0",
+		"verified": "11"
+	  },
+	"packs": [
+		{
+			"name": "maps",
+			"label": "TacticalMap Battlemaps",
+			"path": "packs/maps.db",
+			"entity": "Scene",
+			"type": "Scene"
+		}
+	],
+	"url": "https://www.patreon.com/tacticalmap",
+	"manifest": "https://foundryvtt.s3-us-west-2.amazonaws.com/modules/tacticalmap-free/module.json",
+	"download": "https://foundryvtt.s3.us-west-2.amazonaws.com/modules/tacticalmap-free/tacticalmap-free-1.1.1.zip"
 }

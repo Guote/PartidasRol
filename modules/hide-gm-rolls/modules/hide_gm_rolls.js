@@ -40,6 +40,16 @@ class HideGMRolls {
 			type: Boolean,
 		});
 
+		game.settings.register('hide-gm-rolls', 'sanitize-ready-set-roll-crit-dmg', {
+			name: game.i18n.localize('hide-gm-rolls.settings.sanitize-ready-set-roll-crit-dmg.name'),
+			hint: game.i18n.localize('hide-gm-rolls.settings.sanitize-ready-set-roll-crit-dmg.hint'),
+			scope: 'world',
+			config: true,
+			restricted: true,
+			default: true,
+			type: Boolean,
+		});
+
 		game.settings.register('hide-gm-rolls', 'hide-private-rolls', {
 			name: game.i18n.localize('hide-gm-rolls.settings.hide-private-rolls.name'),
 			hint: game.i18n.localize('hide-gm-rolls.settings.hide-private-rolls.hint'),
@@ -193,8 +203,10 @@ class HideGMRolls {
 			const flavor = html.find('.flavor-text.inline');
 			if (flavor) flavor.remove();
 		}
+
 		const dieIcon = html.find('.dice-total .die-icon').remove();
 		if (dieIcon) dieIcon.remove();
+
 		if (game.settings.get('hide-gm-rolls', 'sanitize-better-rolls-crit-dmg')) {
 			const total = html.find('.dice-total.red-damage');
 			if (!total || total.length === 0) return;
@@ -204,6 +216,38 @@ class HideGMRolls {
 			const sum = parseInt(base.data('value')) + parseInt(crit.data('value'));
 			total.empty();
 			total.text(sum);
+		}
+	}
+
+	static _sanitizeReadySetRoll5e(html) {
+		if (!game.modules.get('ready-set-roll-5e')?.active) {
+			return;
+		}
+
+		if (game.settings.get('hide-gm-rolls', 'sanitize-crit-fail')) {
+			const success = html.find('.success');
+			if (success) success.removeClass('success');
+			const failure = html.find('.failure');
+			if (failure) failure.removeClass('failure');
+		}
+
+		const dieIcon = html.find('.dice-total .die-icon').remove();
+		if (dieIcon) dieIcon.remove();
+
+		if (game.settings.get('hide-gm-rolls', 'sanitize-ready-set-roll-crit-dmg')) {
+			const total = html.find('.dice-total.rsr-damage');
+			if (!total || total.length === 0) return;
+			const base = total.find('.rsr-base-damage');
+			const crit = total.find('.rsr-crit-damage');
+			const label = total.find('.rsr5e-roll-label');
+			if (!base || !crit || base.length === 0 || crit.length === 0) return;
+			const sum = parseInt(base.data('value')) + parseInt(crit.data('value'));
+			if (label) label.remove();
+			base.data('value', sum);
+			base.attr('data-value', sum);
+			base.text(sum);
+			total.empty();
+			total.append(base);
 		}
 	}
 
@@ -238,6 +282,7 @@ class HideGMRolls {
 		}
 		this._sanitizeCrits(html);
 		this._sanitizeBetterRolls5e(html);
+		this._sanitizeReadySetRoll5e(html);
 		this._sanitizePF2e(html);
 	}
 

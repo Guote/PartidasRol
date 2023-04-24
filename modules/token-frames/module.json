@@ -1,33 +1,44 @@
 {
-    "name": "token-frames",
-    "title": "Token Frames",
-    "description": "Token Frames FoundryVTT",
-    "author": "Jay Colson",
-    "authors": [
-        {
-            "name": "Jay Colson",
-            "email": "jay+foundry@karma.net",
-            "url": "https://keyoxide.org/13286216054838B7D7235AE4841ECE89C918B527",
-            "discord": "blackntan#0069"
-        }
-    ],
-    "version": "1.4.0",
-    "minimumCoreVersion": "9.238",
-    "compatibleCoreVersion": "9",
-    "manifestPlusVersion": "1.2.0",
-    "library": false,
-    "packs": [
-        {
-            "name": "token-frames",
-            "label": "TokenFrames",
-            "path": "packs/TokenFrames.db",
-            "type": "JournalEntry"
-        }
-    ],
-    "manifest": "https://github.com/jcolson/token_frames/releases/latest/download/module.json",
-    "url": "https://github.com/jcolson/token_frames",
-    "download": "https://github.com/jcolson/token_frames/releases/latest/download/TokenFrames.zip",
-    "readme": "https://raw.githubusercontent.com/jcolson/token_frames/master/README.md",
-    "bugs": "https://github.com/jcolson/token_frames/issues",
-	"changelog": "https://raw.githubusercontent.com/jcolson/token_frames/master/CHANGELOG.md"
+  "name": "token-frames",
+  "title": "Token Frames",
+  "description": "Token Frames FoundryVTT",
+  "author": "Jay Colson",
+  "authors": [
+    {
+      "name": "Jay Colson",
+      "email": "jay+foundry@karma.net",
+      "url": "https://keyoxide.org/13286216054838B7D7235AE4841ECE89C918B527",
+      "discord": "blackntan#0069"
+    }
+  ],
+  "url": "https://github.com/jcolson/token_frames",
+  "readme": "https://raw.githubusercontent.com/jcolson/token_frames/master/README.md",
+  "bugs": "https://github.com/jcolson/token_frames/issues",
+  "changelog": "https://raw.githubusercontent.com/jcolson/token_frames/master/CHANGELOG.md",
+  "flags": {},
+  "version": "1.4.0",
+  "minimumCoreVersion": "9.238",
+  "compatibleCoreVersion": "9.269",
+  "scripts": [],
+  "esmodules": [],
+  "styles": [],
+  "languages": [],
+  "packs": [
+    {
+      "name": "token-frames",
+      "label": "TokenFrames",
+      "path": "packs/TokenFrames.db",
+      "type": "JournalEntry",
+      "entity": "JournalEntry",
+      "private": false
+    }
+  ],
+  "system": [],
+  "dependencies": [],
+  "socket": false,
+  "manifest": "https://github.com/jcolson/token_frames/releases/latest/download/module.json",
+  "download": "https://github.com/jcolson/token_frames/releases/latest/download/TokenFrames.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
 }

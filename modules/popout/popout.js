@@ -577,6 +577,8 @@ class PopoutModule {
 
     // -------------------- Add unload handlers --------------------
 
+    Hooks.callAll("PopOut:loading", app, popout); // eslint-disable-line no-undef
+
     window.addEventListener("unload", async (event) => {
       this.log("Unload event", event);
       const appId = app.appId;
@@ -823,7 +825,6 @@ class PopoutModule {
     const oldRender = app.render.bind(app);
     app.render = (...args) => {
       this.log("Intercepted popout render", app);
-      popout.focus();
       return oldRender.apply(app, args);
     };
 

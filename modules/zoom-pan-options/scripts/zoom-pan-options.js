@@ -11,6 +11,10 @@ function getSetting (settingName) {
   return game.settings.get(MODULE_ID, settingName)
 }
 
+function localizeSetting (scope, str) {
+  return game.i18n.localize(MODULE_ID + '.settings.' + scope + '.' + str)
+}
+
 function checkRotationRateLimit (layer) {
   const hoveredLayerThing = isNewerVersion(game.version, '10') ? layer.hover : layer._hover
   const hasTarget = layer.options?.controllableObjects ? layer.controlled.length : !!hoveredLayerThing
@@ -137,16 +141,19 @@ function _onWheel_Override (event) {
 function zoom (event) {
   if (!checkZoomLock()) return
   const multiplier = getSetting('zoom-speed-multiplier')
-  let dz = -event.deltaY * 0.0005 * multiplier + 1
-  // default foundry behavior if zoom-speed-multiplier is 0
-  if (multiplier === 0) dz = event.deltaY < 0 ? 1.05 : 0.95
+  // scaleChangeRatio was originally called "dz" but that's not really descriptive.  it's usually 1.05 or 0.95.
+  // default foundry behavior is 1.05 and 0.95, but I actually change it to 1.05 and 0.95238 (*105% and /105%).
+  // I do this because it makes one zoom-in tick plus one zoom-out tick cancel each other; their product is 1.
+  const fivePercentZoom = event.deltaY < 0 ? 1.05 : (1 / 1.05)
+  const speedBasedZoom = 1.05 ** (-event.deltaY * 0.01 * multiplier)
+  const scaleChangeRatio = multiplier === 0 ? fivePercentZoom : speedBasedZoom
 
   if (!getSetting('zoom-around-cursor')) {
-    canvas.pan({ scale: dz * canvas.stage.scale.x })
+    canvas.pan({ scale: scaleChangeRatio * canvas.stage.scale.x })
     return
   }
 
-  const scale = dz * canvas.stage.scale.x
+  const scale = scaleChangeRatio * canvas.stage.scale.x  // scale x and scale y are the same
   const d = canvas.dimensions
   const max = CONFIG.Canvas.maxZoom
   const min = 1 / Math.max(d.width / window.innerWidth, d.height / window.innerHeight, max)
@@ -158,12 +165,18 @@ function zoom (event) {
   }
 
   // Acquire the cursor position transformed to Canvas coordinates
-  const t = canvas.stage.worldTransform
-  const dx = ((-t.tx + event.clientX) / canvas.stage.scale.x - canvas.stage.pivot.x) * (dz - 1)
-  const dy = ((-t.ty + event.clientY) / canvas.stage.scale.y - canvas.stage.pivot.y) * (dz - 1)
-  const x = canvas.stage.pivot.x + dx
-  const y = canvas.stage.pivot.y + dy
-  canvas.pan({ x, y, scale })
+  const canvasEventPos = canvas.stage.worldTransform.applyInverse({ x: event.clientX, y: event.clientY })
+  const canvasPivotPos = canvas.stage.pivot
+  const deltaX = canvasEventPos.x - canvasPivotPos.x
+  const deltaY = canvasEventPos.y - canvasPivotPos.y
+  // scaledDelta will be about 5% of the delta vector between center-screen and cursor, in world coords
+  const scaledDeltaX = deltaX * (scaleChangeRatio - 1) / scaleChangeRatio
+  const scaledDeltaY = deltaY * (scaleChangeRatio - 1) / scaleChangeRatio
+  // new x and y will be close to the previous center screen, but pushed a bit towards cursor;  just enough to keep the
+  // cursor in the exact same world coords.
+  const x = canvasPivotPos.x + scaledDeltaX
+  const y = canvasPivotPos.y + scaledDeltaY
+  canvas.pan({ scale, x, y })
 }
 
 function panWithMultiplier (event) {
@@ -324,16 +337,16 @@ const avoidLockViewIncompatibility = () => {
 Hooks.on('init', function () {
   console.log('Initializing Zoom/Pan Options')
   game.settings.register(MODULE_ID, 'zoom-around-cursor', {
-    name: 'Zoom around cursor',
-    hint: 'Center zooming around cursor. Does not apply to zooming with pageup or pagedown.',
+    name: localizeSetting('zoom-around-cursor', 'name'),
+    hint: localizeSetting('zoom-around-cursor', 'hint'),
     scope: 'client',
     config: true,
     default: true,
     type: Boolean,
   })
   game.settings.register(MODULE_ID, 'middle-mouse-pan', {
-    name: 'Middle-mouse to pan',
-    hint: 'Middle mouse press will pan the canvas, instead of the default of doing nothing.',
+    name: localizeSetting('middle-mouse-pan', 'name'),
+    hint: localizeSetting('middle-mouse-pan', 'hint'),
     scope: 'client',
     config: true,
     default: false,
@@ -341,8 +354,8 @@ Hooks.on('init', function () {
     onChange: disableMiddleMouseScrollIfMiddleMousePanIsActive,
   })
   game.settings.register(MODULE_ID, 'min-max-zoom-override', {
-    name: 'Minimum/maximum zoom override',
-    hint: 'Override for the minimum and maximum zoom scale limits. 3 is the Foundry default (x3 and x0.333 scaling).',
+    name: localizeSetting('min-max-zoom-override', 'name'),
+    hint: localizeSetting('min-max-zoom-override', 'hint'),
     scope: 'client',
     config: true,
     default: CONFIG.Canvas.maxZoom, // 3.0 is the default
@@ -352,88 +365,75 @@ Hooks.on('init', function () {
     },
   })
   game.settings.register(MODULE_ID, 'drag-resistance-mode', {
-    name: 'Drag resistance mode',
-    hint: 'By default, Foundry has a "drag resistance" of 0.25 grid units (so usually ~25).' +
-      ' This is the minimum distance you need to move your cursor for a mouse drag event to be triggered.' +
-      ' When it\'s too high you\'ll feel a dead zone when making small mouse drags (e.g. short pans, small drawings).' +
-      ' Recommended setting: "Scaling", which scales to be a bit less than the visual size of a tool button',
+    name: localizeSetting('drag-resistance-mode', 'name'),
+    hint: localizeSetting('drag-resistance-mode', 'hint'),
     scope: 'client',
     config: true,
     type: String,
     choices: {
-      'Foundry Default': 'Foundry Default: ~25 constantly, can feel bad, particularly when zoomed in',
-      'Responsive': 'Responsive: 0.1 constantly, makes it hard to ping (long press)',
-      'Scaling': 'Scaling: scales to always be about 1% of screen width',
+      'Foundry Default': localizeSetting('drag-resistance-mode', 'choice_foundry'),
+      'Responsive': localizeSetting('drag-resistance-mode', 'choice_responsive'),
+      'Scaling': localizeSetting('drag-resistance-mode', 'choice_scaling'),
     },
     default: 'Scaling',
     onChange: updateDragResistance,
   })
   game.settings.register(MODULE_ID, 'pan-zoom-mode', {
-    name: 'Pan/zoom mode',
-    hint: `
-      Mouse: Standard foundry behavior. Zoom with mouse scroll. Rotate with Shift+scroll and Ctrl+scroll.
-||
-      Touchpad: Pan with two-finger drag. Zoom with two-finger pinch or Ctrl+scroll. Rotate with Shift+scroll and Ctrl+Shift+scroll.
-||
-      Alternative: Pan with two-finger drag or scroll or shift+scroll. Zoom with two-finger pinch or Ctrl+scroll. Rotate with Alt+Shift+scroll and Alt+Ctrl+scroll.
-    `,
+    name: localizeSetting('pan-zoom-mode', 'name'),
+    hint: localizeSetting('pan-zoom-mode', 'hint'),
     scope: 'client',
     config: true,
     type: String,
     choices: {
-      'Mouse': 'Mouse: standard foundry behavior',
-      'Touchpad': 'Touchpad: drag, pinch, rotate with Shift or Ctrl+Shift',
-      'Alternative': 'Alternative: can pan with Shift, rotate while holding Alt',
+      'Mouse': localizeSetting('pan-zoom-mode', 'choice_mouse'),
+      'Touchpad': localizeSetting('pan-zoom-mode', 'choice_touchpad'),
+      'Alternative': localizeSetting('pan-zoom-mode', 'choice_alternative'),
     },
     default: 'Mouse',
   })
   game.settings.register(MODULE_ID, 'auto-detect-touchpad', {
-    name: 'Auto-detect touchpad',
-    hint: 'Will try to auto-detect touchpads;  going with either Mouse or Touchpad depending on result (or Alternative if it was selected).',
+    name: localizeSetting('auto-detect-touchpad', 'name'),
+    hint: localizeSetting('auto-detect-touchpad', 'hint'),
     scope: 'client',
     config: true,
     default: false,
     type: Boolean,
   })
   game.settings.register(MODULE_ID, 'zoom-speed-multiplier', {
-    name: 'Zoom speed',
-    hint:
-      'Multiplies zoom speed, affecting scaling speed. 0.1 or 10 might be better for some touchpads. 0 for default Foundry behavior (which ignores scroll "intensity", and feels worse for touchpads).',
+    name: localizeSetting('zoom-speed-multiplier', 'name'),
+    hint: localizeSetting('zoom-speed-multiplier', 'hint'),
     scope: 'client',
     config: true,
     default: 0,
     type: Number,
   })
   game.settings.register(MODULE_ID, 'pan-speed-multiplier', {
-    name: 'Pan speed',
-    hint:
-      'Multiplies pan speed. Defaults to 1, which should be close to the pan speed when right-click-dragging the canvas.',
+    name: localizeSetting('pan-speed-multiplier', 'name'),
+    hint: localizeSetting('pan-speed-multiplier', 'hint'),
     scope: 'client',
     config: true,
     default: 1,
     type: Number,
   })
   game.settings.register(MODULE_ID, 'invert-vertical-scroll', {
-    name: 'Invert vertical scroll',
-    hint: 'If set to true, you will scroll up when dragging/scrolling down.',
+    name: localizeSetting('invert-vertical-scroll', 'name'),
+    hint: localizeSetting('invert-vertical-scroll', 'hint'),
     scope: 'client',
     config: true,
     default: false,
     type: Boolean,
   })
   game.settings.register(MODULE_ID, 'pad-value-when-dragging', {
-    name: '"pad" value when dragging something to the edge of the screen',
-    hint:
-      'When holding down the cursor and moving it towards the edge of the screen, the canvas will pan.  "pad" is the distance that will trigger it. Foundry default is 50px.',
+    name: localizeSetting('pad-value-when-dragging', 'name'),
+    hint: localizeSetting('pad-value-when-dragging', 'hint'),
     scope: 'client',
     config: true,
     default: 50,
     type: Number,
   })
   game.settings.register(MODULE_ID, 'shift-value-when-dragging', {
-    name: '"shift" value when dragging something to the edge of the screen',
-    hint:
-      'When holding down the cursor and moving it towards the edge of the screen, the canvas will pan.  "shift" is the panning distance in tiles. Foundry default is 3 tiles.',
+    name: localizeSetting('shift-value-when-dragging', 'name'),
+    hint: localizeSetting('shift-value-when-dragging', 'hint'),
     scope: 'client',
     config: true,
     default: 3,

@@ -9,13 +9,13 @@
       "url": "https://github.com/sPOiDar/"
     }
   ],
-  "version": "0.13.0",
+  "version": "0.15.1",
   "minimumCoreVersion": "0.6.5",
-  "compatibleCoreVersion": "10",
+  "compatibleCoreVersion": "11",
   "compatibility": {
     "minimum": "0.6.5",
-    "verified": "10.285",
-    "maximum": 10
+    "verified": "11",
+    "maximum": 11
   },
   "esmodules": [
     "modules/hide_gm_rolls.js"
@@ -38,6 +38,16 @@
       "lang": "pt-BR",
       "name": "Português (Brasil)",
       "path": "lang/pt_BR.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italiano",
+      "path": "lang/it.json"
+    },
+    {
+      "lang": "pl",
+      "name": "polski",
+      "path": "lang/pl.json"
     }
   ],
   "dependencies": [
@@ -63,5 +73,5 @@
   "bugs": "https://github.com/sPOiDar/fvtt-module-hide-gm-rolls/issues",
   "changelog": "https://github.com/sPOiDar/fvtt-module-hide-gm-rolls/blob/master/CHANGELOG.md",
   "manifest": "https://github.com/sPOiDar/fvtt-module-hide-gm-rolls/raw/master/module.json",
-  "download": "https://github.com/sPOiDar/fvtt-module-hide-gm-rolls/releases/download/v0.13.0/hide-gm-rolls-v0.13.0.zip"
+  "download": "https://github.com/sPOiDar/fvtt-module-hide-gm-rolls/releases/download/v0.15.1/hide-gm-rolls-v0.15.1.zip"
 }
