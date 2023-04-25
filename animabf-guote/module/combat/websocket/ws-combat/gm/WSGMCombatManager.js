@@ -88,7 +88,7 @@ export class WSGMCombatManager extends WSCombatManager {
         if (!user)
             return;
         const { targets } = user;
-        const selectedToken = this.game.scenes?.current?.tokens.find(t => t.object?._controlled);
+        const selectedToken = this.game.scenes?.current?.tokens.find(t => t.object?.controlled);
         if (!selectedToken) {
             ABFDialogs.prompt(this.game.i18n.localize('macros.combat.dialog.error.noSelectedToken.title'));
             return;
