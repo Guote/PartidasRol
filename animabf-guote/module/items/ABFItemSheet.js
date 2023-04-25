@@ -44,7 +44,7 @@ export default class ABFItemSheet extends ItemSheet {
         const data = super.getData();
         data.item.prepareDerivedData();
         // Yes, a lot of datas, I know. This is Foundry VTT, welcome if you see this
-        data.data.data = data.item.data.data;
+        data.system = data.item.system;
         data.config = CONFIG.config;
         return data;
     }

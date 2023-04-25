@@ -20,7 +20,7 @@ export default class ABFCombat extends Combat {
         for (const id of ids) {
             const combatant = this.data.combatants.get(id);
             await super.rollInitiative(id, {
-                formula: `1d100Initiative + ${combatant?.actor?.data.data.characteristics.secondaries.initiative.final.value}${mod ?  ` + ${mod}` : ""}`,
+                formula: `1d100Initiative + ${combatant?.actor?.system.characteristics.secondaries.initiative.final.value}${mod ?  ` + ${mod}` : ""}`,
                 updateTurn,
                 messageOptions
             });         
@@ -35,9 +35,9 @@ export default class ABFCombat extends Combat {
     /* _sortCombatants(a, b) {
         let initiativeA = a.initiative || -9999;
         let initiativeB = b.initiative || -9999;
-        if (initiativeA < (a?.actor?.data.data.characteristics.secondaries.initiative.final.value || 0))
+        if (initiativeA < (a?.actor?.system.characteristics.secondaries.initiative.final.value || 0))
             initiativeA -= 2000;
-        if (initiativeB < (b?.actor?.data.data.characteristics.secondaries.initiative.final.value || 0))
+        if (initiativeB < (b?.actor?.system.characteristics.secondaries.initiative.final.value || 0))
             initiativeB -= 2000;
         console.log("SORTING INITIATIVE ", a, b, initiativeA, initiativeB)
         return initiativeB - initiativeA;

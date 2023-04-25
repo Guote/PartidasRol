@@ -11,18 +11,18 @@ export class ABFActor extends Actor {
     constructor(data, context) {
         super(data, context);
         this.i18n = game.i18n;
-        if (this.data.data.version !== INITIAL_ACTOR_DATA.version) {
-            Log.log(`Upgrading actor ${this.data.name} (${this.data._id}) from version ${this.data.data.version} to ${INITIAL_ACTOR_DATA.version}`);
+        if (this.system.version !== INITIAL_ACTOR_DATA.version) {
+            Log.log(`Upgrading actor ${this.data.name} (${this.data._id}) from version ${this.system.version} to ${INITIAL_ACTOR_DATA.version}`);
             this.data.update({ data: { version: INITIAL_ACTOR_DATA.version } });
         }
     }
     prepareDerivedData() {
         super.prepareDerivedData();
-        this.data.data = foundry.utils.mergeObject(this.data.data, INITIAL_ACTOR_DATA, { overwrite: false });
+        this.system = foundry.utils.mergeObject(this.system, INITIAL_ACTOR_DATA, { overwrite: false });
         prepareActor(this);
     }
     applyFatigue(fatigueUsed) {
-        const newFatigue = this.data.data.characteristics.secondaries.fatigue.value - fatigueUsed;
+        const newFatigue = this.system.characteristics.secondaries.fatigue.value - fatigueUsed;
         this.update({
             data: {
                 characteristics: {
@@ -32,7 +32,7 @@ export class ABFActor extends Actor {
         });
     }
     applyDamage(damage) {
-        const newLifePoints = this.data.data.characteristics.secondaries.lifePoints.value - damage;
+        const newLifePoints = this.system.characteristics.secondaries.lifePoints.value - damage;
         this.update({
             data: {
                 characteristics: {
@@ -46,7 +46,7 @@ export class ABFActor extends Actor {
     }
     async createInnerItem({ type, name, data = {} }) {
         const configuration = ALL_ITEM_CONFIGURATIONS[type];
-        const items = getFieldValueFromPath(this.data.data, configuration.fieldPath) ?? [];
+        const items = getFieldValueFromPath(this.system, configuration.fieldPath) ?? [];
         await this.update({
             data: getUpdateObjectFromPath([...items, { _id: nanoid(), type, name, data }], configuration.fieldPath)
         });
@@ -58,7 +58,7 @@ export class ABFActor extends Actor {
             if (name) {
                 updateObject = { ...updateObject, name };
             }
-            if ((!!name && name !== item.name) || JSON.stringify(data) !== JSON.stringify(item.data.data)) {
+            if ((!!name && name !== item.name) || JSON.stringify(data) !== JSON.stringify(item.system)) {
                 await item.update(updateObject);
             }
         }
@@ -68,7 +68,7 @@ export class ABFActor extends Actor {
     }
     async updateInnerItem({ type, id, name, data = {} }, forceSave = false) {
         const configuration = ALL_ITEM_CONFIGURATIONS[type];
-        const items = getFieldValueFromPath(this.data.data, configuration.fieldPath);
+        const items = getFieldValueFromPath(this.system, configuration.fieldPath);
         const item = items.find(it => it._id === id);
         if (item) {
             const hasChanges = forceSave || (!!name && name !== item.name) || JSON.stringify(data) !== JSON.stringify(item.data);
@@ -90,6 +90,6 @@ export class ABFActor extends Actor {
     }
     getInnerItem(type, itemId) {
         const configuration = ALL_ITEM_CONFIGURATIONS[type];
-        return getFieldValueFromPath(this.data.data, configuration.fieldPath).find(item => item._id === itemId);
+        return getFieldValueFromPath(this.system, configuration.fieldPath).find(item => item._id === itemId);
     }
 }

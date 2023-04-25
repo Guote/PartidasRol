@@ -134,15 +134,15 @@ export class GMCombatDialog extends FormApplication {
     updateAttackerData(result) {
         this.data.attacker.result = result;
         if (result.type === 'combat') {
-            const weapons = this.attackerActor.data.data.combat.weapons;
+            const weapons = this.attackerActor.system.combat.weapons;
             this.data.attacker.result.weapon = weapons.find(w => w._id === result.values.weaponUsed);
         }
         if (result.type === 'mystic') {
-            const spells = this.attackerActor.data.data.mystic.spells;
+            const spells = this.attackerActor.system.mystic.spells;
             this.data.attacker.result.spell = spells.find(w => w._id === result.values.spellUsed);
         }
         if (result.type === 'psychic') {
-            const powers = this.attackerActor.data.data.psychic.psychicPowers;
+            const powers = this.attackerActor.system.psychic.psychicPowers;
             this.data.attacker.result.power = powers.find(w => w._id === result.values.powerUsed);
         }
         this.render();
@@ -151,11 +151,11 @@ export class GMCombatDialog extends FormApplication {
         result.values.total = Math.max(0, result.values.total);
         this.data.defender.result = result;
         if (result.type === 'mystic') {
-            const spells = this.defenderActor.data.data.mystic.spells;
+            const spells = this.defenderActor.system.mystic.spells;
             this.data.defender.result.spell = spells.find(w => w._id === result.values.spellUsed);
         }
         if (result.type === 'psychic') {
-            const powers = this.defenderActor.data.data.psychic.psychicPowers;
+            const powers = this.defenderActor.system.psychic.psychicPowers;
             this.data.defender.result.power = powers.find(w => w._id === result.values.powerUsed);
         }
         this.render();

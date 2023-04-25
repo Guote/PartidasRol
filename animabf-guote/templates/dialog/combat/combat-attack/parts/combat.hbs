@@ -14,7 +14,7 @@
   }}
     <option {{#if (is "eq" 0 this.attacker.combat.fatigueUsed)}}selected{{/if}} value='0'>0</option>
 
-    {{#iterateNumber (minNumber this.attacker.actor.data.data.characteristics.secondaries.fatigue.value 5)}}
+    {{#iterateNumber (minNumber this.attacker.actor.system.characteristics.secondaries.fatigue.value 5)}}
       <option {{#if (is "eq" (math this "+" 1) ../this.attacker.combat.fatigueUsed)}}selected{{/if}} value='{{math this "+" 1}}'>{{math this "+" 1}}</option>
     {{/iterateNumber}}
   {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
@@ -35,7 +35,7 @@
     disabled=this.attackSent
     inputName='attacker.combat.weaponUsed'
   }}
-    {{#each this.attacker.actor.data.data.combat.weapons}}
+    {{#each this.attacker.actor.system.combat.weapons}}
       <option {{#if (is "eq" this._id ../this.attacker.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>{{localize 'macros.combat.dialog.weaponRow.attack.title' name=this.name value=this.data.attack.final.value}}</option>
     {{/each}}
   {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}

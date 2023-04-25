@@ -7,11 +7,11 @@ const getInitialData = (attacker, defender) => {
     const isGM = !!game.user?.isGM;
     const attackerActor = attacker.token.actor;
     const defenderActor = defender.actor;
-    const activeTab = (defenderActor.data.data.general.settings.defenseType.value === 'resistance') ? 'damageResistance' : 'combat';
+    const activeTab = (defenderActor.system.general.settings.defenseType.value === 'resistance') ? 'damageResistance' : 'combat';
     return {
         ui: {
             isGM,
-            hasFatiguePoints: defenderActor.data.data.characteristics.secondaries.fatigue.value > 0,
+            hasFatiguePoints: defenderActor.system.characteristics.secondaries.fatigue.value > 0,
             activeTab: activeTab
         },
         attacker: {
@@ -24,7 +24,7 @@ const getInitialData = (attacker, defender) => {
             token: defender,
             actor: defenderActor,
             showRoll: !isGM || showRollByDefault,
-            withoutRoll: (defenderActor.data.data.general.settings.defenseType.value === 'mass') ? true : false,
+            withoutRoll: (defenderActor.system.general.settings.defenseType.value === 'mass') ? true : false,
             combat: {
                 fatigue: 0,
                 multipleDefensesPenalty: 0,
@@ -45,8 +45,8 @@ const getInitialData = (attacker, defender) => {
             },
             psychic: {
                 modifier: 0,
-                psychicPotential: { special: 0, final: defenderActor.data.data.psychic.psychicPotential.final.value },
-                psychicProjection: defenderActor.data.data.psychic.psychicProjection.imbalance.defensive.final.value,
+                psychicPotential: { special: 0, final: defenderActor.system.psychic.psychicPotential.final.value },
+                psychicProjection: defenderActor.system.psychic.psychicProjection.imbalance.defensive.final.value,
                 powerUsed: undefined
             },
             resistance: {
@@ -65,7 +65,7 @@ export class CombatDefenseDialog extends FormApplication {
             this.data.ui.activeTab = tabName;
             this.render(true);
         };
-        const weapons = this.defenderActor.data.data.combat.weapons;
+        const weapons = this.defenderActor.system.combat.weapons;
         if (weapons.length > 0) {
             this.data.defender.combat.weaponUsed = weapons[0]._id;
         }
@@ -113,12 +113,12 @@ export class CombatDefenseDialog extends FormApplication {
             const type = e.currentTarget.dataset.type === 'dodge' ? 'dodge' : 'block';
             let value, baseDefense;
             if (e.currentTarget.dataset.type === 'dodge') {
-                value = this.defenderActor.data.data.combat.dodge.final.value;
-                baseDefense = this.defenderActor.data.data.combat.dodge.base.value;
+                value = this.defenderActor.system.combat.dodge.final.value;
+                baseDefense = this.defenderActor.system.combat.dodge.base.value;
             }
             else {
-                value = weapon ? weapon.data.block.final.value : this.defenderActor.data.data.combat.block.final.value;
-                baseDefense = this.defenderActor.data.data.combat.block.base.value;
+                value = weapon ? weapon.data.block.final.value : this.defenderActor.system.combat.block.final.value;
+                baseDefense = this.defenderActor.system.combat.block.base.value;
             }
             let formula = `1d100xa + ${modifier ?? 0} + ${fatigue ?? 0} * 20 - ${(multipleDefensesPenalty ?? 0) * -1} + ${value}`;
             if (this.data.defender.withoutRoll) { //Remove the dice from the formula
@@ -126,7 +126,7 @@ export class CombatDefenseDialog extends FormApplication {
             }
             if (baseDefense >= 200) //Mastery reduces the fumble range
                 formula = formula.replace('xa', 'xamastery');
-            const roll = new ABFFoundryRoll(formula, this.defenderActor.data.data);
+            const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
             roll.roll();
             if (this.data.defender.showRoll) {
                 const { i18n } = game;
@@ -173,19 +173,19 @@ export class CombatDefenseDialog extends FormApplication {
             const { modifier, spellUsed, spellGrade } = this.data.defender.mystic;
             const at = this.data.defender.combat.at;
             if (spellUsed) {
-                let magicProjection = this.defenderActor.data.data.mystic.magicProjection.imbalance.defensive.final.value;
-                let baseMagicProjection = this.defenderActor.data.data.mystic.magicProjection.imbalance.defensive.base.value;
+                let magicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.final.value;
+                let baseMagicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.base.value;
                 let formula = `1d100xa + ${magicProjection} + ${modifier ?? 0}`;
                 if (this.data.defender.withoutRoll) { //Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
                 }
                 if (baseMagicProjection >= 200) //Mastery reduces the fumble range
                     formula = formula.replace('xa', 'xamastery');
-                const roll = new ABFFoundryRoll(formula, this.attackerActor.data.data);
+                const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
                 roll.roll();
                 if (this.data.defender.showRoll) {
                     const { i18n } = game;
-                    const spells = this.defenderActor.data.data.mystic.spells;
+                    const spells = this.defenderActor.system.mystic.spells;
                     const spell = spells.find(w => w._id === spellUsed);
                     const flavor = i18n.format('macros.combat.dialog.magicDefense.title', {
                         spell: spell.name,
@@ -221,13 +221,13 @@ export class CombatDefenseDialog extends FormApplication {
                 if (this.data.defender.withoutRoll) { //Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
                 }
-                if (this.defenderActor.data.data.psychic.psychicProjection.base.value >= 200) //Mastery reduces the fumble range
+                if (this.defenderActor.system.psychic.psychicProjection.base.value >= 200) //Mastery reduces the fumble range
                     formula = formula.replace('xa', 'xamastery');
-                const roll = new ABFFoundryRoll(formula, this.defenderActor.data.data);
+                const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
                 roll.roll();
                 if (this.data.defender.showRoll) {
                     const { i18n } = game;
-                    const powers = this.defenderActor.data.data.psychic.psychicPowers;
+                    const powers = this.defenderActor.system.psychic.psychicPowers;
                     const power = powers.find(w => w._id === powerUsed);
                     const flavor = i18n.format('macros.combat.dialog.psychicDefense.title', {
                         power: power.name,
@@ -257,33 +257,33 @@ export class CombatDefenseDialog extends FormApplication {
         });
     }
     getData() {
-        this.data.ui.hasFatiguePoints = this.defenderActor.data.data.characteristics.secondaries.fatigue.value > 0;
+        this.data.ui.hasFatiguePoints = this.defenderActor.system.characteristics.secondaries.fatigue.value > 0;
         this.data.defender.psychic.psychicPotential.final =
             this.data.defender.psychic.psychicPotential.special +
-                this.defenderActor.data.data.psychic.psychicPotential.final.value;
+                this.defenderActor.system.psychic.psychicPotential.final.value;
         let at;
         if (this.data.attacker.critic !== NoneWeaponCritic.NONE) {
             switch (this.data.attacker.critic) {
                 case WeaponCritic.CUT:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.cut.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.cut.value;
                     break;
                 case WeaponCritic.IMPACT:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.impact.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.impact.value;
                     break;
                 case WeaponCritic.THRUST:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.thrust.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.thrust.value;
                     break;
                 case WeaponCritic.HEAT:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.heat.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.heat.value;
                     break;
                 case WeaponCritic.ELECTRICITY:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.electricity.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.electricity.value;
                     break;
                 case WeaponCritic.COLD:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.cold.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.cold.value;
                     break;
                 case WeaponCritic.ENERGY:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.energy.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.energy.value;
                     break;
                 default:
                     at = undefined;
@@ -293,7 +293,7 @@ export class CombatDefenseDialog extends FormApplication {
             this.data.defender.combat.at.final = this.data.defender.combat.at.special + at;
         }
         const { combat } = this.data.defender;
-        const weapons = this.defenderActor.data.data.combat.weapons;
+        const weapons = this.defenderActor.system.combat.weapons;
         combat.weapon = weapons.find(w => w._id === combat.weaponUsed);
         return this.data;
     }

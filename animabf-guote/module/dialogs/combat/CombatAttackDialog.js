@@ -11,7 +11,7 @@ const getInitialData = (attacker, defender, options = {}) => {
     return {
         ui: {
             isGM,
-            hasFatiguePoints: attackerActor.data.data.characteristics.secondaries.fatigue.value > 0,
+            hasFatiguePoints: attackerActor.system.characteristics.secondaries.fatigue.value > 0,
             weaponHasSecondaryCritic: undefined
         },
         attacker: {
@@ -39,8 +39,8 @@ const getInitialData = (attacker, defender, options = {}) => {
             },
             psychic: {
                 modifier: 0,
-                psychicProjection: attackerActor.data.data.psychic.psychicProjection.imbalance.offensive.final.value,
-                psychicPotential: { special: 0, final: attackerActor.data.data.psychic.psychicPotential.final.value },
+                psychicProjection: attackerActor.system.psychic.psychicProjection.imbalance.offensive.final.value,
+                psychicPotential: { special: 0, final: attackerActor.system.psychic.psychicPotential.final.value },
                 powerUsed: undefined,
                 critic: NoneWeaponCritic.NONE,
                 damage: 0
@@ -60,7 +60,7 @@ export class CombatAttackDialog extends FormApplication {
         super(getInitialData(attacker, defender, options));
         this.hooks = hooks;
         this.data = getInitialData(attacker, defender, options);
-        const weapons = this.attackerActor.data.data.combat.weapons;
+        const weapons = this.attackerActor.system.combat.weapons;
         if (weapons.length > 0) {
             this.data.attacker.combat.weaponUsed = weapons[0]._id;
         }
@@ -108,15 +108,15 @@ export class CombatAttackDialog extends FormApplication {
         html.find('.send-attack').click(() => {
             const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed } = this.data.attacker.combat;
             if (typeof damage !== 'undefined') {
-                const attack = weapon ? weapon.data.attack.final.value : this.attackerActor.data.data.combat.attack.final.value;
+                const attack = weapon ? weapon.data.attack.final.value : this.attackerActor.system.combat.attack.final.value;
                 const counterAttackBonus = this.data.attacker.counterAttackBonus ?? 0;
                 let formula = `1d100xa + ${counterAttackBonus} + ${attack} + ${modifier ?? 0} + ${fatigueUsed ?? 0}* 20`;
                 if (this.data.attacker.withoutRoll) { //Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
                 }
-                if (this.attackerActor.data.data.combat.attack.base.value >= 200) //Mastery reduces the fumble range
+                if (this.attackerActor.system.combat.attack.base.value >= 200) //Mastery reduces the fumble range
                     formula = formula.replace('xa', 'xamastery');
-                const roll = new ABFFoundryRoll(formula, this.attackerActor.data.data);
+                const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
                 roll.roll();
                 if (this.data.attacker.showRoll) {
                     const { i18n } = game;
@@ -159,12 +159,12 @@ export class CombatAttackDialog extends FormApplication {
             if (spellUsed) {
                 let baseMagicProjection, magicProjection;
                 if (magicProjectionType === 'normal') {
-                    magicProjection = this.attackerActor.data.data.mystic.magicProjection.final.value;
-                    baseMagicProjection = this.attackerActor.data.data.mystic.magicProjection.base.value;
+                    magicProjection = this.attackerActor.system.mystic.magicProjection.final.value;
+                    baseMagicProjection = this.attackerActor.system.mystic.magicProjection.base.value;
                 }
                 else {
-                    magicProjection = this.attackerActor.data.data.mystic.magicProjection.imbalance.offensive.final.value;
-                    baseMagicProjection = this.attackerActor.data.data.mystic.magicProjection.imbalance.offensive.base.value;
+                    magicProjection = this.attackerActor.system.mystic.magicProjection.imbalance.offensive.final.value;
+                    baseMagicProjection = this.attackerActor.system.mystic.magicProjection.imbalance.offensive.base.value;
                 }
                 let formula = `1d100xa + ${magicProjection} + ${modifier ?? 0}`;
                 if (this.data.attacker.withoutRoll) { //Remove the dice from the formula
@@ -172,11 +172,11 @@ export class CombatAttackDialog extends FormApplication {
                 }
                 if (baseMagicProjection >= 200) //Mastery reduces the fumble range
                     formula = formula.replace('xa', 'xamastery');
-                const roll = new ABFFoundryRoll(formula, this.attackerActor.data.data);
+                const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
                 roll.roll();
                 if (this.data.attacker.showRoll) {
                     const { i18n } = game;
-                    const spells = this.attackerActor.data.data.mystic.spells;
+                    const spells = this.attackerActor.system.mystic.spells;
                     const spell = spells.find(w => w._id === spellUsed);
                     const flavor = i18n.format('macros.combat.dialog.magicAttack.title', {
                         spell: spell.name,
@@ -209,18 +209,18 @@ export class CombatAttackDialog extends FormApplication {
         html.find('.send-psychic-attack').click(() => {
             const { powerUsed, modifier, psychicPotential, psychicProjection, critic, damage } = this.data.attacker.psychic;
             if (powerUsed) {
-                const powers = this.attackerActor.data.data.psychic.psychicPowers;
+                const powers = this.attackerActor.system.psychic.psychicPowers;
                 const power = powers.find(w => w._id === powerUsed);
                 const powerBonus = power.data.bonus.value;
                 let formula = `1d100xa + ${psychicProjection} + ${modifier ?? 0}`;
                 if (this.data.attacker.withoutRoll) { //Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
                 }
-                if (this.attackerActor.data.data.psychic.psychicProjection.base.value >= 200) //Mastery reduces the fumble range
+                if (this.attackerActor.system.psychic.psychicProjection.base.value >= 200) //Mastery reduces the fumble range
                     formula = formula.replace('xa', 'xamastery');
-                const psychicProjectionRoll = new ABFFoundryRoll(formula, this.attackerActor.data.data);
+                const psychicProjectionRoll = new ABFFoundryRoll(formula, this.attackerActor.system);
                 psychicProjectionRoll.roll();
-                const psychicPotentialRoll = new ABFFoundryRoll(`1d100xa + ${psychicPotential.final} + ${powerBonus}`, this.data.attacker.actor.data.data);
+                const psychicPotentialRoll = new ABFFoundryRoll(`1d100xa + ${psychicPotential.final} + ${powerBonus}`, this.data.attacker.actor.system);
                 psychicPotentialRoll.roll();
                 if (this.data.attacker.showRoll) {
                     const { i18n } = game;
@@ -260,15 +260,15 @@ export class CombatAttackDialog extends FormApplication {
     }
     getData() {
         const { attacker: { combat, psychic }, ui } = this.data;
-        ui.hasFatiguePoints = this.attackerActor.data.data.characteristics.secondaries.fatigue.value > 0;
+        ui.hasFatiguePoints = this.attackerActor.system.characteristics.secondaries.fatigue.value > 0;
         psychic.psychicPotential.final =
-            psychic.psychicPotential.special + this.attackerActor.data.data.psychic.psychicPotential.final.value;
-        const weapons = this.attackerActor.data.data.combat.weapons;
+            psychic.psychicPotential.special + this.attackerActor.system.psychic.psychicPotential.final.value;
+        const weapons = this.attackerActor.system.combat.weapons;
         const weapon = weapons.find(w => w._id === combat.weaponUsed);
         combat.unarmed = weapons.length === 0;
         if (combat.unarmed) {
             combat.damage.final =
-                combat.damage.special + 10 + this.attackerActor.data.data.characteristics.primaries.strength.mod;
+                combat.damage.special + 10 + this.attackerActor.system.characteristics.primaries.strength.mod;
         }
         else {
             combat.weapon = weapon;

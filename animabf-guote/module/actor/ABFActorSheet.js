@@ -61,7 +61,7 @@ export default class ABFActorSheet extends ActorSheet {
                                             this.actor.deleteEmbeddedDocuments('Item', [id]);
                                         }
                                         else {
-                                            let items = getFieldValueFromPath(this.actor.data.data, fieldPath);
+                                            let items = getFieldValueFromPath(this.actor.system, fieldPath);
                                             items = items.filter(item => item._id !== id);
                                             const dataToUpdate = {
                                                 data: getUpdateObjectFromPath(items, fieldPath)
@@ -131,7 +131,7 @@ export default class ABFActorSheet extends ActorSheet {
         if (this.actor.data.type === 'character') {
             data.actor.prepareDerivedData();
             // Yes, a lot of datas, I know. This is Foundry VTT, welcome if you see this
-            data.data.data = data.actor.data.data;
+            data.system = data.actor.system;
         }
         data.config = CONFIG.config;
         return data;
@@ -161,7 +161,7 @@ export default class ABFActorSheet extends ActorSheet {
         html.find('.contractible-button').click(e => {
             const { contractibleItemId } = e.currentTarget.dataset;
             if (contractibleItemId) {
-                const ui = this.actor.data.data.ui;
+                const ui = this.actor.system.ui;
                 ui.contractibleItems = {
                     ...ui.contractibleItems,
                     [contractibleItemId]: !ui.contractibleItems[contractibleItemId]
@@ -191,7 +191,7 @@ export default class ABFActorSheet extends ActorSheet {
             let formula = `${dataset.roll}+ ${mod}`;
             if (parseInt(dataset.extra) >= 200)
                 formula = formula.replace('xa', 'xamastery');
-            const roll = new ABFFoundryRoll(formula, this.actor.data.data);
+            const roll = new ABFFoundryRoll(formula, this.actor.system);
             roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ actor: this.actor }),
                 flavor: label

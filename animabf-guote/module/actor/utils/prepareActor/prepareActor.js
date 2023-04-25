@@ -35,9 +35,9 @@ const DERIVED_DATA_FUNCTIONS = [
 export const prepareActor = (actor) => {
     prepareItems(actor);
     // We need to parse to boolean because Foundry saves booleans as string
-    for (const key of Object.keys(actor.data.data.ui.contractibleItems)) {
-        if (typeof actor.data.data.ui.contractibleItems[key] === 'string') {
-            actor.data.data.ui.contractibleItems[key] = actor.data.data.ui.contractibleItems[key] === 'true';
+    for (const key of Object.keys(actor.system.ui.contractibleItems)) {
+        if (typeof actor.system.ui.contractibleItems[key] === 'string') {
+            actor.system.ui.contractibleItems[key] = actor.system.ui.contractibleItems[key] === 'true';
         }
     }
     const { data } = actor.data;

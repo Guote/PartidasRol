@@ -8,7 +8,7 @@ const applyPosture = (data) => {
   const selectedPosture = data.general.modifiers.combatPosture;
 
   /* 
-  const currentActor = game.actors.find(actor => actor.data.data === data)
+  const currentActor = game.actors.find(actor => actor.system === data)
   let previousPosture = data.general.modifiers.previousPosture;
   
   if (selectedPosture !== previousPosture) {
