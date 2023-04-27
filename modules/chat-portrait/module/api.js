@@ -8,7 +8,7 @@ const API = {
      * @returns {array}
      */
     get imageReplacerDamageType() {
-        let arr = game.settings.get(CONSTANTS.MODULE_NAME, 'imageReplacerDamageType') || [];
+        let arr = game.settings.get(CONSTANTS.MODULE_NAME, "imageReplacerDamageType") || [];
         if (arr.length <= 0) {
             arr = SYSTEMS.DATA?.imageReplacerDamageType;
         }
@@ -21,11 +21,11 @@ const API = {
      * @returns {Promise}
      */
     async setImageReplacerDamageType(inAttribute) {
-        if (typeof inAttribute !== 'string') {
-            throw error('setImageReplacerDamageType | inAttribute must be of type string');
+        if (typeof inAttribute !== "string") {
+            throw error("setImageReplacerDamageType | inAttribute must be of type string");
         }
-        await game.settings.set(CONSTANTS.MODULE_NAME, 'preconfiguredSystem', true);
-        return game.settings.set(CONSTANTS.MODULE_NAME, 'imageReplacerDamageType', inAttribute);
+        await game.settings.set(CONSTANTS.MODULE_NAME, "preconfiguredSystem", true);
+        return game.settings.set(CONSTANTS.MODULE_NAME, "imageReplacerDamageType", inAttribute);
     },
     /**
      * The attributes used to track dynamic attributes in this system
@@ -33,7 +33,7 @@ const API = {
      * @returns {array}
      */
     get imageReplacerWeaponProperties() {
-        let arr = game.settings.get(CONSTANTS.MODULE_NAME, 'imageReplacerWeaponProperties') || [];
+        let arr = game.settings.get(CONSTANTS.MODULE_NAME, "imageReplacerWeaponProperties") || [];
         if (arr.length <= 0) {
             arr = SYSTEMS.DATA?.imageReplacerDamageType;
         }
@@ -46,11 +46,11 @@ const API = {
      * @returns {Promise}
      */
     async setImageReplacerWeaponProperties(inAttribute) {
-        if (typeof inAttribute !== 'string') {
-            throw error('setImageReplacerWeaponProperties | inAttribute must be of type string');
+        if (typeof inAttribute !== "string") {
+            throw error("setImageReplacerWeaponProperties | inAttribute must be of type string");
         }
-        await game.settings.set(CONSTANTS.MODULE_NAME, 'preconfiguredSystem', true);
-        return game.settings.set(CONSTANTS.MODULE_NAME, 'imageReplacerWeaponProperties', inAttribute);
+        await game.settings.set(CONSTANTS.MODULE_NAME, "preconfiguredSystem", true);
+        return game.settings.set(CONSTANTS.MODULE_NAME, "imageReplacerWeaponProperties", inAttribute);
     },
     /**
      * The attributes used to track dynamic attributes in this system
@@ -58,7 +58,7 @@ const API = {
      * @returns {array}
      */
     get imageReplacerIconizer() {
-        let arr = game.settings.get(CONSTANTS.MODULE_NAME, 'imageReplacerIconizer') || [];
+        let arr = game.settings.get(CONSTANTS.MODULE_NAME, "imageReplacerIconizer") || [];
         if (arr.length <= 0) {
             arr = SYSTEMS.DATA?.imageReplacerDamageType;
         }
@@ -71,11 +71,11 @@ const API = {
      * @returns {Promise}
      */
     async setImageReplacerIconizer(inAttribute) {
-        if (typeof inAttribute !== 'string') {
-            throw error('setImageReplacerIconizer | inAttribute must be of type string');
+        if (typeof inAttribute !== "string") {
+            throw error("setImageReplacerIconizer | inAttribute must be of type string");
         }
-        await game.settings.set(CONSTANTS.MODULE_NAME, 'preconfiguredSystem', true);
-        return game.settings.set(CONSTANTS.MODULE_NAME, 'imageReplacerIconizer', inAttribute);
+        await game.settings.set(CONSTANTS.MODULE_NAME, "preconfiguredSystem", true);
+        return game.settings.set(CONSTANTS.MODULE_NAME, "imageReplacerIconizer", inAttribute);
     },
     retrieveSystemId() {
         const sys = SYSTEMS.DATA?.SYSTEM_ID;
@@ -83,8 +83,8 @@ const API = {
             return sys;
         }
         else {
-            return 'generic';
+            return "generic";
         }
-    },
+    }
 };
 export default API;

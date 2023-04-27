@@ -1,7 +1,36 @@
 import * as api from "./api.js";
-import BarConfigExtended from "./extendedConfig.js";
 import { getDefaultResources, setDefaultResources } from "./settings.js";
-import { createOverrideData } from "./synchronization.js";
+import { createOverrideData, prepareUpdate } from "./synchronization.js";
+
+/**
+ * Extends the way Foundry updates the configuration of the default token. If
+ *  available, the libWrapper module is used for better compatibility.
+ */
+export const extendDefaultTokenConfig = function () {
+    if (game.modules.get("lib-wrapper")?.active) {
+        // Override using libWrapper: https://github.com/ruipin/fvtt-lib-wrapper
+        libWrapper.register("barbrawl", "DefaultTokenConfig.prototype._getSubmitData",
+            function (wrapped, updateData) {
+                updateData ??= {};
+                updateData.bar1 ??= { attribute: "" };
+                updateData.bar2 ??= { attribute: "" };
+                const formData = wrapped(updateData);
+                prepareUpdate(this.token, formData);
+                return formData;
+            }, "WRAPPER");
+    } else {
+        // Manual override
+        const originalGetSubmitData = DefaultTokenConfig.prototype._getSubmitData;
+        DefaultTokenConfig.prototype._getSubmitData = function (updateData) {
+            updateData ??= {};
+            updateData.bar1 ??= { attribute: "" };
+            updateData.bar2 ??= { attribute: "" };
+            const formData = originalGetSubmitData.call(this, updateData);
+            prepareUpdate(this.token, formData);
+            return formData;
+        };
+    }
+}
 
 /**
  * Modifies the given HTML to replace the resource bar configuration with our
@@ -14,9 +43,6 @@ export const extendTokenConfig = async function (tokenConfig, html, data) {
     data.brawlBars = api.getBars(tokenConfig.token);
 
     if (tokenConfig instanceof DefaultTokenConfig) {
-        // Enable dummy attributes.
-        data.dummyAttributes = true;
-
         // Make sure that the current value exists for selection.
         const attrLists = Object.values(data.barAttributes);
         for (let bar of Object.values(data.brawlBars)) {
@@ -37,14 +63,14 @@ export const extendTokenConfig = async function (tokenConfig, html, data) {
     resourceTab.on("click", ".bar-modifiers .fa-trash", onDeleteBar);
     resourceTab.on("click", ".bar-modifiers .fa-chevron-up", onMoveBarUp);
     resourceTab.on("click", ".bar-modifiers .fa-chevron-down", onMoveBarDown);
-    resourceTab.on("click", ".brawlbar-extend", event => onOpenAdvancedConfiguration(event, tokenConfig, data));
+    resourceTab.on("click", "button.file-picker", tokenConfig._activateFilePicker.bind(tokenConfig));
 
     resourceTab.find(".brawlbar-add").click(event => onAddResource(event, tokenConfig, data));
     resourceTab.find(".brawlbar-save").click(() => onSaveDefaults(tokenConfig));
     resourceTab.find(".brawlbar-load").click(() => onLoadDefaults(tokenConfig, data));
 
     // Trigger change event once to update resource values.
-    resourceTab.find("select.brawlbar-attribute").trigger("change");
+    resourceTab.find("select.brawlbar-attribute").each((_, el) => refreshValueInput(tokenConfig.token, el));
 }
 
 /**
@@ -53,31 +79,44 @@ export const extendTokenConfig = async function (tokenConfig, html, data) {
  * @param {jQuery.Event} event The event of the selection change.
  */
 export const onChangeBarAttribute = function (event) {
-    const barId = event.target.name.split(".")[3];
+    refreshValueInput(this, event.target, event.originalEvent);
+}
+
+/**
+ * Updates the states and values for the current and maximum value inputs.
+ * @param {Token} token The token that the bar belongs to.
+ * @param {HTMLElement} target The select element that contains the bar's attribute.
+ * @param {Event?} event An optional event triggered by changing the target's value.
+ */
+function refreshValueInput(token, target, event) {
+    const barId = target.name.split(".")[3];
     if (!barId) return;
-    let form = event.target.form;
+    let form = target.form;
     if (!form.classList.contains("brawlbar-configuration")) form = form.querySelector("#" + barId);
     if (!form) return;
+
+    // Set a hidden attribute input to make sure FoundryVTT doesn't override it with null.
+    target.nextElementSibling.value = target.value;
 
     const valueInput = form.querySelector(`input.${barId}-value`);
     const maxInput = form.querySelector(`input.${barId}-max`);
 
-    if (event.target.value === "custom") {
+    if (target.value === "custom") {
         valueInput.removeAttribute("disabled");
         maxInput.removeAttribute("disabled");
-        if (event.originalEvent && maxInput.value === "") maxInput.value = valueInput.value;
+        if (event && maxInput.value === "") maxInput.value = valueInput.value;
         form.querySelectorAll(`input.ignore-limit`).forEach(el => {
             el.removeAttribute("disabled");
-            el.checked = false;
+            if (event) el.checked = false;
         });
     } else {
         valueInput.setAttribute("disabled", "");
         form.querySelectorAll(`input.ignore-limit`).forEach(el => {
             el.setAttribute("disabled", "");
-            el.checked = true;
+            if (event) el.checked = true;
         });
 
-        const resource = this.getBarAttribute(null, { alternative: event.target.value });
+        const resource = token.getBarAttribute(null, { alternative: target.value });
         if (resource === null) {
             valueInput.value = maxInput.value = "";
             maxInput.setAttribute("disabled", "");
@@ -87,7 +126,7 @@ export const onChangeBarAttribute = function (event) {
             maxInput.setAttribute("disabled", "");
         } else {
             valueInput.value = resource.value;
-            if (event.originalEvent) maxInput.value = "";
+            if (event) maxInput.value = "";
             maxInput.removeAttribute("disabled");
         }
     }
@@ -165,30 +204,6 @@ function swapButtonState(selector, firstElement, secondElement) {
 }
 
 /**
- * Opens an application with additional configuration options.
- * @param {jQuery.Event} event The event of the button click.
- * @param {TokenConfig} tokenConfig The token configuration object.
- * @param {Object} data The data of the request.
- */
-function onOpenAdvancedConfiguration(event, tokenConfig, data) {
-    const barId = event.currentTarget.parentElement.parentElement.id;
-    let barData = api.getBar(tokenConfig.token, barId) ?? {};
-
-    // Parse form data and merge with stored data.
-    let formData = tokenConfig._getSubmitData();
-    formData = foundry.utils.expandObject(formData).flags.barbrawl.resourceBars[barId];
-    barData = foundry.utils.mergeObject(barData, formData, { inplace: false });
-
-    new BarConfigExtended(barData, {
-        parent: tokenConfig.token,
-        displayModes: data.displayModes,
-        barAttributes: data.barAttributes,
-        isDefaultToken: tokenConfig instanceof DefaultTokenConfig
-    }).render(true);
-    return false;
-}
-
-/**
  * Handles an add button click event by adding another resource.
  * @param {jQuery.Event} event The event of the button click.
  * @param {TokenConfig} tokenConfig The token configuration object.
@@ -208,7 +223,6 @@ async function onAddResource(event, tokenConfig, data) {
 
     const barConfiguration = $(await renderTemplate("modules/barbrawl/templates/bar-config.hbs", {
         brawlBars: [newBar],
-        displayModes: data.displayModes,
         barAttributes: data.barAttributes
     }));
 
@@ -239,10 +253,6 @@ async function onSaveDefaults(tokenConfig) {
     let data = tokenConfig._getSubmitData();
     data = foundry.utils.expandObject(data).flags.barbrawl.resourceBars;
 
-    // Merge extended bar data without overriding the form.
-    const extData = foundry.utils.getProperty(tokenConfig.token.data._source, "flags.barbrawl.resourceBars");
-    foundry.utils.mergeObject(data, extData, { insertKeys: false, overwrite: false });
-
     // Drop bars that were removed.
     for (let id of Object.keys(data)) if (!data[id].attribute) delete data[id];
 
@@ -263,7 +273,7 @@ async function onLoadDefaults(tokenConfig, data) {
             foundry.utils.setProperty(setting, prop[0], prop[1]);
         }
         await game.settings.set("core", DefaultTokenConfig.SETTING, setting);
-    } else if (tokenConfig.token instanceof PrototypeTokenDocument) {
+    } else if (tokenConfig.token instanceof foundry.data.PrototypeToken) {
         await tokenConfig.token.actor.update(createOverrideData(defaults, true), { diff: false });
     } else {
         await tokenConfig.token.update(createOverrideData(defaults), { diff: false });
@@ -275,7 +285,6 @@ async function onLoadDefaults(tokenConfig, data) {
     resourceTab.find("details").remove();
     resourceTab.prepend(await renderTemplate("modules/barbrawl/templates/bar-config.hbs", {
         brawlBars: barData,
-        displayModes: data.displayModes,
         barAttributes: data.barAttributes
     }));
     if (resourceTab.hasClass("active")) adjustConfigHeight(tokenConfig.element, barData.length);

@@ -18,13 +18,16 @@ const BAR_VISIBILITY = {
  * @returns {Object[]} An array of bar data.
  */
 export const getBars = function (tokenDoc) {
-    const resourceBars = foundry.utils.getProperty(tokenDoc.data, "flags.barbrawl.resourceBars") ?? {};
-    const barArray = Object.values(resourceBars);
+    const resourceBars = foundry.utils.getProperty(tokenDoc, "flags.barbrawl.resourceBars") ?? {};
+    const barArray = Object.entries(resourceBars).map(entry => {
+        entry[1].id ??= entry[0];
+        return entry[1];
+    });
 
-    if (tokenDoc.data.bar1?.attribute && !resourceBars.bar1)
-        barArray.push(getDefaultBar("bar1", tokenDoc.data.bar1.attribute, tokenDoc.data._source.displayBars));
-    if (tokenDoc.data.bar2?.attribute && !resourceBars.bar2)
-        barArray.push(getDefaultBar("bar2", tokenDoc.data.bar2.attribute, tokenDoc.data._source.displayBars));
+    if (tokenDoc.bar1?.attribute && !resourceBars.bar1)
+        barArray.push(getDefaultBar("bar1", tokenDoc.bar1.attribute, tokenDoc._source.displayBars));
+    if (tokenDoc.bar2?.attribute && !resourceBars.bar2)
+        barArray.push(getDefaultBar("bar2", tokenDoc.bar2.attribute, tokenDoc._source.displayBars));
 
     return barArray.sort((b1, b2) => (b1.order ?? 0) - (b2.order ?? 0));
 }
@@ -36,12 +39,15 @@ export const getBars = function (tokenDoc) {
  * @returns {Object} A bar data object.
  */
 export const getBar = function (tokenDoc, barId) {
-    const resourceBars = foundry.utils.getProperty(tokenDoc.data._source, "flags.barbrawl.resourceBars") ?? {};
+    const resourceBars = foundry.utils.getProperty(tokenDoc, "flags.barbrawl.resourceBars") ?? {};
     if (barId === "bar1" && !resourceBars.bar1)
-        return getDefaultBar(barId, tokenDoc.data.bar1.attribute, tokenDoc.data._source.displayBars);
+        return getDefaultBar(barId, tokenDoc.bar1.attribute, tokenDoc._source.displayBars);
     if (barId === "bar2" && !resourceBars.bar2)
-        return getDefaultBar(barId, tokenDoc.data.bar2.attribute, tokenDoc.data._source.displayBars);
-    return resourceBars[barId];
+        return getDefaultBar(barId, tokenDoc.bar2.attribute, tokenDoc._source.displayBars);
+
+    const bar = resourceBars[barId];
+    if (bar) bar.id ??= barId;
+    return bar;
 }
 
 /**
@@ -174,9 +180,15 @@ export const getVisibleBars = function (tokenDoc, barsOnly = true) {
  * @private
  */
 export const getNewBarId = function (existingBars) {
-    const existingIds = existingBars.map((_i, el) => el.lastElementChild.id).get();
-    if (!existingIds.includes("bar1")) return "bar1";
-    if (!existingIds.includes("bar2")) return "bar2";
+    const existingIds = new Set(existingBars.map((_i, el) => el.lastElementChild.id).get());
+
+    // Try to find an easily readable, sortable and unused number.
+    for (let i = 1; i < 10; i++) {
+        const id = "bar" + i;
+        if (!existingIds.has(id)) return id;
+    }
+
+    // Generate a random ID as fallback.
     return "bar" + randomID();
 }
 
@@ -219,8 +231,7 @@ export const getDefaultBar = function (id, attribute, defaultVisibility = CONST.
 }
 
 /**
- * Resolves the actual visibility of the given bar, depending on whether the
- *  current player owns the given token.
+ * Resolves the actual visibility of the given bar, depending on whether the current player owns the given token.
  * @param {Token | TokenDocument} token The token (or its document) of the bar.
  * @param {Object} bar The data of the bar.
  * @returns {BAR_VISIBILITY} The visibility of the bar.
@@ -228,8 +239,14 @@ export const getDefaultBar = function (id, attribute, defaultVisibility = CONST.
  */
 function getBarVisibility(token, bar) {
     if (!bar.hasOwnProperty("otherVisibility")) convertBarVisibility(bar);
+    if (token instanceof Token) token = token.document;
+
     if (game.user.isGM && (bar.gmVisibility ?? -1) !== BAR_VISIBILITY.INHERIT) return bar.gmVisibility;
-    if (token.isOwner && (bar.ownerVisibility ?? -1) !== BAR_VISIBILITY.INHERIT) return bar.ownerVisibility;
+    if (token.isOwner) {
+        if ((bar.ownerVisibility ?? -1) !== BAR_VISIBILITY.INHERIT) return bar.ownerVisibility;
+    } else if (token.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE && game.settings.get("barbrawl", "hideHostile")) {
+        return BAR_VISIBILITY.NONE;
+    }
     return bar.otherVisibility;
 }
 
@@ -244,9 +261,9 @@ export const isBarVisible = function (token, bar, ignoreTransient = false) {
     if (!bar || !token) return false;
 
     let visibility = getBarVisibility(token, bar);
-    if (ignoreTransient) {
-        if ([BAR_VISIBILITY.CONTROL, BAR_VISIBILITY.HOVER, BAR_VISIBILITY.HOVER_CONTROL].includes(visibility))
-            return true;
+    if (ignoreTransient
+        && [BAR_VISIBILITY.CONTROL, BAR_VISIBILITY.HOVER, BAR_VISIBILITY.HOVER_CONTROL].includes(visibility)) {
+        return true;
     } else {
         if (bar.hideFull && bar.value === bar.max) return false;
         if (bar.hideEmpty && bar.value === 0) return false;
@@ -256,7 +273,7 @@ export const isBarVisible = function (token, bar, ignoreTransient = false) {
     if (bar.hideCombat && inCombat) return false;
     if (bar.hideNoCombat && !inCombat) return false;
 
-    if (visibility === BAR_VISIBILITY.HOVER_CONTROL) return token._controlled || token._hover;
+    if (visibility === BAR_VISIBILITY.HOVER_CONTROL) return token.controlled || token.hover;
     return token._canViewMode(visibility);
 }
 
@@ -266,7 +283,7 @@ export const isBarVisible = function (token, bar, ignoreTransient = false) {
  * @private
  */
 export const refreshBarVisibility = function (token) {
-    const barContainer = token.hud.bars.children;
+    const barContainer = token.bars.children;
     for (let pixiBar of barContainer) {
         const bar = getBar(token.document, pixiBar.name);
         if (bar) pixiBar.visible = isBarVisible(token, bar);

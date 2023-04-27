@@ -81,9 +81,13 @@ export class Signal {
             game.cub.getConditions = EnhancedConditions.getConditions;
             game.cub.getConditionEffects = EnhancedConditions.getConditionEffects;
             game.cub.hasCondition = EnhancedConditions.hasCondition;
+            game.cub.applyCondition = EnhancedConditions.applyCondition;
             game.cub.addCondition = EnhancedConditions.addCondition;
             game.cub.removeCondition = EnhancedConditions.removeCondition;
             game.cub.removeAllConditions = EnhancedConditions.removeAllConditions;
+
+            game.cub.hideNames.getReplacementName = HideNPCNames.getReplacementName;
+            game.cub.hideNames.shouldReplaceName = HideNPCNames.shouldReplaceName;
 
         });
 
@@ -218,7 +222,11 @@ export class Signal {
                     break;
                 
                 case game.i18n.localize(`${BUTLER.NAME}.ENHANCED_CONDITIONS.ConditionLab.SortDirectionSave.Title`):
-                    ConditionLab._onRenderDialog(app, html, data);
+                    ConditionLab._onRenderSaveDialog(app, html, data);
+                    break;
+                
+                case game.i18n.localize(`ENHANCED_CONDITIONS.Lab.RestoreDefaultsTitle`):
+                    ConditionLab._onRenderRestoreDefaultsDialog(app, html, data);
                     break;
 
                 default:

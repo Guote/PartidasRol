@@ -15,6 +15,14 @@ function registerSetting() {
   });
 }
 
+// Temporarily required by foundryvtt/foundryvtt#7740
+if (game.release?.generation >= 10) {
+	Hooks.on("setup", () => {
+		game.settings.settings.get(`core.${ModuleManagement.CONFIG_SETTING}`).onChange =
+			foundry.utils.debouncedReload ?? window.location.reload;
+	});
+}
+
 Hooks.on("renderModuleManagement", onRenderModuleManagement);
 
 function onRenderModuleManagement(app, html, options) {
@@ -346,8 +354,7 @@ async function deactivationStep(chosenModules = []) {
     await game.settings.set(moduleName, "modules", currSettings);
   }
 
-  await game.settings.set("core", ModuleManagement.CONFIG_SETTING, original);
-  (foundry.utils.debouncedReload ?? window.location.reload)(); // Temporarily required by foundryvtt/foundryvtt#7740
+  game.settings.set("core", ModuleManagement.CONFIG_SETTING, original);
 }
 
 async function reactivateModules() {
@@ -357,8 +364,7 @@ async function reactivateModules() {
   );
   for (let mod in curr.original) original[mod] = curr.original[mod];
 
-  await game.settings.set("core", ModuleManagement.CONFIG_SETTING, original);
-  (foundry.utils.debouncedReload ?? window.location.reload)(); // Temporarily required by foundryvtt/foundryvtt#7740
+  game.settings.set("core", ModuleManagement.CONFIG_SETTING, original);
 }
 
 async function resetSettings() {

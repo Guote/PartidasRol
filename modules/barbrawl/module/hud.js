@@ -50,5 +50,6 @@ export const extendTokenHud = async function (tokenHud, html, data) {
  * @returns {Promise.<string>} A promise representing the rendered inputs as HTML string.
  */
 function renderBarInputs(bars, css) {
-    return renderTemplate("modules/barbrawl/templates/resource-hud.hbs", { bars: bars, css: css });
+    if (game.settings.get("barbrawl", "compactHud")) css += " compact";
+    return renderTemplate("modules/barbrawl/templates/resource-hud.hbs", { bars, css });
 }

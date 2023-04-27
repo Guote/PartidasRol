@@ -78,14 +78,14 @@ class ImageHoverHUD extends BasePlaceableHUD {
         const data = super.getData();
         const tokenObject = this.object;
         let image = tokenObject.actor.img;                                   // Character art
-        const isWildcard = tokenObject.actor.data.token.randomImg;
-        const isLinkedActor = tokenObject.data.actorLink;
+        const isWildcard = tokenObject.actor.prototypeToken.randomImg;
+        const isLinkedActor = tokenObject.document.actorLink;
 
         /**
          * Don't use character art if it doesn't exist or settings are applied.
          */
 	    if (image == DEFAULT_TOKEN || imageHoverArt === "token" || (imageHoverArt === "wildcard" && isWildcard) || (imageHoverArt == "linked" && !isLinkedActor)) {
-		    image = tokenObject.data.img;                                   // Token art
+		    image = tokenObject.document.texture.src;                                   // Token art
         }
         
         /**
@@ -127,10 +127,13 @@ class ImageHoverHUD extends BasePlaceableHUD {
      */
     updatePosition() {
         let url = this.object.actor.img;                                            // Character art
-        const isWildcard = this.object.actor.data.token.randomImg;
-        const isLinkedActor = this.object.data.actorLink;
+        const isWildcard = this.object.actor.prototypeToken.randomImg;
+        const isLinkedActor = this.object.document.actorLink;
         if (url == DEFAULT_TOKEN || imageHoverArt === "token" || (imageHoverArt === "wildcard" && isWildcard) || (imageHoverArt == "linked" && !isLinkedActor)) {                                                 // If no character art exists, use token art instead.
-		    url = this.object.data.img;                                             // Token art
+            if (this.object.document.texture.src == DEFAULT_TOKEN){
+                return;
+            }
+		    url = this.object.document.texture.src;                                             // Token art
         }
 
         /**
@@ -277,16 +280,14 @@ class ImageHoverHUD extends BasePlaceableHUD {
         /**
          * check token is actor, module is enabled, user has permissions to see character art
          */
-        if (!token || !token.actor || (imageHoverActive === false) || (token.actor.permission < actorRequirementSetting && token.actor.data.permission['default'] !== -1)) {
+        if (!token || !token.actor || (imageHoverActive === false) || (token.actor.permission < actorRequirementSetting && token.actor.ownership['default'] !== -1)) {
             return;
         }
 
         /**
          * check flag to hide art for everyone
          */
-        if (token.document.getFlag('image-hover', 'hideArt')){
-            return;
-        }
+        if (token.document.getFlag('image-hover', 'hideArt')) return;
 
         /**
          * Do not show art for chat portrait module (hover hook doesn't trigger out properly).
@@ -308,15 +309,18 @@ class ImageHoverHUD extends BasePlaceableHUD {
         } 
 
         /**
+         * Hide art when dragging a token.
+         */
+        if (event && event.buttons > 0) return;
+
+        /**
          * Do not show new art or hide current art if GM has triggerd the "showToAll" option for "showArtTimer" seconds.
          */
-        if (showSpecificArt) {
-            return;
-        }
+        if (showSpecificArt) return;
 
         if (hovered && (canvas.activeLayer.name == 'TokenLayer' || canvas.activeLayer.name == 'TokenLayerPF2e')) {       // Show token image if hovered, otherwise don't
             setTimeout(function() {
-                if (token == canvas.tokens._hover && token.actor.img == canvas.tokens._hover.actor.img) {
+                if (token == canvas.tokens.hover && token.actor.img == canvas.tokens.hover.actor.img) {
                     canvas.hud.imageHover.bind(token);
                 } else {
                     canvas.hud.imageHover.clear();
@@ -365,7 +369,7 @@ Hooks.on("renderHeadsUpDisplay", (app, html, data) => {
         if (!(token.actor.img in cacheImageNames)) {
             canvas.hud.imageHover.cacheAvailableToken(token.actor.img, false);
         } else if (token.actor.img === DEFAULT_TOKEN) {
-            canvas.hud.imageHover.cacheAvailableToken(token.data.img, false);
+            canvas.hud.imageHover.cacheAvailableToken(token.document.texture.src, false);
         }
     }
 });
@@ -373,13 +377,13 @@ Hooks.on("renderHeadsUpDisplay", (app, html, data) => {
 /**
  * Cache token image upon creating a actor.
  */
-Hooks.on("createToken", (scene, data) => {
-    const tokenId = game.actors.get(data.actorId);
+Hooks.on("createToken", (token, options, userId) => {
+    const tokenId = game.actors.get(token.actorId);
     if (!tokenId) return;
 
     let imageToCache = tokenId.img;
     if (imageToCache === DEFAULT_TOKEN) {
-        imageToCache = data.img;
+        imageToCache = token.texture.src;
     }
     if (imageToCache && !(imageToCache in cacheImageNames)) {
         canvas.hud.imageHover.cacheAvailableToken(imageToCache, false);
@@ -394,10 +398,8 @@ Hooks.on("createToken", (scene, data) => {
  */
 Hooks.on('hoverToken', (token, hovered) => {
 
-    if (showSpecificArt) {
-        return;
-    }
-    if (!hovered || (game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT))) {	// alt key in Foundry auto hovers all tokens in Foundry
+    if (showSpecificArt) return;
+    if (!hovered) {
         canvas.hud.imageHover.clear();
         return;
     }

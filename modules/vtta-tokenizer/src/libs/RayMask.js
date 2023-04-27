@@ -1,18 +1,17 @@
 import CONSTANTS from "../constants.js";
-
-function isOpaque(alpha) {
-  return alpha > CONSTANTS.COLOR.OPAQUE_THRESHOLD;
-}
+import Color from "./Color.js";
 
 function getEnrichedPixel(imageData, point) {
   const index = point.x + (point.y * imageData.height);
   const baseIndex = index * 4;
-  const color = {
-    red: imageData.data[baseIndex],
-    green: imageData.data[baseIndex + 1],
-    blue: imageData.data[baseIndex + 2],
-    alpha: imageData.data[baseIndex + 3],
-  };
+  const color = new Color(
+    {
+      red: imageData.data[baseIndex],
+      green: imageData.data[baseIndex + 1],
+      blue: imageData.data[baseIndex + 2],
+      alpha: imageData.data[baseIndex + 3],
+    }
+  );
   return {
     x: point.x,
     y: point.y,
@@ -67,7 +66,7 @@ function findEdgeOnRay(imageData, startPoint, endPoint) {
 
   // check to see if we find an edge
   enrichedPixels.forEach((pixel, index) => {
-    if (isOpaque(pixel.color.alpha)) {
+    if (pixel.color.isOpaque()) {
       if (start === null) {
         start = index;
       } else {
@@ -129,22 +128,22 @@ function createRays(mask, maskImageData) {
       sampleRay,
     );
 
-    rays.push(ray);
-
-    // if we didn't find and edge pixel, lets step back over sample size
+    // if we didn't find an edge pixel, lets step back over sample size
     if (sampleRay && !ray.edgePixel) {
       for (let stepIndex = rayIndex - 1; stepIndex < CONSTANTS.MASK.SAMPLE_SIZE && (rayIndex - stepIndex) >= 0; stepIndex++) {
-        rays[stepIndex] = createRay(
+        const stepRay = createRay(
           maskImageData, 
           maskCentre,
           getCanvasEdge(mask, stepIndex),
           sampleRay,
         );
-        if (rays[stepIndex].edgePixel) {
+        if (stepRay.edgePixel) {
+          rays.edgePixel = stepRay.edgePixel;
           break;
         }
       }
     }
+    rays.push(ray);
   }
   return rays;
 }
@@ -166,8 +165,7 @@ export function generateRayMask(maskCanvas) {
     .filter((ray) => ray.edgePixel)
     .map((ray) => ray.edgePixel);
 
-  const defaultFillColor = game.settings.get(CONSTANTS.MODULE_ID, "default-color");
-  if (defaultFillColor !== "") context.fillStyle = defaultFillColor;
+  context.fillStyle = "black";
 
   // unable to calculate suitable radius, so just fill the whole mask
   if (edgePoints.length < 2) {
@@ -175,8 +173,6 @@ export function generateRayMask(maskCanvas) {
     context.fill();
   } else {
     context.beginPath();
-    if (defaultFillColor !== "") context.fillStyle = defaultFillColor;
-
     edgePoints.forEach((edgePoint, index) => {
       if (index === 0) {
         context.moveTo(edgePoint.x, edgePoint.y);

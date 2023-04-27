@@ -9,7 +9,7 @@ export class ChatPortraitChatCard extends ChatMessage {
     // id: string;
     // roll:Roll;
     constructor(message, html, speakerInfo, imageReplacer) {
-        super(message.data.document);
+        super(message);
         this.updateBinding(message, html, speakerInfo, imageReplacer);
     }
     get message() {
@@ -26,8 +26,8 @@ export class ChatPortraitChatCard extends ChatMessage {
         // Foundry will sometimes call renderChatMessage() multiple times with un-bound HTML,
         // and we can't do anything except rely on closures to handle those events.
         // this.id = message.id;
-        this.speaker = game.actors?.get(message.data.speaker.actor);
-        // this.roll = message?.roll ? message?.roll : message?.data?.document?.roll;
+        this.speaker = game.actors?.get(message.speaker.actor);
+        // this.roll = message?.roll ? message?.roll : message?.document?.roll;
         //message.BetterRoll = this.roll;
         // Hide Save DCs
         // const actor = this.speaker;
@@ -56,14 +56,14 @@ export class ChatPortraitChatCard extends ChatMessage {
      * @param {JQuery} html
      */
     static async bind(message, html, speakerInfo, imageReplacer) {
-        const chatCard = html.find('.message-sender');
+        const chatCard = html.find(".message-sender");
         if (chatCard.length === 0) {
             return null;
         }
         // Check if the card already exists
         const existing = message.ChatPortraitCardBinding;
         if (existing) {
-            log('Retrieved existing card');
+            log("Retrieved existing card");
             //existing.updateBinding(message, chatCard);
             existing.updateBinding(message, html, speakerInfo, imageReplacer);
             // Pulse the card to make it look more obvious
@@ -72,9 +72,9 @@ export class ChatPortraitChatCard extends ChatMessage {
             window.setTimeout(() => {
                 //@ts-ignore
                 gsap?.from(html.get(), {
-                    'border-color': 'red',
-                    'box-shadow': '0 0 6px inset #ff6400',
-                    duration: 2,
+                    "border-color": "red",
+                    "box-shadow": "0 0 6px inset #ff6400",
+                    duration: 2
                 });
             }, 0);
             // Scroll to bottom if the last card had updated
@@ -83,10 +83,10 @@ export class ChatPortraitChatCard extends ChatMessage {
             if (last?.id === existing.id) {
                 //window.setTimeout(() => { ui.chat?.scrollBottom(); }, 0);
                 window.setTimeout(function () {
-                    const log = document.querySelector('#chat-log');
+                    const log = document.querySelector("#chat-log");
                     const shouldForceScroll = log ? ChatPortrait.shouldScrollToBottom(log) : false;
                     if (log && shouldForceScroll) {
-                        log.scrollTo({ behavior: 'smooth', top: log.scrollHeight });
+                        log.scrollTo({ behavior: "smooth", top: log.scrollHeight });
                     }
                 }, 50);
             }

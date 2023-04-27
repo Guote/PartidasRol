@@ -9,8 +9,8 @@
 <a href="https://www.youtube.com/channel/UCxhr66d1sjfXU4SQ5MEqPvg" title="YouTube"><img height="32" width="32" src="https://cdn.jsdelivr.net/npm/simple-icons@v4/icons/youtube.svg" /></a></span>
 </div><br/>
 
-![https://img.shields.io/endpoint?url=https://foundryshields.com/version?url=https%3A%2F%2Fraw.githubusercontent.com%2Fdeath-save%2Fcombat-utility-belt%2Fmaster%2Fmodule.json](https://img.shields.io/endpoint?url=https://foundryshields.com/version?url=https%3A%2F%2Fraw.githubusercontent.com%2Fdeath-save%2Fcombat-utility-belt%2Fmaster%2Fmodule.json)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-27-orange.svg?style=flat-square)](#contributors-)
+![https://img.shields.io/endpoint?url=https%3A%2F%2Ffoundryshields.com%2Fversion%3Fstyle%3Dflat%26url%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Fdeath-save%2Fcombat-utility-belt%2Fmaster%2Fmodule.json](https://img.shields.io/endpoint?url=https%3A%2F%2Ffoundryshields.com%2Fversion%3Fstyle%3Dflat%26url%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Fdeath-save%2Fcombat-utility-belt%2Fmaster%2Fmodule.json)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/death-save/combat-utility-belt) 
@@ -141,7 +141,7 @@ Firstly thank you to all my [patrons](https://patreon.com/deathsave), you make m
 
 Secondly I want to shout out the awesome contributors for this module (see: [contributors](#contributors-)). Whether it's code, translations, or bugs/suggestions, without your help Combat Utility Belt would not be as awesome as it is! 
 
-I would also like to acknowledge that many of the functions found in the Combat Utility Belt are inspired by [Roll20 API scripts](https://github.com/RobinKuiper/Roll20APIScripts) written by Robin Kuiper (namely the Combat Tracker, Death Tracker and StatusInfo ones).
+I would also like to acknowledge that many of the functions found in the Combat Utility Belt are inspired by [Roll20 API scripts](https://github.com/RobinKuiper/Roll20APIScripts) written by @RobinKuiper (namely the Combat Tracker, Death Tracker and StatusInfo ones).
 
 Concentration icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flat Icon](www.flaticon.com)
 
@@ -191,6 +191,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/flamewave000"><img src="https://avatars.githubusercontent.com/u/3588046?v=4?s=100" width="100px;" alt=""/><br /><sub><b>flamewave000</b></sub></a><br /><a href="https://github.com/death-save/combat-utility-belt/commits?author=flamewave000" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/WallaceMcGregor"><img src="https://avatars.githubusercontent.com/u/17795541?v=4?s=100" width="100px;" alt=""/><br /><sub><b>WallaceMcGregor</b></sub></a><br /><a href="#translation-WallaceMcGregor" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/Hertzila"><img src="https://avatars.githubusercontent.com/u/7857080?v=4?s=100" width="100px;" alt=""/><br /><sub><b>hertzila</b></sub></a><br /><a href="https://github.com/death-save/combat-utility-belt/commits?author=hertzila" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/Autmor"><img src="https://avatars.githubusercontent.com/u/66399049?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Autmor</b></sub></a><br /><a href="https://github.com/death-save/combat-utility-belt/commits?author=Autmor" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/MichalGolaszewski"><img src="https://avatars.githubusercontent.com/u/46850235?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Michał Gołaszewski</b></sub></a><br /><a href="#translation-MichalGolaszewski" title="Translation">🌍</a></td>
   </tr>
 </table>
 

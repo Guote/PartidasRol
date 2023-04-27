@@ -6,6 +6,66 @@
 3. The Default/Inferred Condition Lab Mappings for game systems may not correctly import all data. Importing the map from the CUB Condition Maps folder imports correctly.
 4. **PF2e users**: PF2e is not currently supported by Enhanced Conditions due to the customisation of the effects framework implemented by the system.
 
+## [1.10.4] - 2022-12-27
+> This update adds compatability for Foundry VTT v10.291
+### 😷 Hide Names
+- Fixed issue with Actor form not opening
+- Added ability to have a space or "0" as a replacement name
+
+### 🌍 Translation
+- Updated German translation (thanks @mhilbrunner 🎉)
+
+## [1.10.3] - 2022-10-15
+> This update adds compatibility for Foundry VTT v10.288
+### ✨ Enhanced Condition
+- Fixed issue with Cyberpunk Red Core mapping not being detected as default
+- Fixed missing reference for Smash Addiction in Cyberpunk Red condition map
+
+## [1.10.2] - 2022-10-09
+> This update adds compatibility for Foundry VTT v10.287
+### ✨ Enhanced Condition
+- Add support Cyberpunk Red Core game system (thanks @ryanwalder 🎉)
+- Added support for Foundry special status effects (currently Blinded and Invisible)
+- - Accessible from Option Config
+- Replaced Option checkboxes in Condition Lab with Option Config form
+- Fix drag and drop behaviour in Condition Lab
+- Fix reference links not working
+- Add a checkbox to the Restore Defaults dialog to clear the cache and reimport from server files
+- Update references in CUB default and extended dnd5e mappings
+- Disable some buttons in default Condition Lab mappings
+
+### 😷 Hide Names
+- Fix Actor Name duplication when Hide Names is enabled and changes are made to Actor
+
+## [1.10.1] - 2022-08-31
+> Hotfix for issue [#702](https://github.com/death-save/combat-utility-belt/issues/702) in Foundry VTT v10.283
+
+> Note: full compatibility with Foundry VTT versions greater than v10.275 is **not** verified.
+
+### Misc Token
+- Fixed an issue related to Token Status Effect sizing that prevented scenes from loading when a token was present on the canvas.
+
+## [1.10.0] - 2022-07-27
+> This update adds compatibility for Foundry VTT v10.275 (v10-testing 1)
+
+### ✨ Enhanced Conditions
+- Macros executed by Conditions correctly pass the actor/token
+- Added a shim for the deprecated API function `applyCondition` that points to the correct method: `addCondition`
+
+### 💭 Concentrator
+- Concentrator now fires when temporary HP is damaged
+
+### 😷  Hide Names
+- Added API access to Hide Names functionality (thanks @Autmor ! 🎉).
+> Check [API Docs](./API.md) for more details
+
+### 🕰️Temporary Combatants
+- Temporary Combatants no longer require an actor or token
+> The existing Temporary Combatants folder can safely be deleted from your Actor directory
+
+### Misc Token
+- Added a setting for Mighty Summoner that allows the GM to opt-out of receiving Mighty Summoner prompts
+
 ## [1.9.2] - 2022-06-25
 ### ✨ Enhanced Conditions
 - The Condition Lab reorder buttons work again

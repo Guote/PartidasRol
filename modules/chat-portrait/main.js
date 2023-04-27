@@ -18,7 +18,7 @@ import CONSTANTS from "./module/constants.js";
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
-Hooks.once('init', async () => {
+Hooks.once("init", async () => {
     console.log(`${CONSTANTS.MODULE_NAME} | Initializing ${CONSTANTS.MODULE_NAME}`);
     // Register custom module settings
     registerSettings();
@@ -34,7 +34,7 @@ Hooks.once('init', async () => {
 /* ------------------------------------ */
 /* Setup module							*/
 /* ------------------------------------ */
-Hooks.once('setup', function () {
+Hooks.once("setup", function () {
     // Do anything after initialization but before ready
     //setupModules();
     setupHooks();
@@ -43,7 +43,7 @@ Hooks.once('setup', function () {
 /* ------------------------------------ */
 /* When ready							*/
 /* ------------------------------------ */
-Hooks.once('ready', () => {
+Hooks.once("ready", () => {
     // Do anything once the module is ready
     // if (!game.modules.get("lib-wrapper")?.active && game.user.isGM){
     // 	ui.notifications.error(`The '${MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`);

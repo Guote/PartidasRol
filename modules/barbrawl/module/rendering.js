@@ -1,6 +1,11 @@
 import { getActualBarValue, getBar, getVisibleBars, isBarVisible } from "./api.js";
 
 /**
+ * Optional object containing THREE.js classes when Levels3D is active.
+ */
+var THREE;
+
+/**
  * Object containing current bar rendering promises per token.
  */
 var renderingTokens = {};
@@ -55,6 +60,22 @@ export const extendBarRenderer = function () {
             return originalGetBarAttribute.call(this, null, { alternative: attribute });
         };
     }
+
+    if (game.modules.get("levels-3d-preview")?.active) {
+        // Import required THREE.js classes.
+        import("../../levels-3d-preview/scripts/lib/three.module.js").then(three => {
+            THREE = {
+                SpriteMaterial: three.SpriteMaterial,
+                TextureLoader: three.TextureLoader,
+                Sprite: three.Sprite
+            }
+        });
+
+        // Disable Levels3D's internal bar rendering.
+        Hooks.once("3DCanvasInit", levels3d => levels3d.CONFIG.entityClass.Token3D.prototype.drawBars = async function () {
+            await draw3dBars(this.token);
+        });
+    }
 }
 
 /**
@@ -63,34 +84,53 @@ export const extendBarRenderer = function () {
  */
 function drawBrawlBars() {
     let visibleBars = getVisibleBars(this.document);
-    if (visibleBars.length === 0) return;
+    if (visibleBars.length === 0) {
+        this.bars.removeChildren();
+        return;
+    }
 
-    const reservedSpace = {
-        "top-inner": 0,
-        "top-outer": 0,
-        "bottom-inner": 0,
-        "bottom-outer": 0,
-        "left-inner": 0,
-        "left-outer": 0,
-        "right-inner": 0,
-        "right-outer": 0
-    };
-
-    this.data.displayBars = CONST.TOKEN_DISPLAY_MODES.ALWAYS;
     const asyncRender = async () => {
-        this.hud.bars.removeChildren();
-        for (let barData of visibleBars) await createResourceBar(this, barData, reservedSpace);
-        this.hud.bars.visible = this.hud.bars.children.length > 0;
+        this.displayBars = CONST.TOKEN_DISPLAY_MODES.ALWAYS;
+        const reservedSpace = {
+            "top-inner": 0,
+            "top-outer": 0,
+            "bottom-inner": 0,
+            "bottom-outer": 0,
+            "left-inner": 0,
+            "left-outer": 0,
+            "right-inner": 0,
+            "right-outer": 0
+        };
+
+        try {
+            this.bars.removeChildren();
+            for (let barData of visibleBars) await createResourceBar(this, barData, reservedSpace);
+            this.bars.visible = this.bars.children.length > 0;
+        } finally {
+            if (renderingTokens[this.id].data === visibleBars) delete renderingTokens[this.id];
+        }
     };
 
     // Make sure that we are only rendering bars for each token once.
     if (renderingTokens[this.id]) {
-        console.log("barbrawl | Bars are already rendering, deferring second call.");
-        renderingTokens[this.id] = renderingTokens[this.id]
-            .then(asyncRender).finally(() => delete renderingTokens[this.id]);
+        const renderingData = renderingTokens[this.id].data;
+        if (renderingData.length === visibleBars.length
+            && renderingData.every((bar, index) => foundry.utils.isEmpty(foundry.utils.diffObject(bar, visibleBars[index])))) {
+            console.log("Bar Brawl | Bars are already rendering, prevented duplicate render.");
+            return;
+        }
+
+        console.log("Bar Brawl | Bars are already rendering, deferring second call.");
+        renderingTokens[this.id] = {
+            data: visibleBars,
+            promise: renderingTokens[this.id].promise.then(asyncRender)
+        };
     }
     else {
-        renderingTokens[this.id] = asyncRender().finally(() => delete renderingTokens[this.id]);
+        renderingTokens[this.id] = {
+            data: visibleBars,
+            promise: asyncRender()
+        };
     }
 }
 
@@ -117,28 +157,7 @@ async function createResourceBar(token, data, reservedSpace) {
     const position = calculatePosition(data, renderedHeight, token, reservedSpace);
     if (!data.shareHeight) reservedSpace[data.position] += renderedHeight;
     bar.position.set(position[0], position[1]);
-    token.hud.bars.addChild(bar);
-}
-
-/**
- * Redraws a single resource bar without changing its position.
- * @param {Token} token The token to redraw the bar on.
- * @param {Object} barData The data of the bar to refresh.
- */
-export const redrawBar = async function (token, barData) {
-    const bar = token.hud.bars.getChildByName(barData.id);
-    if (!bar) return;
-
-    const gfx = bar.getChildByName("gfx");
-    bar.removeChildren();
-    if (gfx) {
-        // Clear graphics object instead of removing it.
-        gfx.clear();
-        bar.addChild(gfx);
-    }
-
-    const textures = await loadBarTextures(barData);
-    drawResourceBar(token, bar, barData, textures);
+    token.bars.addChild(bar);
 }
 
 /**
@@ -150,6 +169,47 @@ async function loadBarTextures(data) {
     const bgTexture = data.bgImage ? await loadTexture(data.bgImage) : null;
     const fgTexture = data.fgImage ? await loadTexture(data.fgImage) : null;
     return [bgTexture, fgTexture];
+}
+
+/**
+ * Draws bars for 3D tokens by converting the current bars to a texture that is rendered as a THREE.js sprite.
+ * @param {Token} token The token to draw the bars for.
+ * @returns {Promise} A promise representing the texture conversion.
+ */
+async function draw3dBars(token) {
+    const token3d = game.Levels3DPreview?.tokens[token.id];
+    if (!token3d || !THREE) return;
+
+    // Prepare sprite with existing container as texture.
+    const renderedBars = canvas.app.renderer.extract.base64(token.bars);
+    const texture = new THREE.SpriteMaterial({
+        map: await new THREE.TextureLoader().loadAsync(renderedBars),
+        transparent: true
+    });
+    const sprite = new THREE.Sprite(texture);
+    sprite.userData.ignoreIntersect = true;
+    sprite.userData.ignoreHover = true;
+
+    // Always render on top of the token.
+    sprite.renderOrder = token3d.mesh.renderOrder + 1;
+    sprite.material.depthTest = false;
+
+    // Calculate 3D position.
+    const originalBounds = token.bars.getLocalBounds();
+    const width = originalBounds.width / token3d.factor;
+    const height = originalBounds.height / token3d.factor;
+    sprite.scale.set(width, height, 1);
+    sprite.position.set(0, token3d.d / 2 + 0.008, 0);
+
+    // Calculate relative center from the sprite's bottom left corner to the middle of the token.
+    const bottomCenter = (token.h / 2 - originalBounds.bottom) / originalBounds.height * -1;
+    const leftCenter = (token.w / 2 - originalBounds.left) / originalBounds.width;
+    sprite.center.set(leftCenter, bottomCenter);
+
+    // Reassembly render tree.
+    token3d.mesh.remove(token3d.bars);
+    token3d.bars = sprite;
+    token3d.mesh.add(sprite);
 }
 
 /**
@@ -190,6 +250,9 @@ function drawResourceBar(token, bar, data, textures) {
     if (data.position.startsWith("left")) bar.angle = -90;
     else if (data.position.startsWith("right")) bar.angle = 90;
 
+    // Flip bar if inverted.
+    if (data.invertDirection) bar.scale.x *= -1;
+
     return bar.contentHeight;
 }
 
@@ -206,7 +269,7 @@ function getBarHeight(token, width, textures = [null, null]) {
     else if (textures[1]) return textures[1].height * width / textures[1].width;
 
     let height = Math.max((canvas.dimensions.size / 12), 8);
-    if (token.data.height >= 2) height *= 1.6; // Enlarge the bar for large tokens.
+    if (token.document.height >= 2) height *= 1.6; // Enlarge the bar for large tokens.
     height += barPresets[game.settings.get("barbrawl", "barStyle")].heightOffset ?? 0;
     return height;
 }
@@ -310,7 +373,7 @@ function drawBarLabel(bar, token, data, value, max) {
             createBarLabel(bar, token, data, `${data.label ? data.label + "  " : ""}${percentage}%`);
             break;
         default:
-            console.error(`barbrawl | Unknown label style ${game.settings.get("barbrawl", "textStyle")}.`);
+            console.error(`Bar Brawl | Unknown label style ${game.settings.get("barbrawl", "textStyle")}.`);
     }
 }
 
@@ -331,6 +394,7 @@ function createBarLabel(bar, token, data, text) {
     barText.y = bar.contentHeight / 2;
     barText.anchor.set(0.5);
     barText.resolution = 1.5;
+    if (data.invertDirection) barText.scale.x *= -1;
     bar.addChild(barText);
 }
 
@@ -424,16 +488,63 @@ function calculateWidth(barData, token, reservedSpace) {
  * @returns {number[]} The target X- and Y-coordinate of the bar.
  */
 function calculatePosition(barData, barHeight, token, reservedSpace) {
-    const leftIndent = (barData.indentLeft ?? 0) / 100;
-    switch (barData.position) {
-        case "top-inner": return [reservedSpace["left-inner"] + leftIndent * token.w, reservedSpace["top-inner"]];
-        case "top-outer": return [leftIndent * token.w, (reservedSpace["top-outer"] + barHeight) * -1];
-        case "bottom-inner": return [reservedSpace["left-inner"] + leftIndent * token.w, token.h - reservedSpace["bottom-inner"] - barHeight];
-        case "bottom-outer": return [leftIndent * token.w, token.h + reservedSpace["bottom-outer"]];
-        case "left-inner": return [reservedSpace["left-inner"], token.h - reservedSpace["bottom-inner"] - leftIndent * token.h];
-        case "left-outer": return [(reservedSpace["left-outer"] + barHeight) * -1, token.h - leftIndent * token.h];
-        case "right-inner": return [token.w - reservedSpace["right-inner"], reservedSpace["top-inner"] + leftIndent * token.h];
-        case "right-outer": return [reservedSpace["right-outer"] + barHeight + token.w, leftIndent * token.h];
+    if (barData.invertDirection) {
+        const rightIndent = (barData.indentRight ?? 0) / 100;
+        switch (barData.position) {
+            case "top-inner": return [
+                token.w + reservedSpace["left-inner"] - rightIndent * token.w,
+                reservedSpace["top-inner"]];
+            case "top-outer": return [
+                token.w - rightIndent * token.w,
+                (reservedSpace["top-outer"] + barHeight) * -1];
+            case "bottom-inner": return [
+                token.w + reservedSpace["left-inner"] - rightIndent * token.w,
+                token.h - reservedSpace["bottom-inner"] - barHeight];
+            case "bottom-outer": return [
+                token.w - rightIndent * token.w,
+                token.h + reservedSpace["bottom-outer"]];
+            case "left-inner": return [
+                reservedSpace["left-inner"],
+                (rightIndent * token.h) - reservedSpace["bottom-inner"]];
+            case "left-outer": return [
+                (reservedSpace["left-outer"] + barHeight) * -1,
+                rightIndent * token.h];
+            case "right-inner": return [
+                token.w - reservedSpace["right-inner"],
+                token.h + reservedSpace["top-inner"] - rightIndent * token.h];
+            case "right-outer": return [
+                token.w + reservedSpace["right-outer"] + barHeight,
+                token.h - rightIndent * token.h];
+        }
+    }
+    else {
+        const leftIndent = (barData.indentLeft ?? 0) / 100;
+        switch (barData.position) {
+            case "top-inner": return [
+                reservedSpace["left-inner"] + leftIndent * token.w,
+                reservedSpace["top-inner"]];
+            case "top-outer": return [
+                leftIndent * token.w,
+                (reservedSpace["top-outer"] + barHeight) * -1];
+            case "bottom-inner": return [
+                reservedSpace["left-inner"] + leftIndent * token.w,
+                token.h - reservedSpace["bottom-inner"] - barHeight];
+            case "bottom-outer": return [
+                leftIndent * token.w,
+                token.h + reservedSpace["bottom-outer"]];
+            case "left-inner": return [
+                reservedSpace["left-inner"],
+                token.h - reservedSpace["bottom-inner"] - leftIndent * token.h];
+            case "left-outer": return [
+                (reservedSpace["left-outer"] + barHeight) * -1,
+                token.h - leftIndent * token.h];
+            case "right-inner": return [
+                token.w - reservedSpace["right-inner"],
+                reservedSpace["top-inner"] + leftIndent * token.h];
+            case "right-outer": return [
+                token.w + reservedSpace["right-outer"] + barHeight,
+                leftIndent * token.h];
+        }
     }
 }
 

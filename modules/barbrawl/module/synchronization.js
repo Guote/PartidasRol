@@ -9,9 +9,9 @@ import { convertBarVisibility, getDefaultBar } from "./api.js";
  */
 export const createOverrideData = function (resources, prototype = false) {
     return prototype ? {
-        "token.flags.barbrawl.resourceBars": resources,
-        "token.bar1.attribute": resources.bar1?.attribute ?? null,
-        "token.bar2.attribute": resources.bar2?.attribute ?? null
+        "prototypeToken.flags.barbrawl.resourceBars": resources,
+        "prototypeToken.bar1.attribute": resources.bar1?.attribute ?? null,
+        "prototypeToken.bar2.attribute": resources.bar2?.attribute ?? null
     } : {
         "flags.barbrawl.resourceBars": resources,
         "bar1.attribute": resources.bar1?.attribute ?? null,
@@ -22,12 +22,12 @@ export const createOverrideData = function (resources, prototype = false) {
 /**
  * Prepares the update of a token (or a prototype token) by removing invalid
  *  resources and synchronizing with FoundryVTT's resource format.
- * @param {Object} tokenData The data to merge the new data into.
+ * @param {TokenDocument} tokenDoc The data to merge the new data into.
  * @param {Object} newData The data to be merged into the token data.
  */
-export const prepareUpdate = function (tokenData, newData) {
+export const prepareUpdate = function (tokenDoc, newData) {
     // Always make the bar container visible.
-    if (tokenData._source.displayBars !== CONST.TOKEN_DISPLAY_MODES.ALWAYS) {
+    if (tokenDoc._source.displayBars !== CONST.TOKEN_DISPLAY_MODES.ALWAYS) {
         newData["displayBars"] = CONST.TOKEN_DISPLAY_MODES.ALWAYS;
     }
 
@@ -47,11 +47,11 @@ export const prepareUpdate = function (tokenData, newData) {
             // Convert legacy visibility.
             if (bar.hasOwnProperty("visibility")) convertBarVisibility(bar);
 
-            const barData = (foundry.utils.getProperty(tokenData, "flags.barbrawl.resourceBars") ?? {})[barId];
+            const barData = (foundry.utils.getProperty(tokenDoc, "flags.barbrawl.resourceBars") ?? {})[barId];
 
             // Validate update.
             if (!bar.id && !barData?.id) {
-                console.warn("barbrawl | Skipping invalid bar update. This may indicate a compatibility issue.");
+                console.warn("Bar Brawl | Skipping invalid bar update. This may indicate a compatibility issue.");
                 delete changedBars[barId];
                 continue;
             }
@@ -63,7 +63,7 @@ export const prepareUpdate = function (tokenData, newData) {
             }
         }
     }
-    synchronizeBars(tokenData, newData);
+    synchronizeBars(tokenDoc, newData);
 }
 
 /**
@@ -114,6 +114,7 @@ function synchronizeLegacyBar(barId, tokenData, newData) {
 
     const brawlBars = foundry.utils.getProperty(tokenData, "flags.barbrawl.resourceBars") ?? {};
     const brawlBarChanges = newData.flags.barbrawl.resourceBars;
+    if (!brawlBarChanges[barId]) return; // Already queued for removal.
     if (foundryBarData.attribute === null && brawlBarChanges[barId].attribute === "custom") return;
 
     const brawlBarData = brawlBars[barId];
@@ -130,6 +131,6 @@ function synchronizeLegacyBar(barId, tokenData, newData) {
         }
     } else if (!remove) {
         // Create a new bar with default values
-        brawlBarChanges[barId] = getDefaultBar(barId, foundryBarData.attribute, tokenData._source.displayBars);
+        brawlBarChanges[barId] ??= getDefaultBar(barId, foundryBarData.attribute, tokenData._source.displayBars);
     }
 }

@@ -1,6 +1,6 @@
 import { warn, error, i18n } from "./lib/lib.js";
 import { ChatLink } from "./Chatlink.js";
-import { SettingsForm } from "./SettingsForm.js";
+import { SettingsForm } from "./settings-form.js";
 import { ImageReplacerData } from "./ChatPortraitModels.js";
 import CONSTANTS from "./constants.js";
 import API from "./api.js";
@@ -16,8 +16,22 @@ export class ChatPortrait {
     static onRenderChatMessage(chatMessage, html, speakerInfo, imageReplacer) {
         let doNotStyling = false;
         let doNotPrintPortrait = false;
+        let doOnlyPortrait = false;
+        const gameSystemId = API.retrieveSystemId();
+        // PATCH Compatibility with DF Chat Enhancements module
+        // multiple portrait when chat merged by DF Chat Enhancements
+        const elementMessageHeaderBySystem1 = html.find(`chat-portrait-message-header-${gameSystemId}`);
+        // TODO TO REMOVE
+        const elementMessageHeaderBySystem2 = html.find(`chat-portrait-message-portrait-${gameSystemId}`);
+        // TODO TO REMOVE
+        const elementMessageHeaderBySystem3 = html.find(`chat-portrait-message-portrait`);
+        if (elementMessageHeaderBySystem1?.length > 0 ||
+            elementMessageHeaderBySystem2?.length > 0 ||
+            elementMessageHeaderBySystem3?.length > 0) {
+            return undefined;
+        }
         // PreHook (can abort the interaction with the door)
-        if (Hooks.call('ChatPortraitEnabled') === false) {
+        if (Hooks.call("ChatPortraitEnabled") === false) {
             return html;
         }
         if (!ChatPortrait.shouldOverrideMessageStyling(speakerInfo)) {
@@ -49,7 +63,7 @@ export class ChatPortrait {
         }
         if (ChatPortrait.settings.disablePortraitForAliasGmMessage) {
             const userByAlias = game.users?.find((u) => {
-                return speakerInfo.alias === u.name && u?.isGM;
+                return (speakerInfo.alias === u.name || speakerInfo.author.name === u.name) && u?.isGM;
             });
             if (userByAlias) {
                 doNotStyling = true;
@@ -57,39 +71,54 @@ export class ChatPortrait {
         }
         // PATCH MODULE NARRATOR TOOLS
         // Do not styling narrator message because it's make no sense the module has is own css customizing
-        if (speakerInfo.alias == i18n('NT.Narrator')) {
+        if (speakerInfo.alias == i18n("NT.Narrator")) {
             //  && game.modules.get('narrator-tools')?.active
             return html;
         }
         // PATCH MODULE koboldworks-turn-announcer
-        const isTurnAnnouncer = html.find('.message-content .turn-announcer .portrait')[0];
+        const isTurnAnnouncer = html.find(".message-content .turn-announcer .portrait")[0];
         if (isTurnAnnouncer) {
             //  && game.modules.get('koboldworks-turn-announcer')?.active
             const size = ChatPortrait.settings.portraitSize;
             if (size && size > 0) {
-                isTurnAnnouncer.style.width = size + 'px';
-                isTurnAnnouncer.style.height = size + 'px';
-                isTurnAnnouncer.style.flex = '0 0 ' + size + 'px';
+                isTurnAnnouncer.style.width = size + "px";
+                isTurnAnnouncer.style.height = size + "px";
+                isTurnAnnouncer.style.flex = "0 0 " + size + "px";
             }
             doNotStyling = true;
         }
         // PATCH MODULE TOKEN BAR  - IS MONK TOKEN BAR XP
-        const isMonkTokenBarXP = html.find('.message-content')[0]?.firstElementChild?.classList;
+        const isMonkTokenBarXP = html.find(".message-content")[0]?.firstElementChild?.classList;
         if (isMonkTokenBarXP && isMonkTokenBarXP.length > 0) {
-            if (isMonkTokenBarXP.contains('monks-tokenbar') && 'assignxp') {
+            if (isMonkTokenBarXP.contains("monks-tokenbar") && "assignxp") {
                 doNotStyling = true;
             }
         }
+        // PATCH IRON MONK LITTLE UTILITIES ROUND UP MESSAGE
+        const isMonkLittleUtilitiesRoundUp = getProperty(chatMessage, `flags.monks-little-details.roundmarker`);
+        if (String(isMonkLittleUtilitiesRoundUp) === "true") {
+            doNotStyling = true;
+        }
+        // PATCH IRON MONK SHOP ACTION
+        const isMonkEnhancedJournal = getProperty(chatMessage, `flags.monks-enhanced-journal.action`);
+        if (isMonkEnhancedJournal) {
+            doOnlyPortrait = true;
+        }
         // PATCH MODULE CHAT IMAGE
-        const isChatImage = html.find('.message-content .chat-images-container img')[0];
+        const isChatImage = html.find(".message-content .chat-images-container img")[0];
         if (isChatImage) {
-            isChatImage.style.width = '100%';
-            isChatImage.style.height = '100%';
+            isChatImage.style.width = "100%";
+            isChatImage.style.height = "100%";
             doNotStyling = true;
         }
         // PATCH INNOCENTI LOOT
-        const isInnocentiLoot = html.find('.message-content .innocenti-loot')[0];
+        const isInnocentiLoot = html.find(".message-content .innocenti-loot")[0];
         if (isInnocentiLoot) {
+            doNotStyling = true;
+        }
+        // PATCH MONK UTILTIIES ROUND UP (https://github.com/ShoyuVanilla/FoundryVTT-Chat-Portrait/issues/121)
+        const isMonkRoundup = html.find(".message-content .round-marker")[0];
+        if (isMonkRoundup) {
             doNotStyling = true;
         }
         // PATCH DragonFlagon Chat Enhancements
@@ -110,57 +139,109 @@ export class ChatPortrait {
         }
         // MULTISYSTEM MANAGEMENT
         let messageSenderElement;
-        let messageHeaderElement;
+        let messageHeaderElementBase;
         let elementItemImageList;
         let elementItemNameList;
         let elementItemContentList;
         let elementItemTextList;
-        messageSenderElement = html.find('.message-sender')[0];
+        messageSenderElement = html.find(".message-sender")[0];
         if (!messageSenderElement) {
-            messageSenderElement = html.find('.chat-card')[0];
+            messageSenderElement = html.find(".chat-card")[0];
         }
-        messageHeaderElement = html.find('.message-header')[0];
-        if (!messageHeaderElement) {
-            messageHeaderElement = html.find('.card-header')[0];
+        messageHeaderElementBase = html.find(".message-header")[0];
+        if (!messageHeaderElementBase) {
+            messageHeaderElementBase = html.find(".card-header")[0];
         }
-        elementItemImageList = html.find('.message-content img');
+        elementItemImageList = html.find(".message-content img");
         if (!elementItemImageList) {
-            elementItemImageList = html.find('.card-content img');
+            elementItemImageList = html.find(".card-content img");
         }
-        elementItemNameList = html.find('.message-content h3');
+        elementItemNameList = html.find(".message-content h3");
         if (!elementItemNameList) {
-            elementItemNameList = html.find('.card-content h3');
+            elementItemNameList = html.find(".card-content h3");
         }
-        elementItemContentList = html.find('.message-content');
+        elementItemContentList = html.find(".message-content");
         if (!elementItemContentList) {
-            elementItemContentList = html.find('.card-content');
+            elementItemContentList = html.find(".card-content");
         }
-        elementItemTextList = html.find('.message-header .flavor-text');
+        elementItemTextList = html.find(".message-header .flavor-text");
         if (!elementItemTextList) {
-            elementItemTextList = html.find('.card-header p');
+            elementItemTextList = html.find(".card-header p");
         }
-        const gameSystemId = API.retrieveSystemId();
-        if (!messageHeaderElement.classList.contains(`chat-portrait-message-header-${gameSystemId}`)) {
-            messageHeaderElement.classList.add(`chat-portrait-message-header-${gameSystemId}`);
+        if (!elementItemContentList[0]?.innerText) {
+            return html;
+        }
+        if (!elementItemContentList[0]?.innerText.replace(/(\r\n|\r|\n)/g, "").trim()) {
+            return html;
         }
         if (doNotStyling) {
-            let authorColor = 'black';
+            /*
+            const headerImageElement2 = document.createElement("header");
+            headerImageElement2.classList.add("message-header");
+            headerImageElement2.classList.add("chat-portrait-flexrow");
+            if (!headerImageElement2.classList.contains(`chat-portrait-message-content-${gameSystemId}`)) {
+                headerImageElement2.classList.add(`chat-portrait-message-content-${gameSystemId}`);
+            }
+            const messageHeaderElement2 = <HTMLElement>(
+                messageHeaderElementBase.parentElement?.insertBefore(
+                    headerImageElement2,
+                    messageHeaderElementBase.parentElement?.firstChild
+                )
+            );
+            const headerTextElement2 = document.createElement("h4");
+            headerTextElement2.classList.add("message-sender");
+            headerTextElement2.classList.add(`chat-portrait-text-content-name-${gameSystemId}`);
+            messageHeaderElement2.appendChild(headerTextElement2);
+
+            const headerImageElement = document.createElement("header");
+            headerImageElement.classList.add("message-header");
+            headerImageElement.classList.add("chat-portrait-flexrow");
+            if (!headerImageElement.classList.contains(`chat-portrait-message-header-${gameSystemId}`)) {
+                headerImageElement.classList.add(`chat-portrait-message-header-${gameSystemId}`);
+            }
+            const messageHeaderElement = <HTMLElement>(
+                messageHeaderElementBase.parentElement?.insertBefore(
+                    headerImageElement,
+                    messageHeaderElementBase.parentElement?.firstChild
+                )
+            );
+            // Text is transfer to header
+            const headerTextElement = document.createElement("h4");
+            if (messageSenderElement.textContent) {
+                headerTextElement.innerHTML = <string>messageSenderElement.innerHTML;
+            } else {
+                const useTokenName: boolean = ChatPortrait.settings.useTokenName;
+                const speaker = speakerInfo.message.speaker;
+                const actorName = (ChatPortrait.getActorName(speaker) || "").trim();
+                const tokenName = (ChatPortrait.getTokenName(speaker) || "").trim();
+                if (useTokenName) {
+                    headerTextElement.innerHTML = tokenName;
+                } else {
+                    headerTextElement.innerHTML = actorName;
+                }
+            }
+            headerTextElement.classList.add("message-sender");
+            headerTextElement.classList.add(`chat-portrait-text-header-name-${gameSystemId}`);
+            messageHeaderElement.appendChild(headerTextElement);
+            messageSenderElement.textContent = "";
+            */
+            let authorColor = "black";
             if (speakerInfo.author) {
-                authorColor = speakerInfo.author.data.color;
+                authorColor = speakerInfo.author.color;
             }
             else {
                 //@ts-ignore
-                authorColor = speakerInfo?.document?.user.color;
+                authorColor = speakerInfo?.user.color;
             }
-            const messageData = speakerInfo.message ? speakerInfo.message : speakerInfo.document.data;
+            const messageData = speakerInfo.message;
             ChatPortrait.setCustomStylingText(html, messageData, authorColor, gameSystemId);
             ChatPortrait.setChatMessageBackground(html, messageData, authorColor);
             ChatPortrait.setChatMessageBorder(html, messageData, authorColor);
             if (ChatPortrait.settings.displayPlayerName) {
-                ChatPortrait.appendPlayerName(messageSenderElement, speakerInfo.author, gameSystemId);
+                ChatPortrait.appendPlayerName(messageHeaderElementBase, messageSenderElement, speakerInfo.author, gameSystemId);
             }
             if (ChatPortrait.settings.displayMessageTag) {
-                ChatPortrait.injectMessageTag(html, speakerInfo, messageHeaderElement, gameSystemId);
+                ChatPortrait.injectMessageTag(html, speakerInfo, messageHeaderElementBase, gameSystemId);
                 ChatPortrait.injectWhisperParticipants(html, speakerInfo, gameSystemId);
             }
             ChatLink.prepareEvent(chatMessage, html, speakerInfo, gameSystemId);
@@ -168,7 +249,7 @@ export class ChatPortrait {
         }
         else {
             //@ts-ignore
-            const myPromise = ChatPortrait.onRenderChatMessageInternal(chatMessage, html, speakerInfo, messageSenderElement, messageHeaderElement, elementItemImageList, elementItemNameList, elementItemContentList, elementItemTextList, imageReplacer, gameSystemId, doNotPrintPortrait);
+            const myPromise = ChatPortrait.onRenderChatMessageInternal(chatMessage, html, speakerInfo, messageSenderElement, messageHeaderElementBase, elementItemImageList, elementItemNameList, elementItemContentList, elementItemTextList, imageReplacer, gameSystemId, doNotPrintPortrait, doOnlyPortrait);
             if (myPromise) {
                 myPromise.then((html) => {
                     return html;
@@ -177,6 +258,7 @@ export class ChatPortrait {
             else {
                 return html;
             }
+            return undefined;
         }
     }
     /**
@@ -184,16 +266,16 @@ export class ChatPortrait {
      * @param  {JQuery} html
      * @param  {MessageRenderData} messageData
      */
-    static onRenderChatMessageInternal(chatMessage, html, speakerInfo, messageSender, messageHeader, elementItemImageList, elementItemNameList, elementItemContentList, elementItemTextList, imageReplacer, gameSystemId, doNotPrintPortrait) {
+    static onRenderChatMessageInternal(chatMessage, html, speakerInfo, messageSender, messageHeaderBase, elementItemImageList, elementItemNameList, elementItemContentList, elementItemTextList, imageReplacer, gameSystemId, doNotPrintPortrait, doOnlyPortrait) {
         const messageDataBase = speakerInfo;
         let imgPath;
-        let authorColor = 'black';
+        let authorColor = "black";
         if (messageDataBase.author) {
-            authorColor = messageDataBase.author.data.color;
+            authorColor = messageDataBase.author.color;
         }
         else {
             //@ts-ignore
-            authorColor = messageDataBase?.document?.user.color;
+            authorColor = messageDataBase?.user.color;
         }
         let speaker;
         if (speakerInfo.message?.user) {
@@ -221,59 +303,39 @@ export class ChatPortrait {
             imgPath = CONSTANTS.DEF_TOKEN_IMG_PATH;
         }
         else {
-            imgPath = ChatPortrait.loadImagePathForChatMessage(html, speaker);
+            imgPath = ChatPortrait.loadImagePathForChatMessage(speaker);
         }
         const chatPortraitCustomData = {
             customIconPortraitImage: imgPath,
             customImageReplacer: {},
-            customImageReplacerData: API.imageReplacerIconizer,
+            customImageReplacerData: API.imageReplacerIconizer
         };
-        Hooks.call('ChatPortraitReplaceData', chatPortraitCustomData, chatMessage);
+        Hooks.call("ChatPortraitReplaceData", chatPortraitCustomData, chatMessage);
         if (chatPortraitCustomData.customIconPortraitImage) {
             imgPath = chatPortraitCustomData.customIconPortraitImage;
         }
         // ty to Mejari for the contribute
         let imageReplacerToUse = [];
         if (!!chatPortraitCustomData.customImageReplacerData &&
-            typeof chatPortraitCustomData.customImageReplacerData == 'object') {
+            typeof chatPortraitCustomData.customImageReplacerData == "object") {
             imageReplacerToUse = chatPortraitCustomData.customImageReplacerData;
         }
         else if (chatPortraitCustomData.customImageReplacer &&
             !!chatPortraitCustomData.customImageReplacer &&
-            typeof chatPortraitCustomData.customImageReplacer == 'object') {
+            typeof chatPortraitCustomData.customImageReplacer == "object") {
             const imageReplacerToUseOLD = chatPortraitCustomData.customImageReplacer;
             for (const key in imageReplacerToUseOLD) {
                 imageReplacerToUse.push({
                     name: key,
-                    icon: imageReplacerToUseOLD[key],
+                    icon: imageReplacerToUseOLD[key]
                 });
             }
         }
         return ChatPortrait.generatePortraitImageElement(imgPath, gameSystemId).then((imgElement) => {
-            const messageData = messageDataBase.message ? messageDataBase.message : messageDataBase.document.data;
-            // GOD HELP ME: Use case where we not must prepend the image or imagReplacer
-            const isRollTable = messageData.flags?.core?.RollTable ? true : false;
-            let messageHtmlContent = undefined;
-            try {
-                messageHtmlContent = $(messageData.content);
-            }
-            catch (e) {
-                messageHtmlContent = undefined;
-            }
-            const isEnhancedConditionsCUB = messageHtmlContent ? messageHtmlContent.hasClass('enhanced-conditions') : false;
-            const isMidiDisplaySave = messageHtmlContent
-                ? $(messageData.content).find('.midi-qol-saves-display')?.length > 0
-                : false;
-            const isStarwarsffgDiceRoll = messageHtmlContent ? messageHtmlContent.hasClass('starwarsffg dice-roll') : false;
-            const doNotPrependImage = isRollTable || isEnhancedConditionsCUB || isMidiDisplaySave || isStarwarsffgDiceRoll;
-            const doNotImageReplacer = isMidiDisplaySave;
-            if (doNotPrintPortrait) {
-                imgElement.style.display = 'none';
-            }
             // Very very rare use case ????
             if (!imgElement) {
-                imgElement = document.createElement('img');
-                imgElement.src = '';
+                imgElement = document.createElement("img");
+                imgElement.src = "";
                 const size = ChatPortrait.settings.portraitSize;
                 if (size && size > 0) {
                     imgElement.width = size;
@@ -281,7 +343,7 @@ export class ChatPortrait {
                 }
                 // WE TRY TO GET THE AVATAR IMAGE ANYWAY
                 if (ChatPortrait.settings.useAvatarImage) {
-                    imgElement.src = ChatPortrait.getUserAvatarImage(speaker);
+                    imgElement.src = ChatPortrait.getUserAvatarImageFromChatMessage(speaker);
                 }
                 if (!imgElement.src || imgElement.src.length <= 0) {
                     imgElement.src = CONSTANTS.INV_UNIDENTIFIED_BOOK;
@@ -290,35 +352,161 @@ export class ChatPortrait {
                     imgElement.classList.add(`chat-portrait-message-portrait-${gameSystemId}`);
                 }
             }
+            // const headerTextElement = <HTMLElement>document.querySelector(".message-header");
+            // headerTextElement.prepend(imgElement);
+            const headerTextElement = messageHeaderBase; //<HTMLElement>html.find('.message-header')[0];
+            headerTextElement.prepend(imgElement);
+            if (!headerTextElement.classList.contains(`chat-portrait-message-header-${gameSystemId}`)) {
+                headerTextElement.classList.add(`chat-portrait-message-header-${gameSystemId}`);
+            }
+            const headerTextElement3 = document.createElement("h4");
+            if (!headerTextElement3.classList.contains(`chat-portrait-text-content-name-${gameSystemId}`)) {
+                headerTextElement3.classList.add(`chat-portrait-text-content-name-${gameSystemId}`);
+            }
+            if (!headerTextElement3.classList.contains(`chat-portrait-flexrow`)) {
+                headerTextElement3.classList.add(`chat-portrait-flexrow`);
+            }
+            const messageContent = html.find(".message-content")[0];
+            messageContent?.insertBefore(headerTextElement3, messageContent.firstChild);
+            /*
+            // I need this orribile piece of code for better manage the multisystem use case
+            const headerImageElement3 = document.createElement("header");
+            // headerImageElement3.classList.add("message-header");
+            headerImageElement3.classList.add("chat-portrait-flexrow");
+            if (!headerImageElement3.classList.contains(`chat-portrait-message-content-${gameSystemId}`)) {
+                headerImageElement3.classList.add(`chat-portrait-message-content-${gameSystemId}`);
+            }
+            const messageHeaderElement3 = <HTMLElement>(
+                messageHeaderBase.parentElement?.insertBefore(
+                    headerImageElement3,
+                    messageHeaderBase.parentElement?.firstChild
+                )
+            );
+            const headerTextElement3 = document.createElement("h4");
+            headerTextElement3.classList.add("message-sender");
+            headerTextElement3.classList.add(`chat-portrait-text-content-name-${gameSystemId}`);
+            messageHeaderElement3.appendChild(headerTextElement3);
+
+            const headerImageElement = document.createElement("header");
+            // headerImageElement.classList.add("message-header");
+            headerImageElement.classList.add("chat-portrait-flexrow");
+            if (!headerImageElement.classList.contains(`chat-portrait-message-header-${gameSystemId}`)) {
+                headerImageElement.classList.add(`chat-portrait-message-header-${gameSystemId}`);
+            }
+            headerImageElement.appendChild(imgElement);
+
+            const messageHeader = <HTMLElement>(
+                messageHeaderBase.parentElement?.insertBefore(
+                    headerImageElement,
+                    messageHeaderBase.parentElement?.firstChild
+                )
+            );
+            // Text is transfer to header
+            const headerTextElement = document.createElement("h4");
+            if (messageSender.textContent) {
+                headerTextElement.innerHTML = <string>messageSender.innerHTML;
+            } else {
+                const useTokenName: boolean = ChatPortrait.settings.useTokenName;
+                const speaker = speakerInfo.message.speaker;
+                const actorName = (ChatPortrait.getActorName(speaker) || "").trim();
+                const tokenName = (ChatPortrait.getTokenName(speaker) || "").trim();
+                if (useTokenName) {
+                    headerTextElement.innerHTML = tokenName;
+                } else {
+                    headerTextElement.innerHTML = actorName;
+                }
+            }
+            headerTextElement.classList.add("message-sender");
+            headerTextElement.classList.add(`chat-portrait-text-header-name-${gameSystemId}`);
+            messageHeader.appendChild(headerTextElement);
+
+            const messageMetadata: HTMLElement = <HTMLElement>html.find(".message-metadata")[0];
+            messageHeader.appendChild(messageMetadata);
+            // hide old header
+            if (<HTMLElement>messageSender.parentElement) {
+                (<HTMLElement>messageSender.parentElement).style.display = "none";
+            }
+            */
+            if (doOnlyPortrait) {
+                return html;
+            }
+            const messageData = messageDataBase.message;
+            // GOD HELP ME: Use case where we not must prepend the image or imagReplacer
+            // PATCH
+            const isRollTable = messageData.flags?.core?.RollTable ? true : false;
+            let messageHtmlContent = undefined;
+            try {
+                messageHtmlContent = $(messageData.content);
+            }
+            catch (e) {
+                messageHtmlContent = undefined;
+            }
+            // PATCH CUB - Enhanced Cconditions
+            const isEnhancedConditionsCUB = messageHtmlContent
+                ? messageHtmlContent.hasClass("enhanced-conditions")
+                : false;
+            // PATCH MIDIQOL - SAVE DISPLAY
+            const isMidiDisplaySave = messageHtmlContent
+                ? $(messageData.content).find(".midi-qol-saves-display")?.length > 0
+                : false;
+            // PATCH STARWARSFFG SYSTEM - DICE ROLL
+            const isStarwarsffgDiceRoll = messageHtmlContent
+                ? messageHtmlContent.hasClass("starwarsffg dice-roll")
+                : false;
+            const doNotPrependImage = isRollTable || isEnhancedConditionsCUB || isMidiDisplaySave || isStarwarsffgDiceRoll;
+            const doNotImageReplacer = isMidiDisplaySave;
+            if (doNotPrintPortrait) {
+                imgElement.style.display = "none";
+            }
             ChatPortrait.setImageBorder(imgElement, authorColor);
             // Place the image to left of the header by injecting the HTML
-            //const messageHeader: HTMLElement = html.find('.message-header')[0];
-            messageHeader.prepend(imgElement);
+            // const messageHeader: HTMLElement = <HTMLElement>html.find('.message-header')[0];
+            // TODO OLD SETTING ??
+            // messageHeader.prepend(imgElement);
+            /*
             if (ChatPortrait.settings.flavorNextToPortrait) {
-                const flavorElement = html.find('.flavor-text');
+                const flavorElement: JQuery = html.find(".flavor-text");
                 if (flavorElement && flavorElement.length > 0) {
-                    const copiedElement = flavorElement[0]?.cloneNode(true);
+                    const copiedElement: Node = <Node>flavorElement[0]?.cloneNode(true);
                     flavorElement.remove();
-                    const brElement = document.createElement('br');
+                    const brElement: HTMLElement = document.createElement("br");
+
                     messageSender.appendChild(brElement);
                     messageSender.appendChild(copiedElement);
                 }
             }
+            */
             // Default style
             if (!messageSender.classList.contains(`chat-portrait-text-size-name-${gameSystemId}`)) {
                 messageSender.classList.add(`chat-portrait-text-size-name-${gameSystemId}`);
-                // messageSender.textContent = messageSender.innerText + ' ';
+                messageSender.style.alignSelf = "center";
             }
             // Update size text name by settings
             if (ChatPortrait.settings.textSizeName > 0) {
                 const size = ChatPortrait.settings.textSizeName;
-                messageSender.style.fontSize = size + 'px';
+                messageSender.style.fontSize = size + "px";
                 if (ChatPortrait.shouldOverrideMessageUnknown(messageData)) {
                     messageSender.innerText = ChatPortrait.settings.displayUnknownPlaceHolderActorName; //'Unknown Actor';
                 }
             }
             else if (ChatPortrait.shouldOverrideMessageUnknown(messageData)) {
                 messageSender.innerText = ChatPortrait.settings.displayUnknownPlaceHolderActorName; //'Unknown Actor';
+            }
+            // TODO can't remember why i'm doing this
+            // if (!headerTextElement.classList.contains(`chat-portrait-text-size-name-${gameSystemId}`)) {
+            // 	headerTextElement.classList.add(`chat-portrait-text-size-name-${gameSystemId}`);
+            // 	headerTextElement.style.alignSelf = "center";
+            // }
+            // Update size text name by settings
+            if (ChatPortrait.settings.textSizeName > 0) {
+                const size = ChatPortrait.settings.textSizeName;
+                headerTextElement.style.fontSize = size + "px";
+                if (ChatPortrait.shouldOverrideMessageUnknown(messageData)) {
+                    headerTextElement.innerText = ChatPortrait.settings.displayUnknownPlaceHolderActorName; //'Unknown Actor';
+                }
+            }
+            else if (ChatPortrait.shouldOverrideMessageUnknown(messageData)) {
+                headerTextElement.innerText = ChatPortrait.settings.displayUnknownPlaceHolderActorName; //'Unknown Actor';
             }
             // Add click listener to image and text
             ChatLink.prepareEventImage(chatMessage, html, speaker, gameSystemId);
@@ -337,7 +525,7 @@ export class ChatPortrait {
                         elementItemImage.height = size;
                     }
                     if (ChatPortrait.shouldOverrideMessageUnknown(messageData)) {
-                        elementItemImage.src = ChatPortrait.settings.displayUnknownPlaceHolderItemIcon; //`/modules/${MODULE_NAME}/assets/inv-unidentified.png`;
+                        elementItemImage.src = ChatPortrait.settings.displayUnknownPlaceHolderItemIcon; //`modules/${MODULE_NAME}/assets/inv-unidentified.png`;
                     }
                     if (!elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                         elementItemImage.classList.add(`chat-portrait-message-portrait-${gameSystemId}`);
@@ -350,7 +538,7 @@ export class ChatPortrait {
                     if (!elementItemImage) {
                         continue;
                     }
-                    elementItemImage.src = ChatPortrait.settings.displayUnknownPlaceHolderItemIcon; //`/modules/${MODULE_NAME}/assets/inv-unidentified.png`;
+                    elementItemImage.src = ChatPortrait.settings.displayUnknownPlaceHolderItemIcon; //`modules/${MODULE_NAME}/assets/inv-unidentified.png`;
                     const size = ChatPortrait.settings.portraitSizeItem;
                     if (size && size > 0) {
                         elementItemImage.width = size;
@@ -379,10 +567,9 @@ export class ChatPortrait {
                     if (elementItemName) {
                         if (!elementItemName.classList.contains(`chat-portrait-text-size-name-${gameSystemId}`)) {
                             elementItemName.classList.add(`chat-portrait-text-size-name-${gameSystemId}`);
-                            // elementItemName.textContent = elementItemName.innerText + ' ';
                         }
-                        let value = '';
-                        let images = { iconMainReplacer: '', iconsDamageType: [] };
+                        let value = "";
+                        let images = { iconMainReplacer: "", iconsDamageType: [] };
                         if (ChatPortrait.useImageReplacer(html)) {
                             images = ChatPortrait.getImagesReplacerAsset(imageReplacerToUse, elementItemName.innerText, elementItemContentList[i]);
                             if (images && images.iconMainReplacer) {
@@ -409,15 +596,26 @@ export class ChatPortrait {
                                 if (elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                                     elementItemImage.classList.remove(`chat-portrait-message-portrait-${gameSystemId}`);
                                 }
-                                if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith('/game')) {
-                                    elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
-                                    elementItemName.prepend(elementItemImage);
+                                if (!doNotImageReplacer &&
+                                    !doNotPrependImage &&
+                                    !elementItemImage.src.endsWith("/game")) {
+                                    if (
+                                    // PATCH FOR MONK JOURNAL https://github.com/p4535992/foundryvtt-chat-portrait/issues/16
+                                    !elementItemImage.classList.contains(`chat-actor-icon`) &&
+                                        // PATCH FOR PF2E DAMAGE https://github.com/p4535992/foundryvtt-chat-portrait/issues/15
+                                        !(game.system.id === "pf2e" &&
+                                            messageContent.querySelectorAll(".damage-application")?.length > 0)) {
+                                        elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
+                                        elementItemName.prepend(elementItemImage);
+                                    }
                                 }
                                 // DAMAGE TYPES
-                                if (images && images.iconsDamageType.length > 0 && ChatPortrait.settings.useImageReplacerDamageType) {
-                                    const elementItemContainerDamageTypes = (document.createElement('div'));
+                                if (images &&
+                                    images.iconsDamageType.length > 0 &&
+                                    ChatPortrait.settings.useImageReplacerDamageType) {
+                                    const elementItemContainerDamageTypes = (document.createElement("div"));
                                     for (const [index, itemImage] of images.iconsDamageType.entries()) {
-                                        const elementItemImage2 = document.createElement('img');
+                                        const elementItemImage2 = (document.createElement("img"));
                                         const size = ChatPortrait.settings.portraitSizeItem;
                                         if (size && size > 0) {
                                             elementItemImage2.width = size;
@@ -440,7 +638,7 @@ export class ChatPortrait {
                             }
                             else {
                                 if (ChatPortrait.useImageReplacer(html)) {
-                                    const elementItemImage = document.createElement('img');
+                                    const elementItemImage = (document.createElement("img"));
                                     const size = ChatPortrait.settings.portraitSizeItem;
                                     if (size && size > 0) {
                                         elementItemImage.width = size;
@@ -455,15 +653,26 @@ export class ChatPortrait {
                                     if (elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                                         elementItemImage.classList.remove(`chat-portrait-message-portrait-${gameSystemId}`);
                                     }
-                                    if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith('/game')) {
-                                        elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
-                                        elementItemName.prepend(elementItemImage);
+                                    if (!doNotImageReplacer &&
+                                        !doNotPrependImage &&
+                                        !elementItemImage.src.endsWith("/game")) {
+                                        if (
+                                        // PATCH FOR MONK JOURNAL https://github.com/p4535992/foundryvtt-chat-portrait/issues/16
+                                        !elementItemImage.classList.contains(`chat-actor-icon`) &&
+                                            // PATCH FOR PF2E DAMAGE https://github.com/p4535992/foundryvtt-chat-portrait/issues/15
+                                            !(game.system.id === "pf2e" &&
+                                                messageContent.querySelectorAll(".damage-application")?.length > 0)) {
+                                            elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
+                                            elementItemName.prepend(elementItemImage);
+                                        }
                                     }
                                     // DAMAGE TYPES
-                                    if (images && images.iconsDamageType.length > 0 && ChatPortrait.settings.useImageReplacerDamageType) {
-                                        const elementItemContainerDamageTypes = (document.createElement('div'));
+                                    if (images &&
+                                        images.iconsDamageType.length > 0 &&
+                                        ChatPortrait.settings.useImageReplacerDamageType) {
+                                        const elementItemContainerDamageTypes = (document.createElement("div"));
                                         for (const [index, itemImage] of images.iconsDamageType.entries()) {
-                                            const elementItemImage2 = document.createElement('img');
+                                            const elementItemImage2 = (document.createElement("img"));
                                             const size = ChatPortrait.settings.portraitSizeItem;
                                             if (size && size > 0) {
                                                 elementItemImage2.width = size;
@@ -497,30 +706,34 @@ export class ChatPortrait {
                                     elementItemImage.width = size;
                                     elementItemImage.height = size;
                                 }
-                                if (!elementItemImage.src || elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
+                                if (!elementItemImage.src ||
+                                    elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                                     // TODO DA RIVEDERE
-                                    elementItemImage.src = ''; // ChatPortrait.settings.displayUnknownPlaceHolderItemIcon;
+                                    elementItemImage.src = ""; // ChatPortrait.settings.displayUnknownPlaceHolderItemIcon;
                                     if (messageHtmlContent) {
                                         // PATCH MODULE MERCHANT SHEET
-                                        const itemName = messageHtmlContent.find('.item-name').length > 0
-                                            ? messageHtmlContent.find('.item-name')[0].textContent
-                                            : '';
+                                        const itemName = messageHtmlContent.find(".item-name").length > 0
+                                            ? messageHtmlContent.find(".item-name")[0].textContent
+                                            : "";
                                         if (itemName) {
-                                            const actorIdMerchant = messageHtmlContent.attr('data-actor-id');
+                                            const actorIdMerchant = messageHtmlContent.attr("data-actor-id");
                                             let item;
                                             if (actorIdMerchant) {
-                                                item = game.actors?.get(actorIdMerchant)?.items?.find((myItem) => {
+                                                item = (game.actors?.get(actorIdMerchant)?.items?.find((myItem) => {
                                                     return myItem.name == itemName;
-                                                });
+                                                }));
                                             }
                                             else {
                                                 item = game.items?.find((myItem) => {
                                                     return myItem.name == itemName;
                                                 });
                                             }
-                                            elementItemImage.src = item.img;
-                                            if (!elementItemImage.src || elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
-                                                elementItemImage.src = '';
+                                            if (item?.img) {
+                                                elementItemImage.src = item.img;
+                                            }
+                                            if (!elementItemImage.src ||
+                                                elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
+                                                elementItemImage.src = "";
                                             }
                                         }
                                     }
@@ -528,15 +741,26 @@ export class ChatPortrait {
                                 if (elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                                     elementItemImage.classList.remove(`chat-portrait-message-portrait-${gameSystemId}`);
                                 }
-                                if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith('/game')) {
-                                    elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
-                                    elementItemName.prepend(elementItemImage);
+                                if (!doNotImageReplacer &&
+                                    !doNotPrependImage &&
+                                    !elementItemImage.src.endsWith("/game")) {
+                                    if (
+                                    // PATCH FOR MONK JOURNAL https://github.com/p4535992/foundryvtt-chat-portrait/issues/16
+                                    !elementItemImage.classList.contains(`chat-actor-icon`) &&
+                                        // PATCH FOR PF2E DAMAGE https://github.com/p4535992/foundryvtt-chat-portrait/issues/15
+                                        !(game.system.id === "pf2e" &&
+                                            messageContent.querySelectorAll(".damage-application")?.length > 0)) {
+                                        elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
+                                        elementItemName.prepend(elementItemImage);
+                                    }
                                 }
                                 // DAMAGE TYPES
-                                if (images && images.iconsDamageType.length > 0 && ChatPortrait.settings.useImageReplacerDamageType) {
-                                    const elementItemContainerDamageTypes = (document.createElement('div'));
+                                if (images &&
+                                    images.iconsDamageType.length > 0 &&
+                                    ChatPortrait.settings.useImageReplacerDamageType) {
+                                    const elementItemContainerDamageTypes = (document.createElement("div"));
                                     for (const [index, itemImage] of images.iconsDamageType.entries()) {
-                                        const elementItemImage2 = document.createElement('img');
+                                        const elementItemImage2 = (document.createElement("img"));
                                         const size = ChatPortrait.settings.portraitSizeItem;
                                         if (size && size > 0) {
                                             elementItemImage2.width = size;
@@ -559,37 +783,43 @@ export class ChatPortrait {
                             }
                             else {
                                 if (ChatPortrait.useImageReplacer(html)) {
-                                    const elementItemImage = document.createElement('img');
+                                    const elementItemImage = (document.createElement("img"));
                                     const size = ChatPortrait.settings.portraitSizeItem;
                                     if (size && size > 0) {
                                         elementItemImage.width = size;
                                         elementItemImage.height = size;
                                     }
                                     if (!doNotImageReplacer &&
-                                        (!elementItemImage.src || elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME))) {
+                                        (!elementItemImage.src ||
+                                            elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME))) {
                                         // TODO DA RIVEDERE
-                                        elementItemImage.src = ''; // ChatPortrait.settings.displayUnknownPlaceHolderItemIcon;
+                                        elementItemImage.src = ""; // ChatPortrait.settings.displayUnknownPlaceHolderItemIcon;
                                         if (messageHtmlContent) {
                                             // PATCH MODULE MERCHANT SHEET
-                                            const itemName = messageHtmlContent.find('.item-name').length > 0
-                                                ? messageHtmlContent.find('.item-name')[0].textContent
-                                                : '';
+                                            const itemName = messageHtmlContent.find(".item-name").length > 0
+                                                ? messageHtmlContent.find(".item-name")[0].textContent
+                                                : "";
                                             if (itemName) {
-                                                const actorIdMerchant = messageHtmlContent.attr('data-actor-id');
+                                                const actorIdMerchant = (messageHtmlContent.attr("data-actor-id"));
                                                 let item;
                                                 if (actorIdMerchant) {
-                                                    item = game.actors?.get(actorIdMerchant)?.items?.find((myItem) => {
+                                                    item = (game.actors
+                                                        ?.get(actorIdMerchant)
+                                                        ?.items?.find((myItem) => {
                                                         return myItem.name == itemName;
-                                                    });
+                                                    }));
                                                 }
                                                 else {
                                                     item = game.items?.find((myItem) => {
                                                         return myItem.name == itemName;
                                                     });
                                                 }
-                                                elementItemImage.src = item.img;
-                                                if (!elementItemImage.src || elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
-                                                    elementItemImage.src = '';
+                                                if (item?.img) {
+                                                    elementItemImage.src = item.img;
+                                                }
+                                                if (!elementItemImage.src ||
+                                                    elementItemImage.src?.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
+                                                    elementItemImage.src = "";
                                                 }
                                             }
                                         }
@@ -597,15 +827,26 @@ export class ChatPortrait {
                                     if (elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                                         elementItemImage.classList.remove(`chat-portrait-message-portrait-${gameSystemId}`);
                                     }
-                                    if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith('/game')) {
-                                        elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
-                                        elementItemName.prepend(elementItemImage);
+                                    if (!doNotImageReplacer &&
+                                        !doNotPrependImage &&
+                                        !elementItemImage.src.endsWith("/game")) {
+                                        if (
+                                        // PATCH FOR MONK JOURNAL https://github.com/p4535992/foundryvtt-chat-portrait/issues/16
+                                        !elementItemImage.classList.contains(`chat-actor-icon`) &&
+                                            // PATCH FOR PF2E DAMAGE https://github.com/p4535992/foundryvtt-chat-portrait/issues/15
+                                            !(game.system.id === "pf2e" &&
+                                                messageContent.querySelectorAll(".damage-application")?.length > 0)) {
+                                            elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
+                                            elementItemName.prepend(elementItemImage);
+                                        }
                                     }
                                     // DAMAGE TYPES
-                                    if (images && images.iconsDamageType.length > 0 && ChatPortrait.settings.useImageReplacerDamageType) {
-                                        const elementItemContainerDamageTypes = (document.createElement('div'));
+                                    if (images &&
+                                        images.iconsDamageType.length > 0 &&
+                                        ChatPortrait.settings.useImageReplacerDamageType) {
+                                        const elementItemContainerDamageTypes = (document.createElement("div"));
                                         for (const [index, itemImage] of images.iconsDamageType.entries()) {
-                                            const elementItemImage2 = document.createElement('img');
+                                            const elementItemImage2 = (document.createElement("img"));
                                             const size = ChatPortrait.settings.portraitSizeItem;
                                             if (size && size > 0) {
                                                 elementItemImage2.width = size;
@@ -636,10 +877,9 @@ export class ChatPortrait {
                     const elementItemText = elementItemTextList[i];
                     if (!elementItemText.classList.contains(`chat-portrait-text-size-name-${gameSystemId}`)) {
                         elementItemText.classList.add(`chat-portrait-text-size-name-${gameSystemId}`);
-                        // elementItemText.textContent = elementItemText.innerText + ' ';
                     }
-                    let value = '';
-                    let images = { iconMainReplacer: '', iconsDamageType: [] };
+                    let value = "";
+                    let images = { iconMainReplacer: "", iconsDamageType: [] };
                     if (ChatPortrait.useImageReplacer(html)) {
                         images = ChatPortrait.getImagesReplacerAsset(imageReplacerToUse, elementItemText.innerText, elementItemContentList[i]);
                         if (images && images.iconMainReplacer) {
@@ -666,15 +906,24 @@ export class ChatPortrait {
                             if (elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                                 elementItemImage.classList.remove(`chat-portrait-message-portrait-${gameSystemId}`);
                             }
-                            if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith('/game')) {
-                                elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
-                                elementItemText.prepend(elementItemImage);
+                            if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith("/game")) {
+                                if (
+                                // PATCH FOR MONK JOURNAL https://github.com/p4535992/foundryvtt-chat-portrait/issues/16
+                                !elementItemImage.classList.contains(`chat-actor-icon`) &&
+                                    // PATCH FOR PF2E DAMAGE https://github.com/p4535992/foundryvtt-chat-portrait/issues/15
+                                    !(game.system.id === "pf2e" &&
+                                        messageContent.querySelectorAll(".damage-application")?.length > 0)) {
+                                    elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
+                                    elementItemText.prepend(elementItemImage);
+                                }
                             }
                             // DAMAGE TYPES
-                            if (images && images.iconsDamageType.length > 0 && ChatPortrait.settings.useImageReplacerDamageType) {
-                                const elementItemContainerDamageTypes = (document.createElement('div'));
+                            if (images &&
+                                images.iconsDamageType.length > 0 &&
+                                ChatPortrait.settings.useImageReplacerDamageType) {
+                                const elementItemContainerDamageTypes = (document.createElement("div"));
                                 for (const [index, itemImage] of images.iconsDamageType.entries()) {
-                                    const elementItemImage2 = document.createElement('img');
+                                    const elementItemImage2 = (document.createElement("img"));
                                     const size = ChatPortrait.settings.portraitSizeItem;
                                     if (size && size > 0) {
                                         elementItemImage2.width = size;
@@ -697,7 +946,7 @@ export class ChatPortrait {
                         }
                         else {
                             if (ChatPortrait.useImageReplacer(html)) {
-                                const elementItemImage = document.createElement('img');
+                                const elementItemImage = (document.createElement("img"));
                                 const size = ChatPortrait.settings.portraitSizeItem;
                                 if (size && size > 0) {
                                     elementItemImage.width = size;
@@ -712,15 +961,26 @@ export class ChatPortrait {
                                 if (elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                                     elementItemImage.classList.remove(`chat-portrait-message-portrait-${gameSystemId}`);
                                 }
-                                if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith('/game')) {
-                                    elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
-                                    elementItemText.prepend(elementItemImage);
+                                if (!doNotImageReplacer &&
+                                    !doNotPrependImage &&
+                                    !elementItemImage.src.endsWith("/game")) {
+                                    if (
+                                    // PATCH FOR MONK JOURNAL https://github.com/p4535992/foundryvtt-chat-portrait/issues/16
+                                    !elementItemImage.classList.contains(`chat-actor-icon`) &&
+                                        // PATCH FOR PF2E DAMAGE https://github.com/p4535992/foundryvtt-chat-portrait/issues/15
+                                        !(game.system.id === "pf2e" &&
+                                            messageContent.querySelectorAll(".damage-application")?.length > 0)) {
+                                        elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
+                                        elementItemText.prepend(elementItemImage);
+                                    }
                                 }
                                 // DAMAGE TYPES
-                                if (images && images.iconsDamageType.length > 0 && ChatPortrait.settings.useImageReplacerDamageType) {
-                                    const elementItemContainerDamageTypes = (document.createElement('div'));
+                                if (images &&
+                                    images.iconsDamageType.length > 0 &&
+                                    ChatPortrait.settings.useImageReplacerDamageType) {
+                                    const elementItemContainerDamageTypes = (document.createElement("div"));
                                     for (const [index, itemImage] of images.iconsDamageType.entries()) {
-                                        const elementItemImage2 = document.createElement('img');
+                                        const elementItemImage2 = (document.createElement("img"));
                                         const size = ChatPortrait.settings.portraitSizeItem;
                                         if (size && size > 0) {
                                             elementItemImage2.width = size;
@@ -760,9 +1020,16 @@ export class ChatPortrait {
                             if (elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
                                 elementItemImage.classList.remove(`chat-portrait-message-portrait-${gameSystemId}`);
                             }
-                            if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith('/game')) {
-                                elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
-                                elementItemText.prepend(elementItemImage);
+                            if (!doNotImageReplacer && !doNotPrependImage && !elementItemImage.src.endsWith("/game")) {
+                                if (
+                                // PATCH FOR MONK JOURNAL https://github.com/p4535992/foundryvtt-chat-portrait/issues/16
+                                !elementItemImage.classList.contains(`chat-actor-icon`) &&
+                                    // PATCH FOR PF2E DAMAGE https://github.com/p4535992/foundryvtt-chat-portrait/issues/15
+                                    !(game.system.id === "pf2e" &&
+                                        messageContent.querySelectorAll(".damage-application")?.length > 0)) {
+                                    elementItemImage.classList.add(`chat-portrait-image-size-name-${gameSystemId}`);
+                                    elementItemText.prepend(elementItemImage);
+                                }
                             }
                         }
                         else {
@@ -771,18 +1038,18 @@ export class ChatPortrait {
                                 /*
                                 const elementItemImage:HTMLImageElement = <HTMLImageElement> document.createElement("img");
                                 if(!elementItemImage){
-                                  continue;
+                                    continue;
                                 }
                                 const size: number = ChatPortrait.settings.portraitSizeItem;
                                 if(size && size > 0){
-                                  elementItemImage.width = size;
-                                  elementItemImage.height = size;
+                                    elementItemImage.width = size;
+                                    elementItemImage.height = size;
                                 }
                                 if( !doNotImageReplacer && (!elementItemImage.src || elementItemImage.src?.includes(CHAT_PORTRAIT_DEF_TOKEN_IMG_NAME))){
-                                  elementItemImage.src = ChatPortrait.settings.displayUnknownPlaceHolderItemIcon;
+                                    elementItemImage.src = ChatPortrait.settings.displayUnknownPlaceHolderItemIcon;
                                 }
                                 if(!elementItemImage.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)){
-                                  elementItemImage.classList.add(`chat-portrait-message-portrait-${gameSystemId}`);
+                                    elementItemImage.classList.add(`chat-portrait-message-portrait-${gameSystemId}`);
                                 }
                                 if(!isRollTable) elementItemText.prepend(elementItemImage);
                                 */
@@ -799,10 +1066,12 @@ export class ChatPortrait {
             ChatPortrait.setChatMessageBorder(html, messageData, authorColor);
             // Final settings
             if (ChatPortrait.settings.displayPlayerName) {
-                ChatPortrait.appendPlayerName(messageSender, speaker.author, gameSystemId);
+                ChatPortrait.appendPlayerName(headerTextElement3, messageSender, speaker.author, gameSystemId);
+                // ChatPortrait.appendPlayerName(headerTextElement, messageSender, speaker.author, gameSystemId);
             }
             if (ChatPortrait.settings.displayMessageTag) {
-                ChatPortrait.injectMessageTag(html, messageData, messageHeader, gameSystemId);
+                ChatPortrait.injectMessageTag(html, messageData, headerTextElement3, gameSystemId);
+                // ChatPortrait.injectMessageTag(html, messageData, headerTextElement, gameSystemId);
                 ChatPortrait.injectWhisperParticipants(html, messageData, gameSystemId);
             }
             ChatLink.prepareEvent(chatMessage, html, speakerInfo, gameSystemId);
@@ -814,27 +1083,49 @@ export class ChatPortrait {
      * @param  {{scene?:string;actor?:string;token?:string;alias?:string;}} speaker
      * @returns string
      */
-    static loadImagePathForChatMessage(html, speakerInfo) {
-        const message = speakerInfo.message ? speakerInfo.message : speakerInfo.document;
+    static loadImagePathForChatMessage(speakerInfo) {
+        const message = speakerInfo.message
+            ? speakerInfo.message
+            : speakerInfo.document
+                ? speakerInfo.document
+                : speakerInfo;
         const speaker = message.speaker ? message.speaker : speakerInfo;
         const isOOC = ChatPortrait.getMessageTypeVisible(speakerInfo) === CONST.CHAT_MESSAGE_TYPES.OOC;
         const imgFinal = CONSTANTS.DEF_TOKEN_IMG_PATH;
+        const flaggedPreChatSrc = message.flags?.[CONSTANTS.MODULE_NAME]?.src;
+        if (flaggedPreChatSrc) {
+            if (message.user && isOOC) {
+                const imgAvatar = ChatPortrait.getUserAvatarImageFromChatMessage(message);
+                if (imgAvatar && !imgAvatar.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
+                    return imgAvatar;
+                }
+                else {
+                    warn(`No specific avatar player image found it for player "'${ChatPortrait.getUserNameFromChatMessage(message)}'"`);
+                    return imgAvatar ? imgAvatar : imgFinal;
+                }
+            }
+            else {
+                return flaggedPreChatSrc;
+            }
+        }
         if (!ChatPortrait.settings.disablePortraitForAliasGmMessage &&
             ChatPortrait.settings.setUpPortraitForAliasGmMessage?.length > 0) {
             const userByAlias = game.users?.find((u) => {
-                return speakerInfo.alias === u.name && u?.isGM;
+                return (speakerInfo.alias === u.name || speakerInfo.author.name === u.name) && u?.isGM;
             });
             if (userByAlias) {
                 return ChatPortrait.settings.setUpPortraitForAliasGmMessage;
             }
         }
         if (message.user && isOOC) {
-            const imgAvatar = ChatPortrait.getUserAvatarImage(message);
+            const imgAvatar = ChatPortrait.getUserAvatarImageFromChatMessage(message);
             if (imgAvatar && !imgAvatar.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                 return imgAvatar;
             }
             else {
-                warn('No specific avatar player image found it for player "' + ChatPortrait.getUserName(message) + '"');
+                warn('No specific avatar player image found it for player "' +
+                    ChatPortrait.getUserNameFromChatMessage(message) +
+                    '"');
                 return imgAvatar ? imgAvatar : imgFinal;
             }
         }
@@ -842,18 +1133,20 @@ export class ChatPortrait {
             // CASE 1
             if ((!speaker.token && !speaker.actor) || ChatPortrait.settings.useAvatarImage) {
                 if (message.user && ChatPortrait.settings.useAvatarImage && !ChatPortrait.isSpeakerGM(message)) {
-                    const imgAvatar = ChatPortrait.getUserAvatarImage(message);
+                    const imgAvatar = ChatPortrait.getUserAvatarImageFromChatMessage(message);
                     if (imgAvatar && !imgAvatar.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                         return imgAvatar;
                     }
                     else {
-                        warn('No specific avatar player image found it for player "' + ChatPortrait.getUserName(message) + '"');
+                        warn('No specific avatar player image found it for player "' +
+                            ChatPortrait.getUserNameFromChatMessage(message) +
+                            '"');
                         return imgAvatar ? imgAvatar : imgFinal;
                     }
                 }
                 else if (!speaker.token && !speaker.actor) {
                     if (message.user && ChatPortrait.settings.useAvatarImage) {
-                        const imgAvatar = ChatPortrait.getUserAvatarImage(message);
+                        const imgAvatar = ChatPortrait.getUserAvatarImageFromChatMessage(message);
                         if (imgAvatar && !imgAvatar.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                             return imgAvatar;
                         }
@@ -862,7 +1155,7 @@ export class ChatPortrait {
                             // const currentToken:Token = ChatPortrait.getFirstPlayerToken();
                             // if(currentToken){
                             //   speaker.token = currentToken;
-                            //   return currentToken.data.img;
+                            //   return currentToken.document.texture.src;
                             // }else{
                             //warn("No specific avatar player image found it for player '"+ChatPortrait.getUserName(message)+"'");
                             //return imgAvatar ? imgAvatar : imgFinal;
@@ -877,17 +1170,20 @@ export class ChatPortrait {
             }
             // It's a chat message associated with an actor
             let useTokenImage = ChatPortrait.settings.useTokenImage;
-            const actor = ChatPortrait.getActor(speaker);
-            const doNotUseTokenImageWithSpecificType = ChatPortrait.settings.doNotUseTokenImageWithSpecificType
-                ? String(ChatPortrait.settings.doNotUseTokenImageWithSpecificType).split(',')
+            const actor = ChatPortrait.getActorFromSpeaker(speaker);
+            const doNotUseTokenImageWithSpecificType = ChatPortrait.settings
+                .doNotUseTokenImageWithSpecificType
+                ? String(ChatPortrait.settings.doNotUseTokenImageWithSpecificType).split(",")
                 : [];
             if (doNotUseTokenImageWithSpecificType.length > 0 &&
                 doNotUseTokenImageWithSpecificType.includes(actor?.type)) {
                 useTokenImage = false;
             }
             // Make sense only for player and for non GM
-            if (actor?.type == 'character' && ChatPortrait.settings.useAvatarImage && !ChatPortrait.isSpeakerGM(message)) {
-                const imgAvatar = ChatPortrait.getUserAvatarImage(message);
+            if (actor?.type == "character" &&
+                ChatPortrait.settings.useAvatarImage &&
+                !ChatPortrait.isSpeakerGM(message)) {
+                const imgAvatar = ChatPortrait.getUserAvatarImageFromChatMessage(message);
                 if (imgAvatar && !imgAvatar.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                     return imgAvatar;
                 }
@@ -895,85 +1191,103 @@ export class ChatPortrait {
                     //warn("No specific avatar player image found it for player '"+ChatPortrait.getUserName(message)+"'");
                 }
             }
-            let token;
-            //@ts-ignore
-            let tokenData;
+            // let tokenDocument: TokenDocument;
+            let tokenDocumentData;
             if (speaker.token) {
-                token = ChatPortrait.getTokenFromScene(speaker.scene, speaker.token);
-                if (!token) {
-                    token = ChatPortrait.getTokenFromId(speaker.token);
-                }
-                if (!token && speaker.actor) {
-                    token = ChatPortrait.getTokenFromActor(speaker.actor);
-                }
+                let tokenDocument = ChatPortrait.getTokenFromSpeaker(speaker);
                 // THIS PIECE OF CODE IS PROBABLY NOT NECESSARY ANYMORE ??
-                if (!token) {
+                if (!tokenDocument) {
                     try {
-                        token = (canvas?.tokens?.getDocuments().find((token) => token.id === speaker.token));
+                        tokenDocument = (canvas?.tokens?.getDocuments().find((token) => token.id === speaker.token));
                         //token = canvas?.tokens?.getDocuments().find(speaker.token);
                     }
                     catch (e) {
                         // Do nothing
                     }
-                    if (!token) {
-                        tokenData = game.scenes?.get(speaker.scene)?.data?.tokens?.find((t) => t.id === speaker.token); // Deprecated on 0.8.6
+                    if (!tokenDocument) {
+                        tokenDocumentData = (game.scenes?.get(speaker.scene)?.tokens?.find((t) => t.id === speaker.token)); // Deprecated on 0.8.6
                     }
                     else {
-                        tokenData = token.data;
+                        tokenDocumentData = tokenDocument;
                     }
                 }
                 else {
-                    tokenData = token.data;
+                    tokenDocumentData = tokenDocument;
                 }
-                let imgToken = '';
-                if (tokenData) {
+                let imgToken = "";
+                if (tokenDocumentData) {
                     if (useTokenImage) {
-                        if (tokenData?.img) {
-                            imgToken = tokenData.img;
+                        //@ts-ignore
+                        if (tokenDocumentData?.randomImg) {
+                            //@ts-ignore
+                            if (tokenDocumentData?.texture?.src) {
+                                //@ts-ignore
+                                imgToken = tokenDocumentData.texture.src;
+                            }
+                            else {
+                                // particolar case...
+                                imgToken = CONSTANTS.DEF_TOKEN_IMG_PATH;
+                            }
                         }
-                        if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenData?.data?.img) {
-                            imgToken = tokenData?.data?.img;
+                        //@ts-ignore
+                        if (tokenDocumentData?.texture?.src) {
+                            //@ts-ignore
+                            imgToken = tokenDocumentData.texture.src;
+                        }
+                        //@ts-ignore
+                        if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenDocumentData?.img) {
+                            //@ts-ignore
+                            imgToken = tokenDocumentData?.texture.src;
                         }
                     }
                     else {
-                        if (tokenData?.actorData?.img) {
-                            imgToken = tokenData.actorData.img;
+                        //@ts-ignore
+                        if (tokenDocumentData?.actorData?.img) {
+                            //@ts-ignore
+                            imgToken = tokenDocumentData.actorData.img;
                         }
-                        if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenData?.data?.actorData?.img) {
-                            imgToken = tokenData.data?.actorData.img;
+                        if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) &&
+                            //@ts-ignore
+                            tokenDocumentData?.actorData?.img) {
+                            //@ts-ignore
+                            imgToken = tokenDocumentData?.actorData.img;
                         }
                     }
                     // if((!imgToken || ChatPortrait.isWildcardImage(imgToken)) || imgToken.includes(CHAT_PORTRAIT_DEF_TOKEN_IMG_NAME)){
-                    //return useTokenImage ? <string>actor?.data.token.img : <string>actor?.token?.data?.img; // actor?.img; // Deprecated on 0.8.6
-                    //return useTokenImage ? actor?.data?.token?.img : actor.data.img; // actor?.img; // Deprecated on 0.8.6
+                    //return useTokenImage ? <string>actor?.token.texture.src : <string>actor?.token?.texture.src; // actor?.img; // Deprecated on 0.8.6
+                    //return useTokenImage ? actor?.token?.texture.src; : actor.img; // actor?.img; // Deprecated on 0.8.6
                     //}
-                    if (imgToken && !ChatPortrait.isWildcardImage(imgToken) && !imgToken.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
+                    if (imgToken &&
+                        !ChatPortrait.isWildcardImage(imgToken) &&
+                        !imgToken.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                         return imgToken;
                     }
                 }
             }
-            let imgActor = '';
+            let imgActor = "";
             if (actor) {
                 if ((!imgActor || imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) && useTokenImage) {
-                    imgActor = actor?.data.token.img;
+                    //@ts-ignore
+                    imgActor = actor?.token?.texture.src;
                     if (imgActor && ChatPortrait.isWildcardImage(imgActor)) {
-                        imgActor = '';
+                        imgActor = "";
                     }
                 }
                 if ((!imgActor || imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) && useTokenImage) {
-                    imgActor = actor?.token?.data?.img;
+                    //@ts-ignore
+                    imgActor = actor?.token?.texture.src;
                     if (imgActor && ChatPortrait.isWildcardImage(imgActor)) {
-                        imgActor = '';
+                        imgActor = "";
                     }
                 }
                 if (!imgActor || imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
-                    imgActor = actor?.data.img;
+                    imgActor = actor.img;
                 }
                 if (imgActor && !imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                     return imgActor;
                 }
             }
-            const imgAvatar = ChatPortrait.getUserAvatarImage(message);
+            const imgAvatar = ChatPortrait.getUserAvatarImageFromChatMessage(message);
             // if (isMonkTokenBarXP(html)) {
             //   return imgAvatar;
             // } else {
@@ -985,17 +1299,19 @@ export class ChatPortrait {
                 return imgAvatar ? imgAvatar : CONSTANTS.INV_UNIDENTIFIED_BOOK;
             }
             // }
-            //return  useTokenImage ? <string>actor?.data.token.img : <string>actor?.img;
-            //return useTokenImage ? actor?.data?.token?.img : actor.data.img;
+            //return  useTokenImage ? <string>actor?.token.texture.src : <string>actor?.img;
+            //return useTokenImage ? actor?.token?.texture.src : actor.img;
         }
         else if (message && message.user) {
             // CASE 2
-            const imgAvatar = ChatPortrait.getUserAvatarImage(message);
+            const imgAvatar = ChatPortrait.getUserAvatarImageFromChatMessage(message);
             if (imgAvatar && !imgAvatar.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                 return imgAvatar;
             }
             else {
-                warn("No specific avatar player image found it for player '" + ChatPortrait.getUserName(message) + "'");
+                warn("No specific avatar player image found it for player '" +
+                    ChatPortrait.getUserNameFromChatMessage(message) +
+                    "'");
                 return imgAvatar ? imgAvatar : imgFinal;
             }
         }
@@ -1013,32 +1329,48 @@ export class ChatPortrait {
         if (!imgPath) {
             return;
         }
-        const img = document.createElement('img');
-        img.src = '';
+        const img = document.createElement("img");
+        img.src = "";
         const size = ChatPortrait.settings.portraitSize;
         // Support for video or webm file
         //let thumb = diff.img;
         //if (VideoHelper.hasVideoExtension(diff.img))
         //    thumb = await ImageHelper.createThumbnail(diff.img, { width: 48, height: 48 });
         //let thumb = CONSTANTS.DEF_TOKEN_IMG_PATH;
-        if (imgPath.includes('.webm')) {
+        if (imgPath.includes(".webm") || ChatPortrait.isVideo(imgPath)) {
             try {
-                const imgThumb = await ImageHelper.createThumbnail(imgPath, { width: size, height: size });
-                if (imgPath.includes('.webm')) {
-                    img.src = imgThumb.thumb;
-                    // If a url we need these anyway
-                    if (size && size > 0) {
-                        img.width = size;
-                        img.height = size;
+                const video = ChatPortrait.createVideoElement(imgPath);
+                if (!video) {
+                    const imgThumb = size && size > 0
+                        ? await ImageHelper.createThumbnail(imgPath, { width: size, height: size })
+                        : await ImageHelper.createThumbnail(imgPath);
+                    if (imgPath.includes(".webm")) {
+                        img.src = imgThumb.thumb;
+                        // If a url we need these anyway
+                        if (size && size > 0) {
+                            img.width = size;
+                            img.height = size;
+                        }
+                    }
+                    else {
+                        img.src = imgThumb.src;
+                        if (size && size > 0) {
+                            // If a url we need these anyway
+                            img.width = size;
+                            img.height = size;
+                        }
                     }
                 }
                 else {
-                    img.src = imgThumb.src;
+                    // If a url we need these anyway
                     if (size && size > 0) {
-                        // If a url we need these anyway
-                        img.width = size;
-                        img.height = size;
+                        video.width = size;
+                        video.height = size;
                     }
+                    if (!video.classList.contains(`chat-portrait-message-portrait-${gameSystemId}`)) {
+                        video.classList.add(`chat-portrait-message-portrait-${gameSystemId}`);
+                    }
+                    return video;
                 }
             }
             catch {
@@ -1073,15 +1405,15 @@ export class ChatPortrait {
             ? authorColor
             : ChatPortrait.settings.borderColor;
         switch (borderShape) {
-            case 'square':
+            case "square":
                 img.style.border = `${borderWidth}px solid ${borderColor}`;
                 break;
-            case 'circle':
+            case "circle":
                 img.style.border = `${borderWidth}px solid ${borderColor}`;
-                img.style.borderRadius = '50%';
+                img.style.borderRadius = "50%";
                 break;
-            case 'none':
-                img.style.border = 'none';
+            case "none":
+                img.style.border = "none";
                 break;
         }
     }
@@ -1129,10 +1461,10 @@ export class ChatPortrait {
         const useUserBackgroundColor = ChatPortrait.settings.useUserColorAsChatBackgroundColor;
         if (useUserBackgroundColor) {
             //html[0].setAttribute('style','background-color:' + authorColor + ';background-blend-mode:screen;');
-            html[0].style.background = 'url(../ui/parchment.jpg) repeat';
+            html[0].style.background = "url(../ui/parchment.jpg) repeat";
             html[0].style.backgroundColor = authorColor;
             //@ts-ignore
-            html[0].style.backgroundBlendMode = 'screen';
+            html[0].style.backgroundBlendMode = "screen";
         }
     }
     /**
@@ -1168,7 +1500,7 @@ export class ChatPortrait {
             borderWidth: SettingsForm.getBorderWidth(),
             useUserColorAsChatBackgroundColor: SettingsForm.getUseUserColorAsChatBackgroundColor(),
             useUserColorAsChatBorderColor: SettingsForm.getUseUserColorAsChatBorderColor(),
-            flavorNextToPortrait: SettingsForm.getFlavorNextToPortrait(),
+            // flavorNextToPortrait: SettingsForm.getFlavorNextToPortrait(),
             forceNameSearch: SettingsForm.getForceNameSearch(),
             // hoverTooltip: SettingsForm.getHoverTooltip(),
             textSizeName: SettingsForm.getTextSizeName(),
@@ -1190,13 +1522,13 @@ export class ChatPortrait {
             customStylingMessageText: SettingsForm.getCustomStylingMessageText(),
             customStylingMessageImage: SettingsForm.getCustomStylingMessageImage(),
             displayMessageTag: SettingsForm.getDisplayMessageTag(),
-            displayMessageTagNextToName: SettingsForm.getDisplayMessageTagNextToName(),
+            // displayMessageTagNextToName: SettingsForm.getDisplayMessageTagNextToName(),
             useImageReplacer: SettingsForm.getUseImageReplacer(),
             useImageReplacerDamageType: SettingsForm.getUseImageReplacerDamageType(),
             applyOnCombatTracker: SettingsForm.getApplyOnCombatTracker(),
-            applyPreCreateChatMessagePatch: SettingsForm.getApplyPreCreateChatMessagePatch(),
+            // applyPreCreateChatMessagePatch: SettingsForm.getApplyPreCreateChatMessagePatch(),
             disablePortraitForAliasGmMessage: SettingsForm.getDisablePortraitForAliasGmMessage(),
-            setUpPortraitForAliasGmMessage: SettingsForm.getSetUpPortraitForAliasGmMessage(),
+            setUpPortraitForAliasGmMessage: SettingsForm.getSetUpPortraitForAliasGmMessage()
         };
     }
     /**
@@ -1206,27 +1538,27 @@ export class ChatPortrait {
     static get defaultSettings() {
         return {
             useTokenImage: false,
-            doNotUseTokenImageWithSpecificType: '',
+            doNotUseTokenImageWithSpecificType: "",
             useTokenName: false,
             portraitSize: 36,
             portraitSizeItem: 36,
-            borderShape: 'square',
+            borderShape: "square",
             useUserColorAsBorderColor: true,
-            borderColor: '#000000',
+            borderColor: "#000000",
             borderWidth: 2,
             useUserColorAsChatBackgroundColor: false,
             useUserColorAsChatBorderColor: false,
-            flavorNextToPortrait: false,
+            // flavorNextToPortrait: false,
             forceNameSearch: false,
             // hoverTooltip: false,
             textSizeName: 0,
-            displaySetting: 'allCards',
+            displaySetting: "allCards",
             useAvatarImage: false,
             displayPlayerName: false,
-            displayUnknown: 'none',
-            displayUnknownPlaceHolderActorName: 'Unknown Actor',
-            displayUnknownPlaceHolderItemName: 'Unknown Item',
-            displayUnknownPlaceHolderItemIcon: `/modules/${CONSTANTS.MODULE_NAME}/assets/inv-unidentified.png`,
+            displayUnknown: "none",
+            displayUnknownPlaceHolderActorName: "Unknown Actor",
+            displayUnknownPlaceHolderItemName: "Unknown Item",
+            displayUnknownPlaceHolderItemIcon: `modules/${CONSTANTS.MODULE_NAME}/assets/inv-unidentified.png`,
             displaySettingOTHER: true,
             displaySettingOOC: true,
             displaySettingIC: true,
@@ -1235,16 +1567,16 @@ export class ChatPortrait {
             displaySettingROLL: true,
             displaySettingWhisperToOther: false,
             // customStylingMessageSystem: false,
-            customStylingMessageText: '',
-            customStylingMessageImage: '',
+            customStylingMessageText: "",
+            customStylingMessageImage: "",
             displayMessageTag: false,
-            displayMessageTagNextToName: false,
+            // displayMessageTagNextToName: false,
             useImageReplacer: true,
             useImageReplacerDamageType: true,
             applyOnCombatTracker: false,
-            applyPreCreateChatMessagePatch: false,
+            // applyPreCreateChatMessagePatch: false,
             disablePortraitForAliasGmMessage: false,
-            setUpPortraitForAliasGmMessage: '',
+            setUpPortraitForAliasGmMessage: ""
         };
     }
     // static getSpeakerImage = function (message, useTokenImage):string {
@@ -1253,13 +1585,13 @@ export class ChatPortrait {
     //       if (speaker.token && useTokenImage) {
     //           const token = canvas?.tokens?.getDocuments().get(speaker.token);
     //           if (token) {
-    //               return token.data.img;
+    //               return token.texture.src;
     //           }
     //       }
     //       if (speaker.actor && !useTokenImage) {
     //           const actor = Actors.instance.get(speaker.actor);
     //           if (actor) {
-    //             return actor.data.img;
+    //             return actor.img;
     //           }
     //       }
     //   }
@@ -1274,13 +1606,13 @@ export class ChatPortrait {
     //     if (speaker.token && useTokenImage) {
     //         const token = canvas?.tokens?.getDocuments().get(speaker.token);
     //         if (token) {
-    //             bHasImage = bHasImage || token.data.img != null;
+    //             bHasImage = bHasImage || token.texture.src != null;
     //         }
     //     }
     //     if (speaker.actor) {
     //         const actor = Actors.instance.get(speaker.actor);
     //         if (actor) {
-    //             bHasImage = bHasImage || actor.data.img != null;
+    //             bHasImage = bHasImage || actor.img != null;
     //         }
     //     }
     //     if (!bHasImage) {
@@ -1290,7 +1622,7 @@ export class ChatPortrait {
     //     }
     //   }
     // }
-    static getActor(speaker) {
+    static getActorFromSpeaker(speaker) {
         let actor = game.actors?.get(speaker.actor);
         if (!actor) {
             actor = game.actors?.tokens[speaker.token];
@@ -1301,7 +1633,7 @@ export class ChatPortrait {
         }
         const forceNameSearch = ChatPortrait.settings.forceNameSearch;
         if (!actor && forceNameSearch) {
-            actor = game.actors?.find((a) => a.data.token.name === speaker.alias);
+            actor = game.actors?.find((a) => a.token?.name === speaker.alias);
         }
         return actor;
     }
@@ -1316,7 +1648,7 @@ export class ChatPortrait {
         }
         // const forceNameSearch = ChatPortrait.settings.forceNameSearch;
         // if (!actor && forceNameSearch) {
-        //     actor = game.actors?.find((a: Actor) => a.data.token.name === speaker.alias);
+        //     actor = game.actors?.find((a: Actor) => a.token.name === speaker.alias);
         // }
         return actor;
     }
@@ -1326,7 +1658,16 @@ export class ChatPortrait {
         let innerTextTmp = innerText;
         //let betterRollLabelAttack = ($(elementItemContent).find(".br5e-roll-label")[0])?.innerText;
         //let betterRollLabelDamage = ($(elementItemContent).find(".br5e-roll-label")[1])?.innerText;
-        const fullTextContent = $(elementItemContent)[0]?.innerText;
+        // const fullTextContent = $(elementItemContent)[0]?.innerText;
+        const textToCheck = $(elementItemContent)[0]?.innerText || "";
+        const fullTextContent = textToCheck.toLowerCase().trim();
+        // TODO special word for integration multisystem and help to identify the chat text
+        const check = i18n(`${CONSTANTS.MODULE_NAME}.labels.check`);
+        const ability = i18n(`${CONSTANTS.MODULE_NAME}.labels.ability`);
+        const skill = i18n(`${CONSTANTS.MODULE_NAME}.labels.skill`);
+        const checkEN = i18n(`${CONSTANTS.MODULE_NAME}.labels.checkEN`);
+        const abilityEN = i18n(`${CONSTANTS.MODULE_NAME}.labels.abilityEN`);
+        const skillEN = i18n(`${CONSTANTS.MODULE_NAME}.labels.skillEN`);
         const innerTextDamageTmp = fullTextContent; //Damage -Slashing
         if (innerTextTmp) {
             // Clean up the string for multisystem (D&D5, PF2, ecc.)
@@ -1336,11 +1677,26 @@ export class ChatPortrait {
             for (let i = 0; i < arr1.length; i++) {
                 let text = arr1[i];
                 if (text) {
-                    text = text.replace(/\W/g, ' ');
-                    text = text.replace('skill', '');
-                    text = text.replace('check', '');
-                    text = text.replace('ability', '');
-                    text = text.replace(/[0-9]/g, '');
+                    // Keywords to avoid for all the system ?
+                    if (text.indexOf(check) !== -1 ||
+                        text.indexOf(ability) !== -1 ||
+                        text.indexOf(skill) !== -1 ||
+                        text.indexOf(checkEN) !== -1 ||
+                        text.indexOf(abilityEN) !== -1 ||
+                        text.indexOf(skillEN) !== -1) {
+                        // is ok ??
+                    }
+                    else {
+                        continue;
+                    }
+                    text = text.replace(/\W/g, " ");
+                    text = text.replace(skill, "");
+                    text = text.replace(check, "");
+                    text = text.replace(ability, "");
+                    text = text.replace(skillEN, "");
+                    text = text.replace(checkEN, "");
+                    text = text.replace(abilityEN, "");
+                    text = text.replace(/[0-9]/g, "");
                     text = text.toLowerCase().trim();
                     for (const objKey in imageReplacer) {
                         const obj = imageReplacer[objKey];
@@ -1353,13 +1709,17 @@ export class ChatPortrait {
                                 //for (let j = 0; j < arr2.length; j++) {
                                 let keyValue = mykeyvalue; //arr2[j];
                                 if (keyValue) {
-                                    keyValue = keyValue.replace(/\W/g, ' ');
-                                    keyValue = keyValue.replace('skill', '');
-                                    keyValue = keyValue.replace('check', '');
-                                    keyValue = keyValue.replace('ability', '');
-                                    keyValue = keyValue.replace(/[0-9]/g, '');
+                                    keyValue = keyValue.replace(/\W/g, " ");
+                                    keyValue = keyValue.replace(skill, "");
+                                    keyValue = keyValue.replace(check, "");
+                                    keyValue = keyValue.replace(ability, "");
+                                    keyValue = keyValue.replace(skillEN, "");
+                                    keyValue = keyValue.replace(checkEN, "");
+                                    keyValue = keyValue.replace(abilityEN, "");
+                                    keyValue = keyValue.replace(/[0-9]/g, "");
                                     keyValue = keyValue.toLowerCase().trim();
-                                    if (text.trim().indexOf(keyValue) !== -1) {
+                                    if (text.trim().indexOf(i18n(keyValue).toLowerCase()) !== -1) {
+                                        // if (text.trim().indexOf(keyValue) !== -1) {
                                         //value.push(imageReplacer[key]);
                                         value.iconMainReplacer = obj.icon; //imageReplacer[key];
                                         break;
@@ -1378,11 +1738,14 @@ export class ChatPortrait {
             for (let i = 0; i < arr4.length; i++) {
                 let textDamage = arr4[i];
                 if (textDamage) {
-                    textDamage = textDamage.replace(/\W/g, ' ');
-                    textDamage = textDamage.replace('skill', '');
-                    textDamage = textDamage.replace('check', '');
-                    textDamage = textDamage.replace('ability', '');
-                    textDamage = textDamage.replace(/[0-9]/g, '');
+                    textDamage = textDamage.replace(/\W/g, " ");
+                    textDamage = textDamage.replace(skill, "");
+                    textDamage = textDamage.replace(check, "");
+                    textDamage = textDamage.replace(ability, "");
+                    textDamage = textDamage.replace(skillEN, "");
+                    textDamage = textDamage.replace(checkEN, "");
+                    textDamage = textDamage.replace(abilityEN, "");
+                    textDamage = textDamage.replace(/[0-9]/g, "");
                     textDamage = textDamage.toLowerCase().trim();
                     for (const keydamageObjeKey in API.imageReplacerDamageType) {
                         const keydamageObj = API.imageReplacerDamageType[keydamageObjeKey];
@@ -1394,14 +1757,18 @@ export class ChatPortrait {
                             //for (let x = 0; x < arr3.length; x++) {
                             let damageValue = mykeydamagevalue; //arr3[x];
                             if (damageValue) {
-                                damageValue = damageValue.replace(/\W/g, ' ');
-                                damageValue = damageValue.replace('skill', '');
-                                damageValue = damageValue.replace('check', '');
-                                damageValue = damageValue.replace('ability', '');
-                                damageValue = damageValue.replace(/[0-9]/g, '');
+                                damageValue = damageValue.replace(/\W/g, " ");
+                                damageValue = damageValue.replace(skill, "");
+                                damageValue = damageValue.replace(check, "");
+                                damageValue = damageValue.replace(ability, "");
+                                damageValue = damageValue.replace(skillEN, "");
+                                damageValue = damageValue.replace(checkEN, "");
+                                damageValue = damageValue.replace(abilityEN, "");
+                                damageValue = damageValue.replace(/[0-9]/g, "");
                                 damageValue = damageValue.toLowerCase().trim();
-                                damageValue = ' ' + damageValue;
-                                if (textDamage.toLowerCase().trim().indexOf(damageValue) !== -1) {
+                                damageValue = " " + damageValue;
+                                if (textDamage.trim().indexOf(i18n(damageValue).toLowerCase()) !== -1) {
+                                    // if (textDamage.toLowerCase().trim().indexOf(damageValue) !== -1) {
                                     const srcdamageType = keydamageObj.icon; //imageReplacerDamageType[keydamage];
                                     damageTypes.push(srcdamageType);
                                     // Add all damage types
@@ -1425,38 +1792,52 @@ export class ChatPortrait {
         }
         return false;
     }
-    static injectMessageTag(html, messageData, messageHeaderElement, gameSystemId) {
-        let timestampTag = html.find('.message-timestamp');
+    static injectMessageTag(html, messageData, messageElement, gameSystemId) {
+        /*
+        let timestampTag = html.find(".message-timestamp");
         if (ChatPortrait.settings.displayMessageTagNextToName) {
-            timestampTag = html.find(`h4.chat-portrait-text-size-name-${gameSystemId}`);
+            // timestampTag = html.find(`h4.chat-portrait-text-size-name-${gameSystemId}`);
+            timestampTag = html.find(`h4.chat-portrait-text-content-name-${gameSystemId}`);
         }
-        // const arr = $(messageHeaderElement).find(`chat-portrait-indicator-${gameSystemId}`);
-        // if(arr.length > 0){
-        //   return;
-        // }
-        const indicatorElement = $('<span>');
-        indicatorElement.addClass(`chat-portrait-indicator-${gameSystemId}`);
+        */
+        //const timestampTag = html.find(`h4.chat-portrait-text-content-name-${gameSystemId}`);
+        // const timestampTag = $(messageElement);
+        // const indicatorElement = $("<span>");
+        // indicatorElement.addClass(`chat-portrait-indicator-${gameSystemId}`);
+        const indicatorElement = document.createElement("span");
+        if (!indicatorElement.classList.contains(`chat-portrait-indicator-${gameSystemId}`)) {
+            indicatorElement.classList.add(`chat-portrait-indicator-${gameSystemId}`);
+        }
         const whisperTargets = messageData.whisper;
         const isBlind = messageData.blind || false;
         const isWhisper = whisperTargets?.length > 0 || false;
         const isSelf = isWhisper && whisperTargets.length === 1 && whisperTargets[0] === messageData.user;
-        const isRoll = messageData.roll !== undefined;
+        //@ts-ignore
+        const isRoll = messageData.rolls !== undefined;
         // Inject tag to the left of the timestamp
         if (isBlind) {
-            indicatorElement.text(game.i18n.localize('CHAT.RollBlind'));
-            timestampTag.before(indicatorElement);
+            // indicatorElement.text(game.i18n.localize("CHAT.RollBlind"));
+            // timestampTag.before(indicatorElement);
+            indicatorElement.innerText = game.i18n.localize("CHAT.RollBlind");
+            messageElement.appendChild(indicatorElement);
         }
         else if (isSelf && whisperTargets[0]) {
-            indicatorElement.text(game.i18n.localize('CHAT.RollSelf'));
-            timestampTag.before(indicatorElement);
+            // indicatorElement.text(game.i18n.localize("CHAT.RollSelf"));
+            // timestampTag.before(indicatorElement);
+            indicatorElement.innerText = game.i18n.localize("CHAT.RollSelf");
+            messageElement.appendChild(indicatorElement);
         }
         else if (isRoll && isWhisper) {
-            indicatorElement.text(game.i18n.localize('CHAT.RollPrivate'));
-            timestampTag.before(indicatorElement);
+            // indicatorElement.text(game.i18n.localize("CHAT.RollPrivate"));
+            // timestampTag.before(indicatorElement);
+            indicatorElement.innerText = game.i18n.localize("CHAT.RollPrivate");
+            messageElement.appendChild(indicatorElement);
         }
         else if (isWhisper) {
-            indicatorElement.text(game.i18n.localize('chat-portrait.whisper'));
-            timestampTag.before(indicatorElement);
+            // indicatorElement.text(game.i18n.localize("chat-portrait.whisper"));
+            // timestampTag.before(indicatorElement);
+            indicatorElement.innerText = game.i18n.localize("chat-portrait.whisper");
+            messageElement.appendChild(indicatorElement);
         }
     }
     static injectWhisperParticipants(html, messageData, gameSystemId) {
@@ -1464,9 +1845,10 @@ export class ChatPortrait {
         const whisperTargetString = messageData.whisperTo;
         const whisperTargetIds = messageData.whisper;
         const isWhisper = whisperTargetIds?.length > 0 || false;
-        const isRoll = messageData.roll !== undefined;
+        //@ts-ignore
+        const isRoll = messageData.rolls !== undefined;
         const authorId = messageData.user;
-        const userId = game.user?.data._id;
+        const userId = game.user?.id;
         if (!isWhisper)
             return;
         if (userId !== authorId && !whisperTargetIds.includes(userId))
@@ -1477,27 +1859,40 @@ export class ChatPortrait {
         if (isRoll)
             return;
         // add new content
-        const messageHeader = html.find('.card-header'); // message-header
-        const whisperParticipants = $('<span>');
+        const messageHeader = html.find(".card-header"); // message-header
+        const whisperParticipants = $("<span>");
         whisperParticipants.addClass(`chat-portrait-whisper-to-${gameSystemId}`);
-        const whisperFrom = $('<span>');
-        whisperFrom.text(`${game.i18n.localize('chat-portrait.from')}: ${alias}`);
-        const whisperTo = $('<span>');
-        whisperTo.text(`${game.i18n.localize('CHAT.To')}: ${whisperTargetString}`);
+        const whisperFrom = $("<span>");
+        whisperFrom.text(`${game.i18n.localize("chat-portrait.from")}: ${alias}`);
+        const whisperTo = $("<span>");
+        whisperTo.text(`${game.i18n.localize("CHAT.To")}: ${whisperTargetString}`);
         whisperParticipants.append(whisperFrom);
         whisperParticipants.append(whisperTo);
         messageHeader.append(whisperParticipants);
     }
     static isWildcardImage(imgUrl) {
         try {
-            const filename = imgUrl.split('/').pop();
-            const baseFileName = filename.substr(0, filename.lastIndexOf('.'));
-            return baseFileName == '*';
+            const filename = imgUrl.split("/").pop();
+            const baseFileName = filename.substr(0, filename.lastIndexOf("."));
+            return baseFileName == "*";
         }
         catch (e) {
             //TODO must check other systems
             return false;
         }
+    }
+    static isVideo(imgSrc) {
+        const re = /(?:\.([^.]+))?$/;
+        const ext = re.exec(imgSrc)?.[1];
+        return ext === "webm";
+    }
+    static createVideoElement(videoSrc) {
+        const video = document.createElement("video");
+        video.src = videoSrc;
+        video.autoplay = false;
+        video.controls = false;
+        video.muted = true;
+        return video;
     }
     static loadImagePathForCombatTracker(tokenID, actorID, userID, sceneID, isOwnedFromPLayer) {
         const imgFinal = CONSTANTS.DEF_TOKEN_IMG_PATH;
@@ -1510,7 +1905,9 @@ export class ChatPortrait {
                     return imgAvatar;
                 }
                 else {
-                    warn("No specific avatar player image found it for player '" + ChatPortrait.getUserNameFromUserID(userID) + "'");
+                    warn("No specific avatar player image found it for player '" +
+                        ChatPortrait.getUserNameFromUserID(userID) +
+                        "'");
                     return imgAvatar ? imgAvatar : imgFinal;
                 }
             }
@@ -1525,7 +1922,7 @@ export class ChatPortrait {
                         // const currentToken:Token = ChatPortrait.getFirstPlayerToken();
                         // if(currentToken){
                         //   speaker.token = currentToken;
-                        //   return currentToken.data.img;
+                        //   return currentToken.texture.src;
                         // }else{
                         //warn("No specific avatar player image found it for player '"+ChatPortrait.getUserName(message)+"'");
                         //return imgAvatar ? imgAvatar : imgFinal;
@@ -1542,14 +1939,16 @@ export class ChatPortrait {
         let useTokenImage = ChatPortrait.settings.useTokenImage;
         const actor = ChatPortrait.getActorFromActorID(actorID, tokenID);
         const doNotUseTokenImageWithSpecificType = ChatPortrait.settings.doNotUseTokenImageWithSpecificType
-            ? String(ChatPortrait.settings.doNotUseTokenImageWithSpecificType).split(',')
+            ? String(ChatPortrait.settings.doNotUseTokenImageWithSpecificType).split(",")
             : [];
         if (doNotUseTokenImageWithSpecificType.length > 0 &&
             doNotUseTokenImageWithSpecificType.includes(actor?.type)) {
             useTokenImage = false;
         }
         // Make sense only for player and for non GM
-        if (actor?.type == 'character' && ChatPortrait.settings.useAvatarImage && !ChatPortrait.isGMFromUserID(userID)) {
+        if (actor?.type == "character" &&
+            ChatPortrait.settings.useAvatarImage &&
+            !ChatPortrait.isGMFromUserID(userID)) {
             const imgAvatar = ChatPortrait.getUserAvatarImageFromUserID(userID);
             if (imgAvatar && !imgAvatar.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                 return imgAvatar;
@@ -1558,93 +1957,93 @@ export class ChatPortrait {
                 //warn("No specific avatar player image found it for player '"+ChatPortrait.getUserName(message)+"'");
             }
         }
-        let token;
+        let tokenDocument;
         //@ts-ignore
-        let tokenData;
+        let tokenDocumentData;
         if (tokenID) {
-            token = ChatPortrait.getTokenFromScene(sceneID, tokenID);
-            if (!token) {
-                token = ChatPortrait.getTokenFromId(tokenID);
-            }
-            if (!token && actorID) {
-                token = ChatPortrait.getTokenFromActor(actorID);
-            }
+            tokenDocument = ChatPortrait.getTokenFromIds(sceneID, tokenID, actorID);
             // THIS PIECE OF CODE IS PROBABLY NOT NECESSARY ANYMORE ??
-            if (!token) {
+            if (!tokenDocument) {
                 try {
-                    token = canvas?.tokens?.getDocuments().find((token) => token.id === tokenID);
+                    tokenDocument = (canvas?.tokens?.getDocuments().find((token) => token.id === tokenID));
                     //token = canvas?.tokens?.getDocuments().find(speaker.token);
                 }
                 catch (e) {
                     // Do nothing
                 }
-                if (!token) {
-                    tokenData = game.scenes?.get(sceneID)?.data?.tokens?.find((t) => t.id === tokenID); // Deprecated on 0.8.6
+                if (!tokenDocument) {
+                    tokenDocumentData = game.scenes?.get(sceneID)?.tokens?.find((t) => t.id === tokenID); // Deprecated on 0.8.6
                 }
                 else {
-                    tokenData = token.data;
+                    tokenDocumentData = tokenDocument;
                 }
             }
             else {
-                tokenData = token.data;
+                tokenDocumentData = tokenDocument;
             }
-            let imgToken = '';
-            if (tokenData) {
+            let imgToken = "";
+            if (tokenDocumentData) {
                 if (useTokenImage) {
-                    if (tokenData?.img) {
-                        imgToken = tokenData.img;
+                    if (tokenDocumentData?.img) {
+                        imgToken = tokenDocumentData.img;
                     }
-                    if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenData?.data?.img) {
-                        imgToken = tokenData?.data?.img;
+                    if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenDocumentData?.img) {
+                        imgToken = tokenDocumentData?.img;
                     }
                 }
                 else {
-                    if (tokenData?.actorData?.img) {
-                        imgToken = tokenData.actorData.img;
+                    if (tokenDocumentData?.actorData?.img) {
+                        imgToken = tokenDocumentData.actorData.img;
                     }
-                    if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenData?.data?.actorData?.img) {
-                        imgToken = tokenData.data?.actorData.img;
+                    if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenDocumentData?.actorData?.img) {
+                        imgToken = tokenDocumentData.actorData.img;
                     }
                 }
                 // if((!imgToken || ChatPortrait.isWildcardImage(imgToken)) || imgToken.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)){
-                //return useTokenImage ? <string>actor?.data.token.img : <string>actor?.token?.data?.img; // actor?.img; // Deprecated on 0.8.6
-                //return useTokenImage ? actor?.data?.token?.img : actor.data.img; // actor?.img; // Deprecated on 0.8.6
+                //return useTokenImage ? <string>actor?.token.texture.src  : <string>actor?.token.texture.src ; // actor?.img; // Deprecated on 0.8.6
+                //return useTokenImage ? actor?.token.texture.src : actor.img; // actor?.img; // Deprecated on 0.8.6
                 //}
-                if (imgToken && !ChatPortrait.isWildcardImage(imgToken) && !imgToken.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
+                if (imgToken &&
+                    !ChatPortrait.isWildcardImage(imgToken) &&
+                    !imgToken.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                     return imgToken;
                 }
             }
         }
         // MOD COMBAT TRACKER NEED TOKEN RETRIEVE ANYWAY IF TOKEN IS NOT OWNED
-        let imgToken = '';
+        let imgToken = "";
         if (!useTokenImage && !isOwnedFromPLayer) {
-            if (tokenData?.img) {
-                imgToken = tokenData.img;
+            if (tokenDocumentData?.img) {
+                imgToken = tokenDocumentData.img;
             }
-            if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenData?.data?.img) {
-                imgToken = tokenData?.data?.img;
+            if ((!imgToken || ChatPortrait.isWildcardImage(imgToken)) && tokenDocumentData?.texture.src) {
+                imgToken = tokenDocumentData?.texture.src;
             }
-            if (imgToken && !ChatPortrait.isWildcardImage(imgToken) && !imgToken.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
+            if (imgToken &&
+                !ChatPortrait.isWildcardImage(imgToken) &&
+                !imgToken.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                 return imgToken;
             }
         }
         // END MOD COMBAT TRACKER IF TOKEN IS NOT OWNED
-        let imgActor = '';
+        let imgActor = "";
         if (actor) {
             if ((!imgActor || imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) && useTokenImage) {
-                imgActor = actor?.data.token.img;
+                //@ts-ignore
+                imgActor = actor?.token?.texture.src;
                 if (imgActor && ChatPortrait.isWildcardImage(imgActor)) {
-                    imgActor = '';
+                    imgActor = "";
                 }
             }
             if ((!imgActor || imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) && useTokenImage) {
-                imgActor = actor?.token?.data?.img;
+                //@ts-ignore
+                imgActor = actor?.token?.texture.src;
                 if (imgActor && ChatPortrait.isWildcardImage(imgActor)) {
-                    imgActor = '';
+                    imgActor = "";
                 }
             }
             if (!imgActor || imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
-                imgActor = actor?.data.img;
+                imgActor = actor?.img;
             }
             if (imgActor && !imgActor.includes(CONSTANTS.DEF_TOKEN_IMG_NAME)) {
                 return imgActor;
@@ -1662,38 +2061,38 @@ export class ChatPortrait {
             return imgAvatar ? imgAvatar : CONSTANTS.INV_UNIDENTIFIED_BOOK;
         }
         // }
-        //return  useTokenImage ? <string>actor?.data.token.img : <string>actor?.img;
-        //return useTokenImage ? actor?.data?.token?.img : actor.data.img;
+        //return  useTokenImage ? <string>actor?.token.texture.src : <string>actor?.img;
+        //return useTokenImage ? actor?.token.texture.src : actor.img;
     }
 }
-ChatPortrait.getActorName = function (speaker) {
-    const actor = ChatPortrait.getActor(speaker); //game.actors.get(speaker.actor);
+ChatPortrait.getActorNameFromSpeaker = function (speaker) {
+    const actor = ChatPortrait.getActorFromSpeaker(speaker); //game.actors.get(speaker.actor);
     if (actor) {
         return actor.name;
     }
     return speaker.alias;
 };
-ChatPortrait.getTokenName = function (speaker) {
+ChatPortrait.getTokenNameFromSpeaker = function (speaker) {
     if (speaker.token) {
-        const scene = speaker.scene ? speaker.scene : game.scenes?.current?.id;
-        let token = ChatPortrait.getTokenFromScene(speaker.scene, speaker.token);
-        if (!token) {
-            token = ChatPortrait.getTokenFromId(speaker.token);
-        }
-        if (!token && speaker.actor) {
-            token = ChatPortrait.getTokenFromActor(speaker.actor);
-        }
+        const token = ChatPortrait.getTokenFromSpeaker(speaker);
         if (token) {
             return token.name;
         }
     }
-    const actor = game.actors?.get(speaker.actor);
-    if (actor) {
-        if (actor.data.token) {
-            return actor.data.token.name;
-        }
-        if (actor.hasPlayerOwner) {
-            return actor.name;
+    if (speaker.actor) {
+        const actor = game.actors?.get(speaker.actor);
+        if (actor) {
+            //@ts-ignore
+            if (actor?.prototypeToken) {
+                //@ts-ignore
+                return actor?.prototypeToken.name;
+            }
+            else if (actor.token) {
+                return actor.token.name;
+            }
+            if (actor.hasPlayerOwner) {
+                return actor.name;
+            }
         }
     }
     if (game.user?.isGM) {
@@ -1702,26 +2101,58 @@ ChatPortrait.getTokenName = function (speaker) {
     return ChatPortrait.settings.displayUnknownPlaceHolderActorName; //'???';
 };
 ChatPortrait.getTokenFromSpeaker = function (speaker) {
-    let token = ChatPortrait.getTokenFromId(speaker.token);
-    if (!token) {
-        token = ChatPortrait.getTokenFromActor(speaker.actor);
+    let token = null;
+    if (speaker.token) {
+        const sceneSpeaker = speaker.scene ? speaker.scene : game.scenes?.current?.id;
+        const scene = game.scenes?.get(sceneSpeaker);
+        const tokenSpeaker = scene?.tokens.get(speaker.token);
+        token = ChatPortrait._getTokenFromScene(scene?.id, tokenSpeaker?.id);
+        if (!token) {
+            token = ChatPortrait._getTokenFromId(tokenSpeaker?.id);
+        }
+        if (!token && speaker.actor) {
+            token = ChatPortrait._getTokenFromActor(speaker.actor);
+        }
     }
-    return token;
+    if (!token) {
+        const actor = game.actors?.get(speaker.actor);
+        if (actor) {
+            //@ts-ignore
+            if (actor?.prototypeToken) {
+                //@ts-ignore
+                token = actor?.prototypeToken;
+            }
+            else if (actor.token) {
+                token = actor.token;
+            }
+        }
+    }
+    return !token ? null : token;
 };
-ChatPortrait.getTokenFromActor = function (actorID) {
+ChatPortrait.getTokenFromIds = function (sceneID, tokenID, actorID) {
+    let tokenDocument = ChatPortrait._getTokenFromScene(sceneID, tokenID);
+    if (!tokenDocument) {
+        tokenDocument = ChatPortrait._getTokenFromId(tokenID);
+    }
+    if (!tokenDocument && actorID) {
+        tokenDocument = ChatPortrait._getTokenFromActor(actorID);
+    }
+    return tokenDocument;
+};
+ChatPortrait._getTokenFromActor = function (actorID) {
     let token = null;
     const scene = game.scenes?.get(game.user?.viewedScene);
     if (scene) {
-        const thisSceneToken = scene.data.tokens.find((tokenTmp) => {
+        const thisSceneToken = scene.tokens.find((tokenTmp) => {
             return (tokenTmp.actor && tokenTmp.actor.id === actorID);
         });
         if (thisSceneToken) {
-            token = ChatPortrait.getTokenFromId(thisSceneToken.id);
+            token = ChatPortrait._getTokenFromId(thisSceneToken.id);
         }
     }
     return token;
 };
-ChatPortrait.getTokenFromId = function (tokenId) {
+ChatPortrait._getTokenFromId = function (tokenId) {
     try {
         return canvas.tokens?.get(tokenId)?.document;
     }
@@ -1729,14 +2160,14 @@ ChatPortrait.getTokenFromId = function (tokenId) {
         return null;
     }
 };
-ChatPortrait.getTokenFromScene = function (sceneID, tokenID) {
+ChatPortrait._getTokenFromScene = function (sceneID, tokenID) {
     const specifiedScene = game.scenes?.get(sceneID);
     if (specifiedScene) {
         //return ChatPortrait.getTokenForScene(specifiedScene, tokenID);
         if (!specifiedScene) {
             return null;
         }
-        const tokenDoc = specifiedScene.data.tokens.find((tokenTmp) => {
+        const tokenDoc = specifiedScene.tokens.find((tokenTmp) => {
             return (tokenTmp.id === tokenID);
         });
         return tokenDoc;
@@ -1747,7 +2178,7 @@ ChatPortrait.getTokenFromScene = function (sceneID, tokenID) {
         if (!sceneTmp) {
             foundToken = null;
         }
-        foundToken = sceneTmp.data.tokens.find((token) => {
+        foundToken = sceneTmp.tokens.find((token) => {
             return token.id === tokenID;
         });
         return !!foundToken;
@@ -1758,7 +2189,7 @@ ChatPortrait.getTokenFromScene = function (sceneID, tokenID) {
 //   if (!scene) {
 //     return null;
 //   }
-//   return scene.data.tokens.find((token) => {
+//   return scene.tokens.find((token) => {
 //     return token.id === tokenID;
 //   });
 // }
@@ -1802,7 +2233,7 @@ ChatPortrait.getFirstPlayerToken = function () {
         //if(!controlled.length || controlled.length == 0 ){
         // If no token is selected use the token of the users character
         //@ts-ignore
-        token = canvas.tokens.placeables.find((token) => token.data._id === game.user?.character?.data?._id);
+        token = canvas.tokens.placeables.find((token) => token.id === game.user?.character.id);
         //}
         // If no token is selected use the first owned token of the users character you found and is not GM
         if (!token && !game.user?.isGM) {
@@ -1843,21 +2274,19 @@ ChatPortrait.shouldOverrideMessageUnknown = function (message) {
     let actor;
     let mytype;
     if (!speaker) {
-        //@ts-ignore
-        actor = game.users.get(message.user)?.character?.data;
+        actor = game.users?.get(message.user)?.character;
         mytype = actor?.type;
     }
     else if (!speaker.token && !speaker.actor) {
-        //@ts-ignore
-        actor = game.users.get(message.user)?.character?.data;
+        actor = game.users?.get(message.user)?.character;
         mytype = actor?.type;
     }
     else {
-        actor = ChatPortrait.getActor(speaker);
-        mytype = actor?.data?.type;
+        actor = ChatPortrait.getActorFromSpeaker(speaker);
+        mytype = actor?.type;
     }
-    const setting = game.settings.get(CONSTANTS.MODULE_NAME, 'displayUnknown');
-    if (setting !== 'none') {
+    const setting = game.settings.get(CONSTANTS.MODULE_NAME, "displayUnknown");
+    if (setting !== "none") {
         //const user = game.users.get(message.user);
         let user = game.users?.get(message.user);
         if (!user) {
@@ -1867,26 +2296,26 @@ ChatPortrait.shouldOverrideMessageUnknown = function (message) {
             user = game.users?.get(message.document?.user?.id);
         }
         if (user) {
-            const isSelf = user.data._id === game.user?.data._id;
+            const isSelf = user.id === game.user?.id;
             const isGM = user.isGM;
-            if (setting === 'allCards' ||
-                (setting === 'self' && isSelf) ||
-                (setting === 'selfAndGM' && (isSelf || isGM)) ||
-                (setting === 'gm' && isGM) ||
-                (setting === 'player' && !isGM) ||
-                (setting === 'onlyNpc' && mytype == 'npc' && !isGM)) {
+            if (setting === "allCards" ||
+                (setting === "self" && isSelf) ||
+                (setting === "selfAndGM" && (isSelf || isGM)) ||
+                (setting === "gm" && isGM) ||
+                (setting === "player" && !isGM) ||
+                (setting === "onlyNpc" && mytype == "npc" && !isGM)) {
                 return true;
             }
         }
         else {
-            error('Impossibile to get message user');
+            error("Impossibile to get message user");
         }
     }
     return false;
 };
 ChatPortrait.shouldOverrideMessageStyling = function (message) {
-    const setting = game.settings.get(CONSTANTS.MODULE_NAME, 'displaySetting');
-    if (setting !== 'none') {
+    const setting = game.settings.get(CONSTANTS.MODULE_NAME, "displaySetting");
+    if (setting !== "none") {
         //const user = game.users.get(message.user);
         let user = game.users?.get(message.user);
         if (!user) {
@@ -1896,18 +2325,18 @@ ChatPortrait.shouldOverrideMessageStyling = function (message) {
             user = game.users?.get(message.document?.user?.id);
         }
         if (user) {
-            const isSelf = user.data._id === game.user?.data._id;
+            const isSelf = user.id === game.user?.id;
             const isGM = user.isGM;
-            if (setting === 'allCards' ||
-                (setting === 'self' && isSelf) ||
-                (setting === 'selfAndGM' && (isSelf || isGM)) ||
-                (setting === 'gm' && isGM) ||
-                (setting === 'player' && !isGM)) {
+            if (setting === "allCards" ||
+                (setting === "self" && isSelf) ||
+                (setting === "selfAndGM" && (isSelf || isGM)) ||
+                (setting === "gm" && isGM) ||
+                (setting === "player" && !isGM)) {
                 return true;
             }
         }
         else {
-            error('Impossibile to get message user');
+            error("Impossible to get message user");
         }
     }
     return false;
@@ -1917,27 +2346,30 @@ ChatPortrait.getUserColor = function (message) {
     if (!user) {
         user = game.users?.get(message.user.id);
         if (user) {
-            return user.data.color;
+            return user.color;
         }
     }
-    return '';
+    return "";
 };
-ChatPortrait.getUserAvatarImage = function (message) {
-    let userId = '';
-    if (message.document) {
+ChatPortrait.getUserAvatarImageFromChatMessage = function (message) {
+    let userId = "";
+    // TODO CHECK THESE FOR FVTT10
+    if (message.document?.user?.id) {
         userId = message.document.user.id;
     }
-    if (!userId) {
-        userId = message.user;
-    }
-    if (!userId) {
+    if (!userId && message.user?.id) {
         userId = message.user.id;
     }
-    const user = game.users?.get(userId);
-    if (user) {
-        if (user.data && user.data.avatar) {
-            // image path
-            return user.data.avatar;
+    if (!userId && message.user) {
+        userId = message.user;
+    }
+    if (userId) {
+        const user = game.users?.get(userId);
+        if (user) {
+            if (user && user.avatar) {
+                // image path
+                return user.avatar;
+            }
         }
     }
     return CONSTANTS.DEF_TOKEN_IMG_PATH;
@@ -1945,45 +2377,44 @@ ChatPortrait.getUserAvatarImage = function (message) {
 ChatPortrait.getUserAvatarImageFromUserID = function (userId) {
     const user = game.users?.get(userId);
     if (user) {
-        if (user.data && user.data.avatar) {
+        if (user && user.avatar) {
             // image path
-            return user.data.avatar;
+            return user.avatar;
         }
     }
     return CONSTANTS.DEF_TOKEN_IMG_PATH;
 };
-ChatPortrait.getUserName = function (message) {
+ChatPortrait.getUserNameFromChatMessage = function (message) {
     let user = game.users?.get(message.user);
     if (!user) {
         user = game.users?.get(message.user.id);
     }
     if (user) {
-        if (user.data && user.data.avatar) {
+        if (user && user.avatar) {
             // image path
-            return user.data.name;
+            return user.name;
         }
     }
-    return '';
+    return "";
 };
 ChatPortrait.getUserNameFromUserID = function (userID) {
     const user = game.users?.get(userID);
     if (user) {
-        if (user.data && user.data.avatar) {
+        if (user && user.avatar) {
             // image path
-            return user.data.name;
+            return user.name;
         }
     }
-    return '';
+    return "";
 };
 ChatPortrait.isWhisperToOther = function (speakerInfo) {
     const whisper = speakerInfo?.message?.whisper;
-    //if (e.data.blind && e.data.whisper.find(element => element == game.userId) == undefined) return false;
     return whisper && whisper.length > 0 && whisper.indexOf(game.userId) === -1;
 };
 ChatPortrait.replaceSenderWithTokenName = function (messageSenderElem, speakerInfo) {
-    const speaker = speakerInfo;
-    const actorName = (ChatPortrait.getActorName(speaker) || '').trim();
-    const name = (ChatPortrait.getTokenName(speaker) || '').trim();
+    const speaker = speakerInfo.message.speaker;
+    const actorName = (ChatPortrait.getActorNameFromSpeaker(speaker) || "").trim();
+    const name = (ChatPortrait.getTokenNameFromSpeaker(speaker) || "").trim();
     if (actorName !== name) {
         ChatPortrait.replaceMatchingTextNodes(messageSenderElem[0], actorName, name);
     }
@@ -2003,20 +2434,18 @@ ChatPortrait.replaceMatchingTextNodes = function (parent, match, replacement) {
         }
     }
 };
-ChatPortrait.appendPlayerName = function (messageSenderElem, author, gameSystemId) {
+ChatPortrait.appendPlayerName = function (headerTextElement, messageSenderElem, author, gameSystemId) {
     const playerName = author.name;
-    const playerNameElem = document.createElement('span');
+    const playerNameElem = document.createElement("span");
     playerNameElem.appendChild(document.createTextNode(playerName));
-    if (!playerNameElem.classList.contains(`${CONSTANTS.MODULE_NAME}-playerName-${gameSystemId}`)) {
-        playerNameElem.classList.add(`${CONSTANTS.MODULE_NAME}-playerName-${gameSystemId}`);
+    if (!playerNameElem.classList.contains(`chat-portrait-playerName-${gameSystemId}`)) {
+        playerNameElem.classList.add(`chat-portrait-playerName-${gameSystemId}`);
     }
-    messageSenderElem.append(playerNameElem);
+    // messageSenderElem.append(playerNameElem);
+    headerTextElement.appendChild(playerNameElem);
 };
 ChatPortrait.getMessageTypeVisible = function (speakerInfo) {
     let messageType = speakerInfo.message?.type;
-    if (speakerInfo.document) {
-        messageType = speakerInfo.document?.data.type;
-    }
     switch (messageType) {
         case CONST.CHAT_MESSAGE_TYPES.OTHER:
             return CONST.CHAT_MESSAGE_TYPES.OTHER;
@@ -2038,7 +2467,7 @@ ChatPortrait.getMessageTypeVisible = function (speakerInfo) {
 };
 ChatPortrait.getLogElement = function (chatLog) {
     const el = chatLog.element;
-    const log = el.length ? el[0].querySelector('#chat-log') : null;
+    const log = el.length ? el[0].querySelector("#chat-log") : null;
     return log;
 };
 ChatPortrait.shouldScrollToBottom = function (log) {

@@ -7,7 +7,7 @@ export const SOCKET_HANDLERS = {
 };
 export let chatPortraitSocket;
 export function registerSocket() {
-    debug('Registered chatPortraitSocket');
+    debug("Registered chatPortraitSocket");
     if (chatPortraitSocket) {
         return chatPortraitSocket;
     }

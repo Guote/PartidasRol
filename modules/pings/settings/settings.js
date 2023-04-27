@@ -8,9 +8,9 @@ window.Azzu = window.Azzu || {};
  * May only be called after the foundry game.settings object is fully initialized
  * @returns {Promise<GuiOptions>}
  */
-export default async function setupSettings(foundryGame) {
+export default async function setupSettings(foundryGame, localize) {
 	const settings = {};
-	registerPingsSettings(foundryGame, settings);
+	registerPingsSettings(foundryGame, settings, localize);
 	const migrationResult = await migrate(foundryGame);
 	if (migrationResult === MigrationResult.FAILED) {
 		alert('The settings of the "Pings" module could not be updated after you or your GM installed a new ' +
@@ -31,12 +31,7 @@ export default async function setupSettings(foundryGame) {
 }
 
 
-function registerPingsSettings(foundryGame, settings) {
-
-	function localize(key) {
-		return foundryGame.i18n.localize(Constants.PINGS + '.' + key);
-	}
-
+function registerPingsSettings(foundryGame, settings, localize) {
 
 	function register(settings, key, data) {
 		const dataWithDefaults = {

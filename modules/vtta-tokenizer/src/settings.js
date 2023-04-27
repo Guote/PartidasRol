@@ -1,6 +1,6 @@
 import ImagePicker from "./libs/ImagePicker.js";
 import DirectoryPicker from "./libs/DirectoryPicker.js";
-import logger from "./logger.js";
+import logger from "./libs/logger.js";
 import CONSTANTS from "./constants.js";
 
 class ResetCustomFrames extends FormApplication {
@@ -146,6 +146,16 @@ export function registerSettings() {
     default: false,
   });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "disable-player", {
+    name: `${CONSTANTS.MODULE_ID}.disable-player.name`,
+    hint: `${CONSTANTS.MODULE_ID}.disable-player.hint`,
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+
+
   game.settings.register(CONSTANTS.MODULE_ID, "disable-avatar-click", {
     name: `${CONSTANTS.MODULE_ID}.disable-avatar-click.name`,
     hint: `${CONSTANTS.MODULE_ID}.disable-avatar-click.hint`,
@@ -209,6 +219,14 @@ export function registerSettings() {
 
   game.settings.register(CONSTANTS.MODULE_ID, "disable-jcolson-frames", {
     name: `${CONSTANTS.MODULE_ID}.disable-jcolson-frames.name`,
+    scope: "player",
+    config: true,
+    type: Boolean,
+    default: false,
+  });
+
+  game.settings.register(CONSTANTS.MODULE_ID, "disable-thegreatnacho-frames", {
+    name: `${CONSTANTS.MODULE_ID}.disable-thegreatnacho-frames.name`,
     scope: "player",
     config: true,
     type: Boolean,

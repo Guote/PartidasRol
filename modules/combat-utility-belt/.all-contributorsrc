@@ -252,14 +252,34 @@
         "translation"
       ]
     },
+    {
       "login": "hertzila",
       "name": "hertzila",
       "avatar_url": "https://avatars.githubusercontent.com/u/7857080?v=4",
       "profile": "https://github.com/Hertzila",
       "contributions": [
         "code"
-      ],
-   }
+      ]
+    },
+    {
+      "login": "Autmor",
+      "name": "Autmor",
+      "avatar_url": "https://avatars.githubusercontent.com/u/66399049?v=4",
+      "profile": "https://github.com/Autmor",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "MichalGolaszewski",
+      "name": "Michał Gołaszewski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46850235?v=4",
+      "profile": "https://github.com/MichalGolaszewski",
+      "contributions": [
+        "translation"
+      ]
+    }
+  ],
   "contributorsPerLine": 7,
   "projectName": "combat-utility-belt",
   "projectOwner": "death-save",

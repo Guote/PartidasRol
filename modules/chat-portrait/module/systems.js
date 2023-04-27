@@ -17,8 +17,8 @@ export const SYSTEMS = {
             dnd5e,
             generic,
             pf2e,
-            swade,
+            swade
             // ↑ ADD SYSTEMS HERE ↑
         }?.[game.system.id];
-    },
+    }
 };

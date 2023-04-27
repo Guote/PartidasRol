@@ -1,5 +1,5 @@
 import { autoToken } from "../hooks.js";
-import logger from "../logger.js";
+import logger from "../libs/logger.js";
 
 export default class AutoTokenize extends FormApplication {
   /** @override */
@@ -14,7 +14,7 @@ export default class AutoTokenize extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "auto-tokenize",
-      classes: ["vtta-tokenizer"],
+      classes: ["tokenizer"],
       title: "Auto Tokenize",
       template: "modules/vtta-tokenizer/templates/auto.hbs",
       width: 350,
@@ -30,7 +30,7 @@ export default class AutoTokenize extends FormApplication {
     };
     return {
       data,
-      cssClass: "vtta-tokenizer-window"
+      cssClass: "tokenizer-window"
     };
 
   }
@@ -56,10 +56,11 @@ export default class AutoTokenize extends FormApplication {
   }
 
   async tokenizePack() {
-    const totalCount = this.pack.index.size;
     let currentCount = 1;
-    for (const i of this.pack.index) {
-      AutoTokenize._updateProgress(totalCount, currentCount, "token");
+    const tokenIndex = this.pack.index.filter((i) => i.name !== "#[CF_tempEntity]");
+    const totalCount = tokenIndex.length;
+    for (const i of tokenIndex) {
+      AutoTokenize._updateProgress(totalCount, currentCount, "token", i.name);
       logger.debug(`Tokenizing ${i.name}`);
       // eslint-disable-next-line no-await-in-loop
       const actor = await this.pack.getDocument(i._id);
@@ -81,23 +82,30 @@ export default class AutoTokenize extends FormApplication {
 
       $(".tokenizer-overlay").toggleClass("import-invalid");
 
-      AutoTokenize._renderCompleteDialog(`Successful Token generation for ${this.packName}`, { title: this.packName, description: `Updated ${this.pack.index.size} actor tokens` });
+      AutoTokenize._renderCompleteDialog(
+        game.i18n.format("vtta-tokenizer.auto.success", { packName: this.packName }), 
+        {
+          title: this.packName,
+          description: game.i18n.format("vtta-tokenizer.auto.success-content", { size: this.pack.index.size })
+        }
+      );
 
       this.close();
     } catch (err) {
       $(".tokenizer-overlay").toggleClass("import-invalid");
-      ui.notifications.error(`There was an error importing ${this.packName}`);
-      logger.error(`Error importing file ${this.packName}`, err);
+      const errorText = game.i18n.format("vtta-tokenizer.auto.error", { packName: this.packName });
+      ui.notifications.error(errorText);
+      logger.error(errorText, err);
       this.close();
     }
 
   }
 
-  static _updateProgress(total, count, type) {
+  static _updateProgress(total, count, type, note = "") {
     const localizedType = `vtta-tokenizer.label.${type}`;
     $(".import-progress-bar")
       .width(`${Math.trunc((count / total) * 100)}%`)
-      .html(`<span>${game.i18n.localize("vtta-tokenizer.label.Working")} (${game.i18n.localize(localizedType)})...</span>`);
+      .html(`<span>${game.i18n.localize("vtta-tokenizer.label.Working")} (${game.i18n.localize(localizedType)})... ${note}</span>`);
   }
 
   static _progressNote(note) {

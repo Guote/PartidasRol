@@ -15,7 +15,7 @@ export const registerSettings = function () {
             "legacy": "barbrawl.barStyle.legacy"
         },
         default: "default",
-        onChange: updateBars
+        onChange: refreshBars
     });
 
     game.settings.register("barbrawl", "textStyle", {
@@ -30,7 +30,29 @@ export const registerSettings = function () {
             "percent": "barbrawl.textStyle.percent"
         },
         default: "none",
-        onChange: updateBars
+        onChange: refreshBars
+    });
+
+    game.settings.register("barbrawl", "compactHud", {
+        name: game.i18n.localize("barbrawl.compactHud.name"),
+        hint: game.i18n.localize("barbrawl.compactHud.hint"),
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true,
+        onChange: () => {
+            if (canvas.hud.token.rendered) canvas.hud.token.render();
+        }
+    });
+
+    game.settings.register("barbrawl", "hideHostile", {
+        name: game.i18n.localize("barbrawl.hideHostile.name"),
+        hint: game.i18n.localize("barbrawl.hideHostile.hint"),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: refreshBars
     });
 
     game.settings.register("barbrawl", "defaultResources", {
@@ -64,7 +86,7 @@ export const registerSettings = function () {
 /**
  * Refreshes the bars of all tokens to apply the new style.
  */
-function updateBars() {
+function refreshBars() {
     for (let token of canvas.tokens.placeables) token.drawBars();
 }
 

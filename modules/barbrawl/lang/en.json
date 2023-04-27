@@ -17,6 +17,14 @@
             "fraction": "Fraction (value / max)",
             "percent": "Percentage (%)"
         },
+        "compactHud": {
+            "name": "Compact HUD",
+            "hint": "Reduces the size of the resource input fields in the token HUD."
+        },
+        "hideHostile": {
+            "name": "Hide all hostile bars",
+            "hint": "Prevents the display of bars for hostile tokens that players don't own. Be aware that this may override resource specific visibility settings."
+        },
         "config": {
             "attribute": "Attribute",
             "ownerVisibility": "Visibility (owner)",
@@ -32,7 +40,6 @@
             "color": "Color (min/max)",
             "position": "Position",
             "advanced": "Advanced configuration",
-            "advancedButton": "Show more settings",
             "indent": "Indentation",
             "indentHint": "Additional space on the side of the bar in percent of the token's width.",
             "indentLeft": "Left",
@@ -45,7 +52,9 @@
             "ignoreMin": "Lower limit",
             "ignoreMax": "Upper limit",
             "invert": "Invert values",
+            "invertDirection": "Invert direction",
             "invertHint": "Displays 0 as a full bar and the maximum value as an empty bar.",
+            "invertDirectionHint": "Inverts the direction this bar fills from.",
             "label": "Label prefix",
             "labelHint": "Displays the configured text on the bar.",
             "approximate": "Approximation",

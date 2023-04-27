@@ -1,5 +1,5 @@
-import Utils from "../Utils.js";
-import logger from "../logger.js";
+import Utils from "../libs/Utils.js";
+import logger from "../libs/logger.js";
 import View from "./View.js";
 import DirectoryPicker from "../libs/DirectoryPicker.js";
 import ImageBrowser from "../libs/ImageBrowser.js";
@@ -17,7 +17,7 @@ export default class Tokenizer extends FormApplication {
       ["v2", "v3", "v4", "v7", "v12"].forEach((v) => {
         for (let i = 1; i <= 8; i++) {
           const fileName = `modules/vtta-tokenizer/img/omfg/${version}/${v}/OMFG_Tokenizer_${v}_0${i}.png`;
-          const label = `OMFG Frame ${v} 0${i}`;
+          const label = `OMFG ${game.i18n.localize("vtta-tokenizer.label.Frame")} ${v} 0${i}`;
           const obj = {
             key: fileName,
             label,
@@ -30,6 +30,27 @@ export default class Tokenizer extends FormApplication {
       });
     });
     return this.omfgFrames;
+  }
+
+  async getTheGreatNachoFrames() {
+    if (game.settings.get(CONSTANTS.MODULE_ID, "disable-thegreatnacho-frames")) return [];
+    if (this.theGreatNachoFrames.length > 0) return this.theGreatNachoFrames;
+    logger.debug(`Checking for GreatNacho Token Frames.`);
+
+    for (let i = 1; i <= 20; i++) {
+      const fileName = `modules/vtta-tokenizer/img/thegreatnacho/theGreatNacho-${i}.webp`;
+      const label = `TheGreatNacho ${game.i18n.localize("vtta-tokenizer.label.Frame")} ${i}`;
+      const obj = {
+        key: fileName,
+        label,
+        selected: false,
+      };
+      if (!this.frames.some((frame) => frame.key === fileName)) {
+        this.theGreatNachoFrames.push(obj);
+      }
+    }
+
+    return this.theGreatNachoFrames;
   }
 
   async getJColsonFrames() {
@@ -57,12 +78,14 @@ export default class Tokenizer extends FormApplication {
     const defaultFrames = [
       {
         key: setPlayerDefaultFrame,
-        label: "Default Player Frame",
+        label: game.i18n.localize("vtta-tokenizer.default-frame-pc.name"),
         selected: false,
       },
       {
         key: setNPCDefaultFrame,
-        label: npcDiff ? "Default NPC Frame (Hostile)" : "Default NPC Frame",
+        label: npcDiff
+          ? game.i18n.localize("vtta-tokenizer.default-frame-npc.hostile")
+          : game.i18n.localize("vtta-tokenizer.default-frame-npc.neutral"),
         selected: true,
       }
     ];
@@ -73,14 +96,16 @@ export default class Tokenizer extends FormApplication {
     if (foundryDefaultPCFrame !== setPlayerDefaultFrame) {
       defaultFrames.push({
         key: foundryDefaultPCFrame,
-        label: "Default Player Frame (Foundry)",
+        label: game.i18n.localize("vtta-tokenizer.default-frame-pc.foundry"),
         selected: false,
       });
     }
     if (foundryDefaultNPCFrame !== setNPCDefaultFrame) {
       defaultFrames.push({
         key: foundryDefaultNPCFrame,
-        label: npcDiff ? "Default NPC Frame (Foundry, Hostile)" : "Default NPC Frame (Foundry)",
+        label: npcDiff
+          ? game.i18n.localize("vtta-tokenizer.default-frame-npc.foundry-hostile")
+          : game.i18n.localize("vtta-tokenizer.default-frame-npc.foundry-neutral"),
         selected: false,
       });
     }
@@ -88,7 +113,7 @@ export default class Tokenizer extends FormApplication {
     if (npcDiff) {
       defaultFrames.push({
         key: otherNPCFrame.replace(/^\/|\/$/g, ""),
-        label: "Default NPC Frame (Other)",
+        label: game.i18n.localize("vtta-tokenizer.default-frame-npc.other"),
         selected: false,
       });
     }
@@ -136,9 +161,10 @@ export default class Tokenizer extends FormApplication {
       : [];
 
     this.getOMFGFrames();
+    this.getTheGreatNachoFrames();
     await this.getJColsonFrames();
 
-    const frames = this.defaultFrames.concat(folderFrames, this.omfgFrames, this.jColsonFrames, this.customFrames);
+    const frames = this.defaultFrames.concat(folderFrames, this.omfgFrames, this.theGreatNachoFrames, this.jColsonFrames, this.customFrames);
 
     this.frames = frames;
     return this.frames;
@@ -184,10 +210,12 @@ export default class Tokenizer extends FormApplication {
       ? options.tokenOffset
       : { position: { x: defaultOffset, y: defaultOffset } };
     this.callback = callback;
-    this.tokenToggle = game.settings.get(CONSTANTS.MODULE_ID, "token-only-toggle");
+    this.modifyAvatar = !game.settings.get(CONSTANTS.MODULE_ID, "token-only-toggle");
+    this.modifyToken = true;
     this.defaultFrames = Tokenizer.getDefaultFrames();
     this.frames = [];
     this.omfgFrames = [];
+    this.theGreatNachoFrames = [];
     this.jColsonFrames = [];
     this.customFrames = game.settings.get(CONSTANTS.MODULE_ID, "custom-frames");
     this.addFrame = game.settings.get(CONSTANTS.MODULE_ID, "add-frame-default") || this.tokenOptions.auto;
@@ -231,7 +259,6 @@ export default class Tokenizer extends FormApplication {
       frames: frames,
       pasteTarget: pasteTarget,
       pasteTargetName: pasteTargetName,
-      tokenOnlyToggle: this.tokenToggle,
     };
   }
 
@@ -285,14 +312,16 @@ export default class Tokenizer extends FormApplication {
   }
 
   async updateToken(dataBlob) {
-    this.tokenOptions.tokenUploadDirectory = this.tokenUploadDirectory;
-    const filePath = await Utils.uploadToFoundry(dataBlob, this.tokenUploadDirectory, this.tokenFileName);
-    logger.debug(`Created token at ${filePath}`);
-    this.tokenOptions.tokenFilename = filePath;
+    if (this.modifyToken) {
+      this.tokenOptions.tokenUploadDirectory = this.tokenUploadDirectory;
+      const filePath = await Utils.uploadToFoundry(dataBlob, this.tokenUploadDirectory, this.tokenFileName);
+      logger.debug(`Created token at ${filePath}`);
+      this.tokenOptions.tokenFilename = filePath;
+    }
   }
 
   async updateAvatar(dataBlob) {
-    if (!this.tokenToggle) {
+    if (this.modifyAvatar) {
       this.tokenOptions.avatarUploadDirectory = this.avatarUploadDirectory;
       const filePath = await Utils.uploadToFoundry(dataBlob, this.avatarUploadDirectory, this.avatarFileName);
       logger.debug(`Created avatar at ${filePath}`);
@@ -335,27 +364,30 @@ export default class Tokenizer extends FormApplication {
       $("#tokenizer-control").css("height", "auto");
     } catch (error) {
       if (inputUrl) {
-        ui.notifications.error(`Failed to load original image "${url}". File has possibly been deleted. Falling back to default.`);
+        const error = game.i18n.format("vtta-tokenizer.notification.failedInput", { url });
+        ui.notifications.error(error);
         await this._initAvatar();
       } else {
-        ui.notifications.error('Failed to load fallback image.');
+        ui.notifications.error(game.i18n.localize("vtta-tokenizer.notification.failedFallback"));
       }
     }
 
-    $("#avatar-options :input").attr("disabled", this.tokenToggle);
-    $("#tokenizer-avatar :input").attr("disabled", this.tokenToggle);
+    $("#avatar-options :input").attr("disabled", !this.modifyAvatar);
+    $("#tokenizer-avatar :input").attr("disabled", !this.modifyAvatar);
+    $("#token-options :input").attr("disabled", !this.modifyToken);
+    $("#tokenizer-token :input").attr("disabled", !this.modifyToken);
   }
 
   activateListeners(html) {
     this.loadImages();
 
-    $("#vtta-tokenizer .file-picker-thumbs").click((event) => {
+    $("#tokenizer .file-picker-thumbs").click((event) => {
         event.preventDefault();
         const picker = new ImageBrowser(this.frames, { type: "image", callback: this.handleFrameSelection.bind(this) });
         picker.render(true);
     });
 
-    $("#vtta-tokenizer .filePickerTarget").on("change", (event) => {
+    $("#tokenizer .filePickerTarget").on("change", (event) => {
       const eventTarget = event.target == event.currentTarget ? event.target : event.currentTarget;
       const view = eventTarget.dataset.target === "avatar" ? this.Avatar : this.Token;
 
@@ -364,7 +396,61 @@ export default class Tokenizer extends FormApplication {
         .catch((error) => ui.notifications.error(error));
     });
 
-    $("#vtta-tokenizer button.menu-button").click(async (event) => {
+    $("#tokenizer button.invisible-button").click(async (event) => {
+      event.preventDefault();
+    });
+
+    $("#tokenizer button.box-button").click(async (event) => {
+      event.preventDefault();
+      const eventTarget = event.target == event.currentTarget ? event.target : event.currentTarget;
+
+      switch (eventTarget.dataset.type) {
+        case "modify-toggle": {
+          const button = document.getElementById(`modify-${eventTarget.dataset.target}`);
+          const fas = document.getElementById(`modify-${eventTarget.dataset.target}-fas`);
+          const newState = eventTarget.dataset.target === "avatar"
+            ? !this.modifyAvatar
+            : !this.modifyToken; 
+          
+          fas.classList.toggle("fa-regular");
+          fas.classList.toggle("fas");
+          fas.classList.toggle("fa-square");
+          fas.classList.toggle("fa-square-check");
+
+          $(`#${eventTarget.dataset.target}-options :input`).attr("disabled", !newState);
+          $(`#tokenizer-${eventTarget.dataset.target} :input`).attr("disabled", !newState);
+
+          if (eventTarget.dataset.target === "avatar") {
+            this.modifyAvatar = newState;
+          } else {
+            this.modifyToken = newState;
+          }
+
+          button.classList.toggle('deselected');
+          fas.classList.toggle('deselected');
+          break;
+        }
+        case "paste-toggle": {
+          const target = eventTarget.dataset.target;
+          const avatarButton = document.getElementById(`paste-avatar`);
+          const avatarFas = document.getElementById(`paste-avatar-fas`);
+          const tokenButton = document.getElementById(`paste-token`);
+          const tokenFas = document.getElementById(`paste-token-fas`);
+          game.settings.set("vtta-tokenizer", "paste-target", target);
+
+          avatarButton.classList.toggle('deselected');
+          avatarFas.classList.toggle("fa-circle");
+          avatarFas.classList.toggle("fa-circle-dot");
+          tokenButton.classList.toggle('deselected');
+          tokenFas.classList.toggle("fa-circle");
+          tokenFas.classList.toggle("fa-circle-dot");
+
+        }
+        // no default
+      }
+    });
+
+    $("#tokenizer button.menu-button").click(async (event) => {
       event.preventDefault();
       const eventTarget = event.target == event.currentTarget ? event.target : event.currentTarget;
       const view = eventTarget.dataset.target === "avatar" ? this.Avatar : this.Token;
@@ -375,12 +461,22 @@ export default class Tokenizer extends FormApplication {
           view.addImageLayer(img);
           break;
         }
+        case "download-token": {
+          const filename = this.tokenFileName;
+          const blob = await this.Token.get("blob");
+          const file = new File([blob], filename, { type: blob.type });
+          let a = document.createElement("a");
+          a.href = URL.createObjectURL(file);
+          a.download = filename;
+          a.click();
+          break;
+        }
         case "download": {
           // show dialog, then download
           let urlPrompt = new Dialog({
             title: "Download from the internet",
             content: `
-                      <p>Please provide the URL of your desired image.</p>
+                      <p>${game.i18n.localize("vtta-tokenizer.download.url")}.</p>
                       <form>
                       <div class="form-group">
                          <label>URL</label>
@@ -390,12 +486,12 @@ export default class Tokenizer extends FormApplication {
             buttons: {
               cancel: {
                 icon: '<i class="fas fa-times"></i>',
-                label: "Cancel",
+                label: game.i18n.localize("vtta-tokenizer.label.Cancel"),
                 callback: () => logger.debug("Cancelled"),
               },
               ok: {
                 icon: '<i class="fas fa-check"></i>',
-                label: "OK",
+                label: game.i18n.localize("vtta-tokenizer.label.OK"),
                 callback: () => {
                   Utils.download($("#url").val())
                     .then((img) => view.addImageLayer(img))
@@ -430,37 +526,6 @@ export default class Tokenizer extends FormApplication {
             callback: (imgSrc) => Utils.download(imgSrc).then((img) => view.addImageLayer(img)),
             searchType: eventTarget.dataset.target === "avatar" ? "Portrait" : "Token"
           });
-          break;
-        }
-        case "paste-toggle-token": {
-          const toggle = document.getElementById("paste-toggle");
-          toggle.setAttribute("data-type", "paste-toggle-avatar");
-          toggle.innerHTML = '<i class="fas fa-clipboard"></i> Avatar';
-          game.settings.set("vtta-tokenizer", "paste-target", "avatar");
-          break;
-        }
-        case "paste-toggle-avatar": {
-          const toggle = document.getElementById("paste-toggle");
-          toggle.setAttribute("data-type", "paste-toggle-token");
-          toggle.innerHTML = '<i class="fas fa-clipboard"></i> Token';
-          game.settings.set("vtta-tokenizer", "paste-target", "token");
-          break;
-        }
-        case "token-only-toggle": {
-          const newTokenOnlyState = !(this.tokenToggle);
-          this.tokenToggle = newTokenOnlyState;
-
-          const toggle = document.getElementById("token-only");
-          if (newTokenOnlyState) {
-            toggle.innerHTML = '<i class="fas fa-toggle-on"></i>';
-            $("#avatar-options :input").attr("disabled", true);
-            $("#tokenizer-avatar :input").attr("disabled", true);
-          } else {
-            toggle.innerHTML = '<i class="fas fa-toggle-off"></i>';
-            $("#avatar-options :input").attr("disabled", false);
-            $("#tokenizer-avatar :input").attr("disabled", false);
-          }
-
           break;
         }
         case "locations": {
@@ -498,8 +563,9 @@ export default class Tokenizer extends FormApplication {
       if (!src || src === CONST.DEFAULT_TOKEN) {
         logger.error(`Failed to load fallback token: "${imgSrc}"`);
       } else {
-        ui.notifications.error(`Failed to load token: "${imgSrc}", falling back to "${CONST.DEFAULT_TOKEN}"`);
-        logger.error("Failed to init image", error);
+        const errorMessage = game.i18n.format("vtta-tokenizer.notification.failedLoad", { imgSrc, default: CONST.DEFAULT_TOKEN });
+        ui.notifications.error(errorMessage);
+        logger.error("Failed to init image", errorMessage);
         await this._initToken();
       }
     }
@@ -514,8 +580,8 @@ export default class Tokenizer extends FormApplication {
     const frameTypePath = this.tokenType === "pc"
       ? game.settings.get(CONSTANTS.MODULE_ID, "default-frame-pc")
       : npcFrame;
-    const isDefault = game.settings.get(CONSTANTS.MODULE_ID, "default-frame-pc").replace(/^\/|\/$/g, "") ||
-      fileName != npcFrame.replace(/^\/|\/$/g, "");
+    const isDefault = game.settings.get(CONSTANTS.MODULE_ID, "default-frame-pc").replace(/^\/|\/$/g, "")
+      || fileName != npcFrame.replace(/^\/|\/$/g, "");
 
     const framePath = fileName && !isDefault
       ? `${game.settings.get(CONSTANTS.MODULE_ID, "frame-directory")}/${fileName}`
@@ -529,7 +595,8 @@ export default class Tokenizer extends FormApplication {
         const img = await Utils.download(options.current);
         this.Token.addImageLayer(img, { masked: true, onTop: true });
       } catch (error) {
-        ui.notifications.error(`Failed to load frame: "${options.current}"`);
+        const errorMessage = game.i18n.format("vtta-tokenizer.notification.failedLoadFrame", { frame: options.current });
+        ui.notifications.error(errorMessage);
       }
     }
   }
@@ -557,7 +624,7 @@ export default class Tokenizer extends FormApplication {
     });
 
     if (this.tokenOptions.isWildCard) {
-      $("#vtta-tokenizer div.token > h1").text("Token (Wildcard)");
+      $("#tokenizer div.token > h1").text("Token (Wildcard)");
       this.Token = new View(game.settings.get(CONSTANTS.MODULE_ID, "token-size"), tokenView);
       // load the default frame, if there is one set
       this._setTokenFrame();

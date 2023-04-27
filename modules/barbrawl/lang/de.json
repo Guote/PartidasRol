@@ -17,6 +17,14 @@
             "fraction": "Bruch (Wert / Max.)",
             "percent": "Prozent (%)"
         },
+        "compactHud": {
+            "name": "Kompaktes HUD",
+            "hint": "Reduziert die Größe von Eingabefeldern für Ressourcen im Token HUD."
+        },
+        "hideHostile": {
+            "name": "Alle feindlichen Bars verstecken",
+            "hint": "Verhindert das Anzeigen von Bars für feindliche Tokens, welche der Spieler nicht besitzt. Dies kann ressourcenspezifische Einstellungen überschreiben."
+        },
         "config": {
             "attribute": "Attribut",
             "ownerVisibility": "Sichtbarkeit (Besitzer)",
@@ -32,7 +40,6 @@
             "color": "Farbe (min/max)",
             "position": "Position",
             "advanced": "Erweiterte Einstellungen",
-            "advancedButton": "Mehr Optionen anzeigen",
             "indent": "Einzug",
             "indentHint": "Zusätzlicher Abstand an der Seite der Bar in Prozent der Breite des Tokens.",
             "indentLeft": "Links",
@@ -45,7 +52,9 @@
             "ignoreMin": "Untergrenze",
             "ignoreMax": "Obergrenze",
             "invert": "Werte umkehren",
+            "invertDirection": "Richtung umkehren",
             "invertHint": "Zeigt 0 als leere Bar und den Maximalwert als volle Bar an.",
+            "invertDirectionHint": "Kehrt die Richtung um, aus der dieser Balken gefüllt wird.",
             "label": "Beschriftungspräfix",
             "labelHint": "Zeit den konfigurierten Text auf der Bar an.",
             "approximate": "Näherungswert",

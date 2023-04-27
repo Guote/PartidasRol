@@ -17,6 +17,14 @@
             "fraction": "分数(値/最大)",
             "percent": "パーセンテージ(%)"
         },
+        "compactHud": {
+            "name": "Compact HUD",
+            "hint": "Reduces the size of the resource input fields in the token HUD."
+        },
+        "hideHostile": {
+            "name": "Hide all hostile bars",
+            "hint": "Prevents the display of bars for hostile tokens that players don't own. Be aware that this may override resource specific visibility settings."
+        },
         "config": {
             "attribute": "能力値",
             "ownerVisibility": "可視性（自分）",
@@ -32,7 +40,6 @@
             "color": "色 (最小/最大)",
             "position": "位置",
             "advanced": "高度な設定",
-            "advancedButton": "他の設定を表示する",
             "indent": "インデント",
             "indentHint": "バーの側面にある余白を、トークンの幅に対する%で表したもの。",
             "indentLeft": "左側",
@@ -45,7 +52,9 @@
             "ignoreMin": "下限",
             "ignoreMax": "上限",
             "invert": "値の反転",
+            "invertDirection": "方向を反転",
             "invertHint": "0をフルバー、最大値をエンプティバーで表示します。",
+            "invertDirectionHint": "このバーが塗りつぶされる方向を反転します。",
             "label": "ラベルプレフィックス",
             "labelHint": "設定されたテキストをバーに表示します。",
             "approximate": "近似値",

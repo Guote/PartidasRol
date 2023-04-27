@@ -1,8 +1,9 @@
 import Layer from './Layer.js';
 import Control from './Control.js';
-import Utils from '../Utils.js';
+import Utils from '../libs/Utils.js';
 import CONSTANTS from '../constants.js';
-import logger from '../logger.js';
+import logger from '../libs/logger.js';
+import Color from '../libs/Color.js';
 
 export default class View {
   constructor(dimension, element) {
@@ -22,8 +23,7 @@ export default class View {
     this.menu = null;
 
     // there is one mask that is active for every layer
-    this.mask = null;
-    this.maskId = null;
+    this.maskIds = new Set();
 
     // the currently selected layer for translation/scaling
     this.activeLayer = null;
@@ -32,6 +32,13 @@ export default class View {
     this.isColorPicking = false;
     this.colorPickingForLayer = null;
     this.colorPickingLayerId = null;
+
+    // alpha picking
+    this.isAlphaPicking = false;
+    this.alphaPickingForLayer = null;
+    this.alphaPickingLayerId = null;
+    this.alphaColor = null;
+    this.alphaTolerance = 50;
 
     // The working stage for the View
     this.stage = document.createElement('div');
@@ -59,10 +66,12 @@ export default class View {
     element.appendChild(this.controlsArea);
     element.appendChild(this.menu);
 
+    const moveFunction = Utils.throttle(this.onMouseMove.bind(this), 15);
     // add event listeners for translation/scaling of the active layer
     this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
     this.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
-    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    this.canvas.addEventListener('mousemove', moveFunction);
+    // this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
     this.canvas.addEventListener('wheel', this.onWheel.bind(this), {
       passive: false,
     });
@@ -122,12 +131,16 @@ export default class View {
    * Get this mask from the layer id or default view
    * @param {id} Number
    */
-  getMaskLayer(id = null) {
-    if (id === null) {
-      return this.layers.find((layer) => layer.id === this.maskId);
-    } else {
-      return this.layers.find((layer) => layer.id === id);
-    }
+  getMaskLayer(id) {
+    return this.layers.find((layer) => layer.id === id);
+  }
+
+    /**
+   * Get this mask from the layer id or default view
+   * @param {id} Number
+   */
+  getMaskLayers() {
+    return this.layers.find((layer) => this.maskIds.has(layer.id));
   }
 
   initializeMenu() {
@@ -135,7 +148,7 @@ export default class View {
     newImageSection.name = 'color-management';
     newImageSection.classList.add('section');
     var title = document.createElement('span');
-    title.innerHTML = 'New Image';
+    title.innerHTML = game.i18n.localize("vtta-tokenizer.label.NewImage");
     newImageSection.appendChild(title);
 
     // Set the mask of this layer
@@ -153,9 +166,12 @@ export default class View {
   onMouseDown(event) {
     if (this.isColorPicking) {
       this.endColorPicking(false);
+    } else if (this.isAlphaPicking) {
+      this.endAlphaPicking(false);
     }
 
     if (this.activeLayer === null) return;
+    this.redraw(true);
     this.isDragging = true;
     this.lastPosition = {
       x: event.clientX,
@@ -169,6 +185,7 @@ export default class View {
    */
   // eslint-disable-next-line no-unused-vars
   onMouseUp(event) {
+    this.redraw(true);
     if (this.activeLayer === null) return;
     this.isDragging = false;
   }
@@ -180,8 +197,8 @@ export default class View {
    */
   onMouseMove(event) {
     if (this.isColorPicking) {
-      const eventLocation = View.getEventLocation(this.canvas, event);
-      // Get the data of the pixel according to the location generate by the getEventLocation function
+      const eventLocation = Utils.getCanvasCords(this.canvas, event);
+      // Get the data of the pixel according to the mouse pointer location
       const pixelData = this.canvas.getContext('2d').getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
       // If transparency on the pixel , array = [0,0,0,0]
       if (pixelData[0] == 0 && pixelData[1] == 0 && pixelData[2] == 0 && pixelData[3] == 0) {
@@ -191,13 +208,30 @@ export default class View {
       const hex = '#' + ('000000' + Utils.rgbToHex(pixelData[0], pixelData[1], pixelData[2])).slice(-6);
 
       // update the layer
-      // let layer = this.layers.find(layer => layer.id === this.colorPickingForLayer);
       // setting the color
       this.colorPickingForLayer.setColor(hex);
       // refreshing the control
       let control = this.controls.find((control) => control.layer.id === this.colorPickingForLayer.id);
       control.refresh();
       this.redraw();
+    } else if (this.isAlphaPicking) {
+      const eventLocation = Utils.getCanvasCords(this.canvas, event);
+      const pixelData = this.canvas.getContext('2d').getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
+      if (pixelData[0] == 0 && pixelData[1] == 0 && pixelData[2] == 0 && pixelData[3] == 0) {
+        // Do nothing if the pixel is transparent
+      } else {
+        this.alphaColorHex = '#' + ('000000' + Utils.rgbToHex(pixelData[0], pixelData[1], pixelData[2])).slice(-6);
+        this.alphaColor = new Color({
+          red: pixelData[0],
+          green: pixelData[1],
+          blue: pixelData[2],
+          alpha: pixelData[3],
+          tolerance: this.alphaTolerance,
+        });
+        const control = this.controls.find((control) => control.layer.id === this.alphaPickingForLayer.id);
+        control.refresh();
+        this.redraw();
+      }
     }
 
     if (this.activeLayer === null) return;
@@ -209,29 +243,13 @@ export default class View {
     };
 
     if (this.activeLayer.source !== null) {
-      // this.activeLayer.translate(this.activeLayer.flipped ? -1 * delta.x : delta.x, delta.y);
       this.activeLayer.translate(delta.x, delta.y);
     }
-    if (this.activeLayer.masked) this.activeLayer.createMask();
     this.activeLayer.redraw();
-    this.redraw(this.activeLayer.masked);
+    this.redraw(true);
     this.lastPosition = {
       x: event.clientX,
       y: event.clientY,
-    };
-  }
-
-  /**
-   * Gets the view canvas position on the current page, which is necessary to allow a fluid mousewheel zoom
-   * @param {HTMLElement} element
-   * @param {Event} event
-   */
-  static getEventLocation(element, event) {
-    const pos = Utils.getElementPosition(element);
-
-    return {
-      x: event.pageX - pos.x,
-      y: event.pageY - pos.y,
     };
   }
 
@@ -250,7 +268,7 @@ export default class View {
       this.activeLayer.redraw();
       this.redraw();
     } else {
-      const eventLocation = View.getEventLocation(this.canvas, event);
+      const eventLocation = Utils.getCanvasCords(this.canvas, event);
       if (this.activeLayer.source !== null) {
         const scaleDirection = event.deltaY / 100;
         const factor = 1 - (scaleDirection * 0.05);
@@ -259,9 +277,8 @@ export default class View {
 
         this.activeLayer.setScale(this.activeLayer.scale * factor);
         this.activeLayer.translate(dx, dy);
-        if (this.activeLayer.masked) this.activeLayer.createMask();
         this.activeLayer.redraw();
-        this.redraw(this.activeLayer.masked);
+        this.redraw(true);
       }
     }
   }
@@ -284,8 +301,13 @@ export default class View {
 
     // if this layer provided the mask, remove that mask, too
     if (this.layers[index].providesMask) {
-      this.maskId = null;
+      this.maskIds.delete(index);
     }
+
+    // remove any masks applied to other layers
+    this.layers.forEach((l) => {
+      l.appliedMaskIds.delete(layerId);
+    });
 
     // delete this from the array
     this.layers.splice(index, 1);
@@ -333,6 +355,7 @@ export default class View {
 
     // add the new image on top
     this.layers.unshift(layer);
+    this.calculateAllDefaultMaskLayers();
     this.redraw(true);
 
     // add the control at the top of the control array
@@ -384,10 +407,16 @@ export default class View {
       this.controls.forEach((control) => control.refresh());
     });
     control.view.addEventListener('pick-color-start', (event) => {
-      this.startColorPicking(event.detail.layerId, event.detail.color);
+      this.startColorPicking(event.detail.layerId);
     });
     control.view.addEventListener('pick-color-end', () => {
       this.endColorPicking(true);
+    });
+    control.view.addEventListener('pick-alpha-start', (event) => {
+      this.startAlphaPicking(event.detail.layerId);
+    });
+    control.view.addEventListener('pick-alpha-end', () => {
+      this.endAlphaPicking(true);
     });
     control.view.addEventListener('delete', (event) => {
       this.removeImageLayer(event.detail.layerId);
@@ -395,12 +424,35 @@ export default class View {
     control.view.addEventListener('opacity', (event) => {
       this.setOpacity(event.detail.layerId, event.detail.opacity);
     });
+    control.view.addEventListener('visible', (event) => {
+      this.setLayerVisibility(event.detail.layerId);
+      this.controls.forEach((control) => control.refresh());
+    });
+    control.view.addEventListener('blend', (event) => {
+      this.setBlendMode(event.detail.layerId, event.detail.blendMode, event.detail.mask);
+    });
+    control.view.addEventListener('edit-mask', async (event) => {
+      this.editMask(event.detail.layerId);
+    });
+    control.view.addEventListener('mask-layer', async (event) => {
+      this.customMaskLayerToggle(event.detail.layerId, event.detail.maskLayerId);
+      this.controls.forEach((control) => control.refresh());
+    });
+    control.view.addEventListener('transparency-level', (event) => {
+      this.alphaTolerance = event.detail.tolerance;
+    });
+    control.view.addEventListener('reset-transparency-level', (event) => {
+      this.resetTransparencyLevel(event.detail.layerId);
+    });
+    control.view.addEventListener('reset-mask-layer', (event) => {
+      this.resetCustomMaskLayers(event.detail.layerId);
+      this.controls.forEach((control) => control.refresh());
+    });
   }
 
   /**
    * Starts color picking for a given layer
    * @param {String} id The layer that is getting the picked color as a background color
-   * @param {*} currentColor The layers current color
    */
   startColorPicking(id) {
     const layer = this.layers.find((layer) => layer.id === id);
@@ -409,6 +461,35 @@ export default class View {
     this.isColorPicking = true;
     this.colorPickingForLayer = layer;
     this.canvas.classList.add('isColorPicking');
+  }
+
+    /**
+   * Starts alpha picking for a given layer
+   * @param {String} id The layer that is getting the picked color as a alpha color
+   */
+  startAlphaPicking(id) {
+    const layer = this.layers.find((layer) => layer.id === id);
+    layer.saveAlphas();
+    // move the control in sync
+    this.isAlphaPicking = true;
+    this.alphaPickingForLayer = layer;
+    this.canvas.classList.add('isColorPicking');
+  }
+
+  resetTransparencyLevel(id) {
+    const layer = this.layers.find((layer) => layer.id === id);
+    if (layer) {
+      layer.alphaPixelColors.clear();
+      this.redraw(true);
+    }
+  }
+
+  resetCustomMaskLayers(id) {
+    const layer = this.layers.find((layer) => layer.id === id);
+    if (layer) {
+      layer.resetMasks();
+      this.redraw(true);
+    }
   }
 
   /**
@@ -424,6 +505,7 @@ export default class View {
     if (reset) {
       // setting the color
       this.colorPickingForLayer.restoreColor();
+      this.redraw(true);
     }
 
     // refreshing the control
@@ -431,6 +513,34 @@ export default class View {
     control.endColorPicking();
 
     this.colorPickingForLayer = null;
+
+    control.refresh();
+    this.redraw();
+  }
+
+  /**
+   * Ends a color picking state
+   * @param {boolean} reset If the user aborted the color picking, we will reset to the original color
+   */
+  endAlphaPicking(reset = false) {
+    this.canvas.classList.remove('isColorPicking');
+    // move the control in sync
+    this.isAlphaPicking = false;
+
+    // update the layer
+    if (reset) {
+      // setting the color
+      this.alphaPickingForLayer.restoreAlphas();
+      this.redraw(true);
+    } else {
+      this.alphaPickingForLayer.addTransparentColour(this.alphaColor);
+    }
+
+    // refreshing the control
+    const control = this.controls.find((control) => control.layer.id === this.alphaPickingForLayer.id);
+    control.endAlphaPicking();
+
+    this.alphaPickingForLayer = null;
 
     control.refresh();
     this.redraw();
@@ -474,6 +584,8 @@ export default class View {
       } else {
         this.controlsArea.insertBefore(sourceControl, targetControl.nextSibling);
       }
+      this.calculateDefaultAppliedMaskLayers(this.layers[targetId].id);
+      this.calculateDefaultAppliedMaskLayers(this.layers[sourceId].id);
     }
     this.redraw(true);
   }
@@ -486,7 +598,16 @@ export default class View {
     const layer = this.layers.find((layer) => layer.id === id);
     if (layer !== null) {
       layer.reset();
-      this.redraw();
+      this.redraw(true);
+    }
+  }
+
+  setBlendMode(id, blendMode, isMask) {
+    const layer = this.layers.find((layer) => layer.id === id);
+    if (layer !== null) {
+      if (isMask) layer.maskCompositeOperation = blendMode;
+      else layer.compositeOperation = blendMode;
+      this.redraw(true);
     }
   }
 
@@ -503,6 +624,14 @@ export default class View {
     if (layer !== null) {
       layer.alpha = parseInt(opacity) / 100;
       layer.redraw();
+      this.redraw();
+    }
+  }
+
+  setLayerVisibility(id) {
+    const layer = this.layers.find((layer) => layer.id === id);
+    if (layer !== null) {
+      layer.visible = !layer.visible;
       this.redraw();
     }
   }
@@ -531,6 +660,30 @@ export default class View {
     this.redraw();
   }
 
+  calculateDefaultAppliedMaskLayers(id) {
+    const layer = this.layers.find((l) => l.id === id);
+    const index = this.layers.findIndex((l) => l.id === id);
+
+    logger.debug(`Adding mask ids to layer ${index} (${id})`, layer);
+    if (layer && !layer.customMaskLayers) {
+      this.layers.forEach((l) => {
+        if (l.providesMask && this.isOriginLayerHigher(l.id, id)) {
+          logger.debug(`Applying id ${l.id}`);
+          layer.appliedMaskIds.add(l.id);
+        } else {
+          logger.debug(`Deleting id ${l.id}`);
+          layer.appliedMaskIds.delete(l.id);
+        }
+      });
+    }
+  }
+
+  calculateAllDefaultMaskLayers() {
+    this.layers.forEach((layer) => {
+      this.calculateDefaultAppliedMaskLayers(layer.id);
+    });
+  }
+
   /**
    * Activates the mask with the given id
    * @param Number | null id of the layer that should activate it's mask, if null: Activate the lowest layer with id = 0
@@ -544,16 +697,42 @@ export default class View {
       // check if this layer currently provides the mask
       if (layer.providesMask === true) {
         layer.providesMask = false;
-        this.maskId = null;
+        this.maskIds.delete(id);
       } else {
-        this.maskId = id;
-        this.layers.forEach((layer) => (layer.providesMask = false));
+        this.maskIds.add(id);
         layer.providesMask = true;
-        layer.applyMask();
+      }
+
+      this.calculateAllDefaultMaskLayers();
+    }
+
+    this.redraw(true);
+    return true;
+  }
+
+  customMaskLayerToggle(id, maskLayerId) {
+    logger.debug(`Toggling custom mask layers for ${id} layer and mask ${maskLayerId}`);
+    const layer = this.layers.find((l) => l.id === id);
+    if (layer) {
+      layer.customMaskLayers = true;
+
+      if (layer.appliedMaskIds.has(maskLayerId)) {
+        layer.appliedMaskIds.delete(maskLayerId);
+      } else {
+        layer.appliedMaskIds.add(maskLayerId);
       }
     }
     this.redraw(true);
-    return true;
+  }
+
+  editMask(id) {
+    logger.debug(`Editing mask for layer ${id}`);
+    const layer = this.layers.find((layer) => layer.id === id);
+    if (layer) {
+      layer.editMask(this.redraw.bind(this));
+      this.deactivateLayers();
+      this.controls.forEach((control) => control.refresh());
+    }
   }
 
   // eslint-disable-next-line default-param-last
@@ -570,13 +749,14 @@ export default class View {
     const context = this.canvas.getContext('2d');
     context.clearRect(0, 0, this.width, this.height);
 
-    // console.warn(this);
-    // console.warn("layers", this.layers);
-
     if (full) {
       logger.debug("Full redraw triggered");
       this.layers.forEach((layer) => {
-        if (layer.masked) layer.createMask();
+        logger.debug(`Recalculating mask for ${layer.id}`, layer);
+        layer.recalculateMask();
+      });
+      this.layers.forEach((layer) => {
+        logger.debug(`Recalculating visual layer for ${layer.id}`, layer);
         layer.redraw();
       });
     }
@@ -603,6 +783,5 @@ export default class View {
         );
       }
     }
-
   }
 }

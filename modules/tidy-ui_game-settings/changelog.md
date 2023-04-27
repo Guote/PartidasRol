@@ -1,24 +1,51 @@
 # Changelog
 
+# 0.1.51
+
+- Module manager Display fix
+- Forge Version fix
+
+# 0.1.5
+
+- DSA display issue fix
+
+# 0.1.4
+
+- removed settings page modifications due to core layout change
+- exclusive v10
+
+## 0.1.33
+
+- v10 compatibility fix
+
+## 0.1.32
+
+- v10 compatibility
+
 ## 0.1.31
 
 - fixed css for tab display
 
 ## 0.1.30
+
 - module json fix (maybe will fix install pre v9)
 
 ## 0.1.29
+
 - v9 compatibility
 - disabled checkboxes are now greyed out
 - script changes for module compatibility
 
 ## 0.1.27 / 0.1.28
+
 - TDE/DSA 5 layout fix
 
 ## 0.1.26
+
 - TDE/DSA 5 layout fix
 
 ## 0.1.25
+
 - warning on new version changes
 - better worded button names
 

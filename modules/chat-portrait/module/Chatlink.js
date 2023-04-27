@@ -1,11 +1,12 @@
 import { ChatPortrait } from "./ChatPortrait.js";
 import CONSTANTS from "./constants.js";
+import { warn } from "./lib/lib.js";
 export class ChatLink {
     static init() {
         ChatLink.updateSettings();
     }
     static updateSettings() {
-        ChatLink.showTooltip = game.settings.get(CONSTANTS.MODULE_NAME, 'hoverTooltip');
+        ChatLink.showTooltip = game.settings.get(CONSTANTS.MODULE_NAME, "hoverTooltip");
     }
     static prepareEvent(message, html, speakerInfo, gameSystemId) {
         // let clickable = html.find('.chat-card'); // message-sender
@@ -23,8 +24,13 @@ export class ChatLink {
         }
         // Removed 4535992 just a bug i can avoid to manage
         //ChatLink.formatLink(clickable);
-        const speakerName = clickable[0]?.textContent ?? speaker.alias ?? ChatLink.i18n(CONSTANTS.MODULE_NAME + '.genericName');
-        const speakerData = { idScene: speaker.scene, idActor: speaker.actor, idToken: speaker.token, name: speakerName };
+        const speakerName = clickable[0]?.textContent ?? speaker.alias ?? ChatLink.i18n(CONSTANTS.MODULE_NAME + ".genericName");
+        const speakerData = {
+            idScene: speaker.scene,
+            idActor: speaker.actor,
+            idToken: speaker.token,
+            name: speakerName
+        };
         if (!speakerData.idScene) {
             if (speakerInfo.author) {
                 speakerData.idScene = speakerInfo.author.viewedScene;
@@ -64,8 +70,13 @@ export class ChatLink {
         }
         // Removed 4535992 just a bug i can avoid to manage
         //ChatLink.formatLink(clickable);
-        const speakerName = clickable[0]?.textContent ?? speaker.alias ?? ChatLink.i18n(CONSTANTS.MODULE_NAME + '.genericName');
-        const speakerData = { idScene: speaker.scene, idActor: speaker.actor, idToken: speaker.token, name: speakerName };
+        const speakerName = clickable[0]?.textContent ?? speaker.alias ?? ChatLink.i18n(CONSTANTS.MODULE_NAME + ".genericName");
+        const speakerData = {
+            idScene: speaker.scene,
+            idActor: speaker.actor,
+            idToken: speaker.token,
+            name: speakerName
+        };
         if (!speakerData.idScene) {
             if (speakerInfo.author) {
                 speakerData.idScene = speakerInfo.author.viewedScene;
@@ -125,36 +136,44 @@ export class ChatLink {
         return token;
     }
     static tokenExists(user, speakerData, token) {
-        if (token && token.visible)
+        if (token && token.visible) {
             return true;
-        if (!ChatLink.isRightScene(user, speakerData))
-            return;
+        }
+        if (!ChatLink.isRightScene(user, speakerData)) {
+            return false;
+        }
         const message = user.isGM
-            ? ChatLink.playerWarning(speakerData) + ` ${ChatLink.i18n(CONSTANTS.MODULE_NAME + '.noTokenFound')}`
+            ? ChatLink.playerWarning(speakerData) + ` ${ChatLink.i18n(CONSTANTS.MODULE_NAME + ".noTokenFound")}`
             : ChatLink.playerWarning(speakerData);
         ChatLink.warning(message);
+        return false;
     }
     static isRightScene(user, speakerData) {
-        if (canvas.scene?.id === speakerData.idScene)
+        if (canvas.scene?.id === speakerData.idScene) {
             return true;
+        }
         let sceneNote;
         if (!speakerData.idScene) {
-            sceneNote = ` ${ChatLink.i18n(CONSTANTS.MODULE_NAME + '.noSceneFound')}`;
+            sceneNote = ` ${ChatLink.i18n(CONSTANTS.MODULE_NAME + ".noSceneFound")}`;
         }
         else {
-            const tokenScene = game.scenes?.find((s) => s.data._id === speakerData.idScene);
-            sceneNote = ` ${ChatLink.i18nFormat(CONSTANTS.MODULE_NAME + '.checkScene', {
-                sceneName: tokenScene?.data.name,
+            const tokenScene = game.scenes?.find((s) => s.id === speakerData.idScene);
+            sceneNote = ` ${ChatLink.i18nFormat(CONSTANTS.MODULE_NAME + ".checkScene", {
+                sceneName: tokenScene?.name
             })}`;
         }
-        const message = user.isGM ? ChatLink.playerWarning(speakerData) + sceneNote : ChatLink.playerWarning(speakerData);
+        const message = user.isGM
+            ? ChatLink.playerWarning(speakerData) + sceneNote
+            : ChatLink.playerWarning(speakerData);
         ChatLink.warning(message);
+        return false;
     }
     static permissionToSee(user, speakerData, token) {
         if (user.isGM || token.visible) {
             return true;
         }
         ChatLink.warning(ChatLink.playerWarning(speakerData));
+        return false;
     }
     static permissionToControl(user, token) {
         // return user.isGM || token.actor?.hasPerm(user, 'OWNER');
@@ -219,12 +238,12 @@ export class ChatLink {
         return result;
     }
     static warning(message) {
-        ui.notifications?.warn(message);
+        warn(message, true);
     }
 }
 ChatLink.clickTimeout = 250;
 ChatLink.clickCount = 0;
-ChatLink.playerWarning = (data) => ChatLink.i18nFormat(CONSTANTS.MODULE_NAME + '.notInSight', data);
+ChatLink.playerWarning = (data) => ChatLink.i18nFormat(CONSTANTS.MODULE_NAME + ".notInSight", data);
 ChatLink.showTooltip = true;
 ChatLink.hoverTimeout = 1000;
 ChatLink.hoverTimer = null;
@@ -235,8 +254,14 @@ ChatLink.hoverIn = (event, speaker) => {
     if (token && token.visible) {
         event.fromChat = true;
         //@ts-ignore
-        token._object._onHoverIn(event);
-        ChatLink.lastHoveredToken = token;
+        if (token._object) {
+            //@ts-ignore
+            token._object._onHoverIn(event);
+            ChatLink.lastHoveredToken = token;
+        }
+        else {
+            warn(`Can't hover in the chat portrait of the token '${token}'`);
+        }
     }
 };
 ChatLink.hoverOut = (event) => {
