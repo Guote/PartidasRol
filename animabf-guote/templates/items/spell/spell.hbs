@@ -23,7 +23,7 @@
               class="level"
               title=(localize "anima.ui.mystic.spell.level.title")
               inputName="data.level.value"
-              inputValue=data.data.level.value
+              inputValue=system.level.value
             }}
             {{>
             'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
@@ -31,7 +31,7 @@
               choices=config.iterables.mystic.vias
               title=(localize "anima.ui.mystic.spell.via.title")
               inputName="data.via.value"
-              inputValue=data.data.via.value
+              inputValue=system.via.value
             }}
           </div>
         </div>
@@ -48,7 +48,7 @@
           maintenanceCostInputName=(concat "data.grades.base.maintenanceCost.value")
           descriptionInputName=(concat "data.grades.base.description.value")
           gradeName='base'
-          grade=data.data.grades.base
+          grade=system.grades.base
         }}
         {{>
         "systems/animabf-guote/templates/actor/parts/mystic/parts/spells/grade/grade.hbs"
@@ -60,7 +60,7 @@
           maintenanceCostInputName=(concat "data.grades.intermediate.maintenanceCost.value")
           descriptionInputName=(concat "data.grades.intermediate.description.value")
           gradeName='intermediate'
-          grade=data.data.grades.intermediate
+          grade=system.grades.intermediate
         }}
         {{>
         "systems/animabf-guote/templates/actor/parts/mystic/parts/spells/grade/grade.hbs"
@@ -72,7 +72,7 @@
           maintenanceCostInputName=(concat "data.grades.advanced.maintenanceCost.value")
           descriptionInputName=(concat "data.grades.advanced.description.value")
           gradeName='advanced'
-          grade=data.data.grades.advanced
+          grade=system.grades.advanced
         }}
         {{>
         "systems/animabf-guote/templates/actor/parts/mystic/parts/spells/grade/grade.hbs"
@@ -84,11 +84,11 @@
           maintenanceCostInputName=(concat "data.grades.arcane.maintenanceCost.value")
           descriptionInputName=(concat "data.grades.arcane.description.value")
           gradeName='arcane'
-          grade=data.data.grades.arcane
+          grade=system.grades.arcane
         }}
         <div class="description">
           <p class='label'>{{localize "anima.ui.mystic.spell.grade.description.title"}}</p>
-          {{editor content=data.data.description.value target=(concat "data.description.value") button=true owner=true editable=true}}
+          {{editor content=system.description.value target=(concat "data.description.value") button=true owner=true editable=true}}
         </div>
       {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
       {{#> "systems/animabf-guote/templates/common/ui/group-footer.hbs"}}
@@ -99,7 +99,7 @@
             choices=config.iterables.mystic.spellTypes
             title=(localize "anima.ui.mystic.spell.spellType.title")
             inputName="data.spellType.value"
-            inputValue=data.data.spellType.value
+            inputValue=system.spellType.value
           }}
           {{>
           'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
@@ -107,7 +107,7 @@
             choices=config.iterables.mystic.actionTypes
             title=(localize "anima.ui.mystic.spell.actionType.title")
             inputName="data.actionType.value"
-            inputValue=data.data.actionType.value
+            inputValue=system.actionType.value
           }}
           {{>
           'systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs'
@@ -115,7 +115,7 @@
             title=(localize "anima.ui.mystic.spell.hasDailyMaintenance.title")
             inputType="checkbox"
             inputName=(concat "data.hasDailyMaintenance.value")
-            inputValue=(is 'eq' data.data.hasDailyMaintenance.value true)
+            inputValue=(is 'eq' system.hasDailyMaintenance.value true)
           }}
         </div>
       {{/"systems/animabf-guote/templates/common/ui/group-footer.hbs"}}

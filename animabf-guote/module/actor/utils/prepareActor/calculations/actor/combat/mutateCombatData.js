@@ -1,15 +1,15 @@
-const applyPosture = (data) => {
+const applyPosture = (system) => {
   const postures = {
     offensive: { modHA: 20, modHD: -20, flavor: "A la ofensiva" },
     defensive: { modHA: -20, modHD: 20, flavor: "A la defensiva" },
     fullOffense: { modHA: 40, modHD: -999, flavor: "Ataque total" },
     fullDefense: { modHA: -999, modHD: 40, flavor: "Defensa total" },
   };
-  const selectedPosture = data.general.modifiers.combatPosture;
+  const selectedPosture = system.general.modifiers.combatPosture;
 
   /* 
-  const currentActor = game.actors.find(actor => actor.system === data)
-  let previousPosture = data.general.modifiers.previousPosture;
+  const currentActor = game.actors.find(actor => actor.system === system)
+  let previousPosture = system.general.modifiers.previousPosture;
   
   if (selectedPosture !== previousPosture) {
     let chatData = {
@@ -22,7 +22,7 @@ const applyPosture = (data) => {
   }
 
   console.log(currentActor)
-  currentActor.update({ data: { general: {modifiers: {previousPosture: selectedPosture}} } });
+  currentActor.update({ system: { general: {modifiers: {previousPosture: selectedPosture}} } });
 
   console.log(
     previousPosture,
@@ -37,28 +37,28 @@ const applyPosture = (data) => {
   return [modHA, modHD];
 };
 
-export const mutateCombatData = (data) => {
-  const [postureModHA, postureModHD] = applyPosture(data);
+export const mutateCombatData = (system) => {
+  const [postureModHA, postureModHD] = applyPosture(system);
 
-  data.combat.attack.final.value =
+  system.combat.attack.final.value =
     postureModHA === -999
       ? 0
-      : data.combat.attack.base.value +
-        data.general.modifiers.modFisico.final.value +
-        data.general.modifiers.modSobrenatural.final.value +
+      : system.combat.attack.base.value +
+        system.general.modifiers.modFisico.final.value +
+        system.general.modifiers.modSobrenatural.final.value +
         postureModHA;
-  data.combat.block.final.value =
+  system.combat.block.final.value =
     postureModHD === -999
       ? 0
-      : data.combat.block.base.value +
-        data.general.modifiers.modFisico.final.value +
-        data.general.modifiers.modSobrenatural.final.value +
+      : system.combat.block.base.value +
+        system.general.modifiers.modFisico.final.value +
+        system.general.modifiers.modSobrenatural.final.value +
         postureModHD;
-  data.combat.dodge.final.value =
+  system.combat.dodge.final.value =
     postureModHD === -999
       ? 0
-      : data.combat.dodge.base.value +
-        data.general.modifiers.modFisico.final.value +
-        data.general.modifiers.modSobrenatural.final.value +
+      : system.combat.dodge.base.value +
+        system.general.modifiers.modFisico.final.value +
+        system.general.modifiers.modSobrenatural.final.value +
         postureModHD;
 };

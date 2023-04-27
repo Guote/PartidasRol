@@ -12,8 +12,8 @@ export class ABFActor extends Actor {
         super(data, context);
         this.i18n = game.i18n;
         if (this.system.version !== INITIAL_ACTOR_DATA.version) {
-            Log.log(`Upgrading actor ${this.data.name} (${this.data._id}) from version ${this.system.version} to ${INITIAL_ACTOR_DATA.version}`);
-            this.data.update({ data: { version: INITIAL_ACTOR_DATA.version } });
+            Log.log(`Upgrading actor ${this.name} (${this._id}) from version ${this.system.version} to ${INITIAL_ACTOR_DATA.version}`);
+            this.data.update({ system: { version: INITIAL_ACTOR_DATA.version } });
         }
     }
     prepareDerivedData() {
@@ -24,7 +24,7 @@ export class ABFActor extends Actor {
     applyFatigue(fatigueUsed) {
         const newFatigue = this.system.characteristics.secondaries.fatigue.value - fatigueUsed;
         this.update({
-            data: {
+            system: {
                 characteristics: {
                     secondaries: { fatigue: { value: newFatigue } }
                 }
@@ -34,7 +34,7 @@ export class ABFActor extends Actor {
     applyDamage(damage) {
         const newLifePoints = this.system.characteristics.secondaries.lifePoints.value - damage;
         this.update({
-            data: {
+            system: {
                 characteristics: {
                     secondaries: { lifePoints: { value: newLifePoints } }
                 }
@@ -48,17 +48,17 @@ export class ABFActor extends Actor {
         const configuration = ALL_ITEM_CONFIGURATIONS[type];
         const items = getFieldValueFromPath(this.system, configuration.fieldPath) ?? [];
         await this.update({
-            data: getUpdateObjectFromPath([...items, { _id: nanoid(), type, name, data }], configuration.fieldPath)
+            system: getUpdateObjectFromPath([...items, { _id: nanoid(), type, name, data }], configuration.fieldPath)
         });
     }
-    async updateItem({ id, name, data = {} }) {
+    async updateItem({ id, name, system = {} }) {
         const item = this.getItem(id);
         if (item) {
-            let updateObject = { data };
+            let updateObject = { system };
             if (name) {
                 updateObject = { ...updateObject, name };
             }
-            if ((!!name && name !== item.name) || JSON.stringify(data) !== JSON.stringify(item.system)) {
+            if ((!!name && name !== item.name) || JSON.stringify(system) !== JSON.stringify(item.system)) {
                 await item.update(updateObject);
             }
         }
@@ -80,7 +80,7 @@ export class ABFActor extends Actor {
                     item.data = data;
                 }
                 await this.update({
-                    data: getUpdateObjectFromPath(items, configuration.fieldPath)
+                    system: getUpdateObjectFromPath(items, configuration.fieldPath)
                 });
             }
         }

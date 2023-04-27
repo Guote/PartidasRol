@@ -9,7 +9,7 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="spells"
   }}
-    {{#each data.data.mystic.spells as |spell|}}
+    {{#each system.mystic.spells as |spell|}}
       <div data-item-id='{{spell._id}}' class='spell-row'>
         {{#> "systems/animabf-guote/templates/common/ui/group.hbs"
           class="spell"

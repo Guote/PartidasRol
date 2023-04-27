@@ -16,32 +16,32 @@ import { mutateInitiative } from "./calculations/actor/mutateInitiative.js";
 import { mutateRegenerationType } from "./calculations/actor/general/mutateRegenerationType.js";
 // Be careful with order of this functions, some derived data functions could be dependent of another
 const DERIVED_DATA_FUNCTIONS = [
-    mutatePrimaryModifiers,
-    mutateMovementType,
-    mutateRegenerationType,
-    mutatePenalties,
-    mutateCombatData,
-    mutateArmorsData,
-    mutateTotalArmor,
-    mutateNaturalPenalty,
-    mutateSecondariesData,
-    mutateAmmoData,
-    mutateWeaponsData,
-    mutateInitiative,
-    mutateMysticData,
-    mutatePsychicData,
-    mutateDomineData,
+  mutatePrimaryModifiers,
+  mutateMovementType,
+  mutateRegenerationType,
+  mutatePenalties,
+  mutateCombatData,
+  mutateArmorsData,
+  mutateTotalArmor,
+  mutateNaturalPenalty,
+  mutateSecondariesData,
+  mutateAmmoData,
+  mutateWeaponsData,
+  mutateInitiative,
+  mutateMysticData,
+  mutatePsychicData,
+  mutateDomineData,
 ];
 export const prepareActor = (actor) => {
-    prepareItems(actor);
-    // We need to parse to boolean because Foundry saves booleans as string
-    for (const key of Object.keys(actor.system.ui.contractibleItems)) {
-        if (typeof actor.system.ui.contractibleItems[key] === 'string') {
-            actor.system.ui.contractibleItems[key] = actor.system.ui.contractibleItems[key] === 'true';
-        }
+  prepareItems(actor);
+  // We need to parse to boolean because Foundry saves booleans as string
+  for (const key of Object.keys(actor.system.ui.contractibleItems)) {
+    if (typeof actor.system.ui.contractibleItems[key] === "string") {
+      actor.system.ui.contractibleItems[key] =
+        actor.system.ui.contractibleItems[key] === "true";
     }
-    const { data } = actor.data;
-    for (const fn of DERIVED_DATA_FUNCTIONS) {
-        fn(data);
-    }
+  }
+  for (const fn of DERIVED_DATA_FUNCTIONS) {
+    fn(actor.system);
+  }
 };

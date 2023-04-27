@@ -9,7 +9,7 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="psychic-disciplines"
   }}
-    {{#each data.data.psychic.psychicDisciplines}}
+    {{#each system.psychic.psychicDisciplines}}
       <div data-item-id='{{this._id}}' class='psychic-discipline-row'>
         <input
           name='data.dynamic.psychicDisciplines.{{this._id}}.name'

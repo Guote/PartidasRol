@@ -24,10 +24,10 @@
         title=(localize 'anima.ui.languageSection.base')
         inputType="text"
         inputName="data.general.languages.base.value"
-        inputValue=data.data.general.languages.base.value
+        inputValue=system.general.languages.base.value
       }}
     </div>
-    {{#each data.data.general.languages.others}}
+    {{#each system.general.languages.others}}
       <div data-item-id='{{this._id}}' class='language-row'>
         {{>
         "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"

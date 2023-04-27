@@ -1,6 +1,6 @@
-export const mutateDomineData = (data) => {
-    const allActionsPenalty = data.general.modifiers.allActions.final.value;
-    const { domine } = data;
+export const mutateDomineData = (system) => {
+    const allActionsPenalty = system.general.modifiers.allActions.final.value;
+    const { domine } = system;
     const KI_ACCUMULATIONS = [
         "strength",
         "agility",

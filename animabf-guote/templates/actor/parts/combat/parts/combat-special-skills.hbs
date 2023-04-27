@@ -9,7 +9,7 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="combat-special-skills"
   }}
-    {{#each data.data.combat.combatSpecialSkills}}
+    {{#each system.combat.combatSpecialSkills}}
       <div data-item-id='{{this._id}}' class='combat-special-skill-row'>
         <input
           name='data.dynamic.combatSpecialSkills.{{this._id}}.name'

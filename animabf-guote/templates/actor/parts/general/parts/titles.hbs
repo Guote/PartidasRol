@@ -9,7 +9,7 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="titles"
   }}
-    {{#each data.data.general.titles}}
+    {{#each system.general.titles}}
       <div data-item-id='{{this._id}}' class='title-row'>
         <input
           name='data.dynamic.titles.{{this._id}}.name'

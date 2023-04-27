@@ -2,10 +2,10 @@ import { calculateAttributeModifier } from "../util/calculateAttributeModifier.j
 /**
  * Adds to primary characteristics object without modifiers its modifiers,
  * calculated based on its value
- * @param data
+ * @param system
  */
-export const mutatePrimaryModifiers = (data) => {
-    const { primaries } = data.characteristics;
+export const mutatePrimaryModifiers = (system) => {
+    const { primaries } = system.characteristics;
     for (const primaryKey of Object.keys(primaries)) {
         primaries[primaryKey] = {
             value: primaries[primaryKey].value,

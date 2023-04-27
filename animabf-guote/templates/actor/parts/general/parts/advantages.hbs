@@ -9,7 +9,7 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="advantages"
   }}
-    {{#each data.data.general.advantages}}
+    {{#each system.general.advantages}}
       <div data-item-id='{{this._id}}' class='advantage-row'>
         <input
           name='data.dynamic.advantages.{{this._id}}.name'

@@ -3,8 +3,9 @@ export const prepareItems = (actor) => {
     for (const item of actor.items.values()) {
         const configuration = ITEM_CONFIGURATIONS[item.type];
         if (configuration) {
+            const act = actor
             const { data } = actor.data;
-            configuration.onAttach?.(data, item.data);
+            configuration.onAttach?.(actor.system, item.data);
             configuration.prepareItem?.(item);
         }
         else {

@@ -13,7 +13,7 @@ export default class ABFItemSheet extends ItemSheet {
         this.position.height = this.getHeightFromType();
     }
     getWidthFromType() {
-        switch (this.item.data.type) {
+        switch (this.item.type) {
             case ABFItems.SPELL:
                 return 700;
             case ABFItems.ARMOR:
@@ -25,7 +25,7 @@ export default class ABFItemSheet extends ItemSheet {
         }
     }
     getHeightFromType() {
-        switch (this.item.data.type) {
+        switch (this.item.type) {
             case ABFItems.SPELL:
                 return 450;
             case ABFItems.WEAPON:
@@ -49,10 +49,10 @@ export default class ABFItemSheet extends ItemSheet {
         return data;
     }
     get template() {
-        const configuration = ITEM_CONFIGURATIONS[this.item.data.type];
+        const configuration = ITEM_CONFIGURATIONS[this.item.type];
         if (configuration && configuration.hasSheet) {
             const path = 'systems/animabf-guote/templates/items/';
-            return `${path}/${this.item.data.type}/${this.item.data.type}.hbs`;
+            return `${path}/${this.item.type}/${this.item.type}.hbs`;
         }
         return super.template;
     }

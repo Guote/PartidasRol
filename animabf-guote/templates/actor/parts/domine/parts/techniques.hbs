@@ -9,7 +9,7 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="techniques"
   }}
-    {{#each data.data.domine.techniques as |technique|}}
+    {{#each system.domine.techniques as |technique|}}
       <div data-item-id='{{technique._id}}' class='technique-row'>
         {{#> "systems/animabf-guote/templates/common/ui/group.hbs"
           class="technique"

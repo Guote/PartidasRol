@@ -12,7 +12,7 @@
       "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
       title=(localize 'anima.ui.resistances.physical')
       inputName="data.characteristics.secondaries.resistances.physical.base.value"
-      inputValue=data.data.characteristics.secondaries.resistances.physical.base.value
+      inputValue=system.characteristics.secondaries.resistances.physical.base.value
       hasSecondaryInput=false
       addTooltips=true
       rollable=true
@@ -22,7 +22,7 @@
       "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
       title=(localize 'anima.ui.resistances.magic')
       inputName="data.characteristics.secondaries.resistances.magic.base.value"
-      inputValue=data.data.characteristics.secondaries.resistances.magic.base.value
+      inputValue=system.characteristics.secondaries.resistances.magic.base.value
       hasSecondaryInput=false
       addTooltips=true
       rollable=true
@@ -32,7 +32,7 @@
       "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
       title=(localize 'anima.ui.resistances.psychic')
       inputName="data.characteristics.secondaries.resistances.psychic.base.value"
-      inputValue=data.data.characteristics.secondaries.resistances.psychic.base.value
+      inputValue=system.characteristics.secondaries.resistances.psychic.base.value
       hasSecondaryInput=false
       addTooltips=true
       rollable=true
@@ -46,10 +46,10 @@
       rollableDice='1d100-1d100'
       rollableMessage='Crítico'
       disabled=true
-      inputValue=data.data.characteristics.secondaries.resistances.physical.base.value
+      inputValue=system.characteristics.secondaries.resistances.physical.base.value
     }}
     
-    {{!-- {{#each data.data.characteristics.secondaries.resistances as |atr key|}}
+    {{!-- {{#each system.characteristics.secondaries.resistances as |atr key|}}
       {{>
       "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
         class="resistance"

@@ -9,7 +9,7 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="innate-psychic-powers"
   }}
-    {{#each data.data.psychic.innatePsychicPowers}}
+    {{#each system.psychic.innatePsychicPowers}}
       <div data-item-id='{{this._id}}' class='innate-psychic-power-row'>
         {{>
         "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
@@ -49,7 +49,7 @@
       class="amount"
       title=(localize "anima.ui.psychic.innatePsychicPower.amount.title")
       inputName="data.psychic.innatePsychicPower.amount.value"
-      inputValue=data.data.psychic.innatePsychicPower.amount.value
+      inputValue=system.psychic.innatePsychicPower.amount.value
     }}
   {{/"systems/animabf-guote/templates/common/ui/group-footer.hbs"}}
 {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}
