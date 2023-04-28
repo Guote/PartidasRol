@@ -22,35 +22,35 @@
         isVertical=true
         choices=config.iterables.combat.weapon.criticTypes
         title=(localize "anima.ui.combat.ammo.critic.title")
-        inputName=(concat "data.critic.value")
+        inputName=(concat ".critic.value")
         inputValue=system.critic.value
       }}
       {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="presence"
         title=(localize "anima.ui.combat.ammo.presence.base.title")
-        inputName=(concat "data.presence.base.value")
+        inputName=(concat ".presence.base.value")
         inputValue=system.presence.base.value
       }}
       {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="integrity"
         title=(localize "anima.ui.combat.ammo.integrity.base.title")
-        inputName=(concat "data.integrity.base.value")
+        inputName=(concat ".integrity.base.value")
         inputValue=system.integrity.base.value
       }}
       {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="breaking"
         title=(localize "anima.ui.combat.ammo.breaking.base.title")
-        inputName=(concat "data.breaking.base.value")
+        inputName=(concat ".breaking.base.value")
         inputValue=system.breaking.base.value
       }}
       {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="damage"
         title=(localize "anima.ui.combat.ammo.damage.base.title")
-        inputName=(concat "data.damage.base.value")
+        inputName=(concat ".damage.base.value")
         inputValue=system.damage.base.value
       }}
       {{>
@@ -58,7 +58,7 @@
         class="special"
         title=(localize "anima.ui.combat.ammo.special.title")
         inputType="text"
-        inputName=(concat "data.special.value")
+        inputName=(concat ".special.value")
         inputValue=system.special.value
       }}
     {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}

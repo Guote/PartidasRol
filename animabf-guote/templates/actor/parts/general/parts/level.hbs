@@ -24,15 +24,15 @@
           class="name"
           hideTitle=true
           inputType="text"
-          inputName=(concat "data.dynamic.levels." this._id ".name")
+          inputName=(concat ".dynamic.levels." this._id ".name")
           inputValue=this.name
         }}
         {{>
         "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
           class="level"
           hideTitle=true
-          inputName=(concat "data.dynamic.levels." this._id ".data.level")
-          inputValue=this.data.level
+          inputName=(concat ".dynamic.levels." this._id ".system.level")
+          inputValue=this.system.level
         }}
       </div>
     {{/each}}

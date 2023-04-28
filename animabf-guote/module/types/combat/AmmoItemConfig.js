@@ -48,7 +48,7 @@ export const AmmoItemConfig = {
     },
     onAttach: (data, item) => {
         const items = data.combat.ammo;
-        item.data = foundry.utils.mergeObject(item.data, INITIAL_AMMO_DATA, { overwrite: false });
+        item.system = foundry.utils.mergeObject(item.system, INITIAL_AMMO_DATA, { overwrite: false });
         if (items) {
             const itemIndex = items.findIndex(i => i._id === item._id);
             if (itemIndex !== -1) {

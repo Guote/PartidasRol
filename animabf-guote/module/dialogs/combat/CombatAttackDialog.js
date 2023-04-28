@@ -108,7 +108,7 @@ export class CombatAttackDialog extends FormApplication {
         html.find('.send-attack').click(() => {
             const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed } = this.data.attacker.combat;
             if (typeof damage !== 'undefined') {
-                const attack = weapon ? weapon.data.attack.final.value : this.attackerActor.system.combat.attack.final.value;
+                const attack = weapon ? weapon.system.attack.final.value : this.attackerActor.system.combat.attack.final.value;
                 const counterAttackBonus = this.data.attacker.counterAttackBonus ?? 0;
                 let formula = `1d100xa + ${counterAttackBonus} + ${attack} + ${modifier ?? 0} + ${fatigueUsed ?? 0}* 20`;
                 if (this.data.attacker.withoutRoll) { //Remove the dice from the formula
@@ -273,10 +273,10 @@ export class CombatAttackDialog extends FormApplication {
         else {
             combat.weapon = weapon;
             if (!combat.criticSelected) {
-                combat.criticSelected = weapon.data.critic.primary.value;
+                combat.criticSelected = weapon.system.critic.primary.value;
             }
-            ui.weaponHasSecondaryCritic = weapon.data.critic.secondary.value !== NoneWeaponCritic.NONE;
-            combat.damage.final = combat.damage.special + weapon.data.damage.final.value;
+            ui.weaponHasSecondaryCritic = weapon.system.critic.secondary.value !== NoneWeaponCritic.NONE;
+            combat.damage.final = combat.damage.special + weapon.system.damage.final.value;
         }
         this.data.config = ABFConfig;
         return this.data;

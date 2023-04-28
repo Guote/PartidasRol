@@ -17,7 +17,7 @@
           title=(localize "anima.ui.combat.ammo.name.title")
           hideTitle=(is "gt" @index 0)
           inputType="text"
-          inputName=(concat "data.dynamic.ammo." this._id ".name")
+          inputName=(concat ".dynamic.ammo." this._id ".name")
           inputValue=this.name
         }}
         {{>
@@ -26,8 +26,8 @@
           title=(localize "anima.ui.combat.ammo.quality.title")
           hideTitle=(is "gt" @index 0)
           isVertical=true
-          inputName=(concat "data.dynamic.ammo." this._id ".data.quality.value")
-          inputValue=this.data.quality.value
+          inputName=(concat ".dynamic.ammo." this._id ".system.quality.value")
+          inputValue=this.system.quality.value
         }}
         {{>
         "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
@@ -35,8 +35,8 @@
           title=(localize "anima.ui.combat.ammo.presence.title")
           hideTitle=(is "gt" @index 0)
           disabled=true
-          inputName=(concat "data.dynamic.ammo." this._id ".data.presence.final.value")
-          inputValue=this.data.presence.final.value
+          inputName=(concat ".dynamic.ammo." this._id ".system.presence.final.value")
+          inputValue=this.system.presence.final.value
         }}
         {{>
         "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
@@ -44,8 +44,8 @@
           title=(localize "anima.ui.combat.ammo.damage.title")
           hideTitle=(is "gt" @index 0)
           disabled=true
-          inputName=(concat "data.dynamic.ammo." this._id ".data.damage.final.value")
-          inputValue=this.data.damage.final.value
+          inputName=(concat ".dynamic.ammo." this._id ".system.damage.final.value")
+          inputValue=this.system.damage.final.value
         }}
         {{>
         "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
@@ -53,8 +53,8 @@
           title=(localize "anima.ui.combat.ammo.breaking.title")
           hideTitle=(is "gt" @index 0)
           disabled=true
-          inputName=(concat "data.dynamic.ammo." this._id ".data.breaking.final.value")
-          inputValue=this.data.breaking.final.value
+          inputName=(concat ".dynamic.ammo." this._id ".system.breaking.final.value")
+          inputValue=this.system.breaking.final.value
         }}
         {{>
         "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
@@ -62,16 +62,16 @@
           title=(localize "anima.ui.combat.ammo.integrity.title")
           hideTitle=(is "gt" @index 0)
           disabled=true
-          inputName=(concat "data.dynamic.ammo." this._id ".data.integrity.final.value")
-          inputValue=this.data.integrity.final.value
+          inputName=(concat ".dynamic.ammo." this._id ".system.integrity.final.value")
+          inputValue=this.system.integrity.final.value
         }}
         {{>
         "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
           class="amount"
           title=(localize "anima.ui.combat.ammo.amount.title")
           hideTitle=(is "gt" @index 0)
-          inputName=(concat "data.dynamic.ammo." this._id ".data.amount.value")
-          inputValue=this.data.amount.value
+          inputName=(concat ".dynamic.ammo." this._id ".system.amount.value")
+          inputValue=this.system.amount.value
         }}
       </div>
     {{/each}}

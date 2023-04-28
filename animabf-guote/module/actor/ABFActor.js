@@ -8,88 +8,106 @@ import { INITIAL_ACTOR_DATA } from "./constants.js";
 import ABFActorSheet from "./ABFActorSheet.js";
 import { Log } from "../../utils/Log.js";
 export class ABFActor extends Actor {
-    constructor(data, context) {
-        super(data, context);
-        this.i18n = game.i18n;
-        if (this.system.version !== INITIAL_ACTOR_DATA.version) {
-            Log.log(`Upgrading actor ${this.name} (${this._id}) from version ${this.system.version} to ${INITIAL_ACTOR_DATA.version}`);
-            this.data.update({ system: { version: INITIAL_ACTOR_DATA.version } });
+  constructor(data, context) {
+    super(data, context);
+    this.i18n = game.i18n;
+    if (this.system.version !== INITIAL_ACTOR_DATA.version) {
+      Log.log(
+        `Upgrading actor ${this.name} (${this._id}) from version ${this.system.version} to ${INITIAL_ACTOR_DATA.version}`
+      );
+      this.update({ version: INITIAL_ACTOR_DATA.version });
+    }
+  }
+  prepareDerivedData() {
+    super.prepareDerivedData();
+    this.system = foundry.utils.mergeObject(this.system, INITIAL_ACTOR_DATA, {
+      overwrite: false,
+    });
+    prepareActor(this);
+  }
+  applyFatigue(fatigueUsed) {
+    const newFatigue =
+      this.system.characteristics.secondaries.fatigue.value - fatigueUsed;
+    this.update({
+      system: {
+        characteristics: {
+          secondaries: { fatigue: { value: newFatigue } },
+        },
+      },
+    });
+  }
+  applyDamage(damage) {
+    const newLifePoints =
+      this.system.characteristics.secondaries.lifePoints.value - damage;
+    this.update({
+      system: {
+        characteristics: {
+          secondaries: { lifePoints: { value: newLifePoints } },
+        },
+      },
+    });
+  }
+  async createItem({ type, name, data = {} }) {
+    await this.createEmbeddedDocuments("Item", [{ type, name, data }]);
+  }
+  async createInnerItem({ type, name, data = {} }) {
+    const configuration = ALL_ITEM_CONFIGURATIONS[type];
+    const items =
+      getFieldValueFromPath(this.system, configuration.fieldPath) ?? [];
+    await this.update({
+      system: getUpdateObjectFromPath(
+        [...items, { _id: nanoid(), type, name, data }],
+        configuration.fieldPath
+      ),
+    });
+  }
+  async updateItem({ id, name, system = {} }) {
+    const item = this.getItem(id);
+    if (item) {
+      let updateObject = { system };
+      if (name) {
+        updateObject = { ...updateObject, name };
+      }
+      if (
+        (!!name && name !== item.name) ||
+        JSON.stringify(system) !== JSON.stringify(item.system)
+      ) {
+        await item.update(updateObject);
+      }
+    }
+  }
+  _getSheetClass() {
+    return ABFActorSheet;
+  }
+  async updateInnerItem({ type, id, name, data = {} }, forceSave = false) {
+    const configuration = ALL_ITEM_CONFIGURATIONS[type];
+    const items = getFieldValueFromPath(this.system, configuration.fieldPath);
+    const item = items.find((it) => it._id === id);
+    if (item) {
+      const hasChanges =
+        forceSave ||
+        (!!name && name !== item.name) ||
+        JSON.stringify(data) !== JSON.stringify(item.data);
+      if (hasChanges) {
+        if (name) {
+          item.name = name;
         }
-    }
-    prepareDerivedData() {
-        super.prepareDerivedData();
-        this.system = foundry.utils.mergeObject(this.system, INITIAL_ACTOR_DATA, { overwrite: false });
-        prepareActor(this);
-    }
-    applyFatigue(fatigueUsed) {
-        const newFatigue = this.system.characteristics.secondaries.fatigue.value - fatigueUsed;
-        this.update({
-            system: {
-                characteristics: {
-                    secondaries: { fatigue: { value: newFatigue } }
-                }
-            }
-        });
-    }
-    applyDamage(damage) {
-        const newLifePoints = this.system.characteristics.secondaries.lifePoints.value - damage;
-        this.update({
-            system: {
-                characteristics: {
-                    secondaries: { lifePoints: { value: newLifePoints } }
-                }
-            }
-        });
-    }
-    async createItem({ type, name, data = {} }) {
-        await this.createEmbeddedDocuments('Item', [{ type, name, data }]);
-    }
-    async createInnerItem({ type, name, data = {} }) {
-        const configuration = ALL_ITEM_CONFIGURATIONS[type];
-        const items = getFieldValueFromPath(this.system, configuration.fieldPath) ?? [];
+        if (data) {
+          item.data = data;
+        }
         await this.update({
-            system: getUpdateObjectFromPath([...items, { _id: nanoid(), type, name, data }], configuration.fieldPath)
+          system: getUpdateObjectFromPath(items, configuration.fieldPath),
         });
+      }
     }
-    async updateItem({ id, name, system = {} }) {
-        const item = this.getItem(id);
-        if (item) {
-            let updateObject = { system };
-            if (name) {
-                updateObject = { ...updateObject, name };
-            }
-            if ((!!name && name !== item.name) || JSON.stringify(system) !== JSON.stringify(item.system)) {
-                await item.update(updateObject);
-            }
-        }
-    }
-    _getSheetClass() {
-        return ABFActorSheet;
-    }
-    async updateInnerItem({ type, id, name, data = {} }, forceSave = false) {
-        const configuration = ALL_ITEM_CONFIGURATIONS[type];
-        const items = getFieldValueFromPath(this.system, configuration.fieldPath);
-        const item = items.find(it => it._id === id);
-        if (item) {
-            const hasChanges = forceSave || (!!name && name !== item.name) || JSON.stringify(data) !== JSON.stringify(item.data);
-            if (hasChanges) {
-                if (name) {
-                    item.name = name;
-                }
-                if (data) {
-                    item.data = data;
-                }
-                await this.update({
-                    system: getUpdateObjectFromPath(items, configuration.fieldPath)
-                });
-            }
-        }
-    }
-    getItem(itemId) {
-        return this.getEmbeddedDocument('Item', itemId);
-    }
-    getInnerItem(type, itemId) {
-        const configuration = ALL_ITEM_CONFIGURATIONS[type];
-        return getFieldValueFromPath(this.system, configuration.fieldPath).find(item => item._id === itemId);
-    }
+  }
+  getItem(itemId) {
+    return this.getEmbeddedDocument("Item", itemId);
+  }
+  getInnerItem(type, itemId) {
+    const configuration = ALL_ITEM_CONFIGURATIONS[type];
+    return getFieldValueFromPath(this.system, configuration.fieldPath).find(
+      (item) => item._id === itemId
+    );
+  }
 }

@@ -36,7 +36,7 @@
     inputName='attacker.combat.weaponUsed'
   }}
     {{#each this.attacker.actor.system.combat.weapons}}
-      <option {{#if (is "eq" this._id ../this.attacker.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>{{localize 'macros.combat.dialog.weaponRow.attack.title' name=this.name value=this.data.attack.final.value}}</option>
+      <option {{#if (is "eq" this._id ../this.attacker.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>{{localize 'macros.combat.dialog.weaponRow.attack.title' name=this.name value=this.system.attack.final.value}}</option>
     {{/each}}
   {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{/if}}
@@ -48,7 +48,7 @@
       disabled=this.attackSent
       inputName='attacker.combat.criticSelected'
     }}
-      <option {{#if (is "eq" this.attacker.combat.weapon.data.critic.primary.value this.attacker.combat.criticSelected)}}selected{{/if}} value='{{this.attacker.combat.weapon.data.critic.primary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.' this.attacker.combat.weapon.data.critic.primary.value '.title')}}</option>
+      <option {{#if (is "eq" this.attacker.combat.weapon.system.critic.primary.value this.attacker.combat.criticSelected)}}selected{{/if}} value='{{this.attacker.combat.weapon.system.critic.primary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.' this.attacker.combat.weapon.system.critic.primary.value '.title')}}</option>
       <option value='impact'>{{localize 'anima.ui.combat.armors.at.impact.title'}}</option>
       <option value='cut'>{{localize 'anima.ui.combat.armors.at.cut.title'}}</option>  
       <option value='thrust'>{{localize 'anima.ui.combat.armors.at.thrust.title'}}</option>  
@@ -64,7 +64,7 @@
       disabled=true
       inputName='attacker.combat.criticSelected'
     }}
-      <option selected value='{{this.attacker.combat.weapon.data.critic.primary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.' this.attacker.combat.weapon.data.critic.primary.value '.title')}}</option>
+      <option selected value='{{this.attacker.combat.weapon.system.critic.primary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.' this.attacker.combat.weapon.system.critic.primary.value '.title')}}</option>
     {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
   {{/if}}
 {{/unless}}

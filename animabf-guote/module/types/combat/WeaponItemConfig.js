@@ -157,7 +157,7 @@ export const WeaponItemConfig = {
     onAttach: (data, item) => {
         const combat = data.combat;
         const items = combat.weapons;
-        item.data = foundry.utils.mergeObject(item.data, INITIAL_WEAPON_DATA, { overwrite: false });
+        item.system = foundry.utils.mergeObject(item.system, INITIAL_WEAPON_DATA, { overwrite: false });
         if (items) {
             const itemIndex = items.findIndex(i => i._id === item._id);
             if (itemIndex !== -1) {
@@ -171,9 +171,9 @@ export const WeaponItemConfig = {
             combat.weapons = [item];
         }
         combat.weapons = combat.weapons.map(weapon => {
-            if (weapon.data.isRanged && typeof weapon.data.ammoId === 'string' && !!weapon.data.ammoId) {
+            if (weapon.system.isRanged && typeof weapon.system.ammoId === 'string' && !!weapon.system.ammoId) {
                 const ammo = combat.ammo;
-                weapon.data.ammo = ammo.find(i => i._id === weapon.data.ammoId);
+                weapon.system.ammo = ammo.find(i => i._id === weapon.system.ammoId);
             }
             return weapon;
         });

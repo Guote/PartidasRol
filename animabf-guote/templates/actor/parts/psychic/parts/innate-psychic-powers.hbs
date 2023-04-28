@@ -17,7 +17,7 @@
           title=(localize "anima.ui.psychic.innatePsychicPower.power.title")
           hideTitle=(is "gt" @index 0)
           inputType="text"
-          inputName=(concat "data.dynamic.innatePsychicPowers." this._id ".name")
+          inputName=(concat ".dynamic.innatePsychicPowers." this._id ".name")
           inputValue=this.name
         }}
 
@@ -27,8 +27,8 @@
           title=(localize "anima.ui.psychic.innatePsychicPower.effect.title")
           hideTitle=(is "gt" @index 0)
           inputType="text"
-          inputName=(concat "data.dynamic.innatePsychicPowers." this._id ".data.effect.value")
-          inputValue=this.data.effect.value
+          inputName=(concat ".dynamic.innatePsychicPowers." this._id ".system.effect.value")
+          inputValue=this.system.effect.value
         }}
 
         {{>
@@ -36,8 +36,8 @@
           class="value"
           title=(localize "anima.ui.psychic.innatePsychicPower.value.title")
           hideTitle=(is "gt" @index 0)
-          inputName=(concat "data.dynamic.innatePsychicPowers." this._id ".data.value.value")
-          inputValue=this.data.value.value
+          inputName=(concat ".dynamic.innatePsychicPowers." this._id ".system.value.value")
+          inputValue=this.system.value.value
         }}
 
       </div>

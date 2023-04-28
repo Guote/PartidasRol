@@ -17,7 +17,7 @@
           hideTitle=(is "gt" @index 0)
           title=(localize 'anima.ui.inventoryItemsSection.name.title')
           inputType="text"
-          inputName=(concat "data.dynamic.inventory." this._id ".name")
+          inputName=(concat ".dynamic.inventory." this._id ".name")
           inputValue=this.name
         }}
         {{>
@@ -25,16 +25,16 @@
           class="amount"
           hideTitle=(is "gt" @index 0)
           title=(localize 'anima.ui.inventoryItemsSection.amount.title')
-          inputName=(concat "data.dynamic.inventory." this._id ".data.amount.value")
-          inputValue=this.data.amount.value
+          inputName=(concat ".dynamic.inventory." this._id ".system.amount.value")
+          inputValue=this.system.amount.value
         }}
         {{>
         "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
           class="weight"
           hideTitle=(is "gt" @index 0)
           title=(localize 'anima.ui.inventoryItemsSection.weight.title')
-          inputName=(concat "data.dynamic.inventory." this._id ".data.weight.value")
-          inputValue=this.data.weight.value
+          inputName=(concat ".dynamic.inventory." this._id ".system.weight.value")
+          inputValue=this.system.weight.value
         }}
       </div>
     {{/each}}

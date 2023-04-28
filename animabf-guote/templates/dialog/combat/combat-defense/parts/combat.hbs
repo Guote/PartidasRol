@@ -37,7 +37,7 @@
     inputName='defender.combat.weaponUsed'
   }}
     {{#each this.defender.actor.system.combat.weapons}}
-      <option {{#if (is 'eq' this._id ../this.defender.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>{{localize 'macros.combat.dialog.weaponRow.defense.title' name=this.name value=this.data.block.final.value}}</option>
+      <option {{#if (is 'eq' this._id ../this.defender.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>{{localize 'macros.combat.dialog.weaponRow.defense.title' name=this.name value=this.system.block.final.value}}</option>
     {{/each}}
   {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{/if}}

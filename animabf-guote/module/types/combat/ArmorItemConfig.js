@@ -70,7 +70,7 @@ export const ArmorItemConfig = {
     },
     onAttach: (data, item) => {
         const items = data.combat.armors;
-        item.data = foundry.utils.mergeObject(item.data, INITIAL_ARMOR_DATA, { overwrite: false });
+        item.system = foundry.utils.mergeObject(item.system, INITIAL_ARMOR_DATA, { overwrite: false });
         if (items) {
             const itemIndex = items.findIndex(i => i._id === item._id);
             if (itemIndex !== -1) {

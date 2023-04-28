@@ -17,7 +17,7 @@
           title=(localize 'anima.ui.contactSection.contactRow.name')
           hideTitle=(is "gt" @index 0)
           inputType="text"
-          inputName=(concat "data.dynamic.contacts." this._id ".name")
+          inputName=(concat ".dynamic.contacts." this._id ".name")
           inputValue=this.name
         }}
         {{>
@@ -26,8 +26,8 @@
           title=(localize 'anima.ui.contactSection.contactRow.description')
           hideTitle=(is "gt" @index 0)
           inputType="text"
-          inputName=(concat "data.dynamic.contacts." this._id ".data.description.value")
-          inputValue=this.data.description.value
+          inputName=(concat ".dynamic.contacts." this._id ".system.description.value")
+          inputValue=this.system.description.value
         }}
       </div>
     {{/each}}

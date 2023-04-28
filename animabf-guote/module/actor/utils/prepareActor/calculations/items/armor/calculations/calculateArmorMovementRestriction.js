@@ -1,1 +1,1 @@
-export const calculateArmorMovementRestriction = (armor) => Math.min(armor.data.movementRestriction.base.value + Math.floor(armor.data.quality.value / 5), 0);
+export const calculateArmorMovementRestriction = (armor) => Math.min(armor.system.movementRestriction.base.value + Math.floor(armor.system.quality.value / 5), 0);

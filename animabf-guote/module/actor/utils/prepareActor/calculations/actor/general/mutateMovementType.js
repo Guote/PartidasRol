@@ -9,7 +9,7 @@ const calculateArmorsMovementTypeModifier = (system) => {
     return Math.min(0, wearArmorModifier + armorsMovementRestrictions);
 };
 export const mutateMovementType = (system) => {
-    const armorsMovementRestrictions = calculateArmorsMovementTypeModifier(system);
+    const armorsMovementRestrictions = calculateArmorsMovementTypeModifier(system); 
     const { movementType } = system.characteristics.secondaries;
     movementType.final.value =
         movementType.mod.value +

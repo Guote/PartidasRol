@@ -117,7 +117,7 @@ export class CombatDefenseDialog extends FormApplication {
                 baseDefense = this.defenderActor.system.combat.dodge.base.value;
             }
             else {
-                value = weapon ? weapon.data.block.final.value : this.defenderActor.system.combat.block.final.value;
+                value = weapon ? weapon.system.block.final.value : this.defenderActor.system.combat.block.final.value;
                 baseDefense = this.defenderActor.system.combat.block.base.value;
             }
             let formula = `1d100xa + ${modifier ?? 0} + ${fatigue ?? 0} * 20 - ${(multipleDefensesPenalty ?? 0) * -1} + ${value}`;
