@@ -5,7 +5,7 @@ export const SecondarySpecialSkillItemConfig = {
     isInternal: true,
     fieldPath: ['secondaries', 'secondarySpecialSkills'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.secondarySpecialSkills;
+        return changes.system.dynamic.secondarySpecialSkills;
     },
     selectors: {
         addItemButtonSelector: 'add-secondary-special-skill',

@@ -5,7 +5,7 @@ export const LevelItemConfig = {
     isInternal: true,
     fieldPath: ['general', 'levels'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.levels;
+        return changes.system.dynamic.levels;
     },
     selectors: {
         addItemButtonSelector: 'add-level',

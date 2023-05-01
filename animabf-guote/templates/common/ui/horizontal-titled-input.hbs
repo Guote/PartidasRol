@@ -22,7 +22,7 @@
 
   <div class='input-container {{#if this.hasSecondaryInput}}big{{/if}}'>
     <input
-      {{#if this.addTooltips}}title='Base'{{/if}}
+      {{#if this.addTooltips}}title='{{#if this.hasTertiaryInput}}Bonus{{else}}Base{{/if}}'{{/if}}
       {{#if this.disabled}}disabled{{/if}}
       name='{{this.inputName}}'
       type='{{#if this.inputType}}{{this.inputType}}{{else}}number{{/if}}'
@@ -42,7 +42,7 @@
     {{/if}}
     {{#if this.hasTertiaryInput}}
       <input
-        {{#if this.addTooltips}}title='Final'{{/if}}
+        {{#if this.addTooltips}}title='Malus'{{/if}}
         {{#if this.disableTertiaryInput}}disabled{{/if}}
         name='{{this.tertiaryInputName}}'
         type='{{#if this.tertiaryInputType}}{{this.tertiaryInputType}}{{else}}number{{/if}}'

@@ -5,7 +5,7 @@ export const SelectedSpellItemConfig = {
     isInternal: true,
     fieldPath: ['mystic', 'selectedSpells'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.selectedSpells;
+        return changes.system.dynamic.selectedSpells;
     },
     selectors: {
         addItemButtonSelector: 'add-selected-spell',

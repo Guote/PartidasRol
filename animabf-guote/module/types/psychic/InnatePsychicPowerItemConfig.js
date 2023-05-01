@@ -5,7 +5,7 @@ export const InnatePsychicPowerItemConfig = {
     isInternal: true,
     fieldPath: ['psychic', 'innatePsychicPowers'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.innatePsychicPowers;
+        return changes.system.dynamic.innatePsychicPowers;
     },
     selectors: {
         addItemButtonSelector: 'add-innate-psychic-power',

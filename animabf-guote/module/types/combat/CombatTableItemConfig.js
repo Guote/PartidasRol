@@ -5,7 +5,7 @@ export const CombatTableItemConfig = {
     isInternal: true,
     fieldPath: ['combat', 'combatTables'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.combatTables;
+        return changes.system.dynamic.combatTables;
     },
     selectors: {
         addItemButtonSelector: 'add-combat-table',

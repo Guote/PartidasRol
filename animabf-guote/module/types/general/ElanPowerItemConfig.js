@@ -6,7 +6,7 @@ export const ElanPowerItemConfig = {
     isInternal: true,
     fieldPath: [],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.elan_power;
+        return changes.system.dynamic.elan_power;
     },
     selectors: {
         addItemButtonSelector: 'add-elan-power',

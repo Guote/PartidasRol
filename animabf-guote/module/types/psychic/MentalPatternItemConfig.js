@@ -5,7 +5,7 @@ export const MentalPatternItemConfig = {
     isInternal: false,
     fieldPath: ['psychic', 'mentalPatterns'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.mentalPatterns;
+        return changes.system.dynamic.mentalPatterns;
     },
     selectors: {
         addItemButtonSelector: 'add-mental-pattern',

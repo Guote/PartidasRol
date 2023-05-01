@@ -8,8 +8,8 @@ import { INITIAL_ACTOR_DATA } from "./constants.js";
 import ABFActorSheet from "./ABFActorSheet.js";
 import { Log } from "../../utils/Log.js";
 export class ABFActor extends Actor {
-  constructor(data, context) {
-    super(data, context);
+  constructor(system, context) {
+    super(system, context);
     this.i18n = game.i18n;
     if (this.system.version !== INITIAL_ACTOR_DATA.version) {
       Log.log(
@@ -47,16 +47,16 @@ export class ABFActor extends Actor {
       },
     });
   }
-  async createItem({ type, name, data = {} }) {
-    await this.createEmbeddedDocuments("Item", [{ type, name, data }]);
+  async createItem({ type, name, system = {} }) {
+    await this.createEmbeddedDocuments("Item", [{ type, name, system }]);
   }
-  async createInnerItem({ type, name, data = {} }) {
+  async createInnerItem({ type, name, system = {} }) {
     const configuration = ALL_ITEM_CONFIGURATIONS[type];
     const items =
       getFieldValueFromPath(this.system, configuration.fieldPath) ?? [];
     await this.update({
       system: getUpdateObjectFromPath(
-        [...items, { _id: nanoid(), type, name, data }],
+        [...items, { _id: nanoid(), type, name, system }],
         configuration.fieldPath
       ),
     });
@@ -79,7 +79,7 @@ export class ABFActor extends Actor {
   _getSheetClass() {
     return ABFActorSheet;
   }
-  async updateInnerItem({ type, id, name, data = {} }, forceSave = false) {
+  async updateInnerItem({ type, id, name, system = {} }, forceSave = false) {
     const configuration = ALL_ITEM_CONFIGURATIONS[type];
     const items = getFieldValueFromPath(this.system, configuration.fieldPath);
     const item = items.find((it) => it._id === id);
@@ -87,13 +87,13 @@ export class ABFActor extends Actor {
       const hasChanges =
         forceSave ||
         (!!name && name !== item.name) ||
-        JSON.stringify(data) !== JSON.stringify(item.data);
+        JSON.stringify(system) !== JSON.stringify(item.system);
       if (hasChanges) {
         if (name) {
           item.name = name;
         }
-        if (data) {
-          item.data = data;
+        if (system) {
+          item.system = system;
         }
         await this.update({
           system: getUpdateObjectFromPath(items, configuration.fieldPath),

@@ -5,7 +5,7 @@ export const LanguageItemConfig = {
     isInternal: true,
     fieldPath: ['general', 'languages', 'others'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.languages;
+        return changes.system.dynamic.languages;
     },
     selectors: {
         addItemButtonSelector: 'add-language',

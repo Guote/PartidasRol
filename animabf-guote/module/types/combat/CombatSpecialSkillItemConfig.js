@@ -5,7 +5,7 @@ export const CombatSpecialSkillItemConfig = {
     isInternal: true,
     fieldPath: ['combat', 'combatSpecialSkills'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.combatSpecialSkills;
+        return changes.system.dynamic.combatSpecialSkills;
     },
     selectors: {
         addItemButtonSelector: 'add-combat-special-skill',

@@ -5,7 +5,7 @@ export const SpellMaintenanceItemConfig = {
     isInternal: true,
     fieldPath: ['mystic', 'spellMaintenances'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.spellMaintenances;
+        return changes.system.dynamic.spellMaintenances;
     },
     selectors: {
         addItemButtonSelector: 'add-spell-maintenance',

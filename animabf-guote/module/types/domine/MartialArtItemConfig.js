@@ -5,7 +5,7 @@ export const MartialArtItemConfig = {
     isInternal: true,
     fieldPath: ['domine', 'martialArts'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.martialArts;
+        return changes.system.dynamic.martialArts;
     },
     selectors: {
         addItemButtonSelector: 'add-martial-art',

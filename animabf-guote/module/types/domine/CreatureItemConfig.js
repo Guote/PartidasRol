@@ -5,7 +5,7 @@ export const CreatureItemConfig = {
     isInternal: true,
     fieldPath: ['domine', 'creatures'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.creatures;
+        return changes.system.dynamic.creatures;
     },
     selectors: {
         addItemButtonSelector: 'add-creature',

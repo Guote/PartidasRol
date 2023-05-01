@@ -5,7 +5,7 @@ export const MetamagicItemConfig = {
     isInternal: true,
     fieldPath: ['mystic', 'metamagics'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.metamagics;
+        return changes.system.dynamic.metamagics;
     },
     selectors: {
         addItemButtonSelector: 'add-metamagic',

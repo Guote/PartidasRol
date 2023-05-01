@@ -11,7 +11,7 @@ export const PsychicPowerItemConfig = {
     hasSheet: true,
     fieldPath: ['psychic', 'psychicPowers'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.psychicPowers;
+        return changes.system.dynamic.psychicPowers;
     },
     selectors: {
         addItemButtonSelector: 'add-psychic-power',

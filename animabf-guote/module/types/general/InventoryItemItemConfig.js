@@ -5,7 +5,7 @@ export const InventoryItemItemConfig = {
     isInternal: true,
     fieldPath: ['general', 'inventory'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.inventory;
+        return changes.system.dynamic.inventory;
     },
     selectors: {
         addItemButtonSelector: 'add-inventory-item',

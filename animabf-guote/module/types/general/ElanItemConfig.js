@@ -6,7 +6,7 @@ export const ElanItemConfig = {
     isInternal: true,
     fieldPath: ['general', 'elan'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.elan;
+        return changes.system.dynamic.elan;
     },
     selectors: {
         addItemButtonSelector: 'add-elan',

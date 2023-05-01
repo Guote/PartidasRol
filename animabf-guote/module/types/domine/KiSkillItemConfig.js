@@ -5,7 +5,7 @@ export const KiSkillItemConfig = {
     isInternal: true,
     fieldPath: ['domine', 'kiSkills'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.kiSkills;
+        return changes.system.dynamic.kiSkills;
     },
     selectors: {
         addItemButtonSelector: 'add-ki-skill',

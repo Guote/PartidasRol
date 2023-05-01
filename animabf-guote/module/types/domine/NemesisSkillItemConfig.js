@@ -5,7 +5,7 @@ export const NemesisSkillItemConfig = {
     isInternal: true,
     fieldPath: ['domine', 'nemesisSkills'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.nemesisSkills;
+        return changes.system.dynamic.nemesisSkills;
     },
     selectors: {
         addItemButtonSelector: 'add-nemesis-skill',

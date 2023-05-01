@@ -5,7 +5,7 @@ export const ContactItemConfig = {
     isInternal: true,
     fieldPath: ['general', 'contacts'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.contacts;
+        return changes.system.dynamic.contacts;
     },
     selectors: {
         addItemButtonSelector: 'add-contact',

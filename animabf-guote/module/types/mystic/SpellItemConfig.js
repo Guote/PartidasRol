@@ -13,7 +13,7 @@ export const SpellItemConfig = {
     hasSheet: true,
     fieldPath: ['mystic', 'spells'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.spells;
+        return changes.system.dynamic.spells;
     },
     selectors: {
         addItemButtonSelector: 'add-spell',

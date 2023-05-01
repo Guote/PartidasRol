@@ -5,7 +5,7 @@ export const TitleItemConfig = {
     isInternal: true,
     fieldPath: ['general', 'titles'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.titles;
+        return changes.system.dynamic.titles;
     },
     selectors: {
         addItemButtonSelector: 'add-title',

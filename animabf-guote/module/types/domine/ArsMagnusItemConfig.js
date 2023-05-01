@@ -5,7 +5,7 @@ export const ArsMagnusItemConfig = {
     isInternal: true,
     fieldPath: ['domine', 'arsMagnus'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.arsMagnus;
+        return changes.system.dynamic.arsMagnus;
     },
     selectors: {
         addItemButtonSelector: 'add-ars-magnus',

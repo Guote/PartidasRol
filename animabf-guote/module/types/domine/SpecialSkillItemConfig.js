@@ -5,7 +5,7 @@ export const SpecialSkillItemConfig = {
     isInternal: true,
     fieldPath: ['domine', 'specialSkills'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.specialSkills;
+        return changes.system.dynamic.specialSkills;
     },
     selectors: {
         addItemButtonSelector: 'add-special-skill',

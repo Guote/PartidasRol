@@ -5,7 +5,7 @@ export const SummonItemConfig = {
     isInternal: true,
     fieldPath: ['mystic', 'summons'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.summons;
+        return changes.system.dynamic.summons;
     },
     selectors: {
         addItemButtonSelector: 'add-summon',

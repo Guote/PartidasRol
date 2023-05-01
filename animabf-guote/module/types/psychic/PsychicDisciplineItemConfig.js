@@ -5,7 +5,7 @@ export const PsychicDisciplineItemConfig = {
     isInternal: false,
     fieldPath: ['psychic', 'psychicDisciplines'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.psychicDisciplines;
+        return changes.system.dynamic.psychicDisciplines;
     },
     selectors: {
         addItemButtonSelector: 'add-psychic-discipline',
