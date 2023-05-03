@@ -8,6 +8,7 @@ import { getDifficultyFromIndexHBSHelper } from "./helpers/getDifficultyFromInde
 import { iterateNumberHBSHelper } from "./helpers/iterateNumberHBSHelper.js";
 import { notHBSHelper } from "./helpers/notHBSHelper.js";
 import { minNumberHBSHelper } from "./helpers/minNumberHBSHelper.js";
+import {logicHBSHelper} from "./helpers/logicHBSHelper.js"
 export const registerHelpers = () => {
     const helpers = [
         calculateExperienceHBSHelper,
@@ -17,6 +18,7 @@ export const registerHelpers = () => {
         getKeyOfHBSHelper,
         isHBSHelper,
         iterateNumberHBSHelper,
+        logicHBSHelper,
         manipulateStringHBSHelper,
         mathHBSHelper,
         minNumberHBSHelper

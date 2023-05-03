@@ -58,7 +58,7 @@
         isVertical=true
         choices=config.iterables.combat.weapon.sizes
         title=(localize "anima.ui.combat.weapons.size.title")
-        inputName="data.size.value"
+        inputName="system.size.value"
         inputValue=system.size.value
       }}
       {{>
@@ -67,7 +67,7 @@
         isVertical=true
         choices=config.iterables.combat.weapon.sizeProportions
         title=(localize "anima.ui.combat.weapons.sizeProportion.title")
-        inputName="data.sizeProportion.value"
+        inputName="system.sizeProportion.value"
         inputValue=system.sizeProportion.value
       }}
       {{>
@@ -104,7 +104,7 @@
         isVertical=true
         choices=config.iterables.combat.weapon.manageabilityTypes
         title=(localize "anima.ui.combat.weapon.manageabilityType.title")
-        inputName="data.manageabilityType.value"
+        inputName="system.manageabilityType.value"
         inputValue=system.manageabilityType.value
       }}
       {{#if (or (is 'eq' system.manageabilityType.value 'one_hand') (is 'eq' system.manageabilityType.value 'one_or_two_hands'))}}
@@ -155,7 +155,7 @@
           isVertical=true
           choices=config.iterables.combat.weapon.shotTypes
           title=(localize "anima.ui.combat.weapon.shotType.title")
-          inputName="data.shotType.value"
+          inputName="system.shotType.value"
           inputValue=system.shotType.value
         }}
         {{#if (is 'eq' system.shotType.value 'throw')}}

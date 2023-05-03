@@ -21,7 +21,7 @@ export const InventoryItemItemConfig = {
     },
     onUpdate: async (actor, changes) => {
         for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
+            const { name, system} = changes[id];
             actor.updateInnerItem({ type: ABFItems.INVENTORY_ITEM, id, name, data });
         }
     },

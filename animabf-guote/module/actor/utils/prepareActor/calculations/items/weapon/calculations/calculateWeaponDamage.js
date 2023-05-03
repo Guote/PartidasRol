@@ -10,10 +10,10 @@ const addSizeModifier = (weapon, damage) => {
     }
     return damage;
 };
-export const calculateWeaponDamage = (weapon, data) => {
+export const calculateWeaponDamage = (weapon, system) => {
     const getDamage = () => {
-        const weaponStrengthModifier = calculateWeaponStrengthModifier(weapon, data);
-        const extraDamage = data.general.modifiers.extraDamage.value;
+        const weaponStrengthModifier = calculateWeaponStrengthModifier(weapon, system);
+        const extraDamage = system.general.modifiers.extraDamage.value;
         if (weapon.system.isRanged.value && weapon.system.shotType.value === WeaponShotType.SHOT) {
             const { ammo } = weapon.system;
             if (ammo) {

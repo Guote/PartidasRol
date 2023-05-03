@@ -125,7 +125,7 @@ export const WeaponItemConfig = {
     hasSheet: true,
     fieldPath: ['combat', 'weapons'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.weapons;
+        return changes.system.dynamic.weapons;
     },
     selectors: {
         addItemButtonSelector: 'add-weapon',
@@ -146,7 +146,7 @@ export const WeaponItemConfig = {
     },
     onUpdate: async (actor, changes) => {
         for (const id of Object.keys(changes)) {
-            const { name, system } = changes[id];
+            const { name, system} = changes[id];
             actor.updateItem({
                 id,
                 name,

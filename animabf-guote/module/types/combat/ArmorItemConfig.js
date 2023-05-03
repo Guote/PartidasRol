@@ -39,7 +39,7 @@ export const ArmorItemConfig = {
     hasSheet: true,
     fieldPath: ['combat', 'armors'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.armors;
+        return changes.system.dynamic.armors;
     },
     selectors: {
         addItemButtonSelector: 'add-armor',
@@ -60,11 +60,11 @@ export const ArmorItemConfig = {
     },
     onUpdate: async (actor, changes) => {
         for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
+            const { name, system} = changes[id];
             actor.updateItem({
                 id,
                 name,
-                data
+                system
             });
         }
     },

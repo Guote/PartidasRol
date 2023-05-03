@@ -1,8 +1,8 @@
 import { getWeaponRangeFromStrength } from "../util/getWeaponRangeFromStrength.js";
-export const calculateWeaponRange = (weapon, data) => {
+export const calculateWeaponRange = (weapon, system) => {
     const strength = weapon.system.hasOwnStr.value
         ? weapon.system.weaponStrength.final.value
-        : data.characteristics.primaries.strength.value;
+        : system.characteristics.primaries.strength.value;
     const baseRange = weapon.system.range.base.value;
     const rangeFromStrength = getWeaponRangeFromStrength(strength);
     if (strength > 10 && weapon.system.quality.value < 5) {

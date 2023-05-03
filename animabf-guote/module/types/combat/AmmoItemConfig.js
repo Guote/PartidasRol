@@ -17,7 +17,7 @@ export const AmmoItemConfig = {
     hasSheet: true,
     fieldPath: ['combat', 'ammo'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.ammo;
+        return changes.system.dynamic.ammo;
     },
     selectors: {
         addItemButtonSelector: 'add-ammo',
@@ -38,11 +38,11 @@ export const AmmoItemConfig = {
     },
     onUpdate: async (actor, changes) => {
         for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
+            const { name, system} = changes[id];
             actor.updateItem({
                 id,
                 name,
-                data
+                system
             });
         }
     },

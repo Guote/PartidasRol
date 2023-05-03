@@ -5,7 +5,7 @@ export const DisadvantageItemConfig = {
     isInternal: false,
     fieldPath: ['general', 'disadvantages'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.disadvantages;
+        return changes.system.dynamic.disadvantages;
     },
     selectors: {
         addItemButtonSelector: 'add-disadvantage',

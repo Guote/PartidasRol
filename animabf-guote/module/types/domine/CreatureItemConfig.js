@@ -41,12 +41,12 @@ export const CreatureItemConfig = {
     },
     onUpdate: async (actor, changes) => {
         for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
+            const { name, system } = changes[id];
             await actor.updateInnerItem({
                 id,
                 type: ABFItems.CREATURE,
                 name,
-                data
+                system
             });
         }
     },

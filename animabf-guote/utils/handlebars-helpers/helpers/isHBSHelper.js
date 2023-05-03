@@ -25,6 +25,9 @@ export const isHBSHelper = {
         if (op === 'lte') {
             return val1 <= val2 ? getTruthyFn() : getFalsyFn();
         }
+        if (op === 'true') {
+            return val1 == true ? getTruthyFn() : getFalsyFn();
+        }
         throw new Error(`Unknown operator (${op})`);
     }
 };

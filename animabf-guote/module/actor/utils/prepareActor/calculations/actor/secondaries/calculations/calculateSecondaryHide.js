@@ -1,5 +1,5 @@
-export const calculateSecondaryHide = (data) => {
-    return (data.secondaries.subterfuge.hide.base.value +
-        data.general.modifiers.allActions.final.value +
-        data.general.modifiers.naturalPenalty.byArmors.value);
+export const calculateSecondaryHide = (system) => {
+    return (system.secondaries.subterfuge.hide.base.value +
+        system.general.modifiers.allActions.final.value +
+        system.general.modifiers.naturalPenalty.byArmors.value);
 };

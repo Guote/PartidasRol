@@ -157,8 +157,10 @@ export default class ABFActorSheet extends ActorSheet {
         formData[key] = parseInt(formData[key], 10);
       }
     });
+    console.log("before", this.actor)
     const [actorChanges, itemChanges] = splitAsActorAndItemChanges(formData);
     await this.updateItems(itemChanges);
+    console.log("after", this.actor)
     return super._updateObject(event, actorChanges);
   }
   activateListeners(html) {
@@ -171,6 +173,19 @@ export default class ABFActorSheet extends ActorSheet {
     html.find(".rollable").click((e) => {
       this._onRoll(e);
     });
+    /* html.find(".testlistener").on("click", (e) => {
+      console.log("asdasd", e);
+      const newValue = e.currentTarget.value === 'true' ? 'true' : 'false'
+      
+      console.log("currentvalue, newvalue", newValue, newValue);
+
+      
+      this.actor.update({
+        system: {
+          ui: { tabVisibility: { domine: { value: newValue} } },
+        },
+      });
+    }); */
     html.find(".contractible-button").click((e) => {
       const { contractibleItemId } = e.currentTarget.dataset;
       if (contractibleItemId) {

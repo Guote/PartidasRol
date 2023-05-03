@@ -1,9 +1,9 @@
 import { calculateNaturalPenaltyWithoutWearArmor } from "../../natural-penalty/calculations/calculateWearArmorNaturalPenalty.js";
-export const calculateSecondarySwim = (data) => {
-    const naturalPenalty = -calculateNaturalPenaltyWithoutWearArmor(data);
-    return (data.secondaries.athletics.swim.base.value +
-        data.general.modifiers.allActions.final.value +
-        data.general.modifiers.physicalActions.value +
+export const calculateSecondarySwim = (system) => {
+    const naturalPenalty = -calculateNaturalPenaltyWithoutWearArmor(system);
+    return (system.secondaries.athletics.swim.base.value +
+        system.general.modifiers.allActions.final.value +
+        system.general.modifiers.physicalActions.value +
         naturalPenalty +
-        data.general.modifiers.naturalPenalty.byWearArmorRequirement.value);
+        system.general.modifiers.naturalPenalty.byWearArmorRequirement.value);
 };

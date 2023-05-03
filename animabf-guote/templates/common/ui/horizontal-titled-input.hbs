@@ -26,9 +26,10 @@
       {{#if this.disabled}}disabled{{/if}}
       name='{{this.inputName}}'
       type='{{#if this.inputType}}{{this.inputType}}{{else}}number{{/if}}'
-      class='input {{#if this.hasSecondaryInput}}primary-input{{/if}}'
-      value='{{this.inputValue}}'
-      {{#if (is 'eq' this.inputValue true)}}checked{{/if}}
+      class='input testlistener {{#if this.hasSecondaryInput}}primary-input{{/if}}'
+      value={{this.inputValue}}
+      {{checked this.inputValue}}
+      {{!-- {{#if (is 'eq' this.inputValue true)}}checked{{/if}} --}}
     />
     {{#if this.hasSecondaryInput}}
       <input

@@ -5,7 +5,7 @@ export const AdvantageItemConfig = {
     isInternal: false,
     fieldPath: ['general', 'advantages'],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.advantages;
+        return changes.system.dynamic.advantages;
     },
     selectors: {
         addItemButtonSelector: 'add-advantage',
