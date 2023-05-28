@@ -197,6 +197,38 @@
           }}
         {{/if}}
       {{/if}}
+        {{>
+          "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+            class="is-summon"
+            title="is summon"
+            inputType="checkbox"
+            inputName=(concat "data.isSummon")
+            inputValue=(is 'eq' data.data.isSummon true)
+        }}
+        {{#if (is 'eq' data.data.isSummon true)}}
+            {{>
+            "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+              class="baseAtk"
+              title="baseAtk"
+              inputName=(concat "data.baseAtk.value")
+              inputValue=data.data.baseAtk.value
+              hasSecondaryInput=true
+              disableSecondaryInput=true
+              secondaryInputName=(concat "data.baseAtk.value.value")
+              secondaryInputValue=data.data.baseAtk.value
+            }}
+            {{>
+            "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+              class="baseDef"
+              title="baseDef"
+              inputName=(concat "data.baseDef.value")
+              inputValue=data.data.baseDef.value
+              hasSecondaryInput=true
+              disableSecondaryInput=true
+              secondaryInputName=(concat "data.baseDef.value.value")
+              secondaryInputValue=data.data.baseDef.value
+            }}
+        {{/if}}
       {{>
       "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
         class="special"

@@ -135,7 +135,7 @@ Hooks.on('init', () => {
 
         static get layerOptions() { // @ts-ignore
             return mergeObject(super.layerOptions, {
-                zIndex: 220, // Above imageFog  // TODO Check this
+                zIndex: 50, // Above imageFog  // TODO Check this
             });
         }
 

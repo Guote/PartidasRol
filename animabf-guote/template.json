@@ -6,7 +6,11 @@
       "version": 0,
       "ui": {
         "contractibleItems": {},
-        "tabVisibility": { "mystic": { "value": false }, "domine": { "value": false }, "psychic": { "value": false } }
+        "tabVisibility": {
+          "mystic": { "value": false },
+          "domine": { "value": false },
+          "psychic": { "value": false }
+        }
       },
       "general": {
         "settings": {
@@ -18,13 +22,39 @@
         "modifiers": {
           "physicalActions": { "value": 0 },
           "allActions": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "naturalPenalty": { "byArmors": { "value": 0 }, "byWearArmorRequirement": { "value": 0 } },
+          "naturalPenalty": {
+            "byArmors": { "value": 0 },
+            "byWearArmorRequirement": { "value": 0 }
+          },
           "extraDamage": { "value": 0 },
-          "modFisico": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } },
-          "modSobrenatural": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } },
-          "modOtros": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } },
-          "modManiobras": { "ha": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } }, "hd": { "bonus": { "value": 0 }, "malus": { "value": 0 },  "final": { "value": 0 } } },
-          "defenseCounter": {"value": 0},
+          "modFisico": {
+            "bonus": { "value": 0 },
+            "malus": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "modSobrenatural": {
+            "bonus": { "value": 0 },
+            "malus": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "modOtros": {
+            "bonus": { "value": 0 },
+            "malus": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "modManiobras": {
+            "ha": {
+              "bonus": { "value": 0 },
+              "malus": { "value": 0 },
+              "final": { "value": 0 }
+            },
+            "hd": {
+              "bonus": { "value": 0 },
+              "malus": { "value": 0 },
+              "final": { "value": 0 }
+            }
+          },
+          "defenseCounter": { "value": 0 },
           "combatPosture": "normal",
           "previousPosture": "normal"
         },
@@ -44,7 +74,11 @@
         "advantages": [],
         "contacts": [],
         "inventory": [],
-        "money": { "cooper": { "value": 0 }, "silver": { "value": 0 }, "gold": { "value": 0 } },
+        "money": {
+          "cooper": { "value": 0 },
+          "silver": { "value": 0 },
+          "gold": { "value": 0 }
+        },
         "description": { "value": "" },
         "disadvantages": [],
         "elan": [],
@@ -54,11 +88,11 @@
         "notes": [],
         "titles": [],
         "customResources": {
-          "customResource_1": {"value": 0, "max": 0},
-          "customResource_2": {"value": 0, "max": 0},
-          "customResource_3": {"value": 0, "max": 0},
-          "customResource_4": {"value": 0, "max": 0},
-          "customResource_5": {"value": 0, "max": 0}
+          "customResource_1": { "value": 0, "max": 0 },
+          "customResource_2": { "value": 0, "max": 0 },
+          "customResource_3": { "value": 0, "max": 0 },
+          "customResource_4": { "value": 0, "max": 0 },
+          "customResource_5": { "value": 0, "max": 0 }
         }
       },
       "characteristics": {
@@ -76,7 +110,10 @@
           "lifePoints": { "value": 100, "max": 100 },
           "initiative": { "base": { "value": 0 }, "final": { "value": 0 } },
           "fatigue": { "value": 0, "max": 0 },
-          "regenerationType": { "mod": { "value": 0 }, "final": { "value": 0 } },
+          "regenerationType": {
+            "mod": { "value": 0 },
+            "final": { "value": 0 }
+          },
           "regeneration": {
             "normal": { "value": 0, "period": "" },
             "resting": { "value": 0, "period": "" },
@@ -123,7 +160,10 @@
         },
         "vigor": {
           "composure": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "featsOfStrength": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "featsOfStrength": {
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
           "withstandPain": { "base": { "value": 0 }, "final": { "value": 0 } }
         },
         "perception": {
@@ -172,7 +212,10 @@
           "animism": { "base": { "value": 0 }, "final": { "value": 0 } },
           "music": { "base": { "value": 0 }, "final": { "value": 0 } },
           "sleightOfHand": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "ritualCalligraphy": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "ritualCalligraphy": {
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
           "jewelry": { "base": { "value": 0 }, "final": { "value": 0 } },
           "tailoring": { "base": { "value": 0 }, "final": { "value": 0 } },
           "puppetMaking": { "base": { "value": 0 }, "final": { "value": 0 } }
@@ -208,7 +251,10 @@
         },
         "zeon": { "accumulated": 0, "value": 0, "max": 0 },
         "zeonRegeneration": { "base": { "value": 0 }, "final": { "value": 0 } },
-        "innateMagic": { "main": { "value": 0 }, "alternative": { "value": 0 } },
+        "innateMagic": {
+          "main": { "value": 0 },
+          "alternative": { "value": 0 }
+        },
         "magicProjection": {
           "base": { "value": 0 },
           "final": { "value": 0 },
@@ -272,12 +318,36 @@
         },
         "martialKnowledge": { "used": { "value": 0 }, "max": { "value": 0 } },
         "kiAccumulation": {
-          "strength": { "accumulated": { "value": 0 }, "base": { "value": 0 }, "final": { "value": 0 } },
-          "agility": { "accumulated": { "value": 0 }, "base": { "value": 0 }, "final": { "value": 0 } },
-          "dexterity": { "accumulated": { "value": 0 }, "base": { "value": 0 }, "final": { "value": 0 } },
-          "constitution": { "accumulated": { "value": 0 }, "base": { "value": 0 }, "final": { "value": 0 } },
-          "willPower": { "accumulated": { "value": 0 }, "base": { "value": 0 }, "final": { "value": 0 } },
-          "power": { "accumulated": { "value": 0 }, "base": { "value": 0 }, "final": { "value": 0 } },
+          "strength": {
+            "accumulated": { "value": 0 },
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "agility": {
+            "accumulated": { "value": 0 },
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "dexterity": {
+            "accumulated": { "value": 0 },
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "constitution": {
+            "accumulated": { "value": 0 },
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "willPower": {
+            "accumulated": { "value": 0 },
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "power": {
+            "accumulated": { "value": 0 },
+            "base": { "value": 0 },
+            "final": { "value": 0 }
+          },
           "generic": { "value": 0, "max": 0 }
         }
       },
@@ -420,7 +490,10 @@
       "cadence": { "value": "" },
       "reload": { "value": 0 },
       "weaponStrength": { "value": 0 },
-      "critic": { "primary": { "value": "-" }, "secondary": { "value": "-" } }
+      "critic": { "primary": { "value": "-" }, "secondary": { "value": "-" } },
+      "isSummon": false,
+      "baseAtk": { "value": 0 },
+      "baseDef": { "value": 0 }
     }
   }
 }
