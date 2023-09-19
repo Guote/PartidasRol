@@ -154,7 +154,7 @@ class DataConverterTable extends DataConverter {
 		}
 
 		// format: "12+"
-		const mPlus = /^(\d+)\+$/.exec(cellClean);
+		const mPlus = /^(\d+)\s*\+$/.exec(cellClean);
 		rangeLow = Number(mPlus[1]);
 		rangeHigh = rangeLow;
 
@@ -162,7 +162,7 @@ class DataConverterTable extends DataConverter {
 	}
 
 	static async _pGetResultText (cells) {
-		const walker = MiscUtil.getWalker({keyBlacklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST});
+		const walker = MiscUtil.getWalker({keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST});
 
 		let cpyCells = UtilDataConverter.getConvertedTagLinkEntries(MiscUtil.copy(cells));
 
@@ -262,10 +262,11 @@ class DataConverterTable extends DataConverter {
 	static getMaxTableRange (table) { return Math.max(0, ...table.results.map(it => it.data.range).flat()); }
 
 	static _getFoundryDiceTagged (str) {
-		return str.replace(/{@(?:dice|damage) ([^}]+)}/gi, (...m) => {
-			const [rollText, displayText] = Renderer.splitTagByPipe(m[1]);
+		return str.replace(/{@(?<tag>dice|damage|autodice) (?<text>[^}]+)}/gi, (...m) => {
+			const isAuto = m.last().tag === "autodice";
+			const [rollText, displayText] = Renderer.splitTagByPipe(m.last().text);
 			const rollTextClean = Vetools.getCleanDiceString(rollText);
-			return `[[/r ${rollTextClean}]]${displayText && rollTextClean.toLowerCase().trim() !== displayText.toLowerCase().trim() ? ` (${displayText})` : ""}`;
+			return `[[${isAuto ? "" : "/r "}${rollTextClean}]]${displayText && rollTextClean.toLowerCase().trim() !== displayText.toLowerCase().trim() ? ` (${displayText})` : ""}`;
 		});
 	}
 

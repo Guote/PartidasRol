@@ -2,7 +2,7 @@ import {Config} from "./Config.js";
 import {LGT} from "./Util.js";
 import {UtilApplications} from "./UtilApplications.js";
 import {UtilActors} from "./UtilActors.js";
-import {UtilWorldContentBlacklist} from "./UtilWorldContentBlacklist.js";
+import {UtilWorldContentBlocklist} from "./UtilWorldContentBlocklist.js";
 
 class RivetBridge {
 	static init () {
@@ -26,7 +26,7 @@ class RivetBridge {
 			case "entity": return this._pHandleEntityMessage(pack);
 			case "currency": return this._pHandleCurrencyMessage(pack);
 			case "5etools.lootgen.loot": return this._pHandleSpecialMessage_5etools_lootgen_loot(pack);
-			case "5etools.blacklist.excludes": return this._pHandleSpecialMessage_5etools_blacklist_excludes(pack);
+			case "5etools.blocklist.excludes": return this._pHandleSpecialMessage_5etools_blocklist_excludes(pack);
 			default: ui.notifications.error(`Unhandled Rivet message with type "${pack.type}"! You may need to update your extension.`);
 		}
 	}
@@ -37,14 +37,20 @@ class RivetBridge {
 		if (!pack.settings.isSendRolls) return;
 
 		const roll = new Roll(data.dice);
-
-		roll.toMessage({
+		const msgData = {
 			speaker: {
 				alias: data.rolledBy,
 			},
 			flavor: data.label,
-			rollMode: pack.settings.isWhisper ? CONST.CHAT_MESSAGE_TYPES.WHISPER : CONST.CHAT_MESSAGE_TYPES.ROLL,
-		});
+			type: pack.settings.isWhisper ? CONST.CHAT_MESSAGE_TYPES.WHISPER : CONST.CHAT_MESSAGE_TYPES.ROLL,
+		};
+		if (pack.settings.isWhisper) {
+			msgData.whisper = game.users
+				.filter(it => it.active && (it.isGM || it.id === game.user.id))
+				.map(it => it.id);
+		}
+
+		roll.toMessage(msgData).then(null);
 	}
 
 	/** Import an entity. */
@@ -103,8 +109,8 @@ class RivetBridge {
 		await LootGeneratorApp.pImportLoot({loot: data, actor, isLogToChat: true, isNotify: true});
 	}
 
-	static async _pHandleSpecialMessage_5etools_blacklist_excludes (pack) {
-		await UtilWorldContentBlacklist.pSaveState(pack.data, {message: "Updated content blacklist!"});
+	static async _pHandleSpecialMessage_5etools_blocklist_excludes (pack) {
+		await UtilWorldContentBlocklist.pSaveState(pack.data, {message: "Updated content blocklist!"});
 	}
 
 	static _getTargetActor () {

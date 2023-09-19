@@ -141,15 +141,17 @@ class UtilActiveEffects {
 		return lookup[path]?.default;
 	}
 
-	static getExpandedEffects (rawEffects, {actor = null, sheetItem = null, parentName = "", additionalData = null, img = null} = {}) {
+	static getExpandedEffects (
+		rawEffects,
+		{actor = null, sheetItem = null, parentName = "", additionalData = null, img = null} = {},
+		{isTuples = false} = {},
+	) {
 		if (!rawEffects || !rawEffects.length) return [];
 
-		const out = [];
+		const tuples = [];
 
 		// Convert the reduced versions in the side data to full-data effects
 		for (const effectRaw of rawEffects) {
-			if (!effectRaw.changes || !effectRaw.changes.length) continue;
-
 			// Create a version of the raw effect with all our known/used props removed; we'll copy the rest over to the
 			//   final effect.
 			const cpyEffectRaw = MiscUtil.copy(effectRaw);
@@ -157,15 +159,18 @@ class UtilActiveEffects {
 
 			const effect = UtilActiveEffects.getGenericEffect({
 				label: effectRaw.name ?? parentName,
-				priority: Math.max(...effectRaw.changes.map(it => UtilActiveEffects.getPriority(UtilActiveEffects.getFoundryMode({mode: it.mode})))),
+				priority: effectRaw?.changes?.length
+					? Math.max(...effectRaw.changes.map(it => UtilActiveEffects.getPriority(UtilActiveEffects.getFoundryMode({mode: it.mode}))))
+					: 0,
 				icon: img ?? sheetItem?.img ?? actor?.data?.img ?? actor?.data?.token?.image,
 				disabled: !!effectRaw.disabled,
+				transfer: !!effectRaw.transfer,
 			});
 
 			if (actor && sheetItem) effect.origin = `Actor.${actor.id}.Item.${sheetItem.id}`;
 
 			effect.changes = effect.changes || [];
-			effectRaw.changes.forEach(rawChange => {
+			(effectRaw.changes || []).forEach(rawChange => {
 				const mode = UtilActiveEffects.getFoundryMode(rawChange.mode);
 
 				// A single raw key can be expanded to multiple keys, e.g.:
@@ -188,10 +193,10 @@ class UtilActiveEffects {
 					effect[k] = v;
 				});
 
-			if (effect.changes.length) out.push(effect);
+			tuples.push({effect, effectRaw});
 		}
 
-		return out;
+		return isTuples ? tuples : tuples.map(it => it.effect);
 	}
 
 	/**
@@ -404,6 +409,14 @@ class UtilActiveEffects {
 	static getPriority ({mode, rawPriority = null}) {
 		if (rawPriority != null && !isNaN(rawPriority)) return rawPriority;
 		return mode >= CONST.ACTIVE_EFFECT_MODES.DOWNGRADE ? UtilActiveEffects.PRIORITY_BASE : UtilActiveEffects.PRIORITY_BONUS;
+	}
+
+	static _HINTS_DEFAULT_SIDE = {hintTransfer: false, hintDisabled: false};
+	static getDisabledTransferHintsSideData (effectRaw) {
+		const out = MiscUtil.copy(this._HINTS_DEFAULT_SIDE);
+		if (effectRaw?.transfer != null) out.hintTransfer = effectRaw.transfer;
+		if (effectRaw?.disabled != null) out.hintDisabled = effectRaw.disabled;
+		return out;
 	}
 }
 UtilActiveEffects._AVAIL_EFFECTS_ACTOR_DND5E = [];

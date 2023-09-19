@@ -37,9 +37,9 @@ class ImportListRecipe extends ImportListJournal {
 		);
 	}
 
-	async _pPostLoad (recipeList, fileData) {
+	async _pPostLoad (fileData) {
 		DataUtil.recipe.postProcessData(fileData);
-		return fileData.recipe || [];
+		return fileData;
 	}
 
 	async _pGetSources () {

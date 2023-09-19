@@ -143,9 +143,9 @@ class DataConverterRaceFeature extends DataConverterFeature {
 		return (await DataConverter._pGetEffectsRawSideLoaded_(raceFeature, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetRaceFeatureItemEffects (actor, feature, sheetItem, {additionalData, img} = {}) {
+	static async pGetRaceFeatureItemEffectTuples (actor, feature, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await DataConverter._pGetEffectsRawSideLoaded_(feature, this._SIDE_LOAD_OPTS);
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem: sheetItem, parentName: feature.raceName, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem: sheetItem, parentName: feature.raceName, additionalData, img}, {isTuples: true});
 	}
 
 	static async _pGetPreloadSideData () {

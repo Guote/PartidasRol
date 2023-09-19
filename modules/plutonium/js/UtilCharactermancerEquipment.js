@@ -134,8 +134,8 @@ class Charactermancer_StartingEquipment extends Application {
 		const compCurrency = actor ? Charactermancer_StartingEquipment.Currency.fromActor(actor) : new Charactermancer_StartingEquipment.Currency();
 		compCurrency.init();
 
-		const compDefault = new Charactermancer_StartingEquipment.ComponentDefault({compCurrency, fnDoShowShop: opts.fnDoShowShop});
-		const compGold = new Charactermancer_StartingEquipment.ComponentGold({compCurrency, itemDatas: opts.itemDatas});
+		const compDefault = new Charactermancer_StartingEquipment.ComponentDefault({compCurrency, actor, fnDoShowShop: opts.fnDoShowShop});
+		const compGold = new Charactermancer_StartingEquipment.ComponentGold({compCurrency, actor, itemDatas: opts.itemDatas});
 
 		return {
 			compCurrency,
@@ -456,10 +456,12 @@ Charactermancer_StartingEquipment.ComponentBase = class extends BaseComponent {
 	 *
 	 * @param opts
 	 * @param [opts.compCurrency]
+	 * @param [opts.actor]
 	 */
 	constructor (opts) {
 		super();
 		this._compCurrency = opts.compCurrency;
+		this._actor = opts.actor;
 	}
 
 	static _getHumanReadableCoinage (copper) {
@@ -493,7 +495,16 @@ Charactermancer_StartingEquipment.ComponentBase = class extends BaseComponent {
 				const roll = new Roll(this._compCurrency.rollableExpressionGold);
 				await roll.evaluate();
 				this._compCurrency.cpRolled = roll.total * 100;
-				roll.toMessage(); // Send the message async
+
+				const optsToMessage = {};
+				if (this._actor) {
+					optsToMessage.speaker = {actor: this._actor.id};
+					optsToMessage.flavor = `<div>${this._actor.name} rolls starting gold!</div>`;
+				}
+
+				roll
+					.toMessage(optsToMessage)
+					.then(null);
 			});
 	}
 
@@ -560,6 +571,7 @@ Charactermancer_StartingEquipment.ComponentDefault = class extends Charactermanc
 	/**
 	 * @param opts
 	 * @param [opts.compCurrency]
+	 * @param [opts.actor]
 	 * @param [opts.equiSpecialSource] The source to be assigned to "special" (i.e. non-statted items).
 	 * @param [opts.equiSpecialPage] The page number to be assigned to "special" (i.e. non-statted items).
 	 * @param [opts.fnDoShowShop]
@@ -958,6 +970,7 @@ Charactermancer_StartingEquipment.ComponentGold = class extends Charactermancer_
 	/**
 	 * @param opts
 	 * @param [opts.compCurrency]
+	 * @param [opts.actor]
 	 * @param [opts.itemDatas]
 	 */
 	constructor (opts) {
@@ -1414,7 +1427,7 @@ Charactermancer_StartingEquipment.ModalFilterEquipment = class extends ModalFilt
 	setDataList (allData) {
 		this._list.removeAllItems();
 
-		this._allData = (allData || []).filter(it => it.value != null && it.type !== "$");
+		this._allData = (allData?.item || []).filter(it => it.value != null && it.type !== "$");
 
 		this._allData.forEach((it, i) => {
 			this._pageFilter.mutateAndAddToFilters(it);
@@ -1438,6 +1451,7 @@ Charactermancer_StartingEquipment.ModalFilterEquipment = class extends ModalFilt
 };
 
 Charactermancer_StartingEquipment._EQUIPMENT_SET_NAMES = {
+	weaponAny: "Weapon",
 	weaponSimple: "Simple Weapon",
 	weaponSimpleMelee: "Simple Melee Weapon",
 	weaponMartial: "Martial Weapon",
@@ -1453,6 +1467,10 @@ Charactermancer_StartingEquipment._EQUIPMENT_SET_NAMES = {
 	toolArtisan: "Artisan's Tool",
 };
 Charactermancer_StartingEquipment._EQUIPMENT_SETS = {
+	weapon: [
+		...UtilDataConverter.WEAPONS_SIMPLE,
+		...UtilDataConverter.WEAPONS_MARTIAL,
+	],
 	weaponSimple: [
 		...UtilDataConverter.WEAPONS_SIMPLE,
 	],

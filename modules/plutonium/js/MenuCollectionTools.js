@@ -9,7 +9,7 @@ import {CompendiumListVisibilityToggler} from "./CompendiumListVisibilityToggler
 import {LootGeneratorApp} from "./LootGeneratorApp.js";
 import {MenuToolInfo} from "./UtilMenu.js";
 import {WorldDataSourceSelector} from "./WorldDataSourceSelector.js";
-import {WorldContentBlacklistSourceSelector, WorldContentBlacklist} from "./WorldContentBlacklist.js";
+import {WorldContentBlocklistSourceSelector, WorldContentBlocklist} from "./WorldContentBlocklist.js";
 import {ImportSpecialImagePreloader} from "./ImportSpecialImagePreloader.js";
 import {Config} from "./Config.js";
 
@@ -105,8 +105,8 @@ MenuCollectionTools._TOOL_LIST = [
 		fnCheckRequirements: type => type !== "compendium" && game.user.isGM,
 	}),
 	new MenuToolInfo({
-		name: WorldContentBlacklist.APP_TITLE,
-		Class: WorldContentBlacklistSourceSelector,
+		name: WorldContentBlocklist.APP_TITLE,
+		Class: WorldContentBlocklistSourceSelector,
 		iconClass: "fa-ban",
 		fnCheckRequirements: type => type !== "compendium" && game.user.isGM,
 	}),

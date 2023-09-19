@@ -1119,6 +1119,7 @@ class Charactermancer_Spell_Level extends BaseComponent {
 		return this._handleAlwaysStateSpells_(
 			{
 				propIx: "ixPrepared",
+				propParentCnt: "cntPrepared",
 				propIxAlways: "ixAlwaysPrepared",
 				propBtn: "btnPrepare",
 				propExistingSpellMetaAlways: "isAlwaysPrepared",
@@ -1131,6 +1132,7 @@ class Charactermancer_Spell_Level extends BaseComponent {
 		return this._handleAlwaysStateSpells_(
 			{
 				propIx: "ixLearned",
+				propParentCnt: this._spellLevel === 0 ? "cntLearnedCantrips" : "cntLearnedSpells",
 				propIxAlways: "ixAlwaysKnownSpell",
 				propBtn: "btnLearn",
 				fnParentCheckAlways: this._parent.isAlwaysKnownSpell_.bind(this._parent),
@@ -1141,6 +1143,7 @@ class Charactermancer_Spell_Level extends BaseComponent {
 	_handleAlwaysStateSpells_ (
 		{
 			propIx,
+			propParentCnt,
 			propIxAlways,
 			propBtn,
 			propExistingSpellMetaAlways,
@@ -1169,8 +1172,8 @@ class Charactermancer_Spell_Level extends BaseComponent {
 			if (isAlways) {
 				// Consider the spell un-prepared/un-learned, as it does not count towards our total prepared/learned spells
 				if (this._state[propIxProp]) {
-					this._state[allProps[propIx]] = false;
-					this._parent.cntPrepared--;
+					this._state[propIxProp] = false;
+					this._parent[propParentCnt]--;
 				}
 
 				if (!this._state[propIxAlwaysProp] && it.data[propBtn]) {

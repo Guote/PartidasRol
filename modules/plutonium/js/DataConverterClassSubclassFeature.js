@@ -77,13 +77,19 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 
 		const allRefsClassFeature = new Set();
 		const allRefsSubclassFeature = new Set();
+
 		(data.classFeature || []).forEach(cf => {
-			const refs = Charactermancer_Class_Util.getClassSubclassFeatureReferences(cf.entries);
-			refs.forEach(ref => allRefsClassFeature.add((ref.classFeature || "").toLowerCase()));
+			const {refsClassFeature, refsSubclassFeature} = Charactermancer_Class_Util.getClassSubclassFeatureReferences(cf.entries);
+
+			refsClassFeature.forEach(ref => allRefsClassFeature.add((ref.classFeature || "").toLowerCase()));
+			refsSubclassFeature.forEach(ref => allRefsSubclassFeature.add((ref.subclassFeature || "").toLowerCase()));
 		});
+
 		(data.subclassFeature || []).forEach(scf => {
-			const refs = Charactermancer_Class_Util.getClassSubclassFeatureReferences(scf.entries);
-			refs.forEach(ref => allRefsSubclassFeature.add((ref.subclassFeature || "").toLowerCase()));
+			const {refsClassFeature, refsSubclassFeature} = Charactermancer_Class_Util.getClassSubclassFeatureReferences(scf.entries);
+
+			refsClassFeature.forEach(ref => allRefsClassFeature.add((ref.classFeature || "").toLowerCase()));
+			refsSubclassFeature.forEach(ref => allRefsSubclassFeature.add((ref.subclassFeature || "").toLowerCase()));
 		});
 
 		for (const uid of allRefsClassFeature) {
@@ -169,7 +175,7 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 		};
 	}
 
-	static async pGetClassSubclassFeatureItemEffects (actor, feature, sheetItem, {additionalData, img} = {}) {
+	static async pGetClassSubclassFeatureItemEffectTuples (actor, feature, sheetItem, {additionalData, img} = {}) {
 		const out = [];
 
 		if (this._isUnarmoredDefense(feature)) {
@@ -195,6 +201,9 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 							sheetItem,
 							parentName: feature.name,
 							additionalData,
+						},
+						{
+							isTuples: true,
 						},
 					);
 				} else {
@@ -227,6 +236,9 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 							parentName: feature.name,
 							additionalData,
 						},
+						{
+							isTuples: true,
+						},
 					);
 				}
 
@@ -238,13 +250,19 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 			feature,
 			this._getSideLoadOpts(feature),
 		);
-		const fromSide = UtilActiveEffects.getExpandedEffects(effectsRaw || [], {
-			actor,
-			sheetItem,
-			parentName: feature.name,
-			additionalData,
-			img,
-		});
+		const fromSide = UtilActiveEffects.getExpandedEffects(
+			effectsRaw || [],
+			{
+				actor,
+				sheetItem,
+				parentName: feature.name,
+				additionalData,
+				img,
+			},
+			{
+				isTuples: true,
+			},
+		);
 		if (fromSide) out.push(...fromSide);
 
 		return out;
@@ -292,18 +310,19 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 
 		const dataConsume = this._getData_getConsume({ent: feature, actor: opts.actor});
 
-		const effects = [
-			...(MiscUtil.copy(srdData.effects || []))
-				.filter(eff => {
-					// Filter out well-known unarmored defense effects, as we add these ourselves.
-					eff.changes = ([] || eff.changes).filter(it => !["unarmoredBarb", "unarmoredMonk"].includes(it.value));
-					if (!eff.changes.length) return false;
+		const effects = (MiscUtil.copy(srdData.effects || []))
+			.filter(eff => {
+				// Filter out well-known unarmored defense effects, as we add these ourselves.
+				eff.changes = ([] || eff.changes).filter(it => !["unarmoredBarb", "unarmoredMonk"].includes(it.value));
+				if (!eff.changes.length) return false;
 
-					return true;
-				}),
-			...UtilActiveEffects.getExpandedEffects(feature.effectsRaw, {actor, img, parentName: feature.name}),
-		];
+				return true;
+			});
 		DataConverter.mutEffectsDisabledTransfer(effects, "importClassSubclassFeature");
+
+		// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
+		const effectsSideTuples = opts.isActorItem ? [] : UtilActiveEffects.getExpandedEffects(feature.effectsRaw, {actor, img, parentName: feature.name}, {isTuples: true});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importClassSubclassFeature", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		return {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(feature, {isActorItem: actor != null})),
@@ -317,7 +336,10 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 
 				...(feature.foundryAdditionalData || {}),
 			},
-			effects,
+			effects: [
+				...effects,
+				...effectsSideTuples.map(it => it.effect),
+			],
 			flags: {
 				...this._getClassSubclassFeatureFlags(feature, type, opts),
 				...(feature.foundryAdditionalFlags || {}),
@@ -350,8 +372,9 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 
 		const img = await this._pGetSaveImagePath(feature, {propCompendium: type});
 
-		const effects = UtilActiveEffects.getExpandedEffects(feature.effectsRaw, {actor, img, parentName: feature.name});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importClassSubclassFeature");
+		// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
+		const effectsSideTuples = opts.isActorItem ? [] : UtilActiveEffects.getExpandedEffects(feature.effectsRaw, {actor, img, parentName: feature.name}, {isTuples: true});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importClassSubclassFeature", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		return this.pGetItemActorPassive(
 			feature,
@@ -368,7 +391,7 @@ class DataConverterClassSubclassFeature extends DataConverterFeature {
 				additionalData: feature.foundryAdditionalData,
 				foundryFlags: this._getClassSubclassFeatureFlags(feature, type, opts),
 				additionalFlags: feature.foundryAdditionalFlags,
-				effects,
+				effects: effectsSideTuples.map(it => it.effect),
 				actor,
 				consumeType: dataConsume.type,
 				consumeTarget: dataConsume.target,

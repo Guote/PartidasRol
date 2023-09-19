@@ -77,6 +77,8 @@ class DataConverterClass extends DataConverter {
 	 * @param [opts.proficiencyImportMode]
 	 * @param [opts.level]
 	 *
+	 * @param [opts.spellSlotLevelSelection]
+	 *
 	 * @param [opts.isClsDereferenced]
 	 *
 	 * @param [opts.isActorItem]
@@ -94,7 +96,7 @@ class DataConverterClass extends DataConverter {
 			cls = await DataUtil.class.pGetDereferencedClassData(cls);
 		}
 
-		if (opts.pageFilter && opts.filterValues) {
+		if (opts.pageFilter?.filterBox && opts.filterValues) {
 			cls = MiscUtil.copy(cls);
 
 			Renderer.class.mutFilterDereferencedClassFeatures({
@@ -115,8 +117,8 @@ class DataConverterClass extends DataConverter {
 		const additionalAdvancement = await this._pGetAdvancementSideLoaded(cls);
 
 		// For actor items, effects are handled elsewhere during the import process
-		const effects = opts.isActorItem ? [] : await this._pGetEffectsSideLoaded({ent: cls, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importClass");
+		const effectsSideTuples = opts.isActorItem ? [] : await this._pGetEffectsSideLoadedTuples({ent: cls, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importClass", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(cls, {isActorItem: opts.isActorItem})),
@@ -163,10 +165,11 @@ class DataConverterClass extends DataConverter {
 					filterValues: opts.filterValues,
 					proficiencyImportMode: opts.proficiencyImportMode,
 					isActorItem: opts.isActorItem,
+					spellSlotLevelSelection: opts.spellSlotLevelSelection,
 				}),
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 			img,
 		};
 
@@ -195,7 +198,7 @@ class DataConverterClass extends DataConverter {
 		return `<div class="mb-2 ve-flex-col">${ptDoNotUse}${ptTable}${ptFluff}${ptFeatures}</div>`;
 	}
 
-	static _getClassSubclassFlags ({cls, sc, filterValues, proficiencyImportMode, isActorItem}) {
+	static _getClassSubclassFlags ({cls, sc, filterValues, proficiencyImportMode, isActorItem, spellSlotLevelSelection}) {
 		const out = {
 			[SharedConsts.MODULE_NAME_FAKE]: {
 				page: UrlUtil.PG_CLASSES,
@@ -209,6 +212,8 @@ class DataConverterClass extends DataConverter {
 				filterValues,
 
 				isPrimaryClass: proficiencyImportMode === Charactermancer_Class_ProficiencyImportModeSelect.MODE_PRIMARY,
+
+				spellSlotLevelSelection,
 			},
 		};
 
@@ -264,7 +269,7 @@ class DataConverterClass extends DataConverter {
 			sc = await DataUtil.class.pGetDereferencedSubclassData(sc);
 		}
 
-		if (opts.pageFilter && opts.filterValues) {
+		if (opts.pageFilter?.filterBox && opts.filterValues) {
 			sc = MiscUtil.copy(sc);
 
 			Renderer.class.mutFilterDereferencedSubclassFeatures({
@@ -287,8 +292,8 @@ class DataConverterClass extends DataConverter {
 		const additionalFlags = await this._pGetFlagsSideLoaded(sc, {propOpts: "_SIDE_LOAD_OPTS_SUBCLASS"});
 		const additionalAdvancement = await this._pGetAdvancementSideLoaded(sc, {propOpts: "_SIDE_LOAD_OPTS_SUBCLASS"});
 
-		const effects = opts.isActorItem ? [] : await this._pGetEffectsSideLoaded({ent: sc, img}, {propOpts: "_SIDE_LOAD_OPTS_SUBCLASS"});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importClass");
+		const effectsSideTuples = opts.isActorItem ? [] : await this._pGetEffectsSideLoadedTuples({ent: sc, img}, {propOpts: "_SIDE_LOAD_OPTS_SUBCLASS"});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importClass", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(sc, {isActorItem: opts.isActorItem})),
@@ -324,7 +329,7 @@ class DataConverterClass extends DataConverter {
 				}),
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 			img,
 		};
 
@@ -338,7 +343,7 @@ class DataConverterClass extends DataConverter {
 		const ptDoNotUse = !opts.isActorItem ? await this._getDoNotUseNote() : "";
 
 		// region """Fluff"""
-		const cleanEntries = MiscUtil.getWalker({keyBlacklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST})
+		const cleanEntries = MiscUtil.getWalker({keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST})
 			.walk(
 				MiscUtil.copy(sc._fluff.entries),
 				{
@@ -364,17 +369,7 @@ class DataConverterClass extends DataConverter {
 		return `<div class="mb-2 ve-flex-col">${ptDoNotUse}${ptFluff}${ptFeatures}</div>`;
 	}
 
-	static async pGetClassSubclassFeatureItem (loaded, actor) {
-		// "type" is either "classFeature" or "subclassFeature"
-		const {entity, type} = loaded;
-		return DataConverterClassSubclassFeature.pGetClassSubclassFeatureItem(entity, {type, actor});
-	}
-
 	// region Effects, generally defined in side-loaded data
-	static getItemEffects (actor, effectRaw, sheetItem) {
-		return this._getClassSubclassItemEffects(actor, sheetItem, [effectRaw]);
-	}
-
 	static async pHasClassSideLoadedEffects ({cls}) {
 		const allEffects = await this._pGetClassSubclassItemEffectsRaw({cls});
 		return !!allEffects.length;
@@ -385,14 +380,14 @@ class DataConverterClass extends DataConverter {
 		return !!allEffects.length;
 	}
 
-	static async pGetClassItemEffects ({actor, cls, sheetItem}) {
+	static async pGetClassItemEffectTuples ({actor, cls, sheetItem}) {
 		const allEffects = await this._pGetClassSubclassItemEffectsRaw({cls});
-		return this._getClassSubclassItemEffects(actor, sheetItem, allEffects, {parentName: cls.name});
+		return this._getClassSubclassItemEffectTuples(actor, sheetItem, allEffects, {parentName: cls.name});
 	}
 
-	static async pGetSubclassItemEffects ({actor, sc, sheetItem}) {
+	static async pGetSubclassItemEffectTuples ({actor, sc, sheetItem}) {
 		const allEffects = await this._pGetClassSubclassItemEffectsRaw({sc});
-		return this._getClassSubclassItemEffects(actor, sheetItem, allEffects, {parentName: sc.name});
+		return this._getClassSubclassItemEffectTuples(actor, sheetItem, allEffects, {parentName: sc.name});
 	}
 
 	static async _pGetClassSubclassItemEffectsRaw ({cls, sc}) {
@@ -409,8 +404,8 @@ class DataConverterClass extends DataConverter {
 		return [...(additionalEffectsRawCls || []), ...(additionalEffectsRawSc || [])];
 	}
 
-	static _getClassSubclassItemEffects (actor, sheetItem, effects, {parentName = ""} = {}) {
-		return UtilActiveEffects.getExpandedEffects(effects, {actor, sheetItem, parentName});
+	static _getClassSubclassItemEffectTuples (actor, sheetItem, effects, {parentName = ""} = {}) {
+		return UtilActiveEffects.getExpandedEffects(effects, {actor, sheetItem, parentName}, {isTuples: true});
 	}
 	// endregion
 

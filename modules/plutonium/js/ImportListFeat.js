@@ -9,6 +9,7 @@ import {ImportListFeature} from "./ImportListFeature.js";
 class ImportListFeat extends ImportListFeature {
 	static get ID () { return "feats"; }
 	static get DISPLAY_NAME_TYPE_PLURAL () { return "Feats"; }
+	static get _PROPS () { return ["feat"]; }
 
 	static _ = this.registerImpl(this);
 
@@ -31,7 +32,7 @@ class ImportListFeat extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["feat"],
+				props: ImportListFeat._PROPS,
 				dirsHomebrew: ["feat"],
 				titleSearch: "feats",
 				sidebarTab: "items",
@@ -51,7 +52,7 @@ class ImportListFeat extends ImportListFeature {
 	}
 
 	async _pGetSources () {
-		const argsShared = {pPostLoad: loadedData => this.constructor._pPostLoad_addFauxOptionalfeatures(loadedData)};
+		const argsShared = {pPostLoad: data => this.constructor._pPostLoad_addFauxOptionalfeatures(data)};
 		return [
 			new UtilDataSource.DataSourceUrl(
 				Config.get("ui", "isStreamerMode") ? "SRD" : "5etools",
@@ -157,8 +158,8 @@ class ImportListFeat extends ImportListFeature {
 
 	static async _pHasSideLoadedEffects (actor, feat) { return DataConverterFeat.pHasFeatSideLoadedEffects(actor, feat); }
 
-	static async _pGetItemEffects (actor, feat, importedEmbed, dataBuilderOpts) {
-		return DataConverterFeat.pGetFeatItemEffects(
+	static async _pGetItemEffectTuples (actor, feat, importedEmbed, dataBuilderOpts) {
+		return DataConverterFeat.pGetFeatItemEffectTuples(
 			actor,
 			feat,
 			importedEmbed,

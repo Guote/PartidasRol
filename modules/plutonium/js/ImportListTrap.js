@@ -7,6 +7,7 @@ import {UtilDataSource} from "./UtilDataSource.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
 import {DataConverterTrap} from "./DataConverterTrap.js";
 import {SharedConsts} from "../shared/SharedConsts.js";
+import {UtilCompat} from "./UtilCompat.js";
 
 class ImportListTrap extends ImportListActor {
 	static get ID () { return "traps"; }
@@ -132,7 +133,7 @@ class ImportListTrap extends ImportListActor {
 		return super._pImportEntry(trap, importOpts);
 	}
 
-	async _pImportEntry_pGetImportMetadata (actor, trap, importOpts) {
+	async _pImportEntry_pGetImportMetadata (actor, trap, importOpts, importOptsEntity) {
 		const act = {};
 
 		const dataBuilderOpts = new ImportListTrap.ImportEntryOpts({actor});
@@ -141,7 +142,7 @@ class ImportListTrap extends ImportListActor {
 
 		act.data = {};
 
-		await this._pImportEntry_pFillFolder(trap, act, importOpts);
+		await this._pImportEntry_pFillFolder(trap, act, importOpts, importOptsEntity);
 
 		if (importOpts.defaultPermission != null) act.permission = {default: importOpts.defaultPermission};
 		else act.permission = {default: Config.get(this._configGroup, "permissions")};
@@ -156,7 +157,7 @@ class ImportListTrap extends ImportListActor {
 		this._pImportEntry_fillData_Bonuses(trap, act.data, dataBuilderOpts);
 		this._pImportEntry_fillData_Resources(trap, act.data, dataBuilderOpts);
 
-		await this._pImportEntry_pFillToken({importable: trap, actor: act, img: ImportListTrap._IMG_TRAP});
+		await this._pImportEntry_pFillToken({importable: trap, actor: act, img: ImportListTrap._IMG_TRAP, flags: this._getTokenFlags({trap})});
 
 		return {dataBuilderOpts: dataBuilderOpts, actorData: act};
 	}
@@ -366,6 +367,11 @@ class ImportListTrap extends ImportListActor {
 				}),
 			},
 		};
+	}
+
+	_getTokenFlags ({trap}) {
+		if (!UtilCompat.isMonksLittleDetailsActive()) return null;
+		return {"monks-little-details": {"bloodsplat-colour": "#00000000"}};
 	}
 }
 ImportListTrap._TRAP_HAZ_TYPES_HAZARD = new Set(["HAZ", "WTH", "ENV", "WLD", "GEN"]);

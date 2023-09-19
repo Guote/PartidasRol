@@ -118,7 +118,12 @@ class ImportListCharacter extends ImportList {
 	static async _pPostLoad_pGetAllOptionalFeatures () {
 		const optionalfeatureData = await Vetools.pGetWithCache(Vetools.DATA_URL_OPTIONALFEATURES);
 		const brew = await BrewUtil2.pGetBrewProcessed();
-		return [...optionalfeatureData.optionalfeature, ...(brew?.optionalfeature || [])];
+		return {
+			optionalfeature: [
+				...optionalfeatureData.optionalfeature,
+				...(brew?.optionalfeature || []),
+			],
+		};
 	}
 }
 

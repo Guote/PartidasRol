@@ -24,8 +24,8 @@ class DataConverterBackgroundFeature extends DataConverterFeature {
 	static async pGetBackgroundFeatureItem (featureEntry, {actor}) {
 		const img = await this._pGetCompendiumFeatureImage(featureEntry);
 
-		const effects = await this._pGetEffectsSideLoaded({ent: featureEntry, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importBackground");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: featureEntry, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importBackground", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		return DataConverter.pGetItemActorPassive(
 			featureEntry,
@@ -45,7 +45,7 @@ class DataConverterBackgroundFeature extends DataConverterFeature {
 						hash: UrlUtil.URL_TO_HASH_BUILDER["backgroundFeature"](featureEntry),
 					},
 				},
-				effects,
+				effects: effectsSideTuples.map(it => it.effect),
 			},
 		);
 	}
@@ -95,9 +95,9 @@ class DataConverterBackgroundFeature extends DataConverterFeature {
 		return (await this._pGetEffectsRawSideLoaded_(optFeature, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetBackgroundFeatureItemEffects (actor, feature, sheetItem, {additionalData, img} = {}) {
+	static async pGetBackgroundFeatureItemEffectTuples (actor, feature, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await this._pGetEffectsRawSideLoaded_(feature, this._SIDE_LOAD_OPTS);
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: feature.name, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: feature.name, additionalData, img}, {isTuples: true});
 	}
 }
 

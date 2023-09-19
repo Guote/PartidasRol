@@ -49,7 +49,6 @@ class ImportListRollableTable extends ImportList {
 				Vetools.pGetRollableTables.bind(Vetools),
 				{
 					cacheKey: "5etools-rollable-tables",
-					isUseProps: true,
 					filterTypes: [UtilDataSource.SOURCE_TYP_OFFICIAL_ALL],
 					isDefault: true,
 				},

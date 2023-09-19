@@ -6,6 +6,7 @@ import {UtilActors} from "./UtilActors.js";
 import {DataConverterObject} from "./DataConverterObject.js";
 import {UtilDataSource} from "./UtilDataSource.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
+import {UtilCompat} from "./UtilCompat.js";
 
 class ImportListObject extends ImportListActor {
 	static get ID () { return "objects"; }
@@ -69,7 +70,7 @@ class ImportListObject extends ImportListActor {
 		];
 	}
 
-	async _pImportEntry_pGetImportMetadata (actor, obj, importOpts) {
+	async _pImportEntry_pGetImportMetadata (actor, obj, importOpts, importOptsEntity) {
 		const act = {};
 
 		const fluff = obj.entries ? {entries: obj.entries} : null;
@@ -80,7 +81,7 @@ class ImportListObject extends ImportListActor {
 
 		act.data = {};
 
-		await this._pImportEntry_pFillFolder(obj, act, importOpts);
+		await this._pImportEntry_pFillFolder(obj, act, importOpts, importOptsEntity);
 
 		if (importOpts.defaultPermission != null) act.permission = {default: importOpts.defaultPermission};
 		else act.permission = {default: Config.get(this._configGroup, "permissions")};
@@ -92,7 +93,7 @@ class ImportListObject extends ImportListActor {
 		this._pImportEntry_fillData_Currency(obj, act.data, dataBuilderOpts);
 		this._pImportEntry_fillData_Cargo(obj, act.data, dataBuilderOpts);
 
-		await this._pImportEntry_pFillToken({importable: obj, actor: act});
+		await this._pImportEntry_pFillToken({importable: obj, actor: act, flags: this._getTokenFlags({obj})});
 
 		return {dataBuilderOpts: dataBuilderOpts, actorData: act};
 	}
@@ -300,6 +301,11 @@ class ImportListObject extends ImportListActor {
 			crew: [],
 			passengers: [],
 		};
+	}
+
+	_getTokenFlags ({obj}) {
+		if (!UtilCompat.isMonksLittleDetailsActive()) return null;
+		return {"monks-little-details": {"bloodsplat-colour": "#00000000"}};
 	}
 }
 

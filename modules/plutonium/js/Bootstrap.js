@@ -71,10 +71,11 @@ import {DataConverterReward} from "./DataConverterReward.js";
 import {DataConverterCharCreationOption} from "./DataConverterCharCreationOption.js";
 import {DataConverterVehicleUpgrade} from "./DataConverterVehicleUpgrade.js";
 import {UtilWorldDataSourceSelector} from "./UtilWorldDataSourceSelector.js";
-import {UtilWorldContentBlacklist} from "./UtilWorldContentBlacklist.js";
+import {UtilWorldContentBlocklist} from "./UtilWorldContentBlocklist.js";
 import {ImportList} from "./ImportList.js";
 import {GameStorage} from "./GameStorage.js";
 import {UtilChat} from "./UtilChat.js";
+import {UtilGameSettings} from "./UtilGameSettings.js";
 
 let isFail = false;
 
@@ -92,6 +93,8 @@ function handleError (err) {
 function handleInit () {
 	// Add compatibility for old installs, as libWrapper was not always included as a hard dependency.
 	if (!UtilCompat.isLibWrapperActive()) throw new Error(`Plutonium depends on libWrapper! Please ensure libWrapper is installed and up-to-date.`);
+
+	UtilGameSettings.prePreInit();
 
 	ArtBrowserApp.prePreInit();
 	Patcher.prePreInit();
@@ -201,7 +204,7 @@ async function handleReady () {
 	UtilCompendium.init();
 	UtilCompat.init();
 	await UtilWorldDataSourceSelector.pInit();
-	await UtilWorldContentBlacklist.pInit();
+	await UtilWorldContentBlocklist.pInit();
 	WeDontTalk.init();
 
 	Api.init();

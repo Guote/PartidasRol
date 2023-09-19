@@ -62,8 +62,8 @@ class DataConverterCharCreationOption extends DataConverterFeature {
 		const additionalFlags = await this._pGetFlagsSideLoaded(ent);
 
 		// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-		const effects = opts.isActorItem ? [] : await this._pGetEffectsSideLoaded({ent, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importCharCreationOption");
+		const effectsSideTuples = opts.isActorItem ? [] : await this._pGetEffectsSideLoadedTuples({ent, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importCharCreationOption", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(ent, {isActorItem: opts.isActorItem})),
@@ -96,7 +96,7 @@ class DataConverterCharCreationOption extends DataConverterFeature {
 				...this._getCharCreationOptionFlags(ent, opts),
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 		};
 
 		if (opts.defaultPermission != null) out.permission = {default: opts.defaultPermission};
@@ -138,9 +138,9 @@ class DataConverterCharCreationOption extends DataConverterFeature {
 		return (await this._pGetEffectsRawSideLoaded_(ent, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetCharCreationOptionItemEffects (actor, ent, sheetItem, {additionalData, img} = {}) {
+	static async pGetCharCreationOptionItemEffectTuples (actor, ent, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await this._pGetEffectsRawSideLoaded_(ent, this._SIDE_LOAD_OPTS);
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: ent.name, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: ent.name, additionalData, img}, {isTuples: true});
 	}
 }
 

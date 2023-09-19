@@ -44,7 +44,7 @@ class Patcher_ActiveEffectConfig {
 				const $iptValue = $row.find(`.value input`)
 					.addClass("h-27p");
 
-				$(`<button class="no-grow no-shrink text-center p-0 m-0 btr-0 bbr-0 br-0 aeff__btn-inline" title="Find Active Effect Attribute Key"><i class="fas fa-fw fa-search"></i></button>`)
+				$(`<button class="no-grow no-shrink text-center p-0 m-0 btr-0 bbr-0 br-0 aeff__btn-inline" title="Find Active Effect Attribute Key"><i class="fas fa-fw fa-search mr-0"></i></button>`)
 					.click(async evt => {
 						evt.preventDefault();
 						evt.stopPropagation();
@@ -130,7 +130,7 @@ class Patcher_ActiveEffectConfig {
 
 				const $iptPriority = $(`<input class="btr-0 bbr-0 h-27p" type="number" name="changes.${ixChange}.priority" value="${app?.object?.data.changes?.[ixChange]?.priority || ""}">`);
 
-				const $btnPriorityHelp = $(`<button class="no-grow no-shrink text-center p-0 m-0 aeff__btn-inline btl-0 bbl-0 bl-0" title="Priority Help"><i class="fas fa-fw fa-question-circle"></i></button>`)
+				const $btnPriorityHelp = $(`<button class="no-grow no-shrink text-center p-0 m-0 aeff__btn-inline btl-0 bbl-0 bl-0" title="Priority Help"><i class="fas fa-fw fa-question-circle mr-0"></i></button>`)
 					.click(evt => {
 						evt.stopPropagation();
 						evt.preventDefault();

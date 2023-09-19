@@ -39,8 +39,6 @@ class ImportListActor extends ImportList {
 	 * @param [importOpts.isTemp] if the item should be temporary, and displayed.
 	 * @param [importOpts.isDataOnly] If the item should not be imported, but its data should be returned.
 	 * @param [importOpts.isImportToTempDirectory]
-	 *
-	 * @param [importOpts.isSkipFolder] If the folder-setting step should be skipped.
 	 */
 	async _pImportEntry (imp, importOpts) {
 		importOpts = importOpts || {};
@@ -53,6 +51,7 @@ class ImportListActor extends ImportList {
 		if (this._actor) throw new Error(`Cannot import ${this._actorType} to actor!`);
 
 		let actor;
+		let isSkipFolder = false;
 		const duplicateMeta = this._getDuplicateMeta({entity: imp, importOpts});
 		if (duplicateMeta.isSkip) {
 			return new ImportSummary({
@@ -65,7 +64,7 @@ class ImportListActor extends ImportList {
 				],
 			});
 		} else if (duplicateMeta.isOverwrite) {
-			importOpts.isSkipFolder = true;
+			isSkipFolder = true;
 			actor = duplicateMeta.existing;
 		} else {
 			actor = this._pack
@@ -77,7 +76,7 @@ class ImportListActor extends ImportList {
 				);
 		}
 
-		const {dataBuilderOpts, actorData} = await this._pImportEntry_pGetImportMetadata(actor, imp, importOpts);
+		const {dataBuilderOpts, actorData} = await this._pImportEntry_pGetImportMetadata(actor, imp, importOpts, {isSkipFolder});
 
 		const additionalData = this._DataConverter ? await this._DataConverter._pGetDataSideLoaded(imp) : null;
 		if (additionalData) Object.assign(actorData.data || {}, additionalData);
@@ -91,11 +90,15 @@ class ImportListActor extends ImportList {
 			actor = await Actor.create({...actorData, type: this._actorType}, {renderSheet: !importOpts.isDataOnly, temporary: true});
 			dataBuilderOpts.actor = actor;
 
-			const additionalEffects = this._DataConverter ? await this._DataConverter._pGetEffectsSideLoaded({ent: imp, actor: dataBuilderOpts.actor, img: imgEffects}) : null;
-			if (additionalEffects?.length) dataBuilderOpts.effects.push(...additionalEffects);
-
-			await this._pImportEntry_pFillItems(imp, actorData, dataBuilderOpts, importOpts);
-			await this._pImportEntry_pApplyEffects(dataBuilderOpts, importOpts);
+			await this._pImportEntry_populateItemsAndEffects({
+				imp,
+				importOpts,
+				duplicateMeta,
+				actor,
+				actorData,
+				dataBuilderOpts,
+				imgEffects,
+			});
 
 			// Handle any post-item item updates
 			await this._pImportEntry_pHandlePostItemItemUpdates(actor, importOpts, dataBuilderOpts);
@@ -123,14 +126,15 @@ class ImportListActor extends ImportList {
 			if (duplicateMeta.isOverwrite) {
 				dataBuilderOpts.actor = actor;
 
-				const additionalEffects = this._DataConverter ? await this._DataConverter._pGetEffectsSideLoaded({ent: imp, actor: dataBuilderOpts.actor, img: imgEffects}) : null;
-				if (additionalEffects?.length) dataBuilderOpts.effects.push(...additionalEffects);
-
-				await actor.deleteEmbeddedDocuments("Item", actor.items.map(it => it.id));
-				await actor.deleteEmbeddedDocuments("ActiveEffect", actor.effects.map(it => it.id));
-
-				await this._pImportEntry_pFillItems(imp, actorData, dataBuilderOpts, importOpts);
-				await this._pImportEntry_pApplyEffects(dataBuilderOpts, importOpts);
+				await this._pImportEntry_populateItemsAndEffects({
+					imp,
+					importOpts,
+					duplicateMeta,
+					actor,
+					actorData,
+					dataBuilderOpts,
+					imgEffects,
+				});
 
 				await UtilDocuments.pUpdateDocument(actor, actorData);
 
@@ -151,11 +155,15 @@ class ImportListActor extends ImportList {
 				actor = await Actor.create({...actorData, type: this._actorType}, {temporary: true});
 				dataBuilderOpts.actor = actor;
 
-				const additionalEffects = this._DataConverter ? await this._DataConverter._pGetEffectsSideLoaded({ent: imp, actor: dataBuilderOpts.actor, img: imgEffects}) : null;
-				if (additionalEffects?.length) dataBuilderOpts.effects.push(...additionalEffects);
-
-				await this._pImportEntry_pFillItems(imp, actorData, dataBuilderOpts, importOpts);
-				await this._pImportEntry_pApplyEffects(dataBuilderOpts, importOpts);
+				await this._pImportEntry_populateItemsAndEffects({
+					imp,
+					importOpts,
+					duplicateMeta,
+					actor,
+					actorData,
+					dataBuilderOpts,
+					imgEffects,
+				});
 
 				const actorImported = await this._pack.importDocument(actor);
 
@@ -174,18 +182,15 @@ class ImportListActor extends ImportList {
 				});
 			}
 		} else {
-			const additionalEffects = this._DataConverter ? await this._DataConverter._pGetEffectsSideLoaded({ent: imp, actor: dataBuilderOpts.actor, img: imgEffects}) : null;
-			if (additionalEffects?.length) dataBuilderOpts.effects.push(...additionalEffects);
-
-			// If we're updating an existing entity, strip its embedded documents, as passing in an updated
-			//   `items`/`effects` array only adds items.
-			if (duplicateMeta.isOverwrite) {
-				await actor.deleteEmbeddedDocuments("Item", actor.items.map(it => it.id));
-				await actor.deleteEmbeddedDocuments("ActiveEffect", actor.effects.map(it => it.id));
-			}
-
-			await this._pImportEntry_pFillItems(imp, actorData, dataBuilderOpts, importOpts);
-			await this._pImportEntry_pApplyEffects(dataBuilderOpts, importOpts);
+			await this._pImportEntry_populateItemsAndEffects({
+				imp,
+				importOpts,
+				duplicateMeta,
+				actor,
+				actorData,
+				dataBuilderOpts,
+				imgEffects,
+			});
 
 			// Set the actor's data
 			await UtilDocuments.pUpdateDocument(actor, actorData);
@@ -207,6 +212,37 @@ class ImportListActor extends ImportList {
 				],
 			});
 		}
+	}
+
+	async _pImportEntry_populateItemsAndEffects (
+		{
+			imp,
+			importOpts,
+			duplicateMeta,
+			actor,
+			actorData,
+			dataBuilderOpts,
+			imgEffects,
+		},
+	) {
+		const additionalEffects = this._DataConverter ? await this._DataConverter._pGetEffectsSideLoadedTuples({ent: imp, actor: dataBuilderOpts.actor, img: imgEffects}) : null;
+		if (additionalEffects?.length) dataBuilderOpts.effects.push(...additionalEffects.map(it => it.effect));
+
+		const prevTokenImg = duplicateMeta.isOverwrite && Config.get("import", "isDuplicateHandlingMaintainImage") ? actor.data.token.img : null;
+		const prevImg = duplicateMeta.isOverwrite && Config.get("import", "isDuplicateHandlingMaintainImage") ? actor.img : null;
+
+		// If we're updating an existing entity, strip its embedded documents, as passing in an updated
+		//   `items`/`effects` array only adds items.
+		if (duplicateMeta?.isOverwrite) {
+			await actor.deleteEmbeddedDocuments("Item", actor.items.map(it => it.id));
+			await actor.deleteEmbeddedDocuments("ActiveEffect", actor.effects.map(it => it.id));
+		}
+
+		await this._pImportEntry_pFillItems(imp, actorData, dataBuilderOpts, importOpts);
+		await this._pImportEntry_pApplyEffects(dataBuilderOpts, importOpts);
+
+		if (prevImg != null) actorData.img = prevImg;
+		if (prevTokenImg != null) actorData.token.img = prevTokenImg;
 	}
 
 	/** Run after any item effects have been applied. */
@@ -322,8 +358,8 @@ class ImportListActor extends ImportList {
 		return compendiumImage;
 	}
 
-	async _pImportEntry_pFillFolder (it, act, importOpts) {
-		if (importOpts.isSkipFolder) return;
+	async _pImportEntry_pFillFolder (it, act, importOpts, importOptsEntity) {
+		if (importOptsEntity?.isSkipFolder) return;
 
 		if (importOpts.isImportToTempDirectory) {
 			const folderId = await this._pImportEntry_pCreateTempDirectoryGetId();
@@ -372,7 +408,7 @@ class ImportListActor extends ImportList {
 	// endregion
 
 	// region Token data
-	async _pImportEntry_pFillToken ({importable, actor, img = null, size = null}) {
+	async _pImportEntry_pFillToken ({importable, actor, img = null, size = null, flags = null}) {
 		size = size || [importable.size || SZ_MEDIUM].flat(2)[0] || SZ_MEDIUM;
 		const {dimensions, scale} = UtilTokens.getTokenDimensionsAndScale(size);
 
@@ -410,6 +446,8 @@ class ImportListActor extends ImportList {
 			effects: [],
 			randomImg: isWildcard,
 		};
+
+		if (flags) actor.token.flags = flags;
 	}
 
 	static _getMergedTokenData ({configGroup, maxDimSight, maxBrightSight}) {
@@ -596,18 +634,12 @@ class ImportListActor extends ImportList {
 		);
 
 		// Flatten objects to make merging easier
-		Object.entries(itemDataAction)
-			.forEach(([prop, values]) => {
-				if (typeof values !== "object" || values instanceof Array) {
-					itemDataAction[prop] = MiscUtil.copy(values);
-					return;
-				}
-
-				itemDataAction[prop] = foundry.utils.flattenObject(values);
-			});
+		this.constructor._mutFlattenFoundryItemData(itemDataAction);
 
 		const itemDataItem = await DataConverterItem.pGetActionWeaponDetails({size: entity.size, action, damageParts, isSiegeWeapon, isMagical, isInfiniteAmmo: true});
 		delete itemDataItem.effects; // Strip effects, as we assume the creature statblock will already include these
+
+		this.constructor._mutFlattenFoundryItemData(itemDataItem);
 
 		// Prefer the from-action data...
 		const itemDataMerged = foundry.utils.mergeObject(
@@ -620,6 +652,14 @@ class ImportListActor extends ImportList {
 		if (itemDataItem.data["attunement"]) itemDataMerged.data["attunement"] = CONFIG.DND5E.attunementTypes.ATTUNED;
 		//   - Prefer the item image, if there is one
 		if (itemDataItem.img) itemDataMerged.img = itemDataItem.img;
+		//   - Prefer the item's damage/rolls, as it may include e.g. "versatile" adjustments
+		[
+			"critical.damage",
+			"critical.threshold",
+			"damage.parts",
+			"damage.versatile",
+			"formula",
+		].forEach(prop => itemDataMerged.data[prop] = itemDataItem.data[prop]);
 
 		// The img URL is a raw one until this point
 		itemDataMerged.img = await Vetools.pOptionallySaveImageToServerAndGetUrl(itemDataMerged.img);
@@ -629,6 +669,18 @@ class ImportListActor extends ImportList {
 		dataBuilderOpts.items.push(itemDataMergedExpanded);
 
 		return itemDataMergedExpanded;
+	}
+
+	static _mutFlattenFoundryItemData (itemData) {
+		Object.entries(itemData)
+			.forEach(([prop, values]) => {
+				if (typeof values !== "object" || values instanceof Array) {
+					itemData[prop] = MiscUtil.copy(values);
+					return;
+				}
+
+				itemData[prop] = foundry.utils.flattenObject(values);
+			});
 	}
 
 	_getSavingThrowData (strEntries) {
@@ -641,13 +693,12 @@ class ImportListActor extends ImportList {
 			saveDc,
 		} = MiscUtil.copy(ImportListActor._DEFAULT_SAVING_THROW_DATA);
 
-		const mDc = /(?:{@dc (\d+)}|DC\s*(\d+))\s*(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma)/i.exec(strEntries);
+		const mDc = /(?:{@dc (?<dc>\d+)}|DC\s*(?<dcAlt>\d+))\s*(?<ability>Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma)/i.exec(strEntries);
+
 		if (mDc) {
-			saveDc = Number(mDc[1] || mDc[2]);
-			saveAbility = mDc[3].toLowerCase().substring(0, 3);
-
+			saveDc = Number(mDc.groups.dc || mDc.groups.dcAlt);
+			saveAbility = mDc.groups.ability.toLowerCase().substring(0, 3);
 			saveScaling = "flat";
-
 			isFoundParse = true;
 		}
 
@@ -656,9 +707,9 @@ class ImportListActor extends ImportList {
 	// endregion
 }
 ImportListActor._DEFAULT_SAVING_THROW_DATA = {
-	saveAbility: "",
-	saveScaling: "spell",
-	saveDc: null,
+	saveAbility: undefined,
+	saveScaling: undefined,
+	saveDc: undefined,
 };
 
 ImportListActor.ImportEntryOpts = class {

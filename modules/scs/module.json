@@ -1,0 +1,54 @@
+{
+    "name": "scs",
+    "title": "Simultaneous Combat System",
+    "description": "An implementation of the Simultaneous Combat System for Foundry VTT.",
+    "author": "Arcanist",
+    "authors": [
+        {
+            "name": "Arcanist",
+            "url": "https://arcanistzed.github.io/",
+            "email": "arcanistzed@gmail.com",
+            "discord": "arcanist#4317",
+            "reddit": "u/arcanistzed"
+        }
+    ],
+    "url": "https://github.com/arcanistzed/scs",
+    "license": "https://github.com/arcanistzed/scs/blob/main/LICENSE",
+    "readme": "https://github.com/arcanistzed/scs/blob/main/README.md",
+    "bugs": "https://github.com/arcanistzed/scs/issues/new/choose",
+    "changelog": "https://github.com/arcanistzed/scs/blob/main/CHANGELOG.md",
+    "flags": {
+        "allowBugReporter": true
+    },
+    "version": "2.14.0",
+    "minimumCoreVersion": "0.7.9",
+    "compatibleCoreVersion": "9",
+    "esmodules": [
+        "scripts/scs.js"
+    ],
+    "styles": [
+        "styles/scs.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "languages/en.json"
+        }
+    ],
+    "manifest": "https://github.com/arcanistzed/scs/releases/latest/download/module.json",
+    "download": "https://github.com/arcanistzed/scs/releases/download/2.14.0/module.zip",
+    "manifestPlusVersion": "1.2.0",
+    "media": [
+        {
+            "type": "screenshot",
+            "url": "https://img.itch.zone/aW1hZ2UvMTEyNDU0My82NTA4NTcyLnBuZw==/347x500/04ycw3.png",
+            "caption": "See it in action on the bottom left of the screen."
+        },
+        {
+            "type": "cover",
+            "url": "https://img.itch.zone/aW1hZ2UvMTEyNDU0My82NTA4NDgxLmdpZg==/347x500/rngeuv.gif",
+            "caption": "Simultaneous Combat System"
+        }
+    ]
+}

@@ -1,0 +1,211 @@
+:root {
+	--scs-phase-height: 2.5rem;
+}
+
+/* Controls the app itself */
+#scsApp {
+	flex-wrap: nowrap;
+	max-width: 200px;
+	border: 1px solid var(--color-border-dark, #000);
+	pointer-events: all;
+	transform-origin: center;
+}
+
+/* Don't show any header */
+#scsApp .window-header {
+	display: none;
+}
+
+/* Give the whole app a look that blends into the Foundry UI alongside the player list */
+#scsApp .window-content {
+	padding: 0;
+	color: var(
+		--Whetstone-text-highlight-lighter,
+		var(--palette-app-background-contrast-text, var(--color-text-light-highlight, #f0f0e0))
+	);
+	background-color: var(--Whetstone-bg-app, var(--palette-app-background, none));
+	background-image: var(--palette-app-background-image, url(/ui/denim075.png) repeat);
+	background-blend-mode: var(--palette-app-background-image-blend-mode, normal);
+	overflow: hidden;
+}
+
+.scs .container {
+	overflow-y: auto;
+	scroll-behavior: smooth;
+	max-height: calc((var(--scs-phase-height) + 0.5ch) * 3);
+	padding: 0.5ch;
+	row-gap: 0.5ch;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	scroll-snap-type: y mandatory;
+}
+
+.scs.colorConfig .container {
+	max-height: calc((4.5ch + 4.5rem) * 2);
+}
+
+/* Style the phases */
+.scs .phase {
+	box-sizing: border-box;
+	text-align: center;
+	color: var(--color-text-light-0, white);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 1ch;
+	gap: 1ch;
+	scroll-snap-align: start;
+}
+
+/* Add a shadow on the active phase */
+.scs .phase.active {
+	box-shadow: inset 2px 2px 5px var(--color-shadow-dark, rgb(0, 0, 0));
+	mix-blend-mode: soft-light;
+}
+
+#scsApp .phase {
+	flex: 0 0 33%;
+	height: var(--scs-phase-height);
+}
+
+/* Style the first one in the row so that the corners are rounded correctly and so there is a margin on the left */
+.scs .phase:nth-child(3n + 1) {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+/* Style the last one in the row so that the corners are rounded correctly and so there is a margin on the right */
+.scs .phase:nth-last-child(1),
+.scs .phase:nth-child(3n + 3) {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+/* These are the small arrows which let you switch phase and round */
+.scs .arrows {
+	text-align: center;
+	color: var(
+		--Whetstone-text-highlight-lighter,
+		var(--palette-app-background-contrast-text, var(--color-text-light-highlight, #f0f0e0))
+	);
+	align-items: center;
+	flex: 0;
+	display: flex;
+	min-height: var(--scs-phase-height);
+	justify-content: space-around;
+}
+
+/* Give the navigation arrows some room */
+.scs .arrows > div {
+	cursor: pointer;
+	flex: 0;
+	border-radius: 1ch;
+}
+
+.scs .arrows > div:not(.round):is(:hover, :focus) {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* The current round indicator */
+#scsApp .round {
+	color: var(
+		--Whetstone-accent-primary-contrast,
+		var(--palette-app-background-shaded-text, var(--color-text-light-primary, grey))
+	);
+	text-align: center;
+	cursor: move;
+	white-space: nowrap;
+}
+
+/* Lighter text when dragged around */
+#scsApp .round:active {
+	color: var(
+		--Whetstone-text-accent-primary-half,
+		var(--palette-app-background-contrast-text, var(--color-text-light-highlight, lightgrey))
+	);
+}
+
+/* Space between color config rows */
+.scs.colorConfig .phase.flexcol {
+	gap: 0.5ch;
+	padding: 1ch;
+}
+
+/* Center vertically */
+.scs.colorConfig .phase .flexrow {
+	align-items: center;
+	gap: 0.5ch;
+}
+
+.scs.colorConfig .phase h3 {
+	margin: 0;
+}
+
+/* The color config inputs */
+.scs.colorConfig .phase input {
+	border: solid white 1px;
+	color: white;
+	box-shadow: none;
+	width: 12ch;
+	box-sizing: border-box;
+}
+
+/* The randomize buttons in the color config */
+.scs.colorConfig .phase button {
+	color: white;
+	border: none;
+	background: none;
+	margin: 0;
+	padding: 0.5ch;
+	cursor: pointer;
+	border-radius: 1ch;
+}
+
+.scs.colorConfig .phase button:is(:hover, :focus) {
+	box-shadow: none;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* The animation shown when pinning the app */
+@keyframes jiggle {
+	0% {
+		transform: rotate(1deg);
+		animation-timing-function: ease-in;
+	}
+
+	50% {
+		transform: rotate(-1deg);
+		animation-timing-function: ease-out;
+	}
+}
+
+/* Hide turn buttons in Combat Tracker */
+.scs-hide-turn-buttons :is([data-control="nextTurn"], [data-control="previousTurn"]) {
+	display: none;
+}
+
+/* Custom styling for IntroJS tour */
+
+/* Style checkbox */
+#scsTutorialAgainDiv {
+	display: flex;
+	align-items: center;
+	text-align: center;
+	margin-left: -5px;
+	padding: 0.5em 1em;
+}
+
+/* Move line above checkbox */
+.introjs-tooltipbuttons {
+	border: transparent;
+	padding: 1em;
+	padding-top: 0;
+}
+
+/* Font Awesome Icons */
+.introjs-tooltipReferenceLayer .fa,
+.introjs-tooltipReferenceLayer .far,
+.introjs-tooltipReferenceLayer .fas {
+	font-family: "Font Awesome 6 Pro", "Font Awesome 5 Free";
+}

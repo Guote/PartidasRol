@@ -169,12 +169,12 @@ class ArtBrowserApp extends Application {
 	static init () {
 		// Subvert clicks on our fake layer button
 		const cachedOnClickLayer = ui.controls._onClickLayer.bind(ui.controls);
-		ui.controls._onClickLayer = function (event) {
+		ui.controls._onClickLayer = function (event, ...rest) {
 			if (event.currentTarget.dataset.control === ArtBrowserApp._ART_SCENE_CONTROLS_NAME) {
 				ArtBrowserApp._pOpen();
 				return;
 			}
-			cachedOnClickLayer(event);
+			cachedOnClickLayer(event, ...rest);
 		};
 
 		// Prevent Foundry's anti-drag-drop mechanism from working
@@ -471,6 +471,8 @@ class ArtBrowserApp extends Application {
 
 					gridDistance: Config.getMetricNumberDistance({configGroup: "artBrowser", originalValue: 5, originalUnit: "ft", configKey: "isSceneGridMetric"}),
 					gridUnits: Config.getMetricNumberDistance({configGroup: "artBrowser", originalUnit: "ft", configKey: "isSceneGridMetric"}),
+
+					flags: {},
 				};
 				const scene = await Scene.create(createData, {renderSheet: Config.get("artBrowser", "isDisplaySheetCreatedScene")});
 

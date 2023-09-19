@@ -35,6 +35,7 @@ class ImportListItem extends ImportList {
 			{title: "Import Items"},
 			externalData,
 			{
+				props: ["item"],
 				dirsHomebrew: ["item", "baseitem", "magicvariant"],
 				namespace: "item",
 				titleSearch: "items",
@@ -62,14 +63,14 @@ class ImportListItem extends ImportList {
 	async _pGetSources () {
 		const nonVetoolsOpts = {
 			pPostLoad: async json => {
-				return Renderer.item.pGetItemsFromHomebrew(json);
+				return {item: await Renderer.item.pGetItemsFromHomebrew(json)};
 			},
 		};
 
 		return [
 			new UtilDataSource.DataSourceSpecial(
 				Config.get("ui", "isStreamerMode") ? "SRD" : "5etools",
-				async () => (await Vetools.pGetItems()).item,
+				() => Vetools.pGetItems(),
 				{
 					cacheKey: "5etools-items",
 					filterTypes: [UtilDataSource.SOURCE_TYP_OFFICIAL_ALL],

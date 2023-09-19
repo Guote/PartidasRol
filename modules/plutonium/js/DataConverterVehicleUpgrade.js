@@ -136,7 +136,7 @@ class DataConverterVehicleUpgrade extends DataConverterFeature {
 
 	static async _pGetVehicleUpgradeEffects (vehUpgrade, img, {isActorItem} = {}) {
 		if (isActorItem) return []; // For actor items, the effects are handled at the importer level
-		if (await this.pHasVehicleUpgradeSideLoadedEffects(null, vehUpgrade)) return this.pGetVehicleUpgradeItemEffects(null, vehUpgrade, null, {img});
+		if (await this.pHasVehicleUpgradeSideLoadedEffects(null, vehUpgrade)) return this.pGetVehicleUpgradeItemEffectTuples(null, vehUpgrade, null, {img});
 		return [];
 	}
 
@@ -144,9 +144,9 @@ class DataConverterVehicleUpgrade extends DataConverterFeature {
 		return (await DataConverter._pGetEffectsRawSideLoaded_(vehUpgrade, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetVehicleUpgradeItemEffects (actor, vehUpgrade, sheetItem, {additionalData, img} = {}) {
+	static async pGetVehicleUpgradeItemEffectTuples (actor, vehUpgrade, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await DataConverter._pGetEffectsRawSideLoaded_(vehUpgrade, this._SIDE_LOAD_OPTS);
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: vehUpgrade.name, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: vehUpgrade.name, additionalData, img}, {isTuples: true});
 	}
 
 	static async _pGetPreloadSideData () {

@@ -101,7 +101,7 @@ class ImportListCreatureFeature extends ImportListCharacter {
 	}
 
 	_pPostLoad_getFeaturesFromCreatures (data) {
-		const out = [];
+		const out = {};
 
 		for (const mon of data.monster) {
 			Renderer.monster.initParsed(mon);
@@ -112,9 +112,14 @@ class ImportListCreatureFeature extends ImportListCharacter {
 				// TODO(Future) support spellcasting
 				if (prop === "spellcasting") return;
 
+				const outProp = `monster${prop.uppercaseFirst()}`;
+
 				(mon[prop] || legendaryMeta?.[prop] || [])
 					.filter(ent => ent.name && ent.entries)
-					.forEach(ent => out.push(DataConverterCreatureFeature.getFauxCreatureFeature(mon, ent, `monster${prop.uppercaseFirst()}`)));
+					.forEach(ent => {
+						out[outProp] = out[outProp] || [];
+						out[outProp].push(DataConverterCreatureFeature.getFauxCreatureFeature(mon, ent, `monster${prop.uppercaseFirst()}`));
+					});
 			});
 		}
 
@@ -124,7 +129,7 @@ class ImportListCreatureFeature extends ImportListCharacter {
 	async _pGetSources () {
 		const creatureIndex = await Vetools.pGetCreatureIndex();
 
-		const argsShared = {pPostLoad: (loadedData, data) => this._pPostLoad_getFeaturesFromCreatures(data)};
+		const argsShared = {pPostLoad: (data) => this._pPostLoad_getFeaturesFromCreatures(data)};
 
 		return [
 			new UtilDataSource.DataSourceSpecial(
@@ -158,7 +163,7 @@ class ImportListCreatureFeature extends ImportListCharacter {
 				{
 					...argsShared,
 					source: src,
-					pPostLoad: (loadedData, data) => this._pPostLoad_getFeaturesFromSingleSourceCreatures(src, data),
+					pPostLoad: (data) => this._pPostLoad_getFeaturesFromSingleSourceCreatures(src, data),
 					filterTypes: SourceUtil.isNonstandardSource(src) ? [UtilDataSource.SOURCE_TYP_ARCANA] : [UtilDataSource.SOURCE_TYP_OFFICIAL_SINGLE],
 				},
 			)),

@@ -4,6 +4,7 @@ import {Config} from "./Config.js";
 import {DataConverter} from "./DataConverter.js";
 import {Vetools} from "./Vetools.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
+import {UtilActiveEffects} from "./UtilActiveEffects.js";
 
 class DataConverterBackground extends DataConverter {
 	static _SIDE_LOAD_OPTS = {
@@ -54,8 +55,8 @@ class DataConverterBackground extends DataConverter {
 		const additionalFlags = await this._pGetFlagsSideLoaded(bg);
 		const additionalAdvancement = await this._pGetAdvancementSideLoaded(bg);
 
-		const effects = await this._pGetEffectsSideLoaded({ent: bg, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importBackground");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: bg, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importBackground", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(bg)),
@@ -93,7 +94,7 @@ class DataConverterBackground extends DataConverter {
 				...this._getBackgroundFlags(bg, opts),
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 			img,
 		};
 

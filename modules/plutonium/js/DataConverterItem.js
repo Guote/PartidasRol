@@ -52,7 +52,7 @@ class DataConverterItem extends DataConverter {
 		}
 
 		// region Versatile
-		if (damageParts.length > 1 && ((weapon && (weapon.property || []).includes("V")) || / (?:two|both) hands/i.test(JSON.stringify(action.entries || [])))) {
+		if (damageParts.length > 1 && ((weapon && (weapon.property || []).includes("V")) || this._RE_IS_VERSATILE.test(JSON.stringify(action.entries || [])))) {
 			// Find the first damage term that has the same type as the main (first) damage term
 			const damageTypePrimary = damageParts[0][1];
 			if (damageTypePrimary) {
@@ -552,7 +552,7 @@ class DataConverterItem extends DataConverter {
 			item,
 			{
 				isCompact: true,
-				wrappedTypeWhitelist: Config.get("importItem", "isImportDescriptionHeader") ? null : new Set(["magicvariant"]),
+				wrappedTypeAllowlist: Config.get("importItem", "isImportDescriptionHeader") ? null : new Set(["magicvariant"]),
 			},
 		);
 
@@ -901,9 +901,9 @@ class DataConverterItem extends DataConverter {
 				identified: isIdentified,
 				rarity: this._getItemItem_getRarity(item),
 				capacity: {
-					type: item.containerCapacity.weight ? "weight" : "items",
+					type: item.containerCapacity?.weight ? "weight" : "items",
 					value: capacityValue,
-					weightless: !!item.containerCapacity.weightless,
+					weightless: !!item.containerCapacity?.weightless,
 				},
 
 				attunement,
@@ -1099,6 +1099,7 @@ class DataConverterItem extends DataConverter {
 	}
 
 	static _getImgFallback (item) {
+		if (item.staff) return `modules/${SharedConsts.MODULE_NAME}/media/icon/orb-wand.svg`;
 		return `modules/${SharedConsts.MODULE_NAME}/media/icon/${DataConverterItem._ITEM_TYPE_TO_ICON[item.type] || "crossed-swords"}.svg`;
 	}
 
@@ -1199,6 +1200,8 @@ class DataConverterItem extends DataConverter {
 		};
 	}
 
+	static _ITEM_EFFECTS_HINTS_SELF = {hintDisabled: false, hintTransfer: true};
+
 	static async _pGetItemEffects (item, img, opts) {
 		opts = opts || {};
 
@@ -1211,12 +1214,20 @@ class DataConverterItem extends DataConverter {
 
 		// region Additional custom effects
 		if (await this.pHasItemSideLoadedEffects(null, item)) {
-			out.push(...(await this.pGetItemItemEffects(null, item, null, {img})));
+			const effectsSideTuples = await this._pGetItemItemEffectTuples(null, item, null, {img});
+			effectsSideTuples.forEach(({effect, effectRaw}) => {
+				out.push(DataConverter.mutEffectDisabledTransfer(
+					effect,
+					"importItem",
+					UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw),
+				));
+			});
 		}
 		// endregion
 
 		// region AC
-		out.push(...this._pGetItemEffects_getAcEffects(item, img, opts, {isDisabled}));
+		const effectsAc = this._pGetItemEffects_getAcEffects(item, img, opts, {isDisabled});
+		out.push(...DataConverter.mutEffectsDisabledTransfer(effectsAc, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		// endregion
 
 		// region Saving throws
@@ -1229,7 +1240,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusSavingThrow",
 				isDisabled,
 			});
-			if (effect) out.push(effect);
+			if (effect) out.push(DataConverter.mutEffectDisabledTransfer(effect, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		}
 		// endregion
 
@@ -1243,7 +1254,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusAbilityCheck",
 				isDisabled,
 			});
-			if (effect) out.push(effect);
+			if (effect) out.push(DataConverter.mutEffectDisabledTransfer(effect, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		}
 		// endregion
 
@@ -1257,7 +1268,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusSpellAttack",
 				isDisabled,
 			});
-			if (effectMelee) out.push(effectMelee);
+			if (effectMelee) out.push(DataConverter.mutEffectDisabledTransfer(effectMelee, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 
 			const effectRanged = this._pGetItemEffects_getGenericBonus({
 				item,
@@ -1267,7 +1278,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusSpellAttack",
 				isDisabled,
 			});
-			if (effectRanged) out.push(effectRanged);
+			if (effectRanged) out.push(DataConverter.mutEffectDisabledTransfer(effectRanged, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		}
 		// endregion
 
@@ -1281,7 +1292,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusSpellDamage",
 				isDisabled,
 			});
-			if (effectMelee) out.push(effectMelee);
+			if (effectMelee) out.push(DataConverter.mutEffectDisabledTransfer(effectMelee, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 
 			const effectRanged = this._pGetItemEffects_getGenericBonus({
 				item,
@@ -1291,7 +1302,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusSpellDamage",
 				isDisabled,
 			});
-			if (effectRanged) out.push(effectRanged);
+			if (effectRanged) out.push(DataConverter.mutEffectDisabledTransfer(effectRanged, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		}
 		// endregion
 
@@ -1305,7 +1316,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusSpellSaveDc",
 				isDisabled,
 			});
-			if (effect) out.push(effect);
+			if (effect) out.push(DataConverter.mutEffectDisabledTransfer(effect, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		}
 		// endregion
 
@@ -1319,7 +1330,7 @@ class DataConverterItem extends DataConverter {
 				prop: "bonusProficiencyBonus",
 				isDisabled,
 			});
-			if (effect) out.push(effect);
+			if (effect) out.push(DataConverter.mutEffectDisabledTransfer(effect, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		}
 		// endregion
 
@@ -1329,7 +1340,7 @@ class DataConverterItem extends DataConverter {
 				Parser.ABIL_ABVS.forEach(ab => {
 					if (item.ability.static[ab] == null) return;
 
-					out.push(UtilActiveEffects.getGenericEffect({
+					const effect = UtilActiveEffects.getGenericEffect({
 						key: `data.abilities.${ab}.value`,
 						value: item.ability.static[ab],
 						mode: CONST.ACTIVE_EFFECT_MODES.UPGRADE,
@@ -1337,14 +1348,15 @@ class DataConverterItem extends DataConverter {
 						icon: img,
 						disabled: isDisabled,
 						priority: UtilActiveEffects.PRIORITY_BASE,
-					}));
+					});
+					out.push(DataConverter.mutEffectDisabledTransfer(effect, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 				});
 			}
 
 			Parser.ABIL_ABVS.forEach(ab => {
 				if (item.ability[ab] == null) return;
 
-				out.push(UtilActiveEffects.getGenericEffect({
+				const effect = UtilActiveEffects.getGenericEffect({
 					key: `data.abilities.${ab}.value`,
 					value: item.ability[ab],
 					mode: CONST.ACTIVE_EFFECT_MODES.ADD,
@@ -1352,17 +1364,22 @@ class DataConverterItem extends DataConverter {
 					icon: img,
 					disabled: isDisabled,
 					priority: UtilActiveEffects.PRIORITY_BONUS,
-				}));
+				});
+				out.push(DataConverter.mutEffectDisabledTransfer(effect, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 			});
 		}
 		// endregion
 
 		// region Damage resistance/immunity/vulnerability; condition immunity
 		const actorDataDrDiDvCi = DataConverter.getActorDamageResImmVulnConditionImm(item);
-		out.push(...this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Damage Resistance", actProp: "dr", isDisabled, actorDataDrDiDvCi}));
-		out.push(...this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Damage Immunity", actProp: "di", isDisabled, actorDataDrDiDvCi}));
-		out.push(...this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Damage Vulnerability", actProp: "dv", isDisabled, actorDataDrDiDvCi}));
-		out.push(...this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Condition Immunity", actProp: "ci", isDisabled, actorDataDrDiDvCi}));
+		const effectsDr = await this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Damage Resistance", actProp: "dr", isDisabled, actorDataDrDiDvCi});
+		const effectsDu = await this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Damage Immunity", actProp: "di", isDisabled, actorDataDrDiDvCi});
+		const effectsDv = await this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Damage Vulnerability", actProp: "dv", isDisabled, actorDataDrDiDvCi});
+		const effectsCi = await this._pGetItemEffects_getDrDiDvCiEffects({img, label: "Condition Immunity", actProp: "ci", isDisabled, actorDataDrDiDvCi});
+		out.push(...DataConverter.mutEffectsDisabledTransfer(effectsDr, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
+		out.push(...DataConverter.mutEffectsDisabledTransfer(effectsDu, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
+		out.push(...DataConverter.mutEffectsDisabledTransfer(effectsDv, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
+		out.push(...DataConverter.mutEffectsDisabledTransfer(effectsCi, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		// endregion
 
 		// region Speed
@@ -1443,20 +1460,19 @@ class DataConverterItem extends DataConverter {
 		}
 
 		if (speedChanges.length) {
-			out.push(UtilActiveEffects.getGenericEffect({
+			const effect = UtilActiveEffects.getGenericEffect({
 				label: `Speed Adjustment`,
 				icon: img,
 				disabled: isDisabled,
 				changes: speedChanges,
-			}));
+			});
+			out.push(DataConverter.mutEffectDisabledTransfer(effect, "importItem", this._ITEM_EFFECTS_HINTS_SELF));
 		}
 		// endregion
 
 		// TODO(Future)
 		//  - language proficiencies
 		//  - save proficiencies?
-
-		DataConverter.mutEffectsDisabledTransfer(out, "importItem");
 
 		return out;
 	}
@@ -1545,15 +1561,15 @@ class DataConverterItem extends DataConverter {
 		return (await DataConverter._pGetEffectsRawSideLoaded_(fauxGeneric, {propBrew: "foundryVariant", fnLoadJson: Vetools.pGetItemSideData, propJson: "magicvariant"}))?.length > 0;
 	}
 
-	static async pGetItemItemEffects (actor, item, sheetItem, {additionalData, img} = {}) {
+	static async _pGetItemItemEffectTuples (actor, item, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await DataConverter._pGetEffectsRawSideLoaded_(item, this._SIDE_LOAD_OPTS);
-		const effects = UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: item.name, additionalData, img});
+		const effects = UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: item.name, additionalData, img}, {isTuples: true});
 
 		if (!item._variantName) return effects;
 		const fauxGeneric = {name: item._variantName, source: item.source};
 
 		const effectsRawVariant = await DataConverter._pGetEffectsRawSideLoaded_(fauxGeneric, {propBrew: "foundryVariant", fnLoadJson: Vetools.pGetItemSideData, propJson: "magicvariant"});
-		const effectsVariant = UtilActiveEffects.getExpandedEffects(effectsRawVariant || [], {actor, sheetItem, parentName: fauxGeneric.name, additionalData, img});
+		const effectsVariant = UtilActiveEffects.getExpandedEffects(effectsRawVariant || [], {actor, sheetItem, parentName: fauxGeneric.name, additionalData, img}, {isTuples: true});
 
 		return [...effects, ...effectsVariant];
 	}

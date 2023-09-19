@@ -44,7 +44,12 @@ class Config extends Application {
 
 	static _IS_INIT = false;
 
-	static get backendEndpoint () { return ROUTE_PREFIX ? `/${ROUTE_PREFIX}/api/plutonium` : "/api/plutonium"; }
+	static get backendEndpoint () {
+		const customUrl = Config.get("misc", "backendEndpoint");
+		if (customUrl) return customUrl;
+		return ROUTE_PREFIX ? `/${ROUTE_PREFIX}/api/plutonium` : "/api/plutonium";
+	}
+
 	static get isInit () { return this._IS_INIT; }
 
 	static prePreInit () {
@@ -224,15 +229,19 @@ class Config extends Application {
 
 		// Add a fake config button to the module settings tab
 		game.settings.registerMenu(SharedConsts.MODULE_NAME, "stub", {
+			name: "Config Editor",
+			hint: "Access the config editor.",
 			label: "Open Config Editor",
 			icon: "fas fa-fw fa-cogs",
 			type: ModuleSettingsStub,
+			restricted: false,
 		});
 		// endregion
 
 		this._IS_INIT = true;
 	}
 
+	static _COMPATIBILITY_TEMP_OVERRIDES = null;
 	static _pInit_initCompatibilityTempOverrides () {
 		ConfigConsts.getDefaultConfigSortedFlat_()
 			.forEach(([groupKey, allGroupSettings]) => {
@@ -250,15 +259,56 @@ class Config extends Application {
 								if (!UtilCompat.isModuleActive(moduleId)) return false;
 
 								// Only log if we actually made a change
-								const isLog = !CollectionUtil.deepEquals(compatibilityValue, Config.get(groupKey, key));
+								const valCur = Config.get(groupKey, key);
+								const isChange = !CollectionUtil.deepEquals(compatibilityValue, valCur);
 
 								Config.setTemp(groupKey, key, compatibilityValue, {isSkipPermissionCheck: true});
-								if (isLog) {
-									console.warn(...LGT, `${game.modules.get(moduleId).data.title} detected! Setting compatibility config: ${groupKey}.${key} = ${compatibilityValueDisplay != null ? JSON.stringify(compatibilityValueDisplay) : compatibilityValueDisplay}. If you encounter unexpected issues, consider disabling either module.`);
+								if (isChange) {
+									const {displayGroup, displayKey} = Config._getDisplayLabels(groupKey, key);
+									const dispValCur = valCur != null ? JSON.stringify(valCur) : valCur;
+									const dispVal = compatibilityValueDisplay != null ? JSON.stringify(compatibilityValueDisplay) : compatibilityValueDisplay;
+
+									this._COMPATIBILITY_TEMP_OVERRIDES = this._COMPATIBILITY_TEMP_OVERRIDES || {};
+									MiscUtil.set(
+										this._COMPATIBILITY_TEMP_OVERRIDES,
+										groupKey,
+										key,
+										{
+											value: compatibilityValue,
+											message: `"${displayGroup} -&gt; ${displayKey}" value \`${dispValCur}\` has compatibility issues with module "${game.modules.get(moduleId).data.title}" (must be set to \`${dispVal}\`)`,
+										},
+									);
+
+									console.warn(...LGT, `${game.modules.get(moduleId).data.title} detected! Setting compatibility config: ${groupKey}.${key} = ${dispVal} (was ${dispValCur}). If you encounter unexpected issues, consider disabling either module.`);
 								}
 							});
 					});
 			});
+	}
+
+	static _hasCompatibilityWarnings () { return this._COMPATIBILITY_TEMP_OVERRIDES != null; }
+
+	static _getCompatibilityWarnings () {
+		if (!this._COMPATIBILITY_TEMP_OVERRIDES) return "";
+
+		const summary = Object.values(this._COMPATIBILITY_TEMP_OVERRIDES)
+			.map(keyToMeta => Object.values(keyToMeta).map(it => it.message))
+			.flat()
+			.map(it => ` - ${it}`)
+			.join("\n");
+		return `Click to resolve config module compatibility issues. Issues detected:\n${summary}.`;
+	}
+
+	static _doResolveCompatibility () {
+		Object.entries(this._COMPATIBILITY_TEMP_OVERRIDES)
+			.forEach(([groupKey, keyToMeta]) => {
+				Object.entries(keyToMeta)
+					.forEach(([key, meta]) => {
+						Config.set(groupKey, key, meta.value);
+					});
+			});
+
+		this._COMPATIBILITY_TEMP_OVERRIDES = null;
 	}
 
 	static async _pInit_pRegisterSettings () {
@@ -664,7 +714,15 @@ class Config extends Application {
 
 			const $btnPatreon = $(`<a class="btn btn-5et btn-xs ml-1" href="https://www.patreon.com/Giddy5e" rel="noopener noreferrer"><i class="fab fa-patreon"></i> Become a Patron</a>`);
 
-			const $btnResetAll = $(`<button class="btn btn-5et btn-xs ml-1" title="Reset All Settings"><i class="fa fa-undo-alt"></i></button>`)
+			const titleCompatWarning = this.constructor._getCompatibilityWarnings().qq();
+			const $btnCompatWarning = $(`<button class="btn btn-5et btn-xs ml-1 btn-pulse" ${titleCompatWarning ? `title="${titleCompatWarning}"` : ""}><i class="fas fa-exclamation-triangle mr-0"></i></button>`)
+				.click(() => {
+					this.constructor._doResolveCompatibility();
+					$btnCompatWarning.hideVe();
+				});
+			$btnCompatWarning.toggleVe(game.user.isGM && this.constructor._hasCompatibilityWarnings());
+
+			const $btnResetAll = $(`<button class="btn btn-5et btn-xs ml-1" title="Reset All Settings"><i class="fa fa-undo-alt mr-0"></i></button>`)
 				.click(async () => {
 					const isContinue = await InputUiUtil.pGetUserBoolean({
 						title: "Reset All",
@@ -684,6 +742,7 @@ class Config extends Application {
 					${$btnChangelog}
 					${$btnReportBug}
 					${$btnPatreon}
+					${$btnCompatWarning}
 					${$btnResetAll}
 				</div>
 
@@ -761,7 +820,7 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 	_activateListeners_$getWrpImportExport () {
 		if (!game.user.isGM) return null;
 
-		const $btnExport = $(`<button class="btn btn-5et btn-xs"><i class="fas fa-file-export fa-fw"></i> Export Config</button>`)
+		const $btnExport = $(`<button class="btn btn-5et btn-xs" title="Export Config"><i class="fas fa-file-export fa-fw"></i> Export</button>`)
 			.click(() => {
 				DataUtil.userDownload(
 					`${SharedConsts.MODULE_NAME}-config`,
@@ -776,7 +835,7 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 				);
 			});
 
-		const $btnImport = $(`<button class="btn btn-5et btn-xs"><i class="fas fa-file-import fa-fw"></i> Import Config</button>`)
+		const $btnImport = $(`<button class="btn btn-5et btn-xs" title="Import Config"><i class="fas fa-file-import fa-fw"></i> Import</button>`)
 			.click(async () => {
 				const {jsons, errors} = await DataUtil.pUserUpload({
 					expectedFileTypes: ["config"],
@@ -826,7 +885,7 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 
 		const fnsReset = [];
 
-		const $btnResetTab = $(`<button class="btn btn-xs ml-auto" title="Reset Settings for This Tab"><i class="fa fa-undo-alt"></i></button>`)
+		const $btnResetTab = $(`<button class="btn btn-xs ml-auto" title="Reset Settings for This Tab"><i class="fa fa-undo-alt mr-0"></i></button>`)
 			.click(() => fnsReset.forEach(it => it()));
 
 		const getRowMeta = settings => {
@@ -846,7 +905,7 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 
 					const current = Config.get(groupKey, k);
 
-					const $btnResetRow = $(`<button class="btn btn-xxs ml-1 cfg__btn-reset-row" title="Reset"><i class="fa fa-undo-alt"></i></button>`)
+					const $btnResetRow = $(`<button class="btn btn-xxs ml-1 cfg__btn-reset-row" title="Reset"><i class="fa fa-undo-alt mr-0"></i></button>`)
 						.click(evt => {
 							evt.stopPropagation();
 							evt.preventDefault();
@@ -900,7 +959,9 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 									doUpdate(DRAFT[groupKey][k]);
 								});
 
-							if (meta.isNullable) $ele.append(`<option value="-1">(None)</option>`);
+							if (meta.additionalStyleClasses) $ele.addClass(meta.additionalStyleClasses);
+
+							if (meta.isNullable) $ele.append(`<option value="-1" class="ve-muted">\u2014</option>`);
 							values.forEach((it, i) => $(`<option/>`, {value: i, text: it.name ?? it.value ?? it}).title(it.help).appendTo($ele));
 
 							const doUpdate = (val) => {
@@ -945,6 +1006,8 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 									doUpdate(DRAFT[groupKey][k]);
 								});
 
+							if (meta.additionalStyleClasses) $ele.addClass(meta.additionalStyleClasses);
+
 							const doUpdate = (val) => {
 								$ele.val(val);
 								cbIsDefault();
@@ -959,8 +1022,11 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 						}
 
 						case "percentage":
-						case "number": { // Note that this is _not_ "integer"
-							const cur = (current == null || isNaN(current)) ? meta.default : Number(current);
+						case "number": // Note that this is _not_ "integer"
+						case "integer": {
+							const cur = (meta.isNullable && current == null)
+								? null
+								: (current == null || isNaN(current)) ? meta.default : Number(current);
 
 							$ele = $(`<input type="text" class="w-100 text-right">`)
 								.placeholder(meta.placeholder)
@@ -981,12 +1047,15 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 									if (meta.min) opts.min = meta.min;
 									if (meta.max) opts.max = meta.max;
 
-									const num = UiUtil.strToNumber(rawVal, defaultVal, opts);
+									let num = UiUtil.strToNumber(rawVal, defaultVal, opts);
+									if (meta.type === "integer" && defaultVal != null) num = Math.round(num);
 									DRAFT[groupKey][k] = num;
 									$ele.val(num);
 
 									doUpdate(DRAFT[groupKey][k]);
 								});
+
+							if (meta.additionalStyleClasses) $ele.addClass(meta.additionalStyleClasses);
 
 							const doUpdate = (val) => {
 								$ele.val(val);
@@ -1299,7 +1368,8 @@ ${[...game.modules].filter(([, data]) => data.active).map(([, data]) => `${data.
 				case "url":
 				case "color":
 				case "percentage":
-				case "number": return setting.default;
+				case "number":
+				case "integer": return setting.default;
 
 				case "enum": {
 					if (setting.default == null) return undefined;

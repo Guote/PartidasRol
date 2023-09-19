@@ -33,8 +33,8 @@ class DataConverterRace extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(race);
 		const additionalFlags = await this._pGetFlagsSideLoaded(race);
 
-		const effects = await this._pGetEffectsSideLoaded({ent: race, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importRace");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: race, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importRace", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(race)),
@@ -77,7 +77,7 @@ class DataConverterRace extends DataConverter {
 				},
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 			img,
 		};
 

@@ -4,6 +4,7 @@ import {UtilDataConverter} from "./UtilDataConverter.js";
 import {Vetools} from "./Vetools.js";
 import {Config} from "./Config.js";
 import {UtilApplications} from "./UtilApplications.js";
+import {UtilActiveEffects} from "./UtilActiveEffects.js";
 
 class DataConverterVehicle extends DataConverter {
 	static _SIDE_LOAD_OPTS = {
@@ -333,8 +334,8 @@ class DataConverterVehicle extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(fauxEnt, {propOpts: "_SIDE_LOAD_OPTS_WEAPON"});
 		const additionalFlags = await this._pGetFlagsSideLoaded(fauxEnt, {propOpts: "_SIDE_LOAD_OPTS_WEAPON"});
 
-		const effects = await this._pGetEffectsSideLoaded({ent: fauxEnt, img}, {propOpts: "_SIDE_LOAD_OPTS_WEAPON"});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importVehicle");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: fauxEnt, img}, {propOpts: "_SIDE_LOAD_OPTS_WEAPON"});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importVehicle", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: weap.name,
@@ -379,7 +380,7 @@ class DataConverterVehicle extends DataConverter {
 				...additionalFlags,
 			},
 			img,
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 		};
 
 		return [out];
@@ -389,7 +390,7 @@ class DataConverterVehicle extends DataConverter {
 		let actionCount;
 		if (weap.entries) {
 			const walker = MiscUtil.getWalker({
-				keyBlacklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST,
+				keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST,
 				isBreakOnReturn: true,
 				isNoModification: true,
 			});

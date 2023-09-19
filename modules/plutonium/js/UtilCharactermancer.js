@@ -180,6 +180,12 @@ class Charactermancer_Util {
 
 					return `${it.name} ${it.source !== SRC_PHB ? `[${Parser.sourceJsonToAbv(it.source)}]` : ""}`;
 				},
+				fnGetAdditionalStyleClasses: ix => {
+					if (ix == null) return null;
+					const it = data[ix];
+					if (!it) return; // Should never occur
+					return it._versionBase_isVersion ? ["ve-muted"] : null;
+				},
 				asMeta: true,
 			},
 		);
@@ -2538,11 +2544,41 @@ class Charactermancer_ExpertiseSelect extends Charactermancer_SkillSaveProficien
 		this._hkUpdateExisting = () => this._hk_updatePtsExisting($ptsExistingStatic, $ptsExistingChooseAnyProficientSkill, $ptsExistingChooseAnyProficientTool);
 	}
 
-	_getProps (ix) {
+	_getProps (prop, ix) {
 		return {
-			propAnyProficientSkill: `ix_skill_${ix}`,
-			propAnyProficientTool: `ix_tool_${ix}`,
+			propAnyProficientSkill: `${prop}_ix_skill_${ix}`,
+			propAnyProficientTool: `${prop}_ix_tool_${ix}`,
 		};
+	}
+
+	_render_$getPtExisting () {
+		return $(`<div class="ve-small veapp__msg-warning inline-block ml-1 no-shrink" title="Expertise from Another Source">(<i class="fas fa-fw ${UtilActors.PROF_TO_ICON_CLASS[2]}"></i>)</div>`);
+	}
+
+	_render_renderPtStatic ($stgGroup, profSet) {
+		const $ptsExisting = [];
+
+		const profList = this._getStaticKeys()
+			.filter(key => profSet[key]);
+
+		const $wrps = profList
+			.map((it, i) => {
+				const $ptExisting = this._render_$getPtExisting();
+
+				$ptsExisting.push({
+					prof: it,
+					$ptExisting,
+				});
+
+				const isNotLast = i < profList.length - 1;
+				return $$`<div class="inline-block ${isNotLast ? "mr-1" : ""}">${this._getStaticDisplay(it)}${$ptExisting}${isNotLast ? `,` : ""}</div>`;
+			});
+
+		$$`<div class="block">
+			${$wrps}
+		</div>`.appendTo($stgGroup);
+
+		return $ptsExisting;
 	}
 
 	_render_renderPtChooseAnyProficientSkill ($stgGroup, profSet) {
@@ -2587,7 +2623,7 @@ class Charactermancer_ExpertiseSelect extends Charactermancer_SkillSaveProficien
 		const $ptsExisting = [];
 
 		for (let i = 0; i < numChoices; ++i) {
-			const ixProps = this._getProps(i);
+			const ixProps = this._getProps(propProfSet, i);
 
 			const selMeta = ComponentUiUtil.$getSelEnum(
 				this,
@@ -2601,27 +2637,11 @@ class Charactermancer_ExpertiseSelect extends Charactermancer_SkillSaveProficien
 			);
 			this._lastMeta._fnsCleanup.push(selMeta.unhook);
 
-			// region Juggle the "existing" display between multiple props
-			const $ptExisting = $(`<div class="ve-small veapp__msg-warning inline-block no-wrap"></div>`);
-			const hkMoveExisting = () => {
-				const desiredLocationProf = this._state[ixProps[propIxProps]];
-				const [curLocationProf, $curLocationArr] = Object.entries($ptsExisting)
-					.find(([, $ptExistingArr]) => $ptExistingArr.includes($ptExisting)) || [];
-
-				if (desiredLocationProf !== curLocationProf) {
-					if ($curLocationArr) {
-						const ixCurLocationArray = $curLocationArr.indexOf($ptExisting);
-						if (~ixCurLocationArray) $curLocationArr.splice(ixCurLocationArray, 1);
-						if (!$curLocationArr.length) delete $ptsExisting[curLocationProf];
-					}
-				}
-
-				($ptsExisting[desiredLocationProf] = $ptsExisting[desiredLocationProf] || []).push($ptExisting);
-			};
-			this._addHookBase(ixProps[propIxProps], hkMoveExisting);
-			this._lastMeta._fnsCleanup.push(() => this._removeHookBase(ixProps[propIxProps], hkMoveExisting));
-			hkMoveExisting();
-			// endregion
+			const $ptExisting = this._render_$getPtExisting();
+			$ptsExisting.push({
+				prop: ixProps[propIxProps],
+				$ptExisting,
+			});
 
 			const hk = () => selMeta.setValues(fnGetValues(), {isResetOnMissing: true});
 			if (this._featureSourceTracker) {
@@ -2695,24 +2715,25 @@ class Charactermancer_ExpertiseSelect extends Charactermancer_SkillSaveProficien
 	_hk_updatePtsExisting ($ptsExistingStatic, $ptsExistingChooseAnyProficientSkill, $ptsExistingChooseAnyProficientTool) {
 		const otherStates = this._featureSourceTracker ? this._featureSourceTracker.getStatesForKey(this._propGroup.propTracker, {ignore: this}) : null;
 
-		const $ptsExistings = [$ptsExistingStatic, $ptsExistingChooseAnyProficientSkill, $ptsExistingChooseAnyProficientTool].filter(Boolean);
+		const ptsExistingMetas = [$ptsExistingStatic, $ptsExistingChooseAnyProficientSkill, $ptsExistingChooseAnyProficientTool]
+			.filter(Boolean)
+			.flat();
 
-		$ptsExistings.forEach($ptsExisting => {
-			Object.entries($ptsExisting)
-				.forEach(([prof, $ptsExistingArr]) => {
-					// Value from sheet
-					let maxExisting = this._existing?.[prof] || 0;
+		ptsExistingMetas.forEach(ptExistingMeta => {
+			const prof = ptExistingMeta.prof ?? this._state[ptExistingMeta.prop];
 
-					// Value from other networked components
-					if (otherStates) otherStates.forEach(otherState => maxExisting = Math.max(maxExisting, otherState[prof] || 0));
+			if (prof == null) {
+				ptExistingMeta.$ptExisting.hideVe();
+				return;
+			}
 
-					$ptsExistingArr.forEach($ptExisting => {
-						$ptExisting
-							.title(maxExisting === 2 ? "Expertise from Another Source" : "")
-							.toggleClass("ml-1", maxExisting === 2)
-							.html(maxExisting === 2 ? `(<i class="fas fa-fw ${UtilActors.PROF_TO_ICON_CLASS[maxExisting]}"></i>)` : "");
-					});
-				});
+			// Value from sheet
+			let maxExisting = this._existing?.[prof] || 0;
+
+			// Value from other networked components
+			if (otherStates) otherStates.forEach(otherState => maxExisting = Math.max(maxExisting, otherState[prof] || 0));
+
+			ptExistingMeta.$ptExisting.toggleVe(maxExisting === 2);
 		});
 	}
 
@@ -2739,10 +2760,13 @@ class Charactermancer_ExpertiseSelect extends Charactermancer_SkillSaveProficien
 				if (k === "anyProficientSkill" || k === "anyProficientTool") {
 					const numChoices = Number(v || 1);
 					for (let i = 0; i < numChoices; ++i) {
-						const {propAnyProficientSkill, propAnyProficientTool} = this._getProps(i);
+						const {propAnyProficientSkill, propAnyProficientTool} = this._getProps(k, i);
 						const prop = this._isSkillKey(k) ? propAnyProficientSkill : propAnyProficientTool;
 						const chosenProf = this._state[prop];
-						if (chosenProf == null) return isFormComplete = false;
+						if (chosenProf == null) {
+							isFormComplete = false;
+							continue;
+						}
 						(this._isSkillKey(k) ? outSkills : outTools)[chosenProf] = outExpertise[chosenProf] = 2;
 					}
 					return;

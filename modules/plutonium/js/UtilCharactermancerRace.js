@@ -3,9 +3,9 @@ import {UtilApplications} from "./UtilApplications.js";
 
 class Charactermancer_Race_Util {
 	static async pPostLoadBrew (fileData) {
-		const out = [];
+		const out = {race: []};
 
-		if (fileData.race) out.push(...Renderer.race.mergeSubraces(fileData.race, {isAddBaseRaces: true}));
+		if (fileData.race) out.race.push(...Renderer.race.mergeSubraces(fileData.race, {isAddBaseRaces: true}));
 
 		if (fileData.subrace) {
 			const baseListSite = MiscUtil.copy((await Vetools.pGetRaces({isAddBaseRaces: true})).race);
@@ -18,7 +18,7 @@ class Charactermancer_Race_Util {
 			const nxtData = Renderer.race.adoptSubraces(baseList, fileData.subrace);
 			const mergedNxtData = Renderer.race.mergeSubraces(nxtData);
 
-			out.push(...mergedNxtData);
+			out.race.push(...mergedNxtData);
 		}
 
 		return out;

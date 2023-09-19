@@ -8,17 +8,24 @@ class Charactermancer_Feature_Util {
 	 * @param optfeatList A list of all optionalfeature entities.
 	 */
 	static addFauxOptionalFeatureEntries (featureList, optfeatList) {
-		for (const feature of featureList) {
-			if (!feature.entries?.length || !feature.optionalfeatureProgression) continue;
+		if (!featureList || !optfeatList) return;
 
-			for (const optFeatProgression of feature.optionalfeatureProgression) {
-				this._addFauxOptionalFeatureFeatures_handleFeatProgression(
-					optfeatList,
-					feature,
-					optFeatProgression,
-				);
-			}
-		}
+		Object.values(featureList)
+			.forEach(arr => {
+				if (!(arr instanceof Array)) return;
+
+				for (const feature of arr) {
+					if (!feature.entries?.length || !feature.optionalfeatureProgression) continue;
+
+					for (const optFeatProgression of feature.optionalfeatureProgression) {
+						this._addFauxOptionalFeatureFeatures_handleFeatProgression(
+							optfeatList,
+							feature,
+							optFeatProgression,
+						);
+					}
+				}
+			});
 	}
 
 	static _addFauxOptionalFeatureFeatures_handleFeatProgression (optfeatList, feature, optFeatProgression) {

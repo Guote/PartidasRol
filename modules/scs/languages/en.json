@@ -1,0 +1,128 @@
+{
+    "scs": {
+        "notifications": {
+            "actionLocking": {
+                "none": "There is no action locking available for the {title} {context} yet. Feel free to drop by <a href='https://discord.gg/AAkZWWqVav'>my discord server</a> to make a suggestion.",
+                "move": "It's currently the Movement & Misc. phase, so you cannot cast spells or attack",
+                "attacks": "It's currently the attack phase, so you can only attack",
+                "magic": "It's currently the magic phase, so you can only cast non-attacking spells"
+            },
+            "colorGeneration": {
+                "tryingAgain": "Error in color generation. Trying again..."
+            },
+            "tutorial": {
+                "introDependency": "You must install and enable the IntroJS library before you can {action} the SCS tutorial."
+            },
+            "changeOutOfBounds": "Cannot change phase by delta \"{delta}\", because that would bring it outside of the allowed bounds. Current phase: \"{phase}\".",
+            "display": {
+                "latestAttackRoll": "Latest attack roll"
+            },
+            "phaseCountDerived": "The phase count is calculated from the phase names and cannot be changed directly."
+        },
+        "settings": {
+            "hideNoCombat": {
+                "Name": "Hide if no Combat",
+                "Hint": "Hide the SCS App if there is no Combat active"
+            },
+            "hideTracker": {
+                "Name": "Hide Tracker",
+                "Hint": "Enable this to hide the default combat tracker"
+            },
+            "limitCycles": {
+                "Name": "Limit Cycles",
+                "Hint": "Move on to the next round of combat after the number of cycles configured below."
+            },
+            "maxCycle": {
+                "Name": "Maximum Cycle",
+                "Hint": "Set a maximum number of cycles before continuing on to the next round. You must enable Limit Cycles to use this."
+            },
+            "limitPhases": {
+                "Name": "Limit Phases",
+                "Hint": "Move on to the next round of combat at the end of each cycle of phases. This will override Limit Cycles above."
+            },
+            "startupTutorial": {
+                "Name": "Play Startup Tutorial",
+                "Hint": "Disable this if you don't want the tutorial to display each time the page loads"
+            },
+            "phaseNames": {
+                "Name": "Phase Names",
+                "Hint": "A comma-separated list of phase names (reloads page)",
+                "defaults": {
+                    "move": "Move",
+                    "attacks": "Attacks",
+                    "magic": "Magic"
+                }
+            },
+            "colorConfig": {
+                "Name": "Configure Colors",
+                "Label": "Configure",
+                "Hint": "Click to configure the colors of the Simultaneous Combat System app"
+            },
+            "alternateActive": {
+                "Name": "Alternate Appearance",
+                "Hint": "Invert the appearance of the active phase, so that it's lighter than the others rather than darker"
+            },
+            "actionLocking": {
+                "Name": "Action Locking",
+                "Hint": "Lock to only specific actions for known phases. Feel free to make suggestions for phases to add!"
+            },
+            "hudDisplay": {
+                "Name": "Attack Roll HUD",
+                "Hint": "Show the last attack roll in the token's HUD for aiding in determining attack order"
+            },
+            "trackerDisplay": {
+                "Name": "Attack Roll in the Combat Tracker",
+                "Hint": "Show the last attack roll in the Combat Tracker next to each combatant's name"
+            },
+            "preventTurns": {
+                "Name": "Prevent Turns",
+                "Hint": "Do not show \"Next Turn\", \"Previous Turn\", or \"End Turn\" buttons and do not allow any Combatants to become active on the Combat Tracker."
+            }
+        },
+        "tutorial": {
+            "welcome": {
+                "Title": "Welcome to the SCS",
+                "Intro": "This module is an implementation of the Simultaneous Combat System described in <a href=\"https://redd.it/p11h35\">this reddit post</a>."
+            },
+            "howItWorks": {
+                "Title": "How it works",
+                "Intro": "<p>Instead of each character taking their own turn sequentially, everything happens all at once. <br/> In order to prevent total chaos, combat still happens in rounds and there is a structure to each round. That is, they are divided into resolution phases:</p>"
+            },
+            "combatTracker": {
+                "Title": "Where is the combat tracker?",
+                "Intro": "<p>Since combat happens simultaneously with this system, I've removed the default combat tracker. You can always re-enable it in the module's settings.</p>"
+            },
+            "movingAround": {
+                "Title": "How do I move this thing around?",
+                "Intro": "<p>You can drag the app around by clicking and holding this text. It snaps to the bottom left corner, but will remember it's position wherever you choose to put it.</p>"
+            },
+            "dontShowAgain": "Don't show again"
+        },
+        "keybindings": {
+            "nextPhase": {
+                "name": "Next Phase",
+                "hint": "Switch to the next phase"
+            },
+            "previousPhase": {
+                "name": "Previous Phase",
+                "hint": "Switch to the previous phase"
+            },
+            "nextRound": {
+                "name": "Next Round",
+                "hint": "Switch to the next round"
+            },
+            "previousRound": {
+                "name": "Previous Round",
+                "hint": "Switch to the previous round"
+            },
+            "toggleVisibility": {
+                "name": "Toggle Visibility",
+                "hint": "Show and hide the app"
+            }
+        },
+        "colorConfig": {
+            "title": "Color Config",
+            "save": "Save"
+        }
+    }
+}

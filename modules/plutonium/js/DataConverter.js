@@ -18,6 +18,7 @@ import {UtilDataConverter} from "./UtilDataConverter.js";
 import {UtilCompendium} from "./UtilCompendium.js";
 import {UtilActiveEffects} from "./UtilActiveEffects.js";
 import {ConfigConsts} from "./ConfigConsts.js";
+import {UtilAutomation} from "./UtilAutomation.js";
 
 class DataConverter {
 	// region Side data fetching
@@ -62,9 +63,9 @@ class DataConverter {
 		return DataConverter._pGetEffectsRawSideLoaded_(ent, opts);
 	}
 
-	static async _pGetEffectsSideLoaded ({ent, actor = null, sheetItem = null, additionalData = null, img = null}, {propOpts = "_SIDE_LOAD_OPTS"} = {}) {
+	static async _pGetEffectsSideLoadedTuples ({ent, actor = null, sheetItem = null, additionalData = null, img = null}, {propOpts = "_SIDE_LOAD_OPTS"} = {}) {
 		const outRaw = await this._pGetEffectsRawSideLoaded(ent, {propOpts});
-		if (!outRaw?.length) return null;
+		if (!outRaw?.length) return [];
 
 		return UtilActiveEffects.getExpandedEffects(
 			outRaw,
@@ -73,6 +74,9 @@ class DataConverter {
 				sheetItem,
 				parentName: ent._displayName || ent.name,
 				img,
+			},
+			{
+				isTuples: true,
 			},
 		);
 	}
@@ -532,7 +536,10 @@ class DataConverter {
 			// endregion
 
 			// Effects added by the parsing process
-			this.effectsAdditional = [];
+			this.effectsParsed = [];
+
+			// Flags added by the parsing process
+			this.flagsParsed = {};
 		}
 
 		async pInit ({isSkipDescription = false, isSkipImg = false} = {}) {
@@ -687,25 +694,6 @@ class DataConverter {
 		}
 		// endregion
 
-		// region Resource Consumption
-		if (opts.mode === "player" && entry.entries) {
-			UtilDataConverter.WALKER_READONLY_GENERIC.walk(
-				entry.entries,
-				{
-					string: (str) => {
-						if (state.consumeType || state.consumeTarget || state.consumeAmount) return;
-
-						str.replace(/(?:(\d+) to )?(\d+) (?:ki|sorcery) point/i, (...m) => {
-							state.consumeType = "attribute";
-							state.consumeTarget = "resources.primary.value";
-							state.consumeAmount = Number(m[1] || m[2]);
-						});
-					},
-				},
-			);
-		}
-		// endregion
-
 		// region Damage
 		let strEntriesNoDamageDice = strEntries;
 		if ((opts.mode === "player" || opts.mode === "vehicle") && entry.entries && !state.damageParts?.length) {
@@ -742,6 +730,8 @@ class DataConverter {
 		this._pGetItemActorPassive_mutActionType({entry, opts, state});
 		// endregion
 
+		this._pGetItemActorPassive_mutEffects({entry, opts, state});
+
 		// region Post-processing
 		try { state.activationCondition = Renderer.stripTags(state.activationCondition); } catch (e) { console.error(...LGT, e); }
 
@@ -765,6 +755,8 @@ class DataConverter {
 		const fauxEntrySourcePage = {...entry};
 		if (opts.source != null) fauxEntrySourcePage.source = opts.source;
 		if (opts.page != null) fauxEntrySourcePage.page = opts.page;
+
+		this._pGetItemActorPassive_mutFlags({entry, opts, state});
 
 		return {
 			name: state.name,
@@ -836,13 +828,14 @@ class DataConverter {
 			},
 			img: state.img,
 			flags: {
+				...state.flagsParsed,
 				...(UtilCompat.getFeatureFlags({isReaction: ["reaction", "reactiondamage", "reactionmanual"].includes(state.activationType)})),
 				...(state.combinedFoundryFlags || {}),
 				...opts.additionalFlags,
 			},
 			effects: [
 				...(opts.effects || []),
-				...state.effectsAdditional,
+				...state.effectsParsed,
 			],
 		};
 	}
@@ -941,7 +934,7 @@ class DataConverter {
 
 		MiscUtil.getWalker({
 			isNoModification: true,
-			keyBlacklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST,
+			keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST,
 			isBreakOnReturn: true,
 		}).walk(
 			entry.entries,
@@ -992,7 +985,7 @@ class DataConverter {
 					? {flags: {[UtilCompat.MODULE_DAE]: {specialDuration: ["1Reaction"]}}}
 					: {durationTurns: 1};
 
-				state.effectsAdditional.push(UtilActiveEffects.getGenericEffect({
+				state.effectsParsed.push(UtilActiveEffects.getGenericEffect({
 					...argsDuration,
 					key: `data.attributes.ac.bonus`,
 					value: Number(m.last().ac),
@@ -1101,14 +1094,24 @@ class DataConverter {
 
 		const {partsNonNumerical, totalNumerical} = this._getProfBonusExpressionParts(m.groups.save);
 
-		state.actionType = state.actionType || "save";
-		state.saveAbility = state.saveAbility || m.groups.abil.toLowerCase().slice(0, 3);
-		state.saveDc = totalNumerical; // FIXME(Future) Unfortunately, dnd5e (as of 2022-03-23) does not support expressions/etc. in this field, so we have to use the number
+		state.actionType = state.actionType === undefined
+			? "save"
+			: state.actionType;
+		state.saveAbility = state.saveAbility === undefined
+			? m.groups.abil.toLowerCase().slice(0, 3)
+			: state.saveAbility;
+		state.saveDc = state.saveDc === undefined
+			? totalNumerical // FIXME(Future) Unfortunately, dnd5e (as of 2022-03-23) does not support expressions/etc. in this field, so we have to use the number
+			: state.saveDc;
 
 		if (partsNonNumerical.length || opts.pb == null || opts.entity == null || Parser.ABIL_ABVS.some(it => opts.entity[it] == null)) {
-			state.saveScaling = "flat";
+			state.saveScaling = state.saveScaling === undefined ? "flat" : state.saveScaling;
 			return;
 		}
+
+		// region Scaling
+		// If the save scaling is already defined, use it
+		if (state.saveScaling) return;
 
 		// If there is exactly one ability score that our saving throw could be based on, use it,
 		//   rather than flat scaling.
@@ -1118,6 +1121,7 @@ class DataConverter {
 
 		if (matchingAbils.length === 1) state.saveScaling = state.saveScaling || matchingAbils[0].ability;
 		else state.saveScaling = "flat";
+		// endregion
 	}
 
 	static _pGetItemActorPassive_mutUses ({entry, opts, strEntries, state}) {
@@ -1369,7 +1373,7 @@ class DataConverter {
 	static _pGetItemActorPassive_mutActionType_player ({entry, opts, state}) {
 		if (state.actionType || opts.mode !== "player" || !entry.entries?.length) return;
 
-		const walker = MiscUtil.getWalker({keyBlacklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST, isNoModification: true, isBreakOnReturn: true});
+		const walker = MiscUtil.getWalker({keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST, isNoModification: true, isBreakOnReturn: true});
 		walker.walk(
 			entry.entries,
 			{
@@ -1402,6 +1406,62 @@ class DataConverter {
 		if (state.actionType || opts.mode !== "creature" || !entry.entries?.length) return;
 
 		state.actionType = "other";
+	}
+
+	static _pGetItemActorPassive_mutEffects ({entry, opts, state}) {
+		this._pGetItemActorPassive_mutEffects_player({entry, opts, state});
+		this._pGetItemActorPassive_mutEffects_creature({entry, opts, state});
+	}
+
+	static _pGetItemActorPassive_mutEffects_player ({entry, opts, state}) {
+		if (opts.mode !== "player" || !entry.entries?.length) return;
+
+		// (Expand this as required)
+		void 0;
+	}
+
+	static _pGetItemActorPassive_mutEffects_creature ({entry, opts, state}) {
+		if (opts.mode !== "creature" || !entry.entries?.length) return;
+
+		// Only add effects if we're using automation
+		if (!UtilCompat.isPlutoniumAddonAutomationActive()) return;
+
+		const effects = UtilAutomation.getCreatureFeatureEffects({entry, img: state.img, entity: opts.entity});
+		if (effects.length) state.effectsParsed.push(...effects);
+	}
+
+	static _pGetItemActorPassive_mutFlags ({entry, opts, state}) {
+		this._pGetItemActorPassive_mutFlags_player({entry, opts, state});
+		this._pGetItemActorPassive_mutFlags_creature({entry, opts, state});
+	}
+
+	static _pGetItemActorPassive_mutFlags_player ({entry, opts, state}) {
+		if (opts.mode !== "player" || !entry.entries?.length) return;
+
+		// (Expand this as required)
+		void 0;
+	}
+
+	static _pGetItemActorPassive_mutFlags_creature ({entry, opts, state}) {
+		if (opts.mode !== "creature" || !entry.entries?.length) return;
+
+		if (!UtilCompat.isMidiQolActive()) return;
+
+		MiscUtil.getWalker({
+			isNoModification: true,
+			keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST,
+			isBreakOnReturn: true,
+		}).walk(
+			entry.entries,
+			{
+				string: str => {
+					if (/\buntil [^.?!]+ concentration ends\b/i.test(str)) {
+						MiscUtil.set(state.flagsParsed, "midiProperties", "concentration", true);
+						return true;
+					}
+				},
+			},
+		);
 	}
 
 	static getMaxCasterProgression (...casterProgressions) {
@@ -2208,7 +2268,11 @@ class DataConverter {
 
 		Object.entries(formData.data)
 			.forEach(([sense, range]) => {
+				if (!range) return dataTarget[sense] = Math.max(dataTarget[sense], 0);
+
 				range = Config.getMetricNumberDistance({configGroup, originalValue: range, originalUnit: "feet"});
+				// Tokens require distance increments >= `0.01`
+				range = Number(range.toFixed(2));
 
 				if (!dataTarget[sense]) return dataTarget[sense] = range;
 				dataTarget[sense] = Math.max(dataTarget[sense], range);
@@ -2248,12 +2312,13 @@ class DataConverter {
 
 		// Treat these as "bright sight," as they represent the creature having an unrestricted view of the area.
 		for (const prop of ["blindsight", "tremorsense", "truesight"]) {
-			if (dataAttributesSenses[prop]) dataToken.brightSight = Math.max(dataToken.brightSight, dataAttributesSenses[prop]);
+			if (dataAttributesSenses[prop]) dataToken.brightSight = Math.max(dataToken.brightSight ?? 0, dataAttributesSenses[prop]);
 		}
 
 		return {dataAttributesSenses, dataToken};
 	}
 
+	static _RE_IS_VERSATILE = / (?:two|both) hands/i;
 	static getDamageTupleMetas (str, {summonSpellLevel = 0} = {}) {
 		const damageTupleMetas = [];
 
@@ -2266,10 +2331,14 @@ class DataConverter {
 		// "the spell's level" part for e.g. TCE's Aberrant Spirit
 		// "plus ..." part for e.g. Orc War Chief
 		const strOut = str
-			.replace(/(?:(\d+)|\(?{@(?:dice|damage) ([^|}]+)(?:\|[^}]+)?}(?:\s+[-+]\s+the spell's level)?(?: plus {@(?:dice|damage) ([^|}]+)(?:\|[^}]+)?})?\)?)(?:\s+[-+]\s+[-+a-zA-Z0-9 ]*?)? ([^ ]+) damage/gi, (...mDamage) => {
-				const [fullMatch, dmgFlat, dmgDice1, dmgDice2, dmgType, ixMatch] = mDamage;
+			.replace(/(?:(?<dmgFlat>\d+)|\(?{@(?:dice|damage) (?<dmgDice1>[^|}]+)(?:\|[^}]+)?}(?:\s+[-+]\s+the spell's level)?(?: plus {@(?:dice|damage) (?<dmgDice2>[^|}]+)(?:\|[^}]+)?})?\)?)(?:\s+[-+]\s+[-+a-zA-Z0-9 ]*?)?(?: (?<dmgType>[^ ]+))? damage/gi, (...mDamage) => {
+				const [fullMatch] = mDamage;
+				const [ixMatch] = mDamage.slice(-2, -1);
+				const {dmgFlat, dmgDice1, dmgDice2, dmgType} = mDamage.last();
+
 				const dmgDice1Clean = dmgDice1 ? dmgDice1.split("|")[0] : null;
 				const dmgDice2Clean = dmgDice2 ? dmgDice2.split("|")[0] : null;
+				const dmgTypeClean = dmgType || "";
 
 				const isFlatDamage = dmgFlat != null;
 				let dmg = isFlatDamage
@@ -2302,7 +2371,7 @@ class DataConverter {
 				dmg = dmg.replace(/\bsummonSpellLevel\b/gi, `${summonSpellLevel ?? 0}`);
 
 				const tupleMeta = {
-					tuple: [dmg, dmgType],
+					tuple: [dmg, dmgTypeClean],
 					isOnFailSavingThrow: false,
 					isAlternateRoll: false,
 				};
@@ -2313,13 +2382,13 @@ class DataConverter {
 				}
 
 				// If this damage comes after another damage roll, *and* there is an "... or ..." between the two rolls,
-				//   or if the previous damage roll was an alt-roll,
-				//   mark this roll as an alt-role.
+				//   or if the previous damage roll was an alt-roll, mark this roll as an alt-roll.
 				if (
 					damageTupleMetas.last()?.isAlternateRoll
 					|| (
 						damageTupleMetas.length
 						&& /\bor\b/.test(str.slice(ixLastMatch + lenLastMatch, ixMatch))
+						&& !this._RE_IS_VERSATILE.test(str.slice(ixMatch + fullMatch.length))
 					)
 				) {
 					tupleMeta.isAlternateRoll = true;
@@ -2629,7 +2698,7 @@ class DataConverter {
 	static async _pGetSideLoadedMatch (ent, {propBrew, fnLoadJson, propJson, propsMatch = ["source", "name"]}) {
 		const founds = [];
 
-		if (UtilCompat.isPlutoniumAddonDataActive()) {
+		if (UtilCompat.isPlutoniumAddonAutomationActive()) {
 			const valsLookup = propsMatch.map(prop => ent[prop]).filter(Boolean);
 			const found = await UtilCompat.getApi(UtilCompat.MODULE_PLUTONIUM_ADDON_AUTOMATION)
 				.pGetExpandedAddonData({
@@ -2774,45 +2843,43 @@ class DataConverter {
 		return (actor?.items?.contents || []).find(it => it.type === "feat" && it.name.toLowerCase().trim() === consumes.name.toLowerCase().trim());
 	}
 
-	static mutEffectsDisabledTransfer (effects, configGroup) {
+	static mutEffectsDisabledTransfer (effects, configGroup, opts = {}) {
 		if (!effects) return;
 
-		effects.forEach(effect => {
-			const isOnActivationEffect = this._isOnActivationEffect(effect);
-
-			const disabled = Config.get(configGroup, "setEffectDisabled");
-			switch (disabled) {
-				case ConfigConsts.C_USE_PLUT_VALUE: effect.disabled = !isOnActivationEffect; break;
-				case ConfigConsts.C_BOOL_DISABLED: effect.disabled = false; break;
-				case ConfigConsts.C_BOOL_ENABLED: effect.disabled = true; break;
-			}
-
-			const transfer = Config.get(configGroup, "setEffectTransfer");
-			switch (transfer) {
-				case ConfigConsts.C_USE_PLUT_VALUE: effect.transfer = UtilCompat.isDaeActive() ? isOnActivationEffect : true; break;
-				case ConfigConsts.C_BOOL_DISABLED: effect.transfer = false; break;
-				case ConfigConsts.C_BOOL_ENABLED: effect.transfer = true; break;
-			}
-		});
+		return effects.map(effect => this.mutEffectDisabledTransfer(effect, configGroup, opts));
 	}
 
-	static _isOnActivationEffect (effect) {
-		if (
-			effect?.duration?.seconds
-			|| effect?.duration?.rounds
-			|| effect?.duration?.turns
-		) return false;
+	static mutEffectDisabledTransfer (
+		effect,
+		configGroup,
+		{
+			hintDisabled = null,
+			hintTransfer = null,
+		} = {},
+	) {
+		if (!effect) return;
 
-		if (UtilCompat.isDaeActive()) {
-			if (
-				effect?.flags?.dae?.durationExpression
-				|| (effect?.flags?.dae?.specialDuration || []).length
-			) return true;
-
-			return false;
+		const disabled = Config.get(configGroup, "setEffectDisabled");
+		switch (disabled) {
+			case ConfigConsts.C_USE_PLUT_VALUE: effect.disabled = hintDisabled != null
+				? hintDisabled
+				: false;
+				break;
+			case ConfigConsts.C_BOOL_DISABLED: effect.disabled = false; break;
+			case ConfigConsts.C_BOOL_ENABLED: effect.disabled = true; break;
 		}
 
-		return false;
+		const transfer = Config.get(configGroup, "setEffectTransfer");
+		switch (transfer) {
+			case ConfigConsts.C_USE_PLUT_VALUE: effect.transfer = hintTransfer != null
+				? hintTransfer
+				: true;
+				break;
+			case ConfigConsts.C_BOOL_DISABLED: effect.transfer = false; break;
+			case ConfigConsts.C_BOOL_ENABLED: effect.transfer = true; break;
+		}
+
+		return effect;
 	}
 }
 

@@ -4,6 +4,7 @@ import {Config} from "./Config.js";
 import {DataConverter} from "./DataConverter.js";
 import {Vetools} from "./Vetools.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
+import {UtilActiveEffects} from "./UtilActiveEffects.js";
 
 class DataConverterCultBoon extends DataConverter {
 	static _getSideLoadOpts (ent) {
@@ -35,8 +36,8 @@ class DataConverterCultBoon extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(ent);
 		const additionalFlags = await this._pGetFlagsSideLoaded(ent);
 
-		const effects = await this._pGetEffectsSideLoaded({ent, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importCultBoon");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importCultBoon", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(ent, {isActorItem: opts.isActorItem})),
@@ -78,7 +79,7 @@ class DataConverterCultBoon extends DataConverter {
 				},
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 		};
 
 		if (opts.defaultPermission != null) out.permission = {default: opts.defaultPermission};

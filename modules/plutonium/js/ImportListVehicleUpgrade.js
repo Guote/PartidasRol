@@ -8,6 +8,7 @@ import {ImportListFeature} from "./ImportListFeature.js";
 class ImportListVehicleUpgrade extends ImportListFeature {
 	static get ID () { return "vehicle-upgrades"; }
 	static get DISPLAY_NAME_TYPE_PLURAL () { return "Vehicle Upgrades"; }
+	static get _PROPS () { return ["vehicleUpgrade"]; }
 
 	static _ = this.registerImpl(this);
 
@@ -28,7 +29,7 @@ class ImportListVehicleUpgrade extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["vehicleUpgrade"],
+				props: ImportListVehicleUpgrade._PROPS,
 				dirsHomebrew: ["vehicleUpgrade"],
 				titleSearch: "vehicle upgrades",
 				sidebarTab: "items",
@@ -144,8 +145,8 @@ class ImportListVehicleUpgrade extends ImportListFeature {
 
 	static async _pHasSideLoadedEffects (actor, feature) { return DataConverterVehicleUpgrade.pHasVehicleUpgradeSideLoadedEffects(actor, feature); }
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
-		return DataConverterVehicleUpgrade.pGetVehicleUpgradeItemEffects(
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
+		return DataConverterVehicleUpgrade.pGetVehicleUpgradeItemEffectTuples(
 			actor,
 			feature,
 			importedEmbed,

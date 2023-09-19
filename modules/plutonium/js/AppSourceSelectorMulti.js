@@ -21,7 +21,7 @@ class AppSourceSelectorMulti extends Application {
 	 * @param [opts.isDedupable]
 	 * @param [opts.page]
 	 * @param [opts.fnGetDedupedData]
-	 * @param [opts.fnGetBlacklistFilteredData]
+	 * @param [opts.fnGetBlocklistFilteredData]
 	 */
 	constructor (opts) {
 		super({
@@ -59,7 +59,7 @@ class AppSourceSelectorMulti extends Application {
 		this._isDedupable = !!opts.isDedupable;
 		this._page = opts.page;
 		this._fnGetDedupedData = opts.fnGetDedupedData;
-		this._fnGetBlacklistFilteredData = opts.fnGetBlacklistFilteredData;
+		this._fnGetBlocklistFilteredData = opts.fnGetBlocklistFilteredData;
 
 		this._resolve = null;
 		this._reject = null;
@@ -646,7 +646,7 @@ class AppSourceSelectorMulti extends Application {
 		})();
 	}
 
-	async _pAcceptAndResolveSelection ({$ovrLoading, isSilent = false, isBackground = false} = {}) {
+	async _pAcceptAndResolveSelection ({$ovrLoading, isSilent = false, isBackground = false, isAutoSelectAll = false} = {}) {
 		try {
 			if ($ovrLoading) $ovrLoading.showVe();
 
@@ -671,9 +671,10 @@ class AppSourceSelectorMulti extends Application {
 				}
 			}
 
-			const out = await this._pGetOutputEntities(sources, {isBackground});
+			const out = await this._pGetOutputEntities(sources, {isBackground, isAutoSelectAll});
+			if (!out) return; // The prompt was cancelled (e.g. the user had too many auto-selected sources, and chose to cancel)
 
-			if (!isSilent && !out.length) {
+			if (!isSilent && !Object.values(out).some(it => it?.length)) {
 				if ($ovrLoading) $ovrLoading.hideVe();
 				return ui.notifications.warn(`No sources to be loaded! Please finish entering source details first.`);
 			}
@@ -687,22 +688,24 @@ class AppSourceSelectorMulti extends Application {
 		}
 	}
 
-	async _pGetOutputEntities (sources, {isBackground = false} = {}) {
-		const {dedupedAllContentFlat} = await UtilDataSource.pGetAllContent({
+	async _pGetOutputEntities (sources, {isBackground = false, isAutoSelectAll = false} = {}) {
+		const allContentMeta = await UtilDataSource.pGetAllContent({
 			sources,
 			uploadedFiles: this.uploadedFiles,
 			customUrls: this.getCustomUrls(),
 			isBackground,
-			props: this._props,
 
 			page: this._page,
 
 			isDedupable: this._isDedupable,
 			fnGetDedupedData: this._fnGetDedupedData,
 
-			fnGetBlacklistFilteredData: this._fnGetBlacklistFilteredData,
+			fnGetBlocklistFilteredData: this._fnGetBlocklistFilteredData,
+
+			isAutoSelectAll,
 		});
-		return dedupedAllContentFlat;
+		if (!allContentMeta) return null;
+		return allContentMeta.dedupedAllContentMerged;
 	}
 
 	getCustomUrls () {
@@ -737,7 +740,7 @@ class AppSourceSelectorMulti extends Application {
 			this._reject = reject;
 		});
 
-		if (isSelectAll) this._pAcceptAndResolveSelection({isSilent: true, isBackground: true}).then(null);
+		if (isSelectAll) this._pAcceptAndResolveSelection({isSilent: true, isBackground: true, isAutoSelectAll: isSelectAll}).then(null);
 
 		return this._pUserInput;
 	}

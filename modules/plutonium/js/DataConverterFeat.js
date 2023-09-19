@@ -69,8 +69,8 @@ class DataConverterFeat extends DataConverterFeature {
 		const additionalFlags = await this._pGetFlagsSideLoaded(cpyFeat);
 
 		// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-		const effects = opts.isActorItem ? [] : await this._pGetEffectsSideLoaded({ent: cpyFeat, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importFeat");
+		const effectsSideTuples = opts.isActorItem ? [] : await this._pGetEffectsSideLoadedTuples({ent: cpyFeat, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importFeat", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(cpyFeat, {isActorItem: opts.isActorItem})),
@@ -108,7 +108,7 @@ class DataConverterFeat extends DataConverterFeature {
 				...additionalFlags,
 			},
 			// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 		};
 
 		if (opts.defaultPermission != null) out.permission = {default: opts.defaultPermission};
@@ -149,9 +149,9 @@ class DataConverterFeat extends DataConverterFeature {
 		return (await this._pGetEffectsRawSideLoaded_(feat, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetFeatItemEffects (actor, feat, sheetItem, {additionalData, img} = {}) {
+	static async pGetFeatItemEffectTuples (actor, feat, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await this._pGetEffectsRawSideLoaded_(feat, this._SIDE_LOAD_OPTS);
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: feat.name, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: feat.name, additionalData, img}, {isTuples: true});
 	}
 
 	static async _pGetPreloadSideData () {

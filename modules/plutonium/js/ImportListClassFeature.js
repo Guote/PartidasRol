@@ -13,6 +13,8 @@ class ImportListClassFeature extends ImportListFeature {
 
 	static _ = this.registerImpl(this);
 
+	static get _PROPS () { return ["classFeature", "subclassFeature"]; }
+
 	// region External
 	static init () {
 		this._initCreateSheetItemHook({
@@ -36,7 +38,7 @@ class ImportListClassFeature extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["classFeature", "subclassFeature"],
+				props: ImportListClassFeature._PROPS,
 				dirsHomebrew: ["classFeature", "subclassFeature"],
 				titleSearch: "class and subclass features",
 				sidebarTab: "items",
@@ -67,7 +69,6 @@ class ImportListClassFeature extends ImportListFeature {
 				{
 					cacheKey: "5etools-class-subclass-features",
 					filterTypes: [UtilDataSource.SOURCE_TYP_OFFICIAL_ALL],
-					isUseProps: true,
 					isDefault: true,
 					pPostLoad: loadedData => this.constructor._pPostLoad(loadedData),
 				},
@@ -92,14 +93,22 @@ class ImportListClassFeature extends ImportListFeature {
 	}
 
 	static async _pPostLoad (loadedData) {
-		loadedData = loadedData.filter(it => it.name.toLowerCase() !== "ability score improvement");
+		const out = {};
 
-		// (N.b.: this is a performance hog)
-		const out = [];
-		for (const feature of loadedData) {
-			const loaded = await this._pGetInitFeatureLoadeds(feature);
-			if (!loaded || loaded.isIgnored) continue;
-			out.push(feature);
+		for (let [k, arr] of Object.entries(loadedData)) {
+			if (!this._PROPS.includes(k)) continue;
+
+			arr = arr.filter(it => it.name.toLowerCase() !== "ability score improvement");
+
+			// (N.b.: this is a performance hog)
+			const outArr = [];
+			for (const feature of arr) {
+				const loaded = await this._pGetInitFeatureLoadeds(feature);
+				if (!loaded || loaded.isIgnored) continue;
+				outArr.push(feature);
+			}
+
+			out[k] = outArr;
 		}
 
 		return out;
@@ -183,7 +192,8 @@ class ImportListClassFeature extends ImportListFeature {
 
 	async pSetContent (val) {
 		await super.pSetContent(val);
-		this._contentDereferenced = await Promise.all(val.map(feature => DataConverterClassSubclassFeature.pGetDereferencedClassSubclassFeatureItem(feature)));
+		this._contentDereferenced = await this._content
+			.pMap(feature => DataConverterClassSubclassFeature.pGetDereferencedClassSubclassFeatureItem(feature));
 	}
 
 	_renderInner_initPreviewButton (item, btnShowHidePreview) {
@@ -202,8 +212,8 @@ class ImportListClassFeature extends ImportListFeature {
 		return DataConverterClassSubclassFeature.pHasClassSubclassSideLoadedEffects(actor, feature);
 	}
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
-		return DataConverterClassSubclassFeature.pGetClassSubclassFeatureItemEffects(
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
+		return DataConverterClassSubclassFeature.pGetClassSubclassFeatureItemEffectTuples(
 			actor,
 			feature,
 			importedEmbed,

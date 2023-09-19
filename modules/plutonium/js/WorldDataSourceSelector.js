@@ -139,7 +139,7 @@ class _WorldDataSourceSelectorComp extends BaseComponent {
 				await UtilWorldDataSourceSelector.pSaveState(this.getSaveableState());
 			});
 
-		const $btnResetAll = $(`<button class="btn btn-5et btn-xs ml-1" title="Reset All"><i class="fa fa-undo-alt"></i></button>`)
+		const $btnResetAll = $(`<button class="btn btn-5et btn-xs ml-1" title="Reset All"><i class="fa fa-undo-alt mr-0"></i></button>`)
 			.click(async () => {
 				const isContinue = await InputUiUtil.pGetUserBoolean({
 					title: "Reset All",

@@ -285,9 +285,10 @@ class Charactermancer_Spell_Util {
 }
 
 class Charactermancer_Spell_SlotLevelSelect extends BaseComponent {
-	constructor (className) {
+	constructor ({className, spellSlotLevelSelection}) {
 		super();
 		this._className = className;
+		this._prevSpellSlotLevelSelection = spellSlotLevelSelection;
 	}
 
 	set curLevel (val) { this._state.curLevel = val; }
@@ -297,6 +298,35 @@ class Charactermancer_Spell_SlotLevelSelect extends BaseComponent {
 	set spellsKnownProgressionFixed (val) { this._state.spellsKnownProgressionFixed = val; }
 	set spellsKnownProgressionFixedAllowLowerLevel (val) { this._state.spellsKnownProgressionFixedAllowLowerLevel = val; }
 	set spellsKnownProgressionFixedAllowHigherLevel (val) { this._state.spellsKnownProgressionFixedAllowHigherLevel = val; }
+
+	isAnyChoice () { return this._isAnyChoice(); }
+
+	getFlagsChoicesState () {
+		return {
+			...this._getFlagsChoicesState_namespace({namespace: "generic"}),
+			...this._getFlagsChoicesState_namespace({namespace: "fixed"}),
+		};
+	}
+
+	_getFlagsChoicesState_namespace ({namespace}) {
+		const out = {};
+
+		[...new Array(this._state.targetLevel)]
+			.forEach((_, ixLvl) => {
+				const lvl = ixLvl + 1;
+
+				const {propCnt} = this.constructor._getPropsLevel(lvl, namespace);
+
+				const numSpells = this._state[propCnt];
+				for (let i = 0; i < numSpells; ++i) {
+					const {propSpellLevel} = this.constructor._getPropsSpell(lvl, namespace, i);
+
+					out[propSpellLevel] = this._state[propSpellLevel];
+				}
+			});
+
+		return out;
+	}
 
 	addHookPulseFixedLearnedProgression (hk) { this._addHookBase("pulseFixedLearnedProgression", hk); }
 
@@ -341,7 +371,7 @@ class Charactermancer_Spell_SlotLevelSelect extends BaseComponent {
 
 		const $rows = [...new Array(Consts.CHAR_MAX_LEVEL)].map((_, ixLvl) => {
 			const lvl = ixLvl + 1;
-			const $cellSpells = $(`<div class="col-10 ve-flex-v-center ve-flex-wrap"></div>`);
+			const $cellSpells = $(`<div class="col-9 ve-flex-v-center ve-flex-wrap"></div>`);
 
 			const {propSpellLevelMax} = this.constructor._getPropsGeneral(lvl);
 			const {propCnt: propCntGeneric} = this.constructor._getPropsLevel(lvl, "generic");
@@ -351,7 +381,7 @@ class Charactermancer_Spell_SlotLevelSelect extends BaseComponent {
 			const selMetasFixed = [];
 
 			const $row = $$`<div class="ve-flex-v-center stripe-odd">
-				<div class="col-2 text-center">${ixLvl + 1}</div>
+				<div class="col-3 text-center">${ixLvl + 1}</div>
 				${$cellSpells}
 			</div>`;
 
@@ -388,7 +418,7 @@ class Charactermancer_Spell_SlotLevelSelect extends BaseComponent {
 
 				$dispNone.toggleVe(cntVisible === 0);
 
-				$row.toggleVe(lvl > (this._state.curLevel ?? 0) && (this._state.targetLevel ?? 0) >= lvl);
+				$row.toggleVe((this._state.targetLevel ?? 0) >= lvl);
 			};
 			this._addHookBase(propCntFixed, hk);
 			this._addHookBase(propCntGeneric, hk);
@@ -407,8 +437,8 @@ class Charactermancer_Spell_SlotLevelSelect extends BaseComponent {
 		const $stgBody = $$`<div class="ve-flex-col w-100">
 			<div class="ve-muted italic ve-small mb-1">If you wish to swap out learned spell levels for lower/higher (for example, when you swap out a spell on gaining a level as a Bard), you may do so here. Note that your final choices are not validated, so swap with caution, and according to the rules!</div>
 			<div class="ve-flex-v-center">
-				<div class="col-2 text-center">${this._className} Level</div>
-				<div class="col-10">Learned Spell Levels</div>
+				<div class="col-3 text-center">${this._className} Level</div>
+				<div class="col-9">Learned Spell Levels</div>
 			</div>
 			${$rows}
 		</div>`.toggleVe();
@@ -421,6 +451,8 @@ class Charactermancer_Spell_SlotLevelSelect extends BaseComponent {
 
 			${$stgBody}
 		</div>`;
+
+		if (this._prevSpellSlotLevelSelection) this._proxyAssignSimple("state", {...this._prevSpellSlotLevelSelection});
 	}
 
 	_hkRow_doAdjustElements ({namespace, propCnt, selMetas, lvl, propSpellLevelMax, $cellSpells, propIsAllowLower, propIsAllowHigher}) {

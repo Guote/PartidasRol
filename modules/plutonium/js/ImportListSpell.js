@@ -58,7 +58,7 @@ class ImportListSpell extends ImportList {
 		return [
 			new UtilDataSource.DataSourceSpecial(
 				Config.get("ui", "isStreamerMode") ? "SRD" : "5etools",
-				async () => (await Vetools.pGetAllSpells()).spell,
+				() => Vetools.pGetAllSpells(),
 				{
 					cacheKey: "5etools-spells",
 					filterTypes: [UtilDataSource.SOURCE_TYP_OFFICIAL_ALL],

@@ -9,6 +9,7 @@ import {MixinUserChooseImporter} from "./ImportList.js";
 class ImportListOptionalFeature extends ImportListFeature {
 	static get ID () { return "other-options-and-features"; }
 	static get DISPLAY_NAME_TYPE_PLURAL () { return "Other Options & Features"; }
+	static get _PROPS () { return ["optionalfeature"]; }
 
 	static _ = this.registerImpl(this);
 
@@ -29,7 +30,7 @@ class ImportListOptionalFeature extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["optionalfeature"],
+				props: ImportListOptionalFeature._PROPS,
 				dirsHomebrew: ["optionalfeature"],
 				titleSearch: "options and features",
 				sidebarTab: "items",
@@ -122,7 +123,7 @@ class ImportListOptionalFeature extends ImportListFeature {
 				this._pageFilter.constructor.mutateForFilters(it);
 
 				// region Re-used in fnGetValues
-				it._vPrerequisite = Renderer.utils.getPrerequisiteHtml(it.prerequisite, {isListMode: true, blacklistKeys: new Set(["level"])});
+				it._vPrerequisite = Renderer.utils.getPrerequisiteHtml(it.prerequisite, {isListMode: true, blocklistKeys: new Set(["level"])});
 				it._vLevel = Renderer.optionalfeature.getListPrerequisiteLevelText(it.prerequisite);
 				// endregion
 
@@ -171,8 +172,8 @@ class ImportListOptionalFeature extends ImportListFeature {
 
 	static async _pHasSideLoadedEffects (actor, feature) { return DataConverterOptionalfeature.pHasOptionalFeatureSideLoadedEffects(actor, feature); }
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
-		return DataConverterOptionalfeature.pGetOptionalFeatureItemEffects(
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
+		return DataConverterOptionalfeature.pGetOptionalFeatureItemEffectTuples(
 			actor,
 			feature,
 			importedEmbed,

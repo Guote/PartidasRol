@@ -588,14 +588,18 @@ class DataConverterSpell extends DataConverter {
 	}
 
 	static async _pGetSpellEffects (spell, srdData, img) {
-		const out = MiscUtil.copy(srdData?.effects || []);
-		out.forEach(effect => effect.icon = img);
+		const out = [];
+
+		const effectsSrd = MiscUtil.copy(srdData?.effects || []);
+		effectsSrd.forEach(effect => effect.icon = img);
+		DataConverter.mutEffectsDisabledTransfer(effectsSrd, "importSpell", {hintTransfer: false, hintDisabled: false});
+		out.push(...effectsSrd);
 
 		if (await this.pHasSpellSideLoadedEffects(null, spell)) {
-			out.push(...(await this.pGetSpellItemEffects(null, spell, null, {img})));
+			const effectsSideTuples = await this.pGetSpellItemEffectTuples(null, spell, null, {img});
+			effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importSpell", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
+			out.push(...effectsSideTuples.map(it => it.effect));
 		}
-
-		DataConverter.mutEffectsDisabledTransfer(out, "importSpell");
 
 		return out;
 	}
@@ -782,9 +786,9 @@ class DataConverterSpell extends DataConverter {
 		return (await DataConverter._pGetEffectsRawSideLoaded_(spell, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetSpellItemEffects (actor, spell, sheetItem, {additionalData, img} = {}) {
+	static async pGetSpellItemEffectTuples (actor, spell, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await DataConverter._pGetEffectsRawSideLoaded_(spell, this._SIDE_LOAD_OPTS);
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: spell.name, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: spell.name, additionalData, img}, {isTuples: true});
 	}
 }
 

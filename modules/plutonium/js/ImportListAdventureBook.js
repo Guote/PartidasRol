@@ -101,7 +101,7 @@ class ImportListAdventureBook extends ImportList {
 		];
 	}
 
-	_postLoadVetools (data, file, userData) {
+	_postLoadVetools (data, userData) {
 		data = MiscUtil.copy(data);
 		data._contentMetadata = MiscUtil.copy(userData);
 		return data;
@@ -211,21 +211,21 @@ class ImportListAdventureBook extends ImportList {
 		this._availableInlineData = {};
 
 		const tagWalker = MiscUtil.getWalker({
-			keyBlacklist: ImportListAdventureBook._TAG_WALKER_BLACKLIST,
+			keyBlocklist: ImportListAdventureBook._TAG_WALKER_BLOCKLIST,
 		});
 
 		// Track any hashes we've effectively found in inline data already, and avoid re-importing them
 		const fromInline = {};
 
-		const source = this._content[0]._contentMetadata.source || this._content[0]._contentMetadata.id;
+		const source = this._content._contentMetadata.source || this._content._contentMetadata.id;
 
 		// region Synthetic entities from inline data
 		Object.values(ImportListAdventureBook._IMPORTABLE_TAGS)
 			.filter(it => it.fnGetInlineData && it.fnGetInlineHash)
 			.forEach(importable => {
 				const pack = {
-					[this._dataProp]: this._content[0]._contentMetadata,
-					[this._brewDataProp]: {data: this._content[0].data},
+					[this._dataProp]: this._content._contentMetadata,
+					[this._brewDataProp]: {data: this._content.data},
 				};
 				const nxtOpts = {
 					headProp: this._dataProp,
@@ -252,7 +252,7 @@ class ImportListAdventureBook extends ImportList {
 		// endregion
 
 		// region References to entities
-		this._content[0].data.forEach((chapter, ixChapter) => {
+		this._content.data.forEach((chapter, ixChapter) => {
 			const handlers = {
 				string: (str) => {
 					const tagSplit = Renderer.splitByTags(str);
@@ -285,7 +285,7 @@ class ImportListAdventureBook extends ImportList {
 						entry: obj,
 						entryStack: stack,
 						source,
-						chapterInfo: this._content[0]._contentMetadata.contents?.[ixChapter],
+						chapterInfo: this._content._contentMetadata.contents?.[ixChapter],
 					});
 					return obj;
 				},
@@ -390,7 +390,7 @@ class ImportListAdventureBook extends ImportList {
 			.filter(Boolean);
 
 		return {
-			name: this._content[0]._contentMetadata.name,
+			name: this._content._contentMetadata.name,
 			titleSearch: this._titleSearch,
 			tagSections,
 			imageGroupSections,
@@ -501,7 +501,7 @@ class ImportListAdventureBook extends ImportList {
 	async _pHandleRunButtonClick () {
 		this.close();
 
-		console.log(...LGT, `Importing ${this._dataProp} "${this._content[0]._contentMetadata.name}"`);
+		console.log(...LGT, `Importing ${this._dataProp} "${this._content._contentMetadata.name}"`);
 
 		const runInfo = new ImportListAdventureBook._RunInfo();
 
@@ -636,7 +636,7 @@ class ImportListAdventureBook extends ImportList {
 
 	async _pHandleRunButtonClick_pDoMainImport ({preloadedTagMetas, runInfo}) {
 		const tagWalker2 = MiscUtil.getWalker({
-			keyBlacklist: ImportListAdventureBook._TAG_WALKER_BLACKLIST,
+			keyBlocklist: ImportListAdventureBook._TAG_WALKER_BLOCKLIST,
 		});
 
 		const handlers = {
@@ -685,7 +685,7 @@ class ImportListAdventureBook extends ImportList {
 			},
 		};
 
-		this._content[0].data = tagWalker2.walk(this._content[0].data, handlers);
+		this._content.data = tagWalker2.walk(this._content.data, handlers);
 
 		let wrappedJournalDatas;
 		try {
@@ -696,9 +696,9 @@ class ImportListAdventureBook extends ImportList {
 		}
 
 		const folderIdRoot = await this._pImportEntry_pGetFolderId({
-			name: this._content[0]._contentMetadata.name,
-			source: this._content[0]._contentMetadata.source,
-			published: this._content[0]._contentMetadata.published,
+			name: this._content._contentMetadata.name,
+			source: this._content._contentMetadata.source,
+			published: this._content._contentMetadata.published,
 		}, {sorting: "m"});
 
 		const finalizeLinkLookup = {};
@@ -968,7 +968,7 @@ ImportListAdventureBook.ImportableImageType = class {
 	get imageType () { return this._imageType; }
 };
 
-ImportListAdventureBook._TAG_WALKER_BLACKLIST = new Set([
+ImportListAdventureBook._TAG_WALKER_BLOCKLIST = new Set([
 	"name",
 	"caption",
 	"colLabels",

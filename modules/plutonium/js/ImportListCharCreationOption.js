@@ -9,6 +9,7 @@ import {MixinUserChooseImporter} from "./ImportList.js";
 class ImportListCharCreationOption extends ImportListFeature {
 	static get ID () { return "character-creation-options"; }
 	static get DISPLAY_NAME_TYPE_PLURAL () { return "Character Creation Options"; }
+	static get _PROPS () { return ["charoption"]; }
 
 	static _ = this.registerImpl(this);
 
@@ -29,7 +30,7 @@ class ImportListCharCreationOption extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["charoption"],
+				props: ImportListCharCreationOption._PROPS,
 				dirsHomebrew: ["charoption"],
 				titleSearch: "character creation options",
 				sidebarTab: "items",
@@ -145,8 +146,8 @@ class ImportListCharCreationOption extends ImportListFeature {
 
 	static async _pHasSideLoadedEffects (actor, feature) { return DataConverterCharCreationOption.pHasCharCreationOptionSideLoadedEffects(actor, feature); }
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
-		return DataConverterCharCreationOption.pGetCharCreationOptionItemEffects(
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
+		return DataConverterCharCreationOption.pGetCharCreationOptionItemEffectTuples(
 			actor,
 			feature,
 			importedEmbed,

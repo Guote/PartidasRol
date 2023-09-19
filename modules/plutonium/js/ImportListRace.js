@@ -18,6 +18,7 @@ import {UtilDataConverter} from "./UtilDataConverter.js";
 import {SharedConsts} from "../shared/SharedConsts.js";
 import {UtilDocuments} from "./UtilDocuments.js";
 import {DataConverterRaceFeature} from "./DataConverterRaceFeature.js";
+import {UtilActiveEffects} from "./UtilActiveEffects.js";
 
 // TODO merge parts with `ImportListFeature`
 class ImportListRace extends ImportListCharacter {
@@ -57,7 +58,7 @@ class ImportListRace extends ImportListCharacter {
 		);
 	}
 
-	async _pPostLoad (raceList, fileData) {
+	async _pPostLoad (fileData) {
 		return Charactermancer_Race_Util.pPostLoadBrew(fileData);
 	}
 
@@ -67,7 +68,7 @@ class ImportListRace extends ImportListCharacter {
 		return [
 			new UtilDataSource.DataSourceSpecial(
 				Config.get("ui", "isStreamerMode") ? "SRD" : "5etools",
-				async () => (await Vetools.pGetRaces()).race,
+				() => Vetools.pGetRaces(),
 				{
 					cacheKey: "5etools-races",
 					filterTypes: [UtilDataSource.SOURCE_TYP_OFFICIAL_ALL],
@@ -476,7 +477,9 @@ class ImportListRace extends ImportListCharacter {
 
 				if (!importedEmbed) continue;
 
-				effectsToAdd.push(...(await DataConverterRaceFeature.pGetRaceFeatureItemEffects(this._actor, raceFeatureRequiresEffects.raceFeature, importedEmbed.document)));
+				const effectsSideTuples = await DataConverterRaceFeature.pGetRaceFeatureItemEffectTuples(this._actor, raceFeatureRequiresEffects.raceFeature, importedEmbed.document);
+				effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importRace", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
+				effectsToAdd.push(...effectsSideTuples.map(it => it.effect));
 			}
 		}
 

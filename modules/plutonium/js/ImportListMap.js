@@ -62,6 +62,7 @@ class ImportListMap extends ImportList {
 			{title: "Import Maps"},
 			externalData,
 			{
+				props: ["map"],
 				titleSearch: "maps",
 				defaultFolderPath: [],
 				dirsHomebrew: ["adventure", "book"],
@@ -116,12 +117,12 @@ class ImportListMap extends ImportList {
 		];
 	}
 
-	_pPostLoadVetools (data, file, userData) {
-		return this._pPostLoadShared({head: userData, body: data});
+	_pPostLoadVetools (json, userData) {
+		return this._pPostLoadShared({head: userData, body: json});
 	}
 
 	_pPostLoadOther (data) {
-		return [
+		const objs = [
 			{propData: "adventureData", prop: "adventure"},
 			{propData: "bookData", prop: "book"},
 		]
@@ -143,7 +144,9 @@ class ImportListMap extends ImportList {
 					.map(it => this._pPostLoadShared({head: it.head, body: it.body}));
 			})
 			.filter(Boolean)
-			.flat(2);
+			.flat();
+
+		return {map: objs.map(it => it.map).flat()};
 	}
 
 	_pPostLoadShared ({body, head}) {
@@ -189,7 +192,7 @@ class ImportListMap extends ImportList {
 					});
 			});
 
-		return mapEntries;
+		return {map: mapEntries};
 	}
 
 	_renderInner_absorbListItems () {
@@ -221,6 +224,8 @@ class ImportListMap extends ImportList {
 				label: "Type",
 				getter: it => Parser.imageTypeToFull(it.imageType),
 			},
+
+			flags: {},
 		};
 	}
 
@@ -240,8 +245,6 @@ class ImportListMap extends ImportList {
 		const importMeta = await this._pImportEntry_pImportToDirectoryGeneric(ent, importOpts);
 
 		if (importMeta.status === UtilApplications.TASK_EXIT_SKIPPED_DUPLICATE) return importMeta;
-
-		// const scene = await Scene.create(createData, {renderSheet: false});
 
 		const scene = importMeta.imported?.[0]?.document;
 		if (!scene) return importMeta;

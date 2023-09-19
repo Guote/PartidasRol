@@ -47,6 +47,7 @@ class PageFilterBackgroundFeature extends PageFilter {
 class ImportListBackgroundFeature extends ImportListFeature {
 	static get ID () { return "background-features"; }
 	static get DISPLAY_NAME_TYPE_PLURAL () { return "Background Features"; }
+	static get _PROPS () { return ["backgroundFeature"]; }
 
 	static _ = this.registerImpl(this);
 
@@ -58,7 +59,7 @@ class ImportListBackgroundFeature extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["backgroundFeature"],
+				props: ImportListBackgroundFeature._PROPS,
 				dirsHomebrew: ["background"],
 				titleSearch: "background features",
 				sidebarTab: "items",
@@ -78,19 +79,19 @@ class ImportListBackgroundFeature extends ImportListFeature {
 	}
 
 	static async _pPostLoad_getFeaturesFromBackgrounds (data) {
-		const out = [];
+		const out = {backgroundFeature: []};
 
 		for (const bg of data.background || []) {
 			// This copies the entry
 			const features = Charactermancer_Background_Features.getFeatureEntries(bg);
-			out.push(...features);
+			out.backgroundFeature.push(...features);
 		}
 
 		return out;
 	}
 
 	async _pGetSources () {
-		const argsShared = {pPostLoad: (loadedData, data) => this.constructor._pPostLoad_getFeaturesFromBackgrounds(data)};
+		const argsShared = {pPostLoad: (data) => this.constructor._pPostLoad_getFeaturesFromBackgrounds(data)};
 		return [
 			new UtilDataSource.DataSourceUrl(
 				Config.get("ui", "isStreamerMode") ? "SRD" : "5etools",
@@ -189,8 +190,8 @@ class ImportListBackgroundFeature extends ImportListFeature {
 
 	static async _pHasSideLoadedEffects (actor, feature) { return DataConverterBackgroundFeature.pHasBackgroundFeatureSideLoadedEffects(actor, feature); }
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
-		return DataConverterBackgroundFeature.pGetBackgroundFeatureItemEffects(
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
+		return DataConverterBackgroundFeature.pGetBackgroundFeatureItemEffectTuples(
 			actor,
 			feature,
 			importedEmbed,

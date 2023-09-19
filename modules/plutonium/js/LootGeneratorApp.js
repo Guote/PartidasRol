@@ -268,13 +268,13 @@ class LootGeneratorApp extends Application {
 
 class LootGenOutputFvtt extends LootGenOutput {
 	_$getEleTitleSplit () {
-		const $btnImportToJournal = $(`<button title="Import to Journal" class="btn btn-xs btn-default"><i class="fas fa-fw fa-book-open"></i></button>`)
+		const $btnImportToJournal = $(`<button title="Import to Journal" class="btn btn-xs btn-default"><i class="fas fa-fw fa-book-open mr-0"></i></button>`)
 			.click(() => this._pImportToJournal());
 
-		const $btnImportToFolder = $(`<button title="Import to Items Folder" class="btn btn-xs btn-default"><i class="fas fa-fw fa-folder"></i></button>`)
+		const $btnImportToFolder = $(`<button title="Import to Items Folder" class="btn btn-xs btn-default"><i class="fas fa-fw fa-folder mr-0"></i></button>`)
 			.click(async () => this.constructor._pImportToFolder({loot: await this._pGetFoundryForm()}));
 
-		const $btnImportToCompendium = $(`<button title="Import to Compendium" class="btn btn-xs btn-default"><i class="fas fa-fw fa-atlas"></i></button>`)
+		const $btnImportToCompendium = $(`<button title="Import to Compendium" class="btn btn-xs btn-default"><i class="fas fa-fw fa-atlas mr-0"></i></button>`)
 			.click(() => this._pImportToCompendium());
 
 		return $$`<div class="ve-flex-v-center btn-group">

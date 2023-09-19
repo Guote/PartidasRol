@@ -325,8 +325,8 @@ class UtilDataConverter {
 		return Parser._parse_aToB(this._RECHARGE_TYPES, it);
 	}
 }
-UtilDataConverter.WALKER_READONLY_GENERIC = MiscUtil.getWalker({isNoModification: true, keyBlacklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST});
-UtilDataConverter.WALKER_GENERIC = MiscUtil.getWalker({keyBlacklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST});
+UtilDataConverter.WALKER_READONLY_GENERIC = MiscUtil.getWalker({isNoModification: true, keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST});
+UtilDataConverter.WALKER_GENERIC = MiscUtil.getWalker({keyBlocklist: MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLOCKLIST});
 UtilDataConverter.SOURCE_PAGE_PREFIX = " pg. ";
 UtilDataConverter._SOURCE_PAGE_PREFIX_RE = new RegExp(`${UtilDataConverter.SOURCE_PAGE_PREFIX}\\d+`);
 

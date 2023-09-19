@@ -163,7 +163,7 @@ class ImportListBackground extends ImportListCharacter {
 		this._modalFilterBackgrounds = new ModalFilterBackgroundsFvtt({
 			namespace: "ImportListBackground.customFeatures",
 			isRadio: true,
-			allData: this._content,
+			allData: this._content.background,
 		});
 		await this._modalFilterBackgrounds.pPreloadHidden();
 	}
@@ -260,13 +260,13 @@ class ImportListBackground extends ImportListCharacter {
 			isDedupable: this._isDedupable,
 		});
 
-		const backgroundDatas = await appSourceSelector.pWaitForUserInput();
-		if (backgroundDatas == null) return dataBuilderOpts.isCancelled = true;
+		const allData = await appSourceSelector.pWaitForUserInput();
+		if (allData == null) return dataBuilderOpts.isCancelled = true;
 
 		this._modalFilterBackgrounds = new ModalFilterBackgroundsFvtt({
 			namespace: "ImportListBackground.customFeatures",
 			isRadio: true,
-			allData: backgroundDatas,
+			allData: allData.background,
 		});
 		await this._modalFilterBackgrounds.pPreloadHidden();
 	}

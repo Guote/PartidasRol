@@ -54,7 +54,7 @@ class UtilCompat {
 	static isMonksLittleDetailsActive () { return this.isModuleActive(UtilCompat.MODULE_MONKS_LITTLE_DETAILS); }
 	static isBetterRolltablesActive () { return this.isModuleActive(UtilCompat.MODULE_BETTER_ROLLTABLES); }
 	static isItemPilesActive () { return this.isModuleActive(UtilCompat._MODULE_BETTER_ROLLTABLES); }
-	static isPlutoniumAddonDataActive () { return this.isModuleActive(UtilCompat.MODULE_PLUTONIUM_ADDON_AUTOMATION); }
+	static isPlutoniumAddonAutomationActive () { return this.isModuleActive(UtilCompat.MODULE_PLUTONIUM_ADDON_AUTOMATION); }
 	static isMidiQolActive () { return this.isModuleActive(UtilCompat.MODULE_MIDI_QOL); }
 	static isModuleMulticlassSpellbookFilterActive () { return this.isModuleActive(UtilCompat.MODULE_MULTICLASS_SPELLBOOK_FILTER); }
 
@@ -112,6 +112,7 @@ UtilCompat._MODULE_BETTER_ROLLTABLES = "item-piles";
 UtilCompat.MODULE_PLUTONIUM_ADDON_AUTOMATION = "plutonium-addon-automation";
 UtilCompat.MODULE_LEVELS = "levels";
 UtilCompat.MODULE_MULTICLASS_SPELLBOOK_FILTER = "spell-class-filter-for-5e";
+UtilCompat.MODULE_ROLLDATA_AWARE_ACTIVE_EFFECTS = "fvtt-rolldata-aware-active-effects";
 
 UtilCompat._SYSTEMS_SUPPORTED = {
 	"dnd5e": {

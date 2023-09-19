@@ -13,22 +13,27 @@ class NotAxios {
 }
 
 class Vetools {
+	// Homebrew
+	static HOMEBREW_INDEX__SOURCE = {};
+	static HOMEBREW_INDEX__PROP = {};
+	static HOMEBREW_INDEX__META = {};
+
 	// region Meta
 	static async pDoPreload () {
 		if (Config.get("import", "isNoHomebrewIndexes")) return;
 
 		// Load this asynchronously, to avoid killing the load if it doesn't exist
 		Vetools._pGetHomebrewIndices()
-			.then(({source, prop, abbreviation}) => {
+			.then(({source, prop, meta}) => {
 				Vetools.HOMEBREW_INDEX__PROP = prop;
 				Vetools.HOMEBREW_INDEX__SOURCE = source;
-				Vetools.HOMEBREW_INDEX__ABBREVIATION = abbreviation;
+				Vetools.HOMEBREW_INDEX__META = meta;
 				console.log(...LGT, "Loaded homebrew index.");
 			})
 			.catch(e => {
 				Vetools.HOMEBREW_INDEX__PROP = {};
 				Vetools.HOMEBREW_INDEX__SOURCE = {};
-				Vetools.HOMEBREW_INDEX__ABBREVIATION = {};
+				Vetools.HOMEBREW_INDEX__META = {};
 				ui.notifications.error(`Failed to load homebrew index! ${VeCt.STR_SEE_CONSOLE}`);
 				setTimeout(() => { throw e; });
 			});
@@ -138,7 +143,7 @@ class Vetools {
 
 			if (Config.get("import", "isRendererDiceDisabled")) return toDisplay || toRollClean;
 
-			return `[[/r ${toRollClean}]]${toRollClean.toLowerCase().trim() !== toDisplay.toLowerCase().trim() ? ` (${toDisplay})` : ""}`;
+			return `[[${cpy.autoRoll ? "" : "/r "}${toRollClean}]]${toRollClean.toLowerCase().trim() !== toDisplay.toLowerCase().trim() ? ` (${toDisplay})` : ""}`;
 		};
 
 		Renderer.getRollableEntryDice = Vetools._PATCHED_GET_ROLLABLE_ENTRY_DICE;
@@ -179,6 +184,13 @@ class Vetools {
 
 		Renderer.dice.pRollEntry = (entry, rolledBy, opts) => {
 			if (entry.toRoll) (new Roll(entry.toRoll)).toMessage();
+		};
+
+		Renderer.dice.pRoll2 = async (str, rolledBy, opts) => {
+			const roll = new Roll(str);
+			await roll.evaluate({async: true});
+			await roll.toMessage();
+			return roll.total;
 		};
 		// endregion
 
@@ -269,7 +281,7 @@ class Vetools {
 		}
 
 		const nxtMemBrews = currMemBrews.filter(brew => !jsonSources.some(src => brew.sources.includes(src))).map(it => it.brew);
-		const cntReplaced = nxtMemBrews.length - currMemBrews.length;
+		const cntReplaced = currMemBrews.length - nxtMemBrews.length;
 		console.warn(...LGT, `Replaced ${cntReplaced} existing homebrew${cntReplaced === 1 ? "" : "s"}`);
 		BrewUtil2.setBrewRawTemp(nxtMemBrews);
 		BrewUtil2.addTempBrewFromMemory(data);
@@ -624,7 +636,7 @@ class Vetools {
 		return game.isAdmin || (game.user && game.user.can("FILES_UPLOAD"));
 	}
 
-	static async pGetAllSpells ({isFilterNonStandard = false, additionalSourcesBrew = [], isIncludeLoadedBrew = false, isApplyBlacklist = false} = {}) {
+	static async pGetAllSpells ({isFilterNonStandard = false, additionalSourcesBrew = [], isIncludeLoadedBrew = false, isApplyBlocklist = false} = {}) {
 		const index = await Vetools.pGetSpellIndex();
 		const fileData = await Promise.all(
 			Object.entries(index)
@@ -646,7 +658,7 @@ class Vetools {
 		}
 
 		let spells = fileData.map(it => MiscUtil.copy(it.spell || [])).flat();
-		if (isApplyBlacklist) {
+		if (isApplyBlocklist) {
 			spells = spells.filter(sp => !ExcludeUtil.isExcluded(
 				UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_SPELLS](sp),
 				"spell",
@@ -677,17 +689,17 @@ class Vetools {
 	}
 
 	static async _pGetHomebrewIndices () {
-		const out = {source: {}, prop: {}, abbreviations: {}};
+		const out = {source: {}, prop: {}, meta: {}};
 
 		try {
-			const [sourceIndex, propIndex, abbreviationIndex] = await Promise.all([
+			const [sourceIndex, propIndex, metaIndex] = await Promise.all([
 				DataUtil.brew.pLoadSourceIndex(Config.get("import", "baseBrewUrl")),
 				DataUtil.brew.pLoadPropIndex(Config.get("import", "baseBrewUrl")),
-				DataUtil.brew.pLoadAbbreviationIndex(Config.get("import", "baseBrewUrl")),
+				DataUtil.brew.pLoadMetaIndex(Config.get("import", "baseBrewUrl")),
 			]);
 			out.source = sourceIndex;
 			out.prop = propIndex;
-			out.abbreviation = abbreviationIndex;
+			out.meta = metaIndex;
 		} catch (e) {
 			ui.notifications.error(`Failed to load homebrew index! ${VeCt.STR_SEE_CONSOLE}`);
 			setTimeout(() => { throw e; });
@@ -698,23 +710,28 @@ class Vetools {
 
 	static async pGetHomebrewSources (...dirs) {
 		const urlRoot = Config.get("import", "baseBrewUrl");
-		const seenPaths = new Set();
 
-		return dirs
-			.map(dir => {
-				return Object.keys(Vetools.HOMEBREW_INDEX__PROP[BrewUtil2.getDirProp(dir)] || {})
-					.map((path) => {
-						if (seenPaths.has(path)) return null;
-						seenPaths.add(path);
-						return {
-							url: DataUtil.brew.getFileUrl(path, urlRoot),
-							name: this._getHomebrewName(path),
-							abbreviations: Vetools.HOMEBREW_INDEX__ABBREVIATION[path] || [],
-						};
-					});
-			})
-			.flat()
-			.filter(Boolean)
+		let paths;
+		if (dirs.includes("*")) {
+			paths = Object.values(Vetools.HOMEBREW_INDEX__PROP)
+				.map(obj => Object.keys(obj))
+				.flat()
+				.unique();
+		} else {
+			paths = dirs
+				.map(dir => Object.keys(Vetools.HOMEBREW_INDEX__PROP[BrewUtil2.getDirProp(dir)] || {}))
+				.flat()
+				.unique();
+		}
+
+		return paths.map((path) => {
+			const metaName = UrlUtil.getFilename(path);
+			return ({
+				url: DataUtil.brew.getFileUrl(path, urlRoot),
+				name: this._getHomebrewName(path),
+				abbreviations: Vetools.HOMEBREW_INDEX__META[metaName]?.a || [],
+			});
+		})
 			.sort((a, b) => SortUtil.ascSortLower(a.name, b.name));
 	}
 
@@ -793,15 +810,6 @@ class Vetools {
 			ui.notifications.error(`${msg} ${VeCt.STR_SEE_CONSOLE}`);
 			return null;
 		}
-	}
-
-	static getContent (data, props) {
-		if (!props) return data;
-
-		return props.map(prop => {
-			data[prop] = data[prop] || [];
-			return data[prop];
-		}).flat();
 	}
 	// endregion
 
@@ -883,10 +891,6 @@ Vetools._CACHED_GET_ROLLABLE_ENTRY_DICE = null;
 Vetools._PATCHED_GET_ROLLABLE_ENTRY_DICE = null;
 Vetools._CACHED_MONSTER_DO_BIND_COMPACT_CONTENT_HANDLERS = null;
 Vetools._CACHED_RENDERER_HOVER_CACHE_AND_GET = null;
-// Homebrew
-Vetools.HOMEBREW_INDEX__SOURCE = {};
-Vetools.HOMEBREW_INDEX__PROP = {};
-Vetools.HOMEBREW_INDEX__ABBREVIATION = {};
 // Other
 Vetools._LOCK_DOWNLOAD_IMAGE = new VeLock();
 Vetools._VET_SOURCE_LOOKUP = {};

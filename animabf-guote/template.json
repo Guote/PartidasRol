@@ -133,19 +133,20 @@
       "secondaries": {
         "guote-cundarias-1": {
           "acrobacias": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "atletismo": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "actuacion": { "base": { "value": 0 }, "final": { "value": 0 } },
           "animas": { "base": { "value": 0 }, "final": { "value": 0 } },
           "arcana": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "fabricar": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "mentiras": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "historia": { "base": { "value": 0 }, "final": { "value": 0 } }
+          "atletismo": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "engaño": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "historia": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "ingenieria": { "base": { "value": 0 }, "final": { "value": 0 } }
         },
         "guote-cundarias-2": {
           "investigacion": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "insight": { "base": { "value": 0 }, "final": { "value": 0 } },
           "medicina": { "base": { "value": 0 }, "final": { "value": 0 } },
           "naturaleza": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "advertir": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "percepcion": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "perspicacia": { "base": { "value": 0 }, "final": { "value": 0 } },
           "persuasion": { "base": { "value": 0 }, "final": { "value": 0 } },
           "sigilo": { "base": { "value": 0 }, "final": { "value": 0 } }
         },

@@ -30,7 +30,7 @@ class ImportListBook extends ImportListAdventureBook {
 	}
 
 	_pGetJournalDatas () {
-		return DataConverterAdventureBook.pGetBookJournals(this._content[0].data, this._content[0]._contentMetadata, {isAddPermission: true});
+		return DataConverterAdventureBook.pGetBookJournals(this._content.data, this._content._contentMetadata, {isAddPermission: true});
 	}
 }
 

@@ -122,7 +122,10 @@ class ImportListClass extends ImportListCharacter {
 	static async pPostLoad (data, {actor} = {}) {
 		const isIgnoredLookup = await DataConverterClassSubclassFeature.pGetClassSubclassFeatureIgnoredLookup({data});
 		const out = await PageFilterClassesFoundry.pPostLoad(data, {actor, isIgnoredLookup});
-		Charactermancer_Class_Util.addFauxOptionalFeatureFeatures(out, await this._pPostLoad_pGetAllOptionalFeatures());
+		Charactermancer_Class_Util.addFauxOptionalFeatureFeatures(
+			out.class,
+			(await this._pPostLoad_pGetAllOptionalFeatures()).optionalfeature,
+		);
 		return out;
 	}
 
@@ -174,7 +177,7 @@ class ImportListClass extends ImportListCharacter {
 		this._cachedData = this._cachedData || {
 			titleButtonRun: this._titleButtonRun,
 			titleSearch: this._titleSearch,
-			rows: this._content
+			rows: this._content.class
 				.sort((a, b) => SortUtil.ascSortLower(a.name, b.name) || SortUtil.ascSortLower(Parser.sourceJsonToFull(a.source || SRC_PHB), Parser.sourceJsonToFull(b.source || SRC_PHB)))
 				.map((cls, ixClass) => {
 					this._pageFilter.constructor.mutateForFilters(cls);
@@ -210,12 +213,12 @@ class ImportListClass extends ImportListCharacter {
 		return this._cachedData;
 	}
 
-	_getDedupedData ({allContentFlat}) {
-		return ImportListClass.Utils.getDedupedData({allContentFlat});
+	_getDedupedData ({allContentMerged}) {
+		return ImportListClass.Utils.getDedupedData({allContentMerged});
 	}
 
-	_getBlacklistFilteredData ({dedupedAllContentFlat}) {
-		return ImportListClass.Utils.getBlacklistFilteredData({dedupedAllContentFlat});
+	_getBlocklistFilteredData ({dedupedAllContentMerged}) {
+		return ImportListClass.Utils.getBlocklistFilteredData({dedupedAllContentMerged});
 	}
 
 	_renderInner_initRunButton () {
@@ -245,7 +248,7 @@ class ImportListClass extends ImportListCharacter {
 
 		const mapped = selIds.map(({ixClass, ixSubclass}) => {
 			// Make a copy of the classes, so we can modify it later
-			const cls = MiscUtil.copy(this._content[ixClass]);
+			const cls = MiscUtil.copy(this._content.class[ixClass]);
 			return {ixClass, cls, ixSubclass, sc: ixSubclass != null ? cls.subclasses[ixSubclass] : null};
 		});
 		// Wipe the subclass array from any pure classes. Any subclasses we add to this array later, will be imported
@@ -359,7 +362,7 @@ class ImportListClass extends ImportListCharacter {
 			namespace: this._getFilterNamespace(),
 		});
 
-		this._content.forEach(it => this._pageFilter.addToFilters(it));
+		this._content.class.forEach(it => this._pageFilter.addToFilters(it));
 
 		const optsListAbsorb = {
 			fnGetName: it => it.name,
@@ -491,7 +494,7 @@ class ImportListClass extends ImportListCharacter {
 		return ModalFilterClasses.handleFilterChange({
 			pageFilter: this._pageFilter,
 			list: this._list,
-			allData: this._content,
+			allData: this._content.class,
 		});
 	}
 
@@ -526,7 +529,7 @@ class ImportListClass extends ImportListCharacter {
 			}
 
 			const data = await this.constructor.pPostLoad(toLoad);
-			cls = data[0];
+			cls = data.class[0];
 
 			if (scRef) {
 				const sc = cls.subclasses[0];
@@ -544,6 +547,7 @@ class ImportListClass extends ImportListCharacter {
 	 * @param [importOpts.isTemp] if the item should be temporary, and displayed.
 	 * @param [importOpts.filterValues] Saved filter values to be used instead of our own.
 	 * @param [importOpts.isCharactermancer] If the call is coming from the charactermancer.
+	 * @param [importOpts.spellSlotLevelSelection] Spell slot level selection to associate with this class..
 	 * @param [importOpts.levels] Pre-defined list of levels to import.
 	 */
 	async pImportClass (cls, importOpts) {
@@ -648,8 +652,10 @@ class ImportListClass extends ImportListCharacter {
 			&& selectedLevelIndices.includes(0);
 		dataBuilderOpts.proficiencyImportMode = await this._pImportClass_pGetProficiencyImportMode(cls, dataBuilderOpts);
 		if (dataBuilderOpts.isCancelled) return ImportSummary.cancelled();
-		dataBuilderOpts.hpIncreaseMode = await this._pImportClass_pGetHpImportMode(cls, dataBuilderOpts);
+		const hpIncreaseMeta = await this._pImportClass_pGetHpImportMode(cls, dataBuilderOpts);
 		if (dataBuilderOpts.isCancelled) return ImportSummary.cancelled();
+		dataBuilderOpts.hpIncreaseMode = hpIncreaseMeta.mode;
+		dataBuilderOpts.hpIncreaseCustomRollFormula = hpIncreaseMeta.customFormula;
 
 		const actUpdate = {
 			data: {},
@@ -745,14 +751,14 @@ class ImportListClass extends ImportListCharacter {
 	}
 
 	async _pImportClass_pGetHpImportMode (cls, dataBuilderOpts) {
-		if (!Charactermancer_Class_HpIncreaseModeSelect.isHpAvailable(cls)) return Charactermancer_Class_HpIncreaseModeSelect.MODE_DO_NOT_INCREASE;
+		if (!Charactermancer_Class_HpIncreaseModeSelect.isHpAvailable(cls)) return {mode: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE};
 
 		// If specified externally, use this
-		if (cls._foundryHpIncreaseMode != null) return cls._foundryHpIncreaseMode;
+		if (cls._foundryHpIncreaseMode != null || cls._foundryHpIncreaseCustomFormula != null) return {mode: cls._foundryHpIncreaseMode, customFormula: cls._foundryHpIncreaseCustomFormula};
 
 		const out = await Charactermancer_Class_HpIncreaseModeSelect.pGetUserInput();
 		if (out == null) return dataBuilderOpts.isCancelled = true;
-		if (out === VeCt.SYM_UI_SKIP) return Charactermancer_Class_HpIncreaseModeSelect.MODE_DO_NOT_INCREASE;
+		if (out === VeCt.SYM_UI_SKIP) return {mode: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE};
 		return out.data;
 	}
 
@@ -1211,32 +1217,52 @@ class ImportListClass extends ImportListCharacter {
 		const numLevels = isFirstHpGain ? dataBuilderOpts.numLevels - 1 : dataBuilderOpts.numLevels;
 
 		switch (dataBuilderOpts.hpIncreaseMode) {
-			case Charactermancer_Class_HpIncreaseModeSelect.MODE_TAKE_AVERAGE: {
+			case ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__TAKE_AVERAGE: {
 				const avg = Math.ceil(cls.hd.number * ((cls.hd.faces + 1) / 2));
 				hpIncrease += numLevels * Math.max((avg + conMod), 1);
 				break;
 			}
 
-			case Charactermancer_Class_HpIncreaseModeSelect.MODE_ROLL: {
-				for (let i = 0; i < numLevels; ++i) {
-					const roll = new Roll(`${cls.hd.number}d${cls.hd.faces} + ${conMod}`);
-					await roll.evaluate();
-					hpIncrease += Math.max(roll.total, 1);
-					// Post the roll to chat
-					await roll.toMessage({
-						flavor: `HP Increase`,
-						speaker: {
-							actor: this._actor.id,
-							alias: this._actor.name,
-							scene: null,
-							token: null,
-						},
-					});
+			case ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL:
+			case ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM: {
+				const formulaRaw = dataBuilderOpts.hpIncreaseMode === ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL
+					? `${cls.hd.number}d${cls.hd.faces} + ${conMod}`
+					: `${(dataBuilderOpts.hpIncreaseCustomRollFormula || "0")} + ${conMod}`;
+
+				// Handle custom attributes
+				const formula = formulaRaw
+					.replace(/@hd\.number/g, `${cls.hd.number}`)
+					.replace(/@hd\.faces/g, `${cls.hd.faces}`)
+				;
+
+				const rollData = this._actor.getRollData();
+
+				try {
+					for (let i = 0; i < numLevels; ++i) {
+						const roll = new Roll(formula, rollData);
+						await roll.evaluate();
+						hpIncrease += Math.max(roll.total, 1);
+						// Post the roll to chat
+						await roll.toMessage({
+							flavor: `HP Increase`,
+							speaker: {
+								actor: this._actor.id,
+								alias: this._actor.name,
+								scene: null,
+								token: null,
+							},
+						});
+					}
+				} catch (e) {
+					hpIncrease = 0;
+					ui.notifications.error(`Failed to evaluate HP increase formula "${formula}" ("${formulaRaw}")! ${VeCt.STR_SEE_CONSOLE}`);
+					setTimeout(() => { throw e; });
 				}
+
 				break;
 			}
 
-			case Charactermancer_Class_HpIncreaseModeSelect.MODE_DO_NOT_INCREASE: {
+			case ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE: {
 				hpIncrease = 0;
 				break;
 			}
@@ -1463,6 +1489,7 @@ class ImportListClass extends ImportListCharacter {
 				level: dataBuilderOpts.targetLevel,
 				isClsDereferenced: true,
 				actor: this._actor,
+				spellSlotLevelSelection: importOpts.spellSlotLevelSelection,
 			},
 		);
 
@@ -1483,6 +1510,15 @@ class ImportListClass extends ImportListCharacter {
 					MiscUtil.set(update, "data", "levels", dataBuilderOpts.targetLevel);
 				}
 			}
+
+			// Merge flags
+			update.flags = {
+				...existingClassItem.flags,
+				[SharedConsts.MODULE_NAME]: {
+					...existingClassItem.flags?.[SharedConsts.MODULE_NAME],
+					...classItemData.flags?.[SharedConsts.MODULE_NAME],
+				},
+			};
 
 			dataBuilderOpts.classItemUpdate = update;
 			dataBuilderOpts.isPersistClassItemUpdate = dataBuilderOpts.isPersistClassItemUpdate || isUpdate;
@@ -1622,7 +1658,7 @@ class ImportListClass extends ImportListCharacter {
 			actor: this._actor,
 			existingClass: dataBuilderOpts.classItemUpdate ? cls : null,
 			existingCasterMeta: Charactermancer_Spell_Util.getExistingCasterMeta({cls, sc, actor: this._actor, targetLevel: dataBuilderOpts.targetLevel}),
-			spellDatas: (await Vetools.pGetAllSpells({isIncludeLoadedBrew: true, isApplyBlacklist: true})).spell,
+			spellDatas: (await Vetools.pGetAllSpells({isIncludeLoadedBrew: true, isApplyBlocklist: true})).spell,
 			className: cls.name,
 			classSource: cls.source,
 			brewClassSpells: cls.classSpells,
@@ -1692,7 +1728,7 @@ class ImportListClass extends ImportListCharacter {
 		const allSpells = (await Vetools.pGetAllSpells({
 			isFilterNonStandard: !isUaSource,
 			additionalSourcesBrew: isBrewSource ? this._getBrewSpellSources(cls, sc) : null,
-			isApplyBlacklist: true,
+			isApplyBlocklist: true,
 		})).spell;
 
 		const spellsToImport = await Charactermancer_Class_Util.pGetPreparableSpells(allSpells, cls, spellLevelLow, spellLevelHigh);
@@ -1979,18 +2015,18 @@ class ImportListClass extends ImportListCharacter {
 	}
 
 	async _pImportEntry_pAddUpdateClassItem (cls, sc, dataBuilderOpts) {
-		for (const {dataBuilderProp, dataBuilderPropOut, pFnHasSideLoadedEffects, pFnGetSideLoadedEffects} of [
+		for (const {dataBuilderProp, dataBuilderPropOut, pFnHasSideLoadedEffects, pFnGetSideLoadedEffectTuples} of [
 			{
 				dataBuilderProp: "classItemToCreate",
 				dataBuilderPropOut: "classItem",
 				pFnHasSideLoadedEffects: DataConverterClass.pHasClassSideLoadedEffects.bind(DataConverterClass),
-				pFnGetSideLoadedEffects: DataConverterClass.pGetClassItemEffects.bind(DataConverterClass),
+				pFnGetSideLoadedEffectTuples: DataConverterClass.pGetClassItemEffectTuples.bind(DataConverterClass),
 			},
 			{
 				dataBuilderProp: "subclassItemToCreate",
 				dataBuilderPropOut: "subclassItem",
 				pFnHasSideLoadedEffects: DataConverterClass.pHasSubclassSideLoadedEffects.bind(DataConverterClass),
-				pFnGetSideLoadedEffects: DataConverterClass.pGetSubclassItemEffects.bind(DataConverterClass),
+				pFnGetSideLoadedEffectTuples: DataConverterClass.pGetSubclassItemEffectTuples.bind(DataConverterClass),
 			},
 		]) {
 			if (!dataBuilderOpts[dataBuilderProp]) continue;
@@ -1999,8 +2035,9 @@ class ImportListClass extends ImportListCharacter {
 			dataBuilderOpts[dataBuilderPropOut] = DataConverter.getImportedEmbed(importedEmbeds, dataBuilderOpts[dataBuilderProp])?.document;
 
 			if (await pFnHasSideLoadedEffects({actor: this._actor, cls, sc}) && dataBuilderOpts[dataBuilderPropOut]) {
-				const effectsToAdd = await pFnGetSideLoadedEffects({actor: this._actor, cls, sc, sheetItem: dataBuilderOpts[dataBuilderPropOut]});
-				await UtilActors.pAddActorEffects(this._actor, effectsToAdd);
+				const effectsSideTuples = await pFnGetSideLoadedEffectTuples({actor: this._actor, cls, sc, sheetItem: dataBuilderOpts[dataBuilderPropOut]});
+				effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importClass", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
+				await UtilActors.pAddActorEffects(this._actor, effectsSideTuples.map(it => it.effect));
 			}
 		}
 
@@ -2166,7 +2203,7 @@ class ImportListClass extends ImportListCharacter {
 	}
 
 	_getAsTag (listItem) {
-		const cls = this._content[listItem.data.ixClass];
+		const cls = this._content.class[listItem.data.ixClass];
 		const sc = cls.subclasses[listItem.data.ixSubclass];
 
 		const ptId = DataUtil.generic.packUid(cls, "class");
@@ -2219,6 +2256,7 @@ ImportListClass.ImportEntryOpts = class extends ImportListCharacter.ImportEntryO
 		this.isIncludesLevelOne = null;
 		this.proficiencyImportMode = null;
 		this.hpIncreaseMode = null;
+		this.hpIncreaseCustomRollFormula = null;
 
 		this.importedClassFeatureLevelledEmbeddedDocuments = [];
 		this.importedSubclassFeatureLevelledEmbeddedDocuments = [];
@@ -2226,58 +2264,74 @@ ImportListClass.ImportEntryOpts = class extends ImportListCharacter.ImportEntryO
 };
 
 ImportListClass.Utils = class {
-	static getDedupedData ({allContentFlat}) {
-		allContentFlat = MiscUtil.copy(allContentFlat);
+	static getDedupedData ({allContentMerged}) {
+		allContentMerged = MiscUtil.copy(allContentMerged);
 
-		const out = [];
-		const seen = new Set();
-		allContentFlat.forEach(cls => {
-			const hash = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES](cls);
+		Object.entries(allContentMerged)
+			.forEach(([k, arr]) => {
+				if (k !== "class") return;
+				if (!(arr instanceof Array)) return;
 
-			// If it's an existing class, move any subclasses over to it
-			if (seen.has(hash)) {
-				if (cls.subclasses?.length) {
-					const existingCls = out.find(it => UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES](it) === hash);
-					(existingCls.subclasses = existingCls.subclasses || []).push(...cls.subclasses);
-				}
-				return;
-			}
+				const out = [];
+				const seen = new Set();
+				arr.forEach(cls => {
+					const hash = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES](cls);
 
-			seen.add(hash);
-			out.push(cls);
-		});
+					// If it's an existing class, move any subclasses over to it
+					if (seen.has(hash)) {
+						if (cls.subclasses?.length) {
+							const existingCls = out.find(it => UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES](it) === hash);
+							(existingCls.subclasses = existingCls.subclasses || []).push(...cls.subclasses);
+						}
+						return;
+					}
 
-		return out;
+					seen.add(hash);
+					out.push(cls);
+				});
+
+				allContentMerged[k] = out;
+			});
+
+		return allContentMerged;
 	}
 
-	static getBlacklistFilteredData ({dedupedAllContentFlat}) {
-		const out = dedupedAllContentFlat.filter(cls => {
-			if (cls.source === VeCt.STR_GENERIC) return false;
+	static getBlocklistFilteredData ({dedupedAllContentMerged}) {
+		dedupedAllContentMerged = {...dedupedAllContentMerged};
+		Object.entries(dedupedAllContentMerged)
+			.forEach(([k, arr]) => {
+				if (k !== "class") return;
+				if (!(arr instanceof Array)) return;
 
-			return !ExcludeUtil.isExcluded(
-				UrlUtil.URL_TO_HASH_BUILDER["class"](cls),
-				"class",
-				cls.source,
-				{isNoCount: true},
-			);
-		});
+				const out = arr.filter(cls => {
+					if (cls.source === VeCt.STR_GENERIC) return false;
 
-		out.forEach(cls => {
-			if (!cls.subclasses) return;
+					return !ExcludeUtil.isExcluded(
+						UrlUtil.URL_TO_HASH_BUILDER["class"](cls),
+						"class",
+						cls.source,
+						{isNoCount: true},
+					);
+				});
 
-			cls.subclasses = cls.subclasses.filter(sc => {
-				if (sc.source === VeCt.STR_GENERIC) return false;
+				out.forEach(cls => {
+					if (!cls.subclasses) return;
 
-				return !ExcludeUtil.isExcluded(
-					UrlUtil.URL_TO_HASH_BUILDER["subclass"](sc),
-					"subclass",
-					sc.source,
-					{isNoCount: true},
-				);
+					cls.subclasses = cls.subclasses.filter(sc => {
+						if (sc.source === VeCt.STR_GENERIC) return false;
+
+						return !ExcludeUtil.isExcluded(
+							UrlUtil.URL_TO_HASH_BUILDER["subclass"](sc),
+							"subclass",
+							sc.source,
+							{isNoCount: true},
+						);
+					});
+				});
+
+				dedupedAllContentMerged[k] = out;
 			});
-		});
-
-		return out;
+		return dedupedAllContentMerged;
 	}
 };
 
@@ -2711,7 +2765,7 @@ ImportListClass.SheetLevelUpButtonAdapter = class {
 								{class: [cls], subclass: [sc].filter(Boolean)},
 								{actor: app.actor},
 							);
-							await importList.pImportClass(importableClassData[0], {levels: [targetLevel], filterValues});
+							await importList.pImportClass(importableClassData.class[0], {levels: [targetLevel], filterValues});
 
 							ui.notifications.info(`Level up complete!`);
 						});
@@ -2733,15 +2787,15 @@ ImportListClass.SheetLevelUpButtonAdapter = class {
 							savedSelectionKey: `ImportListClass_SheetLevelUpButtonAdapter_savedSelection`,
 							sourcesToDisplay: importListClassSources,
 							fnGetDedupedData: ImportListClass.Utils.getDedupedData.bind(ImportListClass.Utils),
-							fnGetBlacklistFilteredData: ImportListClass.Utils.getBlacklistFilteredData.bind(ImportListClass.Utils),
+							fnGetBlocklistFilteredData: ImportListClass.Utils.getBlocklistFilteredData.bind(ImportListClass.Utils),
 						});
 
-						const classDatas = await appSourceSelector.pWaitForUserInput();
-						if (classDatas == null) return;
+						const allData = await appSourceSelector.pWaitForUserInput();
+						if (allData == null) return;
 
 						const modalFilterClasses = new ModalFilterClassesFvtt({
 							namespace: `${ModalFilterClasses.name}.selectSubclass`,
-							allData: classDatas,
+							allData: allData.class,
 						});
 						const selected = await modalFilterClasses.pGetUserSelection({});
 						if (!selected?.class) return;
@@ -2759,10 +2813,10 @@ ImportListClass.SheetLevelUpButtonAdapter = class {
 							{actor: app.actor},
 						);
 
-						const clsOut = importableClassData[0];
+						const clsOut = importableClassData.class[0];
 						clsOut._foundryStartingProficiencyMode = Charactermancer_Class_ProficiencyImportModeSelect.MODE_MULTICLASS;
 
-						await importList.pImportClass(importableClassData[0], {levels: [1], filterValues: (await ImportListClass.pGetDefaultFilterValues())});
+						await importList.pImportClass(importableClassData.class[0], {levels: [1], filterValues: (await ImportListClass.pGetDefaultFilterValues())});
 
 						ui.notifications.info(`Level up complete!`);
 					});

@@ -987,6 +987,12 @@ class ConfigConsts {
 							},
 						],
 					},
+					isDuplicateHandlingMaintainImage: {
+						name: "Maintain Images when Overwriting Duplicates",
+						help: `If enabled, sheet and token images will be maintained when overwriting an existing document in "Update Existing" Duplicate Handling Mode.`,
+						default: false,
+						type: "boolean",
+					},
 					minimumRole: ConfigConsts._template_getMinimumRole({
 						name: "Minimum Permission Level for Import",
 						help: `"Import" buttons will be hidden for any user with a role less than the chosen role.`,
@@ -1065,6 +1071,7 @@ class ConfigConsts {
 						help: `The sub-directory of the "User Data" directory where imported images/tokens will be saved to when using the "Save Imported Images to Server" option or the "Save Imported Tokens to Server" option. If the "Use Local Images" option is enabled, images will be loaded from this directory by default.`,
 						default: `assets/${SharedConsts.MODULE_NAME_FAKE}`,
 						type: "string",
+						additionalStyleClasses: "code",
 					},
 					isPreferFoundryImages: {
 						name: "Prefer Foundry/System Images",
@@ -1089,6 +1096,7 @@ class ConfigConsts {
 						help: `The sub-directory of the "User Data" directory from which homebrew should be automatically loaded if the "Load Local Homebrew" option is enabled.`,
 						default: `assets/homebrew`,
 						type: "string",
+						additionalStyleClasses: "code",
 					},
 					isUseLocalHomebrewIndexJson: {
 						name: `Use <code>index.json</code> for Local Homebrew`,
@@ -1110,6 +1118,7 @@ class ConfigConsts {
 						name: "Base Site URL",
 						help: `The root server URL from which to load data and source images, and to link in rendered text. Note that, where possible, the module will use its own built-in data files, rather than call out to a remote server.`,
 						type: "url",
+						additionalStyleClasses: "code",
 						default: null,
 						isNullable: true,
 						isReloadRequired: true,
@@ -1143,6 +1152,7 @@ class ConfigConsts {
 						name: "Base Homebrew Repository URL",
 						help: `The root GitHub repository URL from which to load data and source images, and to link in rendered text, when importing homebrew content. URLs should be of the form "https://raw.githubusercontent.com/[username]/[repository name]/master".`,
 						type: "url",
+						additionalStyleClasses: "code",
 						default: null,
 						isNullable: true,
 						isReloadRequired: true,
@@ -1265,6 +1275,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_CREATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					additionalDataCompendiumFeatures: {
@@ -1273,6 +1284,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_CREATURE_FEATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					isUseTokenImageAsPortrait: {
@@ -1290,6 +1302,15 @@ class ConfigConsts {
 							[UtilCompat.MODULE_PLUTONIUM_ADDON_AUTOMATION]: true,
 						},
 					},
+					isSplitConditionalDamageAttack: {
+						name: `Split Conditional Damage Actions`,
+						help: `If enabled, the importer will create two sheet items ("Base" and "Full") per "... plus <x> damage if <y>" action, where the "base" item does not include the conditional damage, and the "full" item does include the conditional damage.`,
+						default: true,
+						type: "boolean",
+						compatibilityModeValues: {
+							[UtilCompat.MODULE_PLUTONIUM_ADDON_AUTOMATION]: true,
+						},
+					},
 					isUseStaticAc: {
 						name: "Use Static AC Values",
 						help: `If enabled, creature AC will be imported as a static number (rather than relying on the sheet's formula calculation), and creature armor will be imported as unequipped.`,
@@ -1299,6 +1320,12 @@ class ConfigConsts {
 					isUseCustomNaturalAc: {
 						name: "Use Custom Natural Armor Formula",
 						help: `If enabled, creatures with natural armor will have their armor formula broken down as "@attributes.ac.armor + @attributes.ac.dex + <naturalBonus>", allowing any later Dexterity score changes to be reflected in the creatures AC.`,
+						default: false,
+						type: "boolean",
+					},
+					isPreferFlatSavingThrows: {
+						name: "Prefer Flat Saving Throws",
+						help: `If enabled, a saving throw for a sheet item will always have "flat" scaling, with the flat DC value set to match the number in the creature's stat block. If disabled, a sheet item's saving throw scaling may be set as an ability score, provided that doing so produces the same value for the DC as is listed in the creature's stat block.`,
 						default: false,
 						type: "boolean",
 					},
@@ -1335,6 +1362,7 @@ class ConfigConsts {
 						default: "",
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					isUseTokenImageAsPortrait: {
@@ -1413,6 +1441,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_BACKGROUNDS_AND_FEATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					additionalDataCompendiumFeatures: {
@@ -1421,6 +1450,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_BACKGROUNDS_AND_FEATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					...ConfigConsts._template_getActiveEffectsDisabledTransferSettings({name: "backgrounds"}),
@@ -1470,6 +1500,28 @@ class ConfigConsts {
 						type: "boolean",
 						isPlayerEditable: true,
 					},
+					hpIncreaseMode: {
+						name: "Hit Points Increase Mode",
+						help: `Determines how Hit Points are calculated when using the Class Importer to level up. If left unspecified, a user will be prompted to choose the mode each time their Hit Points are increased by the Class Importer.`,
+						type: "enum",
+						values: [
+							{value: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__TAKE_AVERAGE, name: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__TAKE_AVERAGE]},
+							{value: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL, name: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL]},
+							{value: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM, name: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM]},
+							{value: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE, name: ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE]},
+						],
+						default: null,
+						isNullable: true,
+					},
+					hpIncreaseModeCustomRollFormula: {
+						name: "Hit Points Increase Custom Roll Formula",
+						help: `A custom roll formula to be used when gaining HP on level up. Used if either the "Hit Points Increase Mode" option is set to "${ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM]}", or if a player chooses "${ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM]}" when prompted to select their Hit Points Increase Mode. Use "@hd.faces" for the type of dice (i.e., the "8" in "1d8"), and "@hd.number" for "number of dice" (i.e., the "1" in "1d8").`,
+						placeholder: "(@hd.number)d(@hd.faces)",
+						type: "string",
+						additionalStyleClasses: "code",
+						default: null,
+						isNullable: true,
+					},
 				},
 				settingsAdvanced: {
 					additionalDataCompendiumClasses: {
@@ -1478,6 +1530,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_CLASSES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					additionalDataCompendiumSubclasses: {
@@ -1486,6 +1539,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_SUBCLASSES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					additionalDataCompendiumFeatures: {
@@ -1494,6 +1548,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_CLASS_FEATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					...ConfigConsts._template_getActiveEffectsDisabledTransferSettings({name: "class"}),
@@ -1667,6 +1722,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_ITEMS.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					replacementDataCompendium: {
@@ -1675,6 +1731,7 @@ class ConfigConsts {
 						default: "",
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					...ConfigConsts._template_getActiveEffectsDisabledTransferSettings({name: "items"}),
@@ -1720,6 +1777,7 @@ class ConfigConsts {
 						name: "Psi Points Custom Resource",
 						help: `The name of the custom resource to use if "Custom" is selected for "Psi Points Resource", above. This supports modules that expand the number of available sheet resources, such as "5e-Sheet Resources Plus" (which adds e.g. "resources.fourth", "resources.fifth", ...).`,
 						type: "string",
+						additionalStyleClasses: "code",
 						default: null,
 						isNullable: true,
 						isPlayerEditable: true,
@@ -1759,6 +1817,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_RACES_AND_FEATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					additionalDataCompendiumFeatures: {
@@ -1767,6 +1826,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_RACES_AND_FEATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					...ConfigConsts._template_getActiveEffectsDisabledTransferSettings({name: "races"}),
@@ -1796,6 +1856,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_TABLES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 				},
@@ -1933,6 +1994,7 @@ class ConfigConsts {
 						name: "Spell Points Custom Resource",
 						help: `The name of the custom resource to use if "Custom" is selected for "Spell Points Resource", above. This supports modules that expand the number of available sheet resources, such as "5e-Sheet Resources Plus" (which adds e.g. "resources.fourth", "resources.fifth", ...).`,
 						type: "string",
+						additionalStyleClasses: "code",
 						default: null,
 						isNullable: true,
 						isPlayerEditable: true,
@@ -1964,6 +2026,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_SPELLS.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					replacementDataCompendium: {
@@ -1972,6 +2035,7 @@ class ConfigConsts {
 						default: "",
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					...ConfigConsts._template_getActiveEffectsDisabledTransferSettings({name: "spells"}),
@@ -2048,6 +2112,7 @@ class ConfigConsts {
 						default: ConfigConsts.SRD_COMPENDIUMS_OPTIONAL_FEATURES.join(", "),
 						type: "string",
 						typeSub: "compendiums",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					...ConfigConsts._template_getActiveEffectsDisabledTransferSettings({name: "optional features"}),
@@ -2194,6 +2259,7 @@ class ConfigConsts {
 						help: `The URL of the index file from which world/module package metadata is loaded.`,
 						type: "url",
 						default: "https://raw.githubusercontent.com/DMsGuild201/Foundry_Resources/master/worlds/index.json",
+						additionalStyleClasses: "code",
 						isReloadRequired: true,
 					},
 				},
@@ -2239,6 +2305,7 @@ class ConfigConsts {
 						type: "boolean",
 						compatibilityModeValues: {
 							[UtilCompat.MODULE_DAE]: false,
+							[UtilCompat.MODULE_ROLLDATA_AWARE_ACTIVE_EFFECTS]: false,
 						},
 					},
 				},
@@ -2251,6 +2318,7 @@ class ConfigConsts {
 						help: `The ID of an actor to which Rivet content should be imported.`,
 						default: "",
 						type: "string",
+						additionalStyleClasses: "code",
 						isPlayerEditable: true,
 					},
 					isDisplayStatus: {
@@ -2339,6 +2407,7 @@ class ConfigConsts {
 						help: `The sub-directory of the "User Data" directory where downloaded images and image packs will be saved.`,
 						default: "assets/art",
 						type: "string",
+						additionalStyleClasses: "code",
 						isNullable: true,
 					},
 					buttonDisplay: {
@@ -2465,6 +2534,15 @@ class ConfigConsts {
 						type: "boolean",
 						isPlayerEditable: true,
 					},
+					backendEndpoint: {
+						name: "Custom Backend Endpoint",
+						help: `The API endpoint used to make calls to the modded Plutonium backend, if available. Note that this API is considered "internal," and is therefore undocumented, and may change on a per-version basis.`,
+						default: null,
+						placeholder: "(Use default)",
+						type: "url",
+						additionalStyleClasses: "code",
+						isNullable: true,
+					},
 				},
 			},
 			equipmentShop: {
@@ -2520,6 +2598,15 @@ class ConfigConsts {
 						default: false,
 						type: "boolean",
 						isReloadRequired: true,
+					},
+				},
+				settingsAdvanced: {
+					tooManySourcesWarningThreshold: {
+						name: "Auto-Selected Source Count Warning Threshold",
+						help: `If set, a warning will be shown when auto-selecting a number of sources greater than this value, which usually occurs if a "Force Select All..." option is set, without also "Enabl[ing] Data Source Filtering."`,
+						default: 50,
+						type: "integer",
+						isNullable: true,
 					},
 				},
 			},
@@ -2672,6 +2759,18 @@ ConfigConsts.C_TOKEN_NPC_HP_ROLL_MODE_SELF = 4;
 ConfigConsts.C_TOKEN_NPC_HP_ROLL_MODE_HIDDEN = 5;
 ConfigConsts.C_TOKEN_NPC_HP_ROLL_MODE_MIN = 6;
 ConfigConsts.C_TOKEN_NPC_HP_ROLL_MODE_MAX = 7;
+
+ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__TAKE_AVERAGE = 0;
+ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL = 1;
+ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM = 2;
+ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE = 3;
+
+ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES = {
+	[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__TAKE_AVERAGE]: "Take Average",
+	[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL]: "Roll",
+	[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM]: "Roll (Custom Formula)",
+	[ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE]: "Do Not Increase HP",
+};
 // endregion
 
 export {ConfigConsts};

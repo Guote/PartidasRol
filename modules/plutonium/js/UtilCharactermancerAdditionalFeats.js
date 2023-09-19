@@ -29,16 +29,16 @@ class Charactermancer_AdditionalFeatsSelect extends BaseComponent {
 			isDedupable: true,
 		});
 
-		const featDatas = await appSourceSelector.pWaitForUserInput();
-		if (featDatas == null) return null; // Pass a "Cancel" back
+		const allData = await appSourceSelector.pWaitForUserInput();
+		if (allData == null) return null; // Pass a "Cancel" back
 
-		const modalFilterFeats = await this._pGetUserInput_pGetModalFilterFeats({featDatas});
-		const modalFilterSpells = await this._pGetUserInput_pGetModalFilterSpells({featDatas});
+		const modalFilterFeats = await this._pGetUserInput_pGetModalFilterFeats({allData});
+		const modalFilterSpells = await this._pGetUserInput_pGetModalFilterSpells({allData});
 
 		const comp = new this({
 			available,
 			actor,
-			featDatas: featDatas,
+			featDatas: allData.feat,
 			modalFilterFeats,
 			modalFilterSpells,
 		});
@@ -49,11 +49,11 @@ class Charactermancer_AdditionalFeatsSelect extends BaseComponent {
 		});
 	}
 
-	static async _pGetUserInput_pGetModalFilterFeats ({featDatas}) {
+	static async _pGetUserInput_pGetModalFilterFeats ({allData}) {
 		const modalFilterFeats = new ModalFilterFeatsFvtt({
 			namespace: "Charactermancer_AdditionalFeatsSelect.feats",
 			isRadio: true,
-			allData: featDatas,
+			allData: allData.feat,
 		});
 		await modalFilterFeats.pPreloadHidden();
 		return modalFilterFeats;
@@ -63,7 +63,7 @@ class Charactermancer_AdditionalFeatsSelect extends BaseComponent {
 	 * This is unused during the "pGetUserInput" flow, so avoid loading spell data.
 	 * N.B. if it _were_ to be used, spell data will need to be loaded from a source selector.
 	 */
-	static async _pGetUserInput_pGetModalFilterSpells () {
+	static async _pGetUserInput_pGetModalFilterSpells ({allData}) {
 		return null;
 		// const modalFilterSpells = new ModalFilterSpellsFvtt({
 		// 	namespace: "Charactermancer_AdditionalFeatsSelect.spells",

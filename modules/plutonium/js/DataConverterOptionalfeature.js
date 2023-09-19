@@ -82,10 +82,12 @@ class DataConverterOptionalfeature extends DataConverterFeature {
 
 		const effects = [
 			...MiscUtil.copy(srdData.effects || []),
-			// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-			...opts.isActorItem ? [] : (await this._pGetEffectsSideLoaded({ent: optFeature, img: srdData.img}) || []),
 		];
 		DataConverter.mutEffectsDisabledTransfer(effects, "importOptionalFeature");
+
+		// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
+		const effectsSideTuples = opts.isActorItem ? [] : (await this._pGetEffectsSideLoadedTuples({ent: optFeature, img: srdData.img}) || []);
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importOptionalFeature", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(optFeature, {isActorItem: opts.isActorItem})),
@@ -108,7 +110,10 @@ class DataConverterOptionalfeature extends DataConverterFeature {
 				...this._getOptionalFeatureFlags(optFeature, opts),
 				...additionalFlags,
 			},
-			effects,
+			effects: [
+				...effects,
+				...effectsSideTuples.map(it => it.effect),
+			],
 		};
 
 		if (opts.defaultPermission != null) out.permission = {default: opts.defaultPermission};
@@ -127,8 +132,8 @@ class DataConverterOptionalfeature extends DataConverterFeature {
 		const additionalFlags = await this._pGetFlagsSideLoaded(optFeature);
 
 		// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-		const effects = opts.isActorItem ? [] : await this._pGetEffectsSideLoaded({ent: optFeature, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importOptionalFeature");
+		const effectsSideTuples = opts.isActorItem ? [] : await this._pGetEffectsSideLoadedTuples({ent: optFeature, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importOptionalFeature", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(optFeature, {isActorItem: opts.isActorItem})),
@@ -163,7 +168,7 @@ class DataConverterOptionalfeature extends DataConverterFeature {
 				...additionalFlags,
 			},
 			// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 		};
 
 		if (opts.defaultPermission != null) out.permission = {default: opts.defaultPermission};
@@ -222,9 +227,9 @@ class DataConverterOptionalfeature extends DataConverterFeature {
 		return (await this._pGetEffectsRawSideLoaded_(optFeature, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetOptionalFeatureItemEffects (actor, optFeature, sheetItem, {additionalData, img} = {}) {
+	static async pGetOptionalFeatureItemEffectTuples (actor, optFeature, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await this._pGetEffectsRawSideLoaded_(optFeature, this._SIDE_LOAD_OPTS);
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: optFeature.name, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: optFeature.name, additionalData, img}, {isTuples: true});
 	}
 
 	static _getCompendiumAliases (entity) {

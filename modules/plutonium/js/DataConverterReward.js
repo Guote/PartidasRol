@@ -54,8 +54,8 @@ class DataConverterReward extends DataConverterFeature {
 		const additionalFlags = await this._pGetFlagsSideLoaded(reward);
 
 		// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-		const effects = opts.isActorItem ? [] : await this._pGetEffectsSideLoaded({ent: reward, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importReward");
+		const effectsSideTuples = opts.isActorItem ? [] : await this._pGetEffectsSideLoadedTuples({ent: reward, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importReward", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(reward, {isActorItem: opts.isActorItem})),
@@ -93,7 +93,7 @@ class DataConverterReward extends DataConverterFeature {
 				...additionalFlags,
 			},
 			// For actor items, let the importer create the effects, so we can pass in additional flow data/etc.
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 		};
 
 		if (opts.defaultPermission != null) out.permission = {default: opts.defaultPermission};
@@ -130,9 +130,9 @@ class DataConverterReward extends DataConverterFeature {
 		return (await this._pGetEffectsRawSideLoaded_(reward, this._SIDE_LOAD_OPTS))?.length > 0;
 	}
 
-	static async pGetRewardItemEffects (actor, reward, sheetItem, {additionalData, img} = {}) {
+	static async pGetRewardItemEffectTuples (actor, reward, sheetItem, {additionalData, img} = {}) {
 		const effectsRaw = await this._pGetEffectsRawSideLoaded_(reward, {propBrew: "foundryReward", fnLoadJson: Vetools.pGetRewardSideData, propJson: "reward"});
-		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: reward.name, additionalData, img});
+		return UtilActiveEffects.getExpandedEffects(effectsRaw || [], {actor, sheetItem, parentName: reward.name, additionalData, img}, {isTuples: true});
 	}
 
 	static async _pGetPreloadSideData () {

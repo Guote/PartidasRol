@@ -88,31 +88,42 @@ class ChooseImporter extends Application {
 
 			const allContentMeta = await UtilDataSource.pGetAllContent({
 				sources: [source],
-				props: importer.props,
 				page: importer.page,
 			});
-			let allContent = allContentMeta.dedupedAllContentFlat;
-			allContent = allContent.filter(it => {
-				// Skip UA/AL
-				if (it.source.startsWith(SRC_UA_PREFIX) || it.source.startsWith(SRC_AL_PREFIX)) return false;
 
-				// Skip specific variants; we let the generic variant/base item take precedence
-				if (it.__prop === "item" && it._category === "Specific Variant") return false;
+			if (!allContentMeta) return;
 
-				return true;
-			});
+			let allContent = allContentMeta.dedupedAllContentMerged;
+			Object.entries(allContent)
+				.forEach(([k, arr]) => {
+					allContent[k] = arr.filter(it => {
+						// Skip UA/AL
+						if (it.source.startsWith(SRC_UA_PREFIX) || it.source.startsWith(SRC_AL_PREFIX)) return false;
+
+						// Skip specific variants; we let the generic variant/base item take precedence
+						if (it.__prop === "item" && it._category === "Specific Variant") return false;
+
+						return true;
+					});
+				});
+
+			let allContentFlat = [];
+			Object.values(allContent)
+				.forEach(arr => {
+					allContentFlat = [...allContentFlat, ...arr];
+				});
 
 			const tStart = Date.now();
-			const msgStart = `Importing ${allContent.length} ${mode.Importer.DISPLAY_NAME_TYPE_PLURAL} to compendium ${packLabel}...`;
+			const msgStart = `Importing ${allContentFlat.length} ${mode.Importer.DISPLAY_NAME_TYPE_PLURAL} to compendium ${packLabel}...`;
 			ui.notifications.info(msgStart);
 			console.warn(...LGT, msgStart);
 
-			for (const ent of allContent) {
+			for (const ent of allContentFlat) {
 				await importer.pImportEntry(ent);
 			}
 
 			const tDelta = Math.round((Date.now() - tStart) / 1000);
-			const msgEnd = `Imported ${allContent.length} ${mode.Importer.DISPLAY_NAME_TYPE_PLURAL} to compendium ${packLabel} in ${tDelta}s.`;
+			const msgEnd = `Imported ${allContentFlat.length} ${mode.Importer.DISPLAY_NAME_TYPE_PLURAL} to compendium ${packLabel} in ${tDelta}s.`;
 			ui.notifications.info(msgEnd);
 			console.warn(...LGT, msgEnd);
 		}
@@ -609,11 +620,11 @@ class ChooseImporter extends Application {
 				: null;
 
 			const $btnOther = mode.metaOther
-				? $(`<button class="btn btn-sm btn-5et pl-2 pr-1 imp-wiz__btn-package-archive h-100">${mode.metaOther.text}</button>`)
+				? $(`<button class="btn btn-sm btn-5et px-1 imp-wiz__btn-package-archive h-100">${mode.metaOther.text}</button>`)
 					.click(() => mode.metaOther.pFn())
 				: null;
 
-			const $btnQuick = $(`<button class="btn btn-sm btn-5et pl-2 pr-1 imp-wiz__btn-quick h-100" title="Open Last-Used Importer"><i class="fas fa-fw fa-forward"></i></button>`)
+			const $btnQuick = $(`<button class="btn btn-sm btn-5et px-1 imp-wiz__btn-quick h-100" title="Open Last-Used Importer"><i class="fas fa-fw fa-forward mr-0"></i></button>`)
 				.click(() => this._pDoQuickOpen(mode));
 
 			const $row = $$`<div class="w-100 ve-flex-v-center input-group imp-wiz__row-mode">
@@ -1096,13 +1107,16 @@ class ChooseImporter extends Application {
 
 		await this._pHandleOpenImporter_pSaveLastUsed(importer, mode);
 
-		const {dedupedAllContentFlat, cacheKeys, userData} = await this._pHandleOpenImporter_pGetAllContent({importer, sources, isBackground});
+		const allContentMeta = await this._pHandleOpenImporter_pGetAllContent({importer, sources, isBackground});
+		if (!allContentMeta) return;
+
+		const {dedupedAllContentMerged, cacheKeys, userData} = allContentMeta;
+
 		importer.userData = userData;
 
 		if (
 			!isSilent
-			&& ((dedupedAllContentFlat instanceof Array && !dedupedAllContentFlat.length)
-				|| (!Object.values(dedupedAllContentFlat || {}).length))
+			&& (!Object.values(dedupedAllContentMerged || {}).length)
 		) {
 			ui.notifications.warn(`No importable content found in the selected source${sources.length === 1 ? "" : "s"}!`);
 			return;
@@ -1110,20 +1124,19 @@ class ChooseImporter extends Application {
 
 		// If any cache key is null, make the entire thing null
 		const cacheKey = cacheKeys.includes(null) ? null : cacheKeys.join("__");
-		await this._pFillUi_handleOpenClick_pOpen(importer, dedupedAllContentFlat, cacheKey);
+		await this._pFillUi_handleOpenClick_pOpen(importer, dedupedAllContentMerged, cacheKey);
 	}
 
 	async _pHandleOpenImporter_pGetAllContent ({importer, sources, isBackground}) {
 		const $ovrLoading = await UtilApplications.$pGetAddAppLoadingOverlay(this._$window);
 
 		try {
-			// eslint-disable-next-line no-return-await
-			return await importer.pGetAllContent({
+			return (await importer.pGetAllContent({
 				sources,
 				isBackground,
 				uploadedFiles: this._appSourceSelector.uploadedFiles,
 				customUrls: this._appSourceSelector.getCustomUrls(),
-			});
+			}));
 		} catch (e) {
 			ui.notifications.error(`Failed to load importer! ${VeCt.STR_SEE_CONSOLE}`);
 			throw e;
@@ -1144,8 +1157,8 @@ class ChooseImporter extends Application {
 		}
 	}
 
-	async _pFillUi_handleOpenClick_pOpen (importer, dedupedAllContentFlat, cacheKey) {
-		if (dedupedAllContentFlat == null || (dedupedAllContentFlat instanceof Array && !dedupedAllContentFlat.length)) return;
+	async _pFillUi_handleOpenClick_pOpen (importer, dedupedAllContentMerged, cacheKey) {
+		if (dedupedAllContentMerged == null || !Object.keys(dedupedAllContentMerged).length) return;
 
 		const isOpenedFromCache = await this._pGetUi_pCheckOpenCachedInstance(importer, {fnCheckHit: cached => cached.cacheKey && cached.cacheKey === cacheKey && cached.hasActor === !!this._actor && cached.hasTable === !!this._table});
 		if (isOpenedFromCache) {
@@ -1155,7 +1168,7 @@ class ChooseImporter extends Application {
 
 		if (this._isAlwaysCloseWindow || !this._comp.get("isRemainOpen")) this.close();
 
-		await importer.pSetContent(dedupedAllContentFlat);
+		await importer.pSetContent(dedupedAllContentMerged);
 
 		await importer.pPreRender(this._importerPreRenderArgs);
 		// As a single importer instance is used per category, we ensure it is not hidden (after e.g. being "closed")

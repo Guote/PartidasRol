@@ -63,6 +63,7 @@ class PageFilterRaceFeature extends PageFilter {
 class ImportListRaceFeature extends ImportListFeature {
 	static get ID () { return "race-and-subrace-features"; }
 	static get DISPLAY_NAME_TYPE_PLURAL () { return "Race & Subrace Features"; }
+	static get _PROPS () { return ["raceFeature"]; }
 
 	static _ = this.registerImpl(this);
 
@@ -74,7 +75,7 @@ class ImportListRaceFeature extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["raceFeature"],
+				props: ImportListRaceFeature._PROPS,
 				dirsHomebrew: ["race"],
 				titleSearch: "race features",
 				sidebarTab: "items",
@@ -94,31 +95,31 @@ class ImportListRaceFeature extends ImportListFeature {
 	}
 
 	static async _pPostLoad_getAllBrewFeaturesFromRaces (data) {
-		const allRaces = await Charactermancer_Race_Util.pPostLoadBrew(data);
-		return this._pPostLoad_getFeaturesFromRaces({race: allRaces});
+		const raceData = await Charactermancer_Race_Util.pPostLoadBrew(data);
+		return this._pPostLoad_getFeaturesFromRaces(raceData);
 	}
 
 	static async _pPostLoad_getFeaturesFromRaces (data) {
-		const out = [];
+		const out = {raceFeature: []};
 
 		for (const race of data.race || []) {
 			// This copies the entry
 			(race.entries || [])
 				.filter(it => it.name && it.entries)
-				.forEach(ent => out.push(DataConverterRaceFeature.getFauxRaceFeature(race, ent)));
+				.forEach(ent => out.raceFeature.push(DataConverterRaceFeature.getFauxRaceFeature(race, ent)));
 		}
 
 		return out;
 	}
 
 	async _pGetSources () {
-		const nonVetoolsOpts = {pPostLoad: (loadedData, data) => this.constructor._pPostLoad_getAllBrewFeaturesFromRaces(data)};
+		const nonVetoolsOpts = {pPostLoad: (data) => this.constructor._pPostLoad_getAllBrewFeaturesFromRaces(data)};
 		return [
 			new UtilDataSource.DataSourceSpecial(
 				Config.get("ui", "isStreamerMode") ? "SRD" : "5etools",
 				Vetools.pGetRaces.bind(Vetools),
 				{
-					pPostLoad: (loadedData, data) => this.constructor._pPostLoad_getFeaturesFromRaces(data),
+					pPostLoad: (data) => this.constructor._pPostLoad_getFeaturesFromRaces(data),
 					cacheKey: "5etools-race-features",
 					filterTypes: [UtilDataSource.SOURCE_TYP_OFFICIAL_ALL],
 					isDefault: true,
@@ -212,8 +213,8 @@ class ImportListRaceFeature extends ImportListFeature {
 
 	static async _pHasSideLoadedEffects (actor, feature) { return DataConverterRaceFeature.pHasRaceFeatureSideLoadedEffects(actor, feature); }
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
-		return DataConverterRaceFeature.pGetRaceFeatureItemEffects(
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
+		return DataConverterRaceFeature.pGetRaceFeatureItemEffectTuples(
 			actor,
 			feature,
 			importedEmbed,

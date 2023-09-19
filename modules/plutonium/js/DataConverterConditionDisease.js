@@ -4,6 +4,7 @@ import {Config} from "./Config.js";
 import {DataConverter} from "./DataConverter.js";
 import {Vetools} from "./Vetools.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
+import {UtilActiveEffects} from "./UtilActiveEffects.js";
 
 class DataConverterConditionDisease extends DataConverter {
 	static _getSideLoadOpts (conDis) {
@@ -33,8 +34,8 @@ class DataConverterConditionDisease extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(conDis);
 		const additionalFlags = await this._pGetFlagsSideLoaded(conDis);
 
-		const effects = await this._pGetEffectsSideLoaded({ent: conDis, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importConditionDisease");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: conDis, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importConditionDisease", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(conDis, {isActorItem: opts.isActorItem})),
@@ -76,7 +77,7 @@ class DataConverterConditionDisease extends DataConverter {
 				},
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 		};
 
 		if (opts.defaultPermission != null) out.permission = {default: opts.defaultPermission};

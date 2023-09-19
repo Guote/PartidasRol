@@ -246,11 +246,13 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 						if (pFnGetEntity) ent = await pFnGetEntity(flags);
 						else ent = await Renderer.hover.pCacheAndGet(flags.page, flags.source, flags.hash);
 					} catch (e) {
-						ui.notifications.error(`Failed to import "${ent?.name ?? flags.hash}"! ${VeCt.STR_SEE_CONSOLE}`);
-						throw e;
+						if (isUseImporter) {
+							ui.notifications.error(`Failed to import "${ent?.name ?? flags.hash}"! ${VeCt.STR_SEE_CONSOLE}`);
+							throw e;
+						}
 					}
 
-					if (!ent) {
+					if (isUseImporter && !ent) {
 						const msg = `Failed to import "${flags.hash}"!`;
 						ui.notifications.error(`${msg} ${VeCt.STR_SEE_CONSOLE}`);
 						throw new Error(`${msg} The original entity could not be found.`);
@@ -420,7 +422,21 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 
 	get _propGroups () { return this._props.map((prop, i) => ({prop, propBrewAdditionalData: this._propsBrewAdditionalData?.[i]})); }
 
-	async pSetContent (val) { this._content = val; }
+	async pSetContent (val) {
+		// Some importers (e.g. adventure/book) have non-array content, and are always single objects
+		if (!this._props?.length) {
+			this._content = val;
+			return;
+		}
+
+		let content = [];
+		Object.entries(val)
+			.forEach(([k, arr]) => {
+				if (!this._props.includes(k)) return;
+				content = [...content, ...arr];
+			});
+		this._content = content;
+	}
 
 	async pSyncStateFrom (that) {
 		this._actor = that._actor;
@@ -913,7 +929,6 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 			uploadedFiles,
 			customUrls,
 			isBackground,
-			props: this._props,
 			userData,
 			cacheKeys,
 
@@ -922,7 +937,7 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 			isDedupable: this._isDedupable,
 			fnGetDedupedData: this._getDedupedData ? this._getDedupedData.bind(this) : null,
 
-			fnGetBlacklistFilteredData: this._getBlacklistFilteredData ? this._getBlacklistFilteredData.bind(this) : null,
+			fnGetBlocklistFilteredData: this._getBlocklistFilteredData ? this._getBlocklistFilteredData.bind(this) : null,
 		});
 	}
 
@@ -1008,10 +1023,6 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 			folderType: this.constructor.FOLDER_TYPE,
 			folderNames: [Config.get("import", "tempFolderName")],
 		});
-	}
-
-	getContent (data) {
-		return Vetools.getContent(data, this._props);
 	}
 
 	_getFilterNamespace () { return `importer_${this._actor ? `actor` : `directory`}_${this._namespace || this._props.join("_")}`; }
@@ -1191,6 +1202,8 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 		if (duplicateMeta.existing.effects?.length) await duplicateMeta.existing.deleteEmbeddedDocuments("ActiveEffect", duplicateMeta.existing.effects.map(it => it.id));
 		if (this._gameProp === "tables" && duplicateMeta.existing.results?.size) await duplicateMeta.existing.deleteEmbeddedDocuments("TableResult", duplicateMeta.existing.results.map(it => it.id));
 
+		this._pImportEntry_pDoUpdateExisting_maintainImg({duplicateMeta, docData: itemData});
+
 		await UtilDocuments.pUpdateDocument(duplicateMeta.existing, itemData);
 
 		await this._pImportEntry_pAddToTargetTableIfRequired([duplicateMeta.existing], duplicateMeta);
@@ -1210,6 +1223,8 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 	async _pImportEntry_pDoUpdateExistingDirectoryEntity (duplicateMeta, itemData) {
 		if (this._gameProp === "tables" && duplicateMeta.existing.results?.size) await duplicateMeta.existing.deleteEmbeddedDocuments("TableResult", duplicateMeta.existing.results.map(it => it.id));
 
+		this._pImportEntry_pDoUpdateExisting_maintainImg({duplicateMeta, docData: itemData});
+
 		await UtilDocuments.pUpdateDocument(duplicateMeta.existing, itemData);
 
 		return new ImportSummary({
@@ -1221,6 +1236,13 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 				}),
 			],
 		});
+	}
+
+	_pImportEntry_pDoUpdateExisting_maintainImg ({duplicateMeta, docData}) {
+		if (!duplicateMeta?.isOverwrite) return;
+
+		const prevImg = Config.get("import", "isDuplicateHandlingMaintainImage") ? duplicateMeta.existing.img : null;
+		if (prevImg != null) docData.img = prevImg;
 	}
 
 	async _pImportEntry_pImportToDirectoryGeneric (toImport, importOpts, dataOpts = {}, {docData = null, isSkipDuplicateHandling = false} = {}) {
@@ -1236,6 +1258,7 @@ class ImportList extends MixinHidableApplication(MixinFolderPathBuilder(Applicat
 			importOpts,
 		);
 
+		// TODO(v10) refactor this into e.g. classes implementing methods for the non-shared components
 		const duplicateMeta = isSkipDuplicateHandling
 			? null
 			: this._getDuplicateMeta({name: docData.name, source: MiscUtil.get(docData, "data", "source"), importOpts});

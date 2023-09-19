@@ -5,6 +5,7 @@ import {DataConverter} from "./DataConverter.js";
 import {Vetools} from "./Vetools.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
 import {ConfigConsts} from "./ConfigConsts.js";
+import {UtilActiveEffects} from "./UtilActiveEffects.js";
 
 class DataConverterPsionic extends DataConverter {
 	static _SIDE_LOAD_OPTS = {
@@ -103,8 +104,8 @@ class DataConverterPsionic extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(psi);
 		const additionalFlags = await this._pGetFlagsSideLoaded(psi);
 
-		const effects = await this._pGetEffectsSideLoaded({ent: psi, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importPsionic");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: psi, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importPsionic", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = await DataConverter.pGetItemActorPassive(
 			psi,
@@ -114,7 +115,7 @@ class DataConverterPsionic extends DataConverter {
 				img,
 				additionalData,
 				additionalFlags,
-				effects,
+				effects: effectsSideTuples.map(it => it.effect),
 				description: Config.get("importPsionic", "isImportDescription")
 					? await UtilDataConverter.pGetWithDescriptionPlugins(() => `<div>${Renderer.psionic.getBodyText(psi, Renderer.get())}</div>`)
 					: "",
@@ -155,8 +156,8 @@ class DataConverterPsionic extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(psi, {propOpts: "_SIDE_DATA_DISCIPLINE_FOCUS_OPTS"});
 		const additionalFlags = await this._pGetFlagsSideLoaded(psi, {propOpts: "_SIDE_DATA_DISCIPLINE_FOCUS_OPTS"});
 
-		const effects = await this._pGetEffectsSideLoaded({ent: psi, img}, {propOpts: "_SIDE_DATA_DISCIPLINE_FOCUS_OPTS"});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importPsionic");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: psi, img}, {propOpts: "_SIDE_DATA_DISCIPLINE_FOCUS_OPTS"});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importPsionic", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = await DataConverter.pGetItemActorPassive(
 			psi,
@@ -171,7 +172,7 @@ class DataConverterPsionic extends DataConverter {
 				img,
 				additionalData,
 				additionalFlags,
-				effects,
+				effects: effectsSideTuples,
 				description: Config.get("importPsionic", "isImportDescription")
 					? await UtilDataConverter.pGetWithDescriptionPlugins(() => `<div>${Renderer.get().setFirstSection(true).render({entries: [psi.focus]})}</div>`)
 					: "",
@@ -280,8 +281,8 @@ class DataConverterPsionic extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(entFauxSideData, {propOpts: "_SIDE_DATA_DISCIPLINE_ACTIVE_OPTS"});
 		const additionalFlags = await this._pGetFlagsSideLoaded(entFauxSideData, {propOpts: "_SIDE_DATA_DISCIPLINE_ACTIVE_OPTS"});
 
-		const effects = await this._pGetEffectsSideLoaded({ent: psi, img}, {propOpts: "_SIDE_DATA_DISCIPLINE_ACTIVE_OPTS"});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importPsionic");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: psi, img}, {propOpts: "_SIDE_DATA_DISCIPLINE_ACTIVE_OPTS"});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importPsionic", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = await DataConverter.pGetItemActorPassive(
 			psiMode,
@@ -294,7 +295,7 @@ class DataConverterPsionic extends DataConverter {
 				img,
 				additionalData,
 				additionalFlags,
-				effects,
+				effects: effectsSideTuples.map(it => it.effect),
 				description,
 				damageParts,
 				formula: "", // Override the `formula` value to avoid duplicating our `damageParts`
@@ -376,8 +377,8 @@ class DataConverterPsionic extends DataConverter {
 		const additionalData = await this._pGetDataSideLoaded(psi);
 		const additionalFlags = await this._pGetFlagsSideLoaded(psi);
 
-		const effects = await this._pGetEffectsSideLoaded({ent: psi, img});
-		DataConverter.mutEffectsDisabledTransfer(effects, "importPsionic");
+		const effectsSideTuples = await this._pGetEffectsSideLoadedTuples({ent: psi, img});
+		effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, "importPsionic", UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
 
 		const out = {
 			name: UtilApplications.getCleanEntityName(UtilDataConverter.getNameWithSourcePart(psi)),
@@ -416,7 +417,7 @@ class DataConverterPsionic extends DataConverter {
 				...this._getPsionicFlags(psi, opts),
 				...additionalFlags,
 			},
-			effects,
+			effects: effectsSideTuples.map(it => it.effect),
 			img,
 		};
 

@@ -10,7 +10,6 @@ import {UtilList2} from "./UtilList2.js";
 import {DataConverterCreature} from "./DataConverterCreature.js";
 import {UtilDataSource} from "./UtilDataSource.js";
 import {ConfigConsts} from "./ConfigConsts.js";
-import {DataConverterActor} from "./DataConverterActor.js";
 import {UtilActiveEffects} from "./UtilActiveEffects.js";
 import {ImportListSpell} from "./ImportListSpell.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
@@ -68,11 +67,12 @@ class ImportListCreature extends ImportListActor {
 
 	async _pGetSources () {
 		const creatureIndex = await Vetools.pGetCreatureIndex();
+		const optsBrew = {pPostLoad: this.constructor._postLoadBrew.bind(this.constructor)};
 
 		return [
 			new UtilDataSource.DataSourceSpecial(
 				Config.get("ui", "isStreamerMode") ? "SRD" : "5etools",
-				async () => (await Vetools.pGetAllCreatures()).monster,
+				() => Vetools.pGetAllCreatures(),
 				{
 					cacheKey: "5etools-creatures",
 					filterTypes: [UtilDataSource.SOURCE_TYP_OFFICIAL_ALL],
@@ -83,12 +83,14 @@ class ImportListCreature extends ImportListActor {
 				"Custom URL",
 				"",
 				{
+					...optsBrew,
 					filterTypes: [UtilDataSource.SOURCE_TYP_CUSTOM],
 				},
 			),
 			new UtilDataSource.DataSourceFile(
 				"Upload File",
 				{
+					...optsBrew,
 					filterTypes: [UtilDataSource.SOURCE_TYP_CUSTOM],
 				},
 			),
@@ -101,12 +103,19 @@ class ImportListCreature extends ImportListActor {
 					filterTypes: SourceUtil.isNonstandardSource(src) ? [UtilDataSource.SOURCE_TYP_ARCANA] : [UtilDataSource.SOURCE_TYP_OFFICIAL_SINGLE],
 				},
 			)),
-			...(await this._pGetSourcesHomebrew()),
+			...(await this._pGetSourcesHomebrew({...optsBrew})),
 		];
 	}
 
-	static _postLoadVetools (src, monList) {
-		return monList.filter(it => it.source === src);
+	static _postLoadVetools (src, data) {
+		data = {...data};
+		data.monster = data.monster.filter(it => it.source === src);
+		return data;
+	}
+
+	static _postLoadBrew (data) {
+		DataUtil.monster.populateMetaReference(data);
+		return data;
 	}
 
 	async pGetChooseImporterUserDataForSources (sources) {
@@ -249,7 +258,7 @@ class ImportListCreature extends ImportListActor {
 		});
 	}
 
-	async _pImportEntry_pGetImportMetadata (actor, mon, importOpts) {
+	async _pImportEntry_pGetImportMetadata (actor, mon, importOpts, importOptsEntity) {
 		const act = {};
 
 		const fluff = await Renderer.utils.pGetFluff({
@@ -265,7 +274,7 @@ class ImportListCreature extends ImportListActor {
 
 		act.data = {};
 
-		await this._pImportEntry_pFillFolder(mon, act, importOpts);
+		await this._pImportEntry_pFillFolder(mon, act, importOpts, importOptsEntity);
 
 		if (importOpts.defaultPermission != null) act.permission = {default: importOpts.defaultPermission};
 		else act.permission = {default: Config.get(this._configGroup, "permissions")};
@@ -279,7 +288,7 @@ class ImportListCreature extends ImportListActor {
 		this._pImportEntry_fillData_Spells(mon, act.data, dataBuilderOpts);
 		this._pImportEntry_fillData_Resources(mon, act.data, dataBuilderOpts);
 
-		await this._pImportEntry_pFillToken({importable: mon, actor: act});
+		await this._pImportEntry_pFillToken({importable: mon, actor: act, flags: this._getTokenFlags({mon})});
 
 		return {dataBuilderOpts: dataBuilderOpts, actorData: act};
 	}
@@ -1022,7 +1031,18 @@ class ImportListCreature extends ImportListActor {
 				opts.fnPreProcess(entry);
 			}
 
-			const nxtOpts = {};
+			const {
+				saveAbility,
+				saveScaling,
+				saveDc,
+			} = this._getSavingThrowData(mon, dataBuilderOpts.getSheetPb(), dataBuilderOpts.spellAbility, JSON.stringify(entry));
+
+			const nxtOpts = {
+				saveAbility,
+				saveScaling,
+				saveDc,
+			};
+
 			Object.entries(optsFoundryData)
 				.forEach(([k, v]) => {
 					if (typeof v === "function") nxtOpts[k] = v(entry);
@@ -1148,7 +1168,7 @@ class ImportListCreature extends ImportListActor {
 			saveAbility,
 			saveScaling,
 			saveDc,
-		} = this._getSavingThrowData(mon, dataBuilderOpts.getSheetPb(), strEntries);
+		} = this._getSavingThrowData(mon, dataBuilderOpts.getSheetPb(), dataBuilderOpts.spellAbility, strEntries);
 
 		const damageTuples = [];
 		let formula = "";
@@ -1384,8 +1404,19 @@ class ImportListCreature extends ImportListActor {
 				.replace(/{@atk m[ws],(r[ws])}/, (...m) => `{@atk ${m[1]}}`)
 				.replace(/(?:reach|range) \d+ ft\. or (range \d+(?:\/\d+)? ft\.)/, (...m) => m[1]);
 
-			return [cpyMelee, cpyRanged];
+			const actionsCondDamageMelee = this.constructor._getActionsConditionalDamageAttack(cpyMelee);
+			const actionsCondDamageRanged = this.constructor._getActionsConditionalDamageAttack(cpyRanged);
+
+			return [
+				...(actionsCondDamageMelee || [cpyMelee]),
+				...(actionsCondDamageRanged || [cpyRanged]),
+			];
 		}
+		// endregion
+
+		// region "Conditional damage" attacks
+		const actionsCondDamage = this.constructor._getActionsConditionalDamageAttack(action);
+		if (actionsCondDamage) return actionsCondDamage;
 		// endregion
 
 		return [action];
@@ -1436,6 +1467,64 @@ class ImportListCreature extends ImportListActor {
 			&& /(?:reach|range) \d+ ft\. or range \d+(?:\/\d+)? ft\./.test(action.entries[0]);
 	}
 
+	static _getActionsConditionalDamageAttack (action) {
+		if (!Config.get("importCreature", "isSplitConditionalDamageAttack")) return null;
+
+		// Note that these have to be careful not to pick up e.g. versatile weapons
+		const fromConditional = this._getActionsConditionalDamageAttack_conditional(action);
+		const fromSwarm = this._getActionsConditionalDamageAttack_swarm(action);
+
+		const out = [
+			...(fromConditional || []),
+			...(fromSwarm || []),
+		];
+
+		if (!out.length) return null;
+		return out;
+	}
+
+	static _getActionsConditionalDamageAttack_conditional (action) {
+		if (
+			!action.entries.length
+			|| typeof action.entries[0] !== "string"
+		) return null;
+
+		const withoutExtra = action.entries[0].replace(/, plus \d+(?: \([^)]+\))?(?: [a-zA-Z]+)? damage if [^.!?]+\./i, "");
+		if (withoutExtra === action.entries[0]) return null;
+
+		const cpyWithout = MiscUtil.copy(action);
+		cpyWithout.name = `${cpyWithout.name} (Base)`;
+		cpyWithout.entries[0] = withoutExtra;
+
+		const cpyWith = MiscUtil.copy(action);
+		cpyWith.name = `${cpyWith.name} (Full)`;
+
+		return [cpyWithout, cpyWith];
+	}
+
+	static _getActionsConditionalDamageAttack_swarm (action) {
+		if (
+			!action.entries.length
+			|| typeof action.entries[0] !== "string"
+		) return null;
+
+		const atFullHp = action.entries[0].replace(/, or \d+(?: \([^)]+\))?(?: [a-zA-Z]+)? damage if the swarm has half of its hit points [^.!?]+\./i, "");
+		if (atFullHp === action.entries[0]) return null;
+
+		// {@atk mw} {@hit 4} to hit, reach 0 ft., one creature in the swarm's space. {@h}5 ({@damage 2d4}) piercing damage, or 2 ({@damage 1d4}) piercing damage if the swarm has half of its hit points or fewer. // FIXME remove
+		const atHalfHp = action.entries[0].replace(/\{@h}\d+(?: \([^)]+\))?(?: [a-zA-Z]+)? damage, or /i, "{@h}");
+		if (atHalfHp === action.entries[0]) return null;
+
+		const cpyFullHp = MiscUtil.copy(action);
+		cpyFullHp.entries[0] = atFullHp;
+
+		const cpyHalfHp = MiscUtil.copy(action);
+		cpyHalfHp.name = `${cpyHalfHp.name} (Half Hit Points)`;
+		cpyHalfHp.entries[0] = atHalfHp;
+
+		return [cpyFullHp, cpyHalfHp];
+	}
+
 	/**
 	 * @param mon
 	 * @param act
@@ -1476,7 +1565,7 @@ class ImportListCreature extends ImportListActor {
 			saveAbility,
 			saveScaling,
 			saveDc,
-		} = this._getSavingThrowData(mon, dataBuilderOpts.getSheetPb(), strEntries);
+		} = this._getSavingThrowData(mon, dataBuilderOpts.getSheetPb(), dataBuilderOpts.spellAbility, strEntries);
 		// endregion
 
 		// If it was an attack, treat is as a weapon. Otherwise, treat it as a generic action.
@@ -1552,31 +1641,32 @@ class ImportListCreature extends ImportListActor {
 		<p>${shortName} attacks with ${mon.isNamedCreature ? "their" : "its"} ${actionNameClean}.</p>`;
 	}
 
-	_getSavingThrowData (mon, assumedMonProf, strEntries) {
-		let {
-			saveAbility,
-			saveScaling,
-			saveDc,
-			isFoundParse,
-		} = super._getSavingThrowData(strEntries);
+	_getSavingThrowData (mon, assumedMonProf, spellcastingAbil, strEntries) {
+		const out = super._getSavingThrowData(strEntries);
 
-		if (isFoundParse) {
-			// Try to find an ability to link the scaling to
-			//   Order of preference: cha > wis > int > str > dex > con
-			//   (Rough heuristic of which saving throw sources are the most common)
-			if (assumedMonProf) {
-				const fromAbil = saveDc - assumedMonProf - 8;
-				for (const abil of ["cha", "wis", "int", "str", "dex", "con"]) {
-					const mod = Parser.getAbilityModNumber(mon[abil]);
-					if (mod === fromAbil) {
-						saveScaling = abil;
-						break;
-					}
-				}
-			}
+		if (!out.isFoundParse || !assumedMonProf) return out;
+
+		if (Config.get("importCreature", "isPreferFlatSavingThrows")) return out;
+
+		const {saveDc} = out;
+
+		const fromAbil = saveDc - assumedMonProf - 8;
+
+		// Prefer spellcasting ability, where available
+		if (spellcastingAbil) {
+			const mod = Parser.getAbilityModNumber(mon[spellcastingAbil]);
+			if (mod === fromAbil) return {...out, saveScaling: spellcastingAbil};
 		}
 
-		return {saveAbility, saveScaling, saveDc};
+		// Try to find an ability to link the scaling to
+		//   Order of preference: cha > wis > int > str > dex > con
+		//   (Rough heuristic of which saving throw sources are the most common)
+		for (const abil of ["cha", "wis", "int", "str", "dex", "con"]) {
+			const mod = Parser.getAbilityModNumber(mon[abil]);
+			if (mod === fromAbil) return {...out, saveScaling: abil};
+		}
+
+		return out;
 	}
 
 	_getDamageTuplesWithMod (damageTuples, abilityScore) {
@@ -1950,7 +2040,10 @@ class ImportListCreature extends ImportListActor {
 
 		await UtilDataConverter.pGetWithDescriptionPlugins(
 			async () => {
-				const traits = Renderer.monster.getSpellcastingRenderedTraits(Renderer.get(), mon);
+				const traits = [
+					...Renderer.monster.getSpellcastingRenderedTraits(Renderer.get(), mon),
+					...Renderer.monster.getSpellcastingRenderedTraits(Renderer.get(), mon, "action"),
+				];
 				for (const trait of traits) {
 					const img = await DataConverterCreature.pGetSpellcastingImage(mon, trait, dataBuilderOpts);
 					await this._pImportEntry_pFillItems_pAddTextOnlyItem({
@@ -2109,6 +2202,34 @@ class ImportListCreature extends ImportListActor {
 		}
 	}
 	// endregion
+
+	static _CREATURE_TYPE_TO_BLOOD_COLOR = {
+		[TP_ABERRATION]: "#5f377a",
+		[TP_CELESTIAL]: "#a3f4ff",
+		[TP_CONSTRUCT]: "#8c6b4a",
+		[TP_DRAGON]: "#4f0000",
+		[TP_ELEMENTAL]: "#756879",
+		[TP_FEY]: "#25278b",
+		[TP_FIEND]: "#130710",
+		[TP_GIANT]: "#751010",
+		[TP_MONSTROSITY]: "#ff1000",
+		[TP_OOZE]: "#7da793",
+		[TP_PLANT]: "#403e10",
+		[TP_UNDEAD]: "#c7b7a0",
+	};
+
+	_getTokenFlags ({mon}) {
+		if (!UtilCompat.isMonksLittleDetailsActive()) return null;
+
+		const bloodColor = this.constructor._CREATURE_TYPE_TO_BLOOD_COLOR[mon?.type];
+		if (!bloodColor) return;
+
+		return {
+			"monks-little-details": {
+				"bloodsplat-colour": bloodColor,
+			},
+		};
+	}
 }
 
 ImportListCreature._CREATURE_TYPES = null;
@@ -2589,7 +2710,7 @@ ImportListCreature.ImportCustomizer = class extends ImportCustomizer {
 									.forEach(re => {
 										str.replace(re, (...m) => {
 											const name = m.last().name;
-											if (ImportListCreature.ImportCustomizer._RES_SHORTNAME_BLACKLIST.some(it => it.test(name))) return;
+											if (ImportListCreature.ImportCustomizer._RES_SHORTNAME_BLOCKLIST.some(it => it.test(name))) return;
 											shortName = name;
 										});
 									});
@@ -2618,7 +2739,7 @@ ImportListCreature.ImportCustomizer._RES_SHORTNAME = [
 	ImportListCreature.ImportCustomizer._RE_SHORTNAME__IF_THE,
 	ImportListCreature.ImportCustomizer._RE_SHORTNAME__THE,
 ];
-ImportListCreature.ImportCustomizer._RES_SHORTNAME_BLACKLIST = [
+ImportListCreature.ImportCustomizer._RES_SHORTNAME_BLOCKLIST = [
 	/^target$/i,
 ];
 

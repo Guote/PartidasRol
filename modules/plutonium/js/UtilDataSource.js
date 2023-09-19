@@ -1,5 +1,6 @@
 import {Vetools} from "./Vetools.js";
 import {Config} from "./Config.js";
+import {LGT} from "./Util.js";
 
 class UtilDataSource {
 	static sortListItems (a, b, o) {
@@ -9,12 +10,11 @@ class UtilDataSource {
 		return SortUtil.ascSort(ixTypeA, ixTypeB) || SortUtil.compareListNames(a, b);
 	}
 
-	static async pGetFileOutputs (source, props, uploadedFiles) {
+	static async pGetFileOutputs (source, uploadedFiles) {
 		uploadedFiles = uploadedFiles || [];
 
 		const allContent = await Promise.all(uploadedFiles.map(f => {
-			const data = Vetools.getContent(f, props);
-			return source.pPostLoad ? source.pPostLoad(data, f, source.userData) : data;
+			return source.pPostLoad ? source.pPostLoad(f, source.userData) : f;
 		}));
 
 		return {
@@ -22,7 +22,7 @@ class UtilDataSource {
 		};
 	}
 
-	static async pGetUrlOutputs (source, props, customUrls) {
+	static async pGetUrlOutputs (source, customUrls) {
 		if (source.url === "") {
 			customUrls = customUrls || [];
 
@@ -30,7 +30,7 @@ class UtilDataSource {
 			try {
 				loadedDatas = await Promise.all(customUrls.map(async url => {
 					const data = await Vetools.pGetWithCache(url);
-					return source.pPostLoad ? source.pPostLoad(Vetools.getContent(data, props), data, source.userData) : Vetools.getContent(data, props);
+					return source.pPostLoad ? source.pPostLoad(data, source.userData) : data;
 				}));
 			} catch (e) {
 				ui.notifications.error(`Failed to load one or more URLs! ${VeCt.STR_SEE_CONSOLE}`);
@@ -43,11 +43,10 @@ class UtilDataSource {
 			};
 		}
 
-		let loadedData;
+		let data;
 		try {
-			const data = await Vetools.pGetWithCache(source.url);
-			loadedData = Vetools.getContent(data, props);
-			if (source.pPostLoad) loadedData = await source.pPostLoad(loadedData, data, source.userData);
+			data = await Vetools.pGetWithCache(source.url);
+			if (source.pPostLoad) data = await source.pPostLoad(data, source.userData);
 		} catch (e) {
 			const msg = `Failed to load URL "${source.url}"!`;
 			ui.notifications.error(`${msg} ${VeCt.STR_SEE_CONSOLE}`);
@@ -56,16 +55,15 @@ class UtilDataSource {
 		}
 		return {
 			cacheKeys: [source.url],
-			contents: [loadedData],
+			contents: [data],
 		};
 	}
 
-	static async pGetSpecialOutput (source, props) {
+	static async pGetSpecialOutput (source) {
 		let loadedData;
 		try {
 			const json = await Vetools.pLoadImporterSourceSpecial(source);
 			loadedData = json;
-			if (source.isUseProps) loadedData = Vetools.getContent(loadedData, props);
 			if (source.pPostLoad) loadedData = await source.pPostLoad(loadedData, json, source.userData);
 		} catch (e) {
 			ui.notifications.error(`Failed to load pre-defined source "${source.cacheKey}"! ${VeCt.STR_SEE_CONSOLE}`);
@@ -77,10 +75,10 @@ class UtilDataSource {
 		};
 	}
 
-	static _PROPS_NO_BLACKLIST = new Set(["itemProperty", "itemType"]);
+	static _PROPS_NO_BLOCKLIST = new Set(["itemProperty", "itemType"]);
 	static _PROP_RE_FOUNDRY = /^foundry[A-Z]/;
 
-	static getMergedData (data, {isFilterBlacklisted = true} = {}) {
+	static getMergedData (data, {isFilterBlocklisted = true} = {}) {
 		const mergedData = {};
 
 		data.forEach(sourceData => {
@@ -92,7 +90,7 @@ class UtilDataSource {
 				});
 		});
 
-		if (isFilterBlacklisted) {
+		if (isFilterBlocklisted) {
 			Object.entries(mergedData)
 				.forEach(([prop, arr]) => {
 					if (!arr || !(arr instanceof Array)) return;
@@ -101,10 +99,8 @@ class UtilDataSource {
 							// Ignore "Generic" entries, as we expect them to be synthetic
 							if (SourceUtil.getEntitySource(it) === VeCt.STR_GENERIC) return false;
 
-							if (
-								it.__prop
-								&& (this._PROPS_NO_BLACKLIST.has(it.__prop) || this._PROP_RE_FOUNDRY.test(it.__prop))
-							) return false;
+							if (it.__prop && this._PROPS_NO_BLOCKLIST.has(it.__prop)) return true;
+							if (it.__prop && this._PROP_RE_FOUNDRY.test(it.__prop)) return false;
 
 							// region Sanity checks
 							if (!SourceUtil.getEntitySource(it)) {
@@ -136,6 +132,16 @@ class UtilDataSource {
 											{isNoCount: true},
 										);
 									});
+
+									break;
+								}
+
+								case "item":
+								case "baseitem":
+								case "itemGroup":
+								case "magicvariant":
+								case "_specificVariant": {
+									return !Renderer.item.isExcluded(it);
 								}
 							}
 							// endregion
@@ -157,23 +163,26 @@ class UtilDataSource {
 	 * If data is being loaded in the background, display an info notification if it is taking a long time, to let
 	 *   the user know that _something_ is happening.
 	 */
-	static async pHandleBackgroundLoad ({pLoad, isBackground = false}) {
+	static async pHandleBackgroundLoad ({pLoad, isBackground = false, cntSources = null}) {
 		const pTimeout = isBackground ? MiscUtil.pDelay(500, VeCt.SYM_UTIL_TIMEOUT) : null;
 
 		const promises = [pLoad, pTimeout].filter(Boolean);
 
 		const winner = await Promise.race(promises);
-		if (winner === VeCt.SYM_UTIL_TIMEOUT) ui.notifications.info(`Please wait while data is being loaded...`);
+		if (winner === VeCt.SYM_UTIL_TIMEOUT) ui.notifications.info(`Please wait while ${cntSources != null ? `${cntSources} source${cntSources === 1 ? " is" : "s are"}` : "data is being"} loaded...`);
 		return pLoad;
 	}
 
+	static _IGNORED_KEYS = new Set([
+		"_meta",
+		"$schema",
+	]);
 	static async pGetAllContent (
 		{
 			sources,
 			uploadedFiles,
 			customUrls,
 			isBackground = false,
-			props,
 			userData,
 			cacheKeys = null,
 
@@ -183,18 +192,41 @@ class UtilDataSource {
 			fnGetDedupedData = null,
 			// endregion
 
-			// region Blacklist
+			// region Blocklist
 			// - `page`
-			fnGetBlacklistFilteredData = null,
+			fnGetBlocklistFilteredData = null,
+			// endregion
+
+			// region Helper flags
+			isAutoSelectAll = false,
 			// endregion
 		},
 	) {
 		const allContent = [];
 
+		if (
+			isAutoSelectAll
+			&& Config.get("dataSources", "tooManySourcesWarningThreshold") != null
+			&& sources.length >= Config.get("dataSources", "tooManySourcesWarningThreshold")
+		) {
+			const ptHelp = `This may take a (very) long time! If this seems like too much, ${game.user.isGM ? "your GM" : "you"} may have to adjust ${game.user.isGM ? "your" : "the"} "Data Sources" Config options/${game.user.isGM ? "your" : "the"} "World Data Source Selector" list to limit the number of sources selected by default.`;
+
+			console.warn(...LGT, `${sources.length} source${sources.length === 1 ? "" : "s"} are being loaded! ${ptHelp}`);
+
+			if (
+				!(await InputUiUtil.pGetUserBoolean({
+					title: "Too Many Sources",
+					htmlDescription: `You are about to load ${sources.length} source${sources.length === 1 ? "" : "s"}. ${ptHelp}<br>Would you like to load ${sources.length} source${sources.length === 1 ? "" : "s"}?`,
+					textNo: "Cancel",
+					textYes: "Continue",
+				}))
+			) return null;
+		}
+
 		const pLoad = sources.pMap(async source => {
 			if (source.isFile) {
 				// Returns an array, as multiple files may be loaded
-				const filesContentMeta = await UtilDataSource.pGetFileOutputs(source, props, uploadedFiles);
+				const filesContentMeta = await UtilDataSource.pGetFileOutputs(source, uploadedFiles);
 				allContent.push(...filesContentMeta.contents);
 
 				// Never cache file loads, as we cannot guarantee the file contents will be the same. This also
@@ -202,81 +234,134 @@ class UtilDataSource {
 				if (cacheKeys) cacheKeys.push(null);
 			} else if (source.url != null) {
 				// Returns an array, as multiple URLs may be specified for a "custom URL" source
-				const urlContentMeta = await UtilDataSource.pGetUrlOutputs(source, props, customUrls);
+				const urlContentMeta = await UtilDataSource.pGetUrlOutputs(source, customUrls);
 
 				allContent.push(...urlContentMeta.contents);
 				if (cacheKeys) cacheKeys.push(...urlContentMeta.cacheKeys);
 			} else {
 				// Returns a single item
-				const specialContentMeta = await UtilDataSource.pGetSpecialOutput(source, props);
+				const specialContentMeta = await UtilDataSource.pGetSpecialOutput(source);
 				allContent.push(...specialContentMeta.contents);
 				if (cacheKeys) cacheKeys.push(...specialContentMeta.cacheKeys);
 			}
 		});
 
-		await UtilDataSource.pHandleBackgroundLoad({pLoad, isBackground});
+		await UtilDataSource.pHandleBackgroundLoad({pLoad, isBackground, cntSources: sources.length});
 
-		// Flatten the content into a single array
-		const allContentFlat = allContent instanceof Array ? allContent.flat(2) : allContent;
+		// Flatten the content into a single object
+		const allContentMerged = {};
 
-		let dedupedAllContentFlat = fnGetDedupedData
-			? fnGetDedupedData({allContentFlat, isDedupable})
-			: this._getDedupedAllContentFlat({allContentFlat, isDedupable});
+		// Some special cases (e.g. adventures/books) expect to pass around a single un-mergeable object; allow this
+		if (allContent.length === 1) Object.assign(allContentMerged, allContent[0]);
+		else {
+			// Otherwise, merge all data arrays into one object
+			allContent.forEach(obj => {
+				Object.entries(obj)
+					.forEach(([k, v]) => {
+						if (v == null) return;
+						if (this._IGNORED_KEYS.has(k)) return;
 
-		dedupedAllContentFlat = fnGetBlacklistFilteredData
-			? fnGetBlacklistFilteredData({dedupedAllContentFlat, page})
-			: this._getBlacklistFilteredData({dedupedAllContentFlat, page});
+						if (!(v instanceof Array)) console.warn(`Could not merge "${typeof v}" for key "${k}"!`);
 
-		if (dedupedAllContentFlat instanceof Array && Config.get("import", "isShowVariantsInLists")) {
-			dedupedAllContentFlat = dedupedAllContentFlat
-				.map(it => [it, ...DataUtil.proxy.getVersions(it.__prop, it)])
-				.flat();
+						allContentMerged[k] = allContentMerged[k] || [];
+						allContentMerged[k] = [...allContentMerged[k], ...v];
+					});
+			});
 		}
-		return {dedupedAllContentFlat, cacheKeys, userData};
+
+		let dedupedAllContentMerged = fnGetDedupedData
+			? fnGetDedupedData({allContentMerged, isDedupable})
+			: this._getDedupedAllContentMerged({allContentMerged, isDedupable});
+
+		dedupedAllContentMerged = fnGetBlocklistFilteredData
+			? fnGetBlocklistFilteredData({dedupedAllContentMerged, page})
+			: this._getBlocklistFilteredData({dedupedAllContentMerged, page});
+
+		if (Config.get("import", "isShowVariantsInLists")) {
+			Object.entries(dedupedAllContentMerged)
+				.forEach(([k, arr]) => {
+					if (!(arr instanceof Array)) return;
+					dedupedAllContentMerged[k] = arr
+						.map(it => [it, ...DataUtil.proxy.getVersions(it.__prop, it)])
+						.flat();
+				});
+		}
+
+		Object.entries(dedupedAllContentMerged)
+			.forEach(([k, arr]) => {
+				if (!(arr instanceof Array)) return;
+				if (!arr.length) delete dedupedAllContentMerged[k];
+			});
+
+		return {dedupedAllContentMerged, cacheKeys, userData};
 	}
 
-	static _getBlacklistFilteredData ({dedupedAllContentFlat, page}) {
-		if (!UrlUtil.URL_TO_HASH_BUILDER[page]) return dedupedAllContentFlat;
-		return dedupedAllContentFlat.filter(it => {
-			if (it.source === VeCt.STR_GENERIC) return false;
+	static _getBlocklistFilteredData ({dedupedAllContentMerged, page}) {
+		if (!UrlUtil.URL_TO_HASH_BUILDER[page]) return dedupedAllContentMerged;
+		dedupedAllContentMerged = {...dedupedAllContentMerged};
+		Object.entries(dedupedAllContentMerged)
+			.forEach(([k, arr]) => {
+				if (!(arr instanceof Array)) return;
+				dedupedAllContentMerged[k] = arr.filter(it => {
+					if (it.source === VeCt.STR_GENERIC) return false;
 
-			// region Sanity checks
-			if (!SourceUtil.getEntitySource(it)) {
-				console.warn(`Entity did not have a "source"! This should never occur.`);
-				return true;
-			}
-			if (!it.__prop) {
-				console.warn(`Entity did not have a "__prop"! This should never occur.`);
-				return true;
-			}
-			// endregion
+					// region Sanity checks
+					if (!SourceUtil.getEntitySource(it)) {
+						console.warn(`Entity did not have a "source"! This should never occur.`);
+						return true;
+					}
+					if (!it.__prop) {
+						console.warn(`Entity did not have a "__prop"! This should never occur.`);
+						return true;
+					}
+					// endregion
 
-			return !ExcludeUtil.isExcluded(
-				(UrlUtil.URL_TO_HASH_BUILDER[it.__prop] || UrlUtil.URL_TO_HASH_BUILDER[page])(it),
-				it.__prop,
-				SourceUtil.getEntitySource(it),
-				{isNoCount: true},
-			);
-		});
+					// region Handle specific sub-entities
+					switch (it.__prop) {
+						case "item":
+						case "baseitem":
+						case "itemGroup":
+						case "magicvariant":
+						case "_specificVariant": {
+							return !Renderer.item.isExcluded(it);
+						}
+					}
+					// endregion
+
+					return !ExcludeUtil.isExcluded(
+						(UrlUtil.URL_TO_HASH_BUILDER[it.__prop] || UrlUtil.URL_TO_HASH_BUILDER[page])(it),
+						it.__prop,
+						SourceUtil.getEntitySource(it),
+						{isNoCount: true},
+					);
+				});
+			});
+		return dedupedAllContentMerged;
 	}
 
-	static _getDedupedAllContentFlat ({allContentFlat, page, isDedupable = false}) {
-		if (!isDedupable) return allContentFlat;
-		return this._getDedupedData({allContentFlat, page});
+	static _getDedupedAllContentMerged ({allContentMerged, page, isDedupable = false}) {
+		if (!isDedupable) return allContentMerged;
+		return this._getDedupedData({allContentMerged, page});
 	}
 
-	static _getDedupedData ({allContentFlat, page}) {
-		if (!UrlUtil.URL_TO_HASH_BUILDER[page]) return allContentFlat;
+	static _getDedupedData ({allContentMerged, page}) {
+		if (!UrlUtil.URL_TO_HASH_BUILDER[page]) return allContentMerged;
 
 		const contentHashes = new Set();
-		return allContentFlat.filter(it => {
-			const fnGetHash = UrlUtil.URL_TO_HASH_BUILDER[page];
-			if (!fnGetHash) return true;
-			const hash = fnGetHash(it);
-			if (contentHashes.has(hash)) return false;
-			contentHashes.add(hash);
-			return true;
-		});
+		Object.entries(allContentMerged)
+			.forEach(([k, arr]) => {
+				if (!(arr instanceof Array)) return;
+				allContentMerged[k] = arr.filter(it => {
+					const fnGetHash = UrlUtil.URL_TO_HASH_BUILDER[page];
+					if (!fnGetHash) return true;
+					const hash = fnGetHash(it);
+					if (contentHashes.has(hash)) return false;
+					contentHashes.add(hash);
+					return true;
+				});
+			});
+
+		return allContentMerged;
 	}
 }
 
@@ -387,7 +472,6 @@ UtilDataSource.DataSourceSpecial = class extends UtilDataSource.DataSourceBase {
 	 * @param opts Options object.
 	 * @param opts.cacheKey Cache key to store the pGet data under.
 	 * @param [opts.pPostLoad] Data modifier.
-	 * @param [opts.isUseProps] If the prop info should be applied to the loaded data.
 	 * @param [opts.filterTypes]
 	 * @param [opts.isDefault]
 	 * @param [opts.abbreviations]
@@ -400,7 +484,6 @@ UtilDataSource.DataSourceSpecial = class extends UtilDataSource.DataSourceBase {
 		this.special = {pGet};
 		if (!opts.cacheKey) throw new Error(`No cache key specified!`);
 		this.cacheKey = opts.cacheKey;
-		this.isUseProps = opts.isUseProps;
 	}
 
 	get identifier () { return this.cacheKey; }

@@ -6,6 +6,7 @@ import {Consts} from "./Consts.js";
 import {SharedConsts} from "../shared/SharedConsts.js";
 import {UtilApplications} from "./UtilApplications.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
+import {ConfigConsts} from "./ConfigConsts.js";
 
 // TODO factor this out when `PageFilterClassesRaw` is factored out to e.g. features
 class PageFilterClassesFoundry extends PageFilterClassesRaw {
@@ -371,7 +372,7 @@ class Charactermancer_Class_Util {
 				ancestorType: "optionalfeature",
 				displayName: `${optFeatProgression.name}: ${l.entity.name}`,
 				foundryData: {
-					requirements: `${cls.name}${sc ? ` (${sc.name})` : ""} ${lvl}`,
+					requirements: cls.name ? `${cls.name}${sc ? ` (${sc.name})` : ""} ${lvl}` : null,
 				},
 			});
 		});
@@ -487,20 +488,27 @@ class Charactermancer_Class_Util {
 	}
 
 	static getClassSubclassFeatureReferences (obj) {
-		const refs = [];
+		const refsClassFeature = [];
+		const refsSubclassFeature = [];
 
 		MiscUtil.getWalker({isNoModification: true})
 			.walk(
 				obj,
 				{
 					object: (obj) => {
-						if (!["refClassFeature", "refSubclassFeature"].includes(obj.type)) return;
-						refs.push(MiscUtil.copy(obj));
+						if (obj.type === "refClassFeature") {
+							refsClassFeature.push(MiscUtil.copy(obj));
+							return;
+						}
+
+						if (obj.type === "refSubclassFeature") {
+							refsSubclassFeature.push(MiscUtil.copy(obj));
+						}
 					},
 				},
 			);
 
-		return refs;
+		return {refsClassFeature, refsSubclassFeature};
 	}
 
 	static getClassSubclassItemTuples ({classItems, subclassItems}) {
@@ -813,21 +821,41 @@ class Charactermancer_Class_LevelSelect extends BaseComponent {
 class Charactermancer_Class_HpIncreaseModeSelect extends BaseComponent {
 	// region External
 	static async pGetUserInput () {
+		if (this.isNoChoice()) {
+			const comp = new this();
+			return comp.pGetFormData();
+		}
+
 		return UtilApplications.pGetImportCompApplicationFormData({
 			comp: new this(),
-			isAutoResize: true,
+			width: 480,
+			height: 150,
 		});
 	}
 
 	static isHpAvailable (cls) {
 		return cls.hd && cls.hd.number && !isNaN(cls.hd.number) && cls.hd.faces && !isNaN(cls.hd.faces);
 	}
+
+	static isNoChoice () {
+		if (game.user.isGM) return false;
+
+		if (
+			Config.get("importClass", "hpIncreaseMode") === ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM
+			&& Config.get("importClass", "hpIncreaseModeCustomRollFormula") == null
+		) return false;
+
+		return Config.get("importClass", "hpIncreaseMode") != null;
+	}
 	// endregion
 
 	pGetFormData () {
 		return {
 			isFormComplete: true,
-			data: this._state.mode,
+			data: {
+				mode: this._state.mode,
+				customFormula: this._state.customFormula,
+			},
 		};
 	}
 
@@ -839,34 +867,44 @@ class Charactermancer_Class_HpIncreaseModeSelect extends BaseComponent {
 			"mode",
 			{
 				values: [
-					Charactermancer_Class_HpIncreaseModeSelect.MODE_TAKE_AVERAGE,
-					Charactermancer_Class_HpIncreaseModeSelect.MODE_ROLL,
-					Charactermancer_Class_HpIncreaseModeSelect.MODE_DO_NOT_INCREASE,
+					ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__TAKE_AVERAGE,
+					ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL,
+					ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM,
+					ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__DO_NOT_INCREASE,
 				],
-				fnDisplay: mode => Charactermancer_Class_HpIncreaseModeSelect.DISPLAY_MODES[mode],
+				fnDisplay: mode => ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE___NAMES[mode],
 			},
 		);
 
+		if (!game.user.isGM && Config.get("importClass", "hpIncreaseMode") != null) $sel.disable();
+
+		const $iptCustom = ComponentUiUtil.$getIptStr(this, "customFormula").addClass("code");
+
+		if (!game.user.isGM && Config.get("importClass", "hpIncreaseModeCustomRollFormula") != null) $iptCustom.disable();
+
+		const $stgCustom = $$`<div class="mt-2 ve-flex-v-center">
+			<div class="inline-block bold mr-1 no-wrap">Custom Formula:</div>
+			${$iptCustom}
+		</div>`;
+		const hkMode = () => {
+			$stgCustom.toggleVe(this._state.mode === ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__ROLL_CUSTOM);
+		};
+		this._addHookBase("mode", hkMode);
+		hkMode();
+
 		$$`<div class="ve-flex-col min-h-0">
 			${$sel}
+			${$stgCustom}
 		</div>`.appendTo($wrp);
 	}
 
 	_getDefaultState () {
 		return {
-			mode: Charactermancer_Class_HpIncreaseModeSelect.MODE_TAKE_AVERAGE,
+			mode: Config.get("importClass", "hpIncreaseMode") ?? ConfigConsts.C_IMPORT_CLASS_HP_INCREASE_MODE__TAKE_AVERAGE,
+			customFormula: Config.get("importClass", "hpIncreaseModeCustomRollFormula") ?? "(2 * @hd.number)d(@hd.faces / 2)",
 		};
 	}
 }
-Charactermancer_Class_HpIncreaseModeSelect.MODE_TAKE_AVERAGE = 0;
-Charactermancer_Class_HpIncreaseModeSelect.MODE_ROLL = 1;
-Charactermancer_Class_HpIncreaseModeSelect.MODE_DO_NOT_INCREASE = 2;
-
-Charactermancer_Class_HpIncreaseModeSelect.DISPLAY_MODES = {
-	[Charactermancer_Class_HpIncreaseModeSelect.MODE_TAKE_AVERAGE]: "Take Average",
-	[Charactermancer_Class_HpIncreaseModeSelect.MODE_ROLL]: "Roll",
-	[Charactermancer_Class_HpIncreaseModeSelect.MODE_DO_NOT_INCREASE]: "Do Not Increase HP",
-};
 
 class Charactermancer_Class_HpInfo extends BaseComponent {
 	constructor ({className, hitDice}) {
@@ -936,9 +974,9 @@ Charactermancer_Class_ProficiencyImportModeSelect.MODE_PRIMARY = 1;
 Charactermancer_Class_ProficiencyImportModeSelect.MODE_NONE = 2;
 
 Charactermancer_Class_ProficiencyImportModeSelect.DISPLAY_MODES = {
-	[Charactermancer_Class_HpIncreaseModeSelect.MODE_TAKE_AVERAGE]: "Add multiclass proficiencies (this is my second+ class)",
-	[Charactermancer_Class_HpIncreaseModeSelect.MODE_ROLL]: "Add base class proficiencies and equipment (this is my first class)",
-	[Charactermancer_Class_HpIncreaseModeSelect.MODE_DO_NOT_INCREASE]: "Do not add proficiencies or equipment",
+	[Charactermancer_Class_ProficiencyImportModeSelect.MODE_MULTICLASS]: "Add multiclass proficiencies (this is my second+ class)",
+	[Charactermancer_Class_ProficiencyImportModeSelect.MODE_PRIMARY]: "Add base class proficiencies and equipment (this is my first class)",
+	[Charactermancer_Class_ProficiencyImportModeSelect.MODE_NONE]: "Do not add proficiencies or equipment",
 };
 
 /** Deals with weapon, armor, and tool proficiencies, which are (generally) static on classes. */

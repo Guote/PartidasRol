@@ -14,6 +14,7 @@ import {ImportedDocument, ImportSummary} from "./ImportList.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
 import {UtilDocuments} from "./UtilDocuments.js";
 import {Charactermancer_Feature_Util} from "./UtilCharactermancerFeature.js";
+import {UtilActiveEffects} from "./UtilActiveEffects.js";
 
 // TODO merge parts with `ImportListRace`
 /**
@@ -25,6 +26,8 @@ import {Charactermancer_Feature_Util} from "./UtilCharactermancerFeature.js";
  * generally, by the importer, as opposed to directly adding effects to the items we would import.
  */
 class ImportListFeature extends ImportListCharacter {
+	static get _PROPS () { throw new Error(`Unimplemented!`); }
+
 	// region External
 	static init () {
 		throw new Error(`Unimplemented!`);
@@ -49,7 +52,7 @@ class ImportListFeature extends ImportListCharacter {
 		throw new Error("Unimplemented!");
 	}
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
 		throw new Error("Unimplemented!");
 	}
 
@@ -65,17 +68,28 @@ class ImportListFeature extends ImportListCharacter {
 		throw new Error("Unimplemented!");
 	}
 
-	static async _pPostLoad_addFauxOptionalfeatures (loadedData) {
-		loadedData = loadedData ? MiscUtil.copy(loadedData) : loadedData;
+	static async _pPostLoad_addFauxOptionalfeatures (data) {
+		if (!data) return data;
+		data = MiscUtil.copy(data);
 
-		Charactermancer_Feature_Util.addFauxOptionalFeatureEntries(loadedData, await this._pPostLoad_pGetAllOptionalFeatures());
+		const out = {};
+
+		Charactermancer_Feature_Util.addFauxOptionalFeatureEntries(
+			data,
+			(await this._pPostLoad_pGetAllOptionalFeatures()).optionalfeature,
+		);
 
 		// (N.b.: this is a performance hog)
-		const out = [];
-		for (const feature of loadedData) {
-			const loaded = await this._pGetInitFeatureLoadeds(feature);
-			if (!loaded || loaded.isIgnored) continue;
-			out.push(feature);
+		for (const [k, arr] of Object.entries(data)) {
+			if (!this._PROPS.includes(k)) continue;
+
+			out[k] = (await arr
+				.pSerialAwaitMap(async feature => {
+					const loaded = await this._pGetInitFeatureLoadeds(feature);
+					if (!loaded || loaded.isIgnored) return null;
+					return feature;
+				}))
+				.filter(Boolean);
 		}
 
 		return out;
@@ -515,9 +529,9 @@ class ImportListFeature extends ImportListCharacter {
 			const importedEmbed = DataConverter.getImportedEmbed(importedEmbeds, featItem);
 
 			if (importedEmbed) {
-				const effects = await this.constructor._pGetItemEffects(this._actor, feature, importedEmbed.document, dataBuilderOpts);
-				DataConverter.mutEffectsDisabledTransfer(effects, this._configGroup);
-				effectsToAdd.push(...effects);
+				const effectsSideTuples = await this.constructor._pGetItemEffectTuples(this._actor, feature, importedEmbed.document, dataBuilderOpts);
+				effectsSideTuples.forEach(({effect, effectRaw}) => DataConverter.mutEffectDisabledTransfer(effect, this._configGroup, UtilActiveEffects.getDisabledTransferHintsSideData(effectRaw)));
+				effectsToAdd.push(...effectsSideTuples.map(it => it.effect));
 			}
 		}
 

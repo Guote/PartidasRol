@@ -10,6 +10,7 @@ import {UtilDataSource} from "./UtilDataSource.js";
 import {ImportListObject} from "./ImportListObject.js";
 import {LGT} from "./Util.js";
 import {UtilDataConverter} from "./UtilDataConverter.js";
+import {UtilCompat} from "./UtilCompat.js";
 
 class ImportListVehicle extends ImportListActor {
 	static get ID () { return "vehicles"; }
@@ -73,7 +74,7 @@ class ImportListVehicle extends ImportListActor {
 		];
 	}
 
-	async _pImportEntry_pGetImportMetadata (actor, veh, importOpts) {
+	async _pImportEntry_pGetImportMetadata (actor, veh, importOpts, importOptsEntity) {
 		const act = {};
 
 		const fluff = await Renderer.vehicle.pGetFluff(veh);
@@ -84,7 +85,7 @@ class ImportListVehicle extends ImportListActor {
 
 		act.data = {};
 
-		await this._pImportEntry_pFillFolder(veh, act, importOpts);
+		await this._pImportEntry_pFillFolder(veh, act, importOpts, importOptsEntity);
 
 		if (importOpts.defaultPermission != null) act.permission = {default: importOpts.defaultPermission};
 		else act.permission = {default: Config.get(this._configGroup, "permissions")};
@@ -98,7 +99,7 @@ class ImportListVehicle extends ImportListActor {
 		this._pImportEntry_fillData_Currency(veh, act.data, vehOpts);
 		this._pImportEntry_fillData_Cargo(veh, act.data, vehOpts);
 
-		await this._pImportEntry_pFillToken({importable: veh, actor: act, size: this._getSize(veh)});
+		await this._pImportEntry_pFillToken({importable: veh, actor: act, size: this._getSize(veh), flags: this._getTokenFlags({veh})});
 
 		return {dataBuilderOpts: vehOpts, actorData: act};
 	}
@@ -470,6 +471,11 @@ class ImportListVehicle extends ImportListActor {
 				}),
 			},
 		};
+	}
+
+	_getTokenFlags ({veh}) {
+		if (!UtilCompat.isMonksLittleDetailsActive()) return null;
+		return {"monks-little-details": {"bloodsplat-colour": "#00000000"}};
 	}
 }
 

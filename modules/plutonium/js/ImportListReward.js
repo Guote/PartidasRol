@@ -9,6 +9,7 @@ import {MixinUserChooseImporter} from "./ImportList.js";
 class ImportListReward extends ImportListFeature {
 	static get ID () { return "rewards"; }
 	static get DISPLAY_NAME_TYPE_PLURAL () { return "Supernatural Gifts & Rewards"; }
+	static get _PROPS () { return ["reward"]; }
 
 	static _ = this.registerImpl(this);
 
@@ -29,7 +30,7 @@ class ImportListReward extends ImportListFeature {
 			},
 			externalData,
 			{
-				props: ["reward"],
+				props: ImportListReward._PROPS,
 				dirsHomebrew: ["reward"],
 				titleSearch: "supernatural gifts and rewards",
 				sidebarTab: "items",
@@ -145,8 +146,8 @@ class ImportListReward extends ImportListFeature {
 
 	static async _pHasSideLoadedEffects (actor, feature) { return DataConverterReward.pHasRewardSideLoadedEffects(actor, feature); }
 
-	static async _pGetItemEffects (actor, feature, importedEmbed, dataBuilderOpts) {
-		return DataConverterReward.pGetRewardItemEffects(
+	static async _pGetItemEffectTuples (actor, feature, importedEmbed, dataBuilderOpts) {
+		return DataConverterReward.pGetRewardItemEffectTuples(
 			actor,
 			feature,
 			importedEmbed,

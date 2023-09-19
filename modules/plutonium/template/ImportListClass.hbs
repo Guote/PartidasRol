@@ -31,7 +31,7 @@
 				{{else}}
 					<span class="col-1 ve-flex-vh-center">{{#unless disabled}}<input type="checkbox" class="no-events">{{/unless}}</span>
 				{{/if}}
-				<span class="col-9 bold">{{name}}</span>
+				<span class="col-9 {{#if ../isHideSubclassRows}}{{else}}bold{{/if}}">{{name}}</span>
 				<span class="col-2 text-center {{sourceClassName}}" title="{{sourceLong}}" {{#if sourceStyle}}style="{{sourceStyle}}"{{/if}}>{{sourceShort}}</span>
 			</label>
 
