@@ -1,18 +1,20 @@
-import { Templates } from "../../utils/constants.js";
-import ABFFoundryRoll from "../../rolls/ABFFoundryRoll.js";
-import { NoneWeaponCritic, WeaponCritic } from "../../types/combat/WeaponItemConfig.js";
-import { ABFSettingsKeys } from "../../../utils/registerSettings.js";
+import { Templates } from '../../utils/constants.js';
+import ABFFoundryRoll from '../../rolls/ABFFoundryRoll.js';
+import { NoneWeaponCritic, WeaponCritic } from '../../types/combat/WeaponItemConfig.js';
+import { ABFSettingsKeys } from '../../../utils/registerSettings.js';
 const getInitialData = (attacker, defender) => {
     const showRollByDefault = !!game.settings.get('animabf-guote', ABFSettingsKeys.SEND_ROLL_MESSAGES_ON_COMBAT_BY_DEFAULT);
     const isGM = !!game.user?.isGM;
     const attackerActor = attacker.token.actor;
     const defenderActor = defender.actor;
-    const activeTab = (defenderActor.data.data.general.settings.defenseType.value === 'resistance') ? 'damageResistance' : 'combat';
+    const activeTab = defenderActor.system.general.settings.defenseType.value === 'resistance'
+        ? 'damageResistance'
+        : 'combat';
     return {
         ui: {
             isGM,
-            hasFatiguePoints: defenderActor.data.data.characteristics.secondaries.fatigue.value > 0,
-            activeTab: activeTab
+            hasFatiguePoints: defenderActor.system.characteristics.secondaries.fatigue.value > 0,
+            activeTab
         },
         attacker: {
             token: attacker.token,
@@ -24,7 +26,7 @@ const getInitialData = (attacker, defender) => {
             token: defender,
             actor: defenderActor,
             showRoll: !isGM || showRollByDefault,
-            withoutRoll: (defenderActor.data.data.general.settings.defenseType.value === 'mass') ? true : false,
+            withoutRoll: defenderActor.system.general.settings.defenseType.value === 'mass',
             combat: {
                 fatigue: 0,
                 multipleDefensesPenalty: 0,
@@ -45,8 +47,11 @@ const getInitialData = (attacker, defender) => {
             },
             psychic: {
                 modifier: 0,
-                psychicPotential: { special: 0, final: defenderActor.data.data.psychic.psychicPotential.final.value },
-                psychicProjection: defenderActor.data.data.psychic.psychicProjection.imbalance.defensive.final.value,
+                psychicPotential: {
+                    special: 0,
+                    final: defenderActor.system.psychic.psychicPotential.final.value
+                },
+                psychicProjection: defenderActor.system.psychic.psychicProjection.imbalance.defensive.final.value,
                 powerUsed: undefined
             },
             resistance: {
@@ -59,19 +64,19 @@ const getInitialData = (attacker, defender) => {
 export class CombatDefenseDialog extends FormApplication {
     constructor(attacker, defender, hooks) {
         super(getInitialData(attacker, defender));
-        this.hooks = hooks;
-        this.data = getInitialData(attacker, defender);
+        this.modalData = getInitialData(attacker, defender);
         this._tabs[0].callback = (event, tabs, tabName) => {
-            this.data.ui.activeTab = tabName;
+            this.modalData.ui.activeTab = tabName;
             this.render(true);
         };
-        const weapons = this.defenderActor.data.data.combat.weapons;
+        const { weapons } = this.defenderActor.system.combat;
         if (weapons.length > 0) {
-            this.data.defender.combat.weaponUsed = weapons[0]._id;
+            this.modalData.defender.combat.weaponUsed = weapons[0]._id;
         }
         else {
-            this.data.defender.combat.unarmed = true;
+            this.modalData.defender.combat.unarmed = true;
         }
+        this.hooks = hooks;
         this.render(true);
     }
     static get defaultOptions() {
@@ -94,10 +99,10 @@ export class CombatDefenseDialog extends FormApplication {
         });
     }
     get attackerActor() {
-        return this.data.attacker.token.actor;
+        return this.modalData.attacker.token.actor;
     }
     get defenderActor() {
-        return this.data.defender.token.actor;
+        return this.modalData.defender.token.actor;
     }
     async close(options) {
         if (options?.force) {
@@ -109,36 +114,46 @@ export class CombatDefenseDialog extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
         html.find('.send-defense').click(e => {
-            const { fatigue, modifier, weapon, multipleDefensesPenalty, at } = this.data.defender.combat;
+            const { fatigue, modifier, weapon, multipleDefensesPenalty, at } = this.modalData.defender.combat;
             const type = e.currentTarget.dataset.type === 'dodge' ? 'dodge' : 'block';
-            let value, baseDefense;
+            let value;
+            let baseDefense;
             if (e.currentTarget.dataset.type === 'dodge') {
-                value = this.defenderActor.data.data.combat.dodge.final.value;
-                baseDefense = this.defenderActor.data.data.combat.dodge.base.value;
+                value = this.defenderActor.system.combat.dodge.final.value;
+                baseDefense = this.defenderActor.system.combat.dodge.base.value;
             }
             else {
-                value = weapon ? weapon.data.block.final.value : this.defenderActor.data.data.combat.block.final.value;
-                baseDefense = this.defenderActor.data.data.combat.block.base.value;
+                value = weapon
+                    ? weapon.system.block.final.value
+                    : this.defenderActor.system.combat.block.final.value;
+                baseDefense = this.defenderActor.system.combat.block.base.value;
             }
-            let formula = `1d100xa + ${modifier ?? 0} + ${fatigue ?? 0} * 20 - ${(multipleDefensesPenalty ?? 0) * -1} + ${value}`;
-            if (this.data.defender.withoutRoll) { //Remove the dice from the formula
+            let formula = `1d100xa + ${modifier ?? 0} + ${fatigue ?? 0} * 15 - ${(multipleDefensesPenalty ?? 0) * -1} + ${value}`;
+            if (this.modalData.defender.withoutRoll) {
+                // Remove the dice from the formula
                 formula = formula.replace('1d100xa', '0');
             }
-            if (baseDefense >= 200) //Mastery reduces the fumble range
+            if (baseDefense >= 200) {
+                // Mastery reduces the fumble range
                 formula = formula.replace('xa', 'xamastery');
-            const roll = new ABFFoundryRoll(formula, this.defenderActor.data.data);
+            }
+            const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
             roll.roll();
-            if (this.data.defender.showRoll) {
+            if (this.modalData.defender.showRoll) {
                 const { i18n } = game;
                 const flavor = i18n.format(`macros.combat.dialog.physicalDefense.${type}.title`, {
-                    target: this.data.attacker.token.name
+                    target: this.modalData.attacker.token.name
                 });
                 roll.toMessage({
-                    speaker: ChatMessage.getSpeaker({ token: this.data.defender.token }),
+                    speaker: ChatMessage.getSpeaker({ token: this.modalData.defender.token }),
                     flavor
                 });
             }
-            const rolled = roll.total - (modifier ?? 0) - (fatigue ?? 0) * 20 - (multipleDefensesPenalty ?? 0) - value;
+            const rolled = roll.total -
+                (modifier ?? 0) -
+                (fatigue ?? 0) * 15 -
+                (multipleDefensesPenalty ?? 0) -
+                value;
             this.hooks.onDefense({
                 type: 'combat',
                 values: {
@@ -152,47 +167,51 @@ export class CombatDefenseDialog extends FormApplication {
                     total: roll.total
                 }
             });
-            this.data.defenseSent = true;
+            this.modalData.defenseSent = true;
             this.render();
         });
-        html.find('.send-defense-damage-resistance').click(e => {
-            const at = this.data.defender.combat.at;
-            const surprised = this.data.defender.resistance.surprised;
+        html.find('.send-defense-damage-resistance').click(() => {
+            const { at } = this.modalData.defender.combat;
+            const { surprised } = this.modalData.defender.resistance;
             this.hooks.onDefense({
                 type: 'resistance',
                 values: {
                     at: at.final,
-                    surprised: surprised,
+                    surprised,
                     total: 0
                 }
             });
-            this.data.defenseSent = true;
+            this.modalData.defenseSent = true;
             this.render();
         });
         html.find('.send-mystic-defense').click(() => {
-            const { modifier, spellUsed, spellGrade } = this.data.defender.mystic;
-            const at = this.data.defender.combat.at;
+            const { modifier, spellUsed, spellGrade } = this.modalData.defender.mystic;
+            const { at } = this.modalData.defender.combat;
             if (spellUsed) {
-                let magicProjection = this.defenderActor.data.data.mystic.magicProjection.imbalance.defensive.final.value;
-                let baseMagicProjection = this.defenderActor.data.data.mystic.magicProjection.imbalance.defensive.base.value;
+                const magicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.final
+                    .value;
+                const baseMagicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.base.value;
                 let formula = `1d100xa + ${magicProjection} + ${modifier ?? 0}`;
-                if (this.data.defender.withoutRoll) { //Remove the dice from the formula
+                if (this.modalData.defender.withoutRoll) {
+                    // Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
                 }
-                if (baseMagicProjection >= 200) //Mastery reduces the fumble range
+                if (baseMagicProjection >= 200) {
+                    // Mastery reduces the fumble range
                     formula = formula.replace('xa', 'xamastery');
-                const roll = new ABFFoundryRoll(formula, this.attackerActor.data.data);
+                }
+                const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
                 roll.roll();
-                if (this.data.defender.showRoll) {
+                if (this.modalData.defender.showRoll) {
                     const { i18n } = game;
-                    const spells = this.defenderActor.data.data.mystic.spells;
+                    const { spells } = this.defenderActor.system.mystic;
                     const spell = spells.find(w => w._id === spellUsed);
                     const flavor = i18n.format('macros.combat.dialog.magicDefense.title', {
                         spell: spell.name,
-                        target: this.data.attacker.token.name
+                        target: this.modalData.attacker.token.name
                     });
                     roll.toMessage({
-                        speaker: ChatMessage.getSpeaker({ token: this.data.defender.token }),
+                        speaker: ChatMessage.getSpeaker({ token: this.modalData.defender.token }),
                         flavor
                     });
                 }
@@ -209,32 +228,35 @@ export class CombatDefenseDialog extends FormApplication {
                         total: roll.total
                     }
                 });
-                this.data.defenseSent = true;
+                this.modalData.defenseSent = true;
                 this.render();
             }
         });
         html.find('.send-psychic-defense').click(() => {
-            const { psychicProjection, psychicPotential, powerUsed, modifier } = this.data.defender.psychic;
-            const at = this.data.defender.combat.at;
+            const { psychicProjection, psychicPotential, powerUsed, modifier } = this.modalData.defender.psychic;
+            const { at } = this.modalData.defender.combat;
             if (powerUsed) {
                 let formula = `1d100xa + ${psychicProjection} + ${modifier ?? 0}`;
-                if (this.data.defender.withoutRoll) { //Remove the dice from the formula
+                if (this.modalData.defender.withoutRoll) {
+                    // Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
                 }
-                if (this.defenderActor.data.data.psychic.psychicProjection.base.value >= 200) //Mastery reduces the fumble range
+                if (this.defenderActor.system.psychic.psychicProjection.base.value >= 200) {
+                    // Mastery reduces the fumble range
                     formula = formula.replace('xa', 'xamastery');
-                const roll = new ABFFoundryRoll(formula, this.defenderActor.data.data);
+                }
+                const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
                 roll.roll();
-                if (this.data.defender.showRoll) {
+                if (this.modalData.defender.showRoll) {
                     const { i18n } = game;
-                    const powers = this.defenderActor.data.data.psychic.psychicPowers;
+                    const powers = this.defenderActor.system.psychic.psychicPowers;
                     const power = powers.find(w => w._id === powerUsed);
                     const flavor = i18n.format('macros.combat.dialog.psychicDefense.title', {
                         power: power.name,
-                        target: this.data.attacker.token.name
+                        target: this.modalData.attacker.token.name
                     });
                     roll.toMessage({
-                        speaker: ChatMessage.getSpeaker({ token: this.data.defender.token }),
+                        speaker: ChatMessage.getSpeaker({ token: this.modalData.defender.token }),
                         flavor
                     });
                 }
@@ -251,54 +273,56 @@ export class CombatDefenseDialog extends FormApplication {
                         total: roll.total
                     }
                 });
-                this.data.defenseSent = true;
+                this.modalData.defenseSent = true;
                 this.render();
             }
         });
     }
     getData() {
-        this.data.ui.hasFatiguePoints = this.defenderActor.data.data.characteristics.secondaries.fatigue.value > 0;
-        this.data.defender.psychic.psychicPotential.final =
-            this.data.defender.psychic.psychicPotential.special +
-                this.defenderActor.data.data.psychic.psychicPotential.final.value;
+        this.modalData.ui.hasFatiguePoints =
+            this.defenderActor.system.characteristics.secondaries.fatigue.value > 0;
+        this.modalData.defender.psychic.psychicPotential.final =
+            this.modalData.defender.psychic.psychicPotential.special +
+                this.defenderActor.system.psychic.psychicPotential.final.value;
         let at;
-        if (this.data.attacker.critic !== NoneWeaponCritic.NONE) {
-            switch (this.data.attacker.critic) {
+        if (this.modalData.attacker.critic !== NoneWeaponCritic.NONE) {
+            switch (this.modalData.attacker.critic) {
                 case WeaponCritic.CUT:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.cut.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.cut.value;
                     break;
                 case WeaponCritic.IMPACT:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.impact.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.impact.value;
                     break;
                 case WeaponCritic.THRUST:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.thrust.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.thrust.value;
                     break;
                 case WeaponCritic.HEAT:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.heat.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.heat.value;
                     break;
                 case WeaponCritic.ELECTRICITY:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.electricity.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.electricity.value;
                     break;
                 case WeaponCritic.COLD:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.cold.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.cold.value;
                     break;
                 case WeaponCritic.ENERGY:
-                    at = this.defenderActor.data.data.combat.totalArmor.at.energy.value;
+                    at = this.defenderActor.system.combat.totalArmor.at.energy.value;
                     break;
                 default:
                     at = undefined;
             }
         }
         if (at !== undefined) {
-            this.data.defender.combat.at.final = this.data.defender.combat.at.special + at;
+            this.modalData.defender.combat.at.final =
+                this.modalData.defender.combat.at.special + at;
         }
-        const { combat } = this.data.defender;
-        const weapons = this.defenderActor.data.data.combat.weapons;
+        const { combat } = this.modalData.defender;
+        const { weapons } = this.defenderActor.system.combat;
         combat.weapon = weapons.find(w => w._id === combat.weaponUsed);
-        return this.data;
+        return this.modalData;
     }
     async _updateObject(event, formData) {
-        this.data = mergeObject(this.data, formData);
+        this.modalData = mergeObject(this.modalData, formData);
         this.render();
     }
 }

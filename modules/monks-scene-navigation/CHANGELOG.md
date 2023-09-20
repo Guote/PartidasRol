@@ -1,3 +1,51 @@
+# Version 11.02
+
+Fixing issue withh v11 support
+
+# Version 11.01
+
+Added v11 Support
+
+Fixed issues with the font colouring on the scene names
+
+Fixed confusing context menu entry when viewing a scene that isn't navigatable.
+
+Fixed issues with collapsing on activate when reloading a game.
+
+Compensating for a Foundry bug in v11 that prevents scenes from being clicked.
+
+# Version 10.3
+
+Changed the Scene name to display in italics if the nav name is different from the real name.
+
+Added the option to not use the dark background for scene names in the scene directory.
+
+Updated the Scene Navigation to allow all the extras even if you don't want the scene stylings.
+
+Added the option to have a back button to go back to the previously viewed scene.
+
+Fixed issue with dragging and dropping folders on the scene navigation.
+
+Fixed issues with dragging and dropping the scene to the right.
+
+Spanish translations updated.  Thank you lozanoje
+
+# Version 10.2
+
+Fixed issue with opening sub folders
+
+# Version 10.1
+
+Updated Spanish translation.  Thank you lozanoje
+
+Fixed issues with re-ordering scenes.
+
+Added the option to decrease the size of Scene entries in the sidebar directory.
+
+# Version 1.0.24
+
+Adding v10 support.
+
 # Version 1.0.23
 
 Changed the layout so that the folder name isn't displayed when a folder is opened.  It was taking up some room and was a bit redundant.

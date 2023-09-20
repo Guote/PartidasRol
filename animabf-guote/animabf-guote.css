@@ -635,22 +635,6 @@ img {
   color: white;
   width: 4rem;
   margin-left: -2rem;
-  z-index: 2;
-}
-
-.common-titled-input .tertiary-input {
-  width: 5rem;
-  margin-left: -1rem;
-  padding-left: 1rem;
-  text-align: left;
-}
-
-.tertiary-without-secondary-input {
-  margin-left: -130px !important;
-  font-size: 0.8rem;
-}
-.modManiobras {
-  font-size: 0.7rem;
 }
 
 .animabf-guote-loading-indicator.white {
@@ -691,43 +675,44 @@ img {
   }
 }
 
-.actor-sheet {
-  display: flex;
-  flex-direction: column;
-}
-.actor-sheet .sheet-tabs,
-.actor-sheet .mystic-tabs,
-.actor-sheet .psychic-tabs,
-.actor-sheet .general-tabs {
+.abf-tabs {
+  flex: 0 0 2rem;
+  line-height: 2rem;
   height: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  line-height: inherit;
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
   border-top: 1px solid #6e2917;
   border-bottom: 1px solid #6e2917;
 }
-.actor-sheet .sheet-tabs.secondary-tab,
-.actor-sheet .mystic-tabs.secondary-tab,
-.actor-sheet .psychic-tabs.secondary-tab,
-.actor-sheet .general-tabs.secondary-tab {
+.abf-tabs.secondary-tab {
   margin-top: 0;
   height: 1.2rem;
+  line-height: 1.2rem;
 }
-.actor-sheet .sheet-tabs .item,
-.actor-sheet .mystic-tabs .item,
-.actor-sheet .psychic-tabs .item,
-.actor-sheet .general-tabs .item {
+.abf-tabs .item {
   background: transparent;
   border-radius: 10px;
   color: #000000;
   font-weight: 600;
+  max-height: 2rem;
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
-  margin-left: 25px;
+}
+.abf-tabs .active {
+  text-shadow: none;
+  background-color: #6e2917;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.actor-sheet {
+  display: flex;
+  flex-direction: column;
 }
 .actor-sheet .sheet-tabs .item[data-tab=settings],
 .actor-sheet .mystic-tabs .item[data-tab=settings],
@@ -742,15 +727,6 @@ img {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-}
-.actor-sheet .sheet-tabs .active,
-.actor-sheet .mystic-tabs .active,
-.actor-sheet .psychic-tabs .active,
-.actor-sheet .general-tabs .active {
-  text-shadow: none;
-  background-color: #6e2917;
-  color: #ffffff;
-  font-weight: 600;
 }
 
 .actor-header {
@@ -819,9 +795,8 @@ img {
 }
 .actor-header .modifiers .first-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 0.3rem;
-  grid-row-gap: 0.2rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 1rem;
 }
 .actor-header .characteristics {
   height: 100%;
@@ -869,7 +844,7 @@ img {
 }
 .actor-header .common-resources .group-body .first-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 0.5rem;
   margin-top: 0.5rem;
 }
@@ -1055,6 +1030,25 @@ img {
 }
 .general .second-tab .elan .group-body .elan-row .powers .input-container {
   margin-top: 0.5rem;
+}
+.general .second-tab .regeneration .group-body .regeneration-row {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 2fr;
+  grid-column-gap: 0.25rem;
+}
+.general .second-tab .regeneration .group-body .regeneration-row .info-container .input-container {
+  width: 10rem;
+}
+.general .second-tab .regeneration .group-body .regeneration-second-row {
+  margin-top: 0.75rem;
+}
+.general .second-tab .regeneration .group-body .regeneration-second-row .info-container {
+  margin: auto;
+  width: 90%;
+}
+.general .second-tab .regeneration .group-body .regeneration-second-row .info-container .input-container {
+  width: 90%;
 }
 .general .second-tab .contacts .group-body .contact-row:first-child {
   margin-top: 0;
@@ -1807,7 +1801,7 @@ img {
 }
 .psychic .psychic-main-tab .first-row {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 4fr;
   grid-column-gap: 1rem;
 }
 .psychic .psychic-main-tab .second-row {
@@ -1821,6 +1815,17 @@ img {
 }
 .psychic .psychic-main-tab div .common-group:first-child {
   margin-top: 0;
+}
+.psychic .psychic-main-tab .psychic-projection .title {
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+.psychic .psychic-main-tab .psychic-projection .imbalance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1rem;
 }
 .psychic .psychic-main-tab .psychic-disciplines .psychic-discipline-row:first-child {
   margin-top: 0;
@@ -2150,6 +2155,26 @@ img {
 .base-item .spell-item-dialog .grade-row .description .input-container {
   width: 100%;
 }
+.base-item .spell-item-dialog .description {
+  display: flex;
+  justify-content: start;
+  padding-top: 0.5rem;
+}
+.base-item .spell-item-dialog .description .label {
+  align-self: flex-start;
+  padding-right: 0.5rem;
+}
+.base-item .spell-item-dialog .description .editor {
+  border-radius: 10px;
+  background: #e7e5da;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  font-weight: inherit;
+  height: 6rem;
+  width: 100%;
+  margin-top: 0;
+  border-radius: 0.5rem;
+}
 .base-item .spell-item-dialog .spell-footer {
   width: 100%;
   display: flex;
@@ -2211,6 +2236,27 @@ img {
   padding: 0.25rem 0.5rem;
   text-align: center;
   height: 1rem;
+}
+.base-item .psychic-power-item-dialog .psychic-power .description {
+  display: flex;
+  justify-content: start;
+  padding-top: 0.5rem;
+}
+.base-item .psychic-power-item-dialog .psychic-power .description .label {
+  align-self: flex-start;
+  padding-right: 0.5rem;
+  font-weight: bold;
+}
+.base-item .psychic-power-item-dialog .psychic-power .description .editor {
+  border-radius: 10px;
+  background: #e7e5da;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  font-weight: inherit;
+  height: 6rem;
+  width: 100%;
+  margin-top: 0;
+  border-radius: 0.5rem;
 }
 .base-item .psychic-power-item-dialog .psychic-power .psychic-power-header {
   padding-right: 0.5rem;
@@ -2589,7 +2635,6 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 50px;
 }
 .combat-attack-dialog .sheet-tabs .active {
   text-shadow: none;
@@ -2630,6 +2675,12 @@ img {
 }
 .combat-attack-dialog .group-body .abf-button {
   margin-top: 2rem;
+}
+.combat-attack-dialog .group-body .columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .combat-defense-dialog {
@@ -2702,6 +2753,12 @@ img {
 .combat-defense-dialog .group-body .waiting-row .label {
   margin-top: 1rem;
   text-align: center;
+}
+.combat-defense-dialog .group-body .columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .generic-dialog {
@@ -2785,3 +2842,5 @@ img {
   font-size: 1.125rem;
   text-align: center;
 }
+
+/*# sourceMappingURL=animabf-guote.css.map */

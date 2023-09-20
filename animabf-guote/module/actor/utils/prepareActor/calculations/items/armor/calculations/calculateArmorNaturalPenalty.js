@@ -1,1 +1,1 @@
-export const calculateArmorNaturalPenalty = (armor) => Math.min(armor.data.naturalPenalty.base.value + armor.data.quality.value, 0);
+export const calculateArmorNaturalPenalty = (armor) => Math.min(armor.system.naturalPenalty.base.value + armor.system.quality.value, 0);

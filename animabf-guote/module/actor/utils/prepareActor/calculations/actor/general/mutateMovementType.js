@@ -1,8 +1,8 @@
-import { calculateMovementInMetersFromMovementType } from "./calculations/calculateMovementInMetersFromMovementType.js";
-import { getEquippedArmors } from "../../../utils/getEquippedArmors.js";
-import { calculateNaturalPenaltyWithoutWearArmor } from "../natural-penalty/calculations/calculateWearArmorNaturalPenalty.js";
+import { calculateMovementInMetersFromMovementType } from './calculations/calculateMovementInMetersFromMovementType.js';
+import { getEquippedArmors } from '../../../utils/getEquippedArmors.js';
+import { calculateNaturalPenaltyWithoutWearArmor } from '../natural-penalty/calculations/calculateWearArmorNaturalPenalty.js';
 const calculateArmorsMovementTypeModifier = (data) => {
-    const armorsMovementRestrictions = getEquippedArmors(data).reduce((prev, curr) => prev + curr.data.movementRestriction.final.value, 0);
+    const armorsMovementRestrictions = getEquippedArmors(data).reduce((prev, curr) => prev + curr.system.movementRestriction.final.value, 0);
     const totalWearRequirement = calculateNaturalPenaltyWithoutWearArmor(data);
     const wearArmor = data.combat.wearArmor.value;
     const wearArmorModifier = Math.floor(Math.max(0, wearArmor - totalWearRequirement) / 50);

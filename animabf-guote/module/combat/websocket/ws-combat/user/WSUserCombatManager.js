@@ -1,19 +1,16 @@
-import { Log } from "../../../../../utils/Log.js";
-import { WSCombatManager } from "../WSCombatManager.js";
-import { GMMessageTypes } from "../gm/WSGMCombatMessageTypes.js";
-import { UserMessageTypes } from "./WSUserCombatMessageTypes.js";
-import { CombatAttackDialog } from "../../../../dialogs/combat/CombatAttackDialog.js";
-import { CombatDefenseDialog } from "../../../../dialogs/combat/CombatDefenseDialog.js";
-import { PromptDialog } from "../../../../dialogs/PromptDialog.js";
-import { ABFDialogs } from "../../../../dialogs/ABFDialogs.js";
-import { getTargetToken } from "../util/getTargetToken.js";
-import { assertCurrentScene } from "../util/assertCurrentScene.js";
-import { assertGMActive } from "../util/assertGMActive.js";
-import { getSelectedToken } from "../util/getSelectedToken.js";
+import { Log } from '../../../../../utils/Log.js';
+import { WSCombatManager } from '../WSCombatManager.js';
+import { GMMessageTypes } from '../gm/WSGMCombatMessageTypes.js';
+import { UserMessageTypes } from './WSUserCombatMessageTypes.js';
+import { CombatAttackDialog } from '../../../../dialogs/combat/CombatAttackDialog.js';
+import { CombatDefenseDialog } from '../../../../dialogs/combat/CombatDefenseDialog.js';
+import { PromptDialog } from '../../../../dialogs/PromptDialog.js';
+import { ABFDialogs } from '../../../../dialogs/ABFDialogs.js';
+import { getTargetToken } from '../util/getTargetToken.js';
+import { assertCurrentScene } from '../util/assertCurrentScene.js';
+import { assertGMActive } from '../util/assertGMActive.js';
+import { getSelectedToken } from '../util/getSelectedToken.js';
 export class WSUserCombatManager extends WSCombatManager {
-    constructor(game) {
-        super(game);
-    }
     receive(msg) {
         switch (msg.type) {
             case GMMessageTypes.RequestToAttackResponse:
@@ -49,7 +46,7 @@ export class WSUserCombatManager extends WSCombatManager {
         return this.game.user;
     }
     isMyToken(tokenId) {
-        return this.game.canvas.tokens?.ownedTokens.filter(tk => tk.id === tokenId).length === 1;
+        return (this.game.canvas.tokens?.ownedTokens.filter(tk => tk.id === tokenId).length === 1);
     }
     async sendAttackRequest() {
         assertGMActive();
@@ -59,13 +56,18 @@ export class WSUserCombatManager extends WSCombatManager {
         const attackerToken = getSelectedToken(this.game);
         const { targets } = this.user;
         const targetToken = getTargetToken(attackerToken, targets);
-        await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', { target: targetToken.name }), {
+        await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', {
+            target: targetToken.name
+        }), {
             onConfirm: () => {
                 if (attackerToken?.id && targetToken.id) {
                     const msg = {
                         type: UserMessageTypes.RequestToAttack,
                         senderId: this.user.id,
-                        payload: { attackerTokenId: attackerToken.id, defenderTokenId: targetToken.id }
+                        payload: {
+                            attackerTokenId: attackerToken.id,
+                            defenderTokenId: targetToken.id
+                        }
                     };
                     this.emit(msg);
                     this.attackDialog = new CombatAttackDialog(attackerToken, targetToken, {
@@ -96,7 +98,10 @@ export class WSUserCombatManager extends WSCombatManager {
                 };
                 this.emit(newMsg);
             }
-        }, { allowed: true, counterAttackBonus: msg.payload.counterAttackBonus });
+        }, {
+            allowed: true,
+            counterAttackBonus: msg.payload.counterAttackBonus
+        });
     }
     async manageAttackRequestResponse(msg) {
         if (msg.toUserId !== this.user.id)

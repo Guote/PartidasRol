@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const InnatePsychicPowerItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").InnatePsychicPowerItemConfig} */
+export const InnatePsychicPowerItemConfig = ABFItemConfigFactory({
     type: ABFItems.INNATE_PSYCHIC_POWER,
     isInternal: true,
     fieldPath: ['psychic', 'innatePsychicPowers'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.innatePsychicPowers;
-    },
     selectors: {
         addItemButtonSelector: 'add-innate-psychic-power',
         containerSelector: '#innate-psychic-powers-context-menu-container',
@@ -20,36 +19,10 @@ export const InnatePsychicPowerItemConfig = {
         await actor.createInnerItem({
             name,
             type: ABFItems.INNATE_PSYCHIC_POWER,
-            data: {
+            system: {
                 effect: { value: '' },
                 value: { value: 0 }
             }
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
-            await actor.updateInnerItem({
-                id,
-                type: ABFItems.INNATE_PSYCHIC_POWER,
-                name,
-                data
-            });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.psychic.innatePsychicPowers;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.psychic.innatePsychicPowers = [item];
-        }
     }
-};
+});

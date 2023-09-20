@@ -1,9 +1,10 @@
-import { renderTemplates } from "../module/utils/renderTemplates.js";
-import { Templates } from "../module/utils/constants.js";
-import { ABFMacros } from "../module/macros/ABFMacros.js";
-import { ABFSettingsKeys } from "./registerSettings.js";
-import { Log } from "./Log.js";
-import { PromptDialog } from "../module/dialogs/PromptDialog.js";
+import { renderTemplates } from '../module/utils/renderTemplates.js';
+import { Templates } from '../module/utils/constants.js';
+import { ABFMacros } from '../module/macros/ABFMacros.js';
+import { ABFSettingsKeys } from './registerSettings.js';
+import { Log } from './Log.js';
+import { PromptDialog } from '../module/dialogs/PromptDialog.js';
+import { ABFSystemName } from '../animabf-guote.name.js';
 const DEFAULT_GM_MACROS = [
     {
         macroSelectorId: '#custom-hotbar-damage-calculator',
@@ -32,7 +33,7 @@ export const attachCustomMacroBar = async () => {
             isGM
         }
     });
-    $('.system-animabf-guote').append(customHotbarHTML);
+    $(`.system-${ABFSystemName}`).append(customHotbarHTML);
     const defaultMacroConfigs = isGM ? DEFAULT_GM_MACROS : DEFAULT_USER_MACROS;
     if (tgame.settings.get('animabf-guote', ABFSettingsKeys.DEVELOP_MODE) && isGM) {
         defaultMacroConfigs.push({

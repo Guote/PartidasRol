@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const MetamagicItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").MetamagicItemConfig} */
+export const MetamagicItemConfig = ABFItemConfigFactory({
     type: ABFItems.METAMAGIC,
     isInternal: true,
     fieldPath: ['mystic', 'metamagics'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.metamagics;
-    },
     selectors: {
         addItemButtonSelector: 'add-metamagic',
         containerSelector: '#metamagics-context-menu-container',
@@ -20,28 +19,7 @@ export const MetamagicItemConfig = {
         await actor.createInnerItem({
             name,
             type: ABFItems.METAMAGIC,
-            data: { grade: { value: 0 } }
+            system: { grade: { value: 0 } }
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
-            await actor.updateInnerItem({ id, type: ABFItems.METAMAGIC, name, data });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.mystic.metamagics;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.mystic.metamagics = [item];
-        }
     }
-};
+});

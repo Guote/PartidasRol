@@ -1,0 +1,346 @@
+{
+	"healthEstimate": {
+		"core": {
+			"custom": {
+				"FractionHP": {
+					"name": "Caminho de Dados do Atributo de Pontos de Vida",
+					"hint": "Seu sistema pode estar usando um outro caminho de dados. Se a estimativa não estiver aparecendo corretamente, informe o caminho de dados para o atributo correto (ex.: actor.system.health)."
+				},
+				"FractionMath": {
+					"name": "Equação da Fração",
+					"hint": "A equação de pontos de vida do seu sistema pode ser diferente do padrão, escolha a equação usada para calcular a fração da estimativa de vida.",
+					"choices": {
+						"0": "(PV Atual)/(PV Máx.)",
+						"1": "(PV Máx. - PV Atual)/(PV Máx.)"
+					}
+				}
+			},
+			"estimates": {
+				"worst": "Pior",
+				"best": "Melhor",
+				"states": {
+					"0": "Inconsciente",
+					"1": "Quase Morto",
+					"2": "Gravemente Ferido",
+					"3": "Ferido",
+					"4": "Escoriado",
+					"5": "Ileso"
+				},
+				"vehicles": {
+					"0": "Destruído",
+					"1": "Gravemente Danificado",
+					"2": "Muito Danificado",
+					"3": "Ligeiramente Danificado",
+					"4": "Danidifcado",
+					"5": "Perfeito"
+				},
+				"thresholds": {
+					"0": "Destruído",
+					"1": "Quebrado",
+					"2": "Funcional"
+				},
+				"plural": "Estimativas"
+			},
+			"estimationSettings": {
+				"title": "Configurações de Estimações",
+				"AddEstimate": "Adicionar Estimativa",
+				"addTable": "Adicionar Tabela",
+				"default": "Padrão",
+				"deleteTable": "Deletar Tabela",
+				"estimate": "Estimativa",
+				"jsRule": "Regra JS",
+				"prioDecrease": "Diminuir Priority",
+				"prioIncrease": "Aumentar Priority",
+				"ignoreColor": {
+					"name": "Ignorar Cor",
+					"hint": "Ignora a cor desta tabela e usa as cores da próxima tabela válida para o token. Esta opção é para condições que devem ter prioridade sobre uma estimativa, mas ainda devem usar as cores da estimativa."
+				}
+			},
+			"keybinds": {
+				"markDead": {
+					"name": "Marcar como Morto",
+					"hint": "Marca todos os tokens selecionados como Mortos. Se todos os tokens selecionados já estiverem mortos, eles serão redefinidos como vivos."
+				},
+				"customEstimates": {
+					"name": "Estimativas Personalizadas",
+					"hint": "Define estimativas personalizadas para os tokens selecionados. Deixe-a em branco para resetar.",
+					"options": {
+						"1": "Tokens e Atores",
+						"2": "Somente Tokens"
+					}
+				},
+				"dontMarkDead": {
+					"name": "Não Marcar como Morto",
+					"hint": "Faz com que PNJs não sejam mostrados como Morto quando seus PV chegarem a 0 (por exemplo, ele mostrará Inconsciente). Isso só é útil se você usar a configuração {setting}."
+				},
+				"hideEstimates": {
+					"name": "Ocultar Estimativas",
+					"hint": "Oculta as estimativas de tokens selecionados para os jogadores. Estimativas ocultas não serão mostradas no chat se a configuração estiver ativa e aparecerão com um asterisco (*) para o MJ."
+				},
+				"hideNames": {
+					"name": "Ocultar Nomes",
+					"hint": "Oculta os nomes de tokens selecionados para os jogadores quando estiver utilizando a configuração {setting}."
+				},
+				"hideEstimatesAndNames": {
+					"name": "Ocultar Estimativas e Nomes",
+					"hint": "Oculta as estimativas e os nomes dos tokens selecionados."
+				}
+			},
+			"isNow": "{name} agora está {desc}.",
+			"unknownEntity": {
+				"name": "Nome da Entidade Desconhecida",
+				"hint": "Define como um personagem ocultado será chamado.{warning}",
+				"default": "Entidade Desconhecida",
+				"warningCUB": "Se você está usando a opção de ocultar nomes do CUB, ela terá prioridade sobre este configuração.",
+				"warningPF2eWorkbench": "Se você está usando a opção de mistificar nomes do PF2e Workbench, ela terá prioridade sobre este configuração."
+			},
+			"alwaysShow": {
+				"name": "Sempre Mostrar Estimativas",
+				"hint": "Torna as estimativas sempre visíveis em vez de só com o passar do mouse."
+			},
+			"showDescription": {
+				"name": "Mostrar Estimativas: Usuários",
+				"hint": "Mostra as estimativas para os seguintes usuários.",
+				"choices": {
+					"all": "Todos",
+					"GM": "Mestres",
+					"Players": "Jogadores",
+					"NPC": "Personagens Não Jogadores",
+					"PC": "Personagens Jogadores"
+				}
+			},
+			"showDescriptionTokenType": {
+				"name": "Mostrar Estimativas: Tokens",
+				"hint": "Mostra as estimativas dos seguintes tokens."
+			},
+			"stateNames": {
+				"name": "Estágios",
+				"hint": "Uma série de descritores organizados da pior para a melhor condição.\nA quantidade de descritores não possui limite máximo, o módulo se ajustará a porcentagem de vitalidade para mostrá-los proporcionalmente.\nSe for necessário um descritor para cobrir uma faixa maior de vitalidade, simplesmente copie-o várias vezes.",
+				"default": "Inconsciente, Quase Morto, Gravemente Ferido, Ferido, Escoriado, Ileso"
+			},
+			"deathState": {
+				"name": "Condição Morto",
+				"hint": "Mostra o token como defino na configuração {setting} quando afetado por qualquer condição que use o ícone da configuração {setting2}. Funciona independentemente da macro."
+			},
+			"deathStateName": {
+				"name": "Nome do Estado de Morte",
+				"hint": "A descrição mostrada aos jogadores quando o token está morto. A aba Compêndio possui uma macro para marcar um token (ou vários) como morto.",
+				"default": "Morto"
+			},
+			"deathMarker": {
+				"name": "Marcador de morte",
+				"hint": "O caminho para o ícone que marca os tokens com a Condição Morto."
+			},
+			"NPCsJustDie": {
+				"name": "PNJs morrem imediatamente",
+				"hint": "O último estágio de tokens cujos atores não foram selecionados por jogadores será substituído pela configuração {setting}. Para mais informações sobre o que \"selecionados por jogadores\" significa, leia a seção \"User Configuration\" no artigo \"Users and Permissions\" no site do Foundry (em inglês)."
+			},
+			"perfectionism": {
+				"name": "Exibir melhor estágio",
+				"hint": "Defina como o melhor estágio é exibido. O melhor estágio é o último estágio na configuração {setting1}. Sugestão para usuários que desativaram {setting2}: se você pretende que cada estágio seja igual a uma cor, não use a primeira opção.",
+				"choices": {
+					"0": "Mostrar o descritor até quando o alvo está machucado",
+					"1": "Mostrar o descritor quando o alvo não está machucado",
+					"2": "Ocultar completamente"
+				}
+			},
+			"outputChat": {
+				"name": "Enviar Estimativa para o Chat",
+				"hint": "Envia mudanças nas estimativas ao chat. Personagens marcados com a configuração de token Ocultar Estimativas aparecem como a descrição da configuração {setting}."
+			},
+			"addTemp": {
+				"name": "Adicionar Pontos de Vida Temporários",
+				"hint": "Inclui pontos de vida temporários no cálculo que o descritor mostra.\nEx.: Com essa configuração ativa, o token mostra o recebimento de PVs da seguinte forma \"Mais Saudável\" a menos que já esteja com vitalidade máxima."
+			},
+			"breakOnZeroMaxHP": {
+				"name": "Ocultar em tokens com 0 PV máximos",
+				"hint": "Útil para tokens de objetos."
+			},
+			"menuSettings": {
+				"fontSize": {
+					"name": "Tamanho da Fonte",
+					"hint": "Aceita qualquer propriedade de tamanho válidas para fontes CSS"
+				},
+				"useColor": {
+					"name": "Usar Cor",
+					"hint": "Os descritores serão mostrados em preto e branco."
+				},
+				"smoothGradient": {
+					"name": "Gradiente Suave",
+					"hint": "Com esta configuração ligada, a cor refletirá a mudança gradual da vitalidade. Caso esteja desmarcada, ela só mudará quando o próximo descritor for alcançado."
+				},
+				"deadColor": {
+					"name": "Cor dos tokens mortos"
+				},
+				"outline": {
+					"name": "Contorno",
+					"darken": "Escuro",
+					"brighten": "Clarear"
+				},
+				"position": {
+					"name": "Posição",
+					"top": "Topo",
+					"middle": "Meio",
+					"bottom": "Base",
+					"hint": "A posição é definida em relação ao quadro do token. Valores negativos posicionam para cima; valores positivos posicionam para baixo."
+				},
+				"positionAdjustment": {
+					"name": "Ajuste de Margem",
+					"hint": "Ajusta a margem do texto. Valores positivos posicionam para cima; valores negativos posicionam para baixo."
+				},
+				"deathSettings": {
+					"name": "Configuração de Morte",
+					"plural": "Configurações de Morte"
+				},
+				"styleSettings": {
+					"name": "Configuração de Estilo",
+					"plural": "Configurações de Estilo"
+				},
+				"behaviorSettings": {
+					"name": "Configuração de Comportamento",
+					"plural": "Configurações de Comportamento"
+				},
+				"scaleToZoom": {
+					"name": "Escalar para o nível de zoom",
+					"hint": "Escala a estimativa de acordo com a distância do zoom. O valor da configuração {setting2} será ignorado enquanto estiver afastando o zoom."
+				}
+			},
+			"combatOnly": {
+				"hint": "Mostra as estimativas apenas quando um combate estiver ativo.",
+				"name": "Mostrar apenas em combate"
+			}
+		},
+		"cyberpunk-red-core": {
+			"useSystemStates": {
+				"name": "Usar Estágios de Ferimento",
+				"hint": "Ignora a configuração de Estágios e usa os estágios de ferimentos do Cyberpunk RED Core."
+			}
+		},
+		"dnd5e": {
+			"vehicleNames": {
+				"name": "Estágios de Veículos",
+				"hint": "Descrições mostradas para veículos.",
+				"default": "Destruído, Quebrado, Surrado, Arranhado, Impecável"
+			}
+		},
+		"PF1": {
+			"addNonlethal": {
+				"name": "Usar Dano Não Letal",
+				"hint": "Se habilitado, dano não letal será subtraído da vida atual para a estimativa."
+			},
+			"showExtra": {
+				"name": "Mostrar {condition1} e {condition2}",
+				"hint": "Mostra as descrições de {condition1} e {condition2} quando seus pré-requisitos forem preenchidos."
+			},
+			"disabledName": {
+				"name": "Estágio: Desabilitado",
+				"hint": "Aparece quando um token estiver com exatamente 0 PVs, tiver dano não letal exatamente igual aos PVs restantes, ou está afetado pela condição Desabilitado.",
+				"default": "Desabilitado"
+			},
+			"dyingName": {
+				"name": "Estágio: Inconsciente",
+				"hint": "Aparece quando um token tem mais dano não-letal do que PV restantes.",
+				"default": "Inconsciente"
+			}
+		},
+		"PF2E": {
+			"staminaToHp": {
+				"name": "Pontos de Estamina na Estimativa",
+				"hint": "Adiciona Pontos de Estamina à estimativa."
+			},
+			"hideHazardHP": {
+				"name": "Ocultar estimativa de perigo",
+				"hint": "Oculta a estimativa dos Perigos."
+			},
+			"hideVehicleHP": {
+				"name": "Ocultar a estimativa do veículo",
+				"hint": "Oculta a estimativa dos veículos."
+			},
+			"useThreshold": {
+				"hint": "Estima a integridade dos veículos em três estágios, portanto, é recomendável reduzir o número de estágios da configuração {setting} para três se você ativar essa configuração."
+			},
+			"workbenchMystifier": {
+				"name": "(EXPERIMENTAL) Suporte ao Mistificador do PF2e Workbench",
+				"hint": "Se a Mistificação de PNJs estiver ativada, as estimativas no chat irão ignorar o nome na configuração {setting} e usará o próprio nome do token, desde que ele seja diferente do protótipo de token de seu ator original."
+			}
+		},
+		"numenera": {
+			"countPools": {
+				"name": "Contar Reservas Vazias",
+				"hint": "Conta reservas vazias em vez da soma dos seus valores, com a estimativa sendo alterada somente quando uma reserva for esgotada ou recuperada."
+			}
+		},
+		"starfinder": {
+			"useThreshold": {
+				"name": "Usar Limiar do Veículo",
+				"hint": "Veículos Use os estágios definidos na configuração {setting1}. Caso contrário, os veículos usarão a mesma descrição da configuração {setting2}."
+			},
+			"thresholdNames": {
+				"name": "Estágios de Limiar",
+				"hint": "A quantidade de estágios é limitada a 3, organizadas da pior para a melhor condição",
+				"default": "Destruído, Quebrado, Totalmente Funcional"
+			},
+			"vehicleNames": {
+				"name": "Estágios de Veículos",
+				"hint": "Descrições mostradas para drones, naves e veículos.",
+				"default": "Destruído, Quebrado, Surrado, Arranhado, Impecável"
+			},
+			"addStamina": {
+				"name": "Contar Estamina",
+				"hint": "Com esta opção selecionada, Estamina será adicionada aos PVs para o cálculo."
+			}
+		},
+		"worldbuilding": {
+			"simpleRule": {
+				"name": "Regra de Estimativa",
+				"hint": "A fórmula JS para calcular a fração de vida do token. Altere com cautela. O padrão assume uma vida decrescente simples, por exemplo, você começa com 10/10 no seu campo de vida e reduz para 0/10 quando tomar dano."
+			}
+		},
+		"od6s": {
+			"vehicleNames": {
+				"name": "Estágios de Veículos",
+				"hint": "Descrições mostradas para naves e veículos.",
+				"default": "Destruído, Gravemente Danificado, Muito Danificado, Ligeiramente Danificado, Muito Ligeiramente Danificado, Não danificado"
+			},
+			"thresholdNames": {
+				"name": "Limiar de Estágios",
+				"default": "Destruído, Quebrado, Totalmente Funcional",
+				"hint": "A quantidade de estágios é limitada a 3, organizadas da pior para a melhor condição"
+			}
+		},
+		"cyphersystem": {
+			"impaired": {
+				"name": "Nível de saúde para PCs debilitados",
+				"hint": "Define o nível máximo de saúde (atual/máximo, fração 0.0 - 1.0) que pode ser relatado para um PC que está prejudicado no Caminho da Morte"
+			},
+			"debilitated": {
+				"name": "Nível de saúde para PCs Debilitados",
+				"hint": "Define o nível máximo de saúde (atual / máximo, fração 0.0 - 1.0) que pode ser relatado para um PC que está Debilitado no Caminho da Morte"
+			}
+		},
+		"swade": {
+			"defaultWildCardMaxWounds": {
+				"hint": "Isso é usado para calcular o máximo de ferimentos que um NPC Carta Selvagem teria por padrão para estimativas.",
+				"name": "Máximo de Ferimentos Padrão de Carta Selvagem"
+			},
+			"vehicleNames": {
+				"name": "Estágios do Veículo",
+				"hint": "Descrições mostradas para veículos.",
+				"default": "Destruído, Flamejante, Fumante, Maltratado, Riscado, Intocada"
+			},
+			"showIncap": {
+				"name": "Efeito de Estado {incap}",
+				"hint": "Tokens com o efeito de estado {incap} serão mostrados como tal em vez de suas estimativas atuais. Isso não afeta tokens de veículos ou de personagens mortos."
+			}
+		},
+		"custom-system-builder": {
+			"FractionHP": {
+				"hint": "Isso provavelmente será {dataPath1} ou {dataPath2}."
+			},
+			"tempHP": {
+				"name": "Caminho de dados do atributo de pontos de vida temporários",
+				"hint": "Deixe em branco se o sistema não tiver um ou se você não quiser que ele seja adicionado à estimativa."
+			}
+		}
+	}
+}

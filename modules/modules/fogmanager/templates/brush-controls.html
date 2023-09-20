@@ -1,0 +1,41 @@
+<div id="fogmanager-brush-controls">
+    <form id="fogmanager-brush-controls-form">
+        <div id="brush-size-container">
+            <h3 class="form-header">{{localize 'FOGMANAGER.brushSize'}}</h3>
+            <div class="form-group">
+                <input type="range" name="brushSize" value="{{ brushSize }}" min="10" max="500" step="10" data-dtype="Number"/>
+            </div>
+        </div>
+        <div id="brush-opacity-container">
+            <h3 class="form-header">{{localize 'FOGMANAGER.brushMode'}}</h3>
+            <div class="form-group brush-opacity">
+                <label class="switch">
+                    <input type="checkbox" name="brushMode" data-dtype="Boolean" {{checked brushMode}}/>
+                    <span class="toggle"></span>  
+                </label>
+                <div class="label left-label">{{localize 'FOGMANAGER.reveal'}}</div>
+                <div class="label right-label">{{localize 'FOGMANAGER.hide'}}</div>
+            </div>
+        </div>
+        
+        <div id="user-mode-container">
+            <table style="color:#FFFFFF">
+                <tr><th><i class="fa fa-users"/></th><th><i class="fa fa-download"/></th><th><i class="fa fa-upload"/></th></tr>
+            {{#each userModes}}
+            <tr>
+            <th>{{this.name}}</th>
+            <div class="form-fields">
+            <td><input type="checkbox" name="{{this.name}}-loadModes" {{checked this.loadMode}}></input></td>
+            <td><input type="checkbox" name="{{this.name}}-saveModes" {{checked this.saveMode}}></input></td>
+            </div>
+            {{/each}}
+            </tr>
+        </table>
+        </div>
+        
+        
+
+
+        
+    </form>
+</div>

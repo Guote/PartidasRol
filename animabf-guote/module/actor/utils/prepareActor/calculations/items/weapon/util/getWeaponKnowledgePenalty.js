@@ -1,6 +1,6 @@
-import { WeaponKnowledgeType } from "../../../../../../../types/combat/WeaponItemConfig.js";
+import { WeaponKnowledgeType } from '../../../../../../../types/combat/WeaponItemConfig.js';
 export const getWeaponKnowledgePenalty = (weapon) => {
-    switch (weapon.data.knowledgeType.value) {
+    switch (weapon.system.knowledgeType.value) {
         case WeaponKnowledgeType.SIMILAR:
             return -20;
         case WeaponKnowledgeType.MIXED:

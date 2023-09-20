@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const NemesisSkillItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").NemesisSkillItemConfig} */
+export const NemesisSkillItemConfig = ABFItemConfigFactory({
     type: ABFItems.NEMESIS_SKILL,
     isInternal: true,
     fieldPath: ['domine', 'nemesisSkills'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.nemesisSkills;
-    },
     selectors: {
         addItemButtonSelector: 'add-nemesis-skill',
         containerSelector: '#nemesis-skills-context-menu-container',
@@ -21,26 +20,5 @@ export const NemesisSkillItemConfig = {
             name,
             type: ABFItems.NEMESIS_SKILL
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name } = changes[id];
-            await actor.updateInnerItem({ id, type: ABFItems.NEMESIS_SKILL, name });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.domine.nemesisSkills;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.domine.nemesisSkills = [item];
-        }
     }
-};
+});

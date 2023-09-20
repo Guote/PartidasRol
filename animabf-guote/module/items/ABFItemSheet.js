@@ -1,19 +1,28 @@
-import { ABFItems } from "./ABFItems.js";
-import { ITEM_CONFIGURATIONS } from "../actor/utils/prepareItems/constants.js";
+import { ABFItems } from './ABFItems.js';
+import { ITEM_CONFIGURATIONS } from '../actor/utils/prepareItems/constants.js';
+import { ABFSystemName } from '../../animabf-guote.name.js';
 export default class ABFItemSheet extends ItemSheet {
+    constructor(object, options) {
+        super(object, options);
+        this.position.width = this.getWidthFromType();
+        this.position.height = this.getHeightFromType();
+    }
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['sheet', 'item'],
             resizable: true
         });
     }
-    constructor(object, options) {
-        super(object, options);
-        this.position.width = this.getWidthFromType();
-        this.position.height = this.getHeightFromType();
+    get template() {
+        const configuration = ITEM_CONFIGURATIONS[this.item.type];
+        if (configuration && configuration.hasSheet) {
+            const path = `systems/${ABFSystemName}/templates/items/`;
+            return `${path}/${this.item.type}/${this.item.type}.hbs`;
+        }
+        return super.template;
     }
     getWidthFromType() {
-        switch (this.item.data.type) {
+        switch (this.item.type) {
             case ABFItems.SPELL:
                 return 700;
             case ABFItems.ARMOR:
@@ -25,7 +34,7 @@ export default class ABFItemSheet extends ItemSheet {
         }
     }
     getHeightFromType() {
-        switch (this.item.data.type) {
+        switch (this.item.type) {
             case ABFItems.SPELL:
                 return 450;
             case ABFItems.WEAPON:
@@ -40,20 +49,11 @@ export default class ABFItemSheet extends ItemSheet {
                 return 450;
         }
     }
-    getData() {
-        const data = super.getData();
-        data.item.prepareDerivedData();
-        // Yes, a lot of datas, I know. This is Foundry VTT, welcome if you see this
-        data.data.data = data.item.data.data;
-        data.config = CONFIG.config;
-        return data;
-    }
-    get template() {
-        const configuration = ITEM_CONFIGURATIONS[this.item.data.type];
-        if (configuration && configuration.hasSheet) {
-            const path = 'systems/animabf-guote/templates/items/';
-            return `${path}/${this.item.data.type}/${this.item.data.type}.hbs`;
-        }
-        return super.template;
+    async getData(options) {
+        const sheet = await super.getData(options);
+        await sheet.item.prepareDerivedData();
+        sheet.system = sheet.item.system;
+        sheet.config = CONFIG.config;
+        return sheet;
     }
 }

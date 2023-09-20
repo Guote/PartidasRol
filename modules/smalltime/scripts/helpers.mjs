@@ -220,11 +220,11 @@ export class Helpers {
     $('.sunrise-start').css('left', initialPositions.sunriseStart);
     $('.sunrise-start').attr('aria-label', initialTimes.sunriseStart);
 
-    $('.sunrise-end').css('top', Helpers.convertDarknessToPostion(minDarkness));
+    $('.sunrise-end').css('top', Helpers.convertDarknessToPostion(minDarkness) + 1);
     $('.sunrise-end').css('left', initialPositions.sunriseEnd);
     $('.sunrise-end').attr('aria-label', initialTimes.sunriseEnd);
 
-    $('.sunset-start').css('top', Helpers.convertDarknessToPostion(minDarkness));
+    $('.sunset-start').css('top', Helpers.convertDarknessToPostion(minDarkness) + 1);
     $('.sunset-start').css('left', initialPositions.sunsetStart);
     $('.sunset-start').attr('aria-label', initialTimes.sunsetStart);
 
@@ -447,11 +447,11 @@ export class Helpers {
   }
 
   static convertPositionToTimeInteger(position) {
-    return (position - 30) * 3;
+    return (position) * 3;
   }
 
   static convertTimeIntegerToPosition(timeInteger) {
-    return timeInteger / 3 + 30;
+    return timeInteger / 3;
   }
 
   static convertDarknessToPostion(darkness) {
@@ -683,9 +683,9 @@ export class Helpers {
   static grabSceneSlice() {
     // Prefer the full image, but fall back to the thumbnail in the case
     // of tile BGs or animations. Use a generic image for empty scenes.
-    let sceneBG = canvas.scene.data.img;
+    let sceneBG = canvas.scene.background.src;
     if (!sceneBG || sceneBG.endsWith('.m4v') || sceneBG.endsWith('.webp')) {
-      sceneBG = canvas.scene.data.thumb;
+      sceneBG = canvas.scene.thumb;
     }
     if (!sceneBG || sceneBG.startsWith('data')) {
       // Generic scene slice provided by MADCartographer -- thanks! :)
@@ -741,7 +741,7 @@ export class Helpers {
 
     newThreshold = Math.round(newThreshold / phases.length * 100) / 100;
     
-    if (newThreshold === game.scenes.viewed.data.globalLightThreshold) {
+    if (newThreshold === game.scenes.viewed.globalLightThreshold) {
       return true;
     }
     await canvas.scene.update({ globalLightThreshold: newThreshold });

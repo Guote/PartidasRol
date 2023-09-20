@@ -1,6 +1,6 @@
-import { renderTemplates } from "../../../utils/renderTemplates.js";
-import { Templates } from "../../../utils/constants.js";
-import { GenericDialog } from "../../../dialogs/GenericDialog.js";
+import { renderTemplates } from '../../../utils/renderTemplates.js';
+import { Templates } from '../../../utils/constants.js';
+import { GenericDialog } from '../../../dialogs/GenericDialog.js';
 const openCombatRequestDialog = async ({ attacker, defender }) => {
     const [dialogHTML] = await renderTemplates({
         name: Templates.Dialog.Combat.CombatRequestDialog,

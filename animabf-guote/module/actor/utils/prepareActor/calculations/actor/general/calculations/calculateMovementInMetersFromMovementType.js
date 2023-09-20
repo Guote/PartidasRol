@@ -1,4 +1,4 @@
-export const calculateMovementInMetersFromMovementType = (movementType) => {
+export const calculateMovementInMetersFromMovementType = movementType => {
     switch (movementType) {
         case 0:
             return 0.5;

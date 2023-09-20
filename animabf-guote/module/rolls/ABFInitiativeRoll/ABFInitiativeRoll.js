@@ -1,4 +1,4 @@
-import ABFExploderRoll from "../ABFExploderRoll/ABFExploderRoll.js";
+import ABFExploderRoll from '../ABFExploderRoll/ABFExploderRoll.js';
 export default class ABFInitiativeRoll extends ABFExploderRoll {
     evaluate() {
         super.evaluate();

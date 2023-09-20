@@ -1,6 +1,6 @@
-import { calculateNonHelmetArmorsNaturalPenalty } from "./calculations/calculateNonHelmetArmorsNaturalPenalty.js";
-import { calculateWearArmorNaturalPenalty } from "./calculations/calculateWearArmorNaturalPenalty.js";
-import { calculateEquippedArmorsPenalty } from "./calculations/calculateEquippedArmorsPenalty.js";
+import { calculateNonHelmetArmorsNaturalPenalty } from './calculations/calculateNonHelmetArmorsNaturalPenalty.js';
+import { calculateWearArmorNaturalPenalty } from './calculations/calculateWearArmorNaturalPenalty.js';
+import { calculateEquippedArmorsPenalty } from './calculations/calculateEquippedArmorsPenalty.js';
 export const mutateNaturalPenalty = (data) => {
     const wearArmorNaturalPenalty = calculateWearArmorNaturalPenalty(data);
     let armorsNaturalPenalty = calculateNonHelmetArmorsNaturalPenalty(data);

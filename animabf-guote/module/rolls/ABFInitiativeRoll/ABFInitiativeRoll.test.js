@@ -1,6 +1,6 @@
-import ABFInitiativeRoll from "./ABFInitiativeRoll.js";
-import ABFFoundryRoll from "../ABFFoundryRoll.js";
-import { nextValueService } from "../__mocks__/nextValueService.js";
+import ABFInitiativeRoll from './ABFInitiativeRoll.js';
+import ABFFoundryRoll from '../ABFFoundryRoll.js';
+import { nextValueService } from '../__mocks__/nextValueService.js';
 jest.mock('../ABFFoundryRoll');
 function getRoll(formula) {
     const abfRoll = new ABFFoundryRoll(formula);

@@ -1,322 +1,397 @@
-import { breakOverlayRender, descriptionToShow, fractionFormula, tokenEffectsPath, updateBreakSettings } from "./systemSpecifics.js";
-import { sGet, t } from "./utils.js";
-
-export let descriptions, deathStateName, showDead, useColor, smooth, NPCsJustDie, deathMarker, colors, outline, deadColor, deadOutline, perfectionism, outputChat;
-
-let current_hp_actor = {}; //store hp of PC
-
-export function getCharacters(actors) {
-	for (let actor of actors) {
-		if (breakOverlayRender(actor)) continue;
-		try {
-			const fraction = getFraction(actor);
-			if (typeof fraction != "number" || isNaN(fraction)) continue;
-			const stage = getStage(fraction);
-			current_hp_actor[actor.data._id] = { name: actor.document.data.name || actor.name, stage: stage, dead: isDead(actor, stage) };
-		} catch (err) {
-			console.error(`Health Estimate | Error on getCharacters(). Token Name: %o. Type: %o`, actor.name, actor.document.actor.data.type, err);
-		}
-	}
-}
-
-export function outputStageChange(actors) {
-	for (let actor of actors) {
-		if (breakOverlayRender(actor)) continue;
-		if (!(actor.data._id in current_hp_actor)) continue;
-		try {
-			const fraction = getFraction(actor);
-			const stage = getStage(fraction);
-			const dead = isDead(actor, stage);
-			if (stage != current_hp_actor[actor.data._id].stage || dead != current_hp_actor[actor.data._id].dead) {
-				let name = current_hp_actor[actor.data._id].name;
-				if ((actor.document.getFlag("healthEstimate", "hideName") || actor.document.getFlag("healthEstimate", "hideHealthEstimate")) && actor.data.displayName == 0) {
-					name = "Unknown entity";
-				}
-				let css = "<span class='hm_messagetaken'>";
-				if (stage > current_hp_actor[actor.data._id].stage) {
-					css = "<span class='hm_messageheal'>";
-				}
-				let desc = descriptionToShow(
-					descriptions,
-					stage,
-					actor,
-					{
-						isDead: dead,
-						desc: deathStateName,
-					},
-					fraction
-				);
-				let chatData = {
-					content: css + name + " " + t("core.isNow") + " " + desc + ".</span>",
-				};
-				ChatMessage.create(chatData, {});
-				current_hp_actor[actor.data._id].stage = stage;
-				current_hp_actor[actor.data._id].dead = dead;
-			}
-		} catch (err) {
-			console.error(`Health Estimate | Error on outputStageChange(). Token Name: %o. Type: %o`, actor.name, actor.document.actor.data.type, err);
-		}
-	}
-}
-
-/**
- * Returns if a token is dead.
- * A token is dead if:
- * (a) is a NPC at 0 HP and the NPCsJustDie setting is enabled
- * (b) has been set as dead in combat (e.g. it has the skull icon, icon may vary from system to system) and the showDead setting is enabled
- * (c) has the healthEstimate.dead flag, which is set by a macro.
- * @param {TokenDocument} token
- * @param {Integer} stage
- * @returns {Boolean}
- */
-export function isDead(token, stage) {
-	return (
-		(NPCsJustDie && !token.actor.hasPlayerOwner && stage === 0 && !token.document.getFlag("healthEstimate", "treatAsPC")) ||
-		(showDead && tokenEffectsPath(token)) ||
-		token.document.getFlag("healthEstimate", "dead") ||
-		false
-	);
-}
-
-/**
- * Returns the current health fraction of the token.
- * @param {TokenDocument} token
- * @returns {Number}
- */
-function getFraction(token) {
-	return Math.min(fractionFormula(token), 1);
-}
-
-/**
- * Returns the current health stage of the token.
- * @param {Number} fraction
- * @returns {Number}
- */
-function getStage(fraction, customStages = []) {
-	const desc = customStages?.length ? customStages : descriptions;
-	return Math.max(0, perfectionism ? Math.ceil((desc.length - 2 + Math.floor(fraction)) * fraction) : Math.ceil((desc.length - 1) * fraction));
-}
-
-/**
- * Updates the variables if any setting was changed.
- */
-export function updateSettings() {
-	useColor = sGet("core.menuSettings.useColor");
-	descriptions = sGet("core.stateNames").split(/[,;]\s*/);
-	smooth = sGet("core.menuSettings.smoothGradient");
-	deathStateName = sGet("core.deathStateName");
-	showDead = sGet("core.deathState");
-	NPCsJustDie = sGet("core.NPCsJustDie");
-	deathMarker = sGet("core.deathMarker");
-	colors = sGet("core.variables.colors");
-	outline = sGet("core.variables.outline");
-	deadColor = sGet("core.variables.deadColor");
-	deadOutline = sGet("core.variables.deadOutline");
-	perfectionism = sGet("core.perfectionism");
-	outputChat = sGet("core.outputChat");
-
-	const margin = `${sGet("core.menuSettings.positionAdjustment")}em`;
-	const alignment = sGet("core.menuSettings.position");
-	document.documentElement.style.setProperty("--healthEstimate-margin", margin);
-	document.documentElement.style.setProperty("--healthEstimate-alignment", alignment);
-	document.documentElement.style.setProperty("--healthEstimate-text-size", sGet("core.menuSettings.fontSize"));
-}
-
-function hideEstimate(token) {
-	return token.document.getFlag("healthEstimate", "hideHealthEstimate") || token.actor.getFlag("healthEstimate", "hideHealthEstimate");
-}
-
-/**
- * Creates the Overlay with the text on mouse over.
- */
-class HealthEstimateOverlay extends BasePlaceableHUD {
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		options.classes = options.classes.concat(["healthEstimate", "healthEstimateColor"]);
-		options.template = "modules/healthEstimate/templates/healthEstimate.hbs";
-		options.id = "healthEstimate";
-		return options;
-	}
-
-	/**
-	 * Sets the position of the overlay.
-	 * This override is needed because the overlay goes off-center on Hexagonal Rows grid types.
-	 * See https://github.com/mclemente/healthEstimate/issues/19 for visual examples.
-	 */
-	setPosition({ left, top, width, height, scale } = {}) {
-		if (canvas.grid.type === 2 || canvas.grid.type === 3) {
-			left = (left ?? this.object.x) - 6;
-		}
-		super.setPosition({ left, top, width, height, scale });
-	}
-
-	/**
-	 * This override is only here because Health Estimate spams the Console with Rendering logs.
-	 */
-	async _render(force = false, options = {}) {
-		// Do not render under certain conditions
-		const states = Application.RENDER_STATES;
-		this._priorState = this._state;
-		if ([states.CLOSING, states.RENDERING].includes(this._state)) return;
-
-		// Applications which are not currently rendered must be forced
-		if (!force && this._state <= states.NONE) return;
-
-		// Begin rendering the application
-		if ([states.NONE, states.CLOSED, states.ERROR].includes(this._state) && this.showRendering) {
-			console.log(`${vtt} | Rendering ${this.constructor.name}`);
-		}
-		this._state = states.RENDERING;
-
-		// Merge provided options with those supported by the Application class
-		foundry.utils.mergeObject(this.options, options, { insertKeys: false });
-
-		// Get the existing HTML element and application data used for rendering
-		const element = this.element;
-		const data = await this.getData(this.options);
-
-		// Store scroll positions
-		if (element.length && this.options.scrollY) this._saveScrollPositions(element);
-
-		// Render the inner content
-		const inner = await this._renderInner(data);
-		let html = inner;
-
-		// If the application already exists in the DOM, replace the inner content
-		if (element.length) this._replaceHTML(element, html);
-		// Otherwise render a new app
-		else {
-			// Wrap a popOut application in an outer frame
-			if (this.popOut) {
-				html = await this._renderOuter();
-				html.find(".window-content").append(inner);
-				ui.windows[this.appId] = this;
-			}
-
-			// Add the HTML to the DOM and record the element
-			this._injectHTML(html);
-		}
-
-		// Activate event listeners on the inner HTML
-		this._activateCoreListeners(inner);
-		this.activateListeners(inner);
-
-		// Set the application position (if it's not currently minimized)
-		if (!this._minimized) {
-			foundry.utils.mergeObject(this.position, options, { insertKeys: false });
-			this.setPosition(this.position);
-		}
-
-		// Apply focus to the application, maximizing it and bringing it to the top
-		if (options.focus === true) {
-			this.maximize().then(() => this.bringToTop());
-		}
-
-		// Dispatch Hooks for rendering the base and subclass applications
-		for (let cls of this.constructor._getInheritanceChain()) {
-			/**
-			 * A hook event that fires whenever this Application is rendered.
-			 * The hook provides the pending application HTML which will be added to the DOM.
-			 * Hooked functions may modify that HTML or attach interactive listeners to it.
-			 *
-			 * @function renderApplication
-			 * @memberof hookEvents
-			 * @param {Application} app		 The Application instance being rendered
-			 * @param {jQuery} html				 The inner HTML of the document that will be displayed and may be modified
-			 * @param {object} data				 The object of data used when rendering the application
-			 */
-			Hooks.call(`render${cls.name}`, this, html, data);
-		}
-
-		// Restore prior scroll positions
-		if (this.options.scrollY) this._restoreScrollPositions(html);
-		this._state = states.RENDERED;
-		this.setPosition();
-	}
-
-	getData() {
-		const data = super.getData();
-		data.status = this.estimation;
-		return data;
-	}
-}
+import * as providers from "./EstimationProvider.js";
+import { registerSettings } from "./settings.js";
+import { addSetting, isEmpty, sGet, t } from "./utils.js";
 
 export class HealthEstimate {
-	constructor() {
-		updateBreakSettings();
-		canvas.hud.HealthEstimate = new HealthEstimateOverlay();
-		updateSettings();
-		this.initHooks();
+	/** Changes which users get to see the overlay. */
+	breakConditions = {
+		default: `false`,
+	};
+
+	//Hooks
+	setup() {
+		this.estimationProvider = this.prepareSystemSpecifics();
+		this.fractionFormula = this.estimationProvider.fraction;
+		if (this.estimationProvider.breakCondition !== undefined) {
+			this.breakConditions.system = this.estimationProvider.breakCondition;
+		}
+		if (this.estimationProvider.tokenEffects !== undefined) {
+			this.tokenEffectsPath = this.estimationProvider.tokenEffects;
+		}
+		registerSettings();
+		for (let [key, data] of Object.entries(this.estimationProvider.settings)) {
+			addSetting(key, data);
+		}
+		this.updateBreakConditions();
+		this.updateSettings();
 	}
 
-	initHooks() {
-		Hooks.on("hoverToken", (token, hovered) => {
-			this._handleOverlay(token, hovered);
-		});
+	/**
+	 * Gets system specifics, such as its hp attribute and other settings.
+	 * @returns {providers.EstimationProvider}
+	 */
+	prepareSystemSpecifics() {
+		const providerArray = Object.keys(providers);
+		const supportedSystems = providerArray.join("|").replace(/EstimationProvider/g, "");
+		const systemsRegex = new RegExp(supportedSystems);
+		if (systemsRegex.test(game.system.id)) var providerString = game.system.id;
+		else providerString = providers.providerKeys[game.system.id] || "Generic";
+		const providerClassName = `${providerString}EstimationProvider`;
+		return new providers[providerClassName](`native.${providerString}`);
+	}
 
-		Hooks.on("deleteToken", (...args) => {
-			canvas.hud.HealthEstimate.clear();
-		});
+	canvasInit(canvas) {
+		this.combatRunning = this.isCombatRunning();
+	}
 
-		Hooks.on("updateToken", (scene, token, ...args) => {
-			if (canvas.hud.HealthEstimate !== undefined && canvas.hud.HealthEstimate.object) {
-				if (token._id === canvas.hud.HealthEstimate.object.id) {
-					canvas.hud.HealthEstimate.clear();
+	/**
+	 * Sets all the hooks related to a game with a canvas enabled.
+	 */
+	canvasReady() {
+		this.actorsCurrentHP = {};
+		this.combatOnly = sGet("core.combatOnly");
+		if (this.combatOnly) this.combatHooks(this.combatOnly);
+		this.alwaysShow = sGet("core.alwaysShow");
+		this.combatRunning = this.isCombatRunning();
+		Hooks.on("refreshToken", (token) => {
+			this._handleOverlay(token, this.showCondition(token.hover));
+		});
+		if (this.alwaysShow) {
+			canvas.tokens?.placeables.forEach((token) => {
+				this._handleOverlay(token, true);
+			});
+			if (this.scaleToZoom) Hooks.on("canvasPan", this.onCanvasPan);
+			Hooks.on("updateActor", this.alwaysOnUpdateActor);
+			if (!(game.version > 11)) Hooks.on("updateToken", this.alwaysOnUpdateToken);
+		}
+		Hooks.on("canvasInit", this.canvasInit.bind(this));
+	}
+
+	/**
+	 * @param {Token} token
+	 * @param {Boolean} hovered
+	 */
+	_handleOverlay(token, hovered) {
+		if (token.healthEstimate?._texture) token.healthEstimate.destroy();
+		if (
+			!token?.actor ||
+			this.breakOverlayRender(token) ||
+			(!game.user.isGM && this.hideEstimate(token)) ||
+			!token.isVisible
+		)
+			return;
+
+		try {
+			if (hovered) {
+				const { desc, color, stroke } = this.getEstimation(token);
+				if (!desc) {
+					return;
+				}
+				const zoomLevel = Math.min(1, canvas.stage.scale.x);
+				const userTextStyle = this._getUserTextStyle(zoomLevel, color, stroke);
+				token.healthEstimate = token.addChild(new PIXI.Text(desc, userTextStyle));
+				token.healthEstimate.scale.set(0.25);
+
+				token.healthEstimate.anchor.set(0.5, this.scaleToZoom && zoomLevel < 1 ? 0 : this.margin);
+				token.healthEstimate.position.set(
+					token.tooltip.x,
+					token.tooltip.y + (Number.isNumeric(this.alignment) ? this.alignment : -65)
+				);
+			} else if (token.healthEstimate) token.healthEstimate.visible = false;
+		} catch (err) {
+			console.error(
+				`Health Estimate | Error on function _handleOverlay(). Token Name: "${token.name}". ID: "${token.id}". Type: "${token.document.actor.type}".`,
+				err
+			);
+		}
+	}
+
+	_getUserTextStyle(zoomLevel, color, stroke) {
+		if (this.scaleToZoom && zoomLevel < 1) var fontSize = 24 * (1 / zoomLevel);
+		else fontSize = Number.isNumeric(this.fontSize) ? this.fontSize : 24;
+
+		return {
+			fontSize: fontSize * 4,
+			fontFamily: CONFIG.canvasTextStyle.fontFamily,
+			fill: color,
+			stroke,
+			strokeThickness: 12,
+			padding: 5,
+		};
+	}
+
+	/**
+	 * Returns an array of estimates related to the token.
+	 * deepClone is used here because changes will reflect locally on the estimations setting (see {@link getEstimation})
+	 * @param {TokenDocument} token
+	 */
+	getTokenEstimate(token) {
+		let special;
+		const validateEstimation = (iteration, token, estimation) => {
+			const rule = estimation.rule;
+			let valid = false;
+			try {
+				const customLogic = this.estimationProvider.customLogic;
+				const actor = token?.actor;
+				const type = token.actor.type;
+				valid = new Function("actor", "token", "type", customLogic + `return ${rule}`)(actor, token, type);
+			} catch (err) {
+				const name = estimation.name || iteration;
+				console.warn(
+					`Health Estimate | Estimation Table "${name}" has an invalid JS Rule and has been skipped. ${err.name}: ${err.message}`
+				);
+			} finally {
+				return valid;
+			}
+		};
+
+		for (const [iteration, estimation] of this.estimations.entries()) {
+			if (estimation.rule === "default" || estimation.rule === "") continue;
+			if (validateEstimation(iteration, token, estimation)) {
+				if (estimation.ignoreColor) {
+					special = estimation;
+				} else {
+					return { estimation: deepClone(estimation), special: deepClone(special) };
 				}
 			}
+		}
+		return { estimation: deepClone(this.estimations[0]), special: deepClone(special) };
+	}
+
+	/**
+	 * Returns the token's estimate's description, color and stroke outline.
+	 * @param {TokenDocument} token
+	 * @returns {{desc: String, color: String, stroke: String}}
+	 */
+	getEstimation(token) {
+		let desc = "";
+		let color = "";
+		let stroke = "";
+		try {
+			const fraction = Number(this.getFraction(token));
+			const { estimate, index } = this.getStage(token, fraction);
+			const isDead = this.isDead(token, estimate.value);
+
+			const colorIndex = this.smoothGradient
+				? Math.max(0, Math.ceil((this.colors.length - 1) * fraction))
+				: index;
+			estimate.label = isDead ? this.deathStateName : estimate.label;
+			color = isDead ? this.deadColor : this.colors[colorIndex];
+			stroke = isDead ? this.deadOutline : this.outline[colorIndex];
+			desc = this.hideEstimate(token) ? `${estimate.label}*` : estimate.label;
+			return { desc, color, stroke };
+		} catch (err) {
+			console.error(
+				`Health Estimate | Error on getEstimation(). Token Name: "${token.name}". Type: "${token.document.actor.type}".`,
+				err
+			);
+			return { desc, color, stroke };
+		}
+	}
+
+	/**
+	 * Returns the current health fraction of the token.
+	 * @param {TokenDocument} token
+	 * @returns {Number}
+	 */
+	getFraction(token) {
+		const fraction = Math.max(0, Math.min(this.fractionFormula(token), 1));
+		if (!Number.isNumeric(fraction)) {
+			throw Error(`Token's fraction is not valid, it probably doesn't have a numerical HP or Max HP value.`);
+		}
+		return fraction;
+	}
+
+	/**
+	 * @typedef {Object} Estimate
+	 * @property {string} label
+	 * @property {number} value
+	 */
+	/**
+	 * Returns the estimate and its index.
+	 * @param {TokenDocument} token
+	 * @param {Number} fraction
+	 * @returns {{estimate: Estimate, index: number}}
+	 */
+	getStage(token, fraction) {
+		try {
+			const { estimation, special } = this.getTokenEstimate(token);
+			fraction *= 100;
+			// for cases where 1% > fraction > 0%
+			if (fraction != 0 && Math.floor(fraction) == 0) fraction = 0.1;
+			else fraction = Math.trunc(fraction);
+			const logic = (e) => e.value >= fraction;
+			const estimate = special
+				? special.estimates.find(logic)
+				: estimation.estimates.find(logic) ?? { value: fraction, label: "" };
+			const index = estimation.estimates.findIndex(logic);
+			return { estimate, index };
+		} catch (err) {
+			console.error(
+				`Health Estimate | Error on getStage(). Token Name: "${token.name}". Type: "${token.document.actor.type}".`,
+				err
+			);
+		}
+	}
+
+	//Utils
+	hideEstimate(token) {
+		return (
+			token.document.getFlag("healthEstimate", "hideHealthEstimate") ||
+			token.actor.getFlag("healthEstimate", "hideHealthEstimate")
+		);
+	}
+
+	//Hooked functions don't interact correctly with "this"
+	onCanvasPan(canvas, constrained) {
+		if (game.healthEstimate.alwaysShow) {
+			canvas.tokens?.placeables.forEach((token) => {
+				game.healthEstimate._handleOverlay(token, game.healthEstimate.showCondition(token.hovered));
+			});
+		}
+	}
+
+	//Hooked functions don't interact correctly with "this"
+	alwaysOnUpdateActor(actor, updates, options, userId) {
+		//Get all the tokens on the off-chance there's two tokens of the same linked actor.
+		const tokens = canvas.tokens?.placeables.filter((token) => token.actor?.id === actor.id);
+		// Call the _handleOverlay method for each token.
+		tokens?.forEach((token) => {
+			game.healthEstimate._handleOverlay(token, true);
 		});
 	}
 
-	_handleOverlay(token, hovered) {
-		if (!token?.actor) {
-			return;
-		}
-		if (breakOverlayRender(token) || (!game.user.isGM && hideEstimate(token))) {
-			return;
-		}
-		const width = `${canvas.scene.data.grid * token.data.width}px`;
-		document.documentElement.style.setProperty("--healthEstimate-width", width);
+	combatStart(combat, updateData) {
+		game.healthEstimate.combatRunning = true;
+		canvas.tokens?.placeables.forEach((token) => {
+			game.healthEstimate._handleOverlay(token, game.healthEstimate.showCondition(token.hover));
+		});
+	}
 
-		if (hovered) {
-			this._getEstimation(token);
-			canvas.hud.HealthEstimate.bind(token);
+	updateCombat(combat, options, userId) {
+		game.healthEstimate.combatRunning = game.healthEstimate.isCombatRunning();
+		canvas.tokens?.placeables.forEach((token) => {
+			game.healthEstimate._handleOverlay(token, game.healthEstimate.showCondition(token.hover));
+		});
+	}
+
+	combatHooks(value) {
+		if (value) {
+			Hooks.on("combatStart", game.healthEstimate.combatStart);
+			Hooks.on("updateCombat", game.healthEstimate.updateCombat);
+			Hooks.on("deleteCombat", game.healthEstimate.updateCombat);
 		} else {
-			canvas.hud.HealthEstimate.clear();
+			Hooks.off("combatStart", game.healthEstimate.combatStart);
+			Hooks.off("updateCombat", game.healthEstimate.updateCombat);
+			Hooks.off("deleteCombat", game.healthEstimate.updateCombat);
 		}
 	}
 
-	_getEstimation(token) {
-		try {
-			const fraction = getFraction(token);
-			let customStages = token.document.getFlag("healthEstimate", "customStages") || "";
-			if (customStages.length) customStages = customStages.split(/[,;]\s*/);
-			const stage = getStage(fraction, customStages || []);
-			const colorIndex = Math.max(0, Math.ceil((colors.length - 1) * fraction));
-			let desc, color, stroke;
+	isCombatRunning() {
+		return [...game.combats].some(
+			(combat) => combat.started && (combat._source.scene == canvas.scene._id || combat._source.scene == null)
+		);
+	}
 
-			desc = descriptionToShow(
-				customStages.length ? customStages : descriptions,
-				stage,
-				token,
-				{
-					isDead: isDead(token, stage),
-					desc: deathStateName,
-				},
-				fraction,
-				customStages.length ? true : false
-			);
-			color = colors[colorIndex];
-			stroke = outline[colorIndex];
-			if (isDead(token, stage)) {
-				color = deadColor;
-				stroke = deadOutline;
+	/**
+	 * Returns if a token is dead.
+	 * A token is dead if:
+	 * (a) is a NPC at 0 HP and the NPCsJustDie setting is enabled
+	 * (b) has been set as dead in combat (e.g. it has the skull icon, icon may vary from system to system) and the showDead setting is enabled
+	 * (c) has the healthEstimate.dead flag, which is set by a macro.
+	 * @param {Token} token
+	 * @param {Integer} stage
+	 * @returns {Boolean}
+	 */
+	isDead(token, stage) {
+		const isOrganicType = this.estimationProvider.organicTypes.includes(token.actor.type);
+		const isNPCJustDie =
+			this.NPCsJustDie &&
+			!token.actor.hasPlayerOwner &&
+			stage === 0 &&
+			!token.document.getFlag("healthEstimate", "dontMarkDead");
+		const isShowDead = this.showDead && this.tokenEffectsPath(token);
+		const isDefeated = this.showDead && token.combatant?.defeated;
+		const isFlaggedDead = token.document.getFlag("healthEstimate", "dead") || false;
+
+		return isOrganicType && (isNPCJustDie || isShowDead || isDefeated || isFlaggedDead);
+	}
+
+	showCondition(hovered) {
+		const combatTrigger = this.combatOnly && this.combatRunning;
+		return (
+			(this.alwaysShow && (combatTrigger || !this.combatOnly)) || (hovered && (combatTrigger || !this.combatOnly))
+		);
+	}
+
+	/**
+	 * Path of the token's effects. Useful for systems that change how it is handled (e.g. PF2e, DSA5, SWADE).
+	 */
+	tokenEffectsPath(token) {
+		const deadIcon = this.estimationProvider.deathMarker.config
+			? this.deathMarker
+			: CONFIG.statusEffects.find((x) => x.id === "dead")?.icon ?? this.deathMarker;
+		return Array.from(token.actor.effects.values()).some((x) => x.icon === deadIcon);
+	}
+
+	updateBreakConditions() {
+		this.breakConditions.onlyGM = sGet("core.showDescription") == 1 ? `|| !game.user.isGM` : "";
+		this.breakConditions.onlyNotGM = sGet("core.showDescription") == 2 ? `|| game.user.isGM` : "";
+		this.breakConditions.onlyPCs =
+			sGet("core.showDescriptionTokenType") == 1 ? `|| !token.actor?.hasPlayerOwner` : "";
+		this.breakConditions.onlyNPCs =
+			sGet("core.showDescriptionTokenType") == 2 ? `|| token.actor?.hasPlayerOwner` : "";
+
+		const prep = (key) => (isEmpty(this.breakConditions[key]) ? "" : this.breakConditions[key]);
+
+		this.breakOverlayRender = (token) => {
+			try {
+				return new Function(
+					`token`,
+					`return (
+						${prep("default")}
+						${prep("onlyGM")}
+						${prep("onlyNotGM")}
+						${prep("onlyNPCs")}
+						${prep("onlyPCs")}
+						${prep("system")}
+					)`
+				)(token);
+			} catch (err) {
+				if (err.name === "TypeError") {
+					console.warn(
+						`Health Estimate | Error on breakOverlayRender(), skipping. Token Name: "${token.name}". Type: "${token.document.actor.type}".`,
+						err
+					);
+					return true;
+				}
+				console.error(err);
 			}
-			document.documentElement.style.setProperty("--healthEstimate-stroke-color", stroke);
-			document.documentElement.style.setProperty("--healthEstimate-text-color", color);
-			if (hideEstimate(token)) desc += "*";
-			canvas.hud.HealthEstimate.estimation = { desc };
-		} catch (err) {
-			console.error(`Health Estimate | Error on HealthEstimate._getEstimation(). Token Name: %o. Type: %o`, token.name, token.document.actor.data.type, err);
-		}
+		};
+	}
+
+	/**
+	 * Variables for settings to avoid multiple system calls for them, since the estimate can be called really often.
+	 * Updates the variables if any setting was changed.
+	 */
+	updateSettings() {
+		this.descriptions = sGet("core.stateNames").split(/[,;]\s*/);
+		this.estimations = sGet("core.estimations");
+		this.deathStateName = sGet("core.deathStateName");
+		this.showDead = sGet("core.deathState");
+		this.NPCsJustDie = sGet("core.NPCsJustDie");
+		this.deathMarker = sGet("core.deathMarker");
+		this.scaleToZoom = sGet("core.menuSettings.scaleToZoom");
+
+		this.smoothGradient = sGet("core.menuSettings.smoothGradient");
+
+		this.alignment = sGet("core.menuSettings.position");
+		this.margin = sGet("core.menuSettings.positionAdjustment");
+		this.fontSize = sGet("core.menuSettings.fontSize");
+
+		this.colors = sGet("core.variables.colors");
+		this.outline = sGet("core.variables.outline");
+		this.deadColor = sGet("core.variables.deadColor");
+		this.deadOutline = sGet("core.variables.deadOutline");
 	}
 }

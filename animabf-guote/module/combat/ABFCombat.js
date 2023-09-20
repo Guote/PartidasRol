@@ -1,8 +1,19 @@
-import { openModDialog } from "../utils/dialogs/openSimpleInputDialog.js";
+import { openModDialog } from '../utils/dialogs/openSimpleInputDialog.js';
 export default class ABFCombat extends Combat {
+    constructor(data, context) {
+        super(data, context);
+        this.setFlag('world', 'newRound', true);
+    }
+    async nextTurn() {
+        if (this.getFlag('world', 'newRound')) {
+            this.setFlag('world', 'newRound', false);
+        }
+        return super.nextTurn();
+    }
     async nextRound() {
         // Reset initiative for everyone when going to the next round
         await this.resetAll();
+        this.setFlag('world', 'newRound', true);
         return super.nextRound();
     }
     prepareDerivedData() {
@@ -18,28 +29,25 @@ export default class ABFCombat extends Combat {
             ids = [ids];
         }
         for (const id of ids) {
-            const combatant = this.data.combatants.get(id);
+            const combatant = this.combatants.get(id);
             await super.rollInitiative(id, {
-                formula: `1d100Initiative + ${combatant?.actor?.data.data.characteristics.secondaries.initiative.final.value}${mod ?  ` + ${mod}` : ""}`,
+                formula: `1d100Initiative + ${combatant?.actor?.system.characteristics.secondaries.initiative.final.value} + ${mod}`,
                 updateTurn,
                 messageOptions
-            });         
-            await this.update({turn: 0})
+            });
+        }
+        if (this.getFlag('world', 'newRound')) {
+            await this.update({ turn: 0 }); // Updates active turn such that it is the one with higher innitiative.
         }
         return this;
     }
-
-    /* static async _onUpdateCombat(combat) {
-        await combat.update({turn: 0});
-    } */
-    /* _sortCombatants(a, b) {
+    _sortCombatants(a, b) {
         let initiativeA = a.initiative || -9999;
         let initiativeB = b.initiative || -9999;
-        if (initiativeA < (a?.actor?.data.data.characteristics.secondaries.initiative.final.value || 0))
+        if (initiativeA < (a?.actor?.system.characteristics.secondaries.initiative.final.value || 0))
             initiativeA -= 2000;
-        if (initiativeB < (b?.actor?.data.data.characteristics.secondaries.initiative.final.value || 0))
+        if (initiativeB < (b?.actor?.system.characteristics.secondaries.initiative.final.value || 0))
             initiativeB -= 2000;
-        console.log("SORTING INITIATIVE ", a, b, initiativeA, initiativeB)
         return initiativeB - initiativeA;
-    } */
+    }
 }

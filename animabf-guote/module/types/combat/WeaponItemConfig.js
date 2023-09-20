@@ -1,55 +1,84 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-import { mutateWeapon } from "../../items/utils/prepareItem/items/mutateWeapon.js";
-export var WeaponEquippedHandType;
-(function (WeaponEquippedHandType) {
-    WeaponEquippedHandType["ONE_HANDED"] = "one-handed";
-    WeaponEquippedHandType["TWO_HANDED"] = "two-handed";
-})(WeaponEquippedHandType || (WeaponEquippedHandType = {}));
-export var WeaponKnowledgeType;
-(function (WeaponKnowledgeType) {
-    WeaponKnowledgeType["KNOWN"] = "known";
-    WeaponKnowledgeType["SIMILAR"] = "similar";
-    WeaponKnowledgeType["MIXED"] = "mixed";
-    WeaponKnowledgeType["DIFFERENT"] = "different";
-})(WeaponKnowledgeType || (WeaponKnowledgeType = {}));
-export var WeaponCritic;
-(function (WeaponCritic) {
-    WeaponCritic["CUT"] = "cut";
-    WeaponCritic["IMPACT"] = "impact";
-    WeaponCritic["THRUST"] = "thrust";
-    WeaponCritic["HEAT"] = "heat";
-    WeaponCritic["ELECTRICITY"] = "electricity";
-    WeaponCritic["COLD"] = "cold";
-    WeaponCritic["ENERGY"] = "energy";
-})(WeaponCritic || (WeaponCritic = {}));
-export var NoneWeaponCritic;
-(function (NoneWeaponCritic) {
-    NoneWeaponCritic["NONE"] = "-";
-})(NoneWeaponCritic || (NoneWeaponCritic = {}));
-export var WeaponManageabilityType;
-(function (WeaponManageabilityType) {
-    WeaponManageabilityType["ONE_HAND"] = "one_hand";
-    WeaponManageabilityType["TWO_HAND"] = "two_hands";
-    WeaponManageabilityType["ONE_OR_TWO_HAND"] = "one_or_two_hands";
-})(WeaponManageabilityType || (WeaponManageabilityType = {}));
-export var WeaponShotType;
-(function (WeaponShotType) {
-    WeaponShotType["SHOT"] = "shot";
-    WeaponShotType["THROW"] = "throw";
-})(WeaponShotType || (WeaponShotType = {}));
-export var WeaponSize;
-(function (WeaponSize) {
-    WeaponSize["SMALL"] = "small";
-    WeaponSize["MEDIUM"] = "medium";
-    WeaponSize["BIG"] = "big";
-})(WeaponSize || (WeaponSize = {}));
-export var WeaponSizeProportion;
-(function (WeaponSizeProportion) {
-    WeaponSizeProportion["NORMAL"] = "normal";
-    WeaponSizeProportion["ENORMOUS"] = "enormous";
-    WeaponSizeProportion["GIANT"] = "giant";
-})(WeaponSizeProportion || (WeaponSizeProportion = {}));
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { mutateWeapon } from '../../items/utils/prepareItem/items/mutateWeapon.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const WeaponEquippedHandType = {
+    ONE_HANDED: 'one-handed',
+    TWO_HANDED: 'two-handed'
+};
+/**
+  * @readonly
+  * @enum {string}
+  */
+export const WeaponKnowledgeType = {
+    KNOWN: 'known',
+    SIMILAR: 'similar',
+    MIXED: 'mixed',
+    DIFFERENT: 'different'
+};
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const WeaponCritic = {
+    CUT: 'cut',
+    IMPACT: 'impact',
+    THRUST: 'thrust',
+    HEAT: 'heat',
+    ELECTRICITY: 'electricity',
+    COLD: 'cold',
+    ENERGY: 'energy'
+};
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const NoneWeaponCritic = {
+    NONE: '-'
+};
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const WeaponManageabilityType = {
+    ONE_HAND: 'one_hand',
+    TWO_HAND: 'two_hands',
+    ONE_OR_TWO_HAND: 'one_or_two_hands'
+};
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const WeaponShotType = {
+    SHOT: 'shot',
+    THROW: 'throw'
+};
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const WeaponSize = {
+    SMALL: 'small',
+    MEDIUM: 'medium',
+    BIG: 'big'
+};
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const WeaponSizeProportion = {
+    NORMAL: 'normal',
+    ENORMOUS: 'enormous',
+    GIANT: 'giant'
+};
+/**
+ * Initial data for a new weapon. Used to infer the type of the data inside `weapon.system`
+ * @readonly
+ */
 export const INITIAL_WEAPON_DATA = {
     equipped: { value: false },
     isShield: { value: false },
@@ -119,14 +148,13 @@ export const INITIAL_WEAPON_DATA = {
         secondary: { value: NoneWeaponCritic.NONE }
     }
 };
-export const WeaponItemConfig = {
+/** @type {import("../Items").WeaponItemConfig} */
+export const WeaponItemConfig = ABFItemConfigFactory({
     type: ABFItems.WEAPON,
     isInternal: false,
     hasSheet: true,
+    defaultValue: INITIAL_WEAPON_DATA,
     fieldPath: ['combat', 'weapons'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.weapons;
-    },
     selectors: {
         addItemButtonSelector: 'add-weapon',
         containerSelector: '#weapons-context-menu-container',
@@ -140,45 +168,19 @@ export const WeaponItemConfig = {
         const itemData = {
             name,
             type: ABFItems.WEAPON,
-            data: INITIAL_WEAPON_DATA
+            system: INITIAL_WEAPON_DATA
         };
         await actor.createItem(itemData);
     },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
-            actor.updateItem({
-                id,
-                name,
-                data
-            });
+    onAttach: async (actor, weapon) => {
+        if (weapon.system.isRanged &&
+            typeof weapon.system.ammoId === 'string' &&
+            !!weapon.system.ammoId) {
+            const { system: { combat: { ammo } } } = actor;
+            weapon.system.ammo = ammo.find(i => i._id === weapon.system.ammoId);
         }
-    },
-    onAttach: (data, item) => {
-        const combat = data.combat;
-        const items = combat.weapons;
-        item.data = foundry.utils.mergeObject(item.data, INITIAL_WEAPON_DATA, { overwrite: false });
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            combat.weapons = [item];
-        }
-        combat.weapons = combat.weapons.map(weapon => {
-            if (weapon.data.isRanged && typeof weapon.data.ammoId === 'string' && !!weapon.data.ammoId) {
-                const ammo = combat.ammo;
-                weapon.data.ammo = ammo.find(i => i._id === weapon.data.ammoId);
-            }
-            return weapon;
-        });
     },
     prepareItem(data) {
         mutateWeapon(data);
     }
-};
+});

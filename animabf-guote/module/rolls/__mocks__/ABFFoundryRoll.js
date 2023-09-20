@@ -2,12 +2,12 @@
  * Custom implementation of Roll from foundry.js
  * Test methods are unique methods used for unit testing
  */
-import { nextValueService } from "./nextValueService.js";
+import { nextValueService } from './nextValueService.js';
 export default class ABFFoundryRoll {
     constructor(formula, data) {
         this._rolled = false;
         this._formula = formula;
-        this.data = data;
+        this.system = data;
         this.dice = [];
     }
     recalculateTotal(mod = 0) {

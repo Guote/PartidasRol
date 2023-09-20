@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const CombatTableItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").CombatTableItemConfig} */
+export const CombatTableItemConfig = ABFItemConfigFactory({
     type: ABFItems.COMBAT_TABLE,
     isInternal: true,
     fieldPath: ['combat', 'combatTables'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.combatTables;
-    },
     selectors: {
         addItemButtonSelector: 'add-combat-table',
         containerSelector: '#combat-tables-context-menu-container',
@@ -21,30 +20,5 @@ export const CombatTableItemConfig = {
             name,
             type: ABFItems.COMBAT_TABLE
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name } = changes[id];
-            actor.updateInnerItem({
-                id,
-                type: ABFItems.COMBAT_TABLE,
-                name
-            });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.combat.combatTables;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.combat.combatTables = [item];
-        }
     }
-};
+});

@@ -1,5 +1,5 @@
-import { WeaponManageabilityType, NoneWeaponCritic, WeaponShotType, WeaponCritic, WeaponSizeProportion, WeaponSize } from "./types/combat/WeaponItemConfig.js";
-import { PsychicPowerActionTypes } from "./types/psychic/PsychicPowerItemConfig.js";
+import { WeaponManageabilityType, NoneWeaponCritic, WeaponShotType, WeaponCritic, WeaponSizeProportion, WeaponSize } from './types/combat/WeaponItemConfig.js';
+import { PsychicPowerActionTypes } from './types/psychic/PsychicPowerItemConfig.js';
 export const ABFConfig = {};
 const criticTypes = {
     [WeaponCritic.CUT]: 'anima.ui.combat.armors.at.cut.title',

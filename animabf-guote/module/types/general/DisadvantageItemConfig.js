@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const DisadvantageItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").DisadvantageItemConfig} */
+export const DisadvantageItemConfig = ABFItemConfigFactory({
     type: ABFItems.DISADVANTAGE,
     isInternal: false,
     fieldPath: ['general', 'disadvantages'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.disadvantages;
-    },
     selectors: {
         addItemButtonSelector: 'add-disadvantage',
         containerSelector: '#disadvantages-context-menu-container',
@@ -21,26 +20,5 @@ export const DisadvantageItemConfig = {
             name,
             type: ABFItems.DISADVANTAGE
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name } = changes[id];
-            await actor.updateItem({ id, name });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.general.disadvantages;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.general.disadvantages = [item];
-        }
     }
-};
+});

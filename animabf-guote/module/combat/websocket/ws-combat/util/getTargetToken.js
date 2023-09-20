@@ -1,4 +1,4 @@
-import { ABFDialogs } from "../../../../dialogs/ABFDialogs.js";
+import { ABFDialogs } from '../../../../dialogs/ABFDialogs.js';
 export const getTargetToken = (attackerToken, targetTokens) => {
     const tgame = game;
     let message;
@@ -12,7 +12,7 @@ export const getTargetToken = (attackerToken, targetTokens) => {
         ABFDialogs.prompt(message);
         throw new Error(message);
     }
-    const target = targetTokens.values().next().value;
+    const target = targetTokens.values().next().value.document;
     if (!target.actor?.id) {
         message = tgame.i18n.localize('macros.combat.dialog.error.withoutActor.title');
     }

@@ -1,4 +1,4 @@
-import { GenericDialog } from "./GenericDialog.js";
+import { GenericDialog } from './GenericDialog.js';
 export class ConfirmationDialog extends GenericDialog {
     constructor(title, body, { onConfirm, onCancel } = {
         onConfirm: () => {

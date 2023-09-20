@@ -1,23 +1,26 @@
-import { renderTemplates } from "../renderTemplates.js";
-import { Templates } from "../constants.js";
-export const openSimpleInputDialog = async ({ title, content, placeholder = '' }) => {
+import { renderTemplates } from '../renderTemplates.js';
+import { Templates } from '../constants.js';
+export const openSimpleInputDialog = async ({ title = '', content, placeholder = '' }) => {
     const referencedGame = game;
     const [dialogHTML, iconHTML] = await renderTemplates({
         name: Templates.Dialog.ModDialog,
-        context: { content, placeholder }
+        context: {
+            content,
+            placeholder
+        }
     }, {
         name: Templates.Dialog.Icons.Accept
     });
     return new Promise(resolve => {
         new Dialog({
-            title: title ?? referencedGame.i18n.localize('dialogs.title'),
+            title: title ? title : referencedGame.i18n.localize('dialogs.title'),
             content: dialogHTML,
             buttons: {
                 submit: {
                     icon: iconHTML,
                     label: referencedGame.i18n.localize('dialogs.continue'),
-                    callback: (html) => {
-                        const results = new FormDataExtended(html.find('form')[0], {}).toObject();
+                    callback: html => {
+                        const results = new FormDataExtended(html.find('form')[0], {}).object;
                         resolve(results['dialog-input']);
                     }
                 }

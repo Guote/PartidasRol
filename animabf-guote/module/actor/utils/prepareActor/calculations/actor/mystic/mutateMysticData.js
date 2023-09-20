@@ -6,7 +6,7 @@ export const mutateMysticData = (data) => {
     mystic.magicProjection.final.value = Math.max(mystic.magicProjection.base.value + allActionsPenalty, 0);
     mystic.magicProjection.imbalance.offensive.final.value = Math.max(mystic.magicProjection.imbalance.offensive.base.value + allActionsPenalty, 0);
     mystic.magicProjection.imbalance.defensive.final.value = Math.max(mystic.magicProjection.imbalance.defensive.base.value + allActionsPenalty, 0);
-    const dailyZeon = mystic.spellMaintenances.reduce((acc, currentValue) => acc + currentValue.data.cost.value, 0);
+    const dailyZeon = mystic.spellMaintenances.reduce((acc, currentValue) => acc + currentValue.system.cost.value, 0);
     mystic.zeonRegeneration.final.value = Math.max(mystic.zeonRegeneration.base.value - dailyZeon, 0);
     mystic.summoning.summon.final.value = mystic.summoning.summon.base.value + Math.min(allActionsPenalty, 0);
     mystic.summoning.banish.final.value = mystic.summoning.banish.base.value + Math.min(allActionsPenalty, 0);

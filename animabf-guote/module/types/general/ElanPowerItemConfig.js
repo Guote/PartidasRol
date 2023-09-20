@@ -1,12 +1,14 @@
-import { nanoid } from "../../../vendor/nanoid/nanoid.js";
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const ElanPowerItemConfig = {
+import { nanoid } from '../../../vendor/nanoid/nanoid.js';
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").ElanPowerItemConfig} */
+export const ElanPowerItemConfig = ABFItemConfigFactory({
     type: ABFItems.ELAN_POWER,
     isInternal: true,
     fieldPath: [],
     getFromDynamicChanges: changes => {
-        return changes.data.dynamic.elan_power;
+        return changes.system.dynamic.elan_power;
     },
     selectors: {
         addItemButtonSelector: 'add-elan-power',
@@ -20,53 +22,67 @@ export const ElanPowerItemConfig = {
         const name = await openSimpleInputDialog({
             content: i18n.localize('dialogs.items.elanPower.content')
         });
+        const InitialData = { level: { value: 0 } };
+        /** @type {import("../Items").ElanPowerDataSource} */
         const power = {
             _id: nanoid(),
             type: ABFItems.ELAN_POWER,
             name,
-            data: { level: { value: 0 } }
+            ...InitialData,
+            system: InitialData
         };
         const elan = actor.getInnerItem(ABFItems.ELAN, elanId);
         if (elan) {
-            const { data } = elan;
+            const { system } = elan;
+            /** @type {import("../Items").ElanPowerDataSource[]} */
             const powers = [];
-            if (!data.powers) {
+            if (!system.powers) {
                 powers.push(power);
             }
             else {
-                powers.push(...[...data.powers, power]);
+                powers.push(...[...system.powers, power]);
             }
             await actor.updateInnerItem({
                 type: ABFItems.ELAN,
                 id: elanId,
-                data: { ...elan.data, powers }
+                system: {
+                    ...elan.system,
+                    powers
+                }
             });
         }
     },
     onUpdate: async (actor, changes) => {
         for (const id of Object.keys(changes)) {
-            const { name, data: { elanId, level } } = changes[id];
+            const { name, system: { elanId, level } } = changes[id];
             if (!elanId)
                 throw new Error('elanId missing');
             const elan = actor.getInnerItem(ABFItems.ELAN, elanId);
             if (elan) {
-                const powers = elan.data.powers;
+                /** @type {import("../Items").ElanPowerDataSource[]} */
+                const powers = elan.system.powers;
                 const elanPower = powers.find(power => power._id === id);
                 if (elanPower) {
-                    if (elanPower.name === name && elanPower.data.level.value === level.value)
+                    if (elanPower.name === name && elanPower.system.level.value === level.value) {
                         continue;
+                    }
                     elanPower.name = name;
-                    elanPower.data.level.value = level.value;
-                    actor.updateInnerItem({
+                    elanPower.system.level.value = level.value;
+                    const system = {
+                        ...elan.system,
+                        powers: [...powers]
+                    };
+                    await actor.updateInnerItem({
                         type: ABFItems.ELAN,
                         id: elanId,
-                        data: { ...elan.data, powers: [...powers] }
+                        ...system,
+                        system
                     }, true);
                 }
             }
         }
     },
-    onDelete: (actor, target) => {
+    onDelete: async (actor, target) => {
         const { elanId } = target[0].dataset;
         if (!elanId) {
             throw new Error('Data id missing. Are you sure to set data-elan-id to rows?');
@@ -77,14 +93,14 @@ export const ElanPowerItemConfig = {
         }
         const elan = actor.getInnerItem(ABFItems.ELAN, elanId);
         if (elan) {
-            actor.updateInnerItem({
+            await actor.updateInnerItem({
                 type: ABFItems.ELAN,
                 id: elanId,
-                data: {
-                    ...elan.data,
-                    powers: elan.data.powers.filter(power => power._id !== elanPowerId)
+                system: {
+                    ...elan.system,
+                    powers: elan.system.powers.filter(power => power._id !== elanPowerId)
                 }
             });
         }
     }
-};
+});

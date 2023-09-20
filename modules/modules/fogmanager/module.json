@@ -1,0 +1,53 @@
+{
+  "name": "fogmanager",
+  "id": "fogmanager",
+  "title": "Fog Manager",
+  "description": "Allows manual editing of the fog layer, and merging/syncing among users.",
+  "author": "Chris Flanagan",
+  "authors": [{"name":"Chris Flanagan",
+    "email":"tiwato@gmail.com",
+    "discord":"ChrisF#4895"
+    }],
+  "version": "v1.2.8",
+  "minimumCoreVersion": "9.238",
+  "compatibleCoreVersion": "100",
+  "compatibility": {
+    "minimum": "9.238",
+    "verified": 10,
+    "maximum": 10
+  },
+  "esmodules": [
+    "js/fogmanager.js",
+    "js/controls.js"
+  ],
+  "styles": [
+    "css/brush-controls.css"
+  ],
+  "languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		}
+  ],
+  "socket": true,
+
+  "url":"https://gitlab.com/tiwato/fogmanager",
+  "manifest": "https://gitlab.com/tiwato/fogmanager/raw/master/module.json",
+  "download": "https://gitlab.com/tiwato/fogmanager/-/archive/v1.2.8/fogmanager.zip",
+  "readme": "https://gitlab.com/tiwato/fogmanager/-/blob/master/README.md",
+  "bugs": "https://gitlab.com/tiwato/fogmanager/-/issues",
+  "allowBugReporter": true,
+  "flags":{
+    "allowBugReporter": true
+  },
+  "changelog": "https://gitlab.com/tiwato/fogmanager/-/blob/master/CHANGELOG.md",
+  "license": "https://gitlab.com/tiwato/quick_module_enable/-/blob/master/LICENSE",
+  "media": [
+    {
+      "type": "video",
+      "url": "https://gitlab.com/tiwato/fogmanager/-/raw/master/short_demo.webm"
+    }
+  ]
+
+}

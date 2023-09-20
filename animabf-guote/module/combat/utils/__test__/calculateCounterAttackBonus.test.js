@@ -1,4 +1,4 @@
-import { calculateCounterAttackBonus } from "../calculateCounterAttackBonus.js";
+import { calculateCounterAttackBonus } from '../calculateCounterAttackBonus.js';
 describe('calculateCounterAttackBonus', () => {
     test('should calculate counter attack bonus', () => {
         let bonus = calculateCounterAttackBonus(100, 200);

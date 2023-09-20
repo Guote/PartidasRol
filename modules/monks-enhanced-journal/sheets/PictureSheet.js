@@ -9,18 +9,18 @@ export class PictureSheet extends EnhancedJournalSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             title: i18n("MonksEnhancedJournal.picture"),
-            template: "modules/monks-enhanced-journal/templates/picture.html"
+            template: "modules/monks-enhanced-journal/templates/sheets/picture.html"
         });
     }
 
     async getData() {
-        let data = super.getData();
+        let data = await super.getData();
 
         return data;
     }
 
     get type() {
-        return 'picture';
+        return 'image';
     }
 
     _inferDefaultMode() {
@@ -44,7 +44,7 @@ export class PictureSheet extends EnhancedJournalSheet {
     _getSubmitData() {
         let data = expandObject(super._getSubmitData());
 
-        data.img = $('.picture-img', this.element).attr('src');
+        data.src = $('.picture-img', this.element).attr('src');
 
         return flattenObject(data);
     }

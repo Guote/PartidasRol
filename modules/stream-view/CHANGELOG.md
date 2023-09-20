@@ -1,3 +1,295 @@
+## [2.0.1](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v2.0.0...v2.0.1) (2023-06-18)
+
+
+### Bug Fixes
+
+* **core:** Hack around Foundry v10 initialiazing users very late. ([8a76cdb](https://github.com/sPOiDar/fvtt-module-stream-view/commit/8a76cdb)), closes [#66](https://github.com/sPOiDar/fvtt-module-stream-view/issues/66)
+
+
+
+
+# [2.0.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.8.0...v2.0.0) (2023-06-18)
+
+
+### Code Refactoring
+
+* **core:** Refactor the code to split functionality by user class ([6fd6d02](https://github.com/sPOiDar/fvtt-module-stream-view/commit/6fd6d02))
+
+
+### BREAKING CHANGES
+
+* **core:** Direct consumers of the module code are likely to experience breakage,
+however the majority of the public API should remain intact.
+
+
+
+
+# [1.8.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.7.4...v1.8.0) (2023-06-09)
+
+
+### Bug Fixes
+
+* **translations:** Update a couple settings with Title Case ([8ae2a38](https://github.com/sPOiDar/fvtt-module-stream-view/commit/8ae2a38))
+
+
+### Features
+
+* **tokens:** Allow tracking of GM controlled tokens on stream ([431e35d](https://github.com/sPOiDar/fvtt-module-stream-view/commit/431e35d)), closes [#65](https://github.com/sPOiDar/fvtt-module-stream-view/issues/65)
+
+
+
+
+## [1.7.4](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.7.3...v1.7.4) (2023-06-03)
+
+
+### Bug Fixes
+
+* **audio:** Trigger update for any ambient sound change ([950de74](https://github.com/sPOiDar/fvtt-module-stream-view/commit/950de74)), closes [#64](https://github.com/sPOiDar/fvtt-module-stream-view/issues/64)
+
+
+
+
+## [1.7.3](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.7.2...v1.7.3) (2023-06-03)
+
+
+### Bug Fixes
+
+* **audio:** Update ambient audio playback on audio state change ([8c22620](https://github.com/sPOiDar/fvtt-module-stream-view/commit/8c22620)), closes [#64](https://github.com/sPOiDar/fvtt-module-stream-view/issues/64)
+
+
+
+
+## [1.7.2](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.7.1...v1.7.2) (2023-05-29)
+
+
+### Bug Fixes
+
+* **rendering:** Override chat options.height on combat resize ([ec82bee](https://github.com/sPOiDar/fvtt-module-stream-view/commit/ec82bee)), closes [#63](https://github.com/sPOiDar/fvtt-module-stream-view/issues/63)
+
+
+
+
+## [1.7.1](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.7.0...v1.7.1) (2023-05-28)
+
+
+### Bug Fixes
+
+* **rendering:** Update positioning method for popouts ([100782f](https://github.com/sPOiDar/fvtt-module-stream-view/commit/100782f)), closes [#57](https://github.com/sPOiDar/fvtt-module-stream-view/issues/57)
+
+
+
+
+# [1.7.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.6.3...v1.7.0) (2023-05-21)
+
+
+### Bug Fixes
+
+* **combat:** Fix potential absent combat on load ([32f6c1b](https://github.com/sPOiDar/fvtt-module-stream-view/commit/32f6c1b))
+
+
+### Features
+
+* **combat:** Add combat tracker max height and chat max height (combat) ([7c1210d](https://github.com/sPOiDar/fvtt-module-stream-view/commit/7c1210d)), closes [#57](https://github.com/sPOiDar/fvtt-module-stream-view/issues/57)
+* **combat:** Allow selecting combatant tokens ([81bc747](https://github.com/sPOiDar/fvtt-module-stream-view/commit/81bc747)), closes [#58](https://github.com/sPOiDar/fvtt-module-stream-view/issues/58) [#59](https://github.com/sPOiDar/fvtt-module-stream-view/issues/59)
+
+
+
+
+## [1.6.3](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.6.2...v1.6.3) (2023-05-05)
+
+
+### Bug Fixes
+
+* **settings:** Fix name of voice-video-hide-stream-user in register call ([09c8e36](https://github.com/sPOiDar/fvtt-module-stream-view/commit/09c8e36)), closes [#56](https://github.com/sPOiDar/fvtt-module-stream-view/issues/56)
+
+
+
+
+## [1.6.2](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.6.1...v1.6.2) (2023-04-30)
+
+
+### Bug Fixes
+
+* **core:** Allow Directed camera to function on viewed scene, not active ([2b280a6](https://github.com/sPOiDar/fvtt-module-stream-view/commit/2b280a6)), closes [#42](https://github.com/sPOiDar/fvtt-module-stream-view/issues/42)
+
+
+
+
+## [1.6.1](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.6.0...v1.6.1) (2023-04-30)
+
+
+### Bug Fixes
+
+* **core:** Update stream focus when new token is added to current scene ([1912600](https://github.com/sPOiDar/fvtt-module-stream-view/commit/1912600))
+
+
+
+
+# [1.6.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.5.1...v1.6.0) (2023-04-29)
+
+
+### Bug Fixes
+
+* **core:** Fix method names missed by VSCode rename ([d35089a](https://github.com/sPOiDar/fvtt-module-stream-view/commit/d35089a))
+* **ui:** Update clear tracked tokens icon ([392082b](https://github.com/sPOiDar/fvtt-module-stream-view/commit/392082b))
+
+
+### Features
+
+* **core:** Add "Disabled" camera mode, to support table play ([e725bdd](https://github.com/sPOiDar/fvtt-module-stream-view/commit/e725bdd)), closes [#32](https://github.com/sPOiDar/fvtt-module-stream-view/issues/32) [#49](https://github.com/sPOiDar/fvtt-module-stream-view/issues/49)
+
+
+
+
+## [1.5.1](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.5.0...v1.5.1) (2023-04-29)
+
+
+### Bug Fixes
+
+* **translations:** Add es to the module language list ([986f180](https://github.com/sPOiDar/fvtt-module-stream-view/commit/986f180))
+
+
+
+
+# [1.5.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.4.0...v1.5.0) (2023-04-28)
+
+
+### Bug Fixes
+
+* **translations:** Add espanol ([#55](https://github.com/sPOiDar/fvtt-module-stream-view/issues/55)) ([82bb802](https://github.com/sPOiDar/fvtt-module-stream-view/commit/82bb802))
+
+
+### Features
+
+* **macros:** Add macros for various tasks for quick access ([012bf16](https://github.com/sPOiDar/fvtt-module-stream-view/commit/012bf16)), closes [#37](https://github.com/sPOiDar/fvtt-module-stream-view/issues/37)
+
+
+
+
+# [1.4.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.3.1...v1.4.0) (2023-04-25)
+
+
+### Features
+
+* **camera:** Allow ignoring invisible player tokens ([#53](https://github.com/sPOiDar/fvtt-module-stream-view/issues/53)) ([8717224](https://github.com/sPOiDar/fvtt-module-stream-view/commit/8717224)), closes [#38](https://github.com/sPOiDar/fvtt-module-stream-view/issues/38)
+* **chat:** Allow setting max height for chat popout ([cae7c28](https://github.com/sPOiDar/fvtt-module-stream-view/commit/cae7c28)), closes [#33](https://github.com/sPOiDar/fvtt-module-stream-view/issues/33)
+* **ui:** Allow disabling the manual token tracking feature ([2adb49a](https://github.com/sPOiDar/fvtt-module-stream-view/commit/2adb49a)), closes [#40](https://github.com/sPOiDar/fvtt-module-stream-view/issues/40)
+* **voice/video:** Allow toggling the Stream user in voice/video output ([1b2d66e](https://github.com/sPOiDar/fvtt-module-stream-view/commit/1b2d66e)), closes [#45](https://github.com/sPOiDar/fvtt-module-stream-view/issues/45)
+
+
+
+
+## [1.3.1](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.3.0...v1.3.1) (2023-04-23)
+
+
+### Bug Fixes
+
+* **build:** Commit correct SHA to tags ([f1a5ec3](https://github.com/sPOiDar/fvtt-module-stream-view/commit/f1a5ec3))
+* **compatibility:** Bump core compat to v11 ([4892b71](https://github.com/sPOiDar/fvtt-module-stream-view/commit/4892b71))
+
+
+
+
+# [1.3.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.2.2...v1.3.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **controls:** Migrate from deprecated layer activation method for notes ([ab6d08b](https://github.com/sPOiDar/fvtt-module-stream-view/commit/ab6d08b))
+
+
+### Features
+
+* **controls:** Remove foreground toggle ([3accee5](https://github.com/sPOiDar/fvtt-module-stream-view/commit/3accee5))
+
+
+
+
+## [1.2.2](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.2.1...v1.2.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **metadata:** Set verified version to "10" ([1419b3a](https://github.com/sPOiDar/fvtt-module-stream-view/commit/1419b3a))
+
+
+
+
+## [1.2.1](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.2.0...v1.2.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **core:** Correct handling of tracked icon rendering on scene change ([0cde1b0](https://github.com/sPOiDar/fvtt-module-stream-view/commit/0cde1b0)), closes [#36](https://github.com/sPOiDar/fvtt-module-stream-view/issues/36)
+
+
+
+
+# [1.2.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.1.1...v1.2.0) (2022-09-17)
+
+
+### Features
+
+* **audio:** Play ambient sounds for the stream view from camera center ([d9493b2](https://github.com/sPOiDar/fvtt-module-stream-view/commit/d9493b2)), closes [#26](https://github.com/sPOiDar/fvtt-module-stream-view/issues/26)
+* **core:** Allow disabling of combatant tracking ([b7a1cde](https://github.com/sPOiDar/fvtt-module-stream-view/commit/b7a1cde)), closes [#31](https://github.com/sPOiDar/fvtt-module-stream-view/issues/31)
+* **keybinds:** Enable keybinds for most useful functionality ([ee89719](https://github.com/sPOiDar/fvtt-module-stream-view/commit/ee89719)), closes [#13](https://github.com/sPOiDar/fvtt-module-stream-view/issues/13)
+* **popouts:** Allow setting popouts to a fixed size/position ([0dfd3b1](https://github.com/sPOiDar/fvtt-module-stream-view/commit/0dfd3b1)), closes [#28](https://github.com/sPOiDar/fvtt-module-stream-view/issues/28)
+
+
+
+
+## [1.1.1](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.1.0...v1.1.1) (2022-09-11)
+
+
+### Bug Fixes
+
+* **translations:** Add missing translation for clear tracked tokens btn ([3f01a0d](https://github.com/sPOiDar/fvtt-module-stream-view/commit/3f01a0d))
+
+
+
+
+# [1.1.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v1.0.0...v1.1.0) (2022-09-11)
+
+
+### Features
+
+* **camera:** Add the ability to track specific tokens for auto camera ([375b7bb](https://github.com/sPOiDar/fvtt-module-stream-view/commit/375b7bb)), closes [#24](https://github.com/sPOiDar/fvtt-module-stream-view/issues/24)
+
+
+
+
+# [1.0.0](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v0.4.4...v1.0.0) (2022-09-10)
+
+
+### Bug Fixes
+
+* **compatibility:** Update for compatibility with core v10 ([45c9bc6](https://github.com/sPOiDar/fvtt-module-stream-view/commit/45c9bc6)), closes [#27](https://github.com/sPOiDar/fvtt-module-stream-view/issues/27)
+
+
+### BREAKING CHANGES
+
+* **compatibility:** Due to some fundamental changes in v10, this and future
+versions will not maintain backwards compatibility for Foundry versions
+prior to v10.
+
+
+
+
+## [0.4.4](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v0.4.3...v0.4.4) (2022-05-15)
+
+
+
+
+## [0.4.3](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v0.4.2...v0.4.3) (2022-05-14)
+
+
+### Bug Fixes
+
+* **docs:** Remote TODO for camera preview, has been implemented. ([9499b52](https://github.com/sPOiDar/fvtt-module-stream-view/commit/9499b52))
+
+
+
+
 ## [0.4.2](https://github.com/sPOiDar/fvtt-module-stream-view/compare/v0.4.1...v0.4.2) (2021-12-25)
 
 

@@ -1,7 +1,7 @@
 export const calculateFatigue = (data) => {
     const currentFatigue = data.characteristics.secondaries.fatigue.value;
     const maxFatigue = data.characteristics.secondaries.fatigue.max;
-    /* if (currentFatigue >= maxFatigue)
+    if (currentFatigue >= maxFatigue)
         return 0;
     switch (currentFatigue) {
         case 0:
@@ -16,6 +16,5 @@ export const calculateFatigue = (data) => {
             return -10;
         default:
             return 0;
-    } */
-    return 0;
+    }
 };

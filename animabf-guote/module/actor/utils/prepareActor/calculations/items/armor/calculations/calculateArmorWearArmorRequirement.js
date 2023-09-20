@@ -1,1 +1,1 @@
-export const calculateArmorWearArmorRequirement = (armor) => Math.max(armor.data.wearArmorRequirement.base.value - armor.data.quality.value, 0);
+export const calculateArmorWearArmorRequirement = (armor) => Math.max(armor.system.wearArmorRequirement.base.value - armor.system.quality.value, 0);

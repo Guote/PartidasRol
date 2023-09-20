@@ -1,14 +1,14 @@
 export const Log = {
     log(...args) {
         // eslint-disable-next-line no-console
-        console.log('animabf-guote |', ...args);
+        console.log('AnimaBF |', ...args);
     },
     warn(...args) {
         // eslint-disable-next-line no-console
-        console.warn('animabf-guote |', ...args);
+        console.warn('AnimaBF |', ...args);
     },
     error(...args) {
         // eslint-disable-next-line no-console
-        console.error('animabf-guote |', ...args);
+        console.error('AnimaBF |', ...args);
     }
 };

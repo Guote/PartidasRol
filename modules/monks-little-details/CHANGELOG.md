@@ -1,3 +1,149 @@
+# version 10.09
+
+Fixed round marker messages in sw5e
+
+Fixed issues with easy polymorph context menu for actors.  And players should now be able to see the menu.
+
+Added compendium section shortcuts
+
+Restored the default status effects for other systems other than dnd5e.
+
+# version 10.8
+
+Added the option to customise the extra status effects added to the Token HUD.
+
+Added the Update Images interface to the settings menu.
+
+Fixed the Scene Compendium link to not preview the image if there is no image provided for the scene.
+
+Clarified the information popout to include Little Details in the list of modules so people realise that MLD isn't discontinued.
+
+# version 10.7
+
+Splitting multiple other modules off of this one.
+
+Created Monk's Chat Timer to take over the chat timer functionality.
+
+Created Monk's Combat Marker to handle the token marker to indicate a token's turn in combat.
+
+Created Monk's Bloodsplats to show bloodsplats when a creature has died.
+
+Created Monk's Combat Details to handle all the features that Monk's Little Details handled to help automate combats
+
+# version 10.6
+
+Fixed issue with bloodsplats being above the fog of war.
+
+Updated Japanese translation, thank you touge.
+
+Added option to change the opacity of the combat bar
+
+Changed the combat marker images to use webm instead of png.
+
+Added the combat marker image to a cache so every time the token image gets shifted to another token it doesn't have to import the file.
+
+Fixed issue with an error being posted when an animated combat image tries to play as the game is just being loaded before the user has had a chance to activate the browser.
+
+Changed the option to prevent spells being changed in combat to allow the option to notify the GM instead of blocking it completely.
+
+Fixed issue with the settings layout when Sound Enhancements is active, since a setting is removed from the list.
+
+Updated the combat encounter in PF2E to display the severity properly.  thank you rmressler.
+
+Fixed issues with the module listing enhancements.
+
+# version 10.5
+
+Fixed stylings for Round messages.
+
+Added bloodsplats and combat marker to the grid layer so that it's no longer hidden under a Tile.  Thank you very much dev7355608 for the code for that.
+
+Fixed issues with compendium directories being squished.
+
+Fixed issue with Switch Layer hot keys being available to the players.
+
+Added the option to prevent changing prepared spells in the middle of combat.
+
+# version 10.4
+
+Fixed issue with getting combat tracker data when there are no players added.
+
+Added the ability to resize the popped out combat tracker window vertically, so you can set the height you want to see.
+
+Fixed issues with the status effect colours in pf2e.
+
+Fixed issue with combat marker when the image has changed or if the highlight scale has been changed
+
+Fixed issues with Combat Marker being shown even if the token isn't visible to the player.
+
+Added the option to set the token combat highlight scale individually per token.
+
+Fixed issue with the combat highglight being set to the wrong size on first rendering..
+
+Fixed combat round message ony being displayed once if there are multiple GMs logged in.
+
+Fixed issues with turn shadows being visible when they shouldn't be.
+
+Changed the "Find My Token" settings to be per user, this way a GM can turn it on to cycle through all tokens on the scene.
+
+Updated the Find My Token feature to control the token that is found.
+
+Fixed issues with using keys to toggle between layers.  There's still a bug with it as, thanks to v10, I can manually change the selected active control.  But it should reasonably work.
+
+Fixed issues with setting the token to defeated by dropping the hp to 0.
+
+Fixed issues with clearing a Folder of contents.
+
+# version 10.3
+
+Added the option to set the opacity of the token when using bloodsplats
+
+Added a check to make sure when panning to the next combatant, that the combatant is within the viewable screen
+
+Added the option to right click the sidebar icon to open up a players Actor Sheet.
+
+Added support for quick links in the File Picker, so if you commonly pick images from a directory, you can quickly change bak to that directory.
+
+# version 10.2
+
+Added the option to hide any defeated token from the combat tracker, only if defeated tokens are also ignored.
+
+Fixed the Combat round messages so the trash can icon lines up with the trash cans from the regular messages.
+
+Updated actor sounds to show a stop icon when the sound effect is playing.
+
+Fixed the auto scroll top top feature to correctly set the top when displayed on the combat tracker popout.
+
+Fixed issue with PF2E displaying the name of statuses.
+
+Removed a duplicate invisible status icon.
+
+Fixed issue with showing the combat CR.
+
+# version 10.1
+
+Fixed an issue dropping a tile from the tile picker
+
+Added the option to right click the actor sidebar icon to open the last viewed Actor if you're the GM and your character sheet if you're a player.
+
+Fixed issue popping out the combat tracker.
+
+Fixed issue with combat turn
+
+# Version 1.0.58
+
+More v10 support
+
+Adding a timer for darkness transition.
+
+# Version 1.0.57
+
+More v10 support
+
+# Version 1.0.56
+
+Adding v10 support
+
 # Version 1.0.55
 
 Fixed issues with combat bars not showing if the non combat bar is set to never display.

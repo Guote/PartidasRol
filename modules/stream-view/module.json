@@ -1,15 +1,24 @@
 {
+  "id": "stream-view",
   "name": "stream-view",
   "title": "Stream View",
   "description": "This module provides a minimal UI view with automated camera work, ideal for streaming or recording games.",
-  "author": [
-    "sPOiDar"
+  "authors": [
+    {
+      "name": "sPOiDar",
+      "url": "https://github.com/sPOiDar"
+    }
   ],
-  "version": "0.4.2",
-  "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "9",
+  "version": "2.0.1",
+  "minimumCoreVersion": "10",
+  "compatibleCoreVersion": "11",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "11",
+    "maximum": "11"
+  },
   "esmodules": [
-    "modules/stream_view.js"
+    "modules/init.js"
   ],
   "styles": [
     "styles/stream_view.css"
@@ -19,22 +28,46 @@
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
-    }
-  ],
-  "socket": true,
-  "dependencies": [
-    {
-      "name": "lib-wrapper"
     },
     {
-      "name": "socketlib"
+      "lang": "es",
+      "name": "Spanish",
+      "path": "lang/es.json"
     }
   ],
+  "packs": [
+    {
+      "name": "stream-view-macros",
+      "label": "Stream View Macros",
+      "path": "./packs/stream-view-macros.db",
+      "type": "Macro",
+      "entity": "Macro"
+    }
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "compatibility": {
+          "minimum": "1.12.7.2",
+          "verified": "1.12.7.2"
+        }
+      },
+      {
+        "id": "socketlib",
+        "compatibility": {
+          "minimum": "1.0.10",
+          "verified": "1.0.10"
+        }
+      }
+    ]
+  },
+  "socket": true,
   "license": "LICENSE",
   "readme": "README.md",
   "url": "https://github.com/sPOiDar/fvtt-module-stream-view",
   "bugs": "https://github.com/sPOiDar/fvtt-module-stream-view/issues",
   "changelog": "https://github.com/sPOiDar/fvtt-module-stream-view/blob/master/CHANGELOG.md",
   "manifest": "https://github.com/sPOiDar/fvtt-module-stream-view/raw/master/module.json",
-  "download": "https://github.com/sPOiDar/fvtt-module-stream-view/releases/download/v0.4.2/stream-view-v0.4.2.zip"
+  "download": "https://github.com/sPOiDar/fvtt-module-stream-view/releases/download/v2.0.1/stream-view-v2.0.1.zip"
 }

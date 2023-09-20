@@ -3,6 +3,7 @@ import { MonksLittleDetails, log, error, setting, i18n } from '../monks-little-d
 export class UpdateImages extends FormApplication {
     constructor(object, options = {}) {
         super(object, options);
+        this.autoscroll = true;
     }
 
     static get defaultOptions() {
@@ -22,7 +23,7 @@ export class UpdateImages extends FormApplication {
         data.compendiums = {};
         for (let pack of game.packs) {
             if (pack.metadata.type == "Actor") {
-                data.compendiums[pack.collection] = `${pack.title} - (${pack.metadata.package})`
+                data.compendiums[pack.collection] = `${pack.title} - (${pack.metadata.packageName})`
             }
         }
         data.compendium = game.user.getFlag("monks-little-details", "compendium");
@@ -38,7 +39,16 @@ export class UpdateImages extends FormApplication {
 
     activateListeners(html) {
         super.activateListeners(html);
+        let that = this;
         $('.convert', html).on("click", this.convert.bind(this));
+        $('.conversion-results', html).on("scroll", this.scrollResults.bind(this))
+    }
+
+    scrollResults(event) {
+        if (event.currentTarget.scrollTop + $(event.currentTarget).height() == event.currentTarget.scrollHeight)
+            this.autoscroll = true;
+        else
+            this.autoscroll = false;
     }
 
     convert() {
@@ -119,7 +129,7 @@ export class UpdateImages extends FormApplication {
             filenames = filenames.sort((a, b) => { return b.ext.localeCompare(a.ext); });
 
             if (getProperty(entry, prop) == filenames[0].name) {
-                $('.conversion-results', this.element).append($('<li>').addClass("ignoring-update").html(`<span>Ignoring ${type}: ${entry.name}, image is the same</span>`));
+                this.addText(`<span>Ignoring ${type}: ${entry.name}, image is the same</span>`, "ignoring-update");
                 return true;
             }
 
@@ -128,11 +138,11 @@ export class UpdateImages extends FormApplication {
             update = expandObject(update);
 
             try {
-                await entry.update(update.data);
+                await entry.update(update);
                 log('Fixing:', entry.name, filenames[0].name);
-                $('.conversion-results', this.element).append($('<li>').addClass("fixing-update").html(`<span>Fixing ${type}: ${entry.name}, ${filenames[0].name}</span>`));
+                this.addText(`<span>Fixing ${type}: ${entry.name}, ${filenames[0].name}</span>`, "fixing-update");
             } catch {
-                $('.conversion-results', this.element).append($('<li>').addClass("error-update").html(`<span>Error: ${entry.name}, ${filenames[0].name}</span>`));
+                this.addText(`<span>Error: ${entry.name}, ${filenames[0].name}</span>`, "error-update");
             }
             return true;
         }
@@ -147,13 +157,21 @@ export class UpdateImages extends FormApplication {
         if (pack) {
             await pack.configure({ locked: false });
 
-            $('.conversion-results', this.element).append($('<li>').html(`Start conversion: ${pack.title}`));
+            this.addText(`Start conversion: ${pack.title}`);
             await pack.getDocuments().then(async (entries) => {
                 for (var i = 0; i < entries.length; i++) {
                     var entry = entries[i];
-                    let altname = entry.name.replace(/-/g, '').replace(/'/g, '').replace(/\(.*\)/, '').replace(/\s/g, '');
                     let names = [entry.name, entry.name.toLowerCase()];
+                    let altname = entry.name.replace(/-/g, '').replace(/'/g, '').replace(/\(.*\)/, '').replace(/\s/g, '');
                     if (altname != entry.name) {
+                        names.push(altname);
+                        names.push(altname.toLowerCase());
+                    }
+                    if (entry.name.toLowerCase().startsWith("swarm")) {
+                        altname = entry.name.replace(/SwarmOf/g, 'Swarm').replace(/Swarm Of/g, 'Swarm').replace(/Swarm of/g, 'Swarm').replace(/Swarmof/g, 'Swarm').replace(/swarmof/, 'swarm');
+                        names.push(altname);
+                        names.push(altname.toLowerCase());
+                        altname = altname.replace(/-/g, '').replace(/'/g, '').replace(/\(.*\)/, '').replace(/\s/g, '');
                         names.push(altname);
                         names.push(altname.toLowerCase());
                     }
@@ -165,8 +183,10 @@ export class UpdateImages extends FormApplication {
                         }
                     }
 
-                    var mtype = entry.data.data.details.type?.value.toLowerCase() || entry.data.data.traits?.traits?.value || ""; //|| entry.data.data.details.creatureType?.toLowerCase()
+                    var mtype = entry.system.details.type?.value.toLowerCase() || entry.system.traits?.traits?.value || ""; //|| entry.system.details.creatureType?.toLowerCase()
                     mtype = (mtype instanceof Array ? mtype : [mtype]);
+                    if (entry.name.toLowerCase().startsWith("swarm"))
+                        mtype.push("swarm");
                     for (let i = 0; i < mtype.length; i++) {
                         if (mtype[i].indexOf(',') > 0) {
                             let temp = mtype[i].split(',');
@@ -186,7 +206,7 @@ export class UpdateImages extends FormApplication {
                         for (let name of names) {
                             for (let type of mtype) {
                                 let imgname = `${avatar}/${type != "" ? type + "/" : ""}${name}.*`;
-                                let result = await this.fixEntry(entry, "data.img", imgname, "avatar");
+                                let result = await this.fixEntry(entry, "img", imgname, "avatar");
                                 if (result) {
                                     found = true;
                                     break foundAvatar;
@@ -195,7 +215,7 @@ export class UpdateImages extends FormApplication {
                         }
                     }
                     if (!found) {
-                        $('.conversion-results', this.element).append($('<li>').addClass("cant-find-update").html(`<span>Unable to find avatar: ${entry.name}</span>`));
+                        this.addText(`<span>Unable to find avatar: ${entry.name}</span>`, "cant-find-update");
                     }
 
                     found = false;
@@ -205,7 +225,7 @@ export class UpdateImages extends FormApplication {
                             for (let type of mtype) {
                                 var imgname = `${token}/${type != "" ? type + "/" : ""}${name}.*`;
 
-                                let result = await this.fixEntry(entry, "data.token.img", imgname, "token");
+                                let result = await this.fixEntry(entry, "prototypeToken.texture.src", imgname, "token");
                                 if (result) {
                                     found = true;
                                     break foundToken;
@@ -214,7 +234,7 @@ export class UpdateImages extends FormApplication {
                         }
                     }
                     if (!found) {
-                        $('.conversion-results', this.element).append($('<li>').addClass("cant-find-update").html(`<span>Unable to find token: ${entry.name}</span>`));
+                        this.addText(`<span>Unable to find token: ${entry.name}</span>`, "cant-find-update");
                     }
 
                     foundSound:
@@ -222,7 +242,7 @@ export class UpdateImages extends FormApplication {
                         for (let type of mtype) {
                             var soundname = `${sound}/${type != "" ? type + "/" : ""}${name}.*`;
 
-                            let result = await this.fixEntry(entry, "data.flags.monks-little-details.sound-effect", soundname, "sound");
+                            let result = await this.fixEntry(entry, "flags.monks-little-details.sound-effect", soundname, "sound");
                             if (result)
                                 break foundSound;
                         }
@@ -232,8 +252,15 @@ export class UpdateImages extends FormApplication {
 
                 pack.configure({ locked: true });
                 log("Completed: " + pack.title);
-                $('.conversion-results', this.element).append($('<li>').html(`Completed: ${pack.title}`));
+                this.addText(`Completed: ${pack.title}`);
             });
+        }
+    }
+
+    addText(text="", cls="") {
+        $('.conversion-results', this.element).append($('<li>').addClass(cls).html(text));
+        if (this.autoscroll) {
+            $('.conversion-results', this.element).get(0).scrollTo(0, $('.conversion-results', this.element).get(0).scrollHeight);
         }
     }
 }

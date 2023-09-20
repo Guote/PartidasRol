@@ -1,4 +1,4 @@
-import { calculateNaturalPenaltyWithoutWearArmor } from "../../natural-penalty/calculations/calculateWearArmorNaturalPenalty.js";
+import { calculateNaturalPenaltyWithoutWearArmor } from '../../natural-penalty/calculations/calculateWearArmorNaturalPenalty.js';
 export const calculateSecondarySwim = (data) => {
     const naturalPenalty = -calculateNaturalPenaltyWithoutWearArmor(data);
     return (data.secondaries.athletics.swim.base.value +

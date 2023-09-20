@@ -1,4 +1,4 @@
-import { calculateAttributeModifier } from "../util/calculateAttributeModifier.js";
+import { calculateAttributeModifier } from '../util/calculateAttributeModifier.js';
 /**
  * Adds to primary characteristics object without modifiers its modifiers,
  * calculated based on its value

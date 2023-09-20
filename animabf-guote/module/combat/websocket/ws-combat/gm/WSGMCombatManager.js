@@ -1,20 +1,17 @@
-import { Log } from "../../../../../utils/Log.js";
-import { WSCombatManager } from "../WSCombatManager.js";
-import { GMMessageTypes } from "./WSGMCombatMessageTypes.js";
-import { UserMessageTypes } from "../user/WSUserCombatMessageTypes.js";
-import { GMCombatDialog } from "../../../../dialogs/combat/GMCombatDialog.js";
-import { CombatDialogs } from "../../dialogs/CombatDialogs.js";
-import { CombatDefenseDialog } from "../../../../dialogs/combat/CombatDefenseDialog.js";
-import { CombatAttackDialog } from "../../../../dialogs/combat/CombatAttackDialog.js";
-import { ABFDialogs } from "../../../../dialogs/ABFDialogs.js";
-import { canOwnerReceiveMessage } from "../util/canOwnerReceiveMessage.js";
-import { getTargetToken } from "../util/getTargetToken.js";
-import { assertCurrentScene } from "../util/assertCurrentScene.js";
-import { ABFSettingsKeys } from "../../../../../utils/registerSettings.js";
+import { Log } from '../../../../../utils/Log.js';
+import { WSCombatManager } from '../WSCombatManager.js';
+import { GMMessageTypes } from './WSGMCombatMessageTypes.js';
+import { UserMessageTypes } from '../user/WSUserCombatMessageTypes.js';
+import { GMCombatDialog } from '../../../../dialogs/combat/GMCombatDialog.js';
+import { CombatDialogs } from '../../dialogs/CombatDialogs.js';
+import { CombatDefenseDialog } from '../../../../dialogs/combat/CombatDefenseDialog.js';
+import { CombatAttackDialog } from '../../../../dialogs/combat/CombatAttackDialog.js';
+import { ABFDialogs } from '../../../../dialogs/ABFDialogs.js';
+import { canOwnerReceiveMessage } from '../util/canOwnerReceiveMessage.js';
+import { getTargetToken } from '../util/getTargetToken.js';
+import { assertCurrentScene } from '../util/assertCurrentScene.js';
+import { ABFSettingsKeys } from '../../../../../utils/registerSettings.js';
 export class WSGMCombatManager extends WSCombatManager {
-    constructor(game) {
-        super(game);
-    }
     receive(msg) {
         switch (msg.type) {
             case UserMessageTypes.RequestToAttack:
@@ -38,7 +35,11 @@ export class WSGMCombatManager extends WSCombatManager {
             if (canOwnerReceiveMessage(defenderActor)) {
                 const newMsg = {
                     type: GMMessageTypes.Attack,
-                    payload: { attackerTokenId: attackerToken.id, defenderTokenId: defenderToken.id, result: msg.payload }
+                    payload: {
+                        attackerTokenId: attackerToken.id,
+                        defenderTokenId: defenderToken.id,
+                        result: msg.payload
+                    }
                 };
                 this.emit(newMsg);
             }
@@ -68,7 +69,10 @@ export class WSGMCombatManager extends WSCombatManager {
     }
     endCombat() {
         if (this.combat) {
-            const msg = { type: GMMessageTypes.CancelCombat, combatId: this.combat.id };
+            const msg = {
+                type: GMMessageTypes.CancelCombat,
+                combatId: this.combat.id
+            };
             this.emit(msg);
             this.combat.close({ executeHook: false });
             this.combat = undefined;
@@ -88,26 +92,23 @@ export class WSGMCombatManager extends WSCombatManager {
         if (!user)
             return;
         const { targets } = user;
-        const selectedToken = this.game.scenes?.current?.tokens.find(t => t.object?._controlled);
+        const selectedToken = this.game.scenes?.current?.tokens.find(t => t.object?.controlled);
         if (!selectedToken) {
             ABFDialogs.prompt(this.game.i18n.localize('macros.combat.dialog.error.noSelectedToken.title'));
             return;
         }
         const targetToken = getTargetToken(selectedToken, targets);
         if (selectedToken?.id) {
-            if (this.game.settings.get('animabf-guote', ABFSettingsKeys.AUTO_ACCEPT_COMBAT_REQUESTS)) {
-                this.combat = this.createNewCombat(selectedToken, targetToken);
-                this.manageAttack(selectedToken, targetToken);
-            } else {
-                await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', { target: targetToken.name }), {
-                    onConfirm: () => {
-                        if (selectedToken?.id && targetToken?.id) {
-                            this.combat = this.createNewCombat(selectedToken, targetToken);
-                            this.manageAttack(selectedToken, targetToken);
-                        }
+            await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', {
+                target: targetToken.name
+            }), {
+                onConfirm: () => {
+                    if (selectedToken?.id && targetToken?.id) {
+                        this.combat = this.createNewCombat(selectedToken, targetToken);
+                        this.manageAttack(selectedToken, targetToken);
                     }
-                });
-            }      
+                }
+            });
         }
         else {
             ABFDialogs.prompt(this.game.i18n.localize('macros.combat.dialog.error.noSelectedActor.title'));
@@ -118,7 +119,10 @@ export class WSGMCombatManager extends WSCombatManager {
             const newMsg = {
                 type: GMMessageTypes.RequestToAttackResponse,
                 toUserId: msg.senderId,
-                payload: { allowed: false, alreadyInACombat: true }
+                payload: {
+                    allowed: false,
+                    alreadyInACombat: true
+                }
             };
             this.emit(newMsg);
             return;
@@ -132,7 +136,10 @@ export class WSGMCombatManager extends WSCombatManager {
         }
         try {
             if (!this.game.settings.get('animabf-guote', ABFSettingsKeys.AUTO_ACCEPT_COMBAT_REQUESTS)) {
-                await CombatDialogs.openCombatRequestDialog({ attacker: attacker.actor, defender: defender.actor });
+                await CombatDialogs.openCombatRequestDialog({
+                    attacker: attacker.actor,
+                    defender: defender.actor
+                });
             }
             this.combat = this.createNewCombat(attacker, defender);
             const newMsg = {
@@ -168,11 +175,18 @@ export class WSGMCombatManager extends WSCombatManager {
                     onCounterAttack: () => {
                         this.endCombat();
                     }
-                }, { isCounter: true, counterAttackBonus: bonus });
+                }, {
+                    isCounter: true,
+                    counterAttackBonus: bonus
+                });
                 if (canOwnerReceiveMessage(defender.actor)) {
                     const newMsg = {
                         type: GMMessageTypes.CounterAttack,
-                        payload: { attackerTokenId: defender.id, defenderTokenId: attacker.id, counterAttackBonus: bonus }
+                        payload: {
+                            attackerTokenId: defender.id,
+                            defenderTokenId: attacker.id,
+                            counterAttackBonus: bonus
+                        }
                     };
                     this.emit(newMsg);
                 }
@@ -192,7 +206,11 @@ export class WSGMCombatManager extends WSCombatManager {
                     if (canOwnerReceiveMessage(defender.actor)) {
                         const newMsg = {
                             type: GMMessageTypes.Attack,
-                            payload: { attackerTokenId: attacker.id, defenderTokenId: defender.id, result }
+                            payload: {
+                                attackerTokenId: attacker.id,
+                                defenderTokenId: defender.id,
+                                result
+                            }
                         };
                         this.emit(newMsg);
                     }
@@ -213,7 +231,11 @@ export class WSGMCombatManager extends WSCombatManager {
         }, { counterAttackBonus: bonus });
     }
     manageDefense(attacker, defender, attackType, critic) {
-        this.defendDialog = new CombatDefenseDialog({ token: attacker, attackType, critic }, defender, {
+        this.defendDialog = new CombatDefenseDialog({
+            token: attacker,
+            attackType,
+            critic
+        }, defender, {
             onDefense: result => {
                 if (this.defendDialog) {
                     this.defendDialog.close({ force: true });

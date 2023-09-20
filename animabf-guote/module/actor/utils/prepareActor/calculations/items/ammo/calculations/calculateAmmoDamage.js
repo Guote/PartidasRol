@@ -1,1 +1,1 @@
-export const calculateAmmoDamage = (ammo) => Math.max(ammo.data.damage.base.value + ammo.data.quality.value * 2, 0);
+export const calculateAmmoDamage = (ammo) => Math.max(ammo.system.damage.base.value + ammo.system.quality.value * 2, 0);
