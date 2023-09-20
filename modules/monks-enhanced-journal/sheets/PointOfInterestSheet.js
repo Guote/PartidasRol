@@ -9,7 +9,7 @@ export class PointOfInterestSheet extends EnhancedJournalSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             title: i18n("MonksEnhancedJournal.PointOfInterest"),
-            template: "modules/monks-enhanced-journal/templates/poi.html",
+            template: "modules/monks-enhanced-journal/templates/sheets/poi.html",
             tabs: [{ navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description" }],
             dragDrop: [
                 { dropSelector: ".poi-container" },
@@ -20,24 +20,33 @@ export class PointOfInterestSheet extends EnhancedJournalSheet {
     }
 
     async getData() {
-        let data = super.getData();
+        let data = await super.getData();
 
         data.relationships = {};
         for (let item of (data.data.flags['monks-enhanced-journal']?.relationships || [])) {
             let entity = await this.getDocument(item, "JournalEntry", false);
+            if (!(entity instanceof JournalEntry || entity instanceof JournalEntryPage))
+                continue;
             if (entity && entity.testUserPermission(game.user, "LIMITED") && (game.user.isGM || !item.hidden)) {
-                if (!data.relationships[entity.type])
-                    data.relationships[entity.type] = { type: entity.type, name: i18n(`MonksEnhancedJournal.${entity.type.toLowerCase()}`), documents: [] };
+                let page = (entity instanceof JournalEntryPage ? entity : entity.pages.contents[0]);
+                let type = getProperty(page, "flags.monks-enhanced-journal.type");
+                if (!data.relationships[type])
+                    data.relationships[type] = { type: type, name: i18n(`MonksEnhancedJournal.${type.toLowerCase()}`), documents: [] };
 
-                item.name = entity.name;
-                item.img = entity.data.img;
+                item.name = page.name;
+                item.img = page.src;
+                item.type = type;
 
-                data.relationships[entity.type].documents.push(item);
+                data.relationships[type].documents.push(item);
             }
         }
 
         for (let [k, v] of Object.entries(data.relationships)) {
             v.documents = v.documents.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        data.has = {
+            relationships: Object.keys(data.relationships || {})?.length
         }
 
         return data;
@@ -47,16 +56,17 @@ export class PointOfInterestSheet extends EnhancedJournalSheet {
         return 'poi';
     }
 
+    /*
     get allowedRelationships() {
         return ['person', 'place'];
-    }
+    }*/
 
     activateListeners(html, enhancedjournal) {
         super.activateListeners(html, enhancedjournal);
         $('.item-hide', html).on('click', this.alterItem.bind(this));
         $('.item-delete', html).on('click', $.proxy(this._deleteItem, this));
-        $('.items-list .actor-icon', html).click(this.openRelationship.bind(this));
-        $('.item-relationship .item-field', html).on('change', this.alterRelationship.bind(this));
+        $('.relationships .items-list h4', html).click(this.openRelationship.bind(this));
+        //$('.item-relationship .item-field', html).on('change', this.alterRelationship.bind(this));
     }
 
     _documentControls() {
@@ -92,7 +102,7 @@ export class PointOfInterestSheet extends EnhancedJournalSheet {
         return game.user.isGM || this.object.isOwner;
     }
 
-    _onDrop(event) {
+    async _onDrop(event) {
         let data;
         try {
             data = JSON.parse(event.dataTransfer.getData('text/plain'));
@@ -102,6 +112,12 @@ export class PointOfInterestSheet extends EnhancedJournalSheet {
         }
 
         if (data.type == 'JournalEntry') {
+            this.addRelationship(data);
+        } else if (data.type == 'JournalEntryPage') {
+            let doc = await fromUuid(data.uuid);
+            data.id = doc?.parent.id;
+            data.uuid = doc?.parent.uuid;
+            data.type = "JournalEntry";
             this.addRelationship(data);
         }
 

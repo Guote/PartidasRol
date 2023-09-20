@@ -3,7 +3,7 @@ import { MoulinetteDropAsActor } from "./modules/moulinette-dropas-actor.js"
 import { MoulinetteMacros } from "./modules/moulinette-macros.js"
 import { MoulinetteTilesFavorites } from "./modules/moulinette-tiles-favorites.js"
 import { MoulinetteSearch } from "./modules/moulinette-search.js"
-
+import { MoulinetteOptions } from "./modules/moulinette-options.js"
 
 Hooks.once("init", async function () {
   console.log("Moulinette Tiles | Init") 
@@ -11,9 +11,9 @@ Hooks.once("init", async function () {
   game.settings.register("moulinette", "tileSize", { scope: "world", config: false, type: Number, default: 100 })
   game.settings.register("moulinette", "tileMacro", { scope: "world", config: false, type: Object, default: {} })  // old implementation
   game.settings.register("moulinette", "tileMacros", { scope: "world", config: false, type: Object, default: {} }) // new implementation
-  game.settings.register("moulinette", "tileActorId", { scope: "world", config: false, type: String })
+  game.settings.register("moulinette", "tileActorId", { scope: "world", config: false, type: String, default: 0 })
   game.settings.register("moulinette", "tileActorLink", { scope: "world", config: false, type: Boolean, default: true })
-  game.settings.register("moulinette", "tileActorType", { scope: "world", config: false, type: String })
+  game.settings.register("moulinette", "tileActorType", { scope: "world", config: false, type: String, default: null })
   game.settings.register("moulinette", "searchPrefs", { scope: "world", config: false, type: Object, default: {} })
   
   game.settings.register("moulinette-tiles", "tileShowVideoThumb", {
@@ -22,6 +22,15 @@ Hooks.once("init", async function () {
     scope: "world",
     config: true,
     default: true,
+    type: Boolean
+  });
+
+  game.settings.register("moulinette-tiles", "prefabsCleanup", {
+    name: game.i18n.localize("mtte.configPrefabsCleanup"),
+    hint: game.i18n.localize("mtte.configPrefabsCleanupHint"),
+    scope: "world",
+    config: true,
+    default: false,
     type: Boolean
   });
 
@@ -56,9 +65,7 @@ Hooks.once("setup", async function () {
     description: game.i18n.localize("mtte.tilesDescription"),
     instance: new moduleClassTiles(),
     actions: [
-      {id: "indexImages", icon: "fas fa-sync" ,name: game.i18n.localize("mtte.indexImages"), help: game.i18n.localize("mtte.indexImagesToolTip") },
       {id: "configureSources", icon: "fas fa-cogs" ,name: game.i18n.localize("mtte.configureSources"), help: game.i18n.localize("mtte.configureSourcesToolTip") },
-      //{id: "customReferences", icon: "fas fa-plus-square" ,name: game.i18n.localize("mtte.customReferences"), help: game.i18n.localize("mtte.customReferencesToolTip") },
       {id: "howto", icon: "fas fa-question-circle" ,name: game.i18n.localize("mtte.howto"), help: game.i18n.localize("mtte.howtoToolTip") }
     ],
     shortcuts: [{
@@ -83,6 +90,7 @@ Hooks.once("setup", async function () {
     actions: []
   })
   
+  game.moulinette.applications["MoulinetteOptions"] = MoulinetteOptions
   game.moulinette.applications["MoulinetteDropAsActor"] = MoulinetteDropAsActor
   Array.prototype.push.apply(game.moulinette.macros, MoulinetteMacros.macros)
 });
@@ -102,8 +110,9 @@ Hooks.once("ready", async function () {
 
   const choices = { "": game.i18n.localize("mtte.configMacroCompendiumNone") }
   const macroCompendiums = game.packs.filter(p => p.documentName == "Macro")
+
   for(const p of macroCompendiums) {
-    choices[`${p.metadata.package}.${p.metadata.name}`] = p.metadata.label
+    choices[`${p.metadata.id}`] = p.metadata.label
   }
 
   game.settings.register("moulinette-tiles", "macroCompendium", {
@@ -142,7 +151,7 @@ Hooks.on('dropCanvasData', (canvas, data) => {
       return false;
     }
     else if(data.type == "Actor" && data.prefab) {
-      console.log("Moulinette | The error below 'cannot read properties' is expected. Just ignore it ;-)")
+      console.log("Moulinette | The error below 'Failed to resolve Document' is expected. Just ignore it ;-)")
       import("./modules/moulinette-prefabs.js").then( c => {
         c.MoulinettePrefabs.createPrefab(data)
       })

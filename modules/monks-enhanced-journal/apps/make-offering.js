@@ -1,4 +1,5 @@
 import { MonksEnhancedJournal, log, setting, i18n, makeid, quantityname } from '../monks-enhanced-journal.js';
+import { getValue, setValue } from "../helpers.js";
 
 export class MakeOffering extends FormApplication {
     constructor(object, journalsheet, options = {}) {
@@ -10,15 +11,20 @@ export class MakeOffering extends FormApplication {
             items: []
         }, options.offering || {});
 
-        if (game.user.character)
-            this.offering.actorId = game.user.character.id;
+        if (game.user.character && !this.offering.actor) {
+            this.offering.actor = {
+                id: game.user.character.id,
+                name: game.user.character.name,
+                img: game.user.character.img
+            }
+        }
     }
 
     /** @override */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             id: "make-offering",
-            classes: ["form", "make-offering"],
+            classes: ["form", "make-offering", "monks-journal-sheet", "dialog"],
             title: i18n("MonksEnhancedJournal.MakeOffering"),
             template: "modules/monks-enhanced-journal/templates/make-offering.html",
             dragDrop: [
@@ -34,7 +40,7 @@ export class MakeOffering extends FormApplication {
 
         data.private = this.offering.hidden;
 
-        data.currency = MonksEnhancedJournal.currencies.map(c => { return { id: c.id, name: c.name }; });
+        data.currency = MonksEnhancedJournal.currencies.filter(c => c.convert != null).map(c => { return { id: c.id, name: c.name }; });
 
         data.coins = this.offering.currency;
         data.items = (this.offering.items || []).map(i => {
@@ -42,7 +48,7 @@ export class MakeOffering extends FormApplication {
             if (!actor)
                 return null;
 
-            let item = actor.data.items.get(i.id);
+            let item = actor.items.get(i.id);
             if (!item)
                 return null;
 
@@ -76,37 +82,41 @@ export class MakeOffering extends FormApplication {
         }
 
         if (data.type == 'Item') {
-            let item = new CONFIG.Item.documentClass(data.data);
-            let max = this.journalsheet.getValue(item.data, quantityname(), null);
-            if (!data.actorId)
-                max = null;
+            let item = await fromUuid(data.uuid);
+            let actor = item.parent;
 
             //Only allow items from an actor
-            if (!data.actorId)
+            if (!actor || actor.compendium)
                 return;
 
-            this.offering.actorId = data.actorId;
+            let max = getValue(item.system, quantityname(), null);
+
+            this.offering.actor = {
+                id: actor.id,
+                name: actor.name,
+                img: actor.img
+            }
 
             let result = await this.journalsheet.constructor.confirmQuantity(item, max, "offer", false);
             if ((result?.quantity ?? 0) > 0) {
-                //let itemData = item.toObject();
-                //this.setValue(itemData, quantityname(), result.quantity);
-                let actor = game.actors.get(data.actorId);
 
                 this.offering.items.push({
                     id: item.id,
                     itemName: item.name,
-                    actorId: data.actorId,
+                    actorId: actor.id,
                     actorName: actor.name,
                     qty: result.quantity
                 });
                 this.render();
             }
         } else if (data.type == "Actor") {
-            let actor = game.actors.get(data.id);
+            let actor = await fromUuid(data.uuid);
+
+            if (!actor || actor.compendium)
+                return;
 
             this.offering.actor = {
-                id: data.id,
+                id: actor.id,
                 name: actor.name,
                 img: actor.img
             }
@@ -127,31 +137,15 @@ export class MakeOffering extends FormApplication {
             offerings.unshift(this.offering);
             await this.object.setFlag("monks-enhanced-journal", "offerings", offerings);
         } else {
-            MonksEnhancedJournal.emit("makeOffering", { offering: this.offering, entryid: this.object.id });
+            MonksEnhancedJournal.emit("makeOffering", { offering: this.offering, uuid: this.object.uuid });
         }
     }
 
     activateListeners(html) {
         super.activateListeners(html);
 
-        let that = this;
-        new ContextMenu($(html), ".offering-item", [
-            {
-                name: "Remove Offering",
-                icon: '<i class="fas fa-trash"></i>',
-                callback: li => {
-                    const id = li.data("id");
-                    Dialog.confirm({
-                        title: `Remove Offering Item`,
-                        content: "Are you sure you want to remove this item from the offering?",
-                        yes: () => {
-                            that.offering.items.findSplice(i => i.id == id);
-                            that.render();
-                        }
-                    });
-                }
-            }
-        ]);
+        $('.actor-icon', html).on("dblclick", this.openActor.bind(this));
+        $('.item-delete', html).on("click", this.removeOffering.bind(this));
 
         $('.cancel-offer', html).on("click", this.close.bind(this));
         $('.private', html).on("change", (event) => {
@@ -160,5 +154,27 @@ export class MakeOffering extends FormApplication {
         $('.currency-field', html).on("blur", (event) => {
             this.offering.currency[$(event.currentTarget).attr("name")] = parseInt($(event.currentTarget).val() || 0);
         });
+    }
+
+    removeOffering(event) {
+        let that = this;
+        const id = event.currentTarget.closest(".item").dataset.id;
+        Dialog.confirm({
+            title: `Remove offering Item`,
+            content: "Are you sure you want to remove this item from the offering?",
+            yes: () => {
+                that.offering.items.findSplice(i => i.id == id);
+                that.render();
+            }
+        });
+    }
+
+    async openActor() {
+        try {
+            let actor = game.actors.get(this.offering?.actor?.id);
+            if (actor) {
+                actor.sheet.render(true);
+            }
+        } catch {}
     }
 }

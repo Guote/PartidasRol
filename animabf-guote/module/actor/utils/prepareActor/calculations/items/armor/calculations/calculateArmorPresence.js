@@ -1,1 +1,1 @@
-export const calculateArmorPresence = (armor) => Math.max(armor.data.presence.base.value + armor.data.quality.value * 10, 0);
+export const calculateArmorPresence = (armor) => Math.max(armor.system.presence.base.value + armor.system.quality.value * 10, 0);

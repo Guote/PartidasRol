@@ -1,36 +1,37 @@
+import { ABFSystemName } from '../../animabf-guote.name.js';
 export const Templates = {
     Dialog: {
-        ModDialog: 'systems/animabf-guote/templates/dialog/mod-dialog.html',
-        DamageCalculator: 'systems/animabf-guote/templates/dialog/damage-calculator.hbs',
+        ModDialog: `systems/${ABFSystemName}/templates/dialog/mod-dialog.html`,
+        DamageCalculator: `systems/${ABFSystemName}/templates/dialog/damage-calculator.hbs`,
         Combat: {
             CombatAttackDialog: {
-                main: 'systems/animabf-guote/templates/dialog/combat/combat-attack/combat-attack-dialog.hbs',
+                main: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/combat-attack-dialog.hbs`,
                 parts: {
-                    combat: 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/combat.hbs',
-                    mystic: 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/mystic.hbs',
-                    psychic: 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/psychic.hbs'
+                    combat: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/combat.hbs`,
+                    mystic: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/mystic.hbs`,
+                    psychic: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/psychic.hbs`
                 }
             },
             CombatDefenseDialog: {
-                main: 'systems/animabf-guote/templates/dialog/combat/combat-defense/combat-defense-dialog.hbs',
+                main: `systems/${ABFSystemName}/templates/dialog/combat/combat-defense/combat-defense-dialog.hbs`,
                 parts: {
-                    combat: 'systems/animabf-guote/templates/dialog/combat/combat-defense/parts/combat.hbs',
-                    damageResistance: 'systems/animabf-guote/templates/dialog/combat/combat-defense/parts/damage-resistance.hbs',
-                    mystic: 'systems/animabf-guote/templates/dialog/combat/combat-defense/parts/mystic.hbs',
-                    psychic: 'systems/animabf-guote/templates/dialog/combat/combat-defense/parts/psychic.hbs'
+                    combat: `systems/${ABFSystemName}/templates/dialog/combat/combat-defense/parts/combat.hbs`,
+                    damageResistance: `systems/${ABFSystemName}/templates/dialog/combat/combat-defense/parts/damage-resistance.hbs`,
+                    mystic: `systems/${ABFSystemName}/templates/dialog/combat/combat-defense/parts/mystic.hbs`,
+                    psychic: `systems/${ABFSystemName}/templates/dialog/combat/combat-defense/parts/psychic.hbs`
                 }
             },
-            CombatRequestDialog: 'systems/animabf-guote/templates/dialog/combat/combat-request-dialog.hbs',
-            GMCombatDialog: 'systems/animabf-guote/templates/dialog/combat/gm-combat-dialog.hbs'
+            CombatRequestDialog: `systems/${ABFSystemName}/templates/dialog/combat/combat-request-dialog.hbs`,
+            GMCombatDialog: `systems/${ABFSystemName}/templates/dialog/combat/gm-combat-dialog.hbs`
         },
-        GenericDialog: 'systems/animabf-guote/templates/dialog/generic-dialog/generic-dialog.hbs',
+        GenericDialog: `systems/${ABFSystemName}/templates/dialog/generic-dialog/generic-dialog.hbs`,
         Icons: {
-            Accept: 'systems/animabf-guote/templates/dialog/parts/check-icon.hbs',
-            Cancel: 'systems/animabf-guote/templates/dialog/parts/cancel-icon.hbs'
+            Accept: `systems/${ABFSystemName}/templates/dialog/parts/check-icon.hbs`,
+            Cancel: `systems/${ABFSystemName}/templates/dialog/parts/cancel-icon.hbs`
         }
     },
-    CustomHotBar: 'systems/animabf-guote/templates/custom-hotbar/custom-hotbar.hbs',
+    CustomHotBar: `systems/${ABFSystemName}/templates/custom-hotbar/custom-hotbar.hbs`,
     Chat: {
-        CombatResult: 'systems/animabf-guote/templates/chat/combat-result.hbs'
+        CombatResult: `systems/${ABFSystemName}/templates/chat/combat-result.hbs`
     }
 };

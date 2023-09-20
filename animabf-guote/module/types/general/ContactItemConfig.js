@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const ContactItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").ContactItemConfig} */
+export const ContactItemConfig = ABFItemConfigFactory({
     type: ABFItems.CONTACT,
     isInternal: true,
     fieldPath: ['general', 'contacts'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.contacts;
-    },
     selectors: {
         addItemButtonSelector: 'add-contact',
         containerSelector: '#contacts-context-menu-container',
@@ -21,31 +20,5 @@ export const ContactItemConfig = {
             name,
             type: ABFItems.CONTACT
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
-            await actor.updateInnerItem({
-                id,
-                type: ABFItems.CONTACT,
-                name,
-                data
-            });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.general.contacts;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.general.contacts = [item];
-        }
     }
-};
+});

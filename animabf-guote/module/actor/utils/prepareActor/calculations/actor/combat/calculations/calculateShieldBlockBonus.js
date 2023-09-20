@@ -1,6 +1,6 @@
-import { WeaponSize } from "../../../../../../../types/combat/WeaponItemConfig.js";
-export const calculateShieldBlockBonus = (shield) => {
-    switch (shield.data.size.value) {
+import { WeaponSize } from '../../../../../../../types/combat/WeaponItemConfig.js';
+export const calculateShieldBlockBonus = shield => {
+    switch (shield.system.size.value) {
         case WeaponSize.SMALL:
             return 10;
         case WeaponSize.MEDIUM:

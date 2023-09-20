@@ -1,0 +1,70 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+  <h3>{{assetName}}</h3>
+  
+  {{#if isSound}}
+    <div class="sound">
+      <div class="icon"><i class="fas fa-music"></i></div>
+      <div><b>{{localize "mtte.duration"}}:</b> <i class="far fa-hourglass"></i> {{soundDuration}}</div>
+      {{#if asset.data.preview}}
+        <audio id="availResultPreview" style="display: none">
+          <source src="{{previewSoundURL}}" type="audio/ogg">
+          Your browser does not support the audio element.
+        </audio>
+        <div class="preview"><b>{{localize "mtte.previewSound15"}}:</b> 
+          <a class="previewSound" href=""><i class="far fa-play"></i></a>
+          <a class="previewSound" href="">listen</a>
+        </div>
+      {{/if}}
+      {{#unless asset.data.preview}}
+        <div><em>No preview available</em></div>
+      {{/unless}}
+    </div>
+  {{/if}}
+  {{#unless isSound}}
+    <div class="tileres">
+      {{#if mouliplaceUrl}}
+        <a href="{{mouliplaceUrl}}" target="_blank"><img id="previewImage" width="{{imageSize}}" height="{{imageSize}}" src="{{url}}"/></a>
+      {{/if}}
+      {{#unless mouliplaceUrl}}
+        <img id="previewImage" width="{{imageSize}}" height="{{imageSize}}" src="{{url}}"/>
+      {{/unless}}
+    </div>
+  {{/unless}}
+  <p>
+    <b>{{#if isSound}}{{localize "mtte.soundFrom"}}{{/if}}
+      {{#unless isSound}}{{localize "mtte.imageFrom"}}{{/unless}}</b>: 
+      {{#if mouliplaceCreatorUrl}}
+        <a href="{{mouliplaceCreatorUrl}}" target="_blank">{{pack.creator}}</a>
+      {{/if}}
+      {{#unless mouliplaceCreatorUrl}}
+        {{pack.creator}}
+      {{/unless}}
+      {{#if mouliplaceUrl}}
+        (<a href="{{mouliplaceUrl}}" target="_blank">{{pack.name}}</a>)
+      {{/if}}
+      {{#unless mouliplaceUrl}}
+        ({{pack.name}})
+      {{/unless}}
+  </p>
+  <p>  
+    <b>{{localize "mtte.requiredTiers"}}</b>:
+    <ul>
+    {{#each tiers as |t|}}
+      <li>{{t.title}} ({{t.amount}} $USD) {{#if t.id}}- <a href="https://www.patreon.com/join/{{../vanity}}/checkout?rid={{t.id}}" target="_blank">{{localize "mtte.subscribe"}}</a></li>{{/if}}
+    {{/each}}
+    </ul>
+  </p>
+  <br />
+  <footer>
+  
+  <div class="actions">
+    {{#if mouliplaceUrl}}
+      <a href="{{mouliplaceUrl}}" target="_blank"><button><i class="fas fa-store"></i> {{localize "mtte.packOnMouliplace"}}</button></a>
+    {{/if}}
+    <a href="{{moulinetteUrl}}" target="_blank"><button><i class="fas fa-store"></i> {{localize "mtte.creatorMoulinetteWebsite"}}</button></a>
+    {{#if creatorUrl}}
+      <a href="{{creatorUrl}}" target="_blank"><button><i class="fas fa-external-link-alt"></i> {{localize "mtte.creatorWebsite"}}</button></a>
+    {{/if}}
+  </div>
+  </footer>
+</form>

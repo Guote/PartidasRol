@@ -1,1 +1,1 @@
-export const calculateAmmoIntegrity = (ammo) => Math.max(ammo.data.integrity.base.value + ammo.data.quality.value * 2, 0);
+export const calculateAmmoIntegrity = (ammo) => Math.max(ammo.system.integrity.base.value + ammo.system.quality.value * 2, 0);

@@ -1,7 +1,29 @@
+/* Fix for module Ernie's modern UI */
+.mtte .window-content {
+  display: flex !important;
+}
+
 #moulinette.forge .body {
   position: relative;
   height: 100%;
   overflow: hidden;
+}
+
+#moulinette.forge .list .creator {
+  display: inline;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+#moulinette.forge .list .pack {
+  display: inline;
+  margin-right: 10px;
+  font-size: smaller;
+}
+
+#moulinette.forge .list .path {
+  display: inline;
+  font-size: small;
 }
 
 #moulinette.forge .header {
@@ -9,7 +31,6 @@
   top: 0px;
   left: 0px;
   height: 75px;
-  overflow: hidden;
   width: 100%;
 }
 
@@ -17,7 +38,7 @@
   height: auto;
   position: absolute;
   top: 75px;
-  bottom: 160px;
+  bottom: 35px;
   left: 0px;
   overflow-y: auto;
   width: 100%;
@@ -35,6 +56,24 @@
   width: 100%;
   padding: 5px;
   padding-right: 15px;
+  background: url(../../ui/parchment.jpg) repeat;
+  display: none;
+}
+
+#moulinette.forge .modulefooter {
+  position: absolute;
+  bottom: 0px;
+  left: 28px;
+  width: 100%;
+  padding: 5px 45px 0px 5px;
+  border-top: 1px solid var(--color-border-light-tertiary);
+}
+
+#moulinette.forge .footerToggle {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  font-size: 22px;
 }
 
 #moulinette.forge footer {
@@ -131,8 +170,14 @@
 }
 
 .mtte button.search {
-  max-width: 30px;
+  max-width: 27px;
+  max-height: 27px;
   margin-left: 5px;
+  font-size: 12px;
+}
+
+.mtte button.hidefooter {
+  max-width: 30px;
 }
 
 .mtte .fvtt-picker {
@@ -207,9 +252,25 @@
   color: red;
 }
 
+.mtte .sOptions {
+  max-width: 18px;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.mtte .sOptions a {
+  margin: 0 3px;
+  border-radius: 5px;
+}
+
+.mtte .sOptions a.active {
+  text-shadow: 0 0 6px red;
+}
+
 .mtte .shortcuts {
   max-width: 18px;
   margin-left: 5px;
+  margin-top: 2px;
 }
 
 .mtte .filepicker {
@@ -223,6 +284,23 @@
   font-size: 18px;
 }
 
+.mtte .filters {
+  max-width: 18px;
+  margin-left: 12px;
+  font-size: 18px;
+  margin-right: 2px;
+}
+
+.mtte .filters a.enabled {
+  color: red;
+}
+
+.mtte .filterOption {
+  display: flex;
+  height: 22px;
+  font-size: 14px;
+}
+
 .moulinette-options .active {
   color: #FFF;
   border: 1px solid red;
@@ -232,14 +310,6 @@
 
 .mtte .expand {
   cursor: pointer;
-}
-
-.mtte option.cloud {
-  color: #f79007;
-}
-
-.mtte option.cloud.contrast {
-  color: brown;
 }
 
 .mtte.help .descr {
@@ -299,7 +369,6 @@
 
 #moulinette-sources .main {
   display: flex;
-  height: auto;
   position: absolute;
   top: 55px;
   bottom: 75px;
@@ -307,6 +376,10 @@
   overflow-y: auto;
   width: 100%;
   margin-bottom: 0px;
+}
+
+#moulinette-sources .main table {
+  height: fit-content;
 }
 
 #moulinette-sources .footer {
@@ -318,6 +391,14 @@
   overflow: hidden;
   padding: 5px;
   padding-right: 15px;
+}
+
+.mtte .sources {
+  width: 100%;
+}
+
+.mtte .exports {
+  display: flex;
 }
 
 .mtte .sources tr:hover {
@@ -343,12 +424,30 @@
   font-weight: bold;
 }
 
+.mtte .actions label.cb {
+  padding-left: 0px;
+}
+
+.mtte .actions .creatorPack {
+  display: flex;
+  align-items: center;
+  min-width: 320px;
+  max-width: 320px;
+}
+
+.mtte .actions .creatorPack.descr {
+  display: block;
+  text-align: right;
+  font-style: italic;
+  padding: 0px 10px 0px 3px;
+}
+
 .mtte .actions button {
   margin-left: 10px;
 }
 
 .mtte .actions button.browse {
-  width: 50px;
+  width: 520px;
 }
 
 .mtte.sources .inactive {
@@ -360,7 +459,19 @@
 }
 
 .mtte .showcase {
+  display: none;
   background: url(../../ui/parchment.jpg) repeat;
+  font-style: italic;
+  font-size: small;
+  padding: 5px;
+  border: 4px solid darkred;
+  position: absolute;
+  bottom: 32px;
+  width: 100%;
+}
+
+.showcase.clickable {
+  cursor: pointer;
 }
 
 .mtte .dragMacro {
@@ -368,3 +479,112 @@
   cursor: grab;
   margin: 0px 5px;
 }
+
+.mtte .inprogress {
+  border: 3px dashed darkred;
+  color: darkred;
+}
+
+.mtte img.mttespinner {
+  height: 32px;
+  border: 0px;
+}
+
+#moulinette .search {
+  align-items: start;
+}
+
+#moulinette-available .main {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+#moulinette-available .infos {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 25px;
+  overflow: hidden;
+}
+
+#moulinette-available .list {
+  height: auto;
+  position: absolute;
+  top: 25px;
+  bottom: 0px;
+  left: 0px;
+  overflow-y: auto;
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+#moulinette-available .sound {
+  cursor: pointer;
+}
+
+#moulinette-availableresult .sound .icon {
+  font-size: 64px;
+  margin: 15px;
+  color: #777;
+}
+
+#moulinette-available .sound-controls {
+  visibility: visible;
+}
+
+.mtte .tooltip-authentication {
+  position: absolute;
+  color: #777;
+  font-style: italic;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+}
+
+.mtte .tooltip-authentication .status {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+.mtte .tooltip-indexing {
+  color: #777;
+  font-style: italic;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+/** Inspired by: https://css-tricks.com/examples/LongDropdowns/# **/
+
+.filterCombo {
+  margin: 0px 5px;
+}
+
+/*
+	LEVEL ONE
+*/
+ul.filterList             { list-style: none; position: relative; width: 100%; margin: 0; padding: 1px 3px; max-width: 255px; }
+ul.filterList li          { float: left; width: 250px; position: relative; }
+ul.filterList li.top      { border: 1px solid var(--color-border-light-tertiary); border-radius: 3px; background: rgba(0, 0, 0, 0.02); }
+ul.filterList a:hover     { color: #000; }
+ul.filterList li a        { text-decoration: none; display: block; padding: 2px 8px; position: relative; z-index: 2000; }
+ul.filterList li a:hover,
+ul.filterList li a.hover  { background: #F3D673; position: relative; }
+
+/*
+	LEVEL TWO
+*/
+ul.filterList ul            { list-style: none; display: none; position: absolute; top: 0; left: 0; width: 250px; z-index: 1000; padding: 0px; margin: 0px; }
+ul.filterList ul li         { color: #000; border-bottom: 1px solid #ccc; }
+ul.filterList ul li a       { display: block; padding: 20px 8px; background: #D6D4C8 !important; }
+ul.filterList ul li a:hover { display: block; background: #F3D673 !important; }
+ul.filterList ul li.filler  { height: 300px; background: #D6D4C8 !important; }
+
+.mtte .cloud          { color: #f79007; }
+.mtte .cloud.contrast { color: brown; }

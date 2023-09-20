@@ -1,6 +1,6 @@
-import { calculateEquippedArmorsPenalty } from "../../natural-penalty/calculations/calculateEquippedArmorsPenalty.js";
-import { calculateNonHelmetArmorsNaturalPenalty } from "../../natural-penalty/calculations/calculateNonHelmetArmorsNaturalPenalty.js";
-import { calculateWearArmorNaturalPenalty } from "../../natural-penalty/calculations/calculateWearArmorNaturalPenalty.js";
+import { calculateEquippedArmorsPenalty } from '../../natural-penalty/calculations/calculateEquippedArmorsPenalty.js';
+import { calculateNonHelmetArmorsNaturalPenalty } from '../../natural-penalty/calculations/calculateNonHelmetArmorsNaturalPenalty.js';
+import { calculateWearArmorNaturalPenalty } from '../../natural-penalty/calculations/calculateWearArmorNaturalPenalty.js';
 export const calculateSecondaryStealth = (data) => {
     const equippedArmorsPenalty = calculateEquippedArmorsPenalty(data);
     const wearArmorNaturalPenalty = calculateWearArmorNaturalPenalty(data);

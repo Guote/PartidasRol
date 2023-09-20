@@ -1,0 +1,8 @@
+.vscode
+fogmanager.code-workspace
+node_modules
+
+.eslintrc.js
+package-lock.json
+package.json
+fogmanager.lock

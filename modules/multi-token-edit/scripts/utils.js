@@ -1,4 +1,6 @@
 import { GeneralDataAdapter } from '../applications/dataAdapters.js';
+import MassEditPresets from '../applications/presets.js';
+import { applyRandomization } from './randomizer/randomizerUtils.js';
 
 export const SUPPORTED_PLACEABLES = [
   'Token',
@@ -15,37 +17,17 @@ export const SUPPORT_SHEET_CONFIGS = [...SUPPORTED_PLACEABLES, 'Actor', 'Playlis
 
 export const SUPPORTED_HISTORY_DOCS = [...SUPPORTED_PLACEABLES, 'Scene', 'Actor', 'PlaylistSound'];
 
-export const SUPPORTED_COLLECTIONS = ['Item', 'Cards', 'RollTable', 'Actor', 'JournalEntry'];
-
-export function hexToRgb(hex) {
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-    return r + r + g + g + b + b;
-  });
-
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
-    : null;
-}
-
-export function rgbToHex(rgb) {
-  return '#' + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-}
+export const SUPPORTED_COLLECTIONS = [
+  'Item',
+  'Cards',
+  'RollTable',
+  'Actor',
+  'JournalEntry',
+  'Scene',
+];
 
 export function interpolateColor(u, c1, c2) {
   return c1.map((a, i) => Math.floor((1 - u) * a + u * c2[i]));
-}
-
-function _randomInRange(num1, num2) {
-  const h = Math.max(num1, num2);
-  const l = Math.min(num1, num2);
-
-  return Math.floor(Math.random() * (h - l) + 1) + l;
-}
-
-export function randomizeColor(c1, c2) {
-  return [_randomInRange(c1[0], c2[0]), _randomInRange(c1[1], c2[1]), _randomInRange(c1[2], c2[2])];
 }
 
 /**
@@ -84,190 +66,9 @@ export async function recursiveTraverse(path, source, bucket, files = []) {
   return files;
 }
 
-export function shuffleArray(array) {
-  var i = array.length,
-    j = 0,
-    temp;
-
-  while (i--) {
-    j = Math.floor(Math.random() * (i + 1));
-
-    // swap randomly chosen element with current element
-    temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-
-  return array;
-}
-
-export function nearestStep(num, step) {
-  if (num % step <= step / 2) {
-    return num - (num % step);
-  }
-  return num - (num % step) + step;
-}
-
-function _canFit(freeRec, rec) {
-  return rec.width <= freeRec.width && rec.height <= freeRec.height;
-}
-
-function _fullyContains(freeRec, rec) {
-  return (
-    freeRec.x <= rec.x &&
-    freeRec.x + freeRec.width >= rec.x + rec.width &&
-    freeRec.y <= rec.y &&
-    freeRec.y + freeRec.height >= rec.y + rec.height
-  );
-}
-
-function _intersectRec(rec1, rec2) {
-  if (rec1.x < rec2.x + rec2.width && rec2.x < rec1.x + rec1.width && rec1.y < rec2.y + rec2.height)
-    return rec2.y < rec1.y + rec1.height;
-  else return false;
-}
-
-export function randomPlace(placeable, ctrl) {
-  const width = nearestStep(placeable.w ?? placeable.width, ctrl.stepX);
-  const height = nearestStep(placeable.h ?? placeable.height, ctrl.stepY);
-
-  const rec = { x: 0, y: 0, width: width, height: height };
-  const freeRectangles = ctrl.freeRectangles;
-
-  // get all free rectangles that can contain rec
-  let fittingRecs = Object.keys(freeRectangles).filter((id) => _canFit(freeRectangles[id], rec));
-
-  // if there are no fitting places left, then place it randomly anywhere within the bounding box
-
-  if (fittingRecs.length) {
-    // Pick a random free rectangle and choose a random location within so that it fits rec
-    const i = fittingRecs[Math.floor(Math.random() * fittingRecs.length)];
-    rec.x = randomNum(
-      freeRectangles[i].x,
-      Math.max(freeRectangles[i].x + freeRectangles[i].width - rec.width, 0),
-      ctrl.stepX
-    );
-    rec.y = randomNum(
-      freeRectangles[i].y,
-      Math.max(freeRectangles[i].y + freeRectangles[i].height - rec.height, 0),
-      ctrl.stepY
-    );
-  } else {
-    // if there are no fitting places left, then place it randomly anywhere within the bounding box
-    rec.x = randomNum(
-      ctrl.boundingBox.x,
-      Math.max(ctrl.boundingBox.x + ctrl.boundingBox.width - rec.width, ctrl.boundingBox.x),
-      ctrl.stepX
-    );
-    rec.y = randomNum(
-      ctrl.boundingBox.y,
-      Math.max(ctrl.boundingBox.y + ctrl.boundingBox.height - rec.height, ctrl.boundingBox.y),
-      ctrl.stepY
-    );
-  }
-
-  // Find all free rectangles that this spot overlaps
-  let overlaps = Object.keys(freeRectangles).filter((id) => _intersectRec(freeRectangles[id], rec));
-
-  for (const id of overlaps) {
-    const overlap = freeRectangles[id];
-    // remove original rectangle
-    delete freeRectangles[id];
-
-    // left split
-    if (overlap.x < rec.x) {
-      _addAndMergeFreeRectangle(
-        freeRectangles,
-        {
-          x: overlap.x,
-          y: overlap.y,
-          width: rec.x - overlap.x,
-          height: overlap.height,
-        },
-        ctrl
-      );
-    }
-
-    // right split
-    if (overlap.x + overlap.width > rec.x + rec.width) {
-      _addAndMergeFreeRectangle(
-        freeRectangles,
-        {
-          x: rec.x + rec.width,
-          y: overlap.y,
-          width: overlap.x + overlap.width - (rec.x + rec.width),
-          height: overlap.height,
-        },
-        ctrl
-      );
-    }
-
-    // top split
-    if (overlap.y < rec.y) {
-      _addAndMergeFreeRectangle(
-        freeRectangles,
-        {
-          x: overlap.x,
-          y: overlap.y,
-          width: overlap.width,
-          height: rec.y - overlap.y,
-        },
-        ctrl
-      );
-    }
-
-    // bottom split
-    if (overlap.y + overlap.height > rec.y + rec.height) {
-      _addAndMergeFreeRectangle(
-        freeRectangles,
-        {
-          x: overlap.x,
-          y: rec.y + rec.height,
-          width: overlap.width,
-          height: overlap.y + overlap.height - (rec.y + rec.height),
-        },
-        ctrl
-      );
-    }
-  }
-
-  return [rec.x, rec.y];
-}
-
-function _addAndMergeFreeRectangle(freeRectangles, rec, ctrl) {
-  const keys = Object.keys(freeRectangles);
-  for (const key of keys) {
-    if (_fullyContains(freeRectangles[key], rec)) {
-      return;
-    }
-  }
-  ctrl.freeId++;
-  freeRectangles[ctrl.freeId] = rec;
-}
-
-export function randomNum(min, max, step) {
-  if (step === 'any') step = 1; // default to integer 1 just to avoid very large decimals
-  else step = Number(step);
-  const stepsInRange = (max - min) / step;
-  return Math.floor(Math.random() * (stepsInRange + (Number.isInteger(step) ? 1 : 0))) * step + min;
-}
-
-// To get rid of v10 warnings
-export function emptyObject(obj) {
-  if (isNewerVersion('10', game.version)) {
-    return foundry.utils.isObjectEmpty(obj);
-  } else {
-    return foundry.utils.isEmpty(obj);
-  }
-}
-
 // To get rid of v10 warnings
 export function getData(obj) {
-  if (isNewerVersion('10', game.version)) {
-    return obj.data;
-  } else {
-    return obj.document ? obj.document : obj;
-  }
+  return obj.document ? obj.document : obj;
 }
 
 // Flags are stored inconsistently. Absence of a flag, being set to null, undefined, empty object or empty string
@@ -279,13 +80,13 @@ export function flagCompare(data, flag, flagVal) {
     flagVal == null ||
     flagVal === false ||
     flagVal === '' ||
-    (getType(flagVal) === 'Object' && emptyObject(flagVal));
+    (getType(flagVal) === 'Object' && isEmpty(flagVal));
 
   const falseyDataVal =
     data[flag] == null ||
     data[flag] === false ||
     data[flag] === '' ||
-    (getType(data[flag]) === 'Object' && emptyObject(data[flag]));
+    (getType(data[flag]) === 'Object' && isEmpty(data[flag]));
 
   if (falseyFlagVal && falseyDataVal) return true;
 
@@ -322,6 +123,7 @@ export function hasFlagRemove(flag, formData) {
 }
 
 export function selectAddSubtractFields(form, fields) {
+  if (!fields) return;
   for (const key of Object.keys(fields)) {
     form
       .find(`[name="${key}"]`)
@@ -334,7 +136,7 @@ export function selectAddSubtractFields(form, fields) {
 
 export function applyAddSubtract(updates, objects, docName, addSubtractFields) {
   // See if any field need to be added or subtracted
-  if (!addSubtractFields || emptyObject(addSubtractFields)) return;
+  if (!addSubtractFields || isEmpty(addSubtractFields)) return;
 
   for (let i = 0; i < updates.length; i++) {
     const update = updates[i];
@@ -430,7 +232,8 @@ export function mergeObjectPreserveDot(original, other = {}, nestedKey = '') {
 }
 
 export function panToFitPlaceables(placeables) {
-  if (placeables && placeables.length) {
+  placeables = placeables.map((p) => p.object ?? p).filter((p) => p.center);
+  if (placeables.length) {
     if (placeables.length === 1) {
       if (placeables[0].center?.x) {
         canvas.animatePan({ x: placeables[0].center.x, y: placeables[0].center.y, duration: 250 });
@@ -440,11 +243,16 @@ export function panToFitPlaceables(placeables) {
       const topLeft = { x: 999999999, y: 999999999 };
       const bottomRight = { x: -999999999, y: -999999999 };
 
-      for (const p of placeables) {
-        if (p.x < topLeft.x) topLeft.x = p.x;
-        if (p.y < topLeft.y) topLeft.y = p.y;
-        if (p.x + p.width > bottomRight.x) bottomRight.x = p.x + p.width;
-        if (p.y + p.height > bottomRight.y) bottomRight.y = p.y + p.height;
+      for (let p of placeables) {
+        let tlc = p;
+        if (p instanceof Wall) {
+          tlc = { x: p.center.x - p.width / 2, y: p.center.y - p.height / 2 };
+        }
+
+        if (tlc.x < topLeft.x) topLeft.x = tlc.x;
+        if (tlc.y < topLeft.y) topLeft.y = tlc.y;
+        if (tlc.x + p.width > bottomRight.x) bottomRight.x = tlc.x + p.width;
+        if (tlc.y + p.height > bottomRight.y) bottomRight.y = tlc.y + p.height;
       }
 
       // Checking if screen at current scale fits placeables along x and y axis
@@ -496,4 +304,179 @@ export function wildcardStringMatch(sw, s2) {
 export function wildcardStringReplace(sw, replaceWith, s2) {
   let re = new RegExp(escapeRegex(sw).replaceAll('*', '.*'), 'g');
   return s2.replaceAll(re, replaceWith);
+}
+
+export function regexStringReplace(sw, replaceWith, s2) {
+  try {
+    let re = new RegExp(sw, 'g');
+    return s2.replaceAll(re, replaceWith);
+  } catch (e) {}
+  return s2;
+}
+
+export function flattenToDepth(obj, d = 0) {
+  if (d === 0) return obj;
+
+  const flat = {};
+  for (let [k, v] of Object.entries(obj)) {
+    let t = getType(v);
+    if (t === 'Object') {
+      if (isEmpty(v)) flat[k] = v;
+      let inner = flattenToDepth(v, d - 1);
+      for (let [ik, iv] of Object.entries(inner)) {
+        flat[`${k}.${ik}`] = iv;
+      }
+    } else flat[k] = v;
+  }
+  return flat;
+}
+
+export function activeEffectPresetSelect(aeConfig) {
+  const showPresetGeneric = function (docName) {
+    new MassEditPresets(
+      null,
+      (preset) => {
+        delete preset['mass-edit-addSubtract'];
+
+        if ('mass-edit-randomize' in preset) {
+          applyRandomization([preset], null, preset['mass-edit-randomize']);
+          delete preset['mass-edit-randomize'];
+        }
+
+        const changes = aeConfig.object.changes ?? [];
+        let nChanges = [];
+
+        Object.keys(preset).forEach((k) => {
+          let value;
+          if (getType(preset[k]) === 'string') value = preset[k];
+          else value = JSON.stringify(preset[k]);
+
+          nChanges.push({
+            key: docName === 'Token' ? 'ATL.' + k : k,
+            mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+            priority: 20,
+            value,
+          });
+        });
+
+        for (let i = changes.length - 1; i >= 0; i--) {
+          if (!nChanges.find((nc) => nc.key === changes[i].key)) nChanges.unshift(changes[i]);
+        }
+
+        aeConfig.object.update({ changes: nChanges });
+      },
+      docName
+    ).render(true);
+  };
+
+  const showPresetActiveEffect = function () {
+    new MassEditPresets(
+      aeConfig,
+      (preset) => {
+        const changes = aeConfig.object.changes ?? [];
+        let nChanges = [];
+
+        preset.changes?.forEach((change) => {
+          if (change.key) {
+            nChanges.push(
+              mergeObject({ mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, priority: 20 }, change)
+            );
+          }
+        });
+
+        for (let i = changes.length - 1; i >= 0; i--) {
+          if (!nChanges.find((nc) => nc.key === changes[i].key)) nChanges.unshift(changes[i]);
+        }
+
+        aeConfig.object.update({ changes: nChanges });
+      },
+      'ActiveEffect'
+    ).render(true);
+  };
+
+  new Dialog({
+    title: 'Open Presets',
+    content: ``,
+    buttons: {
+      activeEffect: {
+        label: 'ActiveEffect',
+        callback: () => showPresetActiveEffect(),
+      },
+      token: {
+        label: 'Token',
+        callback: () => showPresetGeneric('Token'),
+      },
+      actor: {
+        label: 'Actor',
+        callback: () => showPresetGeneric('Actor'),
+      },
+    },
+  }).render(true);
+}
+
+export function spawnPlaceable(docName, preset, { tokenName = 'Token' } = {}) {
+  // Determine spawn position for the new placeable
+  // v11 : canvas.mousePosition
+  let pos =
+    canvas.mousePosition ??
+    canvas.app.renderer.plugins.interaction.mouse.getLocalPosition(canvas.stage);
+  if (docName === 'Token' || docName === 'Tile') {
+    pos.x -= canvas.dimensions.size / 2;
+    pos.y -= canvas.dimensions.size / 2;
+  }
+  pos = canvas.grid.getSnappedPosition(
+    pos.x,
+    pos.y,
+    canvas.getLayerByEmbeddedName(docName).gridPrecision
+  );
+
+  const randomizer = preset['mass-edit-randomize'];
+  if (randomizer) {
+    applyRandomization([preset], null, randomizer);
+  }
+
+  let data;
+
+  // Set default values if needed
+  switch (docName) {
+    case 'Token':
+      data = { name: tokenName };
+      break;
+    case 'Tile':
+      data = { width: canvas.grid.w, height: canvas.grid.h };
+      break;
+    case 'AmbientSound':
+      data = { radius: 20 };
+      break;
+    case 'Wall':
+      data = { c: [pos.x, pos.y, pos.x + canvas.grid.w, pos.y] };
+      break;
+    case 'Drawing':
+      data = { 'shape.width': canvas.grid.w * 2, 'shape.height': canvas.grid.h * 2 };
+      break;
+    case 'MeasuredTemplate':
+      data = { distance: 10 };
+      break;
+    case 'AmbientLight':
+      if (!('config.dim' in preset) && !('config.bright' in preset)) {
+        data = { 'config.dim': 20, 'config.bright': 10 };
+        break;
+      }
+    default:
+      data = {};
+  }
+
+  mergeObject(data, preset);
+  mergeObject(data, pos);
+
+  if (game.keyboard.downKeys.has('AltLeft')) {
+    data.hidden = true;
+  }
+
+  canvas.scene.createEmbeddedDocuments(docName, [data]);
+}
+
+export function getDocumentName(doc) {
+  const docName = doc.document ? doc.document.documentName : doc.documentName;
+  return docName ?? 'NONE';
 }

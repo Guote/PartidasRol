@@ -1,0 +1,133 @@
+{
+	"id": "damage-log",
+	"name": "damage-log",
+	"type": "module",
+	"title": "Damage Log",
+	"description": "Displays damage and healing to tokens in a separate chatlog tab.",
+	"version": "1.15.0",
+	"library": false,
+	"manifestPlusVersion": "1.2.0",
+	"compatibility": {
+		"minimum": "0.8.9",
+		"verified": "11"
+	},
+	"minimumCoreVersion": "0.8.9",
+	"compatibleCoreVersion": "11",
+	"authors": [
+		{
+			"name": "Alan Davies",
+			"discord": "cs96and#3764",
+			"ko-fi": "cs96and"
+		}
+	],
+	"author": "Alan Davies",
+	"dependencies": [
+		{
+			"id": "lib-wrapper",
+			"name": "lib-wrapper",
+			"type": "module"
+		}
+	],
+	"system": [
+		"age-of-sigmar-soulbound",
+		"D35E",
+		"dnd5e",
+		"swade",
+		"tormenta20",
+		"pf1",
+		"pf2e",
+		"worldbuilding",
+		"archmage",
+		"shaper"
+	],
+	"relationships": {
+		"requires": [
+			{
+				"id": "lib-wrapper",
+				"type": "module"
+			}
+		],
+		"systems": [
+			{
+				"id": "age-of-sigmar-soulbound",
+				"type": "system"
+			},
+			{
+				"id": "D35E",
+				"type": "system"
+			},
+			{
+				"id": "dnd5e",
+				"type": "system"
+			},
+			{
+				"id": "gurps",
+				"type": "system"
+			},
+			{
+				"id": "swade",
+				"type": "system"
+			},
+			{
+				"id": "tormenta20",
+				"type": "system"
+			},
+			{
+				"id": "pf1",
+				"type": "system"
+			},
+			{
+				"id": "pf2e",
+				"type": "system"
+			},
+			{
+				"id": "worldbuilding",
+				"type": "system"
+			},
+			{
+				"id": "archmage",
+				"type": "system"
+			},
+			{
+				"id": "shaper",
+				"type": "system"
+			}
+		]
+	},
+	"esmodules": [
+		"scripts/damage-log.js",
+		"scripts/migration.js",
+		"scripts/settings.js",
+		"scripts/util.js"
+	],
+	"scripts": [],
+	"styles": [
+		"styles/damage-log.css"
+	],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		},
+		{
+			"lang": "de",
+			"name": "Deutsch",
+			"path": "lang/de.json"
+		},
+		{
+			"lang": "pt-BR",
+			"name": "Português (Brasil)",
+			"path": "lang/pt_BR.json"
+		},
+		{
+			"lang": "cn",
+			"name": "中文（简体）",
+			"path": "lang/cn.json"
+		}
+	],
+	"url": "https://github.com/cs96and/FoundryVTT-damage-log",
+	"manifest": "https://github.com/cs96and/FoundryVTT-damage-log/releases/latest/download/module.json",
+	"download": "https://github.com/cs96and/FoundryVTT-damage-log/releases/download/1.15.0/module.zip",
+	"changelog": "https://github.com/cs96and/FoundryVTT-damage-log/releases/tag/1.15.0"
+}

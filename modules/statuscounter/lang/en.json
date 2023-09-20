@@ -1,0 +1,39 @@
+{
+    "statuscounter": {
+        "rebindNumberKeys": {
+            "name": "Rebind number keys",
+            "hint": "Overrides the default number key assignment when hovering a status marker to set the amount of stacks."
+        },
+        "rebindMouseButtons": {
+            "name": "Rebind mouse buttons",
+            "hint": "Overrides the default mouse button behavior to increase the stack count with left click and decrease it with right click. The status overlay can be set with Shift + Left click."
+        },
+        "displayOne": {
+            "name": "Display '1'",
+            "hint": "Configures when/if the counter should be displayed for a single stack.",
+            "always": "Always",
+            "countdown": "When counting down",
+            "never": "Never"
+        },
+        "counterFontSize": {
+            "name": "Counter font size",
+            "hint": "The font size of the status counter."
+        },
+        "counterColor": {
+            "name": "Counter color",
+            "hint": "The color of the status counter in RRGGBB format."
+        },
+        "countdownColor": {
+            "name": "Countdown color",
+            "hint": "The color of combat countdowns in RRGGBB format."
+        },
+        "defaultType": {
+            "name": "Default type",
+            "hint": "The default counter type if the effect has no configured type."
+        },
+        "simple": "Simple",
+        "countdown_turn": "Countdown (Turn)",
+        "countdown_round": "Countdown (Round)",
+        "multiplier": "Multiplier"
+    }
+}

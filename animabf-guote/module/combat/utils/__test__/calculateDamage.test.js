@@ -1,4 +1,4 @@
-import { calculateDamage } from "../calculateDamage.js";
+import { calculateDamage } from '../calculateDamage.js';
 describe('calculateDamage', () => {
     test('should calculate damage', () => {
         let damage = calculateDamage(200, 100, 2, 50);

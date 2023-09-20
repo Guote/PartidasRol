@@ -1,9 +1,5 @@
 import { NAME_GENERATOR } from './nameGenerator.js';
 
-String.prototype.capitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
 var mysticOrder = {
     patterns: [
       '<group> of the <entity>',
@@ -432,20 +428,7 @@ var mysticOrder = {
       ],
     },
     places: {
-      seas: [
-        'billow',
-        'breaker',
-        'brine',
-        'deep',
-        'foam',
-        'main',
-        'ocean',
-        'sea',
-        'surf',
-        'swell',
-        'water',
-        'wave',
-      ],
+      seas: ['billow', 'breaker', 'brine', 'deep', 'foam', 'main', 'ocean', 'sea', 'surf', 'swell', 'water', 'wave'],
       lands: [
         'cave',
         'cavern',
@@ -536,15 +519,7 @@ var mysticOrder = {
       'satisfaction',
       'vindication',
     ],
-    titles: [
-      'alliance',
-      'association',
-      'company',
-      'corporation',
-      'organisation',
-      'society',
-      'syndicate',
-    ],
+    titles: ['alliance', 'association', 'company', 'corporation', 'organisation', 'society', 'syndicate'],
     descriptions: [
       'black',
       'cloud',
@@ -648,33 +623,22 @@ export const GROUP_GENERATORS = {
 
     if (d30 < 6) {
       name =
-        thievesAndAssassins.roles[
-          Math.floor(Math.random() * thievesAndAssassins.roles.length)
-        ].capitalize() +
+        thievesAndAssassins.roles[Math.floor(Math.random() * thievesAndAssassins.roles.length)].capitalize() +
         ' of ' +
-        thievesAndAssassins.goals[
-          Math.floor(Math.random() * thievesAndAssassins.goals.length)
-        ].capitalize();
+        thievesAndAssassins.goals[Math.floor(Math.random() * thievesAndAssassins.goals.length)].capitalize();
     } else if (d30 < 11) {
       name =
-        thievesAndAssassins.adjectives[
-          Math.floor(Math.random() * thievesAndAssassins.adjectives.length)
-        ].capitalize() +
+        thievesAndAssassins.adjectives[Math.floor(Math.random() * thievesAndAssassins.adjectives.length)].capitalize() +
         ' ' +
-        thievesAndAssassins.actions[
-          Math.floor(Math.random() * thievesAndAssassins.actions.length)
-        ].capitalize() +
+        thievesAndAssassins.actions[Math.floor(Math.random() * thievesAndAssassins.actions.length)].capitalize() +
         ' ' +
-        thievesAndAssassins.titles[
-          Math.floor(Math.random() * thievesAndAssassins.titles.length)
-        ].capitalize();
+        thievesAndAssassins.titles[Math.floor(Math.random() * thievesAndAssassins.titles.length)].capitalize();
     } else {
       name =
         thievesAndAssassins.descriptions[
           Math.floor(Math.random() * thievesAndAssassins.descriptions.length)
         ].capitalize();
-      rngGroup =
-        thievesAndAssassins.groups[Math.floor(Math.random() * thievesAndAssassins.groups.length)];
+      rngGroup = thievesAndAssassins.groups[Math.floor(Math.random() * thievesAndAssassins.groups.length)];
       name += ' ' + rngGroup[Math.floor(Math.random() * rngGroup.length)].capitalize();
     }
 

@@ -1,3 +1,495 @@
+# Version 10.17
+
+Fixing issue with the save button disappearing in Prose Mirror editors.
+
+Fixed issue with broken inline links not being coloured red.
+
+Fixed issue with roll table names being too long for the select drop down.
+
+Fixed issue with dropping a folder of items onto a Shop taking forever to add them all.
+
+Fixed issue with APSJ Blocks Panels, and Dialogs having html displayed in them.
+
+# Version 10.16
+
+Fixing an issue with the rendering Journal Entry Page hook when not viewing MEJ Journal pages.
+
+Fixed issue with the sidebar directory repositioning when the window is reduced past a certain size.
+
+Fixed issue with MEJ pages showing as blank.
+
+# Version 10.15
+
+Added integration with Monks Sound Enhancement to use the Sound Effects volume if it's available.
+
+Added the option to drag a Journal onto the tab bar to open it.
+
+Fixed issue with opening a Journal Entry not going to the correct anchor.
+
+Fixed issue where the Journal sheet would always open to the anchor regardless of where you've scrolled to in the document.
+
+Fixed issue where pressing enter in the Journal name text field was causing Foundry to reload.
+
+Added the option to hold down the shift key when clicking on a tab to close a tab.
+
+Added the option to hold down the alt key when clicking a tab to open a tab out of the enhaced browser.
+
+Fixed issue with the enhanced browser title not changing if the active tab is open and the name changes.
+
+Added a tooltip to the collapse and expand button for the sidebar directory.
+
+Added the option to drag and drop reorder tabs.
+
+Fixed issue with opening Actors in the enhanced browser.
+
+Updated the checklist page to instead just be a generic list page, with 4 options to change the sheet into.  Regular list, checklist, progress list, and poll list.
+
+Fixed issue with objectives not showing the secrets properly.
+
+Added the option to transfer currency back to a loot sheet, or for players to grab a specific amount.
+
+Added integration with Arius Planeswalker's Stylish Journal, so all the goodness from that module comes included in Enhanced Journal.
+
+Completely redid the css files to support variables and to standardise it to make it a lot easier to alter.  When other systems and modules need to make changes to the MEJ styling.
+
+Removed an conflict notification message when using Starfinder.
+
+Added the option to display journal images to a chat message.
+
+Fixed issue with how journal anchors are slugified.
+
+Reduced the permission levels needed to view an inline content link.
+
+Added a details tab to the shop sheet.  Which now includes an open and close time.  And a log of items that have been purchased.
+
+Added world clock integration so shops can now open and close automatically based on the time in game.
+
+Fixed issue with selling an item back to a shop if there were multiple GMs logged in.
+
+Fixed an issue with dropping items onto an actor sheet if the system doesn't support dropping items onto an actor sheet.
+
+Fixed an issue where selling an item back to a shop wasn't setting the value according the the sell back price.
+
+Fixed an issue with Not config not updating the page dropdown properly when a journal was picked.
+
+Added a field on the Note config to accept an anchor for the page.
+
+Fixed an issue where MEJ pages were showing the pages dropdown in the Note Config.
+
+Fixed issue with Polyglot.
+
+Fixed issue with MATT integration.
+
+Added the option to generate the shop or person name randomly.  Person names will also generate based on the ancestry in the Ancestry field on the sheet.
+
+Fixed issue in the Encounter sheet when actors no longer exist.  It will now indicate that they don't exist, so you're not confused when they're not generated with the encounter.
+
+Fixed issue with not being able to clear an image from an MEJ sheet.  You can now shift click it to remove it.
+
+Added the option to pan and zoom a picture page or a Text and Picture page.  Hold the Ctrl Key down and use the mouse wheel to zoom, or click and drag while holding the ctrl key pan.
+
+Fixed currency in the cypher system.
+
+Added integration with Monks Sound Enhancement to show the journal page sound on the playlist tab.
+
+Fixed issue with items that aren't identified showing as identified in the Loot or Shop sheets.
+
+Fixed issue when rarity doesn't exist.
+
+Fixed issue with offerings showing a broken image, and being clear about the quantity added. 
+
+And made it clear when an offering is no longer active.
+
+Added the option to only clear items that aren't locked in a shop.  You can hold the ctrl key down to clear them all.
+
+Fixed issue where offering item image disappears once an offering is accepted.
+
+Added the option to change the name of a Person sheet when an actor is linked to it.
+
+Fixed issue with quest objectives not rendering the inline links properly.
+
+Added the option to drop another shop sheet onto a shop to have it either replace or add items to the store.  Making it a little easier to populate from a known set of items.
+
+Added the option with roll tables to either keep everything, only keep the locked items, or replace everything.
+
+Fixed issue dragging a folder of items into a shop or loot sheet.
+
+Added the option to drop a tab onto the chat window to create a chat card with a link to the journal.
+
+Added permissions to individual list items so you can reveal items on a per user basis.
+
+Changed the Race field to Ancestry field.
+
+# Version 10.14
+
+Fixed issues with opening MEJ with a new tab.
+
+Fixed issues trying to render when the enhanced journal element hasn't been created yet.
+
+Fixed issue trying to locate a map note when the note page hasn't been set.
+
+Added item icons to the offering dialog
+
+Fixed currency issues with systems that use a value with additional information.
+
+Fixed issues setting the price for items in wfrp4e.
+
+Fixed issues witht he autosave trying to re-open the journal entry when you've closed it.
+
+Updated the Note creation code to use the image from the Loot Entry if there is one.
+
+Fixed issues with creating a content link where the uuid is invalid.
+
+Added the option to right click selected text and have MEJ find an item with that name, and replace the selected text with the content link.
+
+Fixed issue with creating relationships when the player editing doesn't have write permissions on the secondary entry.
+
+Fixed issues with showing the name of the Loot Entry selected.
+
+Added the option to set a default loot name when creating new Loot Entries.
+
+Fixed issues with displaying polyglot text on MEJ entries when players aren't using the enhanced journal browser.
+
+Added item rarity to the Shop sheet.
+
+Fixed issue with filling Quest rewards from a Roll Table.
+
+Added notification when trying to create an offering, if the source isn't an actor.
+
+Fixed an issue when assigning loot from a Quest.
+
+Fixed issues when trying to open an actor. or import items from the shop owner context menu.
+
+# Version 10.12
+
+Fixed an issue with getting the price of an item in PF2E.
+
+Fixed issues with Chat portrait moving the images around.
+
+Fixed issue with editing items in a Shop.
+
+# Version 10.11
+
+Fixing some pages not remembering the scroll height of scrollable sections
+
+Added the Event sheet
+
+Fixed issues with the changes to the D&D 5e system.
+
+Added Storyteller integration, so story teller pages won't open in MEJ and the story sheet is added to the sheet type dropdown.
+
+Fixed issues with Foundry's autosave opening the Journal browser if it's closed.
+
+Fixed error that shows when trying to open an Actor sheet in the enhanced browser.
+
+Fixed issue dropping an actor onto a blank page not opening the actor.
+
+# Version 10.10
+
+Fix chat card stylings in PF2E
+
+Fixed issue when finding default currency if there's no currency registered.
+
+Fixed issue with opening a Note related to a picture entry that has limited permission.
+
+Fixed issue with right click context menu nto appearing in the rihght place on long journal entries.
+
+Fixed issue with default relationship images.
+
+Fixed issue with missing relationships.
+
+Fixed issue if relationship points to a page instead of a journal entry.
+
+Fixed issue with actors linked to journal entries.
+
+Fixed issues opening relationships on the Place sheet.
+
+Fixed Actor link issues on the Quest entry.
+
+# Version 10.9
+
+Hid the Write to Journal action in Active Tiles.
+
+Added dynamic fonts.
+
+Tried to fix issue when extracting a Journal Page.
+
+# Version 10.8
+
+Fixing issue that requires Polyglot to be installed
+
+# Version 10.7
+
+Fixed issues with the save state overwriting requested changes
+
+Added special classes to the Enhanced Journal browser to maintain some css styling that require the main form to be in the css path.
+
+Fixed issue with PF2E css styling.
+
+Fixed issue when activating the journal editor.
+
+Fixed issue with PF2E when rendering the TextPageSheet.
+
+Added code to maintain scroll height when changing between pages.
+
+Changed font sizes so they will respond to changes in the Core font size.
+
+Added styling to Journal Entry tabs that have data.
+
+Fixed styling with currency labels
+
+Fixed styling issues with wfrp4e system.
+
+Updated the journal sheet sound effect button to indicate when the sound is loading.
+
+Fixed issues getting system currency in pf2e.
+
+Added the option to always show the Quest Objectives.
+
+Fixed issue with currency text when displaying UPB.
+
+Added default currency for SWADE, 13th Age, and AGE system
+
+Fixed issues with getting embedded documents.
+
+Added the option to extract an Adventure Book page to its own page.
+
+Added the option to convert a single Adventure Book page to an Enhanced Journal page.
+
+Added the option to drag and drop a MEJ Journal Page onto an Adventure Book page.
+
+Fixed issues with displaying the selected Loot entry in the settings.
+
+Fixed issue with dragging and dropping quest rewards onto a character sheet.
+
+Fixed issues with integration with Active Tiles.
+
+Fixed issue with Journal Page sounds only playing once, and never again once opened a second time.
+
+Fixed issues with players being able to edit journal pages
+
+Fixed issues in PF2E where unidentified items were showing as identified
+
+Fixed the item description drop down in PF2E.
+
+Fixed issues with items converted to scrolls no longer linking to the original item.
+
+Fixed issues with getting the default Lootable name.
+
+Fixed issue with adding a new item to a character sheet.
+
+Updated the relationship interface to allow clicking on the image to view an image popout and clicking on the title opening the associated journal entry.
+
+Updated Quest so that players can view rewards, provided the GM allows them to see.
+
+Added dialog box to confirm deleting all slides.
+
+Fixed issue with custom colour font entries in the sidebar directory.
+
+# Version 10.6
+
+Fixed issue with MEJ remembering the way Foundry Journals were last displayed.  So it will now keep track of the page mode, side bar collapse, and last page viewed.
+
+Fixed issue with adding a page not appearing at the end.
+
+Fixed issue with testing permissions of the Journal Entry.
+
+Fixed issues with displaying the entity name when handling saving loot.
+
+Fixed issue when single clicking on page images popping out the image while also opening the FilePicker.
+
+Fixed issue with creating an inline link
+
+# Version 10.5
+
+Fixed issue with permission of Journal Page permissions
+
+Fixed issue with remembering the sidebar being collapsed
+
+Fixed styling in Alien RPG system
+
+Fixed issue with right click context menu in Alien RPG
+
+Fixed styling issue with Stars without number
+
+Added an alert to let players without a default character know why they can't purchase from the shop
+
+Fixed an issue with Fallout currency
+
+Fixed an issue opening a compendium entry
+
+Fixed an issue when no notes are present on a Journal Entry
+
+Fixed an issue with links to compendium entries being shown as broken.
+
+Fixed libWrapper warning with Advanced Macros
+
+Fixed issue where editing an image entry that had no image was adding additional elements to the page.
+
+Added the option to create a Journal Entry Page when trigger from Monk's Active Tiles, using the Write to Journal action.
+
+Fixed issue with the polyglot menu not being added to MEJ pages.
+
+Fixed issue with resetting result from a Roll Table
+
+Fixed issue with the text on the context menu to remove an actor from a loot sheet
+
+Fixed issue with opening the actor that's been attached to an Organization, Person, and Shop sheet.
+
+Fixed the issue with a stray image being shown on the Place sheet.
+
+# Version 10.4
+
+Added support for opening inline links to specific pages within an Adventure Book.
+
+Added the option to view the old journal sheets that had both text and image in tabs.
+
+Allow document owners to add a page to an Adventure Book.
+
+Added the status of the quest to the Objective display
+
+Fixed styling issues with Warhammer
+
+Fixed styling issues with The Witcher RPG
+
+Changed the Loot Sheet display around a bit to make it a little easier to understand.
+
+Updated currencies so they should work in Warhammer now.
+
+Limited conversions to only convert if there is more than one currency to convert into.
+
+Moved the inline request rolls to the Tokenbar module, since it's technically the one making the rolls.
+
+Fixed the show to players dialog to default to image if the journal entry is a picture.
+
+Fixed issues with chat bubble not finding the correct page to pull text from.
+
+Added the option to set items in a shop to be consumable, so the player can pay for them, but won't receive the item.
+
+Fixed issues when opening the appropriate document when clicking on the icons on a purchase request chat card.
+
+Fixed issues with changing the icons on the Adventure Book table of contents when viewing as a single page.
+
+Added the option to see images associated with Journal compendium entries.
+
+Added an action to Monk's Active Tiles to be able to write text to a journal.
+
+Fixed issue with checklist entry, when a non gm player tried to edit, and delete entries.
+
+Fixed warning message when deleteing an entry in a checklist.
+
+When creating an encounter, newly created creatures will get added tot he Encounter Monsters folder instead of being added to the root.
+
+Fixed issue with adding encounter monsters from a compendium.
+
+Fixed issue with players being able to see journal entries from a compendium.
+
+Changed journal entries with images to open those images as a popout on right click, instead of expanding with the entry.  This should give you the option to show to players as just the image.
+
+Added Narrator Tool commands to the right click menu that Enhanced Journal adds.
+
+Fixed issue with pf2e when converting an removign currency.
+
+Fixed issue where hidden shop items were being shown to players.
+
+Fixed issue where loot chat message were incorrectly claiming the item had been purchased.
+
+Respected the setting to not include the roll from table when adding items from a roll table.
+
+Added the option to have offering go to the attached actor.
+
+Added Leader to the Organization sheet.
+
+Fixed issue with the scroll placement not being saved when a shop is edited.
+
+Fixed issue with the height of the chat card in pf2e
+
+# Version 10.3
+
+Fixing a critical bug with opening inline journal links
+
+# Version 10.2
+
+Making sure that a player has permission to view a Journal Sheet before opening it.  This was affecting the recently opened links and previously viewed page.
+
+Fixing the tool tip on a tab when the title changes.
+
+Fixing search highlighting when using the Adventure Book rather than an MEJ page.
+
+Fixed styling issues for the Vaesen system.
+
+Fixed price issues with the Shadow Run 5e system
+
+Added the option to open a journal entry from the sidebar directory using the alt key to bypass the browser.
+
+Fixed issues opening document links within  a Journal Page.
+
+Fixed issue if it an Adventure Book but has no pages
+
+Fixed issue with creating a document link and the uuid isn't async
+
+Fixed issues with showing a Journal Entry as a chat bubble
+
+Fixed issue with getting the Loot Entity's name.
+
+Fixed issue with pages not updating when they should
+
+Fixed issue with inline links not rendering properly.
+
+Fixed issue in PF2E with enriching the content text
+
+Fixed issue with the shop icon that gets displayed in the chat message when requesting an item.
+
+Fixed issue with dragging and dropping loot from a Quest onto an Actor.  And issue with how it deducts the item from the Quest.
+
+Fixed issue with multiple notification when filling items from a Roll Table and the roll table runs out of items.
+
+Fixed issue with item description not displaying the correct information.
+
+Fixed issue with Loot page and trying to update the permissions on the entry.
+
+Fixed issue with not being able to find the item attached to an actor when dropped onto the Loot sheet from an Actor.
+
+Fixed issue with getting a relationship if that relationship isn't a Journal Entry or Journal Page.
+
+Hopefully fixed an issue with the checklist refreshing the page when tryign to create a new entry.
+
+Fixed issue with the Picture sheet showing instructions behind the image.
+
+# Version 10.1
+
+v10 changes.  Lots has changed with this release.  With the addition of Journal Pages in Foundry I had to find a workaround.  I think ultimately the idea is that the Foundry Journal Entry represents an adventure book, whereas the Enhanced Journal pages are meant to be stand alone, interactive sheets.  The pages that MEJ uses aren't meant to be in a book, but are meant to stand alone.
+
+I also updated the interface when creating an encounter from the Encounter sheet.  Instead of dragging the icon to the map where you want the encounter to take place, you now click the button and draw a Measured Template on the canvas to denote the area you want the monsters to be created in.  This should avoid all the icons piling up around each other and allow a randomization of positioning.
+
+# Version 1.0.65
+
+Fixed issue with Journal Picture showing up strangely to players.
+
+Added the option to turn off the NPC chat button toolbar icon.
+
+Switched from using Notes Drop to Notes Preview for updating the icon image to prevent issues with other modules.
+
+Fixed issue when dragging and dropping an item in starfinder not prompting for quantity.
+
+Fixed issue where a custom note icon default to the acid icon.
+
+Added cypher system currency
+
+Added fallout currency
+
+Added the option to set a tagger location to use for Encounters when created using Monk's Active Tile Triggers.
+
+Added the option to select some text in a journal description, right click, and add that text to a chat message.
+
+Added the option to split the journal from selected text and the right click menu.
+
+Fixed currency issue with Mythras.
+
+Fixed issue when trying to convert lower currencies automatically.
+
+Fixed issues with Quest rewards not assigning XP properly.
+
 # Version 1.0.64
 
 Fixed issue with refreshing the Journal Directory when creating a new journal entry.

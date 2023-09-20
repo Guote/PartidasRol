@@ -1,0 +1,46 @@
+<form>
+  <div class="form-group">
+    <label for="hostile-colour">Hostile Colour</label>
+    <input
+      type="color"
+      name="hostile-colour"
+      id="hostile-colour"
+      value="{{hostile}}"
+    />
+  </div>
+  <div class="form-group">
+    <label for="neutral-colour">Neutral Colour</label>
+    <input
+      type="color"
+      name="neutral-colour"
+      id="neutral-colour"
+      value="{{neutral}}"
+    />
+  </div>
+  <div class="form-group">
+    <label for="friendly-colour">Friendly Colour</label>
+    <input
+      type="color"
+      name="friendly-colour"
+      id="friendly-colour"
+      value="{{friendly}}"
+    />
+  </div>
+  {{#if defeated}}
+  <div class="form-group">
+    <label for="defeated-colour">Defeated Colour</label>
+    <input
+      type="color"
+      name="defeated-colour"
+      id="defeated-colour"
+      value="{{defeated}}"
+    />
+  </div>
+  {{/if}}
+  <footer class="sheet-footer flexrow">
+    <button type="submit" name="submit"><i class="fa fa-check"></i> OK</button>
+    <button type="reset" name="reset">
+      <i class="fa fa-undo"></i> Reset Defaults
+    </button>
+  </footer>
+</form>

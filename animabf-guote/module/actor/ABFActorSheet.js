@@ -1,16 +1,17 @@
-import { openModDialog } from "../utils/dialogs/openSimpleInputDialog.js";
-import ABFFoundryRoll from "../rolls/ABFFoundryRoll.js";
-import { splitAsActorAndItemChanges } from "./utils/splitAsActorAndItemChanges.js";
-import { unflat } from "./utils/unflat.js";
-import { ALL_ITEM_CONFIGURATIONS } from "./utils/prepareItems/constants.js";
-import { getFieldValueFromPath } from "./utils/prepareItems/util/getFieldValueFromPath.js";
-import { getUpdateObjectFromPath } from "./utils/prepareItems/util/getUpdateObjectFromPath.js";
-import { ABFItems } from "../items/ABFItems.js";
-import { ABFDialogs } from "../dialogs/ABFDialogs.js";
+import { openModDialog } from '../utils/dialogs/openSimpleInputDialog.js';
+import ABFFoundryRoll from '../rolls/ABFFoundryRoll.js';
+import { splitAsActorAndItemChanges } from './utils/splitAsActorAndItemChanges.js';
+import { unflat } from './utils/unflat.js';
+import { ALL_ITEM_CONFIGURATIONS } from './utils/prepareItems/constants.js';
+import { getFieldValueFromPath } from './utils/prepareItems/util/getFieldValueFromPath.js';
+import { getUpdateObjectFromPath } from './utils/prepareItems/util/getUpdateObjectFromPath.js';
+import { ABFItems } from '../items/ABFItems.js';
+import { ABFDialogs } from '../dialogs/ABFDialogs.js';
+import { ABFSystemName } from '../../animabf-guote.name.js';
 export default class ABFActorSheet extends ActorSheet {
     constructor(actor, options) {
         super(actor, options);
-        this.buildCommonContextualMenu = (itemConfig) => {
+        this.buildCommonContextualMenu = itemConfig => {
             const { selectors: { containerSelector, rowSelector }, fieldPath } = itemConfig;
             const deleteRowMessage = itemConfig.contextMenuConfig?.customDeleteRowMessage ??
                 this.i18n.localize('contextualMenu.common.options.delete');
@@ -61,10 +62,10 @@ export default class ABFActorSheet extends ActorSheet {
                                             this.actor.deleteEmbeddedDocuments('Item', [id]);
                                         }
                                         else {
-                                            let items = getFieldValueFromPath(this.actor.data.data, fieldPath);
+                                            let items = getFieldValueFromPath(this.actor.system, fieldPath);
                                             items = items.filter(item => item._id !== id);
                                             const dataToUpdate = {
-                                                data: getUpdateObjectFromPath(items, fieldPath)
+                                                system: getUpdateObjectFromPath(items, fieldPath)
                                             };
                                             this.actor.update(dataToUpdate);
                                         }
@@ -84,7 +85,7 @@ export default class ABFActorSheet extends ActorSheet {
             ...super.defaultOptions,
             ...{
                 classes: ['abf', 'sheet', 'actor'],
-                template: 'systems/animabf-guote/templates/actor/actor-sheet.hbs',
+                template: `systems/${ABFSystemName}/templates/actor/actor-sheet.hbs`,
                 width: 1000,
                 height: 850,
                 submitOnChange: true,
@@ -114,7 +115,7 @@ export default class ABFActorSheet extends ActorSheet {
         };
     }
     get template() {
-        return 'systems/animabf-guote/templates/actor/actor-sheet.hbs';
+        return `systems/${ABFSystemName}/templates/actor/actor-sheet.hbs`;
     }
     async close(options) {
         super.close(options);
@@ -126,26 +127,14 @@ export default class ABFActorSheet extends ActorSheet {
         }
         return 1000;
     }
-    getData() {
-        const data = super.getData();
-        if (this.actor.data.type === 'character') {
-            data.actor.prepareDerivedData();
-            // Yes, a lot of datas, I know. This is Foundry VTT, welcome if you see this
-            data.data.data = data.actor.data.data;
+    async getData(options) {
+        const sheet = await super.getData(options);
+        if (this.actor.type === 'character') {
+            await sheet.actor.prepareDerivedData();
+            sheet.system = sheet.actor.system;
         }
-        data.config = CONFIG.config;
-        return data;
-    }
-    async _updateObject(event, formData) {
-        // We have to parse all qualities in order to convert from it selectable to integers to make calculations
-        Object.keys(formData).forEach(key => {
-            if (key.includes('quality')) {
-                formData[key] = parseInt(formData[key], 10);
-            }
-        });
-        const [actorChanges, itemChanges] = splitAsActorAndItemChanges(formData);
-        await this.updateItems(itemChanges);
-        return super._updateObject(event, actorChanges);
+        sheet.config = CONFIG.config;
+        return sheet;
     }
     activateListeners(html) {
         super.activateListeners(html);
@@ -161,12 +150,12 @@ export default class ABFActorSheet extends ActorSheet {
         html.find('.contractible-button').click(e => {
             const { contractibleItemId } = e.currentTarget.dataset;
             if (contractibleItemId) {
-                const ui = this.actor.data.data.ui;
+                const ui = this.actor.system.ui;
                 ui.contractibleItems = {
                     ...ui.contractibleItems,
                     [contractibleItemId]: !ui.contractibleItems[contractibleItemId]
                 };
-                this.actor.update({ data: { ui } });
+                this.actor.update({ system: { ui } });
             }
         });
         for (const item of Object.values(ALL_ITEM_CONFIGURATIONS)) {
@@ -191,20 +180,32 @@ export default class ABFActorSheet extends ActorSheet {
             let formula = `${dataset.roll}+ ${mod}`;
             if (parseInt(dataset.extra) >= 200)
                 formula = formula.replace('xa', 'xamastery');
-            const roll = new ABFFoundryRoll(formula, this.actor.data.data);
+            const roll = new ABFFoundryRoll(formula, this.actor.system);
             roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ actor: this.actor }),
                 flavor: label
             });
         }
     }
+    async _updateObject(event, formData) {
+        // We have to parse all qualities in order to convert from it selectable to integers to make calculations
+        Object.keys(formData).forEach(key => {
+            if (key.includes('quality')) {
+                formData[key] = parseInt(formData[key], 10);
+            }
+        });
+        const [actorChanges, itemChanges] = splitAsActorAndItemChanges(formData);
+        await this.updateItems(itemChanges);
+        return super._updateObject(event, actorChanges);
+    }
     async updateItems(_changes) {
         if (!_changes || Object.keys(_changes).length === 0)
             return;
         const changes = unflat(_changes);
         for (const item of Object.values(ALL_ITEM_CONFIGURATIONS)) {
-            if (item.getFromDynamicChanges(changes)) {
-                await item.onUpdate(this.actor, item.getFromDynamicChanges(changes));
+            const fromDynamicChanges = item.getFromDynamicChanges(changes);
+            if (fromDynamicChanges) {
+                await item.onUpdate(this.actor, fromDynamicChanges);
             }
         }
     }

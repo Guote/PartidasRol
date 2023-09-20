@@ -11,21 +11,20 @@
  */
 // Import JavaScript modules
 // Import TypeScript modules
-import { registerSettings } from "./module/settings.js";
-import "./module/preloadTemplates.js";
-import { initHooks, readyHooks, setupHooks } from "./module/module.js";
-import CONSTANTS from "./module/constants.js";
-import { error } from "./module/lib/lib.js";
+import { registerSettings } from "./scripts/settings.js";
+import { initHooks, readyHooks, setupHooks } from "./scripts/module.js";
+import CONSTANTS from "./scripts/constants.js";
+import { error } from "./scripts/lib/lib.js";
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
-Hooks.once('init', () => {
+Hooks.once("init", () => {
     console.log(`${CONSTANTS.MODULE_NAME} | Initializing ${CONSTANTS.MODULE_NAME}`);
     // Do anything once the module is ready
-    if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
-        let word = 'install and activate';
-        if (game.modules.get('lib-wrapper'))
-            word = 'activate';
+    if (!game.modules.get("lib-wrapper")?.active && game.user?.isGM) {
+        let word = "install and activate";
+        if (game.modules.get("lib-wrapper"))
+            word = "activate";
         throw error(`Requires the 'libWrapper' module. Please ${word} it.`);
     }
     // Register custom module settings
@@ -43,7 +42,7 @@ Hooks.once('init', () => {
 /* ------------------------------------ */
 /* Setup module							*/
 /* ------------------------------------ */
-Hooks.once('setup', function () {
+Hooks.once("setup", function () {
     // Do anything after initialization but before ready
     //setupModules();
     setupHooks();
@@ -52,7 +51,12 @@ Hooks.once('setup', function () {
 /* ------------------------------------ */
 /* When ready							*/
 /* ------------------------------------ */
-Hooks.once('ready', () => {
+Hooks.once("ready", () => {
+    // if (!game.modules.get("socketLib")?.active && game.user?.isGM) {
+    // 	let word = "install and activate";
+    // 	if (game.modules.get("socketLib")) word = "activate";
+    // 	throw error(`Requires the 'socketLib' module. Please ${word} it.`);
+    // }
     // Do anything once the module is ready
     readyHooks();
 });

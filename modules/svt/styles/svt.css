@@ -1,0 +1,41 @@
+/* Small Visual Tweaks by Miriadis */
+
+
+/* Highlight the Current Playing tracks */
+#playlists #currently-playing {
+  border: 1px solid var(--color-border-highlight);
+  box-shadow: 0 0 10px var(--color-shadow-primary);
+}
+
+/* Add border radius if at the bottom */
+#playlists #currently-playing.location-bottom {
+  border-radius: 0 0 5px 5px;
+}
+
+
+/* Add badge to Private Rolls and Whispers */
+#chat-log .chat-message.whisper .message-sender:before {
+  background-color: rgba(79 121 215 / .3);
+  border-radius: 2px;
+  content: "Private";
+  font-size: .6em;
+  font-weight: bold;
+  letter-spacing: .1em;
+  margin-right: .5em;
+  padding: .2em .5em;
+  text-transform: uppercase;
+  vertical-align: .2em;
+}
+
+/* Custom badge for Blind Rolls */
+#chat-log .chat-message.blind .message-sender:before {
+  background-color: rgba(165 57 167 / .3);
+  content: "Blind";
+}
+
+/* Truncate sender name */
+#chat-log .chat-message .message-sender {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 5;
+}

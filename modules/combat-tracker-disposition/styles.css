@@ -1,26 +1,9 @@
-:root {
-  --friendly: #43DFDF27;
-  --neutral: #F1D83627;
-  --hostile: #E7212427;
-}
-
-.hostile {
-    background: var(--hostile) !important;
-}
-
-.neutral {
-    background: var(--neutral) !important;
-}
-
-.friendly {
-    background: var(--friendly) !important;
-}
-
 .hover {
-    filter: brightness(125%) !important;
-    z-index: calc(var(--z-index-app) - 1);
+  backdrop-filter: brightness(150%) !important;
+  z-index: calc(var(--z-index-app) - 1);
+  transition: backdrop-filter .2s;
 }
 
 .hidden {
-    filter: brightness(75%) !important;
+  filter: brightness(75%) !important;
 }

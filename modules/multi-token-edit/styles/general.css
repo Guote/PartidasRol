@@ -54,23 +54,36 @@
   background: rgba(255, 202, 58, 0.8);
 }
 
-.me-update-on-input {
+.me-mod-update {
   flex: 0 !important;
   display: grid;
   align-items: center;
 }
 
-.me-update-on-input > input {
+.me-mod-update > input {
   grid-column: 1;
   grid-row: 1;
 }
 
-.me-update-on-input > i {
+.me-mod-update > i {
   grid-column: 1;
   grid-row: 1;
   pointer-events: none;
   margin-left: 7px;
 }
+
+.me-global-delete {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  color: red;
+  padding-top: 10px;
+}
+
+/* .me-global-delete > a > i {
+  border-width: 0px 1px 1px 1px;
+  border-style: solid solid solid solid;
+} */
 
 /* ===================== 
    === Randomization ===
@@ -135,23 +148,6 @@
   color: green;
 }
 
-.mass-edit-preset-form .item-control.up-down {
-  position: absolute;
-}
-
-.mass-edit-preset-form .item-control .preset-sort-down,
-.mass-edit-preset-form .item-control .preset-sort-up {
-  position: absolute;
-}
-
-.mass-edit-preset-form .item-control .preset-sort-up {
-  margin-top: 5px;
-}
-
-.mass-edit-preset-form .item-control .preset-sort-down {
-  margin-top: 10px;
-}
-
 .mass-edit-preset-form .item-control.preset-update {
   color: rgb(230, 149, 0);
   margin-left: 10px;
@@ -166,15 +162,16 @@
   border: 2px groove #eeede0;
   font-weight: bold;
   color: black;
-}
-
-.mass-edit-preset-form .items-header .item-name {
   padding-left: 4px;
   font-weight: bold;
 }
 
+.mass-edit-preset-form .items-header label {
+  font-size: larger;
+}
+
 .mass-edit-preset-form .item-controls {
-  flex: 0 0 70px;
+  flex: 0 0 90px;
   padding-bottom: 7px;
 }
 
@@ -183,8 +180,15 @@
   padding-bottom: 7px;
 }
 
-.mass-edit-preset-form .item-name > button {
-  text-align: left;
+.mass-edit-preset-form .item-name {
+  color: black;
+  border-style: outset;
+  font-weight: 500;
+}
+
+.mass-edit-preset-form .item-name > label {
+  margin-top: 5px;
+  margin-left: 3px;
 }
 
 input.me-add {
@@ -241,11 +245,20 @@ nav > a[data-tab='me-pinned'] {
   color: gold;
 }
 
+.me-delete-flag {
+  flex: 0.1 !important;
+  color: gray;
+}
+
+.me-delete-flag.active {
+  color: rgb(255, 0, 0);
+}
+
 .me-editable-label {
   border: none !important;
 }
 
-.mass-edit-generic-form .jsonArray {
+.mass-edit-generic-form .tva-jsonArray {
   height: 100px;
   white-space: pre-wrap;
 }

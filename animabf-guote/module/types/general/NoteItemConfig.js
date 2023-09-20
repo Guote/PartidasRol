@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const NoteItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").NoteItemConfig} */
+export const NoteItemConfig = ABFItemConfigFactory({
     type: ABFItems.NOTE,
-    isInternal: false,
+    isInternal: true,
     fieldPath: ['general', 'notes'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.notes;
-    },
     selectors: {
         addItemButtonSelector: 'add-note',
         containerSelector: '#_notes-context-menu-container',
@@ -22,25 +21,9 @@ export const NoteItemConfig = {
             type: ABFItems.NOTE
         });
     },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name } = changes[id];
-            await actor.updateInnerItem({ id, type: ABFItems.NOTE, name });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.general.notes;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.general.notes = [item];
-        }
+    onAttach: async (actor, item) => {
+        item.system.enrichedName = await TextEditor.enrichHTML(item.name ?? '', {
+            async: true
+        });
     }
-};
+});

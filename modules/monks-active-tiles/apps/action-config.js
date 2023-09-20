@@ -9,26 +9,65 @@ export class ActionConfig extends FormApplication {
 
         //let's just grab the first player character we can find
         log("Checking token");
-        let token = canvas.scene.tokens?.contents[0]?.data;
+        let token = canvas.scene.tokens?.contents[0];
         if (token) {
-            let attributes = getDocumentClass("Token").getTrackedAttributes(token ?? {});
-            if (attributes)
-                this.tokenAttr = (this.tokenAttr || []).concat(attributes.value.concat(attributes.bar).map(a => a.join('.')));
+            try {
+                let attributes = getDocumentClass("Token").getTrackedAttributes(token ?? {});
+                if (attributes)
+                    this.tokenAttr = (this.tokenAttr || []).concat(attributes.value.concat(attributes.bar).map(a => a.join('.')));
+            } catch { }
         }
         log("Checking player");
         let player = game.actors.find(a => a.type == 'character');
         if (player) {
-            //try {
-            let attributes = getDocumentClass("Token").getTrackedAttributes(player.data.data ?? {});
+            try {
+            let attributes = getDocumentClass("Token").getTrackedAttributes(player.system ?? {});
                 if (attributes)
                     this.tokenAttr = (this.tokenAttr || []).concat(attributes.value.concat(attributes.bar).map(a => a.join('.')));
-            //} catch {}
+            } catch {}
         }
 
-        let tile = canvas.scene.data.tiles?.contents[0]?.data;
+        let tile = canvas.scene.tiles?.contents[0];
         if (tile) {
-            this.tileAttr = (ActionConfig.getTileTrackedAttributes(tile ?? {}) || []).map(a => a.join('.'));
+            try {
+                this.tileAttr = (ActionConfig.getTileTrackedAttributes(tile ?? {}) || []).map(a => a.join('.'));
+            } catch { }
         }
+
+        this.autoanchors = [
+            "_enter",
+            "_exit",
+            "_movement",
+            "_stop",
+            "_elevation",
+            "_click",
+            "_rightclick",
+            "_dblclick",
+            "_create",
+            "_hoverin",
+            "_hoverout",
+            "_combatstart",
+            "_round",
+            "_turn",
+            "_turnend",
+            "_combatend",
+            "_ready",
+            "_manual",
+            "_gm",
+            "_player",
+            "_dooropen",
+            "_doorclose",
+            "_doorsecret",
+            "_doorlock",
+            "_left",
+            "_up",
+            "_right",
+            "_down",
+            "_up-left",
+            "_up-right",
+            "_down-left",
+            "_down-right"
+        ];
     }
 
     /** @inheritdoc */
@@ -107,6 +146,8 @@ export class ActionConfig extends FormApplication {
         const options = this._getFilePickerOptions(event);
         options.wildcard = true;
         const fp = new FilePicker(options);
+        if (event.currentTarget.dataset.type == "html")
+            fp.extensions = [".html"];
         this.filepickers.push(fp);
         return fp.browse();
     }
@@ -217,9 +258,18 @@ export class ActionConfig extends FormApplication {
     }
 
     fillList(list, id) {
-        return (list instanceof Array
-            ? list.map(g => { return $('<optgroup>').attr('label', i18n(g.text)).append(Object.entries(g.groups).map(([k, v]) => { return $('<option>').attr('value', (g.id ? g.id + ":" : '') + k).html(i18n(v)).prop('selected', ((g.id ? g.id + ":" : '') + k) == id) })) })
-            : Object.entries(list).map(([k, v]) => { return $('<option>').attr('value', k).html(i18n(v)).prop('selected', k == id) }))
+        if (!list)
+            return;
+
+        if (list instanceof Array) {
+            if (list.length > 0 && list[0].groups) {
+                return list.map(g => { return $('<optgroup>').attr('label', i18n(g.text)).append(Object.entries(g.groups).map(([k, v]) => { return $('<option>').attr('value', (g.id ? g.id + ":" : '') + k).html(i18n(v)).prop('selected', ((g.id ? g.id + ":" : '') + k) == id) })) })
+            } else {
+                return list.map((v) => { return $('<option>').attr('value', v).html(i18n(v)).prop('selected', v == id) });
+            }
+        } else {
+            return Object.entries(list).map(([k, v]) => { return $('<option>').attr('value', k).html(i18n(v)).prop('selected', k == id) });
+        }
     }
 
     static async selectEntity(event) {
@@ -238,12 +288,15 @@ export class ActionConfig extends FormApplication {
             field.val('{"id":"token","name":"' + i18n("MonksActiveTiles.TriggeringToken") + '"}').next().html(i18n("MonksActiveTiles.TriggeringToken"));
         else if (btn.attr('data-type') == 'players')
             field.val('{"id":"players","name":"' + i18n("MonksActiveTiles.PlayerTokens") + '"}').next().html(i18n("MonksActiveTiles.PlayerTokens"));
-        else if (btn.attr('data-type') == 'within')
-            field.val('{"id":"within","name":"' + i18n("MonksActiveTiles.WithinTile") + '"}').next().html(i18n("MonksActiveTiles.WithinTile"));
-        else if (btn.attr('data-type') == 'controlled')
-            field.val('{"id":"controlled","name":"' + i18n("MonksActiveTiles.Controlled") + '"}').next().html(i18n("MonksActiveTiles.Controlled"));
+        else if (btn.attr('data-type') == 'within') {
+            let collection = $(event.currentTarget).closest(".trigger-action").find('[name="data.collection"]').val();
+            let displayName = game.i18n.format("MonksActiveTiles.WithinTile", { collection: (collection || field.data("deftype") || "tokens").capitalize() });
+            field.val(`{"id":"within","name":"${displayName}"}`).next().html(displayName);
+        } else if (btn.attr('data-type') == 'controlled')
+            field.val('{"id":"controlled","name":"' + (field.data("deftype") == "playlists" ? i18n("MonksActiveTiles.CurrentlyPlaying") : i18n("MonksActiveTiles.Controlled")) + '"}').next().html(field.data("deftype") == "playlists" ? i18n("MonksActiveTiles.CurrentlyPlaying") : i18n("MonksActiveTiles.Controlled"));
         else if (btn.attr('data-type') == 'previous') {
-            let displayName = (field.data('type') == 'entity' ? game.i18n.format("MonksActiveTiles.CurrentCollection", { collection: field.data("deftype") || "tokens" }) : i18n("MonksActiveTiles.CurrentLocation"));
+            let collection = $(event.currentTarget).closest(".trigger-action").find('[name="data.collection"]').val();
+            let displayName = (field.data('type') == 'entity' ? game.i18n.format("MonksActiveTiles.CurrentCollection", { collection: collection || field.data("deftype") || "tokens" }) : i18n("MonksActiveTiles.CurrentLocation"));
             field.val(`{"id":"previous","name":"${displayName}"}`).next().html(displayName);
         } else if (btn.attr('data-type') == 'origin')
             field.val('{"id":"origin","name":"' + i18n("MonksActiveTiles.Origin") + '"}').next().html(i18n("MonksActiveTiles.Origin"));
@@ -301,7 +354,9 @@ export class ActionConfig extends FormApplication {
             if (selection.id) {
                 let ctrl = select.parent().data('ctrl');
 
-                let list = await ctrl.list.call(ctrl, { actor: { id: selection.id }});
+                //this, this, action, data
+                //let list = await ctrl.list.call(ctrl, { actor: { id: selection.id } });
+                let list = await ctrl.list.call(this, this, null, { actor: { id: selection.id } }) || [];
 
                 select.append(this.fillList(list, ''));
             }
@@ -502,12 +557,16 @@ export class ActionConfig extends FormApplication {
             callback: async (html) => {
                 let form = $('form', html)[0];
                 const fd = new FormDataExtended(form);
-                let data = foundry.utils.expandObject(fd.toObject());
+                let data = foundry.utils.expandObject(fd.object);
 
-                if (!isNaN(data.location.x))
+                if (!isNaN(data.location.x)) {
                     data.location.x = parseInt(data.location.x);
-                if (!isNaN(data.location.y))
+                    data.location.id = "";
+                }
+                if (!isNaN(data.location.y)) {
                     data.location.y = parseInt(data.location.y);
+                    data.location.id = "";
+                }
 
                 let location = data.location;
                 location.name = await MonksActiveTiles.locationName(location);
@@ -540,6 +599,57 @@ export class ActionConfig extends FormApplication {
     removeFile(id, event) {
         $(`.file-list li[data-id="${id}"]`, this.element).remove();
         this.setPosition({ height: 'auto' });
+    }
+
+    async _editButton(data = {}, event) {
+        let content = await renderTemplate("modules/monks-active-tiles/templates/button-edit.html", data);
+        await Dialog.confirm({
+            title: "Edit Button",
+            content,
+            yes: (html) => {
+                const form = html[0].querySelector("form");
+                if (form) {
+                    const fd = new FormDataExtended(form);
+                    data = foundry.utils.mergeObject(data, fd.object);
+
+                    let buttons = JSON.parse($('input[name="buttons"', this.element).val() || "[]");
+                    if (!data.id) {
+                        data.id = randomID();
+                        buttons.push(data);
+                    } else {
+                        let button = buttons.find(b => b.id == data.id);
+                        Object.assign(button, data);
+                    }
+
+                    $('input[name="buttons"', this.element).val(JSON.stringify(buttons)).change();
+                }
+            }
+        })
+    }
+
+    refreshButtonList(ul, event) {
+        let buttons = event instanceof Array ? event : JSON.parse($(event.currentTarget).val() || "[]");
+        this.getButtonList.call(this, ul, buttons);
+        this.setPosition({ height: 'auto' });
+    }
+
+    removeButton(id, event) {
+        let buttons = JSON.parse($('input[name="buttons"', this.element).val() || "[]");
+        buttons.findSplice((b) => { return b.id == id });
+        $('input[name="buttons"', this.element).val(JSON.stringify(buttons)).change();
+    }
+
+    getButtonList(element, buttons = []) {
+        element.empty();
+        for (let button of buttons) {
+            element.append($('<li>').attr('data-id', button.id)
+                .addClass('flexrow file-row')
+                .append($('<span>').addClass('button-name').html(button.name))
+                .append($('<span>').addClass('button-goto').html(button.goto))
+                .append($('<a>').html('<i class="fas fa-pencil fa-sm"></i>').click(this._editButton.bind(this, button)))
+                .append($('<a>').html('<i class="fas fa-trash fa-sm"></i>').click(this.removeButton.bind(this, button.id)))
+            );
+        }
     }
 
     async _onSubmit(...args) {
@@ -591,9 +701,17 @@ export class ActionConfig extends FormApplication {
             delete data.files;
             data.data.files = files;
         }
+        if (data.buttons) {
+            data.data.buttons = JSON.parse(data.buttons || "[]");
+            delete data.buttons;
+        }
 
         if (data.delay == undefined)
             delete data.delay;
+
+        $('input.range-value', this.element).each(function () {
+            if ($(this).val() == "") setProperty(data, $(this).prev().attr("name"), "");
+        });
 
         return flattenObject(data);
     }
@@ -621,7 +739,7 @@ export class ActionConfig extends FormApplication {
             this.object.id = makeid();
             let actions = duplicate(this.options.parent.object.getFlag("monks-active-tiles", "actions") || []);
             actions.push(this.object);
-            mergeObject(this.options.parent.object.data.flags, {
+            mergeObject(this.options.parent.object.flags, {
                 "monks-active-tiles": { actions: actions }
             });
             //add this row to the parent
@@ -632,7 +750,7 @@ export class ActionConfig extends FormApplication {
                     content = await trigger.content(trigger, this.object);
                 } catch {}
             }
-            let li = $('<li>').addClass('item flexrow').attr('data-id', this.object.id).attr('draggable', true)
+            let li = $('<li>').addClass('item flexrow').attr('data-id', this.object.id).attr('data-collection', 'actions').attr('draggable', true)
                 .append($('<div>').addClass('item-name flexrow').append($('<h4>').css({ 'white-space': 'normal' }).html(content)))
                 .append($('<div>').addClass('item-controls flexrow')
                     .append($('<a>').addClass('item-control action-edit').attr('title', 'Edit Action').html('<i class="fas fa-edit"></i>').click(this.options.parent._editAction.bind(this.options.parent)))
@@ -647,12 +765,14 @@ export class ActionConfig extends FormApplication {
             let action = actions.find(a => a.id == this.object.id);
             if (action) {
                 //clear out these before saving the new information so we don't get data bleed through
-                if (action.data.location) action.data.location = {};
-                if (action.data.entity) action.data.entity = {};
-                if (action.data.item) action.data.item = {};
-                if (action.data.actor) action.data.actor = {};
+                if (action.data) {
+                    if (action.data.location) action.data.location = {};
+                    if (action.data.entity) action.data.entity = {};
+                    if (action.data.item) action.data.item = {};
+                    if (action.data.actor) action.data.actor = {};
+                }
                 mergeObject(action, formData);
-                this.options.parent.object.data.flags["monks-active-tiles"].actions = actions;
+                this.options.parent.object.flags["monks-active-tiles"].actions = actions;
                 //update the text for this row
                 let trigger = MonksActiveTiles.triggerActions[action.action];
                 let content = i18n(trigger.name);
@@ -668,12 +788,13 @@ export class ActionConfig extends FormApplication {
         this.options.parent.setPosition({height:'auto'});
     }
 
-    checkConditional() {
-        let that = this;
-        $('.form-group', this.element).each(function () {
-            if ($(this).data('conditional')) 
-                $(this).toggle($(this).data('conditional').call(that, that));
-        })
+    async checkConditional() {
+        for (let elem of $('.form-group', this.element)) {
+            if ($(elem).data('conditional')) {
+                let cond = await $(elem).data('conditional').call(this, this);
+                $(elem).toggle(cond).next("p.notes").toggle(cond);
+            }
+        }
         this.setPosition({ height: 'auto' });
     }
 
@@ -691,16 +812,24 @@ export class ActionConfig extends FormApplication {
         //$('.gmonly', this.element).toggle(action.requiresGM);
 
         for (let ctrl of (action.ctrls || [])) {
-            let options = mergeObject({ showTile: false, showToken: false, showWithin: false, showPlayers: false, showPrevious: false, showControlled: false }, ctrl.options);
+            let options = mergeObject({ show: [] }, ctrl.options);
             let field = $('<div>').addClass('form-fields').data('ctrl', ctrl);
             let id = 'data.' + ctrl.id + (ctrl.variation ? '.value' : '');
             let val = data[ctrl.id] != undefined ? (data[ctrl.id].value != undefined ? data[ctrl.id].value : data[ctrl.id]) : ctrl.defvalue;
 
             switch (ctrl.type) {
+                case 'line':
+                    field = $('<hr>');
+                    break;
                 case 'filepicker':
                     field
                         .append($('<button>').attr({ 'type': 'button', 'data-type': ctrl.subtype, 'data-target': id, 'title': game.i18n.localize("FILES.BrowseTooltip") }).addClass('file-picker').html('<i class="fas fa-file-import fa-sm"></i>').click(this._activateFilePicker.bind(this)))
-                        .append($('<input>').toggleClass('required', !!ctrl.required).attr({ type: 'text', name: id, placeholder: (ctrl.subtype == 'audio' ? 'path/audio.mp3' : 'File Path') }).val(data[ctrl.id]));
+                        .append($('<input>').toggleClass('required', !!ctrl.required).attr({ type: 'text', name: id, placeholder: (ctrl.subtype == 'audio' ? 'path/audio.mp3' : (ctrl.subtype == 'image' || ctrl.subtype == 'imagevideo' ? 'path/image.png' : 'File Path')) }).val(data[ctrl.id]));
+                    break;
+                case 'colorpicker':
+                    field
+                        .append($('<input>').addClass("color").attr({ type: "text", name: id, "data-dtype": "String" }).css({ flex: "0 0 100px" }).val(val).on("blur", function () { $(this).next().val($(this).val()) }))
+                        .append($('<input>').attr({ type: "color", "data-edit": id }).css({ flex: "0 0 100px" }).val(val));
                     break;
                 case 'filelist':
                     {
@@ -729,17 +858,37 @@ export class ActionConfig extends FormApplication {
                         }
                     }
                     break;
+                case 'buttonlist':
+                    {
+                        let ul = $('<ul>').addClass('button-list').toggleClass('required', !!ctrl.required)
+                        field
+                            .append($('<div>').addClass('flexcol')
+                                .append($('<ol>')
+                                    .addClass("buttons-list items-list")
+                                    .append($('<li>').addClass('items-header flexrow')
+                                        .append($('<div>').addClass('item-controls').css({ 'text-align': 'right' })
+                                            .append($('<a>').css({ 'margin-right': '12px' }).attr({ 'title': "Add button" }).html('<i class="fas fa-plus"></i> Add').on('click', this._editButton.bind(this, undefined))))
+                                        .append($('<input>').css({ "margin-right": "0px !important" }).attr({ type: 'hidden', name: 'buttons' }).val(JSON.stringify(data.buttons || [])).change(this.refreshButtonList.bind(this, ul)))
+                                    )
+                                    .append(ul)));
+
+                        this.getButtonList.call(this, ul, data.buttons);
+                    }
+                    break;
                 case 'list':
                     {
                         let list;
-                        if (typeof ctrl.list == 'function')
-                            list = await ctrl.list.call(action, data);
+                        if (typeof ctrl.list == 'function') {
+                            list = ctrl.list.call(this, this, action, data);
+                            if (list instanceof Promise)
+                                list = await list;
+                        }
                         else
                             list = (action.values && action.values[ctrl.list]);
 
                         let select = $('<select>').toggleClass('required', !!ctrl.required).attr({ name: id, 'data-dtype': 'String' });
                         if (ctrl.onChange)
-                            select.on('change', ctrl.onChange.bind(select, this, select));
+                            select.on('change', ctrl.onChange.bind(select, this, select, action, data));
                         field.append(select);
                         if (list != undefined) {
                             select.append(this.fillList(list, (data[ctrl.id]?.id || data[ctrl.id] || ctrl.defvalue)));
@@ -754,30 +903,31 @@ export class ActionConfig extends FormApplication {
                             .append($('<span>').dblclick(this.editLocationId.bind(this)).addClass('display-value').html(await MonksActiveTiles.locationName(data[ctrl.id]) || `<span class="placeholder-style">${i18n(ctrl.placeholder) || 'Please select a location'}</style>`)) //(data[ctrl.id] ? (data[ctrl.id].name ? data[ctrl.id].name : 'x:' + data[ctrl.id].x + ', y:' + data[ctrl.id].y) + (scene ? ', scene:' + scene.name : '') : '')
                             .append($('<button>').attr({ 'type': 'button', 'data-type': ctrl.subtype, 'data-target': id, 'title': i18n("MonksActiveTiles.msg.selectlocation") }).addClass('location-picker').html('<i class="fas fa-crosshairs fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
                             .append($('<button>').attr({ 'type': 'button', 'data-type': 'position', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.setposition") }).toggle(ctrl.subtype == 'position').addClass('location-picker').html('<i class="fas fa-crop-alt fa-sm"></i>').click(this.selectPosition.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'token', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetoken") }).toggle(options.showToken).addClass('entity-picker').html('<i class="fas fa-user-alt fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'players', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.useplayerlocation") }).toggle(options.showPlayers).addClass('location-picker').html('<i class="fas fa-users fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'previous', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usepreviouslocation") }).toggle(options.showPrevious).addClass('location-picker').html('<i class="fas fa-history fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'origin', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.useorigin") }).toggle(options.showOrigin).addClass('location-picker').html('<i class="fas fa-walking fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'tagger', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetagger") }).toggle(options.showTagger && game.modules.get('tagger')?.active).addClass('location-picker').html('<i class="fas fa-tag fa-sm"></i>').click(ActionConfig.addTag.bind(this)));
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'tile', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetile") }).toggle(options.show.includes('tile')).addClass('entity-picker').html('<i class="fas fa-cubes fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'token', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetoken") }).toggle(options.show.includes('token')).addClass('entity-picker').html('<i class="fas fa-user-alt fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').css({ "padding-left": "5px" }).attr({ 'type': 'button', 'data-type': 'players', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.useplayerlocation") }).toggle(options.show.includes('players')).addClass('location-picker').html('<i class="fas fa-users fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'previous', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usepreviouslocation") }).toggle(options.show.includes('previous')).addClass('location-picker').html('<i class="fas fa-history fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'origin', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.useorigin") }).toggle(options.show.includes('origin')).addClass('location-picker').html('<i class="fas fa-walking fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'tagger', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetagger") }).toggle(options.show.includes('tagger') && game.modules.get('tagger')?.active).addClass('location-picker').html('<i class="fas fa-tag fa-sm"></i>').click(ActionConfig.addTag.bind(this)));
 
                     } else if (ctrl.subtype == 'entity') {
-                        let displayValue = (ctrl.placeholder && !data[ctrl.id] && !!ctrl.required ? `<span class="placeholder-style">${i18n(ctrl.placeholder)}</style>` : await MonksActiveTiles.entityName(data[ctrl.id], (ctrl.defaultType || data?.collection)) || `<span class="placeholder-style">'Please select an Entity'</style>`);
+                        let displayValue = (ctrl.placeholder && !data[ctrl.id] && (!!ctrl.required || ctrl.defvalue === null) ? `<span class="placeholder-style">${i18n(ctrl.placeholder)}</style>` : await MonksActiveTiles.entityName(data[ctrl.id], (data?.collection || ctrl.defaultType)) || `<span class="placeholder-style">'Please select an Entity'</style>`);
                         field.addClass("select-field-group")//.css({ 'flex-direction': 'row', 'align-items': 'flex-start' })
                             .append($('<input>').toggleClass('required', !!ctrl.required).attr({ type: 'hidden', name: id }).val(typeof data[ctrl.id] == 'object' ? JSON.stringify(data[ctrl.id]) : data[ctrl.id]).data({ 'restrict': ctrl.restrict, 'type': 'entity', deftype: ctrl.defaultType }))
                             .append($('<span>').dblclick(this.editEntityId.bind(this)).addClass('display-value').html(displayValue))
                             .append($('<button>').attr({ 'type': 'button', 'data-type': ctrl.subtype, 'data-target': id, 'title': i18n("MonksActiveTiles.msg.selectentity") }).addClass('entity-picker').html('<i class="fas fa-crosshairs fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'tile', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetile") }).toggle(options.showTile).addClass('entity-picker').html('<i class="fas fa-cubes fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'token', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetoken") }).toggle(options.showToken).addClass('entity-picker').html('<i class="fas fa-user-alt fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'within', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usewithin") }).toggle(options.showWithin).addClass('entity-picker').html('<i class="fas fa-street-view fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'players', 'data-target': id, 'title': (command == "openjournal" ? i18n("MonksActiveTiles.msg.useplayersjournal") : i18n("MonksActiveTiles.msg.useplayers")) }).toggle(options.showPlayers).addClass('entity-picker').html('<i class="fas fa-users fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'previous', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.useprevious") }).toggle(options.showPrevious).addClass('entity-picker').html('<i class="fas fa-history fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'controlled', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usecontrolled") }).toggle(options.showControlled).addClass('entity-picker').html('<i class="fas fa-bullhorn fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
-                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'tagger', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetagger") }).toggle(options.showTagger && game.modules.get('tagger')?.active).addClass('entity-picker').html('<i class="fas fa-tag fa-sm"></i>').click(ActionConfig.addTag.bind(this)));
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'tile', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetile") }).toggle(options.show.includes('tile')).addClass('entity-picker').html('<i class="fas fa-cubes fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'token', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetoken") }).toggle(options.show.includes('token')).addClass('entity-picker').html('<i class="fas fa-user-alt fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'within', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usewithin") }).toggle(options.show.includes('within')).addClass('entity-picker').html('<i class="fas fa-street-view fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').css({ "padding-left": "5px" }).attr({ 'type': 'button', 'data-type': 'players', 'data-target': id, 'title': (command == "openjournal" ? i18n("MonksActiveTiles.msg.useplayersjournal") : i18n("MonksActiveTiles.msg.useplayers")) }).toggle(options.show.includes('players')).addClass('entity-picker').html('<i class="fas fa-users fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'previous', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.useprevious") }).toggle(options.show.includes('previous')).addClass('entity-picker').html('<i class="fas fa-history fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'controlled', 'data-target': id, 'title': ctrl.defaultType == "playlists" ? i18n("MonksActiveTiles.msg.currentlyplaying") : i18n("MonksActiveTiles.msg.usecontrolled") }).toggle(options.show.includes('controlled')).addClass('entity-picker').html('<i class="fas fa-bullhorn fa-sm"></i>').click(ActionConfig.selectEntity.bind(this)))
+                            .append($('<button>').attr({ 'type': 'button', 'data-type': 'tagger', 'data-target': id, 'title': i18n("MonksActiveTiles.msg.usetagger") }).toggle(options.show.includes('tagger') && game.modules.get('tagger')?.active).addClass('entity-picker').html('<i class="fas fa-tag fa-sm"></i>').click(ActionConfig.addTag.bind(this)));
                     }
                     let input = $('input[type="hidden"]', field);
                     input.attr("needs-parse", "true");
                     if (ctrl.onChange) {
-                        input.on('change', ctrl.onChange.bind(input, this, input));
+                        input.on('change', ctrl.onChange.bind(input, this, input, action, data));
                     }
                     break;
                 case 'text':
@@ -807,7 +957,7 @@ export class ActionConfig extends FormApplication {
                     break;
                 case 'slider':
                     field.append($('<input>').attr({ type: 'range', name: id, min: ctrl.min || 0, max: ctrl.max || 1.0, step: ctrl.step || 0.1 }).val(val != undefined ? val : 1.0))
-                        .append($('<span>').addClass('range-value').html(val != undefined ? val : 1.0));
+                        .append($('<input>').attr("type", "text").addClass('range-value').val(val != undefined ? val : '').on('blur', function () { $(this).prev().val($(this).val()) }));
                     break
                 case 'checkbox':
                     {
@@ -819,74 +969,86 @@ export class ActionConfig extends FormApplication {
                     break;
             }
 
-            const div = $('<div>')
-                .addClass('form-group')
-                .toggle(ctrl.conditional == undefined || (typeof ctrl.conditional == 'function' ? ctrl.conditional.call(this, this) : ctrl.conditional))
-                .append($('<label>').html(i18n(ctrl.name) + (!!ctrl.required ? '<span class="req-field" title="This is a required field">*</span>' : '')))
-                .append(field);
+            if (ctrl.type == "line") {
+                $('.action-controls', this.element).append(field);
+                if (ctrl.help && setting("show-help"))
+                    $('.action-controls', this.element).append($('<p>').addClass("notes").html(ctrl.help));
+            } else {
+                let cond = ctrl.conditional == undefined || (typeof ctrl.conditional == 'function' ? await ctrl.conditional.call(this, this) : ctrl.conditional);
+                const div = $('<div>')
+                    .addClass('form-group')
+                    .toggle(cond)
+                    .append($('<label>').html(i18n(ctrl.name) + (!!ctrl.required ? '<span class="req-field" title="This is a required field">*</span>' : '')))
+                    .append(field);
 
-            if (typeof ctrl.conditional == 'function')
-                div.data('conditional', ctrl.conditional);
-            if (typeof ctrl.check == 'function')
-                div.addClass('check').data('check', ctrl.check);
+                if (typeof ctrl.conditional == 'function')
+                    div.data('conditional', ctrl.conditional);
+                if (typeof ctrl.check == 'function')
+                    div.addClass('check').data('check', ctrl.check);
 
-            if (ctrl.variation) {
-                let list = (action.values && action.values[ctrl.variation]);
+                if (ctrl.variation) {
+                    let list = (action.values && action.values[ctrl.variation]);
 
-                let select = $('<select>').addClass('variant').attr({ name:'data.' + ctrl.id + '.var', 'data-dtype': 'String' });
-                field.append(select);
-                if (list != undefined) {
-                    select.append(this.fillList(list, (data[ctrl.id]?.var)));
-                }
-            }
-
-            if (loadingid != this.loadingid)
-                break;
-
-            div.appendTo($('.action-controls', this.element));
-
-            if (ctrl.help && setting("show-help"))
-                $('.action-controls', this.element).append($('<p>').addClass("notes").html(ctrl.help));
-
-            if (ctrl.id == 'attribute') {
-                this.attributes = this.tokenAttr;
-
-                var substringMatcher = function () {
-                    return function findMatches(q, cb) {
-                        var matches, substrRegex;
-
-                        // an array that will be populated with substring matches
-                        matches = [];
-
-                        // regex used to determine if a string contains the substring `q`
-                        substrRegex = new RegExp(q, 'i');
-
-                        // iterate through the pool of strings and for any string that
-                        // contains the substring `q`, add it to the `matches` array
-                        $.each(that.attributes, function (i, str) {
-                            if (substrRegex.test(str)) {
-                                matches.push(str);
-                            }
-                        });
-
-                        cb(matches);
-                    };
-                };
-
-                $('input[name="data.attribute"]', field).typeahead(
-                    {
-                        minLength: 1,
-                        hint: true,
-                        highlight: true
-                    },
-                    {
-                        source: substringMatcher()
+                    let select = $('<select>').addClass('variant').attr({ name: 'data.' + ctrl.id + '.var', 'data-dtype': 'String' });
+                    field.append(select);
+                    if (list != undefined) {
+                        select.append(this.fillList(list, (data[ctrl.id]?.var)));
                     }
-                );
+                }
+
+                if (loadingid != this.loadingid)
+                    break;
+
+                div.appendTo($('.action-controls', this.element));
+
+                if (ctrl.help && setting("show-help"))
+                    $('.action-controls', this.element).append($('<p>').addClass("notes").html(ctrl.help).toggle(cond));
+
+                if ((ctrl.id == "attribute" && ctrl.id == 'attribute') || (ctrl.id == "tag" && command == "anchor")) {
+                    this.attributes = this.tokenAttr;
+
+                    var substringMatcher = function () {
+                        return function findMatches(q, cb) {
+                            var matches, substrRegex;
+
+                            q = q.replace(/[^a-zA-Z.]/gi, '');
+                            if (q == "")
+                                return;
+
+                            // an array that will be populated with substring matches
+                            matches = [];
+
+                            // regex used to determine if a string contains the substring `q`
+                            substrRegex = new RegExp(q, 'i');
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            let values = ctrl.id == 'attribute' ? that.attributes : that.autoanchors;
+                            $.each(values, function (i, str) {
+                                if (substrRegex.test(str)) {
+                                    matches.push(str);
+                                }
+                            });
+
+                            cb(matches);
+                        };
+                    };
+
+                    $('input[name="data.attribute"],input[name="data.tag"]', field).typeahead(
+                        {
+                            minLength: 1,
+                            hint: true,
+                            highlight: true
+                        },
+                        {
+                            source: substringMatcher()
+                        }
+                    );
+                }
             }
         }
 
-        $('[data-type="delay"]', this.element).toggle(!!this.object.delay && command != 'delay'); //action?.options?.allowDelay === true);
+        //$('[data-type="delay"]', this.element).toggle(!!this.object.delay && command != 'delay'); //action?.options?.allowDelay === true);
 
         if(this.rendered)
             this.setPosition();

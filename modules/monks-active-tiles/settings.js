@@ -41,6 +41,29 @@ export const registerSettings = function () {
 		type: Boolean,
 	});
 
+	game.settings.register(modulename, "drop-item-size", {
+		name: i18n("MonksLittleDetails.drop-item-size.name"),
+		hint: i18n("MonksLittleDetails.drop-item-size.hint"),
+		scope: "world",
+		config: true,
+		range: {
+			min: 0.1,
+			max: 1.5,
+			step: 0.05,
+		},
+		default: 1,
+		type: Number,
+	});
+
+	game.settings.register(modulename, "drop-scene", {
+		name: i18n("MonksActiveTiles.drop-scene.name"),
+		hint: i18n("MonksActiveTiles.drop-scene.hint"),
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean,
+	});
+
 	game.settings.register(modulename, "allow-door", {
 		name: i18n("MonksActiveTiles.allow-door.name"),
 		hint: i18n("MonksActiveTiles.allow-door.hint"),
@@ -95,6 +118,15 @@ export const registerSettings = function () {
 		type: Boolean,
 	});
 
+	game.settings.register(modulename, "show-landing", {
+		name: i18n("MonksActiveTiles.show-landing.name"),
+		hint: i18n("MonksActiveTiles.show-landing.hint"),
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean,
+	});
+
 	game.settings.register(modulename, "prevent-cycle", {
 		scope: "world",
 		config: false,
@@ -114,5 +146,19 @@ export const registerSettings = function () {
 		config: false,
 		default: false,
 		type: Boolean
+	});
+
+	game.settings.register(modulename, "tile-templates", {
+		scope: "world",
+		config: false,
+		default: [],
+		type: Object
+	});
+
+	game.settings.register(modulename, "tile-template-folders", {
+		scope: "world",
+		config: false,
+		default: [],
+		type: Object
 	});
 }

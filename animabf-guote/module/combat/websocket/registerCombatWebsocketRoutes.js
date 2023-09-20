@@ -1,6 +1,6 @@
-import { WSGMCombatManager } from "./ws-combat/gm/WSGMCombatManager.js";
-import { WSUserCombatManager } from "./ws-combat/user/WSUserCombatManager.js";
-import { Log } from "../../../utils/Log.js";
+import { WSGMCombatManager } from './ws-combat/gm/WSGMCombatManager.js';
+import { WSUserCombatManager } from './ws-combat/user/WSUserCombatManager.js';
+import { Log } from '../../../utils/Log.js';
 export const registerCombatWebsocketRoutes = () => {
     const tgame = game;
     if (tgame.user?.isGM) {

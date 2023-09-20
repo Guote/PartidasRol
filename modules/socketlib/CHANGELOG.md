@@ -1,3 +1,17 @@
+## 1.0.13
+### Compatibility
+- Verified compatibility with Foundry 11
+
+
+## 1.0.12
+### Compatibility
+- Foundry 10 will no longer show a deprecation warning when modules or systems register in socketlib
+
+## 1.0.11
+### Compatibility
+- Updated for compatibility with Foundry 10
+
+
 ## 1.0.10
 ### Compatibility
 - Verified compatibility with Foundry 9

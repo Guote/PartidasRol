@@ -1,0 +1,39 @@
+{
+    "statuscounter": {
+        "rebindNumberKeys": {
+            "name": "キーを設定",
+            "hint": "状態異常アイコンを増やすときに使用するキーを上書きできます。"
+        },
+        "rebindMouseButtons": {
+            "name": "マウスボタン設定",
+            "hint": "左クリックで状態異常カウンターを増やす、右クリックでカウンターを減らすマウスの挙動を上書きできます。状態異常のコマ全体表示はShift+クリックで設定できます。"
+        },
+        "displayOne": {
+            "name": "「1」表示",
+            "hint": "カウンターの数が1であることを数字で表示するタイミングを設定します。",
+            "always": "常に",
+            "countdown": "減らす時",
+            "never": "表示しない"
+        },
+        "counterFontSize": {
+            "name": "カウンター文字サイズ",
+            "hint": "カウンターの文字サイズを設定します。"
+        },
+        "counterColor": {
+            "name": "カウンター色",
+            "hint": "RRGGBBフォーマットの文字色を指定できます。"
+        },
+        "countdownColor": {
+            "name": "カウントダウン色",
+            "hint": "戦闘中のカウントダウンをRRGGBBフォーマットで指定できます。"
+        },
+        "defaultType": {
+            "name": "Default type",
+            "hint": "The default counter type if the effect has no configured type."
+        },
+        "simple": "シンプル",
+        "countdown_turn": "カウントダウン（ターン）",
+        "countdown_round": "カウントダウン（ラウンド）",
+        "multiplier": "倍率"
+    }
+}

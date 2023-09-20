@@ -1,9 +1,9 @@
 // Import JavaScript modules
-import { registerSettings } from './module/settings.js';
-import { setUnexploredForPermitted, debug } from './module/lib.js';
+import { loadSettings, registerSettings, settings } from './module/settings.js';
+import { debug, minGen } from './module/lib.js';
 import { libWrapper } from "./module/shim.js";
 
-CONFIG.LESSFOG = { NOFURNACE: true };
+CONFIG.LESSFOG = { NOPV: true };
 
 /* ------------------------------------ */
 /* Initialize module					*/
@@ -14,13 +14,6 @@ Hooks.once('init', async function () {
     // Register custom module settings
     registerSettings();
 
-    // set lighting levels to configured values
-    CONFIG.Canvas.lightLevels.dim = 1 - game.settings.get("lessfog", "dim_darkness");
-    const exploredDarkness = 1 - game.settings.get("lessfog", "explored_darkness");
-    CONFIG.Canvas.exploredColor = PIXI.utils.rgb2hex([exploredDarkness, exploredDarkness, exploredDarkness]);
-    CONFIG.Canvas.daylightColor = parseInt(game.settings.get("lessfog", "daylight_color").substring(1, 7), 16)
-    CONFIG.Canvas.darknessColor = parseInt(game.settings.get("lessfog", "darkness_color").substring(1, 7), 16)
-
 });
 
 /* ------------------------------------ */
@@ -29,34 +22,44 @@ Hooks.once('init', async function () {
 Hooks.once('setup', function () {
     debug.log(true, 'Setup');
 
-    // Determine whether legacy Furnace module is active
-    if (game.modules.get("furnace")?.active) {
-        if (isNewerVersion('2.6.1', game.modules.get("furnace").data.version.match(/[\d.]/g).join(''))) {
-            CONFIG.LESSFOG.NOFURNACE = false;
-        }
-    }
+    loadSettings();
+
+    // Determine whether Perfect Vision module is active
+    // if (game.modules.get("perfect-vision")?.active) {
+    //         CONFIG.LESSFOG.NOPV = false;
+    // }
 
     // Disable sight layer's token vision if GM and option enabled
-    if (CONFIG.LESSFOG.NOFURNACE) {
-        debug.log(false, 'token vision button provided by Less Fog module');
-        libWrapper.register('lessfog', 'SightLayer.prototype.tokenVision', function (wrapped, ...args) {
-            return (game.user.isGM && game.settings.get("lessfog", "showAllToGM")) ? false : wrapped(...args);
-        }, 'MIXED');
+    if (CONFIG.LESSFOG.NOPV) {
+        debug.log(false, 'Token vision button provided by Less Fog module');
+        libWrapper.register('lessfog', 'CanvasVisibility.prototype.tokenVision', function (wrapped, ...args) {
+            let result = wrapped(...args);
+            return (game.user.isGM && settings.showAllToGM) ? false : result;
+        }, 'MIXED', { perf_mode: 'FAST' });
     } else {
-        debug.log(false, 'token vision button provided by legacy Furnace module');
+        debug.log(false, 'Token vision button provided by Perfect Vision module');
     }
 
     // Allow the GM to see all tokens. Disable this option if Levels module is enabled.
     if (game.modules.get("levels")?.active) {
         debug.log(false, 'Levels module enabled; override option to Reveal Tokens to GM');
     } else {
-        Hooks.on("sightRefresh", layer => {
-            for (let t of canvas.tokens.placeables) {
-                t.visible = (!layer.tokenVision && !t.data.hidden) || (game.settings.get("lessfog", "reveal_tokens") && (game.user.isGM || game.settings.get("lessfog", "affect_all"))) || t.isVisible;
-            }
-        });
+        if (minGen(11)) {
+            libWrapper.register('lessfog', 'Token.prototype.isVisible', function (wrapped, ...args) {
+                let result = wrapped(...args);
+                return (settings.reveal_tokens && (game.user.isGM || settings.affect_all)) ? true : result;
+            }, 'MIXED', { perf_mode: 'FAST' });
+        } else {
+            Hooks.on("sightRefresh", layer => {
+                let revealAll = settings.reveal_tokens && (game.user.isGM || settings.affect_all);
+                if (revealAll) {
+                    for (let t of canvas.tokens.placeables) {
+                        t.visible = true;
+                    }
+                }
+            });
+        }
     }
-
 });
 
 /* ------------------------------------ */
@@ -77,8 +80,6 @@ Hooks.once('devModeReady', ({ registerPackageDebugFlag }) => {
 /* When Canvas is ready					*/
 /* ------------------------------------ */
 Hooks.once('canvasReady', function () {
-    const unexploredDarkness = game.settings.get("lessfog", "unexplored_darkness");
-    setUnexploredForPermitted(unexploredDarkness);
 })
 
 /* ------------------------------------ */
@@ -86,7 +87,7 @@ Hooks.once('canvasReady', function () {
 /* ------------------------------------ */
 
 Hooks.on('getSceneControlButtons', controls => {
-    if (CONFIG.LESSFOG.NOFURNACE) {
+    if (CONFIG.LESSFOG.NOPV) {
         let tokenButton = controls.find(b => b.name == "token")
         if (tokenButton) {
             tokenButton.tools.push({
@@ -102,7 +103,9 @@ Hooks.on('getSceneControlButtons', controls => {
     }
 });
 
-// Keep GM's visibility of unexplored areas relatively constant when darkness levels change.
-Hooks.on("lightingRefresh", () => {
-    setUnexploredForPermitted(game.settings.get("lessfog", "unexplored_darkness") * (1 - (canvas.lighting.darknessLevel / 4)));
+Hooks.on("drawCanvasVisibility", layer => {
+    if (game.user.isGM || game.settings.get("lessfog", "affect_all")) {
+        debug.log(false,'Add alpha filter to fog layer');
+        layer.filters.push(new PIXI.filters.AlphaFilter(game.settings.get("lessfog", "fog_opacity")));
+    }
 });

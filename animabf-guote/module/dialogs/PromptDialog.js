@@ -1,4 +1,4 @@
-import { GenericDialog } from "./GenericDialog.js";
+import { GenericDialog } from './GenericDialog.js';
 export class PromptDialog extends GenericDialog {
     constructor(body, { onAccept } = {}) {
         super({

@@ -4,12 +4,74 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.10.0] - 2022-09-30
+## [11.1.0] - 2023-06-08
+### Added
+- Avif support
+
+## [11.0.2] - 2023-05-07
+### Fixed
+- 11.0.4: Fix rendering for special characters (&,+)
+- 11.0.3: Official support for V11
+- 11.0.2: macros from modules not working (specially TokenMagic Portfolio)
+### Changed
+- Indexes are now world-specific
+- Optimizations for The Forge (hosting provider) & S3
+### Added
+- Support for drag & drop animated tiles (as video)
+
+## [10.7.0] - 2023-03-21
+### Added
+- API for retrieving the URL of an asset
+
+## [10.6.0] - 2023-02-19
+### Added
+- Marketplace integration (available assets)
+
+## [10.5.1] - 2022-01-28
+### Fixed
+- 10.5.1 Missing thumb resizing for Prefabs
+### Changed
+- New look-and-feel general availability
+
+## [10.4.0] - 2022-12-22
+### Changed
+- New interface (auto-scroll lists, breadcrumbs)
+- Improved footer
+### Added
+- Create article from image
+- Whole word search & regex search
+
+## [10.3.2] - 2022-12-04
+### Fixed
+- 10.3.1: fix (tentative) for prefabs and PF2 system
+- 10.3.2: fix tiles not showing on top of others (due to FoundryVTT bug: https://github.com/foundryvtt/foundryvtt/issues/8656)
+- 10.3.3: fix backward-compatible fix (10.3.2) for V10 (using document.sort rather than data.z)
+### Added
+- Improved UI for "in progress" indexing
+
+## [10.2.3] - 2022-10-30
+### Fixed
+- 10.2.1: fix V10 compatibility
+- 10.2.2: fix Prefabs not showing up on scene on drag & drop
+- 10.2.3: fix Prefabs without stats block. Make "clean prefabs data" configurable for backwards compatibility with other systems.
+### Changed
+- Sources filtered for tiles/images only
+
+## [10.1.0] - 2022-09-24
 ### Changed
 - Download action closes the window
 - Middle mouse click on tile adds to clipboard (after downloading it)
 
-## [4.9.3] - 2022-09-04
+## [10.0.4] - 2022-09-02
+### Fixed
+- 10.0.2: folder view doesn't list subfolders systematically
+- 10.0.3: image previews broken for faceted search on The Forge
+- 10.0.4: V10 duplicate folders on actor/article import
+### Changed
+- Compatibility with V10
+- Major version based on FVTT
+
+## [4.9.1] - 2022-07-31
 ### Fixed
 - 4.9.1: Dropped tiles not at the highest most point
 - 4.9.3: folder view doesn't list subfolders systematically

@@ -1,0 +1,46 @@
+{
+    "id": "statuscounter",
+    "title": "Status Icon Counters",
+    "description": "Adds the option to add the same status multiple times and displays a counter for the number of stacks.",
+    "version": "2.0.16",
+    "compatibility": {
+        "minimum": "10.284",
+        "verified": "10.291"
+    },
+    "authors": [
+        {
+            "name": "Adrian Haberecht"
+        }
+    ],
+    "esmodules": [
+        "statuscounter.js"
+    ],
+    "styles": [
+        "styles/combatTracker.css",
+        "styles/contextMenu.css"
+    ],
+    "languages": [
+        {
+            "lang": "de",
+            "name": "Deutsch",
+            "path": "lang/de.json"
+        },
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "ja",
+            "name": "日本語",
+            "path": "lang/ja.json"
+        }
+    ],
+    "url": "https://gitlab.com/woodentavern/status-icon-counters",
+    "manifest": "https://gitlab.com/woodentavern/status-icon-counters/-/raw/master/src/module.json",
+    "download": "https://gitlab.com/woodentavern/status-icon-counters/uploads/5d605b1a366cf1b3e261b7b3de960273/statuscounter-v2.0.15.zip",
+    "license": "https://gitlab.com/woodentavern/status-icon-counters/-/blob/master/LICENSE",
+    "readme": "https://gitlab.com/woodentavern/status-icon-counters/-/blob/master/README.md",
+    "bugs": "https://gitlab.com/woodentavern/status-icon-counters/-/issues",
+    "changelog": "https://gitlab.com/woodentavern/status-icon-counters/-/blob/master/CHANGELOG.md"
+}

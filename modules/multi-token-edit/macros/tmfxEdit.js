@@ -30,6 +30,7 @@ await TokenMagic.addUpdateFiltersOnSelected(params);</textarea>
   <label>Preset Name</label><input class="presetName" type="text" value="${
     params[0].filterId ?? params[0].filterType
   }"/>
+  <hr><label>Library</label> <select class="library"><option value="tmfx-main">MAIN</option><option value="tmfx-template">TEMPLATE</option></select>
   `;
   new Dialog({
     title: `Params`,
@@ -38,11 +39,12 @@ await TokenMagic.addUpdateFiltersOnSelected(params);</textarea>
       save: {
         label: 'Save As Preset',
         callback: async (html) => {
-          const presetName = html.find('.presetName').val();
-          if (TokenMagic.getPreset(presetName)) {
-            TokenMagic.deletePreset(presetName);
+          const name = html.find('.presetName').val();
+          const library = html.find('.library').val();
+          if (TokenMagic.getPreset({ name, library })) {
+            TokenMagic.deletePreset({ name, library });
           }
-          TokenMagic.addPreset(presetName, params);
+          TokenMagic.addPreset({ name, library }, params);
         },
       },
     },
@@ -82,6 +84,7 @@ async function promptParamChoice(params) {
           savePreset();
           dialog.close();
         });
+        html.find('.dialog-button').parent().css('display', 'block');
       },
       close: () => resolve(-1),
     });

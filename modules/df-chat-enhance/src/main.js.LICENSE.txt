@@ -1,0 +1,153 @@
+/*! ../../../common/Settings */
+
+/*! ../../../common/libWrapperShared */
+
+/*! ../../common/Settings */
+
+/*! ../Util */
+
+/*! ../archive/DFChatArchiveManager */
+
+/*! ../edit/DFChatEditor */
+
+/*! ./ChatHistoryOptimizer */
+
+/*! ./DFAdventureLogConfig */
+
+/*! ./DFAdventureLogProcessor */
+
+/*! ./DFChatArchive */
+
+/*! ./DFChatArchiveManager */
+
+/*! ./DFChatArchiveNew */
+
+/*! ./DFChatArchiveViewer */
+
+/*! ./DFChatEditor */
+
+/*! ./Settings */
+
+/*! ./archive/df-chat-archive */
+
+/*! ./chat-time/chat-time */
+
+/*! ./df-chat-edit */
+
+/*! ./edit/df-chat-edit */
+
+/*! ./font-size/font-size */
+
+/*! ./logger/DFAdventureLogProcessor */
+
+/*! ./logger/df-adventure-log */
+
+/*! ./merge/chat-merge */
+
+/*! ./player-color/PlayerColor */
+
+/*! ./privacy/df-chat-privacy */
+
+/*! ./scroll-manage/scroll-manage */
+
+/*! ./send/send-button */
+
+/*! ./whisper-trunc/whisper-trunc */
+
+/*!*********************!*\
+  !*** ./src/Util.ts ***!
+  \*********************/
+
+/*!*****************************!*\
+  !*** ../common/Settings.ts ***!
+  \*****************************/
+
+/*!********************************!*\
+  !*** ./src/df-chat-enhance.ts ***!
+  \********************************/
+
+/*!*********************************!*\
+  !*** ./src/merge/chat-merge.ts ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./src/send/send-button.ts ***!
+  \*********************************/
+
+/*!**********************************!*\
+  !*** ./src/edit/DFChatEditor.ts ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./src/edit/df-chat-edit.ts ***!
+  \**********************************/
+
+/*!************************************!*\
+  !*** ./src/chat-time/chat-time.ts ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./src/font-size/font-size.ts ***!
+  \************************************/
+
+/*!*************************************!*\
+  !*** ../common/libWrapperShared.ts ***!
+  \*************************************/
+
+/*!**************************************!*\
+  !*** ./src/archive/DFChatArchive.ts ***!
+  \**************************************/
+
+/*!****************************************!*\
+  !*** ./src/archive/df-chat-archive.ts ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./src/logger/df-adventure-log.ts ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./src/privacy/df-chat-privacy.ts ***!
+  \****************************************/
+
+/*!*****************************************!*\
+  !*** ./src/archive/DFChatArchiveNew.ts ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./src/player-color/PlayerColor.ts ***!
+  \*****************************************/
+
+/*!********************************************!*\
+  !*** ./src/archive/DFChatArchiveViewer.ts ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./src/logger/DFAdventureLogConfig.ts ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./src/scroll-manage/scroll-manage.ts ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./src/whisper-trunc/whisper-trunc.ts ***!
+  \********************************************/
+
+/*!*********************************************!*\
+  !*** ./src/archive/DFChatArchiveManager.ts ***!
+  \*********************************************/
+
+/*!***********************************************!*\
+  !*** ./src/logger/DFAdventureLogProcessor.ts ***!
+  \***********************************************/
+
+/*!***************************************************!*\
+  !*** ./src/scroll-manage/ChatHistoryOptimizer.ts ***!
+  \***************************************************/
+
+//! NOTICE! The message list is inverted, it is sorted OLDEST to NEWEST,
+
+//! at the very bottom of the chat log.
+
+//! so message[0] is at the very top of the chat log, and message[n] is

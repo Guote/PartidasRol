@@ -1,0 +1,39 @@
+{
+    "statuscounter": {
+        "rebindNumberKeys": {
+            "name": "Nummerntasten neu zuweisen",
+            "hint": "Überschreibt die Standardzuweisungen der Nummerntasten, um damit die Anzahl eines Status zu setzen."
+        },
+        "rebindMouseButtons": {
+            "name": "Maustasten neu zuweisen",
+            "hint": "Überschreibt die Standardzuweisungen der Maustasten, um mit Linksklick die Anzahl eines Status zu erhöhen und mit Rechtsklick zu reduzieren. Das Status-Overlay kann mit Umschalt + Linksklick gesetzt werden."
+        },
+        "displayOne": {
+            "name": "'1' anzeigen",
+            "hint": "Konfiguriert wann bzw. ob der Zähler angezeigt wird, wenn nur der Status nur einmal vorhanden ist.",
+            "always": "Immer",
+            "countdown": "Nur beim Runterzählen",
+            "never": "Nie"
+        },
+        "counterFontSize": {
+            "name": "Schriftgröße der Zähler",
+            "hint": "Die Höhe der Schrift auf dem Status."
+        },
+        "counterColor": {
+            "name": "Farbe der Zähler",
+            "hint": "Die Farbe der Schrift auf dem Status im RRGGBB Format."
+        },
+        "countdownColor": {
+            "name": "Farbe der Countdowns",
+            "hint": "Die Farbe von kampfbasierten Countdown-Zählern im RRGGBB Format."
+        },
+        "defaultType": {
+            "name": "Standardtyp",
+            "hint": "Der Standardtyp von Zählern, sofern für den Effekt nichts anderes konfiguriert ist."
+        },
+        "simple": "Einfach",
+        "countdown_turn": "Countdown (Aktion)",
+        "countdown_round": "Countdown (Runde)",
+        "multiplier": "Multiplikator"
+    }
+}

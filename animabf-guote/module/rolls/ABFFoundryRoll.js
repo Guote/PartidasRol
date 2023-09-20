@@ -1,6 +1,6 @@
-import ABFExploderRoll from "./ABFExploderRoll/ABFExploderRoll.js";
-import ABFInitiativeRoll from "./ABFInitiativeRoll/ABFInitiativeRoll.js";
-import ABFControlRoll from "./ABFControlRoll/ABFControlRoll.js";
+import ABFExploderRoll from './ABFExploderRoll/ABFExploderRoll.js';
+import ABFInitiativeRoll from './ABFInitiativeRoll/ABFInitiativeRoll.js';
+import ABFControlRoll from './ABFControlRoll/ABFControlRoll.js';
 /**
  * This class represents the entrypoint of Foundry
  * We must never add our logic here, all of it must be placed in its own class like ABFExploredRoll
@@ -36,8 +36,7 @@ export default class ABFFoundryRoll extends Roll {
     get fumbled() {
         if (this.abfRoll instanceof ABFExploderRoll)
             return this.abfRoll?.fumbled || false;
-        else
-            return false;
+        return false;
     }
     recalculateTotal(mod = 0) {
         this._total = this._evaluateTotal() + mod;

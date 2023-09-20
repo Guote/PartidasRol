@@ -1,0 +1,33 @@
+{
+    "id": "improved-macro-editor",
+    "title": "Improved Macro Editor",
+    "description": "Syntax highlighting tab-capable editor for macros",
+    "authors": [
+        {
+            "name": "Tero Parvinen (Whistler#3253)"
+        }
+    ],
+    "version": "10.1",
+    "compatibility": {
+        "minimum": 10,
+        "verified": 10
+    },
+    "esmodules": [
+        "./module/improved-macro-editor.js"
+    ],
+    "styles": [
+        "styles/improved-macro-editor.css",
+        "styles/highlight-syntax.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+    "url": "https://github.com/teroparvinen/foundry-improved-macro-editor",
+    "bugs": "https://github.com/teroparvinen/foundry-improved-macro-editor/issues",
+    "manifest": "https://github.com/teroparvinen/foundry-improved-macro-editor/releases/latest/download/module.json",
+    "download": "https://github.com/teroparvinen/foundry-improved-macro-editor/releases/download/v10.1/module.zip"
+}

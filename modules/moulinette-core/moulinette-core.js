@@ -9,6 +9,8 @@ import { MoulinetteForgeModule } from "./modules/moulinette-forge-module.js"
 import { MoulinettePatreon } from "./modules/moulinette-patreon.js"
 import { MoulinetteHelp } from "./modules/moulinette-help.js"
 import { MoulinetteSources } from "./modules/moulinette-sources.js"
+import { MoulinetteAvailableAssets } from "./modules/moulinette-available.js"
+import { MoulinetteAvailableResult } from "./modules/moulinette-availableresult.js"
 import { MoulinetteAPI } from "./modules/moulinette-api.js"
 
 /**
@@ -18,48 +20,32 @@ Hooks.once("init", async function () {
   console.log("Moulinette Core| Init")
   
   game.settings.register("moulinette", "userId", { scope: "world", config: false, type: String, default: "anonymous" });
-  game.settings.register("moulinette", "currentTab", { scope: "world", config: false, type: String, default: "scenes" })
-  game.settings.register("moulinette", "displayMode", { scope: "world", config: false, type: String, default: "list" })
-  game.settings.register("moulinette", "winPosForge", { scope: "world", config: false, type: Object })
+  game.settings.register("moulinette", "currentTab", { scope: "client", config: false, type: String, default: "scenes" })
+  game.settings.register("moulinette", "displayMode", { scope: "client", config: false, type: String, default: "list" })
+  game.settings.register("moulinette", "winPosForge", { scope: "client", config: false, type: Object, default: null })
   game.settings.register("moulinette", "favorites", { scope: "world", config: false, type: Object, default: { default: { icon: "fas fa-heart", list: [] }} })
   game.settings.register("moulinette", "currentFav", { scope: "world", config: false, type: String, default: "history" })
-  game.settings.register("moulinette", "sources", { scope: "world", config: false, type: Object })
+  game.settings.register("moulinette", "sources", { scope: "world", config: false, type: Object, default: [] })
+  game.settings.register("moulinette", "wholeWordSearch", { scope: "client", config: false, type: Boolean, default: false })
+  game.settings.register("moulinette", "moduleFilters", { scope: "client", config: false, type: Object, default: {} })
   
-  game.settings.register("moulinette-core", "customPath", {
-    name: game.i18n.localize("mtte.configCustomPath"), 
-    hint: game.i18n.localize("mtte.configCustomPathHint"), 
-    scope: "world",
-    config: true,
-    default: "",
-    type: String
-  });
-  
-  game.settings.register("moulinette-core", "debugScanAssets", {
-    name: game.i18n.localize("mtte.configDebugScanAssets"), 
-    hint: game.i18n.localize("mtte.configDebugScanAssetsHint"), 
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean
-  });
-  
-  game.settings.register("moulinette-core", "showCaseContent", {
-    name: game.i18n.localize("mtte.configShowCase"), 
-    hint: game.i18n.localize("mtte.configShowCaseHint"), 
-    scope: "world",
-    config: true,
-    default: true,
-    type: Boolean
-  });
-
   game.settings.register("moulinette-core", "enableMoulinetteCloud", {
-    name: game.i18n.localize("mtte.configEnableMoulinetteCloud"), 
-    hint: game.i18n.localize("mtte.configEnableMoulinetteCloudHint"), 
+    name: game.i18n.localize("mtte.configEnableMoulinetteCloud"),
+    hint: game.i18n.localize("mtte.configEnableMoulinetteCloudHint"),
     scope: "world",
     config: true,
     default: true,
     type: Boolean,
     onChange: () => game.moulinette.user = {}
+  });
+
+  game.settings.register("moulinette-core", "showCaseContent", {
+    name: game.i18n.localize("mtte.configShowCase"),
+    hint: game.i18n.localize("mtte.configShowCaseHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
   });
 
   game.settings.register("moulinette-core", "showCloudContent", {
@@ -71,6 +57,16 @@ Hooks.once("init", async function () {
     type: Boolean
   });
 
+  game.settings.register("moulinette-core", "dropdownMode", {
+    name: game.i18n.localize("mtte.configDropdownMode"),
+    hint: game.i18n.localize("mtte.configDropdownModeHint"),
+    scope: "world",
+    config: true,
+    default: null,
+    choices: { none: game.i18n.localize("mtte.dropdownDefault"), auto: game.i18n.localize("mtte.dropdownAuto") },
+    type: String
+  });
+
   game.settings.register("moulinette-core", "cloudColor", {
     name: game.i18n.localize("mtte.configCloudColor"),
     hint: game.i18n.localize("mtte.configCloudColorHint"),
@@ -78,17 +74,6 @@ Hooks.once("init", async function () {
     config: true,
     default: "def",
     choices: { none: game.i18n.localize("mtte.cloudColorNone"), def: game.i18n.localize("mtte.cloudColorDefault"), contrast: game.i18n.localize("mtte.cloudColorContrast") },
-    type: String,
-    onChange: () => game.moulinette.user = {}
-  });
-
-  
-  game.settings.register("moulinette-core", "s3Bucket", {
-    name: game.i18n.localize("mtte.configS3"), 
-    hint: game.i18n.localize("mtte.configS3Hint"), 
-    scope: "world",
-    config: true,
-    default: "",
     type: String
   });
   
@@ -100,6 +85,15 @@ Hooks.once("init", async function () {
     default: "",
     choices: { byPack: game.i18n.localize("mtte.browseByPack"), byPub: game.i18n.localize("mtte.browseByPublisher") },
     type: String
+  });
+
+  game.settings.register("moulinette-core", "subControls", {
+    name: game.i18n.localize("mtte.configSubControls"),
+    hint: game.i18n.localize("mtte.configSubControlsHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
   });
   
   game.settings.register("moulinette-core", "filepicker", {
@@ -122,13 +116,31 @@ Hooks.once("init", async function () {
     type: String
   });
 
-  game.settings.register("moulinette-core", "subControls", {
-    name: game.i18n.localize("mtte.configSubControls"),
-    hint: game.i18n.localize("mtte.configSubControlsHint"),
+  game.settings.register("moulinette-core", "debugScanAssets", {
+    name: game.i18n.localize("mtte.configDebugScanAssets"),
+    hint: game.i18n.localize("mtte.configDebugScanAssetsHint"),
     scope: "world",
     config: true,
-    default: true,
+    default: false,
     type: Boolean
+  });
+
+  game.settings.register("moulinette-core", "s3Bucket", {
+    name: game.i18n.localize("mtte.configS3"),
+    hint: game.i18n.localize("mtte.configS3Hint"),
+    scope: "world",
+    config: true,
+    default: "",
+    type: String
+  });
+
+  game.settings.register("moulinette-core", "customPath", {
+    name: game.i18n.localize("mtte.configCustomPath"),
+    hint: game.i18n.localize("mtte.configCustomPathHint"),
+    scope: "world",
+    config: true,
+    default: "",
+    type: String
   });
 
   game.keybindings.register("moulinette-core", "favoriteKey", {
@@ -172,7 +184,10 @@ Hooks.once("init", async function () {
       MoulinetteFilePicker,
       MoulinetteHelp,
       MoulinetteSources,
-      MoulinetteAPI
+      MoulinetteAvailableAssets,
+      MoulinetteAvailableResult,
+      MoulinettePatreon,
+      MoulinetteAPI,
     },
     cache: new MoulinetteCache(),
     forge: [],
@@ -180,7 +195,8 @@ Hooks.once("init", async function () {
     sources: [
       { type: "images", publisher: "Foundry VTT", pack: "Core Data Icons", source: "public", path: "icons" }
     ],
-    toggles: {}
+    toggles: {},
+    cloud: { lastSearch: {} }
   }
   game.moulinette.toggles.patreon = true
 

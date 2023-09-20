@@ -46,6 +46,14 @@ Handlebars.registerHelper('slugify', function (value) {
 Handlebars.registerHelper('faFindById', function (needle, haystack) {
   return haystack.find(val => val.id === needle);
 });
+Handlebars.registerHelper('breaklines', function(text) {
+  text = Handlebars.Utils.escapeExpression(text);
+  text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+  return new Handlebars.SafeString(text);
+});
+Handlebars.registerHelper('escape', function(variable) {
+  return variable?.replace(/(['"])/g, '\\$1');
+});
 
 /**
  * Format bytes as human-readable text.
@@ -127,6 +135,9 @@ Hooks.once('init', () => {
     ...args
   ) {
     const contextOptions = wrapped(...args);
+    if (!game.user.isGM) {
+      return contextOptions;
+    }
     const i = contextOptions.findIndex(c => c.name === 'COMPENDIUM.ImportAll');
     // Limit importAll to only work for compendiums that do not belong to FA Battlemaps
     contextOptions[i].condition = li => {
@@ -147,7 +158,7 @@ Hooks.on('preCreateScene', (scene, data, options) => {
   }
 });
 Hooks.on('renderSidebarTab', async (app, html) => {
-  if (game.user.isGM && app?.options?.id === 'scenes' && game.settings.get(FABattlemaps.ID, 'sidebar-button')) {
+  if (game.user.isGM && (app?.id ?? app?.options?.id) === 'scenes' && game.settings.get(FABattlemaps.ID, 'sidebar-button')) {
     html.find('.fa-battlemaps')
       .remove();
     const button = $('<button class="fa-battlemaps"><i class="fas fa-battlemaps"></i> FA Battlemaps</button>');
@@ -318,7 +329,6 @@ class FABattlemaps extends FormApplication {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       closeOnSubmit: false,
-      height: 800,
       id: 'fa-battlemaps',
       classes: ['fa-battlemaps'],
       submitOnClose: false,
@@ -326,7 +336,9 @@ class FABattlemaps extends FormApplication {
       title: game.i18n.localize('FABattlemaps.WindowTitle'),
       userId: game.userId,
       resizable: true,
+      height: window.innerHeight - 150,
       width: Math.max(670, Math.min(Math.floor(((window.innerWidth * 0.8) - 220) / 220) * 220, 1100)),
+      scrollY: [".u-section"],
     });
   }
 
@@ -587,8 +599,16 @@ class FADownloader extends FormApplication {
       return;
     }
 
+    const moduleVersion = game.modules.get(FABattlemaps.ID).version ?? game.modules.get(FABattlemaps.ID).data.version;
+    const mapVersion = this.battlemap.version || '1.0.18';
+    if (isNewerVersion(mapVersion, moduleVersion)) {
+      this.wrongVersion = game.i18n.format('FABattlemaps.DownloaderStatusWrongVersion', {version: mapVersion});
+      this.status = game.i18n.localize('FABattlemaps.DownloaderStatusWrongVersionShort');
+      return;
+    }
+
     this.downloader = new ConcurrentDownloader({
-      onDownloaded: (data) => {
+      onDownloaded: async (data) => {
         if (!data.fileDetails?.file?.path) {
           return;
         }
@@ -614,7 +634,7 @@ class FADownloader extends FormApplication {
           }
           const folder = data.fileDetails.file.path.substring(0, data.fileDetails.file.path.lastIndexOf('/'));
           const filename = data.fileDetails.file.path.split('/').pop();
-          FADownloader.uploadFile(new File([data.blob], filename, {
+          await FADownloader.uploadFile(new File([data.blob], filename, {
             type: data.blob.type,
             lastModified: lastModified,
           }), folder);
@@ -623,6 +643,15 @@ class FADownloader extends FormApplication {
             file: data.fileDetails.file.path,
           })}`, e);
         }
+      },
+      onFileExists: (data) => {
+        const file = this.files.get(data?.path);
+        if (!file) {
+          return;
+        }
+        file.status = data?.status ?? file.status;
+        file.percentComplete = data?.percentComplete ?? file.percentComplete;
+        this.render(false);
       },
       onProgress: (data) => {
         if (data.complete || !data.fileDetails?.file?.path) {
@@ -651,28 +680,12 @@ class FADownloader extends FormApplication {
         }
         this.render(false);
 
-        this.downloader.AddFiles(battlemapId, Array.from(files.values()))
-          .then((existingFiles) => {
-            for (const existingFile of existingFiles) {
-              const file = this.files.get(existingFile.Path);
-              if (!file) {
-                continue;
-              }
-              file.status = existingFile.status || FADownloader.FILE_STATUS_DOWNLOADED;
-              file.percentComplete = existingFile.percentComplete || 100;
-            }
-            if (this.downloader.files.length) {
-              this.status = game.i18n.format('FABattlemaps.DownloaderStatusDownloading', {
-                count: this.downloader.files.length,
-              });
-              this.downloader.Process()
-                .then(() => {
-                  this.onComplete();
-                });
-            } else {
-              this.onComplete();
-            }
-            this.render(false);
+        this.status = game.i18n.format('FABattlemaps.DownloaderStatusDownloading', {
+          count: files?.size,
+        });
+        this.downloader.Process(battlemapId, Array.from(files.values()))
+          .then(() => {
+            this.onComplete();
           });
       });
   }
@@ -753,6 +766,12 @@ class FADownloader extends FormApplication {
 
     await FADownloader.handleExistingScene(this.battlemap.name, '', async (sceneId, sceneName) => {
       await game.scenes.importFromCompendium(game.packs.get('fa-battlemaps.maps'), sceneId, {}, { keepId: true });
+      const scene = game.scenes.get(sceneId);
+      if (scene) {
+        // Generate thumbnail
+        const thumb = await scene.createThumbnail();
+        await scene.update({"thumb": thumb.thumb});
+      }
       setTimeout(() => {
         this.close({ force: true });
         ui.sidebar.activateTab('scenes');
@@ -781,6 +800,7 @@ class FADownloader extends FormApplication {
       template: FABattlemaps.TEMPLATES.mapDownload,
       title: game.i18n.localize('FABattlemaps.WindowTitle'),
       resizable: true,
+      scrollY: ['.u-section'],
     });
   }
 
@@ -795,6 +815,7 @@ class FADownloader extends FormApplication {
       error: this.error,
       status: this.status,
       authorised: this.authorised,
+      wrongVersion: this.wrongVersion,
       loggedIn: this.loggedIn,
     };
   }
@@ -809,19 +830,23 @@ class FADownloader extends FormApplication {
   static IsUsingTheForge = (typeof ForgeVTT !== 'undefined' && ForgeVTT.usingTheForge);
 
   async getFiles() {
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 2000));
     const battlemapFiles = await FADownloader.getBattlemapFiles(this.battlemap.id);
     const mergedFiles = new Map();
 
+    const animationFiles = battlemapFiles?.files?.animations || [];
     const audioFiles = battlemapFiles?.files?.audio || [];
     const imageFiles = battlemapFiles?.files?.images || [];
-    if (!audioFiles.length || !imageFiles.length) {
+    if (!animationFiles.length && !audioFiles.length && !imageFiles.length) {
       console.error(`${FABattlemaps.ID} - ${game.i18n.localize('FABattlemaps.BattlemapsListFailed')}`, battlemapFiles);
       return mergedFiles;
     }
-    for (const file of audioFiles.concat(imageFiles)) {
+    for (const file of animationFiles.concat(audioFiles.concat(imageFiles))) {
       file.status = FADownloader.FILE_STATUS_PENDING;
       file.percentComplete = 0;
+      if (!file.size) {
+        continue;
+      }
       mergedFiles.set(file.path, file);
     }
 
@@ -958,32 +983,45 @@ class ConcurrentDownloader {
   /**
    * @param {number} concurrency - The number of concurrent downloads to process
    * @param {function(ProgressDownloaded): void} onDownloaded - A function to call each time a download completes.
+   * @param {function(ProgressFileExists): void} onFileExists - A function to call each time a file already exists.
    * @param {function(ProgressUpdate): void} onProgress - A function to call with progress updates.
    */
   constructor({
     concurrency = 5,
-    onDownloaded = () => {
+    onDownloaded = async () => {
+    },
+    onFileExists = () => {
     },
     onProgress = () => {
     },
   } = {}) {
-    this.files = [];
     this.running = 0;
     this.concurrency = concurrency;
     this.resolve = null;
     this.reject = null;
-    this.results = {};
     /**
      * The function to call each time a download completes.
      * @type {function(ProgressDownloaded): void}
      */
     this.onDownloaded = onDownloaded;
     /**
+     * The function to call each time a download completes.
+     * @type {function(ProgressFileExists): void}
+     */
+    this.onFileExists = onFileExists;
+    /**
      * The function to call with progress updates.
      * @type {function(ProgressUpdate): void}
      */
     this.onProgress = onProgress;
   }
+
+  /**
+   * @typedef {object} ProgressFileExists
+   * @property {string} path - The path of the file.
+   * @property {number} percentComplete - The percentage of the download that is complete.
+   * @property {string} status - The status of the download.
+   */
 
   /**
    * @typedef ProgressDownloaded
@@ -999,49 +1037,47 @@ class ConcurrentDownloader {
    * @property {boolean} complete - Whether the download has completed.
    */
 
-  async AddFiles(battlemapId, files) {
-    const existingFiles = [];
-    for (const file of files) {
-      if (await FADownloader.fileExists(file)) {
-        console.log(`${FABattlemaps.ID} - ${game.i18n.format('FABattlemaps.UploadAlreadyExists', {
-          file: file.path.replace(/ /g, '%20'),
-        })}`);
-        file.status = FADownloader.FILE_STATUS_DOWNLOADED;
-        file.percentComplete = 100;
-        existingFiles.push(file);
-        continue;
-      }
-      const fileDetails = await FADownloader.getFileDetails(battlemapId, file);
-      if (fileDetails?.url) {
-        this.files.push(fileDetails);
-      } else {
-        file.status = FADownloader.FILE_STATUS_ERRORED;
-        file.percentComplete = 0;
-        existingFiles.push(file);
-      }
-    }
-    return existingFiles;
-  }
-
   /**
    * Process the pending urls. Be sure to add all the URLs prior to calling Process.
+   * @param {string} battlemapId - The id of the battlemap.
+   * @param {Array.<object>} files - The files to download.
    * @return {Promise<void>}
    */
-  async Process() {
+  async Process(battlemapId, files) {
     return new Promise((resolve, reject) => {
       this.resolve = resolve;
       this.reject = reject;
 
       // No urls to process
-      if (!this.files.length) {
-        return this.resolve(this.results);
+      if (!files.length) {
+        return this.resolve();
       }
 
       const resolveAsset = async (iterator) => {
-        for (let [, fileDetails] of iterator) {
+        for (let [, file] of iterator) {
+          if (await FADownloader.fileExists(file)) {
+            console.log(`${FABattlemaps.ID} - ${game.i18n.format('FABattlemaps.UploadAlreadyExists', {
+              file: file.path.replace(/ /g, '%20'),
+            })}`);
+            this.onFileExists({
+              path: file.path,
+              percentComplete: 100,
+              status: FADownloader.FILE_STATUS_DOWNLOADED,
+            });
+            continue;
+          }
+          const fileDetails = await FADownloader.getFileDetails(battlemapId, file);
+          if (!fileDetails?.url) {
+            this.onFileExists({
+              path: file.path,
+              percentComplete: 0,
+              status: FADownloader.FILE_STATUS_ERRORED,
+            });
+            continue;
+          }
           const blob = await this._download(fileDetails);
           if (blob) {
-            this.onDownloaded({
+            await this.onDownloaded({
               fileDetails,
               blob,
             });
@@ -1050,8 +1086,8 @@ class ConcurrentDownloader {
       };
 
       // Operate with concurrency
-      const iterator = this.files.entries();
-      const workers = new Array(Math.min(this.concurrency, this.files.length))
+      const iterator = files.entries();
+      const workers = new Array(Math.min(this.concurrency, files.length))
         .fill(iterator)
         .map(resolveAsset);
 

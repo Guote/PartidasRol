@@ -1,8 +1,8 @@
-import { Templates } from "../utils/constants.js";
+import { Templates } from '../utils/constants.js';
 export class GenericDialog extends FormApplication {
     constructor(data) {
         super(data);
-        this.data = data;
+        this.modalData = data;
         this.render(true);
     }
     static get defaultOptions() {
@@ -19,7 +19,7 @@ export class GenericDialog extends FormApplication {
     }
     activateListeners(html) {
         super.activateListeners(html);
-        for (const button of this.data.buttons) {
+        for (const button of this.modalData.buttons) {
             html.find(`#${button.id}`).click(e => {
                 button.fn?.(e);
                 this.close();
@@ -27,16 +27,16 @@ export class GenericDialog extends FormApplication {
         }
     }
     async close() {
-        if (!this.data.onClose?.()) {
+        if (!this.modalData.onClose?.()) {
             return super.close();
         }
         return undefined;
     }
     getData() {
-        return this.data;
+        return this.modalData;
     }
     async _updateObject(event, formData) {
-        this.data = mergeObject(this.data, formData);
+        this.modalData = mergeObject(this.modalData, formData);
         this.render();
     }
 }

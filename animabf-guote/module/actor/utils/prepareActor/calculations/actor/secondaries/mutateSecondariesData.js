@@ -1,8 +1,8 @@
-import { calculateSecondaryStealth } from "./calculations/calculateSecondaryStealth.js";
-import { calculateSecondarySwim } from "./calculations/calculateSecondarySwim.js";
-import { calculateSecondaryHide } from "./calculations/calculateSecondaryHide.js";
-import { calculateSecondaryNotice } from "./calculations/calculateSecondaryNotice.js";
-import { calculateSecondarySearch } from "./calculations/calculateSecondarySearch.js";
+import { calculateSecondaryStealth } from './calculations/calculateSecondaryStealth.js';
+import { calculateSecondarySwim } from './calculations/calculateSecondarySwim.js';
+import { calculateSecondaryHide } from './calculations/calculateSecondaryHide.js';
+import { calculateSecondaryNotice } from './calculations/calculateSecondaryNotice.js';
+import { calculateSecondarySearch } from './calculations/calculateSecondarySearch.js';
 const SECONDARIES_AFFECTED_BY_ALL_PHYSIC_PENALTIES = ['acrobatics', 'athleticism', 'climb', 'jump'];
 const SECONDARIES_AFFECTED_BY_ARMOR_PHYSIC_PENALTY = ['featsOfStrength', 'dance'];
 const SECONDARIES_AFFECTED_BY_WEAR_ARMOR_PHYSIC_PENALTY = ['ride', 'piloting'];

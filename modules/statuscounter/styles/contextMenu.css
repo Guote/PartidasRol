@@ -1,0 +1,10 @@
+.reset-font {
+    font-size: 14px;
+    text-align: initial;
+}
+
+.current-counter-type {
+    visibility: hidden;
+    padding-right: 3px;
+    font-weight: bolder;
+}

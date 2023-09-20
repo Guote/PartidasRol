@@ -1,12 +1,18 @@
 import { Helpers, ST_Config } from './helpers.mjs';
 
 Hooks.on('init', () => {
-  // Exclude module from deprecation warnings, as we're relying on shims for now.
-  if (game.release.generation === 10) {
-    const excludeRgx = new RegExp('/modules/smalltime/');
-    CONFIG.compatibility.excludePatterns.push(excludeRgx);
-  }
-
+  game.keybindings.register('smalltime', 'toggle-hotkey', {
+    name: game.i18n.localize('SMLTME.Toggle_Hotkey'),
+    hint: game.i18n.localize('SMLTME.Toggle_Hotkey_Hint'),
+    editable: [{ key: 'KeyS', modifiers: ['SHIFT'] }],
+    precedence: CONST.KEYBINDING_PRECEDENCE.PRIORITY,
+    restricted: false,
+    onDown: () => {
+      SmallTimeApp.toggleAppVis('toggle');
+      return true;
+    },
+  });
+  
   game.settings.register('smalltime', 'current-date', {
     name: 'Current Date',
     scope: 'world',
@@ -44,7 +50,7 @@ Hooks.on('init', () => {
     scope: 'client',
     config: false,
     type: Boolean,
-    default: false,
+    default: true,
   });
 
   game.settings.register('smalltime', 'player-visibility-default', {
@@ -54,6 +60,7 @@ Hooks.on('init', () => {
     config: true,
     type: String,
     choices: {
+      3: 'todo',
       2: game.i18n.localize('SMLTME.Player_Vis_2'),
       1: game.i18n.localize('SMLTME.Player_Vis_1'),
       0: game.i18n.localize('SMLTME.Player_Vis_0'),
@@ -348,11 +355,11 @@ Hooks.on('canvasReady', () => {
     const visDefault = game.settings.get('smalltime', 'player-visibility-default');
 
     // Set the Darkness link state to the default choice.
-    if (!hasProperty(thisScene, 'data.flags.smalltime.darkness-link')) {
+    if (!hasProperty(thisScene, 'flags.smalltime.darkness-link')) {
       thisScene.setFlag('smalltime', 'darkness-link', darknessDefault);
     }
     // Set the Player Vis state to the default choice.
-    if (!hasProperty(thisScene, 'data.flags.smalltime.player-vis')) {
+    if (!hasProperty(thisScene, 'flags.smalltime.player-vis')) {
       thisScene.setFlag('smalltime', 'player-vis', visDefault);
     }
     // Refresh the current scene's Darkness level if it should be linked.
@@ -446,11 +453,11 @@ Hooks.on('renderSceneConfig', async (obj) => {
   const darknessDefault = game.settings.get('smalltime', 'darkness-default');
   const visDefault = game.settings.get('smalltime', 'player-visibility-default');
   // Set the Darkness link state to the default choice.
-  if (!hasProperty(obj.object, 'data.flags.smalltime.darkness-link')) {
+  if (!hasProperty(obj.object, 'flags.smalltime.darkness-link')) {
     await obj.object.setFlag('smalltime', 'darkness-link', darknessDefault);
   }
   // Set the Player Vis state to the default choice.
-  if (!hasProperty(obj.object, 'data.flags.smalltime.player-vis')) {
+  if (!hasProperty(obj.object, 'flags.smalltime.player-vis')) {
     await obj.object.setFlag('smalltime', 'player-vis', visDefault);
   }
 
@@ -644,10 +651,6 @@ Hooks.on('renderSettingsConfig', (obj) => {
     }
   });
 
-  if (game.release.generation === 10) {
-    document.documentElement.style.setProperty('--SMLTME-darkness-container-width', '512px');
-  }
-
   // Create and insert a div for the Darkness Configuration tool.
   const insertionElement = $('input[name="smalltime.sunset-end"]');
   insertionElement.css('display', 'none');
@@ -675,11 +678,6 @@ Hooks.on('renderSettingsConfig', (obj) => {
 
   // Re-auto-size the app window.
   obj.setPosition();
-
-  // Tweak to accommodate TidyUI's smaller available space.
-  if (game.modules.get('tidy-ui_game-settings')?.active && game.release.generation === 9) {
-    $('#smalltime-darkness-config').css('transform', 'scale(0.9, 0.9) translate(-30px, 0px)');
-  }
 
   // Get the current Darkness overlay color.
   const coreDarknessColor = Helpers.convertHexToRGB(CONFIG.Canvas.darknessColor.toString(16));
@@ -1186,7 +1184,7 @@ class SmallTimeApp extends FormApplication {
       currentScene.getFlag('smalltime', 'darkness-link') &&
       game.modules.get('smalltime').controlAuth
     ) {
-      let darknessValue = canvas.lighting.darknessLevel;
+      let darknessValue = canvas.darknessLevel;
       const maxD = game.settings.get('smalltime', 'max-darkness');
       const minD = game.settings.get('smalltime', 'min-darkness');
 

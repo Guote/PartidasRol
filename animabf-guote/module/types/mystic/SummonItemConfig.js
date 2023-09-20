@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const SummonItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").SummonItemConfig} */
+export const SummonItemConfig = ABFItemConfigFactory({
     type: ABFItems.SUMMON,
     isInternal: true,
     fieldPath: ['mystic', 'summons'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.summons;
-    },
     selectors: {
         addItemButtonSelector: 'add-summon',
         containerSelector: '#summons-context-menu-container',
@@ -21,26 +20,5 @@ export const SummonItemConfig = {
             name,
             type: ABFItems.SUMMON
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name } = changes[id];
-            await actor.updateInnerItem({ id, type: ABFItems.SUMMON, name });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.mystic.summons;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.mystic.summons = [item];
-        }
     }
-};
+});

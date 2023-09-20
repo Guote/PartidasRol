@@ -1,7 +1,7 @@
-import { renderTemplates } from "../../utils/renderTemplates.js";
-import { Templates } from "../../utils/constants.js";
-import { ABFDialogs } from "../../dialogs/ABFDialogs.js";
-import { calculateCombatResult } from "../../combat/utils/calculateCombatResult.js";
+import { renderTemplates } from '../../utils/renderTemplates.js';
+import { Templates } from '../../utils/constants.js';
+import { ABFDialogs } from '../../dialogs/ABFDialogs.js';
+import { calculateCombatResult } from '../../combat/utils/calculateCombatResult.js';
 const openDialog = async () => {
     const [dialogHTML, iconHTML] = await renderTemplates({
         name: Templates.Dialog.DamageCalculator,

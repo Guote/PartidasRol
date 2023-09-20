@@ -1,30 +1,29 @@
+/* eslint-disable eqeqeq */
 export const isHBSHelper = {
     name: 'is',
-    fn: (op, val1, val2, options) => {
-        const getTruthyFn = () => {
-            return options.fn?.(this) ?? true;
-        };
-        const getFalsyFn = () => {
-            return options.inverse?.(this) ?? false;
-        };
-        if (op === 'neq') {
-            return val1 != val2 ? getTruthyFn() : getFalsyFn();
+    fn: (op, val1, val2) => {
+        const [realOp, isDebug] = op.toString().split(':');
+        if (isDebug === 'debug') {
+            // debug mode
         }
-        if (op === 'eq') {
-            return val1 == val2 ? getTruthyFn() : getFalsyFn();
+        if (realOp === 'neq') {
+            return val1 != val2 ? true : false;
         }
-        if (op === 'gt') {
-            return val1 > val2 ? getTruthyFn() : getFalsyFn();
+        if (realOp === 'eq') {
+            return val1 == val2 ? true : false;
         }
-        if (op === 'gte') {
-            return val1 >= val2 ? getTruthyFn() : getFalsyFn();
+        if (realOp === 'gt') {
+            return val1 > val2 ? true : false;
         }
-        if (op === 'lt') {
-            return val1 < val2 ? getTruthyFn() : getFalsyFn();
+        if (realOp === 'gte') {
+            return val1 >= val2 ? true : false;
         }
-        if (op === 'lte') {
-            return val1 <= val2 ? getTruthyFn() : getFalsyFn();
+        if (realOp === 'lt') {
+            return val1 < val2 ? true : false;
         }
-        throw new Error(`Unknown operator (${op})`);
+        if (realOp === 'lte') {
+            return val1 <= val2 ? true : false;
+        }
+        throw new Error(`Unknown operator (${realOp})`);
     }
 };

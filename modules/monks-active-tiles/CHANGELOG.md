@@ -1,3 +1,743 @@
+## Version 10.21
+
+Added support for using handlebars with destination values
+
+Fixed isses with finding the appropriate teleport and move location when using randome within or relative
+
+Fixed issues with how the anchor links are slugified when opening a journal entry.
+
+Fixed issue when increasing or decreasing a variable, if the variable hasn't been set yet.
+
+Fixed issue with the custom Dialog adding a button will no longer fill with the old values.
+
+Fixed issue with dragging and dropping actions between tiles when there are no actions on the rdestinatin tile.
+
+Fixed issue with the Tile Directory, when importing a tile to a tile within a directory.
+
+Fixed issue with using the modulus operator in values.
+
+Fixed warning about deprecation of the toObject function.
+
+Fixed issues with animating the movement of Tiles.
+
+Added the option to click on Macros on the hotbar to use when selecting as an entity for running a macro.
+
+Fixed issues that v11 was having with tabs.  This may cause issues with other modules in v10 unfortunately.
+
+## Version 10.20
+
+Fixed issue if Hurt/Heal action is run against a Token that isn't linked to an Actor.
+
+Fixed issue with Hurt Heal, when dice roll has a space between the +/- and the dice roll.  It technically shouldn't have one, but for legacy sake it will work for now but will warn that it should be changed.
+
+Changed the Attack action so you can choose how to "Attack" either by attacking, using, or just displaying a chat message.
+
+Fixed issue with showing help text when a field is hidden due to conditional fields.
+
+Added width and height properties to the show dialog action to make it a little easier to set the most common attributes.
+
+Added the loop action so you can loop through a collection of entities and run code individually against each.
+
+Fixed issue with adding a new button trying to edit an older button.
+
+Added the option to drag and drop an action from one Tile to a different Tile.
+
+Added an example of how to set up a custom dialog that displays a keypad.
+
+Fixed issue with Image Popout not showing the caption to players.
+
+Fixed issue with finding entities within a Tile.
+
+Fixed issue with jumpt to landing triggering with an undefined landing.
+
+## Version 10.19
+
+Fixed issue with teleport and move to a random location within a tile.
+
+Fixed issue with snap to grid, instead of snapping tot he closest point, it will snap to the grid square the point is in.
+
+Fixed issue with positioning of tokens when moving and teleporting
+
+Fixed issues with the Attack action, and added the option to fast forward the roll, and to rolldamage after the attack.
+
+Fixed issue where a 0 value wasn't returnign the correct value.
+
+Fixed issue with showing a custom dialog for players.
+
+Added the option to drag and drop a scene onto the canvas to create an active tile that will change to that scene.
+
+## Version 10.18
+
+Fixed issues with all the filter actions.
+
+Fixed issues with true and false properties
+
+Tried to make it a little easier for altering values that should be strings.
+
+## Version 10.17
+
+Fixed issue with Move not adding entities to the values properly.
+
+Fixed issues with animated placement of entities using the Move action.
+
+Fixed issues with he display name when settign the current collection or collections within.
+
+Added the option to set the current collection with the Activate action.  This will now also set the collection that gets used when selecting entities within the tile.
+
+Fixed issue when setting the tile image if the position is a number.
+
+Fixed issue with the list of available global volumes.
+
+Fixed issue with additional text being dislayed with the Set Currect Collection action.
+
+Removing the Visibility filter until I can figure out a way around things that Foundry is doing.
+
+Fixed issues with landing colours not quite lining up properly.
+
+## Version 10.16
+
+Moved the delay action from Action Flow to an actual action instead.
+
+Changed all value fields to have a consistant way of getting the data.  What this means is that each field now should allow you to use handlebars, dice notation, or +/- notation.
+
+If the teleport destination can't be found, then the token won't stop, but will continue on to the original destination.
+
+Fixed teleport using relative positioning if the trigger wasn't on enter or on exit.
+
+Fixed teleport wash for owners of a token that aren't the user triggering the teleport.
+
+Added positioning to creating a token, so it can be created relative to where the character entered the tile.
+
+Fixed issue with creating multiple tokens overwriting the original destination location.
+
+Added the option with the activate action to target lights and sounds within the Tile.  And use the current lights and sounds.
+
+Monks Sound Enhancements has added a global volume slider for sound effects, and Active Tiles will use that value for any sounds being played.  Otherwise it will default back to the ambient slider.
+
+Fixed issues with sound effects not stopping properly for users.
+
+Monks Sound Enhancements also gives the option to show sounds playing on the sounds tab, and Active Tile has the option to hook into that to display sound effects being played.
+
+Fixed issues with whispering a chat message to tokens owners.
+
+Fixed issues with chat bubble, chat message sbeing displayed to everyone.
+
+Fixed issue with chat bubble icon always showing up, for chat messages in the action listing.
+
+Fixed the run macro action to default to macros instead of tiles.
+
+Fixed issues with roll table results when setting the chat text.
+
+Added code to filter out duplicate conditions in case a system adds multiple conditions.
+
+Fixed issue with play animation not playing again in Firefox.
+
+Removed the page and subsetion options when opening journal entries if the journal in question is an Enhanced Journal entry.
+
+Fixed Active Tiles part in opening journals to a specific anchor.  Enhanced Journals will still need to updated for it to work properly.
+
+Added Sound Effects volume to the options when settign the global volume levels, if Monks Sound Enhancements is installed.
+
+Added the option to handle closing the dialog as a 'no' when using the show dialog action.
+
+Added the option to load a file for the dialog content instead of having to type all the html into a text field.  This way you can share Dialog content.
+
+Added the option to send options to the dialog.
+
+Added the feature to add custom buttons for a dialog.  You can also have no buttons, providing your own custom button within the html for submitting the dialog.
+
+Fixed issue where a Journal with no entries wasn't able to have text added to it.
+
+Added a new action to be able to set the current collection.  For the most part, you could do this within the actions themselves, but this action allows you to do it outside of other actions.
+
+Fixed issue with changes to the FX Master module.
+
+Fixed issue with DFreds convenient effects filter list.
+
+Removed familiar, hazard, and loot from type to include when selecting player tokens.
+
+Fixed issue with rotation reversing and rotating the opposite direction.
+
+Fixed issue with inline roll notation within Active Tile actions.
+
+Added code to support adding current players to the value list.
+
+Fixed issue where having multiple GMs was causing actions to happen more than once.
+
+Fixed issue where tiles that were created before Active Tiles was activated were causing errors due to lacking Active Tile flags.
+
+Added the option to only run inline links to Tiles if the tile is active.  Use `@Tile[Scene.F3Ga2w0WNGBxfhij.Tile.Rj6HLBoqiXYSFYHi actve:true]{Display Text}` to make sure the tile is active when triggering.
+
+Added the option to use `_failedlanding` if you have a call to a landing and that landing doesn't exist, then it will jump to _failedlanding.
+
+Fixed issue where inline tile links weren't formatting correctly in items.
+
+Added new macro to support PF2E DCs, thank you Exhile of Broken Sky.
+
+Removed the legacy delay field from the action config.  You should be using the delay action instead.
+
+Added the option to highlight the actions that are within landings.
+
+## Version 10.15
+
+Fixing issue with players clicking to activate tiles.
+
+Fixed issues with multiple tokens being the speaker for chat message, only speaking from one of them.
+
+Fixed Polyglot display issue in Pathfinder 2E.
+
+Fixed error when showing chatmessage with polyglot.
+
+## Version 10.14
+
+Changed all internal random rolls to return both the value and the roll so additional details can be passed to the actions.
+
+Fixed issues with finding teleport and move locations.
+
+Fixed issues with teleporting to a scene that has a different scale.
+
+Fixed issues with the movement actions crossing the triggering Tile after being triggered.
+
+Fixed issue where Terrain was no longer an option for the Alter action and Attribute filter.
+
+Added collection option when using the alter action.
+
+Fixed issue with alter when the attribute is dynamic.
+
+Restricting Hurt/Heal to only apply to Tokens.
+
+Added the option to show dice when rolling for Hurt/Heal.
+
+Added flavor to the Hurt/Heal message to indicate what character it applied to.
+
+Fixed issue with playing sounds when the current sound list is unexpectedly empty.
+
+Fixed issue with playing sounds when the sound file doesn't actually exist.
+
+Allow the volume to be blank when playing a playlist so that it doesn't change the current volume levels.
+
+Added Tagger support for chat message speaker.
+
+Added the option with Chat Message to display them as a Chat Message, Chat Bubble, or both.
+
+Added error checking with opening a journal entry to make sure it is a journal entry being opened.
+
+Added error checking when opening an Actor to make sure it is an Actor being opened.
+
+Added Tagger support for the attack action.
+
+Tried to clear up what the checkbox does with the Attack action.
+
+Fixed issue when trying to use the attack action to attack multiple characters.
+
+Added the option to check if a Tile is deactivated when calling it via the Trigger action.
+
+Fixed issues when displaying the scene name in the Scene change action.
+
+Fixed the Start combat action to only start the combat once all characters have been added, and to automatically roll initiative.
+
+Fixed the display name for the combat action to show when it's removing characters from the combat.
+
+Fixed issues with the elevation action so you can use the equals operator and added error catching so it exits gracefully if there's an issue.
+
+Added the Measured Template type to objects that can be selected for the Delete action.
+
+Added the option to remove targets from the Target action rather than clearing all targets.
+
+Fixed issues with the actor and tile data being sent to the Scrolling Text and Set Value action.
+
+Added Previous and Tagger option for the entity to Add/Remove values from.
+
+Added the option to use handlebars for the Check entity count filter.
+
+Added Tiles to the attriute filter.
+
+Fixed issues with the attribute filter when the property is a Set instead fo an array.
+
+Added Wall as a type of entity that can be selected to alter a Tagger tag.
+
+Fixed issues with DFreds Convenient effect list.
+
+Added error checking when getting a dynamic list from actions.
+
+Added error checking to only clear out old data from actions that have data.
+
+Updated the tile sounds to only show sounds that have a sound source.
+
+Fixed issues with Multiple Document Selection and the Tile Directory.
+
+Fixed issues with Tile Templates not returning a tiles uuid properly.
+
+Fixed issues with moving multiple tiles within the Tile Directory.
+
+Fixed issues with the trigger dropdown in the Call of Cthulu system.
+
+Fixed issues with resuming a paused play list.
+
+Added error checking when getting a tagger reference that references a scene that doesn't exist.
+
+Added the event property to the values passed to a Macro.
+
+Fixed issue with the double click action releasing tokens before the actual action ran.
+
+Fixed issue with triggering a wall when it's checking if the door is locked while using the Arms Reach module.
+
+Fixing issue with finding a point within a tile when the tile object doesn't exist.
+
+Fixed point within so that edge cases aren't triggered incorrectly.
+
+Added error checkign to make sure that a texture polygon exists before trying to reference it.
+
+Fixed issues with finding tokens within a tile.
+
+Fixed issue where elevation and rotation changes were triggering outside of the Tile.
+
+## Version 10.12
+
+Fixed issues with teleporting multiple tokens
+
+Fixed issues with teleporting a token, using relative whent he token hasn't entered a tile.
+
+Added the option to create player tokens, only using the currently active players.
+
+Fixed issues with creating tokens from a journal entry.
+
+Updated hurt/heal to work in PF2E.
+
+Fixed issues with the stop sound display text.
+
+Fixed issues with opening the actor sheet.
+
+Fixed issues with adding items to PF2E.
+
+Fixed issues with the attack action in PF2E.
+
+Fixed change scene display text when using the previous scene value.
+
+Added the option to select video files for the scene background.
+
+Added the option, when using the Filter by distance, to measure the distance from the edge of the Tile, or the center of the Tile.
+
+Added the option to use handlebar notation for the attribute name in the alter action.
+
+Fixed issue with filter by item count when checking for quantity = 0.
+
+Added an action to jump to landings based on a random number.
+
+Added error checking when triggering a tile using a wall.
+
+Fixed issue where a tile that triggered a cursor change, wouldn't revert once disabled.
+
+Fixed issue when activating a Tile from a Journal Link, if the Journal Link is improperly formed, or the link doesn't point to a Tile.
+
+Fixed issue where clicking the Tile link in a Journal Entry would trigger the Tile twice.
+
+Added user and character to data passed to the Macro when running the macro as a player.
+
+Fixed issue with auto anchor using the combat turn start.
+
+Updated the Tile config tab updates to ignore footers when making changes.
+
+Added the option to control the size of the item when dropped on the canvas.  And fixed where the item is dropped to line up with the mouse better.
+
+Added the option to use playlist as a current object.
+
+Added another action to set variable data on the Tile.  You can use the value in the variable anywhere you can use handlebar notation.
+
+## Version 10.11
+
+Fixed issue with teleporting into a Tile using Random within, and Relative to entry.
+
+Fixed default value for a handful of actions.
+
+Update the stop sound action to remove playlist, because playlist now handles it.
+
+Updated the playlist action to allow stopping the currently playing track, or to use the playlists from previous values.
+
+Updated the playlist to allow it to pause a playlist.
+
+Added a show image action, that will allow you to pop out an image from a file.
+
+Fixed issue with PF2E conditions when trying to increase by multiple numbers if the condition doesn't previously exist.
+
+Updated add item to use the character sheet so that it can increase the quantities in piles.
+
+Updated Reset History action to reflect that it's a token that needs selecting.
+
+Fixed Reset History when no token is selected.
+
+Fixed Scrolling Text action to work correctly for who it's been selected to show for.
+
+Fixed issues when setting attributes for the triggered Tile.
+
+Added support for handlebars in the Tagger alter tag action.
+
+Fixed issue with DFred's Convenient Effects when trying to add or remove.
+
+Fixed issue with getting location of player tokens.
+
+Fixed issue when triggering a Tile using a Wall, when selecting the Tile using tagger.
+
+Fixed issue reseting the history for a Token, if the token didn't have a history yet.
+
+## Version 10.10
+
+Fixed issue with the alter action when multiple entities have been selected.  This is the one that's been affecting using tagger.
+
+Added the option to select a specific token when reseting a tile history.
+
+## Version 10.9
+
+Fixing issues with opening a Journal
+
+Making sure the journal name is required when creating a new journal entry
+
+Fixed issue with triggering a Tile from a door.
+
+Clarified the tool tip when selecting a tile with a door.
+
+Added the ability to trigger a Tile from a Journal Entry link. Using the format `@Tile[Tile.JkCzb5wPecQet5IL]{Tile Trigger}` you can also add `Scene` with its identifier in front of the Tile id if you want to trigger a tile from a different scene.  Otherwise it will attempt to find the Tile on the current scene.
+
+## Version 10.8
+
+Fixed issue with pan canvas when detecting if the co-ordinates are strings.
+
+Fixed issue with who gets to see the pan canvas effect.
+
+Added the option to choose how teleport and move token positions the tokens when teleporting or creating a token in an area (eg.  Tile) you can have it pick a spot randomly within the area, in the center, or relative to how the token entered the Tile that triggered the teleport.
+
+Added the option to specify the teleport wash for individual teleports.
+
+Fixed issue with teleport when detecting if the co-ordinates are strings.
+
+Clarified the action being taken with toggling visibility or activation.  As they both used the same text.
+
+Added the option to create the currently active player tokens when using the Create Token action.
+
+Removed the option to alter multiple values by separating them via a semi-colon.  Since MATT now batches together similar actions, this is no longer needed and makes things confusing.
+
+Allowed users to filter arrays when using the filter by attribute action.
+
+Fixed issue with who gets to hear the play sound action.
+
+Fixed issue with changing PF2E conditions.
+
+Added the option to toggle playing a Tile animation.
+
+Fixed issue with who gets shown a journal entry.
+
+Fixed issues when opening a Journal Entry that the player doesn't have permissions to view.
+
+Added consumable type to items that can be used for an attack.
+
+Added the option to go to a landing when triggering another Tile.
+
+Fixed warning message when transitioning images with no effect.
+
+Added the option to add horizontal lines to the action config.  And added the option to add a colorpicker.
+
+Moved the action to append text to a Journal to MATT instead of MEJ.  And added the option to add a timestamp using `{{timestamp}}`
+
+Added a filter by condition.
+
+Fixed issue with DFred's Convenient Effects when toggling an effect.
+
+Fixed issue with editing a Tile Template opening multiple dialogs.
+
+Fixed issue with Tile Templates, deleting, and creating documents.
+
+Fixed issue with creating documents within folders.
+
+Fixed the cube image used in Tile Templates.
+
+Added trigger based on rotating a Token.
+
+Added door trigger, so if your Tile contains a door, and the door changes, it will trigger the Tile.
+
+Fixed warning message with DF Scene Enhanced
+
+Fixed bug when trying to fix older Tiles.
+
+Switched to using ambient volume settings instead of interface volume.
+
+Allowed Tile Templates to be able to use Multiple Document Selection to delete.
+
+## Version 10.7
+
+Fixing issue with filter by distance
+
+Still fixing issues with the delay action.
+
+## Version 10.6
+
+Fixed issue with moving a token
+
+Fixed issue with delay action
+
+## Version 10.5
+
+Fixed issue where a delay timer would still fire even after the stop all actions was triggered.
+
+Fixed move token action so that it measured from the center of the token, rather than the corner.
+
+Added the option with movetoken to either set the duration, or leave it blank so that it calculates using Foundry's token move speed.
+
+Fixed issue with creating token when finding the correct location.
+
+Added the option to create token at a location determined by a dice roll.
+
+Added the option to create a Note at the location of another note.  And the option to use a location from multiple Tiles, or from a dice roll.
+
+Fixed issue with adding newly created Notes to the current values.
+
+Adding the tagger option to the hurt/heal action
+
+Fixed issue with chat message when the token selected doesn't have an attached actor.
+
+Added the option to use handlebars int he chatmessage's flavor text
+
+Added the option to roll any dice required in the results of a RollTable roll.  So if the result would have been, for example, currency... you can have the result rolled and added as currency rather than just text.
+
+Fixed issue displaying the action, if the rolltable no longer exists.
+
+Fixing issues when animating the Tile image
+
+Fixing issues when open a Journal Entry from a Compendium.
+
+Fixing opening a Journal Entry to a subsection on a Page.
+
+Added the option to add currency when using the add item action.
+
+Fixed issue with a ping appearing when activating a tile that changes the scene via a click.
+
+Added the option to set who the target action is applied to, and to set if adding additional targets or replacing the targets.
+
+Added the option to filter items by quantity in dnd5e.
+
+Fixed padding on button icons on the action config screen.
+
+Added typeahead for auto anchors.
+
+Fixed searching Tile Templates.
+
+Fixed deleting a Folder in the Tile Templates.
+
+Fixed editing a Folde in Tile Templates.
+
+Fixed issue when adding actors to the current values.
+
+Fixed issue with hover in and hover out overwriting Tile changes.
+
+Added the option to select multiple triggers for a Tile.
+
+Added the option to use the Tile's alpha image when using On Enter and On Exit.
+
+## Version 10.4
+
+Fixed issue with creating a token set to hidden, when revealed, the opacity is set to 0.5
+
+Fixed issue with resetting a Roll Table when all items are used
+
+Switched changing the permissions action to require a GM to run.
+
+Fixed issue with permissions action changing permission on an unlinked actor.
+
+Tried to fix issues with transition animation.
+
+Added the option to show the dialog to the GM, not just the triggering player.
+
+Added actions to support DFred's Convenient Effects.
+
+Fixed issue selecting an Actor for the attack action
+
+Fixed issue with the context menu position on the action list.
+
+Fixed issue stopping sound that's already been stopped.
+
+Fixed issue with folders in the Tile Templates
+
+Fixed image issues when a tile in the Tile Templates has an animated image.
+
+Fixed issue with the function that fixed the image cycle.
+
+Fixed issue with the wall config
+
+## Version 10.3
+
+Fixed issue with teleport an invalid co-ordinates for the destination.
+
+Fixed an issue with teleporting tokens that don't belong to an actor.
+
+Updated the move action to integrate a bit better with Foundry's move functions.
+
+Fixed issues with restricting a sound to a scene not being respected when it's the GM.
+
+Fixed issue with playing the animation for a tile.
+
+Added the option to open a Journal to a page.  Thank you wickermoon for a good base of code to work with.
+
+Fixed an issue when an image transition was called, when a transition was currently happening.  I've had to block the second one from happening until the first has completed, so you might need to delay that second action to make sure the transition happens.
+
+Added the attribute as a value that can be used with the alter action when using handlebars.
+
+Also discontinuing the use of multiple attributes separated by a ; since batch manager handles it now.
+
+Removed the option of using 'or' or 'and' in the valeu statement for the alter action.  It caused strange issues.
+
+Added integration for the Party Inventory module.
+
+Added Tile Templates.  So you can save your favorite tile configuration, export the data to a file, import from a file.  Drag and drop templates to the canvas.
+
+Fixed issues using tagger and finding tags from all scenes.
+
+Fixed issues with running a Macro when it's passed to the player to run.
+
+Fixed issues opening up a Journal Entry that's from Monks' Enhanced Journal.
+
+Fixed issues with dragging an Item onto the canvas creating a collectable item.
+
+Fixed Macros so that they're v10 compliant.
+
+Add a function to open a specific FQL quest
+
+## Version 10.2
+
+Fixed issue with show/hide when no animation is called for
+
+Fixed issue with rotation
+
+## Version 10.1
+
+Fixed issue with snap to grid when teleporting to a different scene.
+
+Fixed issue with removing tokens when teleporting to a new scene.
+
+Added duration to the Move action.
+
+Fixed issue with the move action assuming the movement is always outside the bounded area.
+
+Added the rotation action so you can animate the rotation of an object
+
+Added collection to the Delete Action so you can use current when deleting.
+
+Fixed issues with Alter not able to find the correct property to change
+
+Fixed issues with dragging and dropping newly created actions.
+
+Fixed issue with excluding transparent background
+
+Fixed issues with Levels.
+
+Fixed issue with synchronization with token movement and where it meets the Tile.
+
+Fixed issue with combat triggers.
+
+Fixed issues with Wall triggers.
+
+## Version 1.0.91
+
+Adding v10 support
+
+## Version 1.0.90
+
+Fixing issues with Show/Hide
+
+Fixing issues with Fading show/hide
+
+## Version 1.0.89
+
+Fixed issues with automatically assigning tagger tags in the tagger dialog.  There's now a button to do it.
+
+Fixed issue with use player destination icon when selecting the previous token destination for a location.
+
+Fixed the strikethorugh effect following a deactivation of the tile to respect that a landing can bypass this.
+
+Fixed issue with wall config showing html instead of the tagger icon.
+
+Added a batch manager to run actions as a batch instead of trying to process each one individually.  So multiple calls to alter will add each change together and run them all at once in the end.
+
+Added an action to run all the current batch commands.  Active Tiles will do it automatically, but if you needed to run any actions before other actions, you can use this to execute alll the batch actions.
+
+Tried to fix some issues with the fading of tiles when using show/hide
+
+Fixed issues when using "current" journal entries.
+
+Stopped Show/Hide from activating/deactivating an ambient light or sound when found using tagger.
+
+Added blur effect when transitioning between Tile Images.
+
+Updated the find item to ignore case and to trim leading and trailing spaces.
+
+Fixed issue where clicking a tile and requesting a location destination from the triggering token was having issues.
+
+Fixed issue with Tile Image change when the tile is rotated.
+
+Updated door triggers and hover over to respect the pause settign when preventing actions from happening.
+
+Fixed issues with create token trigger triggering on enter as well.
+
+Fixed issues with directional auto triggers.  And changed the auto anchors to better reflect the intended directions.  So top has been replaced with up and bottom replaced by down.
+
+Added support for FXMaster
+
+## Version 1.0.88
+
+Added the option to use Tagger tag rules when setting an entities tag name.
+
+Added disabled highlight to actions that are no longer available.
+
+Fixed issues with selecting the Tile image.
+
+Added the option to perform loops when switching the Tile image.
+
+Removed the slot machine option from Switch Tile Image.
+
+Fixed issues with triggering when players check a locked door.
+
+Fixed issues with fading out a token image.
+
+## Version 1.0.87
+
+Fixing issue with Levels compatibility
+
+Fixing issues with editing newly added images
+
+Fixed issues with finding a random location within a Tile.
+
+## Version 1.0.85
+
+Fixed issue with editing the tag used for locations
+
+Changed the name Anchor to Landing and Got to Anchor to Jump to Landing to hopefully make a little more sense.
+
+Added the option to use a dire roll for the amount of time delayed.
+
+Changed how the create token action finds a location.  You can now have it randomly add to multiple locations, rather than randomly pick one location to add all tokens to.
+
+Changed how the create token action find a location within a Tile.  Instead of starting at the center and workign outwards, it will randomly pick a location somewhere within the Tile.
+
+Added the door change information to any action that allows handlebars and to the macro arguments.
+
+Fixed the compendium labelling for macro actions
+
+Added the option to add or not add the returned data from a triggered Tile to the current information.
+
+Added transitions to the Image Cycle action.
+
+Added compendium icon to entity names that come from a compendium.
+
+Fixed issue with items returned from a RollTable
+
+Added the option to trigger when a locked door is checked.
+
+Fixed issues with auto anchors based on direction a token enters or exits.
+
+Updated the trigger interface.  So instead of having all the setup and actions on the same page, I've split them into three tabs.  The third one os for a list of images available to change this tile into.
+
+BREAKING CHANGE:  Images have been pulled out of the Image Cycle action, and will be added to the images for the Tile itself.  This will give greater flexibility into changing the Tiles images, but will deprecate the Image Cycle action, and the Set Image Cycle action.  They're changing to Switch Tile Image.  Active Tiles should convert your Tiles the first time it loads, but will leave the Image Cycle action, in case you wanted to retain the iformation.  The action will not produce any effect though, and is safe to leave in the list.  Or can be removed in order to clean up the information.
+
+ANY TILES THAT USE THESE ACTIONS NEED TO BE LOOKED INTO.	
+
 ## Version 1.0.84
 
 Fixed issue with show/hide fade.

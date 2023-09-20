@@ -1,6 +1,7 @@
-import { MonksActiveTiles, log, setting, i18n, makeid } from '../monks-active-tiles.js';
+import { MonksActiveTiles, log, error, setting, i18n, makeid } from '../monks-active-tiles.js';
 import { ActionConfig } from "../apps/action-config.js";
 import { TileHistory } from './tile-history.js';
+import { TileVariables } from './tile-variables.js';
 
 class ActiveTileContextMenu extends ContextMenu {
     constructor(...args) {
@@ -11,7 +12,7 @@ class ActiveTileContextMenu extends ContextMenu {
         super._setPosition(html, target);
 
         let container = target.closest('.item-list');
-        let y = container.position().top + (target.position().top + container.scrollTop()) - 55;// - $(html).height();
+        let y = container.position().top + target.position().top - 65; //(target.position().top - container.scrollTop());// - 55;// - $(html).height();
 
         html.removeClass("expand-down").css({ "top": `${y}px` }).insertAfter(target.closest('.action-items'));
     }
@@ -22,14 +23,25 @@ export const WithActiveTileConfig = (TileConfig) => {
         constructor(...args) {
             super(...args);
 
-            this.object._normalize();
+            if (getProperty(this.object, "flags.monks-active-tiles") == undefined) {
+                this.object.flags = mergeObject(this.object.flags, {
+                    'monks-active-tiles': {
+                        active: true,
+                        trigger: setting('default-trigger'),
+                        chance: 100,
+                        restriction: 'all',
+                        controlled: 'all',
+                        actions: []
+                    }
+                });
+            }
         }
 
         static get defaultOptions() {
             let data = MonksActiveTiles.mergeArray(super.defaultOptions, {
                 classes: ["monks-active-tiles"],
                 scrollY: ["ol.item-list"],
-                dragDrop: [{ dragSelector: ".item", dropSelector: ".item-list" }, { dragSelector: ".item", dropSelector: ".file-list" }],
+                dragDrop: [{ dragSelector: ".item", dropSelector: ".items-list" }, { dragSelector: ".item", dropSelector: ".files-list" }],
                 tabs: [{ navSelector: '.tabs[data-group="triggers"]', contentSelector: '.tab[data-tab="triggers"]', initial: "trigger-setup" }]
             });
             data.tabs[0].navSelector = ".sheet-tabs:not(.trigger-tabs)";
@@ -39,7 +51,31 @@ export const WithActiveTileConfig = (TileConfig) => {
 
         getData(options) {
             let data = super.getData(options);
-            data.usingAlpha = ["click", "dblclick", "rightclick"].includes(data.data.flags["monks-active-tiles"]?.trigger);
+            //data.usingAlpha = ["click", "dblclick", "rightclick"].includes(data.data.flags["monks-active-tiles"]?.trigger);
+
+            data.triggerValues = this.object.getFlag("monks-active-tiles", "trigger");
+            data.triggerValues = data.triggerValues instanceof Array ? data.triggerValues : [data.triggerValues];
+            if (data.triggerValues.includes("both")) {
+                data.triggerValues.push("enter", "exit");
+                data.triggerValues.findSplice(t => t == "both");
+            }
+            if (data.triggerValues.includes("hover")) {
+                data.triggerValues.push("hoverin", "hoverout");
+                data.triggerValues.findSplice(t => t == "hover");
+            }
+
+            data.triggerNames = data.triggerValues.map(t => {
+                return Object.keys(MonksActiveTiles.triggerModes).includes(t) ? { id: t, name: MonksActiveTiles.triggerModes[t] } : null;
+            }).filter(t => !!t);
+
+            data.triggers = Object.entries(MonksActiveTiles.triggerModes).map(([k, v]) => {
+                return {
+                    id: k,
+                    name: v,
+                    selected: data.triggerValues.includes(k)
+                }
+            });
+
             data.preventPaused = setting("prevent-when-paused");
             let fileindex = this.object.getFlag("monks-active-tiles", "fileindex");
             data.index = (fileindex != undefined ? fileindex + 1 : '');
@@ -67,30 +103,53 @@ export const WithActiveTileConfig = (TileConfig) => {
             tiledata.triggerRestriction = { 'all': i18n("MonksActiveTiles.restrict.all"), 'player': i18n("MonksActiveTiles.restrict.player"), 'gm': i18n("MonksActiveTiles.restrict.gm") };
             tiledata.triggerControlled = { 'all': i18n("MonksActiveTiles.control.all"), 'player': i18n("MonksActiveTiles.control.player"), 'gm': i18n("MonksActiveTiles.control.gm") };
 
-            
             tiledata.actions = await Promise.all((this.object.getFlag('monks-active-tiles', 'actions') || [])
                 .map(async (a) => {
-                    let trigger = MonksActiveTiles.triggerActions[a.action];
-                    let content = (trigger == undefined ? 'Unknown' : i18n(trigger.name));
-                    if (trigger.content) {
-                        try {
-                            content = await trigger.content(trigger, a);
-                        } catch { }
-                    }
-                    content += (a.delay > 0 ? ' after ' + a.delay + ' seconds' : '');
+                    if (a) {
+                        let trigger = MonksActiveTiles.triggerActions[a.action];
+                        let content = (trigger == undefined ? 'Unknown' : i18n(trigger.name));
+                        if (trigger?.content) {
+                            try {
+                                content = await trigger.content(trigger, a);
+                            } catch (e) {
+                                error(e);
+                            }
+                        }
+                        content += (a.delay > 0 ? ' after ' + a.delay + ' seconds' : '');
 
-                    let deactivated = "";
-                    if (a.action == "activate" && a.data?.activate == "deactivate" && (a.data?.entity?.id == this.object.id || a.data?.entity == ""))
-                        deactivated = "on";
-                    if (a.action == "anchor")
-                        deactivated = "off";
-                    return {
-                        id: a.id,
-                        content: content,
-                        disabled: trigger?.visible === false,
-                        deactivated: deactivated
-                    };
-                }));
+                        let result = {
+                            id: a.id,
+                            action: a.action,
+                            data: a.data,
+                            content: content,
+                            disabled: trigger?.visible === false
+                        }
+
+                        if (a.action == "activate" && a.data?.activate == "deactivate" && (a.data?.entity?.id == this.object.id || a.data?.entity == ""))
+                            result.deactivated = "on";
+                        if (a.action == "anchor")
+                            result.deactivated = "off";
+
+                        return result;
+                    }
+                }).filter(a => !!a));
+
+            if (setting("show-landing")) {
+                let landings = [];
+                let currentLanding = 0;
+                for (let a of tiledata.actions) {
+                    if (a.action == "anchor") {
+                        if (a.data.stop) {
+                            landings = [];
+                        }
+
+                        landings.push(++currentLanding);
+                        a.marker = currentLanding;
+                        a.landingStop = a.data.stop;
+                    }
+                    a.landings = duplicate(landings);
+                }
+            }
 
             let disabled = false;
             for (let a of tiledata.actions) {
@@ -102,7 +161,7 @@ export const WithActiveTileConfig = (TileConfig) => {
                     disabled = true;
             }
 
-            tiledata.sounds = Object.entries(this.object.soundeffect || {}).map(([k, v]) => {
+            tiledata.sounds = Object.entries(this.object.soundeffect || {}).filter(([k, v]) => !!v.src).map(([k, v]) => {
                 let filename = v.src.split('\\').pop().split('/').pop();
                 return {
                     id: k,
@@ -131,7 +190,13 @@ export const WithActiveTileConfig = (TileConfig) => {
 
         _onDragStart(event) {
             let li = event.currentTarget.closest(".item");
-            const dragData = { type: this.constructor.documentName, id: li.dataset.id };
+            let list = event.currentTarget.closest(".items-list");
+            const dragData = {
+                type: this.object.constructor.documentName,
+                tileId: this.object.id,
+                collection: list.dataset.collection,
+                id: li.dataset.id
+            };
             event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
             this._dragType = dragData.type;
         }
@@ -140,7 +205,7 @@ export const WithActiveTileConfig = (TileConfig) => {
             return true;
         }
 
-        _onDrop(event) {
+        async _onDrop(event) {
             const cls = this.constructor.documentName;
 
             // Try to extract the data
@@ -153,24 +218,53 @@ export const WithActiveTileConfig = (TileConfig) => {
             }
 
             // Identify the drop target
-            const target = event.target.closest(".item") || null;
+            let target = event.target.closest(".item") || null;
+            const list = event.target.closest(".items-list") || null;
 
-            // Call the drop handler
-            if (target && target.dataset.id) {
-                let items = duplicate(this[target.dataset.collection]);
+            if (data.tileId != this.object.id) {
+                if (data.collection == list.dataset.collection) {
+                    let src = canvas.scene.tiles.get(data.tileId);
+                    let action = getProperty(src, "flags.monks-active-tiles.actions")?.find(a => a.id == data.id);
 
-                if (data.id === target.dataset.id) return; // Don't drop on yourself
+                    if (action) {
+                        let newAction = duplicate(action);
+                        newAction.id = makeid();
+                        let items = duplicate(this[list.dataset.collection]);
+                        if (items.length && !target)
+                            target = $(`li[data-id="${items[0].id}"]`, this.element).get(0);
+                        let to = items.findIndex(a => a.id == target?.dataset.id) || 0;
+                        items.splice(to, 0, newAction);
+                        this.object.flags["monks-active-tiles"][list.dataset.collection] = items;
 
-                let from = items.findIndex(a => a.id == data.id);
-                let to = items.findIndex(a => a.id == target.dataset.id);
-                log('from', from, 'to', to);
-                items.splice(to, 0, items.splice(from, 1)[0]);
+                        let element = $(`.action-items li[data-id="${data.id}"]`).clone();
+                        if (target)
+                            $(element).attr('data-id', newAction.id).insertBefore(target);
+                        else
+                            $('.item-list', list).append(element);
+                        $('.action-edit', element).click(this._editAction.bind(this));
+                        $('.action-delete', element).click(this._deleteAction.bind(this));
+                        element[0].addEventListener("dragstart", this._onDragStart.bind(this));
+                        this.setPosition({ height: 'auto' });
+                    }
+                }
+            } else {
+                // Call the drop handler
+                if (target && target.dataset.id) {
+                    let items = duplicate(this[list.dataset.collection]);
 
-                this.object.data.flags["monks-active-tiles"][target.dataset.collection] = items;
-                if (from < to)
-                    $('.item[data-id="' + data.id + '"]', this.element).insertAfter(target);
-                else
-                    $('.item[data-id="' + data.id + '"]', this.element).insertBefore(target);
+                    if (data.id === target.dataset.id) return; // Don't drop on yourself
+
+                    let from = items.findIndex(a => a.id == data.id);
+                    let to = items.findIndex(a => a.id == target.dataset.id);
+                    log('from', from, 'to', to);
+                    items.splice(to, 0, items.splice(from, 1)[0]);
+
+                    this.object.flags["monks-active-tiles"][list.dataset.collection] = items;
+                    if (from < to)
+                        $('.item[data-id="' + data.id + '"]', this.element).insertAfter(target);
+                    else
+                        $('.item[data-id="' + data.id + '"]', this.element).insertBefore(target);
+                }
             }
         }
 
@@ -203,42 +297,24 @@ export const WithActiveTileConfig = (TileConfig) => {
             if (data["flags.monks-active-tiles.fileindex"] != '')
                 data["flags.monks-active-tiles.fileindex"] = data["flags.monks-active-tiles.fileindex"] - 1;
 
+            data["flags.monks-active-tiles.trigger"] = data["flags.monks-active-tiles.trigger"].split(",");
+
             return data;
         }
 
         async _updateObject(event, formData) {
             await super._updateObject(event, formData);
 
-            this.object._images = await MonksActiveTiles.getTileFiles(this.object.data.flags["monks-active-tiles"].files || []);
+            this.object._images = await MonksActiveTiles.getTileFiles(this.object.flags["monks-active-tiles"].files || []);
             if (this.object._images.length) {
-                let fileindex = Math.clamped(this.object.data.flags["monks-active-tiles"].fileindex, 0, this.object._images.length - 1);
-                if (this.object._images[fileindex] != this.object.data.img) {
-                    await this.object.update({ img: this.object._images[fileindex] });
+                let fileindex = Math.clamped(this.object.flags["monks-active-tiles"].fileindex, 0, this.object._images.length - 1);
+                if (this.object._images[fileindex] != this.object.texture.src) {
+                    await this.object.update({ texture: { src: this.object._images[fileindex] } });
                 }
-                if (fileindex != this.object.data.flags["monks-active-tiles"].fileindex) {
+                if (fileindex != this.object.flags["monks-active-tiles"].fileindex) {
                     await this.object.setFlag("monks-active-tiles", "fileindex", fileindex);
                 }
             }
-
-            //if any of the actions are to cycle the image, then make sure the image lines up with the img at
-            /*
-            for (let action of (this.object.getFlag('monks-active-tiles', 'actions') || [])) {
-                if (action.action == 'imagecycle') {
-                    let actfiles = (action.data?.files || []);
-
-                    this.object._cycleimages = this.object._cycleimages || {};
-                    let files = this.object._cycleimages[action.id] = await MonksActiveTiles.getTileFiles(actfiles);
-
-                    let imgat = Math.clamped((action.data?.imgat || 1) - 1, 0, files.length - 1);
-                    
-                    if (this.object._cycleimages[action.id].length > 0) {
-                        let entities = await MonksActiveTiles.getEntities({ tile: this.object, action: action }, 'tiles');
-                        for (let entity of entities) {
-                            await entity.update({ img: files[imgat] });
-                        }
-                    }
-                }
-            }*/
         }
 
         activateListeners(html) {
@@ -256,14 +332,19 @@ export const WithActiveTileConfig = (TileConfig) => {
             $('.view-history', html).click(function () {
                 new TileHistory(that.object).render(true);
             });
+            $('.view-variables', html).click(function () {
+                new TileVariables(that.object).render(true);
+            });
 
             $('.record-history', html).click(this.checkRecordHistory.bind(this));
             $('.per-token', html).click(this.checkPerToken.bind(this));
 
+            /*
             $('select[name="flags.monks-active-tiles.trigger"]', html).change(function () {
                 $('.usealpha', html).toggle(["click", "dblclick", "rightclick"].includes($(this).val()));
                 that.setPosition();
             });
+            */
 
             //$('div[data-tab="triggers"] .item-list li.item', html).hover(this._onActionHoverIn.bind(this), this._onActionHoverOut.bind(this));
             $('.browse-files', html).on("click", this.browseFiles.bind(this));
@@ -272,6 +353,54 @@ export const WithActiveTileConfig = (TileConfig) => {
             $('.file-list .edit-file', html).on("click", this.browseFiles.bind(this));
             $('.file-list .delete-file', html).on("click", this.removeFile.bind(this));
             $('.file-list .item', html).on("dblclick", this.selectFile.bind(this));
+
+            $('.multiple-dropdown-select', html).click((event) => {
+                $('.multiple-dropdown-select .dropdown-list', this.element).toggleClass('open');
+                event.preventDefault();
+                event.stopPropagation();
+            });
+            $(html).click(() => { $('.multiple-dropdown-select .dropdown-list', this.element).removeClass('open'); });
+            $('.multiple-dropdown-select .remove-option', html).on("click", this.removeTrigger.bind(this));
+            $('.multiple-dropdown-select .multiple-dropdown-item', html).on("click", this.selectTrigger.bind(this));
+        }
+
+        selectTrigger(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            // if this item is already in the list, then remove it, otherwise add it
+
+            let id = $(event.currentTarget).attr("value");
+            let triggers = $('input[name="flags.monks-active-tiles.trigger"]', this.element).val().split(",");
+            if (triggers.includes(id)) {
+                // remove trigger
+                triggers.findSplice(t => t === id);
+                $(`.multiple-dropdown-item.selected[value="${id}"]`, this.element).removeClass("selected");
+                $(`.multiple-dropdown-option[data-id="${id}"]`, this.element).remove();
+            } else {
+                // add trigger
+                triggers.push(id);
+                $(`.multiple-dropdown-item[value="${id}"]`, this.element).addClass("selected");
+                $('.multiple-dropdown-content', this.element).append(
+                    $("<div>").addClass("multiple-dropdown-option flexrow").attr("data-id", id)
+                        .append($("<span>").html(MonksActiveTiles.triggerModes[id]))
+                        .append($("<div>").addClass("remove-option").html("&times;").on("click", this.removeTrigger.bind(this)))
+                );
+            }
+            $('input[name="flags.monks-active-tiles.trigger"]', this.element).val(triggers.join(","));
+            $('.multiple-dropdown-select .dropdown-list', this.element).removeClass('open');
+        }
+
+        removeTrigger(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            // remove trigger from the list
+            let li = event.currentTarget.closest(".multiple-dropdown-option");
+            let id = li.dataset.id;
+            let triggers = $('input[name="flags.monks-active-tiles.trigger"]', this.element).val().split(",");
+            triggers.findSplice(t => t === id);
+            $('input[name="flags.monks-active-tiles.trigger"]', this.element).val(triggers.join(","));
+            li.remove();
+            $(`.multiple-dropdown-item.selected[value="${id}"]`, this.element).removeClass("selected");
         }
 
         browseFiles(event) {
@@ -319,16 +448,16 @@ export const WithActiveTileConfig = (TileConfig) => {
 
             $(`input[name="flags.monks-active-tiles.fileindex"]`, this.element).val(idx);
 
-            mergeObject(this.object.data.flags, {
+            mergeObject(this.object.flags, {
                 "monks-active-tiles": { fileindex: idx }
             });
         }
 
         removeFile(event) {
             let id = event.currentTarget.closest('.file-row').dataset["id"];
-            let files = duplicate(this.object.data.flags["monks-active-tiles"]?.files || []);
+            let files = duplicate(this.object.flags["monks-active-tiles"]?.files || []);
             files.findSplice(i => i.id == id);
-            mergeObject(this.object.data.flags, {
+            mergeObject(this.object.flags, {
                 "monks-active-tiles": { files: files }
             });
 
@@ -358,7 +487,7 @@ export const WithActiveTileConfig = (TileConfig) => {
         deleteAction(id) {
             let actions = duplicate(this.actions);
             actions.findSplice(i => i.id == id);
-            mergeObject(this.object.data.flags, {
+            mergeObject(this.object.flags, {
                 "monks-active-tiles": { actions: actions }
             });
             //this.object.setFlag("monks-active-tiles", "actions", actions);
@@ -368,8 +497,10 @@ export const WithActiveTileConfig = (TileConfig) => {
 
         _stopSound(event) {
             let id = event.currentTarget.closest('.item').dataset.id;
-            this.object.soundeffect[id].stop();
-            delete this.object.soundeffect[id];
+            if (this.object.soundeffect[id]) {
+                this.object.soundeffect[id].stop();
+                delete this.object.soundeffect[id];
+            }
             MonksActiveTiles.emit('stopsound', {
                 tileid: this.object.uuid,
                 type: 'tile',
@@ -395,7 +526,7 @@ export const WithActiveTileConfig = (TileConfig) => {
             if (this.object.id) {
                 this.object.setFlag("monks-active-tiles", "actions", actions);
             } else {
-                setProperty(this.object.data, "flags.monks-active-tiles.actions", actions);
+                setProperty(this.object, "flags.monks-active-tiles.actions", actions);
                 this.render();
             }
         }

@@ -1,0 +1,77 @@
+#fogmanager-brush-controls {
+    position: absolute;
+    left: 120px;
+    width: 180px;
+    text-align: center;
+}
+
+#fogmanager-brush-controls h3,
+#fogmanager-brush-controls .label {
+    color: #FFF;
+	text-shadow: 1px 1px 0 #000;
+}
+
+#fogmanager-brush-controls .label {
+    position: absolute;
+}
+#fogmanager-brush-controls .brush-opacity {
+    position: relative;
+}
+#fogmanager-brush-controls .right-label {
+    right: 10px;
+    pointer-events: none;
+}
+#fogmanager-brush-controls .left-label {
+    left: 10px;
+    pointer-events: none;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+     position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 30px; 
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  
+  #fogmanager-brush-controls .toggle {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 20px;
+    content: "";
+  }
+  
+  #fogmanager-brush-controls .toggle:before {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 50%;
+    left: 0px;
+    background-color: #005AB5;
+    -webkit-transition: .2s;
+    transition: .1s;
+    border-radius: 40px;
+  }
+  
+  #fogmanager-brush-controls  input:checked + .toggle:before {
+    -webkit-transform: translateX(90px);
+    -ms-transform: translateX(90px);
+    transform: translateX(90px);
+    background-color:#DC3220
+  }
+  
+  

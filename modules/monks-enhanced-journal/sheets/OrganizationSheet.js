@@ -1,5 +1,6 @@
 import { setting, i18n, log, makeid, MonksEnhancedJournal, quantityname } from "../monks-enhanced-journal.js";
 import { EnhancedJournalSheet } from "../sheets/EnhancedJournalSheet.js";
+import { MakeOffering } from "../apps/make-offering.js";
 
 export class OrganizationSheet extends EnhancedJournalSheet {
     constructor(data, options) {
@@ -9,10 +10,11 @@ export class OrganizationSheet extends EnhancedJournalSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             title: i18n("MonksEnhancedJournal.organization"),
-            template: "modules/monks-enhanced-journal/templates/organization.html",
+            template: "modules/monks-enhanced-journal/templates/sheets/organization.html",
             tabs: [{ navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description" }],
             dragDrop: [
                 { dropSelector: ".organization-container" },
+                { dragSelector: ".actor-img img", dropSelector: "null" },
                 { dragSelector: ".sheet-icon", dropSelector: "#board" }
             ],
             scrollY: [".tab.description .tab-inner"]
@@ -20,27 +22,26 @@ export class OrganizationSheet extends EnhancedJournalSheet {
     }
 
     async getData() {
-        let data = super.getData();
+        let data = await super.getData();
 
-        data.relationships = {};
-        for (let item of (data.data.flags['monks-enhanced-journal']?.relationships || [])) {
-            let entity = await this.getDocument(item, "JournalEntry", false);
-            if (entity && entity.testUserPermission(game.user, "LIMITED") && (game.user.isGM || !item.hidden)) {
-                if (!data.relationships[entity.type])
-                    data.relationships[entity.type] = { type: entity.type, name: i18n(`MonksEnhancedJournal.${entity.type.toLowerCase()}`), documents: [] };
+        data.relationships = await this.getRelationships();
 
-                item.name = entity.name;
-                item.img = entity.data.img;
+        let actorLink = this.object.getFlag('monks-enhanced-journal', 'actor');
+        if (actorLink) {
+            let actor = actorLink.id ? game.actors.find(a => a.id == actorLink.id) : await fromUuid(actorLink);
 
-                data.relationships[entity.type].documents.push(item);
+            if (actor && actor.testUserPermission(game.user, "OBSERVER")) {
+                data.actor = { uuid: actor.uuid, name: actor.name, img: actor.img };
             }
         }
-
-        for (let [k, v] of Object.entries(data.relationships)) {
-            v.documents = v.documents.sort((a, b) => a.name.localeCompare(b.name));
-        }
+        data.canViewActor = !!data.actor;
 
         data.offerings = this.getOfferings();
+
+        data.has = {
+            relationships: Object.keys(data.relationships || {})?.length,
+            offerings: data.offerings?.length
+        }
 
         return data;
     }
@@ -49,17 +50,22 @@ export class OrganizationSheet extends EnhancedJournalSheet {
         return 'organization';
     }
 
+    /*
     get allowedRelationships() {
         return ['person', 'place', 'organization'];
-    }
+    }*/
 
     activateListeners(html, enhancedjournal) {
         super.activateListeners(html, enhancedjournal);
         
         $('.item-hide', html).on('click', this.alterItem.bind(this));
         $('.item-delete', html).on('click', $.proxy(this._deleteItem, this));
-        $('.items-list .actor-icon', html).click(this.openRelationship.bind(this));
-        $('.item-relationship .item-field', html).on('change', this.alterRelationship.bind(this));
+        $('.relationships .items-list h4', html).click(this.openRelationship.bind(this));
+        $('.offerings .items-list .actor-icon', html).click(this.openOfferingActor.bind(this));
+        //$('.item-relationship .item-field', html).on('change', this.alterRelationship.bind(this));
+
+        const actorOptions = this._getPersonActorContextOptions();
+        if (actorOptions) new ContextMenu($(html), ".actor-img-container", actorOptions);
 
         $('.item-private', html).on('click', this.alterItem.bind(this));
         $('.make-offering', html).on('click', this.makeOffer.bind(this));
@@ -97,6 +103,22 @@ export class OrganizationSheet extends EnhancedJournalSheet {
         return flattenObject(data);
     }
 
+    _onDragStart(event) {
+        if ($(event.currentTarget).hasClass("sheet-icon"))
+            return super._onDragStart(event);
+
+        const target = event.currentTarget;
+
+        if (target.dataset.document == "Actor") {
+            const dragData = {
+                uuid: target.dataset.uuid,
+                type: target.dataset.document
+            };
+
+            event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+        }
+    }
+
     _canDragDrop(selector) {
         return game.user.isGM || this.object.isOwner;
     }
@@ -110,10 +132,92 @@ export class OrganizationSheet extends EnhancedJournalSheet {
             return false;
         }
 
-        if (data.type == 'JournalEntry') {
+        if (data.type == 'Actor') {
+            this.addActor(data);
+        } else if (data.type == 'JournalEntry') {
             this.addRelationship(data);
+        } else if (data.type == 'JournalEntryPage') {
+            let doc = await fromUuid(data.uuid);
+            data.id = doc?.parent.id;
+            data.uuid = doc?.parent.uuid;
+            data.type = "JournalEntry";
+            this.addRelationship(data);
+        } else if (data.type == 'Item') {
+            let item = await fromUuid(data.uuid);
+            if (!(item?.parent instanceof Actor)) {
+                ui.notifications.warn("Offerings must come from an Actor");
+                return;
+            }
+
+            new MakeOffering(this.object, this, {
+                offering: {
+                    actor: {
+                        id: item.parent.id,
+                        name: item.parent.name,
+                        img: item.parent.img
+                    },
+                    items: [{
+                        id: item.id,
+                        itemName: item.name,
+                        actorId: item.parent.id,
+                        actorName: item.parent.name,
+                        qty: 1
+                    }]
+                }
+            }).render(true);
         }
 
         log('drop data', event, data);
+    }
+
+    async addActor(data) {
+        let actor = await this.getItemData(data);
+
+        if (actor) {
+            this.object.setFlag("monks-enhanced-journal", "actor", actor);
+        }
+    }
+
+    openActor(event) {
+        let actorLink = this.object.getFlag('monks-enhanced-journal', 'actor');
+        let actor = game.actors.find(a => a.id == actorLink.id);
+        if (!actor)
+            return;
+
+        if (event.newtab == true || event.altKey)
+            actor.sheet.render(true);
+        else
+            this.open(actor, event);
+    }
+
+    removeActor() {
+        this.object.unsetFlag('monks-enhanced-journal', 'actor');
+        $('.actor-img-container', this.element).remove();
+    }
+
+    _getPersonActorContextOptions() {
+        return [
+            {
+                name: "SIDEBAR.Delete",
+                icon: '<i class="fas fa-trash"></i>',
+                condition: () => game.user.isGM,
+                callback: li => {
+                    const id = li.data("id");
+                    Dialog.confirm({
+                        title: `${game.i18n.localize("SIDEBAR.Delete")} Actor Link`,
+                        content: i18n("MonksEnhancedJournal.ConfirmRemoveLink"),
+                        yes: this.removeActor.bind(this)
+                    });
+                }
+            },
+            {
+                name: i18n("MonksEnhancedJournal.OpenActorSheet"),
+                icon: '<i class="fas fa-user fa-fw"></i>',
+                condition: () => game.user.isGM,
+                callback: li => {
+                    this.openActor.call(this, { newtab: true });
+                }
+            }
+        ];
     }
 }

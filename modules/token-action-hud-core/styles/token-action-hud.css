@@ -1,0 +1,253 @@
+:root {
+    --tah-font-size-10: 0.65rem;
+    --tah-tooltip-delay: 1500ms;
+}
+
+/*
+ * DIALOGS
+ */
+
+ .tagify.tah-dialog-tagify {
+    align-content: start;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border-light-tertiary);
+    border-radius: 3px;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: var(--font-size-12);
+    gap: 5px;
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 5px;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.tagify.tah-dialog-tagify:hover {
+    border: 1px solid var(--color-border-light-tertiary);
+}
+
+.tah-dialog-tagify .tagify__tag {
+    font-size: var(--font-size-12);
+    margin: 0;
+}
+
+.tah-dialog-tagify .tagify__tag>div::before {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border-light-tertiary);
+    box-shadow: none;
+}
+
+.tah-dialog-tagify .tagify__tag:focus div::before,.tagify__tag:hover:not([readonly]) div::before {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+}
+
+.tah-dialog-tagify .tagify__tag__removeBtn:hover+div::before {
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+}
+
+.tah-dialog-tagify .tagify__input {
+    font-size: var(--font-size-12);
+    margin: 0;
+}
+
+.tah-dialog-tagify .tagify__tag .tagify__tag__removeBtn:focus + div span,
+.tah-dialog-tagify .tagify__tag .tagify__tag__removeBtn:hover + div span {
+    opacity: 100%;
+}
+
+.tah-dialog-tagify .tagify__tag__removeBtn:focus + div::before,
+.tah-dialog-tagify .tagify__tag__removeBtn:hover + div::before {
+    border: 1px solid var(--color-shadow-primary);
+    box-shadow: 0 0 5px var(--color-shadow-primary) !important;
+}
+
+.tah-dialog-tagify .tagify__tag__removeBtn:hover {
+    background: var(--color-border-highlight-alt);
+}
+
+.tah-dialog-light-button {
+    background: rgba(255, 255, 240, 0.8);
+    border: 1px solid var(--color-border-light-primary);
+}
+
+.tah-dialog-col-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.tah-dialog-row-group {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
+}
+
+.tah-dialog-label {
+    margin-top: 0.2rem;
+}
+
+.tah-dialog-tags-dropdown .tagify__dropdown__wrapper {
+    align-content: start;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border-light-tertiary);
+    border-radius: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    height: 200px;
+    font-size: var(--font-size-12);
+    gap: 5px;
+    padding: 5px;
+    text-overflow: ellipsis;
+}
+
+.tah-dialog-tags-dropdown .tagify__dropdown__item {
+    border: 1px solid var(--color-border-light-tertiary);
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 3px;
+    padding: 0.3em 0.5em;
+    background: rgba(0,0,0, 0.05);
+    margin: 0;
+    font-size: var(--font-size-12);
+    color: black;
+    transition: 0s;
+}
+
+.tah-dialog-tags-dropdown .tagify__dropdown__item--active {
+    color: black;
+}
+
+.tah-dialog-tags-dropdown .tagify__dropdown__item:hover {
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+}
+
+.tah-dialog-tags-dropdown .tagify__dropdown__item--hidden {
+    display: none;
+}
+
+#tah-dialog-reset-actions {
+    margin-top: 2px;
+}
+
+.tah-dialog-detail {
+    border-bottom: 1px solid var(--color-border-light-primary);
+    margin-bottom: 5px;
+    padding: 5px 0;
+
+}
+
+.tah-radio-group {
+    text-align: right;
+}
+
+.tah-fieldset {
+    border: 2px groove #ffffff;
+    padding: 3px;
+}
+
+.tah-fieldset > legend {
+    color: #6f6f6f;
+    text-shadow: 1px 1px 1px #ffffff;
+}
+
+.tah-scrollable {
+    flex: 1;
+    overflow: hidden auto;
+    padding: 1rem;
+}
+
+.locked-tooltip.tah-tooltip,
+.tah-tooltip,
+#tooltip:has(.tah-tooltip-wrapper) {
+    font-size: var(--font-size-14);
+}
+
+.locked-tooltip.tah-tooltip.active,
+.tah-tooltip.active,
+#tooltip.tah-tooltip.active,
+#tooltip.active:has(.tah-tooltip-wrapper) {
+    transition: visibility 0s var(--tah-tooltip-delay), opacity var(--tah-tooltip-delay) 500ms;
+}
+
+.locked-tooltip.tah-tooltip:not(.active),
+.tah-tooltip:not(.active),
+#tooltip:not(.active):has(.tah-tooltip-wrapper) {
+    transition: visibility 0s, opacity 0s;
+}
+
+.locked-tooltip.tah-tooltip h3,
+.tah-tooltip h3,
+#tooltip.active:has(.tah-tooltip-wrapper) h3 {
+    padding-bottom: 8px;
+    text-align: left;
+}
+
+.locked-tooltip.tah-tooltip h4, 
+.tah-tooltip h4,
+#tooltip.active:has(.tah-tooltip-wrapper) h4 {
+    font-weight: 600;
+    text-align: left;
+}
+
+.locked-tooltip.tah-tooltip :is(ul, h3, h4, p), 
+.tah-tooltip :is(ul, h3, h4, p),
+#tooltip.active:has(.tah-tooltip-wrapper) :is(ul, h3, h4, p) {
+    text-align: left;
+}
+
+.locked-tooltip.tah-tooltip :is(a.content-link, a.inline-roll),
+.tah-tooltip :is(a.content-link, a.inline-roll),
+#tooltip.active:has(.tah-tooltip-wrapper) :is(a.content-link, a.inline-roll) {
+    background: none;
+    border: none;
+    color: var(--color-text-light-7);
+    font-weight: 600;
+    line-height: 1em;
+    margin: 0;
+    padding: 0;
+}
+
+.locked-tooltip.tah-tooltip :is(a.content-link i, a.inline-roll i),
+.tah-tooltip :is(a.content-link i, a.inline-roll i),
+#tooltip.active:has(.tah-tooltip-wrapper)
+    :is(a.content-link i, a.inline-roll i) {
+    color: var(--color-text-light-7);
+}
+
+.locked-tooltip.tah-tooltip strong,
+.tah-tooltip strong,
+#tooltip.tah-tooltip strong,
+#tooltip.active:has(.tah-tooltip-wrapper) strong {
+    font-weight: 600;
+}
+
+
+.tah-tooltip .tah-properties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    text-align: left;
+}
+
+.tah-tooltip .tah-property {
+    line-break: strict;
+    border-right: 1px solid var(--color-text-light-7);
+    color: var(--color-text-light-7);
+    font-size: var(--font-size-11);
+    padding-right: 5px;
+}
+
+.tah-tooltip .tah-property:first-child {
+    padding-left: 0;
+}
+
+.tah-tooltip .tah-property:last-child {
+    border-right: none;
+    padding-right: 0;
+}

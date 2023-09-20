@@ -8,7 +8,7 @@
 
 See [www.moulinette.cloud](https://www.moulinette.cloud) website.
 
-[Moulinette](https://github.com/SvenWerlen/moulinette) is a set of tools for importing packs of scenes, images, playlists prepared by the community.
+Moulinette is a set of tools for importing packs of scenes, images, playlists prepared by the community.
 
 :warning: the core only provides the Moulinette's foundations. You'll have to install additional modules to bring features.
 
@@ -145,8 +145,9 @@ There are 3 different ways to open the user intervace:
 
 ## <a name="support"/>Support me on Patreon
 
-If you like my work and want to support me, consider becoming a patreon!
+If you like my work and want to support me, consider subscribing to Moulinette!
 
-[https://www.patreon.com/moulinette](https://www.patreon.com/moulinette)
+* Recommended: [Moulinette on Stripe](https://assets.moulinette.cloud/pricing) (requires Patreon authentication)
+* Or: [Moulinette on Patreon](https://www.patreon.com/moulinette)
 
 You can also join [Moulinette Discord](https://discord.gg/xg3dcMQfP2)

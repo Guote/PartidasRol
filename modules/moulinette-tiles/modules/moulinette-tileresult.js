@@ -90,18 +90,18 @@ export class MoulinetteTileResult extends FormApplication {
       moulinetteFolder = moulinetteFolder[0]
     }
     // publisher level
-    let publisherFolder = moulinetteFolder.children.filter( c => c.name == publisher )
+    let publisherFolder = moulinetteFolder.children ? moulinetteFolder.children.filter( c => c.folder.name == publisher ) : []
     if( publisherFolder.length == 0 ) {
       publisherFolder = await Folder.create({name: publisher, type: "Scene", parent: moulinetteFolder.id })
     } else {
-      publisherFolder = publisherFolder[0]
+      publisherFolder = publisherFolder[0].folder
     }
     // pack level
-    let packFolder = publisherFolder.children.filter( c => c.name == pack )
+    let packFolder = publisherFolder.children ? publisherFolder.children.filter( c => c.folder.name == pack ) : []
     if( packFolder.length == 0 ) {
       packFolder = await Folder.create({name: pack, type: "Scene", parent: publisherFolder.id })
     } else {
-      packFolder = packFolder[0]
+      packFolder = packFolder[0].folder
     }
     return packFolder
   }
@@ -188,6 +188,22 @@ export class MoulinetteTileResult extends FormApplication {
         console.log(`Moulinette | Unhandled exception`, e)
         ui.notifications.error(game.i18n.localize("mtte.forgingFailure"), 'error')
       }      
+    } else if(event.submitter.className == "createArticle") {
+      const img = document.getElementById("previewImage")
+      // download if remote
+      const cTiles = await import("../../moulinette-tiles/modules/moulinette-tiles.js")
+      const data = { tile: this.tile, pack: this.pack }
+      if(this.pack.isRemote) {
+        await cTiles.MoulinetteTiles.downloadAsset(data)
+      } else {
+        data.img = this.tile.assetURL
+      }
+      // create folder (where to store the journal article)
+      const folder = await cTiles.MoulinetteTiles.getOrCreateArticleFolder(this.pack.publisher, this.pack.name)
+      // generate journal
+      const name = data.img.split('/').pop()
+      const entry = await game.moulinette.applications.Moulinette.generateArticle(name, data.img, folder.id)
+      return entry.sheet.render(true)
     }
     else if(event.submitter.className == "saveCategories") {
       $(event.submitter).prop('disabled',"disabled")

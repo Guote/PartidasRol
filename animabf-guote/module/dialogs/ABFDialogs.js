@@ -1,5 +1,5 @@
-import { PromptDialog } from "./PromptDialog.js";
-import { ConfirmationDialog } from "./ConfirmationDialog.js";
+import { PromptDialog } from './PromptDialog.js';
+import { ConfirmationDialog } from './ConfirmationDialog.js';
 export const ABFDialogs = {
     prompt: (body) => new Promise(resolve => {
         new PromptDialog(body, { onAccept: () => resolve() });

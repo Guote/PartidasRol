@@ -1,15 +1,14 @@
 import { MoulinetteTileResult } from "./moulinette-tileresult.js"
-import { MoulinetteAvailableAssets } from "./moulinette-available.js"
 import { MoulinetteDropAsActor } from "./moulinette-dropas-actor.js"
+import { MoulinetteOptions } from "./moulinette-options.js"
 
 /**
  * Forge Module for tiles
  */
 export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForgeModule {
 
-  static FOLDER_CUSTOM_IMAGES = "moulinette/images/custom"
-  static FOLDER_CUSTOM_TILES  = "moulinette/tiles/custom"
-  static THUMBSIZES = [25, 50, 75, 100, 125]
+  static IMAGE_EXT = ["gif","jpg","jpeg","png","webp","svg","webm","avif"]
+  static THUMBSIZES = [25, 50, 75, 100, 125, 150]
   
   constructor() {
     super()
@@ -17,6 +16,8 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
   }
 
   supportsThumbSizes() { return true }
+
+  supportsWholeWordSearch() { return true }
   
   clearCache() {
     this.assets = null
@@ -36,12 +37,13 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
       
     const user = await game.moulinette.applications.Moulinette.getUser()
     const baseURL = await game.moulinette.applications.MoulinetteFileUtil.getBaseURL()
+    const worldId = game.world.id
     const index = await game.moulinette.applications.MoulinetteFileUtil.buildAssetIndex([
       game.moulinette.applications.MoulinetteClient.SERVER_URL + "/assets/" + game.moulinette.user.id,
       game.moulinette.applications.MoulinetteClient.SERVER_URL + "/byoa/assets/" + game.moulinette.user.id,
       game.moulinette.applications.MoulinetteClient.SERVER_URL + "/byoi/assets/" + game.moulinette.user.id,
-      baseURL + "moulinette/images/custom/index.json",
-      baseURL + "moulinette/tiles/custom/index.json"
+      baseURL + `moulinette/tiles/custom/index-mtte.json`,
+      baseURL + `moulinette/images/custom/index-mtte.json`
     ])
 
     // remove thumbnails and non-images from assets
@@ -59,6 +61,29 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     
     return duplicate(this.assetsPacks)
   }
+
+  /**
+   * Returns the URL of the specified asset
+   * 
+   * @param {*} packIdx pack Index
+   * @param {*} path relative path
+   */
+    async getAssetURL(packIdx, path) {
+      // make sure that data is loaded in cache
+      await this.getPackList()
+      // search pack
+      const pack = this.assetsPacks.find(p => p.idx == packIdx)
+      if(pack) {
+        // search asset in path
+        const asset = this.assets.find(a => a.pack == pack.idx && a.filename == path)
+        if(asset) {
+          const data = {pack: pack, tile: asset}
+          await MoulinetteTiles.downloadAsset(data)
+          return data.img
+        }
+      }
+      return null
+    }
   
   /**
    * Generate a new asset (HTML) for the given result and idx
@@ -71,9 +96,8 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     let sasThumb = null
     
     // pre-signed url for accessing Digital Ocean Bucket
-    if(Array.isArray(pack.sas)) {
-      r.sas = pack.sas[2*idx-2]
-      sasThumb = pack.sas[2*idx-1]
+    if(r.sasTh) {
+      sasThumb = r.sasTh
     }
     // sas (Shared access signature) for accessing remote files (Azure)
     else {
@@ -85,9 +109,18 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     const folderHTML = folderIdx ? `data-folder="${folderIdx}"` : ""
 
     let html = ""
-    r.assetURL = r.filename.match(/^https?:\/\//) ? r.filename : `${URL}${pack.path}/${game.moulinette.applications.MoulinetteFileUtil.encodeURL(r.filename)}`
+    
+    // full URLs
+    if(r.filename.match(/^https?:\/\//)) {
+      r.assetURL = r.filename
+    } 
+    // pack has full URL
+    else {
+      r.assetURL = (pack.path.match(/^https?:\/\//) ? "" : URL) + `${pack.path}/${r.filename}`
+    }
+
     if(r.filename.endsWith(".webm")) {
-      const thumbnailURL = showThumbs ? r.assetURL.substr(0, r.assetURL.lastIndexOf('.') + 1) + "webp" + r.sas : ""
+      const thumbnailURL = showThumbs ? r.assetURL.substr(0, r.assetURL.lastIndexOf('.')) + "_thumb.webp" + sasThumb : ""
       html = `<div class="tileres video draggable fallback" title="${r.filename}" data-idx="${idx}" data-path="${r.filename}" ${folderHTML}>` +
         `<img width="${thumbSize}" class="cc_image" height="${thumbSize}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="background-image: url(${thumbnailURL})"/>` +
         `<video width="${thumbSize}" height="${thumbSize}" autoplay loop muted><source src="" data-src="${r.assetURL}${r.sas}" type="video/webm"></video>`
@@ -107,31 +140,35 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
   /**
    * Implements getAssetList
    */
-  async getAssetList(searchTerms, pack, publisher, type) {
+  async getAssetList(searchTerms, packs, publisher) {
     let assets = []
-    this.pack = pack
-    
+    const packList = packs == "-1" ? null : ('' + packs).split(",").map(Number);
+
     // pack must be selected or terms provided
-    if((!pack || pack < 0) && (!publisher || publisher.length == 0) && (!searchTerms || searchTerms.length == 0)) {
+    if(!packList && (!publisher || publisher.length == 0) && (!searchTerms || searchTerms.length == 0)) {
       return []
     }
 
     // clear folder selection (if any)
     game.moulinette.cache.setData("selAssets", null)
 
-    
+    const wholeWord = game.settings.get("moulinette", "wholeWordSearch")
     const searchTermsList = searchTerms.split(" ")
     // filter list according to search terms and selected pack or publisher
     this.searchResults = this.assets.filter( t => {
       // pack doesn't match selection
-      if( pack >= 0 && t.pack != pack ) return false
+      if( packList && !packList.includes(t.pack) ) return false
       // publisher doesn't match selection
       if( publisher && publisher != this.assetsPacks[t.pack].publisher ) return false
       // remove webm if type specified
-      if( type && type != "imagevideo" && t.filename.endsWith(".webm") ) return false
-      // check if text match
+      //if( type && type != "imagevideo" && t.filename.endsWith(".webm") ) return false
+      // check if text matches
       for( const f of searchTermsList ) {
-        if( t.filename.toLowerCase().indexOf(f) < 0 ) return false
+        const textToSearch = game.moulinette.applications.Moulinette.cleanForSearch(t.filename)
+        const regex = wholeWord ? new RegExp("\\b"+ f.toLowerCase() +"\\b") : new RegExp(f.toLowerCase())
+        if(!regex.test(textToSearch)) {
+          return false;
+        }
       }
       return true;
     })
@@ -154,10 +191,11 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
       for(const k of keys) {
         folderIdx++;
         const random = `<a class="random draggable"><i class="fas fa-dice"></i></a>`
+        const breadcrumb = game.moulinette.applications.Moulinette.prettyBreadcrumb(k)
         if(viewMode == "browse") {
-          assets.push(`<div class="folder" data-idx="${folderIdx}"><h2 class="expand">${random} ${k} (${folders[k].length}) <i class="fas fa-angle-double-down"></i></h2></div>`)
+          assets.push(`<div class="folder" data-idx="${folderIdx}"><h2 class="expand">${random} ${breadcrumb} (${folders[k].length}) <i class="fas fa-angle-double-down"></i></h2></div>`)
         } else {
-          assets.push(`<div class="folder" data-idx="${folderIdx}"><h2>${random} ${k} (${folders[k].length}) </h2></div>`)
+          assets.push(`<div class="folder" data-idx="${folderIdx}"><h2>${random} ${breadcrumb} (${folders[k].length}) </h2></div>`)
         }
         for(const a of folders[k]) {
           // update search results with folder information
@@ -168,8 +206,28 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     }
     
     // retrieve available assets that the user doesn't have access to
-    this.matchesCloud = await game.moulinette.applications.MoulinetteFileUtil.getAvailableMatches(searchTerms, "tiles", this.assetsPacks)
+    //this.matchesCloud = await game.moulinette.applications.MoulinetteFileUtil.getAvailableMatches(searchTerms, "tiles", this.assetsPacks)
+    this.matchesCloudTerms = searchTerms
+    const parent = this
+    this.matchesCloudCount = await game.moulinette.applications.MoulinetteFileUtil.getAvailableMatchesMoulinetteCloud(searchTerms, "tiles", true).then(results => {
+      // not yet ready?
+      if(!parent.html) return;
+      // display/hide showCase
+      const showCase = parent.html.find(".showcase")
+      if(results && results.count > 0) {
+        // display/hide additional content
+        showCase.html('<i class="fas fa-exclamation-circle"></i> ' + game.i18n.format("mtte.showCaseAssets", {count: results.count}))
+        showCase.addClass("clickable")
+        showCase.show()
+      }
+      else {
+        showCase.html("")
+        showCase.removeClass("clickable")
+        showCase.hide()
+      }
+    })
     
+
     return assets
   }
   
@@ -221,32 +279,6 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
       game.settings.set("moulinette", "tileMacro", macroPrefs)
     })
     
-    // display/hide showCase
-    const showCase = this.html.find(".showcase")
-    if(this.pack >= 0 && this.assetsPacks[this.pack] && this.assetsPacks[this.pack].isShowCase) {
-      const pack = this.assetsPacks[this.pack]
-      showCase.html(game.i18n.localize("mtte.showCase"))
-      showCase.find(".link").text(pack.publisher)
-      showCase.find(".link").attr('href', pack.pubWebsite)
-      showCase.removeClass("clickable")
-      showCase.show()
-    } 
-    else if(this.matchesCloud && this.matchesCloud.length > 0) {
-      // display/hide additional content
-      let count = 0
-      this.matchesCloud.forEach( m => count += m.matches.length )
-      showCase.html('<i class="fas fa-exclamation-circle"></i> ' + game.i18n.format("mtte.showCaseAssets", {count: count}))
-      showCase.addClass("clickable")
-      const matches = this.matchesCloud
-      showCase.click(ev => new MoulinetteAvailableAssets(duplicate(matches)).render(true))
-      showCase.show()
-    }
-    else {
-      showCase.html("")
-      showCase.removeClass("clickable")
-      showCase.hide()
-    }
-
     this.html.find(".random").click(event => {
       event.preventDefault();
       event.stopPropagation();
@@ -267,6 +299,12 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     // adapt fallback size to current size
     const size = MoulinetteTiles.THUMBSIZES[this.thumbsize]
     this.html.find(".fallback").css("min-width", size).css("min-height", size)
+
+    // click on showcase
+    this.html.find(".showcase").click(ev => new game.moulinette.applications.MoulinetteAvailableAssets(this.matchesCloudTerms, "tiles", 100).render(true))
+
+    // insert Footer
+    this.updateFooter()
   }
   
   
@@ -274,32 +312,89 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
    * Footer: Dropmode
    */
   async getFooter() {
-    const mode = game.settings.get("moulinette", "tileMode")
-    const size = game.settings.get("moulinette", "tileSize")
-    const compact = game.settings.get("moulinette-core", "uiMode") == "compact"
-    const macro = MoulinetteTiles.getMacroNames()
-
-    const tileMode = compact ? `<i class="fas fa-cubes" title="${game.i18n.localize("mtte.tile")}"></i>` : game.i18n.localize("mtte.tile")
-    const articleMode = compact ? `<i class="fas fa-book-open" title="${game.i18n.localize("mtte.article")}"></i>` : game.i18n.localize("mtte.article")
-    const tokenMode = compact ? `<i class="fas fa-users" title="${game.i18n.localize("mtte.actor")}"></i>` : game.i18n.localize("mtte.actor")
-
-    return `<div class="showcase"></div>
-      <div class="options"><div class="option">` +
-      (compact ? "" : `${game.i18n.localize("mtte.dropmode")} <i class="fas fa-question-circle" title="${game.i18n.localize("mtte.dropmodeToolTip")}"></i>`) +
-      `<input class="dropmode" type="radio" name="mode" value="tile" ${mode == "tile" ? "checked" : ""}> ${tileMode}
-        <input class="dropmode" type="radio" name="mode" value="article" ${mode == "article" ? "checked" : ""}> ${articleMode}
-        <input class="dropmode" type="radio" name="mode" value="actor" ${mode == "actor" ? "checked" : ""}> ${tokenMode}
-      </div>
-      <div class="option">` +
-      (compact ? "" : `${game.i18n.localize("FILES.TileSize")} <i class="fas fa-question-circle" title="${game.i18n.localize("FILES.TileSizeHint")}"></i>`) +
-      `<input class="tilesize" type="text" name="tilesize" value="${size}" maxlength="4">
-      </div>
-      <div class="option">` +
-      (compact ? "" : `${game.i18n.localize("mtte.runMacro")} <i class="fas fa-question-circle" title="${game.i18n.localize("mtte.runMacroToolTip")}"></i>`) + 
-      `<input class="macro" type="text" name="macro" value="${macro}" placeholder="${game.i18n.localize("mtte.macroExample")}">
-      </div>
-    </div>`
+    return `<div id="footerTiles"></div>`
   }
+
+  /**
+   * Updates the footer
+   */
+  async updateFooter() {
+
+    // prepare the list of macros
+    const mode = game.settings.get("moulinette", "tileMode")
+    const macroCfg = game.settings.get("moulinette", "tileMacros")[mode] // should return a list of _ids
+    const compendium = game.settings.get("moulinette-tiles", "macroCompendium")
+    const macroIndex = compendium ? game.packs.get(compendium)?.index.values() : null
+    const macros = macroIndex ? Array.from(macroIndex).filter(m => macroCfg && macroCfg.includes(m._id)) : []
+
+    let macroText = "-"
+    if( macros.length == 1) {
+      macroText = macros[0].name
+    }
+    else if( macros.length > 1) {
+      macroText = game.i18n.format("mtte.multiplesMacros", { count: macros.length})
+    }
+
+    const html = await renderTemplate("modules/moulinette-tiles/templates/search-footer.hbs", {
+      tileSize: game.settings.get("moulinette", "tileSize"),
+      dropAsTile: mode == "tile",
+      dropAsArticle: mode == "article",
+      dropAsActor: mode == "actor",
+      macros: macroText
+    })
+    this.html.find("#footerTiles").html(html)
+
+    // dropmode listener
+    this.html.find(".dropMode").click(event => {
+      // callback function for appying the results
+      const parent = this
+      const callback = async function (mode) {
+        mode = ["tile","article","actor"].includes(mode) ? mode : "tile"
+        await game.settings.set("moulinette", "tileMode", mode)
+        await parent.updateFooter()
+      }
+
+      const dialog = new MoulinetteOptions("dropmode", callback, { width: 100, height: "auto" })
+      dialog.position.left = event.pageX - dialog.position.width/2
+      dialog.position.top = event.pageY - 60 // is auto
+      dialog.render(true)
+    })
+
+    // tilesize listener
+    this.html.find(".tileSize").click(event => {
+      // callback function for appying the results
+      const parent = this
+      const callback = async function (size) {
+        await game.settings.set("moulinette", "tileSize", Number(size))
+        await parent.updateFooter()
+      }
+
+      const dialog = new MoulinetteOptions("tilesize", callback, { width: 250, height: "auto" })
+      dialog.position.left = event.pageX - dialog.position.width/2
+      dialog.position.top = event.pageY - 100 // is auto
+      dialog.render(true)
+    })
+
+    // macros listener
+    this.html.find(".macros").click(event => {
+      // callback function for appying the results
+      const parent = this
+      const callback = async function (macros) {
+        if(macros) {
+          const config = game.settings.get("moulinette", "tileMacros")
+          config[mode] = macros
+          await game.settings.set("moulinette", "tileMacros", config)
+          await parent.updateFooter()
+        }
+      }
+
+      const dialog = new MoulinetteOptions("macros", callback, { width: 450, height: 400, macros: macros.map(m => m._id) })
+      dialog.position.left = event.pageX - dialog.position.width/2
+      dialog.position.top = event.pageY - 100 // is auto
+      dialog.render(true)
+    })
+  }
+
   
   /**
    * Implements actions
@@ -309,31 +404,8 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
    * - howto: help on how to use the module
    */
   async onAction(classList) {
-    const FileUtil = game.moulinette.applications.MoulinetteFileUtil
-    if(classList.contains("indexImages")) {
-      ui.notifications.info(game.i18n.localize("mtte.indexingInProgress"));
-      this.html.find(".indexImages").prop("disabled", true);
-      const EXT = ["gif","jpg","jpeg","png","webp","svg", "webm"]
-      // scan tiles
-      let publishers = await FileUtil.scanAssets(MoulinetteTiles.FOLDER_CUSTOM_TILES, EXT)
-      const customPath = game.settings.get("moulinette-core", "customPath")
-      publishers.push(...await FileUtil.scanSourceAssets("tiles", EXT))
-      await FileUtil.uploadFile(new File([JSON.stringify(publishers)], "index.json", { type: "application/json", lastModified: new Date() }), "index.json", MoulinetteTiles.FOLDER_CUSTOM_TILES, true)
-      // scan images
-      publishers = await FileUtil.scanAssets(MoulinetteTiles.FOLDER_CUSTOM_IMAGES, EXT)
-      if(customPath) {
-        publishers.push(...await FileUtil.scanAssetsInCustomFolders(customPath, EXT))
-      }
-      publishers.push(...await FileUtil.scanSourceAssets("images", EXT))
-      await FileUtil.uploadFile(new File([JSON.stringify(publishers)], "index.json", { type: "application/json", lastModified: new Date() }), "index.json", MoulinetteTiles.FOLDER_CUSTOM_IMAGES, true)
-      ui.notifications.info(game.i18n.localize("mtte.indexingDone"));
-      // clear cache
-      game.moulinette.cache.clear()
-      this.clearCache()
-      return true
-    }
-    else if(classList.contains("configureSources")) {
-      (new game.moulinette.applications.MoulinetteSources()).render(true)
+    if(classList.contains("configureSources")) {
+      (new game.moulinette.applications.MoulinetteSources(this, ["images","tiles"], MoulinetteTiles.IMAGE_EXT)).render(true)
     }
     else if(classList.contains("customReferences")) {
       new Dialog({title: game.i18n.localize("mtte.customReferencesPacks"), buttons: {}}, { id: "moulinette-info", classes: ["info"], template: "modules/moulinette-tiles/templates/custom-references.hbs", width: 650, height: "auto" }).render(true)
@@ -560,32 +632,8 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
    * Returns the list of macros (based on macro names)
    */
   static async getMacros(data) {
-    if(data.source == "mtteSearch") {
-      return await MoulinetteTiles.getMacrosV2(data)
-    }
-    const tileMode = game.settings.get("moulinette", "tileMode")
-    let macros = game.settings.get("moulinette", "tileMacro")[tileMode]
-    const results = []
-
-    // add specific macros (from favorite)
-    if(data.macros && data.macros.length > 0) {
-      macros = macros ? macros + "," + data.macros : data.macros
-    }
-
-    if(macros) {
-      const list = macros.split(",")
-      for( const macroName of list ) {
-        const macro = game.macros.find(o => o.name === macroName.trim())
-        if(macro) {
-          results.push(macro)
-        } else {
-          console.warn(`Moulinette Tiles | Macro ${macroName} couldn't be found!`)
-        }
-      }
-    }
-    return results;
+    return await MoulinetteTiles.getMacrosV2(data)
   }
-
   
   /**
    * Download the asset received from event
@@ -611,8 +659,8 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     }
     // local assets
     else if(!data.pack.isRemote) {
-      const localBaseURL = data.pack.isLocal ? "" : baseURL
-      data.img =  data.tile.filename.match(/^https?:\/\//) ? data.tile.filename : localBaseURL + `${data.pack.path}/${FILEUTIL.encodeURL(data.tile.filename)}`
+      const localBaseURL = data.pack.isLocal || data.pack.path.match(/^https?:\/\//) ? "" : baseURL
+      data.img =  data.tile.filename.match(/^https?:\/\//) ? data.tile.filename : localBaseURL + `${data.pack.path}/${data.tile.filename}`
     }
     // moulinette cloud assets
     else {
@@ -638,19 +686,20 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
       moulinetteFolder = moulinetteFolder[0]
     }
     // publisher level
-    let publisherFolder = moulinetteFolder.children.filter( c => c.name == publisher )
+    let publisherFolder = moulinetteFolder.children ? moulinetteFolder.children.filter( c => c.folder.name == publisher ) : []
     if( publisherFolder.length == 0 ) {
       publisherFolder = await Folder.create({name: publisher, type: "JournalEntry", parent: moulinetteFolder.id })
     } else {
-      publisherFolder = publisherFolder[0]
+      publisherFolder = publisherFolder[0].folder
     }
     // pack level
-    let packFolder = publisherFolder.children.filter( c => c.name == pack )
+    let packFolder = publisherFolder.children ? publisherFolder.children.filter( c => c.folder.name == pack ) : []
     if( packFolder.length == 0 ) {
       packFolder = await Folder.create({name: pack, type: "JournalEntry", parent: publisherFolder.id })
     } else {
-      packFolder = packFolder[0]
+      packFolder = packFolder[0].folder
     }
+
     return packFolder
   }
   
@@ -665,7 +714,7 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     
     // generate journal
     const name = data.img.split('/').pop()
-    const entry = await JournalEntry.create( {name: name, img: data.img, folder: folder.id} )
+    const entry = await game.moulinette.applications.Moulinette.generateArticle(name, data.img, folder.id)
     const coord = canvas.grid.getSnappedPosition(data.x - canvas.grid.w/2, data.y - canvas.grid.h/2)
     
     // Default Note data
@@ -714,34 +763,32 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
     data.height = tex.baseTexture.height * ratio;
 
     // Validate that the drop position is in-bounds and snap to grid
-    if ( !canvas.grid.hitArea.contains(data.x, data.y) ) return false;
+    if ( !canvas.dimensions.rect.contains(data.x, data.y) ) return false;
     data.x = data.x - (data.width / 2);
     data.y = data.y - (data.height / 2);
     //if ( !event.shiftKey ) mergeObject(data, canvas.grid.getSnappedPosition(data.x, data.y));
 
     // make sure to always put tiles on top
     let maxZ = 0
-    canvas.foreground.placeables.forEach( t => {
-      if(t.zIndex > maxZ) maxZ = t.zIndex
-    })
-    canvas.background.placeables.forEach( t => {
-      if(t.zIndex > maxZ) maxZ = t.zIndex
+    canvas.tiles.placeables.forEach( t => {
+      // bug : https://github.com/foundryvtt/foundryvtt/issues/8656
+      if(t.document.sort > maxZ) maxZ = t.document.sort /*t.zIndex*/
     })
     data.z = maxZ
 
     // Create the tile as hidden if the ALT key is pressed
     //if ( event.altKey ) data.hidden = true;
-    const layer = canvas.activeLayer && canvas.activeLayer.name == "ForegroundLayer" ? canvas.foreground : canvas.background
-    
+
     // Create the Tile
     let tile;
-    data.overhead = layer.name == "ForegroundLayer"
+    data.overhead = ui.controls.controls.find(c => c.layer === "tiles").foreground ?? false;
     tile = (await canvas.scene.createEmbeddedDocuments(Tile.embeddedName, [data], { parent: canvas.scene }))[0]
     tile = tile._object
+    tile.control() // automatically select dropped tile
 
-    if(activateLayer && canvas.activeLayer != layer) {
-      layer.activate()
-    } 
+    if(!canvas.tiles.active && canvas.activeLayer.name != "MoulinetteLayer") {
+      canvas.tiles.activate()
+    }
     
     // Call macro
     const macros = await MoulinetteTiles.getMacros(data)
@@ -811,7 +858,7 @@ export class MoulinetteTiles extends game.moulinette.applications.MoulinetteForg
   onRightClickGrid(eventData) {
     const mode = game.settings.get("moulinette", "tileMode")
     if(mode == "tile") {
-      canvas.background.activate()
+      canvas.tiles.activate()
     } else if(mode == "actor") {
       canvas.tokens.activate()
     } else if(mode == "article") {

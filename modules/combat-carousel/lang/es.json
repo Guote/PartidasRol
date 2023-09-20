@@ -40,19 +40,24 @@
             "ControlActiveCombatantTokenN": "Controlar icono del contendiente activo",
             "ControlActiveCombatantTokenH": "Habilita el control automático (seleccionar) del icono asociado al contendiente activo actualmente",
             "PanOnClickN": "Centrar al hacer clic en una tarjeta",
-            "PanOnClickH": "Se centra en el icono correspondiente cuando se hace clic en una tarjeta (nota: el icono debe ser 'visible' para el usuario actual)"
+            "PanOnClickH": "Se centra en el icono correspondiente cuando se hace clic en una tarjeta (nota: el icono debe ser 'visible' para el usuario actual)",
+            "AlwaysOnTopN": "Siempre visible",
+            "AlwaysOnTopH": "Mostrar el carrusel siempre encima del resto de elementos de la UI",
+            "OpenOnCombatCreateN": "Abrir Combat Carousel al crear un combate",
+            "OpenOnCombatCreateH": "Abre el carrusel cuando se crea un combate"
         },
 
         "CAROUSEL": {
-            "NextTurn": "Turno Siguiente",
-            "PreviousTurn": "Turno Anterior",
-            "NextRound": "Asalto Siguiente",
-            "PreviousRound": "Asalto Anterior",
-            "NextRoundTooltip": "Clic para pasar al Asalto Siguiente",
-            "PreviousRoundTooltip": "Clic para volver al Asalto Anterior",
-            "ToggleHint": "Clic para ocultar/mostrar, clic-derecho para ajustes",
+            "BeginCombat": "Comenzar combate",
+            "NextTurn": "Turno siguiente",
+            "PreviousTurn": "Turno anterior",
+            "NextRound": "Asalto siguiente",
+            "PreviousRound": "Asalto anterior",
+            "NextRoundTooltip": "Clic para pasar al asalto siguiente",
+            "PreviousRoundTooltip": "Clic para volver al asalto anterior",
+            "ToggleHint": "Clic para ocultar/mostrar, clic derecho para ajustes",
             "EndEncounter": "Clic para finalizar el encuentro",
-            "DragTooltip": "Clic y arrastre para mover, clic-derecho para volver a la posición original",
+            "DragTooltip": "Clic y arrastre para mover, clic derecho para volver a la posición original",
 
             "Controls.CreateEncounter": "Crear encuentro",
             "Controls.DeleteEncounter": "Borrar encuentro",
@@ -70,7 +75,7 @@
             "Controls.Defeated": "Marcar como derrotado",
             "Controls.Remove": "Quitar del encuentro",
             "RollInitiative": "Clic para tirar",
-            "EditInitiative": "Clic para editar, clic-derecho para reiniciar (solo GM)"
+            "EditInitiative": "Clic para editar, clic derecho para reiniciar (solo GM)"
         },
 
         "ABOUT.Label": "Acerca de Combat Carousel (Carrusel de Combate)",
@@ -81,7 +86,7 @@
         "OVERLAY_CONFIG.Title": "Carrusel de Combate | Configuración de tarjeta",
         "OVERLAY_CONFIG.Name": "Configuración de tarjeta",
     
-        "TOGGLE_BUTTON.Tooltip": "Carrusel de Combate - clic para alternar visibilidad, clic-derecho para reiniciar posición",
+        "TOGGLE_BUTTON.Tooltip": "Carrusel de Combate - clic para alternar visibilidad, clic derecho para reiniciar posición",
 
         "WORDS": {
             "Save": "Guardar",

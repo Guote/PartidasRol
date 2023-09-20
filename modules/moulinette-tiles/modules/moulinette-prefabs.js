@@ -5,8 +5,11 @@ import { MoulinetteTileResult } from "./moulinette-tileresult.js"
  */
 export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteForgeModule {
 
+  static THUMBSIZES = [25, 50, 75, 100, 125, 150]
+
   constructor() {
     super()
+    this.thumbsize = 3
   }
   
   clearCache() {
@@ -15,6 +18,10 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
     this.searchResults = null
     this.pack = null
   }
+
+  supportsThumbSizes() { return true }
+
+  supportsWholeWordSearch() { return true }
   
   /**
    * Returns the list of available packs
@@ -43,14 +50,18 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
   /**
    * Generate a new asset (HTML) for the given result and idx
    */
-  async generateAsset(r, idx) {
+  async generateAsset(r, idx, folderIdx = null) {
+    const thumbSize = MoulinettePrefabs.THUMBSIZES[this.thumbsize]
     const pack = this.assetsPacks[r.pack]
     const URL = pack.isLocal || pack.isRemote ? "" : await game.moulinette.applications.MoulinetteFileUtil.getBaseURL()
     // sas (Shared access signature) for accessing remote files (Azure)
     r.sas = pack.sas ? "?" + pack.sas : ""
     r.baseURL = `${URL}${pack.path}/`
     
-    return `<div class="tileres draggable" title="${r.data.name}" data-idx="${idx}" data-path="${r.filename}"><img width="100" height="100" src="${r.baseURL + r.data.img + r.sas}"/></div>`
+    // add folder index if browsing by folder
+    const folderHTML = folderIdx ? `data-folder="${folderIdx}"` : ""
+
+    return `<div class="tileres draggable" title="${r.data.name}" data-idx="${idx}" data-path="${r.filename}" ${folderHTML}><img width="${thumbSize}" height="${thumbSize}" src="${r.baseURL + r.data.img + r.sas}"/></div>`
   }
   
   /**
@@ -65,7 +76,8 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
       return []
     }
     
-    searchTerms = searchTerms.split(" ")
+    const wholeWord = game.settings.get("moulinette", "wholeWordSearch")
+    const searchTermsList = searchTerms.split(" ")
     // filter list according to search terms and selected pack
     this.searchResults = this.assets.filter( pf => {
       // pack doesn't match selection
@@ -73,8 +85,12 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
       // publisher doesn't match selection
       if( publisher && publisher != this.assetsPacks[pf.pack].publisher ) return false
       // check if text match
-      for( const f of searchTerms ) {
-        if( pf.data.name.toLowerCase().indexOf(f) < 0 ) return false
+      for( const f of searchTermsList ) {
+        const textToSearch = game.moulinette.applications.Moulinette.cleanForSearch(pf.data.name)
+        const regex = wholeWord ? new RegExp("\\b"+ f.toLowerCase() +"\\b") : new RegExp(f.toLowerCase())
+        if(!regex.test(textToSearch)) {
+          return false;
+        }
       }
       return true;
     })
@@ -91,16 +107,20 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
     }
     // view #2 (by folder)
     else if(viewMode == "list" || viewMode == "browse") {
-      const folders = game.moulinette.applications.MoulinetteFileUtil.foldersFromIndex(this.searchResults, this.assetsPacks);
+      const folders = game.moulinette.applications.MoulinetteFileUtil.foldersFromIndexImproved(this.searchResults, this.assetsPacks);
       const keys = Object.keys(folders).sort()
+      let folderIdx = 0
       for(const k of keys) {
+        folderIdx++;
+        const breadcrumb = game.moulinette.applications.Moulinette.prettyBreadcrumb(k)
         if(viewMode == "browse") {
-          assets.push(`<div class="folder" data-path="${k}"><h2 class="expand">${k} (${folders[k].length}) <i class="fas fa-angle-double-down"></i></h2></div>`)
+          assets.push(`<div class="folder" data-idx="${folderIdx}"><h2 class="expand">${breadcrumb} (${folders[k].length}) <i class="fas fa-angle-double-down"></i></h2></div>`)
         } else {
-          assets.push(`<div class="folder" data-path="${k}"><h2>${k} (${folders[k].length})</div>`)
+          assets.push(`<div class="folder" data-idx="${folderIdx}"><h2>${breadcrumb} (${folders[k].length})</div>`)
         }
         for(const a of folders[k]) {
-          assets.push(await this.generateAsset(a, a.idx))
+          a.fIdx = folderIdx
+          assets.push(await this.generateAsset(a, a.idx, folderIdx))
         }
       }
     }
@@ -115,6 +135,10 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
   activateListeners(html) {
     // keep html for later usage
     this.html = html
+
+    // adapt fallback size to current size
+    const size = MoulinettePrefabs.THUMBSIZES[this.thumbsize]
+    this.html.find(".fallback").css("min-width", size).css("min-height", size)
   }
   
   onDragStart(event) {
@@ -184,18 +208,18 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
       moulinetteFolder = moulinetteFolder[0]
     }
     // publisher level
-    let publisherFolder = moulinetteFolder.children.filter( c => c.name == publisher )
+    let publisherFolder = moulinetteFolder.children ? moulinetteFolder.children.filter( c => c.folder.name == publisher ) : []
     if( publisherFolder.length == 0 ) {
       publisherFolder = await Folder.create({name: publisher, type: "Actor", parent: moulinetteFolder.id })
     } else {
-      publisherFolder = publisherFolder[0]
+      publisherFolder = publisherFolder[0].folder
     }
     // pack level
-    let packFolder = publisherFolder.children.filter( c => c.name == pack )
+    let packFolder = publisherFolder.children ? publisherFolder.children.filter( c => c.folder.name == pack ) : []
     if( packFolder.length == 0 ) {
       packFolder = await Folder.create({name: pack, type: "Actor", parent: publisherFolder.id })
     } else {
-      packFolder = packFolder[0]
+      packFolder = packFolder[0].folder
     }
     return packFolder
   }
@@ -232,30 +256,34 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
       // Create actor
       let actorData = JSON.parse(jsonAsText)
 
-      // Clean-up prefab
-      actorData = {
-        type: game.system.documentTypes.Actor[0],
-        img: actorData.img,
-        name: actorData.name,
-        token: actorData.token,
-        flags: actorData.flags,
-        folder: await MoulinettePrefabs.getOrCreateActorFolder(pack.publisher, pack.name)
+      // Clean-up prefab if not DnD5e (or import could fail)
+      if(game.settings.get("moulinette-tiles", "prefabsCleanup")) {
+        actorData = {
+          img: actorData.img,
+          name: actorData.name,
+          prototypeToken: actorData.prototypeToken ?? actorData.token,
+          flags: actorData.flags,
+          type: game.system.documentTypes.Actor[0]
+        }
       }
+
+      // force folder
+      actorData.folder = await MoulinettePrefabs.getOrCreateActorFolder(pack.publisher, pack.name)
+
       const actor = await getDocumentClass("Actor").create(actorData);
 
       // Prepare the Token data
-      let tokenData= await actor.getTokenData({x: data.x, y: data.y})
+      let tokenData= await actor.getTokenDocument({x: data.x, y: data.y})
 
       // Adjust token position
       const hg = canvas.dimensions.size / 2;
       tokenData.x -= tokenData.width * hg;
       tokenData.y -= tokenData.height * hg;
-      if ( !canvas.grid.hitArea.contains(tokenData.x, tokenData.y) ) return false;
+      if ( !canvas.dimensions.rect.contains(tokenData.x, tokenData.y) ) return false;
 
       //TokenDocument.create(tokenData)
       // Submit the Token creation request and activate the Tokens layer (if not already active)
-      let newToken = (await canvas.scene.createEmbeddedDocuments(Token.embeddedName, [tokenData], { parent: canvas.scene }))[0]
-      newToken = newToken._object
+      await canvas.scene.createEmbeddedDocuments(Token.embeddedName, [tokenData])
 
       // sometimes throws exceptions
       try {
@@ -270,5 +298,11 @@ export class MoulinettePrefabs extends game.moulinette.applications.MoulinetteFo
     game.settings.set("moulinette", "tileMode", mode)
   }
   
+  async onChangeThumbsSize(increase) {
+    // change thumbsize (and check that it's within range of available sizes)
+    this.thumbsize = Math.max(0, Math.min(MoulinettePrefabs.THUMBSIZES.length-1, increase ? this.thumbsize + 1 : this.thumbsize -1))
+    const size = MoulinettePrefabs.THUMBSIZES[this.thumbsize]
+    this.html.find(".tileres img").css("width", size).css("height", size)
+  }
   
 }

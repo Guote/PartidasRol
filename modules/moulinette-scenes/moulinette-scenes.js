@@ -5,6 +5,26 @@ import { MoulinetteLocalExport } from "./modules/moulinette-localexport.js"
 
 Hooks.once("init", async function () {
   console.log("Moulinette Scenes | Init")
+
+  game.settings.register("moulinette-scenes", "createFolders", {
+    name: game.i18n.localize("mtte.configCreateFolders"),
+    hint: game.i18n.localize("mtte.configCreateFoldersHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+
+  game.settings.register("moulinette-scenes", "generateThumbnails", {
+    name: game.i18n.localize("mtte.configGenerateThumbnails"),
+    hint: game.i18n.localize("mtte.configGenerateThumbnailsHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
 })
 
 /**
@@ -23,7 +43,7 @@ Hooks.once("ready", async function () {
       description: game.i18n.localize("mtte.scenesDescription"),
       instance: new moduleClass(),
       actions: [
-        {id: "indexScenes", icon: "fas fa-sync" ,name: game.i18n.localize("mtte.indexScenes"), help: game.i18n.localize("mtte.indexScenesToolTip") },
+        {id: "configureSources", icon: "fas fa-cogs" ,name: game.i18n.localize("mtte.configureSources"), help: game.i18n.localize("mtte.configureSourcesToolTip") },
         {id: "howto", icon: "fas fa-question-circle" ,name: game.i18n.localize("mtte.howto"), help: game.i18n.localize("mtte.howtoToolTip") }
       ]
     })

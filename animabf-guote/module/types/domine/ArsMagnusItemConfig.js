@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const ArsMagnusItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").ArsMagnusItemConfig} */
+export const ArsMagnusItemConfig = ABFItemConfigFactory({
     type: ABFItems.ARS_MAGNUS,
     isInternal: true,
     fieldPath: ['domine', 'arsMagnus'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.arsMagnus;
-    },
     selectors: {
         addItemButtonSelector: 'add-ars-magnus',
         containerSelector: '#ars-magnus-context-menu-container',
@@ -21,26 +20,5 @@ export const ArsMagnusItemConfig = {
             name,
             type: ABFItems.ARS_MAGNUS
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name } = changes[id];
-            await actor.updateInnerItem({ id, type: ABFItems.ARS_MAGNUS, name });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.domine.arsMagnus;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.domine.arsMagnus = [item];
-        }
     }
-};
+});

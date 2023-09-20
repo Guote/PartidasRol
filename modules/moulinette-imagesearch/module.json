@@ -1,37 +1,63 @@
 {
-  "name": "moulinette-imagesearch",
   "title": "Moulinette Image Search (module)",
   "description": "This module for Moulinette adds capabilities for searching images and generating articles on the fly.",
-  "version": "3.1.1",
-  "author": "Sven Werlen",
-  "esmodules": ["moulinette-imagesearch.js"],
-  "styles": ["moulinette-imagesearch.css"],
+  "version": "11.0.1",
+  "authors": [
+    {
+      "name": "Sven Werlen",
+      "flags": {}
+    }
+  ],
+  "esmodules": [
+    "moulinette-imagesearch.js"
+  ],
+  "styles": [
+    "moulinette-imagesearch.css"
+  ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     },
     {
       "lang": "fr",
       "name": "French",
-      "path": "lang/fr.json"
+      "path": "lang/fr.json",
+      "flags": {}
     },
     {
       "lang": "ja",
       "name": "日本語",
-      "path": "lang/ja.json"
+      "path": "lang/ja.json",
+      "flags": {}
     }
   ],
-  "dependencies": [
-    {
-      "name": "moulinette-core",
-      "type": "module"
-    }
-  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "moulinette-core",
+        "type": "module",
+        "compatibility": {
+          "minimum": "11.0.1"
+        }
+      },
+      {
+        "id": "moulinette-tiles",
+        "type": "module",
+        "compatibility": {
+          "minimum": "11.0.1"
+        }
+      }
+    ]
+  },
   "url": "https://github.com/SvenWerlen/moulinette-imagesearch",
-  "download": "https://github.com/SvenWerlen/moulinette-imagesearch/archive/v-3.1.1.zip",
-  "manifest": "https://raw.githubusercontent.com/SvenWerlen/moulinette-imagesearch/master/module.json",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9"
+  "download": "https://github.com/SvenWerlen/moulinette-imagesearch/archive/v-11.0.1.zip",
+  "manifest": "https://raw.githubusercontent.com/SvenWerlen/moulinette-imagesearch/main/module.json",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "11"
+  },
+  "id": "moulinette-imagesearch"
 }

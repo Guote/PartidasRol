@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const SpecialSkillItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").SpecialSkillItemConfig} */
+export const SpecialSkillItemConfig = ABFItemConfigFactory({
     type: ABFItems.SPECIAL_SKILL,
     isInternal: true,
     fieldPath: ['domine', 'specialSkills'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.specialSkills;
-    },
     selectors: {
         addItemButtonSelector: 'add-special-skill',
         containerSelector: '#special-skills-context-menu-container',
@@ -21,26 +20,5 @@ export const SpecialSkillItemConfig = {
             name,
             type: ABFItems.SPECIAL_SKILL
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name } = changes[id];
-            await actor.updateInnerItem({ id, type: ABFItems.SPECIAL_SKILL, name });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.domine.specialSkills;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.domine.specialSkills = [item];
-        }
     }
-};
+});

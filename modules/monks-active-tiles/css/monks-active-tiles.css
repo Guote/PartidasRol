@@ -2,8 +2,6 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
     color: #7a7971;
     margin-bottom: 10px;
 }
@@ -12,6 +10,9 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    max-height: 350px;
 }
 
 .monks-active-tiles.sheet .items-list .item-name {
@@ -33,6 +34,7 @@
 .monks-active-tiles.sheet .items-list .item-controls {
     flex: 0 0 50px;
     justify-content: space-between;
+    align-self: center;
 }
 
 .monks-active-tiles.sheet .items-list .items-header .item-controls {
@@ -45,8 +47,7 @@
 }
 
 .monks-active-tiles.sheet .items-list .item {
-    align-items: center;
-    padding: 4px 2px;
+    align-items: stretch;
     border-bottom: 1px solid #c9c7b8;
 }
 
@@ -56,6 +57,13 @@
 
 .monks-active-tiles.sheet .items-list .item .item-name {
     color: #191813;
+    padding: 4px 2px;
+}
+
+.monks-active-tiles.sheet .items-list .item .item-name.disabled {
+    color: #999;
+    text-decoration: line-through;
+    text-decoration-color: red;
 }
 
 .monks-active-tiles.sheet .items-list .item .item-name .item-image {
@@ -94,6 +102,7 @@
     font-weight: 700;
     text-align: left;
     font-size: 16px;
+    border-bottom: 0px;
 }
 
 .action-sheet form .form-group label {
@@ -126,6 +135,9 @@
     flex: 0 0 28px;
     height: 28px;
     width: 28px;
+    line-height: 25px;
+    font-size: 0.875rem;
+    padding-left: 6px;
 }
 
 .action-sheet button[data-target="data.entity"] i,
@@ -241,12 +253,15 @@
     font-style: italic;
 }
 
-#trigger-action .files-list {
+#trigger-action .files-list,
+#trigger-action .buttons-list {
     padding-left: 0px;
     margin: 0px;
 }
 
-#trigger-action .files-list .items-header .item-controls {
+#trigger-action .files-list .items-header .item-controls,
+#trigger-action .buttons-list .items-header .item-controls,
+.monks-active-tiles .files-list .items-header .item-controls {
     justify-content: flex-end;
     color: #7a7971;
     font-size: 12px;
@@ -256,22 +271,33 @@
     padding-left: 0px;
     margin-top: 0px;
     color: #191813;
-    max-height:100px;
-    overflow-y:auto;
-    max-width:400px;
+    max-height: 100px;
+    overflow-y: auto;
+    max-width: 400px;
 }
 
-#trigger-action .file-list li {
+.monks-active-tiles .file-list {
+    padding-left: 0px;
+    margin-top: 0px;
+    color: #191813;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+#trigger-action .file-list li,
+.monks-active-tiles.sheet .file-list li.item {
     border-bottom: 1px solid #c9c7b8;
     line-height: 25px;
-    padding-left: 4px;
+    padding: 0px 4px;
 }
 
-#trigger-action .file-list li a {
+#trigger-action .items-list li a,
+.monks-active-tiles .file-list li a {
     color: #7a7971;
     flex: 0 0 28px;
     height: 28px;
     width: 28px;
+    text-align: center;
 }
 
 #trigger-action .items-list .items-header {
@@ -298,9 +324,11 @@
     font-size: 16px;
 }
 
-#trigger-action .file-list .image-name {
+#trigger-action .file-list .image-name,
+.monks-active-tiles .file-list .image-name {
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #trigger-action .select-field-group {
@@ -320,3 +348,165 @@
     box-shadow: 0px 0px 10px inset black;
     background: #352516;
 }
+
+.matt-tab[data-tab] {
+    display: none;
+}
+
+.matt-tab[data-tab].active {
+    display: block;
+}
+
+.matt-tab[data-tab].active.flexrow,
+.matt-tab[data-tab].active.flexcol {
+    display: flex;
+}
+
+.alter-tags {
+    width: 28px;
+    height: 28px;
+}
+
+.history-list .item-list {
+    overflow-y: auto;
+    max-height: 500px;
+    font-size: var(--font-size-14);
+}
+
+.multiple-dropdown-select {
+    position: relative;
+    max-width: 242px;
+}
+
+.multiple-dropdown {
+    height: calc(var(--form-field-height) + 1px);
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border-light-tertiary);
+    border-radius: 3px;
+    padding: 2px;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.multiple-dropdown > div {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.multiple-dropdown > i {
+    flex: 0 0 14px;
+    text-align: center;
+    line-height: 19px;
+    font-size: 11px;
+    color: #000;
+}
+
+.multiple-dropdown .multiple-dropdown-option {
+    display: inline-block;
+    background-color: #888;
+    border-radius: 4px;
+    padding: 1px 4px;
+    border: 1px solid #777;
+    margin-right: 2px;
+}
+
+.multiple-dropdown .multiple-dropdown-option .remove-option {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 20px;
+    line-height: 14px;
+}
+
+.multiple-dropdown-select .dropdown-list {
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 0px 5px;
+    color: black;
+    position: absolute;
+    float: left;
+    left: -1px;
+    top: 100%;
+    background: url(../../../ui/parchment.jpg) repeat;
+    border: 1px solid #808080;
+    width: calc(100% + 2px);
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+}
+
+.multiple-dropdown-select .dropdown-list.open {
+    display: block;
+}
+
+.multiple-dropdown-select .dropdown-list .multiple-dropdown-item {
+    padding: 4px;
+    cursor: pointer;
+    min-height: 25px;
+    width: 100%;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.multiple-dropdown-select .dropdown-list .multiple-dropdown-item.selected {
+    background-color: coral;
+    color: #FFF;
+}
+
+.multiple-dropdown-select .dropdown-list .multiple-dropdown-item:hover {
+    background-color: #1e90ff;
+    color: #FFF;
+}
+
+a.tile-trigger-link {
+    background: #DDD;
+    padding: 1px 4px;
+    border: 1px solid #4b4a44;
+    border-radius: 2px;
+    white-space: nowrap;
+    word-break: break-all;
+}
+
+a.tile-trigger-link i {
+    color: #7a7971;
+    margin-right: 2px;
+}
+
+body.system-CoC7 .multiple-dropdown .multiple-dropdown-option {
+    width: unset;
+}
+
+.monks-active-tiles.sheet .action-items .landing-marker {
+    flex: 0 0 4px;
+    display: block;
+    background-color: #808080;
+}
+
+.monks-active-tiles.sheet .action-items .item-list .item:not(:last-child) .landing-marker {
+    margin-bottom: -1px;
+}
+
+.monks-active-tiles.sheet .action-items .landing-marker[marker="1"] { background-color: #008000; }
+.monks-active-tiles.sheet .action-items .landing-marker[marker="2"] { background-color: #800080; }
+.monks-active-tiles.sheet .action-items .landing-marker[marker="3"] { background-color: #0000FF; }
+.monks-active-tiles.sheet .action-items .landing-marker[marker="4"] { background-color: #FF0000; }
+.monks-active-tiles.sheet .action-items .landing-marker[marker="5"] { background-color: #FFA500; }
+.monks-active-tiles.sheet .action-items .landing-marker[marker="6"] { background-color: #A52A2A; }
+.monks-active-tiles.sheet .action-items .landing-marker[marker="7"] { background-color: #008080; }
+.monks-active-tiles.sheet .action-items .landing-marker[marker="8"] { background-color: #FFFF00; }
+
+.monks-active-tiles.sheet .action-items .item .item-name[marker] { border-top: 1px dashed #808080; }
+.monks-active-tiles.sheet .action-items .item .item-name.landing-stop[marker] { border-top-style: solid; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="1"] { border-top-color: #008000; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="2"] { border-top-color: #800080; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="3"] { border-top-color: #0000FF; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="4"] { border-top-color: #0000FF; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="5"] { border-top-color: #FFA500; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="6"] { border-top-color: #A52A2A; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="7"] { border-top-color: #008080; }
+.monks-active-tiles.sheet .action-items .item .item-name[marker="8"] { border-top-color: #FFFF00; }

@@ -4,13 +4,80 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.3.6] - 2022-09-04
+## [11.1.1] - 2023-06-08
+### Fixed
+- 11.1.1: Fix cloud export for V11
+### Added
+- Avif support
+
+## [11.0.3] - 2023-05-07
+### Fixed
+- 11.0.3: Fix "assigment to constant" error
+- 11.0.2: Fix paths for S3 (for files with special characters)
+- 11.0.1: Official support for V11
+### Changed
+- Versionning changed to simpler incremental format.
+- Scene thumbnails now generated into `moulinette/thumbs`
+- Optimizations for The Forge (hosting provider) & S3
+- Preview animated maps for ScenePacker packs
+### Added
+- Configuration to toggle generation of thumbnails for scenes
+- Configuration to Download Scenes in top-level directory
+- 10 filters (walls, tiles, lights, etc.)
+
+## [10.6.1] - 2023-02-19
+### Fixed
+- 10.6.1: Fix Baileywiki previews (often empty)
+### Added
+- Marketplace integration (available assets)
+
+## [10.5.0] - 2022-01-28
+### Fixed
+- 10.5.1: Fix invalid dependencies
+### Changed
+- New look-and-feel general availability
+
+## [10.4.0] - 2023-01-22
+### Fixed
+- Image preview height not fitting the window
+### Added
+- Option to overwrite existing files
+
+## [10.3.0] - 2022-12-22
+### Changed
+- New interface (auto-scroll lists, breadcrumbs)
+- Improved footer
+### Added
+- Whole word search & regex search
+- Create article from map image
+
+## [10.2.0] - 2022-11-13
+### Added
+- Configure sources for scenes (compatibility with The Forge)
+- Improved UI for "in progress" indexing
+
+## [10.1.2] - 2022-10-30
+### Fixed
+- 10.1.1: fix V10 compatibility
+- 10.1.2: exception thrown on local scenes when compendium not found
+### Changed
+- Configure sources: manage image folders for scenes
+
+## [10.0.4] - 2022-09-02
+### Fixed
+- 10.0.1: module packaging fix
+- 10.0.2: folder view doesn't list subfolders systematically
+- 10.0.3: V10 duplicate folders on scene import #51 (Thanks @Norskov!)
+- 10.0.4: Scene preview UI doesn't open when Moulinette Browser Extension (MBE) is active
+### Changed
+- Compatibility with V10
+- Major version based on FVTT
+
+## [3.3.2] - 2022-08-20
 ### Fixed
 - 3.3.3: folder view doesn't list subfolders systematically
 - 3.3.2: Local scenes (indexed) are wrongly set as "showcase content"
 - 3.3.1: #40 Non-host GMs can't use Moulinette for games hosted on The Forge
-- 3.3.4: Conflict between Moulinette Scenes and MBE (Moulinette Browser Extension)
-- 3.3.7: support scenes from V10
 
 ## [3.3.0] - 2022-05-15
 ### Changed

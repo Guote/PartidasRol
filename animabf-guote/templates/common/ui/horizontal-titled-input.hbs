@@ -1,4 +1,4 @@
-<div class='{{this.class}} common-titled-input {{#if this.extraClass}}{{this.extraClass}}{{/if}}'>
+<div class='{{this.class}} common-titled-input'>
   {{#unless this.hideTitle}}
     <p
       class='label
@@ -27,8 +27,11 @@
       name='{{this.inputName}}'
       type='{{#if this.inputType}}{{this.inputType}}{{else}}number{{/if}}'
       class='input {{#if this.hasSecondaryInput}}primary-input{{/if}}'
-      value='{{this.inputValue}}'
-      {{#if (is 'eq' this.inputValue true)}}checked{{/if}}
+      {{#if (is 'eq' this.inputType 'checkbox')}}
+        {{checked this.inputValue}}
+      {{else}}
+        value='{{this.inputValue}}'
+      {{/if}}
     />
     {{#if this.hasSecondaryInput}}
       <input
@@ -38,16 +41,6 @@
         type='{{#if this.secondaryInputType}}{{this.secondaryInputType}}{{else}}number{{/if}}'
         class='input secondary-input'
         value='{{this.secondaryInputValue}}'
-      />
-    {{/if}}
-    {{#if this.hasTertiaryInput}}
-      <input
-        {{#if this.addTooltips}}title='Final'{{/if}}
-        {{#if this.disableTertiaryInput}}disabled{{/if}}
-        name='{{this.tertiaryInputName}}'
-        type='{{#if this.tertiaryInputType}}{{this.tertiaryInputType}}{{else}}number{{/if}}'
-        class='{{#if this.hasSecondaryInput}}input tertiary-input{{else}}input tertiary-without-secondary-input{{/if}}'
-        value='{{this.tertiaryInputValue}}'
       />
     {{/if}}
   </div>

@@ -11,7 +11,8 @@ This module provides a minimal UI view with automated camera work, ideal for str
   - _Directed_ camera mode tracks the GM's view at all times.
 - In _Automatic_ mode, during combat, the current combatant's token, targets and measured templates are tracked by the camera.
 - Optionally, the view of the current combatant's controlling user can be tracked during combat.
-- If using in-game voice/video chat, tokens for the currently speaking users will be focussed, and a speaking indicator will be shown above their token (GMs will use their currently selected token, if any).
+- Specific tokens can be tracked in _Automatic_ mode by the GM using the token HUD, right-clicking a selection of tokens and clicking the camera icon.
+- If using in-game voice/video chat, tokens for the currently speaking users can be focussed, and a speaking indicator will be shown above their token (GMs will use their currently selected token, if any).
 - Shared popouts (e.g. journal notes/images shown to players) may be auto-closed after a timeout. Alternatively, they may be closed manually from the Stream View toolbar.
 - Camera mode may be toggled dynamically from the Stream View toolbar.
 
@@ -29,8 +30,9 @@ This module provides a minimal UI view with automated camera work, ideal for str
 - ???
 - Profit
 
+__Note__: Windows users, please ensure that you're using OBS Studio >= v27.2 if you want to capture Foundry using the Browser Source.
+
 ## TODO
 
 - Record some demonstration videos to show off the features.
-- Add auto-camera viewport preview to the Stream View toolbar for GMs, requires implementing a fully functional layer and Document/DocumentConfig/etc based on Drawing.
 - See if there's any sane way to do Discord voice activity detection, unfortunately there's no tidy solution for this, particularly for hosted Foundry.

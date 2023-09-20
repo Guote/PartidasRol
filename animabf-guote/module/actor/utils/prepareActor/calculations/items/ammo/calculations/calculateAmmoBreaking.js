@@ -1,7 +1,7 @@
-import { getWeaponBreakingFromStrength } from "../../weapon/util/getWeaponBreakingFromStrength.js";
+import { getWeaponBreakingFromStrength } from '../../weapon/util/getWeaponBreakingFromStrength.js';
 export const calculateAmmoBreaking = (ammo, data) => {
     const strength = data.characteristics.primaries.strength.value;
-    return (ammo.data.breaking.base.value +
+    return (ammo.system.breaking.base.value +
         getWeaponBreakingFromStrength(strength) +
-        Math.floor((ammo.data.quality.value / 5) * 2));
+        Math.floor((ammo.system.quality.value / 5) * 2));
 };

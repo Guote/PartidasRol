@@ -4,11 +4,113 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.10.2] - 2022-09-04
+## [11.4.0] - 2023-08-30
+### Added
+- Support player mode (required for moulinette-compendiums)
+
+## [11.2.3] - 2023-07-08
 ### Fixed
-- 4.9.1: folder view doesn't list subfolders systematically
-- 4.9.2: #49 Pressing ENTER brings up default picker instead of searching
-- 4.9.3: #39 FileExists check fails when game hosted on The Forge
+- 11.2.2: Improve download/upload management (specially for ScenePacker) with retries and additional logging
+- 11.2.3: Fix download abort when 1 download fails
+### Added
+- Moulinette Sounds Opus Support #64
+
+## [11.1.2] - 2023-06-12
+### Fixed
+- 11.1.2: Crashes while indexing own s3 files #12
+- 11.1.1: Fix folder names disappear when expand/collapsing, even core data folders
+### Changed
+- Cache baseURL for S3 (fix for non-performant workaround introduced in 11.0.7)
+
+## [11.0.6] - 2023-05-07
+### Fixed
+- 11.0.9: Fix fileExists for S3
+- 11.0.8: Fix folder creation for S3 and special characters (&,+)
+- 11.0.7: Fix for V11 and S3
+- 11.0.6: Official support for V11
+- 11.0.5: Indexed packs have invalid path on The Forge
+- 11.0.4: Fix for The Forge (Bazaar). Invalid URLs for thumbs.
+- 11.0.3: Fix uninitialized windows position (=> errors)
+### Changed
+- Improvement on how Moulinette stores the position of the window
+- Indexes are now world-specific
+- Index folders from multiple sources
+- Optimizations for The Forge (hosting provider) & S3
+### Added
+- Export & Import sources configurations
+- Module filters (ex: scenes can be filtered with "gridless")
+
+## [10.8.1] - 2023-03-21
+### Fixed
+- 10.8.1: help information displayed even when search results
+### Added
+- API for retrieving the URL of an asset
+
+## [10.7.0] - 2023-02-19
+### Added
+- Marketplace integration (available assets)
+- Tooltips to guide user (authentication, moulinette support)
+
+## [10.6.2] - 2023-02-04
+### Fixed
+- 10.6.0: Help still recommending V9 (rather than V10)
+- 10.6.1: Moulinette Window opens with width of 200px (first time)
+- 10.6.2: Animated tiles not animated any more
+### Added
+- #56 Feature: Add hotkey to choose image browser 
+
+## [10.5.0] - 2023-01-31
+### Fixed
+- 10.5.0: #59 After update, file picker no longer works 
+### Changed
+- Make dropdown list mode configurable
+
+## [10.4.0] - 2023-01-28
+### Changed
+- New interface general availability
+
+## [10.3.2] - 2022-12-25
+- 10.3.1: fix for Ernie's modern UI
+- 10.3.2: fix #2 for Ernie's modern UI
+### Changed
+- New interface (auto-scroll lists, breadcrumbs, actions)
+- New interface for FilePicker
+- Improved footer
+### Added
+- Whole word search & regex search
+
+## [10.2.2] - 2022-11-13
+### Fixed
+- 10.2.1: folder expand not working in Moulinette FilePicker
+- 10.2.2: sound indexing doesn't work on The Forge
+- 10.2.3: fix for 10.2.2 which breaks local hosting (not on the Forge)
+### Added
+- Configure sources for scenes (compatibility with The Forge)
+- Improved UI for "in progress" indexing
+
+## [10.1.2] - 2022-10-30
+### Fixed
+- 10.1.1: fix tentative for null options (bucket)
+- 10.1.2: fix V10 compatibility
+### Changed
+- Filter sources based on type
+- UI improvements
+### Added
+- Configure sources for scenes
+
+## [10.0.5] - 2022-09-04
+### Fixed
+- 10.0.1: fix v10 packaging issues
+- 10.0.2: folder view doesn't list subfolders systematically
+- 10.0.3: focus should not go back to search field when selecting a new creator/pack
+- 10.0.3: #49 : Pressing ENTER brings up default picker instead of searching
+- 10.0.4: fix for null while getting S3 source
+- 10.0.5: FileExists check fails when game hosted on The Forge #39
+### Changed
+- Compatibility with V10
+- Major version based on FVTT
+
+## [4.9.0] - 2022-08-14
 ### Added
 - Moulinette Shortcuts (presets)
 

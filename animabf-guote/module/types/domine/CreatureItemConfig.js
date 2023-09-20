@@ -1,12 +1,11 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const CreatureItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/** @type {import("../Items").CreatureItemConfig} */
+export const CreatureItemConfig = ABFItemConfigFactory({
     type: ABFItems.CREATURE,
     isInternal: true,
     fieldPath: ['domine', 'creatures'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.creatures;
-    },
     selectors: {
         addItemButtonSelector: 'add-creature',
         containerSelector: '#creatures-context-menu-container',
@@ -20,7 +19,7 @@ export const CreatureItemConfig = {
         await actor.createInnerItem({
             name,
             type: ABFItems.CREATURE,
-            data: {
+            system: {
                 earth: {
                     value: false
                 },
@@ -38,31 +37,5 @@ export const CreatureItemConfig = {
                 }
             }
         });
-    },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
-            await actor.updateInnerItem({
-                id,
-                type: ABFItems.CREATURE,
-                name,
-                data
-            });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.domine.creatures;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.domine.creatures = [item];
-        }
     }
-};
+});

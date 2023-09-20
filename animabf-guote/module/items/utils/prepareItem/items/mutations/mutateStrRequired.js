@@ -1,4 +1,4 @@
-import { WeaponSizeProportion } from "../../../../../types/combat/WeaponItemConfig.js";
+import { WeaponSizeProportion } from '../../../../../types/combat/WeaponItemConfig.js';
 export const mutateStrRequired = (data) => {
     data.strRequired.oneHand.final.value = data.strRequired.oneHand.base.value;
     data.strRequired.twoHands.final.value = data.strRequired.twoHands.base.value;

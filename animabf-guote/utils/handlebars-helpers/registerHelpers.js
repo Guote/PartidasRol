@@ -1,13 +1,14 @@
-import { isHBSHelper } from "./helpers/isHBSHelper.js";
-import { calculateExperienceHBSHelper } from "./helpers/calculateExperienceHBSHelper.js";
-import { concatHBSHelper } from "./helpers/concatHBSHelper.js";
-import { getKeyOfHBSHelper } from "./helpers/getKeyOfHBSHelper.js";
-import { manipulateStringHBSHelper } from "./helpers/manipulateStringHBSHelper.js";
-import { mathHBSHelper } from "./helpers/mathHBSHelper.js";
-import { getDifficultyFromIndexHBSHelper } from "./helpers/getDifficultyFromIndexHBSHelper.js";
-import { iterateNumberHBSHelper } from "./helpers/iterateNumberHBSHelper.js";
-import { notHBSHelper } from "./helpers/notHBSHelper.js";
-import { minNumberHBSHelper } from "./helpers/minNumberHBSHelper.js";
+import { isHBSHelper } from './helpers/isHBSHelper.js';
+import { calculateExperienceHBSHelper } from './helpers/calculateExperienceHBSHelper.js';
+import { concatHBSHelper } from './helpers/concatHBSHelper.js';
+import { getKeyOfHBSHelper } from './helpers/getKeyOfHBSHelper.js';
+import { manipulateStringHBSHelper } from './helpers/manipulateStringHBSHelper.js';
+import { mathHBSHelper } from './helpers/mathHBSHelper.js';
+import { getDifficultyFromIndexHBSHelper } from './helpers/getDifficultyFromIndexHBSHelper.js';
+import { iterateNumberHBSHelper } from './helpers/iterateNumberHBSHelper.js';
+import { notHBSHelper } from './helpers/notHBSHelper.js';
+import { minNumberHBSHelper } from './helpers/minNumberHBSHelper.js';
+import { logHBSHelper } from './helpers/logHBSHelper.js';
 export const registerHelpers = () => {
     const helpers = [
         calculateExperienceHBSHelper,
@@ -19,7 +20,8 @@ export const registerHelpers = () => {
         iterateNumberHBSHelper,
         manipulateStringHBSHelper,
         mathHBSHelper,
-        minNumberHBSHelper
+        minNumberHBSHelper,
+        logHBSHelper
     ];
     for (const helper of helpers) {
         Handlebars.registerHelper(helper.name, helper.fn);

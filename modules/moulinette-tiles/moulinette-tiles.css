@@ -68,17 +68,6 @@
   width: 100px
 }
 
-.showcase {
-  font-style: italic;
-  font-size: small;
-  padding: 5px;
-  border: 2px solid darkgray;
-}
-    
-.showcase.clickable {
-  cursor: pointer;
-}
-
 .mtte .fav {
   position: absolute;
   top: 10px;
@@ -320,9 +309,13 @@
   overflow: hidden;
   padding: 5px;
   text-align: right;
-  padding-right: 25px;
+  padding: 5px 65px 0px 5px;
   display: flex;
   border-top: 1px solid var(--color-border-light-tertiary)
+}
+
+#footerTiles {
+  display: flex;
 }
 
 #moulinetteSearch .assets {
@@ -383,12 +376,12 @@
   padding-left: 5px;
 }
 
-#moulinetteSearch .tilesize {
+#moulinetteSearch .tilesize, #footerTiles .tilesize {
   margin-left: 5px;
   width: 45px
 }
 
-#moulinetteSearch .dropmode {
+#moulinetteSearch .dropmode, #footerTiles .dropmode {
   padding-left: 5px;
 }
 
@@ -397,7 +390,7 @@
   right: 20px;
 }
 
-#moulinetteSearch .optionBlock {
+#moulinetteSearch .optionBlock, #footerTiles .optionBlock {
   margin-right: 20px;
 }
 

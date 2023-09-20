@@ -4,13 +4,13 @@ export const INITIAL_ACTOR_DATA = {
         contractibleItems: {},
         tabVisibility: {
             mystic: {
-                value: true
+                value: false
             },
             domine: {
-                value: true
+                value: false
             },
             psychic: {
-                value: true
+                value: false
             }
         }
     },
@@ -72,6 +72,9 @@ export const INITIAL_ACTOR_DATA = {
                 value: ''
             },
             race: {
+                value: ''
+            },
+            ethnicity: {
                 value: ''
             },
             appearance: {

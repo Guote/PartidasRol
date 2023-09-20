@@ -1,9 +1,19 @@
-import { vehicleType, starshipType } from "./systemSpecifics.js";
-
-export const REG = {
-	// searches if the string is one path
-	path: new RegExp(/^([\w_-]+\.)*([\w_-]+)$/),
-};
+/**
+ * Shorthand for game.settings.register().
+ * Default data: {scope: "world", config: true}
+ * @function addSetting
+ * @param {string} key
+ * @param {object} data
+ */
+export function addSetting(key, data) {
+	const commonData = {
+		name: t(`${key}.name`),
+		hint: t(`${key}.hint`),
+		scope: "world",
+		config: true,
+	};
+	game.settings.register("healthEstimate", key, Object.assign(commonData, data));
+}
 
 /**
  * Check whether the entry is an empty string or a falsey value
@@ -15,64 +25,21 @@ export function isEmpty(string) {
 }
 
 /**
- * Function handling which description to show. Overrides systemSpecifics.js's descriptionToShow.
- * @param {String[]} descriptions
- * @param {Number} stage
- * @param {Token} token
- * @param state
- * @returns {String}
- */
-export let descriptions = function (descriptions, stage, token, state = { isDead: false, desc: "" }, fraction, customStages) {
-	if (state.isDead) {
-		return state.desc;
-	}
-	const type = token.actor.data.type;
-	if (type === vehicleType && !customStages) {
-		if (game.settings.get("healthEstimate", "starfinder.useThreshold")) {
-			descriptions = game.settings.get("healthEstimate", "starfinder.thresholdNames").split(/[,;]\s*/);
-		} else {
-			descriptions = game.settings.get("healthEstimate", "starfinder.vehicleNames").split(/[,;]\s*/);
-		}
-		stage = Math.max(0, Math.ceil((descriptions.length - 1) * fraction));
-	}
-	if (type === starshipType && !customStages) {
-		if (game.settings.get("healthEstimate", "starfinder.useThreshold")) {
-			descriptions = game.settings.get("healthEstimate", "starfinder.thresholdNames").split(/[,;]\s*/);
-		} else {
-			descriptions = game.settings.get("healthEstimate", "starfinder.vehicleNames").split(/[,;]\s*/);
-		}
-		stage = Math.max(0, Math.ceil((descriptions.length - 1) * fraction));
-	}
-	return descriptions[stage];
-};
-
-/**
- * Shorthand for localization
+ * Shorthand for game.i18n.localize()
  * @param {string} key
  * @returns {string}
  */
 export function t(key) {
 	return game.i18n.localize(`healthEstimate.${key}`);
 }
-
-// extracts data from an object, and a string path,
-// it has no depth search limit
-export function getNestedData(data, path) {
-	if (!REG.path.test(path)) {
-		return null;
-	}
-	const paths = path.split(".");
-	if (!paths.length) {
-		return null;
-	}
-	let res = data;
-	for (let i = 0; i < paths.length; i += 1) {
-		if (res === undefined) {
-			return null;
-		}
-		res = res?.[paths[i]];
-	}
-	return res;
+/**
+ * Shorthand for game.i18n.format()
+ * @param {string} key
+ * @param {object} data
+ * @returns {string}
+ */
+export function f(key, data = {}) {
+	return game.i18n.format(`healthEstimate.${key}`, data);
 }
 
 /**
@@ -80,8 +47,8 @@ export function getNestedData(data, path) {
  * @param {string} key
  * @param value
  */
-export function sSet(key, value) {
-	game.settings.set("healthEstimate", key, value);
+export async function sSet(key, value) {
+	await game.settings.set("healthEstimate", key, value);
 }
 
 /**
@@ -94,7 +61,7 @@ export function sGet(key) {
 }
 
 /**
- * Returns a setting Object
+ * Shorthand for game.settings.settings.get
  * @param {string} key
  * @returns {Object}
  */

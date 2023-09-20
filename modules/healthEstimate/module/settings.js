@@ -1,26 +1,11 @@
-import { t } from "./utils.js";
-import { updateBreakSettings } from "./systemSpecifics.js";
-import { updateSettings } from "./logic.js";
-import { HealthEstimateStyleSettings } from "./styleSettings.js";
-import { HealthEstimateDeathSettings } from "./deathSettings.js";
-import { injectConfig } from "./injectConfig.js";
-
-/**
- * Shorthand for game.settings.register().
- * Default data: {scope: "world", config: true}
- * @function addSetting
- * @param {string} key
- * @param {object} data
- */
-export function addSetting(key, data) {
-	const commonData = {
-		name: t(`${key}.name`),
-		hint: t(`${key}.hint`),
-		scope: "world",
-		config: true,
-	};
-	game.settings.register("healthEstimate", key, Object.assign(commonData, data));
-}
+import { outputStageChange } from "../lib/HealthMonitor.js";
+import { injectConfig } from "../lib/injectConfig.js";
+import {
+	HealthEstimateBehaviorSettings,
+	HealthEstimateEstimationSettings,
+	HealthEstimateStyleSettings,
+} from "./HealthEstimateSettings.js";
+import { addSetting, f, t } from "./utils.js";
 
 export const registerSettings = function () {
 	/**
@@ -39,23 +24,107 @@ export const registerSettings = function () {
 		game.settings.register("healthEstimate", key, Object.assign(commonData, data));
 	}
 
+	game.settings.registerMenu("healthEstimate", "behaviorSettings", {
+		name: t("core.menuSettings.behaviorSettings.plural"),
+		label: t("core.menuSettings.behaviorSettings.plural"),
+		icon: "fas fa-gear",
+		type: HealthEstimateBehaviorSettings,
+		restricted: true,
+	});
+	game.settings.registerMenu("healthEstimate", "estimationSettings", {
+		name: t("core.estimationSettings.title"),
+		label: t("core.estimationSettings.title"),
+		icon: "fas fa-scale-balanced",
+		type: HealthEstimateEstimationSettings,
+		restricted: true,
+	});
 	game.settings.registerMenu("healthEstimate", "styleSettings", {
-		name: "Style Settings",
-		label: "Style Settings",
+		name: t("core.menuSettings.styleSettings.plural"),
+		label: t("core.menuSettings.styleSettings.plural"),
 		icon: "fas fa-palette",
 		type: HealthEstimateStyleSettings,
 		restricted: true,
 	});
-	game.settings.registerMenu("healthEstimate", "deathSettings", {
-		name: "Death Settings",
-		label: "Death Settings",
-		icon: "fas fa-skull",
-		type: HealthEstimateDeathSettings,
-		restricted: true,
-	});
 
 	/* Settings for the main settings menu */
-	addSetting("core.showDescription", {
+
+	addSetting("core.stateNames", {
+		type: String,
+		default: "",
+		config: false,
+	});
+	addMenuSetting("core.estimations", {
+		type: Array,
+		default: game.healthEstimate.estimationProvider.estimations,
+		onChange: (value) => {
+			game.healthEstimate.estimations = value;
+			canvas.scene?.tokens.forEach((token) => token.object.refresh());
+		},
+	});
+	addSetting("core.outputChat", {
+		hint: f("core.outputChat.hint", { setting: t("core.unknownEntity.name") }),
+		type: Boolean,
+		default: false,
+		onChange: (value) => {
+			if (value && game.user.isGM) {
+				Hooks.on("updateActor", onUpdateActor);
+				if (!game.version > 11) Hooks.on("updateToken", onUpdateToken);
+			} else if (game.user.isGM) {
+				Hooks.off("updateActor", onUpdateActor);
+				if (!game.version > 11) Hooks.off("updateToken", onUpdateToken);
+			}
+		},
+	});
+	let warning = " ";
+	if (game.modules.get("combat-utility-belt")?.active) warning += t("core.unknownEntity.warningCUB");
+	else if (game.modules.get("xdy-pf2e-workbench")?.active) warning += t("core.unknownEntity.warningPF2eWorkbench");
+	addSetting("core.unknownEntity", {
+		type: String,
+		hint: f("core.unknownEntity.hint", { warning }),
+		default: game.i18n.localize("healthEstimate.core.unknownEntity.default"),
+	});
+	addSetting("core.addTemp", {
+		config: game.healthEstimate.estimationProvider.addTemp,
+		type: Boolean,
+		default: false,
+	});
+	addSetting("core.breakOnZeroMaxHP", {
+		config: game.healthEstimate.estimationProvider.breakOnZeroMaxHP,
+		type: Boolean,
+		default: true,
+	});
+	addSetting("core.hideVehicleHP", {
+		name: "healthEstimate.PF2E.hideVehicleHP.name",
+		hint: "healthEstimate.PF2E.hideVehicleHP.hint",
+		config: game.healthEstimate.estimationProvider.vehicleRules.config,
+		type: Boolean,
+		default: false,
+	});
+
+	/* Settings for the behavior menu */
+	addMenuSetting("core.alwaysShow", {
+		type: Boolean,
+		default: false,
+		onChange: (value) => {
+			game.healthEstimate.alwaysShow = value;
+			if (value) {
+				Hooks.on("updateActor", game.healthEstimate.alwaysOnUpdateActor);
+				if (!game.version > 11) Hooks.on("updateToken", alwaysOnUpdateToken);
+			} else {
+				Hooks.off("updateActor", game.healthEstimate.alwaysOnUpdateActor);
+				if (!game.version > 11) Hooks.off("updateToken", alwaysOnUpdateToken);
+			}
+		},
+	});
+	addMenuSetting("core.combatOnly", {
+		type: Boolean,
+		default: false,
+		onChange: (value) => {
+			game.healthEstimate.combatOnly = value;
+			game.healthEstimate.combatHooks(value);
+		},
+	});
+	addMenuSetting("core.showDescription", {
 		type: Number,
 		default: 0,
 		choices: {
@@ -64,10 +133,10 @@ export const registerSettings = function () {
 			2: t("core.showDescription.choices.Players"),
 		},
 		onChange: () => {
-			updateBreakSettings();
+			game.healthEstimate.updateBreakConditions();
 		},
 	});
-	addSetting("core.showDescriptionTokenType", {
+	addMenuSetting("core.showDescriptionTokenType", {
 		type: Number,
 		default: 0,
 		choices: {
@@ -76,58 +145,44 @@ export const registerSettings = function () {
 			2: t("core.showDescription.choices.NPC"),
 		},
 		onChange: () => {
-			updateBreakSettings();
-		},
-	});
-	addSetting("core.stateNames", {
-		type: String,
-		default: t("core.stateNames.default"),
-		onChange: (s) => {
-			updateSettings();
-		},
-	});
-	addSetting("core.perfectionism", {
-		type: Boolean,
-		default: true,
-		onChange: (s) => {
-			updateSettings();
-		},
-	});
-	addSetting("core.outputChat", {
-		type: Boolean,
-		default: false,
-		onChange: (s) => {
-			updateSettings();
+			game.healthEstimate.updateBreakConditions();
 		},
 	});
 
 	/* Settings for the death menu */
 	addMenuSetting("core.deathState", {
+		hint: game.healthEstimate.estimationProvider.deathMarker.config
+			? f("core.deathState.hint1", {
+					setting: t("core.deathStateName.name"),
+					setting2: t("core.deathMarker.name"),
+			  })
+			: f("core.deathState.hint2", { setting: t("core.deathStateName.name") }),
 		type: Boolean,
-		default: false,
-		onChange: (s) => {
-			updateSettings();
+		default: game.healthEstimate.estimationProvider.deathState,
+		onChange: (value) => {
+			game.healthEstimate.showDead = value;
 		},
 	});
 	addMenuSetting("core.deathStateName", {
 		type: String,
-		default: t("core.deathStateName.default"),
-		onChange: (s) => {
-			updateSettings();
+		default: game.healthEstimate.estimationProvider.deathStateName,
+		onChange: (value) => {
+			game.healthEstimate.deathStateName = value;
 		},
 	});
 	addMenuSetting("core.NPCsJustDie", {
 		type: Boolean,
+		hint: f("core.NPCsJustDie.hint", { setting: t("core.deathStateName.name") }),
 		default: true,
-		onChange: (s) => {
-			updateSettings();
+		onChange: (value) => {
+			game.healthEstimate.NPCsJustDie = value;
 		},
 	});
 	addMenuSetting("core.deathMarker", {
 		type: String,
-		default: "icons/svg/skull.svg",
-		onChange: (s) => {
-			updateSettings();
+		default: game.healthEstimate.estimationProvider.deathMarker.default,
+		onChange: (value) => {
+			game.healthEstimate.deathMarker = value;
 		},
 	});
 
@@ -136,9 +191,25 @@ export const registerSettings = function () {
 		type: Boolean,
 		default: true,
 	});
+	addMenuSetting("core.menuSettings.scaleToZoom", {
+		hint: f("core.menuSettings.scaleToZoom.hint", {
+			setting: t("core.menuSettings.fontSize.name"),
+			setting2: t("core.menuSettings.positionAdjustment.name"),
+		}),
+		type: Boolean,
+		default: false,
+		onChange: (value) => {
+			game.healthEstimate.scaleToZoom = value;
+			if (value) Hooks.on("canvasPan", game.healthEstimate.onCanvasPan);
+			else Hooks.off("canvasPan", game.healthEstimate.onCanvasPan);
+		},
+	});
 	addMenuSetting("core.menuSettings.smoothGradient", {
 		type: Boolean,
 		default: true,
+		onChange: (value) => {
+			game.healthEstimate.smoothGradient = value;
+		},
 	});
 	addMenuSetting("core.menuSettings.gradient", {
 		type: Object,
@@ -162,34 +233,36 @@ export const registerSettings = function () {
 		default: "#990000",
 	});
 	addMenuSetting("core.menuSettings.outline", {
-		type: Object,
-		default: {
-			mode: "darken",
-			multiplier: 3,
-		},
+		type: String,
+		default: "darken",
 		choices: {
 			darken: t("core.menuSettings.outline.darken"),
 			brighten: t("core.menuSettings.outline.brighten"),
 		},
 	});
+	addMenuSetting("core.menuSettings.outlineIntensity", {
+		type: Number,
+		default: 3,
+	});
 	addMenuSetting("core.menuSettings.position", {
-		type: String,
-		default: "start",
-		choices: {
-			start: t("core.menuSettings.position.top"),
-			center: t("core.menuSettings.position.middle"),
-			end: t("core.menuSettings.position.bottom"),
+		type: Number,
+		default: -65,
+		onChange: (value) => {
+			game.healthEstimate.alignment = value;
 		},
 	});
 	addMenuSetting("core.menuSettings.positionAdjustment", {
 		type: Number,
 		default: -1,
+		onChange: (value) => {
+			game.healthEstimate.margin = value;
+		},
 	});
 	addMenuSetting("core.menuSettings.fontSize", {
-		type: String,
-		default: "x-large",
-		onChange: (s) => {
-			document.documentElement.style.setProperty("--healthEstimate-text-size", s);
+		type: Number,
+		default: 24,
+		onChange: (value) => {
+			game.healthEstimate.fontSize = value;
 		},
 	});
 
@@ -300,6 +373,9 @@ export const registerSettings = function () {
 			"#05ff00",
 			"#00ff00",
 		],
+		onChange: (value) => {
+			game.healthEstimate.colors = value;
+		},
 	});
 	addMenuSetting("core.variables.outline", {
 		type: Array,
@@ -405,16 +481,99 @@ export const registerSettings = function () {
 			"#006600",
 			"#006600",
 		],
+		onChange: (value) => {
+			game.healthEstimate.outline = value;
+		},
 	});
 	addMenuSetting("core.variables.deadColor", {
 		type: String,
 		default: "#990000",
+		onChange: (value) => {
+			game.healthEstimate.deadColor = value;
+		},
 	});
 	addMenuSetting("core.variables.deadOutline", {
 		type: String,
 		default: "#340000",
+		onChange: (value) => {
+			game.healthEstimate.deadOutline = value;
+		},
 	});
 };
+
+/**
+ * Handler called when token configuration window is opened. Injects custom form html and deals
+ * with updating token.
+ * @category GMOnly
+ * @function
+ * @async
+ * @param {SettingsConfig} settingsConfig
+ * @param {JQuery} html
+ */
+export function renderSettingsConfigHandler(settingsConfig, html) {
+	// Chat Output setting changes
+	const outputChat = game.settings.get("healthEstimate", "core.outputChat");
+	const outputChatCheckbox = html.find('input[name="healthEstimate.core.outputChat"]');
+	const unknownEntityInput = html.find('input[name="healthEstimate.core.unknownEntity"]');
+	disableCheckbox(unknownEntityInput, outputChat);
+	outputChatCheckbox.on("change", (event) => {
+		disableCheckbox(unknownEntityInput, event.target.checked);
+	});
+
+	// Additional PF1 system settings
+	if (game.settings.settings.has("healthEstimate.PF1.showExtra")) {
+		const showExtra = game.settings.get("healthEstimate", "PF1.showExtra");
+		const showExtraCheckbox = html.find('input[name="healthEstimate.PF1.showExtra"]');
+		const disabledNameInput = html.find('input[name="healthEstimate.PF1.disabledName"]');
+		const dyingNameInput = html.find('input[name="healthEstimate.PF1.dyingName"]');
+		disableCheckbox(disabledNameInput, showExtra);
+		disableCheckbox(dyingNameInput, showExtra);
+
+		showExtraCheckbox.on("change", (event) => {
+			disableCheckbox(disabledNameInput, event.target.checked);
+			disableCheckbox(dyingNameInput, event.target.checked);
+		});
+	}
+
+	// Additional PF2e system settings
+	if (game.settings.settings.has("healthEstimate.PF2E.workbenchMystifier")) {
+		const workbenchMystifierCheckbox = html.find('input[name="healthEstimate.PF2E.workbenchMystifier"]');
+		disableCheckbox(workbenchMystifierCheckbox, outputChat);
+
+		outputChatCheckbox.on("change", (event) => {
+			disableCheckbox(workbenchMystifierCheckbox, event.target.checked);
+		});
+	}
+}
+
+export function renderHealthEstimateStyleSettingsHandler(settingsConfig, html) {
+	const useColor = game.settings.get("healthEstimate", "core.menuSettings.useColor");
+	const useColorCheckbox = html.find('input[name="useColor"]');
+	const smoothGradientForm = html.find('input[name="smoothGradient"]').parent()[0];
+	const gradientForm = html.find('div[class="form-group gradient"]')[0];
+	const deadColorForm = html.find('input[name="deadColor"]').parent()[0];
+	const outlineModeForm = html.find('select[id="outlineMode"]').parent()[0];
+
+	function hideForm(form, boolean) {
+		form.style.display = !boolean ? "none" : "flex";
+	}
+
+	hideForm(smoothGradientForm, useColor);
+	hideForm(gradientForm, useColor);
+	hideForm(deadColorForm, useColor);
+	hideForm(outlineModeForm, useColor);
+
+	useColorCheckbox.on("change", (event) => {
+		hideForm(smoothGradientForm, event.target.checked);
+		hideForm(gradientForm, event.target.checked);
+		hideForm(deadColorForm, event.target.checked);
+		hideForm(outlineModeForm, event.target.checked);
+	});
+}
+
+export function disableCheckbox(checkbox, boolean) {
+	checkbox.prop("disabled", !boolean);
+}
 
 /**
  * Handler called when token configuration window is opened. Injects custom form html and deals
@@ -426,36 +585,58 @@ export const registerSettings = function () {
  * @param {JQuery} html
  */
 export async function renderTokenConfigHandler(tokenConfig, html) {
-	injectConfig.inject(
-		tokenConfig,
-		html,
-		{
-			moduleId: "healthEstimate",
-			tab: {
-				name: "healthEstimate",
-				label: "Health Estimate",
-				icon: "fas fa-hand-pointer fa-fw",
-			},
-		},
-		tokenConfig.object
-	);
-	const posTab = html.find('.tab[data-tab="healthEstimate"]');
+	const moduleId = "healthEstimate";
+	const tab = {
+		name: moduleId,
+		label: "Estimates",
+		icon: "fas fa-scale-balanced",
+	};
+	injectConfig.inject(tokenConfig, html, { moduleId, tab }, tokenConfig.object);
 
-	if (tokenConfig.options.sheetConfig) {
-		var hideHealthEstimate = tokenConfig.object.getFlag("healthEstimate", "hideHealthEstimate") ? "checked" : "";
-		var hideName = tokenConfig.object.getFlag("healthEstimate", "hideName") ? "checked" : "";
-		var dontMarkDead = tokenConfig.object.getFlag("healthEstimate", "dontMarkDead") ? "checked" : "";
-	} else {
-		hideHealthEstimate = tokenConfig.token.getFlag("healthEstimate", "hideHealthEstimate") ? "checked" : "";
-		hideName = tokenConfig.token.getFlag("healthEstimate", "hideName") ? "checked" : "";
-		dontMarkDead = tokenConfig.token.getFlag("healthEstimate", "dontMarkDead") ? "checked" : "";
-	}
-	let data = {
-		hideHealthEstimate: hideHealthEstimate,
-		hideName: hideName,
-		dontMarkDead: dontMarkDead,
+	const posTab = html.find(`.tab[data-tab="${moduleId}"]`);
+	const tokenFlags = tokenConfig.options.sheetConfig
+		? tokenConfig.object.flags?.healthEstimate
+		: tokenConfig.token.flags?.healthEstimate;
+
+	const data = {
+		hideHealthEstimate: tokenFlags?.hideHealthEstimate ? "checked" : "",
+		hideName: tokenFlags?.hideName ? "checked" : "",
+		dontMarkDead: tokenFlags?.dontMarkDead ? "checked" : "",
+		dontMarkDeadHint: f("core.keybinds.dontMarkDead.hint", { setting: t("core.NPCsJustDie.name") }),
+		hideNameHint: f("core.keybinds.hideNames.hint", { setting: t("core.outputChat.name") }),
 	};
 
-	const insertHTML = await renderTemplate("modules/healthEstimate/templates/token-config.html", data);
+	const insertHTML = await renderTemplate(`modules/${moduleId}/templates/token-config.html`, data);
 	posTab.append(insertHTML);
+}
+
+export function onUpdateActor(actor, data, options, userId) {
+	// Filter tokens associated with the updated actor.
+	const tokens = canvas.tokens?.placeables.filter((token) => token.actor?.id === actor.id);
+
+	// Iterate through the filtered tokens and render the estimate if the conditions are met.
+	tokens?.forEach((token) => {
+		const tokenId = token?.id;
+		const tokenHP = game.healthEstimate.actorsCurrentHP?.[tokenId];
+		if (
+			tokenId &&
+			tokenHP &&
+			!game.healthEstimate.breakOverlayRender(token) &&
+			!game.healthEstimate.hideEstimate(token)
+		) {
+			outputStageChange(token);
+		}
+	});
+}
+
+// Starting in V11, this no longer works for changing a token's HP
+export function onUpdateToken(token, change, options, userId) {
+	if (!game.user.isGM || !canvas.scene) return;
+	if (
+		!game.healthEstimate.breakOverlayRender(token.object) &&
+		token.object.id in game.healthEstimate.actorsCurrentHP &&
+		!game.healthEstimate.hideEstimate(token.object)
+	) {
+		outputStageChange(token.object);
+	}
 }

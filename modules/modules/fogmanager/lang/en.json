@@ -1,0 +1,23 @@
+{
+	"FOGMANAGER.brushMode": "Brush Mode",
+	"FOGMANAGER.brushSize": "Brush Size",
+	"FOGMANAGER.hide": "Hide",
+  "FOGMANAGER.reveal": "Reveal",
+  "FOGMANAGER.gmFogSettings": "GM Fog Settings",
+  "FOGMANAGER.color": "Color",
+  "FOGMANAGER.opacity": "Opacity",
+  "FOGMANAGER.ok": "OK",
+  "FOGMANAGER.fm": "Fog Manager",
+  "FOGMANAGER.onoff": "Enable/Disable Fog Manager",
+  "FOGMANAGER.brushTool": "Brush Tool",
+  "FOGMANAGER.gridTool": "Grid Tool",
+  "FOGMANAGER.polygonTool": "Polygon Tool",
+  "FOGMANAGER.boxTool": "Box Tool",
+  "FOGMANAGER.ellipseTool": "Ellipse Tool",
+  "FOGMANAGER.sceneConfig": "Scene Configuration",
+  "FOGMANAGER.reset": "Reset Fog Manager",
+  "FOGMANAGER.confirmReset": "Are you sure? Fog of war will be reset.",
+  "FOGMANAGER.autoVisNotes": "When enabled, Automatic Visibility will show/hide tokens based on fog opacity level at their location based on the threshold setting. Brush color changes to green/red to indicate whether a token would be visible.",
+  "FOGMANAGER.fogmanager": "Fog Manager",
+  "FOGMANAGER.visionwarn": "Token vision or fog exploration not enabled on this scene. Fogmanager will have no effect"
+}

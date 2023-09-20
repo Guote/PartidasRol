@@ -1,4 +1,0 @@
-# 0.1.9
-
-- Added Japanese translation (by @besardida)
-- Replaced Spanish translation (by @lozalojo)

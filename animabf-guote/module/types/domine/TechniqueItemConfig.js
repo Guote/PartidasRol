@@ -1,12 +1,26 @@
-import { ABFItems } from "../../items/ABFItems.js";
-import { openSimpleInputDialog } from "../../utils/dialogs/openSimpleInputDialog.js";
-export const TechniqueItemConfig = {
+import { ABFItems } from '../../items/ABFItems.js';
+import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
+import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+/**
+ * Initial data for a new technique. Used to infer the type of the data inside `technique.system`
+ * @readonly
+ */
+export const INITIAL_TECHNIQUE_DATA = {
+    description: { value: '' },
+    level: { value: 0 },
+    strength: { value: 0 },
+    agility: { value: 0 },
+    dexterity: { value: 0 },
+    constitution: { value: 0 },
+    willPower: { value: 0 },
+    power: { value: 0 },
+    martialKnowledge: { value: 0 }
+};
+/** @type {import("../Items").TechniqueItemConfig} */
+export const TechniqueItemConfig = ABFItemConfigFactory({
     type: ABFItems.TECHNIQUE,
     isInternal: false,
     fieldPath: ['domine', 'techniques'],
-    getFromDynamicChanges: changes => {
-        return changes.data.dynamic.techniques;
-    },
     selectors: {
         addItemButtonSelector: 'add-technique',
         containerSelector: '#techniques-context-menu-container',
@@ -20,42 +34,14 @@ export const TechniqueItemConfig = {
         await actor.createItem({
             name,
             type: ABFItems.TECHNIQUE,
-            data: {
-                description: { value: '' },
-                level: { value: 0 },
-                strength: { value: 0 },
-                agility: { value: 0 },
-                dexterity: { value: 0 },
-                constitution: { value: 0 },
-                willPower: { value: 0 },
-                power: { value: 0 },
-                martialKnowledge: { value: 0 }
-            }
+            system: INITIAL_TECHNIQUE_DATA
         });
     },
-    onUpdate: async (actor, changes) => {
-        for (const id of Object.keys(changes)) {
-            const { name, data } = changes[id];
-            await actor.updateItem({
-                id,
-                name,
-                data
-            });
-        }
-    },
-    onAttach: (data, item) => {
-        const items = data.domine.techniques;
-        if (items) {
-            const itemIndex = items.findIndex(i => i._id === item._id);
-            if (itemIndex !== -1) {
-                items[itemIndex] = item;
-            }
-            else {
-                items.push(item);
-            }
-        }
-        else {
-            data.domine.techniques = [item];
-        }
+    // TODO: This should go inside prepareItem, as in spellItemConfig. Same for other TextEditors
+    // That it's called also when opening the standalone sheet.
+    onAttach: async (actor, technique) => {
+        technique.system.enrichedDescription = await TextEditor.enrichHTML(technique.system.description?.value ?? '', {
+            async: true
+        });
     }
-};
+});

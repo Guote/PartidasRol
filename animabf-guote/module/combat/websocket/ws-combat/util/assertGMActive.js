@@ -1,4 +1,4 @@
-import { ABFDialogs } from "../../../../dialogs/ABFDialogs.js";
+import { ABFDialogs } from '../../../../dialogs/ABFDialogs.js';
 export const assertGMActive = () => {
     const tgame = game;
     if (!tgame.users?.find(u => u.isGM && u.active)) {

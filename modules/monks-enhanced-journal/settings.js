@@ -1,10 +1,13 @@
 import { MonksEnhancedJournal, i18n } from "./monks-enhanced-journal.js"
 import { EditCurrency } from "./apps/editcurrency.js"
 import { EditPersonAttributes, EditPlaceAttributes } from "./apps/editattributes.js"
+import { APSJ } from "./apsjournal.js";
 
 export const registerSettings = function () {
 	// Register any custom module settings here
 	let modulename = "monks-enhanced-journal";
+
+	const debouncedReload = foundry.utils.debounce(function () { window.location.reload(); }, 500);
 
 	let rollingmodules = {
 		'monks-tokenbar': "Monk's TokenBar"
@@ -16,8 +19,58 @@ export const registerSettings = function () {
 		'false': "Neither"
 	};
 
+	let backgroundImages = {
+		'none': "None",
+		'darkParchment': "Parchment - Dark",
+		'parchment': "Parchment - Light",
+		"marbleBlack": "Marble - Black",
+		"marbleWhite": "Marble - White",
+		"metalBrushed": "Metal - Brushed",
+		"paperCotton": "Paper - Cotton",
+		"paperCrumpled": "Paper - Crumpled",
+		"paperCrumpledYellowed": "Paper - Crumpled Yellowed",
+		"paperRecycled": "Paper - Recycled",
+		"paperRice": "Paper - Rice",
+		"solidBlack": "Solid - Black",
+		"solidGrey": "Solid - Grey",
+		"solidWhite": "Solid - White",
+		"woodAlpine": "Wood - Alpine",
+		"woodPine": "Wood - Pine"
+	};
+
+	let sidebarImages = {
+		'none': "None",
+		"granite": "Granite",
+		"marbleBlack": "Marble - Black",
+		"marbleWhite": "Marble - White",
+		"metalBrushed": "Metal - Brushed",
+		"metalGalvanized": "Metal - Galvanized",
+		'darkParchment': "Parchment - Dark",
+		'parchment': "Parchment - Light",
+		'darkLeather': "Leather - Dark",
+		'leather': "Leather - Light",
+		"solidBlack": "Solid - Black",
+		"solidGrey": "Solid - Grey",
+		"solidWhite": "Solid - White",
+		"woodAlpine": "Wood - Alpine",
+		"woodCottagePine": "Wood - Cottage Pine",
+		"woodPine": "Wood - Pine",
+	};
+
+	let backgroundColour = {
+		'none': "None",
+		'clear': "Clear",
+		'black': 'Black',
+		'red': "Red",
+		'orange': "Orange",
+		'yellow': "Yellow",
+		'green': "Green",
+		'cyan': "Cyan",
+		'blue': "Blue",
+		'purple': "Purple"
+	};
+
 	let lootsheetoptions = MonksEnhancedJournal.getLootSheetOptions();
-	let lootentity = {};
 	let lootfolder = {};
 
 	game.settings.registerMenu(modulename, 'editCurrency', {
@@ -42,6 +95,45 @@ export const registerSettings = function () {
 		icon: 'fas fa-place-of-worship',
 		restricted: true,
 		type: EditPlaceAttributes
+	});
+
+	game.settings.register(modulename, 'background-colour', {
+		name: i18n('APSJournal.background-colour.name'),
+		hint: i18n('APSJournal.background-colour.hint'),
+		scope: 'client',
+		config: true,
+		default: "none",
+		choices: backgroundColour,
+		type: String,
+		onChange: (value) => {
+			APSJ.setTheme(value);
+		},
+	});
+
+	game.settings.register(modulename, 'background-image', {
+		name: i18n('APSJournal.background-image.name'),
+		hint: i18n('APSJournal.background-image.hint'),
+		scope: 'client',
+		config: true,
+		default: "none",
+		choices: backgroundImages,
+		type: String,
+		onChange: (value) => {
+			$('#MonksEnhancedJournal').attr("background-image", value);
+		},
+	});
+
+	game.settings.register(modulename, 'sidebar-image', {
+		name: i18n('APSJournal.sidebar-image.name'),
+		hint: i18n('APSJournal.sidebar-image.hint'),
+		scope: 'client',
+		config: true,
+		default: "none",
+		choices: sidebarImages,
+		type: String,
+		onChange: (value) => {
+			$('#MonksEnhancedJournal').attr("sidebar-image", value);
+		},
 	});
 
 	game.settings.register(modulename, "allow-player", {
@@ -77,7 +169,7 @@ export const registerSettings = function () {
 		hint: i18n("MonksEnhancedJournal.use-objectives.hint"),
 		scope: "world",
 		config: true,
-		default: false,
+		default: true,
 		type: Boolean,
 	});
 
@@ -88,6 +180,24 @@ export const registerSettings = function () {
 		config: true,
 		default: true,
 		type: Boolean,
+	});
+
+	game.settings.register(modulename, "objectives-always", {
+		name: i18n("MonksEnhancedJournal.objectives-always.name"),
+		hint: i18n("MonksEnhancedJournal.objectives-always.hint"),
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean,
+	});
+
+	game.settings.register(modulename, "add-create-link", {
+		name: i18n("MonksEnhancedJournal.add-create-link.name"),
+		hint: i18n("MonksEnhancedJournal.add-create-link.hint"),
+		scope: "world",
+		default: false,
+		type: Boolean,
+		onChange: debouncedReload
 	});
 
 	game.settings.register(modulename, "use-runes", {
@@ -116,6 +226,18 @@ export const registerSettings = function () {
 		config: true,
 		default: false,
 		type: Boolean,
+	});
+
+	game.settings.register(modulename, "inline-roll-styling", {
+		name: i18n("MonksEnhancedJournal.inline-roll-styling.name"),
+		hint: i18n("MonksEnhancedJournal.inline-roll-styling.hint"),
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean,
+		onChange: (value) => {
+			$('body').toggleClass("inline-roll-styling", value);
+		},
 	});
 
 	game.settings.register(modulename, "hud-limited", {
@@ -152,6 +274,9 @@ export const registerSettings = function () {
 		config: true,
 		default: false,
 		type: Boolean,
+		onChange: (value) => {
+			ui.journal.render();
+		},
 	});
 
 	game.settings.register(modulename, "show-zero-quantity", {
@@ -235,6 +360,15 @@ export const registerSettings = function () {
 		type: Boolean,
 	});
 
+	game.settings.register(modulename, "extract-extra-classes", {
+		name: i18n("MonksEnhancedJournal.extract-extra-classes.name"),
+		hint: i18n("MonksEnhancedJournal.extract-extra-classes.hint"),
+		scope: "world",
+		config: true,
+		default: false,
+		type: Boolean,
+	});
+
 	game.settings.register(modulename, "distribute-conversion", {
 		name: i18n("MonksEnhancedJournal.distribute-conversion.name"),
 		hint: i18n("MonksEnhancedJournal.distribute-conversion.hint"),
@@ -268,16 +402,23 @@ export const registerSettings = function () {
 		scope: "world",
 		config: true,
 		default: "",
-		choices: lootentity,
 		type: String,
 	});
 	game.settings.register(modulename, "loot-folder", {
 		name: game.i18n.localize("MonksEnhancedJournal.loot-folder.name"),
 		hint: game.i18n.localize("MonksEnhancedJournal.loot-folder.hint"),
 		scope: "world",
-		config: true,
+		config: false,
 		default: "",
 		choices: lootfolder,
+		type: String,
+	});
+	game.settings.register(modulename, "loot-name", {
+		name: i18n("MonksEnhancedJournal.loot-name.name"),
+		hint: i18n("MonksEnhancedJournal.loot-name.hint"),
+		scope: "world",
+		config: true,
+		default: i18n("MonksEnhancedJournal.LootEntry"),
 		type: String,
 	});
 
@@ -292,7 +433,8 @@ export const registerSettings = function () {
 		scope: "world",
 		config: false,
 		default: [
-			{ id: 'race', name: "MonksEnhancedJournal.Race", hidden: false, full: false },
+			{ id: 'race', name: "MonksEnhancedJournal.Race", hidden: true, full: false },
+			{ id: 'ancestry', name: "MonksEnhancedJournal.Ancestry", hidden: false, full: false },
 			{ id: 'gender', name: "MonksEnhancedJournal.Gender", hidden: true, full: false },
 			{ id: 'age', name: "MonksEnhancedJournal.Age", hidden: false, full: false },
 			{ id: 'eyes', name: "MonksEnhancedJournal.Eyes", hidden: false, full: false },
@@ -300,6 +442,7 @@ export const registerSettings = function () {
 			{ id: 'hair', name: "MonksEnhancedJournal.Hair", hidden: false, full: false },
 			{ id: 'life', name: "MonksEnhancedJournal.LifeStatus", hidden: true, full: false },
 			{ id: 'profession', name: "MonksEnhancedJournal.Profession", hidden: true, full: false },
+			{ id: 'pronoun', name: "MonksEnhancedJournal.Pronoun", hidden: true, full: false },
 			{ id: 'voice', name: "MonksEnhancedJournal.Voice", hidden: false, full: false },
 			{ id: 'faction', name: "MonksEnhancedJournal.Faction", hidden: true, full: false },
 			{ id: 'height', name: "MonksEnhancedJournal.Height", hidden: true, full: false },
@@ -345,6 +488,8 @@ export const registerSettings = function () {
 	});
 
 	game.settings.register(modulename, "show-chat-bubbles", {
+		name: game.i18n.localize("MonksEnhancedJournal.show-chat-bubbles.name"),
+		hint: game.i18n.localize("MonksEnhancedJournal.show-chat-bubbles.hint"),
 		scope: "client",
 		default: false,
 		type: Boolean,
@@ -352,6 +497,27 @@ export const registerSettings = function () {
 	});
 
 	game.settings.register(modulename, "fix-relationships", {
+		scope: "world",
+		default: true,
+		type: Boolean,
+		config: false
+	});
+
+	game.settings.register(modulename, "fix-journals", {
+		scope: "world",
+		default: true,
+		type: Boolean,
+		config: false
+	});
+
+	game.settings.register(modulename, "fix-checklist", {
+		scope: "world",
+		default: true,
+		type: Boolean,
+		config: false
+	});
+
+	game.settings.register(modulename, "fix-person", {
 		scope: "world",
 		default: true,
 		type: Boolean,

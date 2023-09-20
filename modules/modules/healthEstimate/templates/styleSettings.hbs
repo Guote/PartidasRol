@@ -1,0 +1,95 @@
+<form autocomplete="off" onsubmit="event.preventDefault()">
+	<div class="form-group">
+		<label>{{useColor.name}}</label>
+		<input type="checkbox" name="useColor" id="useColor" {{checked useColor.value}} />
+		<p class="notes">{{useColor.hint}}</p>
+	</div>
+	<div class="form-group">
+		<label>{{scaleToZoom.name}}</label>
+		<input type="checkbox" name="scaleToZoom" id="scaleToZoom" {{checked scaleToZoom.value}} />
+		<p class="notes">{{scaleToZoom.hint}}</p>
+	</div>
+	<div class="form-group">
+		{{#with smoothGradient}}
+			<label>{{localize name}}</label>
+			<input type="checkbox" name="smoothGradient" id="smoothGradient" {{checked value}} />
+			<p class="notes">{{localize hint}}</p>
+		{{/with}}
+	</div>
+	<div class="form-group gradient">
+		<span>
+			<div id="gradientExampleHE"></div>
+			<div id="gradientControlsHE"></div>
+		</span>
+		<span class="gradient-settings">
+			{{#with mode}}
+				<select name="mode" id="mode">
+					{{selectOptions select selected=selected nameAttr="key" labelAttr="value"}}
+				</select>
+			{{/with}}
+		</span>
+	</div>
+	<div class="form-group healthEstimate deadColor">
+		{{#with deadColor}}
+			<label>{{localize name}}</label>
+			{{colorPicker name="deadColor" value=value}}
+		{{/with}}
+	</div>
+	<div class="form-group">
+		<span id="sampleFrameHE" class="sampleFrameHE flexcol">
+			<div id="healthEstimateSample" class="healthEstimateSample">
+				<span class="healthEstimateColor">{{deadText}}&nbsp;</span>
+				<span id="SampleAnimation" class="healthEstimateAnimate">Sample</span>
+			</div>
+		</span>
+	</div>
+	<div class="form-group">
+		<div>
+			<div class="form-group">
+				{{#with outline}}
+					<label>{{localize name}}</label>
+					<select name="outlineMode" class="form-fields" id="outlineMode">
+						{{selectOptions select selected=selected nameAttr="key" labelAttr="value"}}
+					</select>
+				{{/with}}
+				{{#with outlineIntensity}}
+					<input type="range" name="outlineIntensity" id="outlineIntensity" value="{{value}}" min="0" max="10" step="0.1" />
+					<span class="range-value">{{value}}</span>
+				{{/with}}
+			</div>
+			<div class="form-group">
+				{{#with fontSize}}
+					<label>{{localize name}}</label>
+					<input type="range" name="fontSize" id="fontSize" data-dtype="Number" value="{{value}}" min="1" max="72" step="1" />
+					<span class="range-value">{{value}}</span>
+				{{/with}}
+			</div>
+			<div class="form-group">
+				{{#with position}}
+					<label>{{localize name}}</label>
+					<input type="range" name="position" id="position" data-dtype="Number" value="{{value}}" min="-100" max="100" step="1" />
+					<span class="range-value">{{value}}</span>
+					<p class="notes">{{localize hint}}</p>
+				{{/with}}
+			</div>
+			<div class="form-group">
+				{{#with positionAdjustment}}
+					<label>{{localize name}}</label>
+					<input type="range" name="positionAdjustment" id="positionAdjustment" data-dtype="Number" value="{{value}}" min="-1" max="1" step="0.1" />
+					<span class="range-value">{{value}}</span>
+					<p class="notes">{{localize hint}}</p>
+				{{/with}}
+			</div>
+		</div>
+	</div>
+	<footer class="sheet-footer flexrow">
+		<button type="submit" name="submit">
+			<i class="far fa-save"></i>
+			{{localize "SETTINGS.Save"}}
+		</button>
+		<button type="button" name="reset" data-action="reset">
+			<i class="fas fa-undo"></i>
+			{{localize "SETTINGS.Reset"}}
+		</button>
+	</footer>
+</form>

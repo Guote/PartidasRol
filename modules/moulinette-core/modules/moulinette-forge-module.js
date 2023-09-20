@@ -21,10 +21,26 @@ export class MoulinetteForgeModule {
   }
 
   /**
+   * Overwrite this function to indicate if the module supports multiple modes (default : yes)
+   */
+  supportsPlayersMode() {
+    console.debug("Moulinette Forge Module | Default playersMode() not implemented")
+    return false
+  }
+
+  /**
    * Overwrite this function to indicate if the module supports thumb sizes
    */
   supportsThumbSizes() {
     console.debug("Moulinette Forge Module | Default supportsThumbSizes() not implemented")
+    return false
+  }
+
+  /**
+   * Overwrite this function to indicate if the module supports whole word search
+   */
+  supportsWholeWordSearch() {
+    console.debug("Moulinette Forge Module | Default supportsWholeWordSearch() not implemented")
     return false
   }
 
@@ -46,7 +62,7 @@ export class MoulinetteForgeModule {
   /**
    * Overwrite this function to implement your asset search (filter with searchTerms)
    */
-  async getAssetList(searchTerms, pack, publisher, type) {
+  async getAssetList(searchTerms, packs, publisher, moduleFilters) {
     console.debug("Moulinette Forge Module | Default getAssetList() returns empty list")
     return []
   }
@@ -207,4 +223,26 @@ export class MoulinetteForgeModule {
     await game.settings.set("moulinette", "favorites", favs)
   }
   
+  /**
+   * Overwrite this function to implement function
+   */
+  async getAssetURL(packIdx, path) {
+    console.debug("Moulinette Forge Module | Default getAssetURL() does nothing")
+  }
+
+  /**
+   * Overwrite this function to implement module-specific indexing
+   */
+  async indexAssets() {
+    console.debug("Moulinette Forge Module | Default onIndexAssets() does nothing")
+    return []
+  }
+
+  /**
+   * Overwrite this function to add filters
+   */
+  getFilters() {
+    console.debug("Moulinette Forge Module | Default getFilters() returns nothing")
+    return []
+  }
 }
