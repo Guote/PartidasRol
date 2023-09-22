@@ -11,9 +11,7 @@
     "minimum": "9",
     "verified": "11"
   },
-  "styles": [
-    "./styles/svt.css"
-  ],
+  "styles": ["./styles/svt.css"],
   "socket": false,
   "manifest": "https://raw.githubusercontent.com/miriadis/svt/1.1.4/module.json",
   "download": "https://github.com/miriadis/svt/archive/refs/tags/1.1.4.zip",

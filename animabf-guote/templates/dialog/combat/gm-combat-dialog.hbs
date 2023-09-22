@@ -20,14 +20,21 @@
         </div>
 
         {{#if this.attacker.isReady}}
-          {{>
+          <div class='values'>{{>
           "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
             class="custom-modifier"
             title=(localize 'macros.combat.dialog.attackerCustomModifier.title')
             inputName="attacker.customModifier"
             inputValue=this.attacker.customModifier
           }}
-
+          {{>
+          "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+            class="custom-modifier"
+            title="Mod. daño"
+            inputName="attacker.customModifier_Damage"
+            inputValue=this.attacker.customModifier_Damage
+          }}
+          </div>
 
           <p class='attack-type label'>
             {{localize (concat 'macros.combat.dialog.attackType.' this.attacker.result.type '.title')}}
@@ -301,13 +308,22 @@
         {{#if this.attacker.isReady}}
           {{#if this.defender.isReady}}
             {{#unless (is "eq" this.defender.result.type 'resistance')}}
-              {{>
-              "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-                class="custom-modifier"
-                title=(localize 'macros.combat.dialog.defenderCustomModifier.title')
-                inputName="defender.customModifier"
-                inputValue=this.defender.customModifier
-              }}
+              <div class='values'>
+                {{>
+                "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+                  class="custom-modifier"
+                  title=(localize 'macros.combat.dialog.defenderCustomModifier.title')
+                  inputName="defender.customModifier"
+                  inputValue=this.defender.customModifier
+                }}
+                {{>
+                "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+                  class="custom-modifier"
+                  title="Mod. TA"
+                  inputName="defender.customModifier_TA"
+                  inputValue=this.defender.customModifier_TA
+                }}
+              </div>
             {{/unless}}
 
             <p class='defense-type label'>

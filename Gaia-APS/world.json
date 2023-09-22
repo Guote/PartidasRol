@@ -42,7 +42,7 @@
     }
   ],
   "system": "animabf-guote",
-  "dependencies": [],
+  "relationships": { "requires": [] },
   "socket": false,
   "protected": false,
   "coreVersion": "9.280",

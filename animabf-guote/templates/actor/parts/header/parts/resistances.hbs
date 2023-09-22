@@ -8,7 +8,48 @@
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="resistances"
   }}
-    {{#each system.characteristics.secondaries.resistances as |atr key|}}
+  {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.ui.resistances.physical')
+      inputName="system.characteristics.secondaries.resistances.physical.base.value"
+      inputValue=system.characteristics.secondaries.resistances.physical.base.value
+      hasSecondaryInput=false
+      addTooltips=true
+      rollable=true
+      rollableDice='1d100'
+    }}
+    {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.ui.resistances.magic')
+      inputName="system.characteristics.secondaries.resistances.magic.base.value"
+      inputValue=system.characteristics.secondaries.resistances.magic.base.value
+      hasSecondaryInput=false
+      addTooltips=true
+      rollable=true
+      rollableDice='1d100'
+    }}
+    {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.ui.resistances.psychic')
+      inputName="system.characteristics.secondaries.resistances.psychic.base.value"
+      inputValue=system.characteristics.secondaries.resistances.psychic.base.value
+      hasSecondaryInput=false
+      addTooltips=true
+      rollable=true
+      rollableDice='1d100'
+    }}
+    {{>
+    "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      class="resistance"
+      title="CRÍTICO"
+      rollable=true
+      rollableDice='1d100[rf]-1d100[critico]'
+      rollableMessage='Crítico'
+      disabled=true
+      inputValue=system.characteristics.secondaries.resistances.physical.base.value
+    }}
+
+   {{!--  {{#each system.characteristics.secondaries.resistances as |atr key|}}
       {{>
       "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
         class="resistance"
@@ -25,6 +66,6 @@
         secondaryInputName=(concat "system.characteristics.secondaries.resistances." key ".base.value")
         secondaryInputValue=atr.final.value
       }}
-    {{/each}}
+    {{/each}} --}}
   {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
 {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

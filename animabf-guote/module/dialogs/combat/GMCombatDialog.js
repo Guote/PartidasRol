@@ -14,6 +14,7 @@ const getInitialData = (attacker, defender, options = {}) => {
             token: attacker,
             actor: attackerActor,
             customModifier: 0,
+            customModifier_Damage: 0,
             counterAttackBonus: options.counterAttackBonus,
             isReady: false
         },
@@ -21,6 +22,7 @@ const getInitialData = (attacker, defender, options = {}) => {
             token: defender,
             actor: defenderActor,
             customModifier: 0,
+            customModifier_TA: 0,
             isReady: false
         }
     };
@@ -160,10 +162,21 @@ export class GMCombatDialog extends FormApplication {
         if (attacker.result && defender.result) {
             const attackerTotal = attacker.result.values.total + this.modalData.attacker.customModifier;
             const defenderTotal = defender.result.values.total + this.modalData.defender.customModifier;
+            const damageTotal = attacker.result.values.damage + this.modalData.attacker.customModifier_Damage
+            const taTotal = defender.result.values.at - calculateATReductionByQuality(attacker.result) + this.modalData.defender.customModifier_TA;
+            
             const winner = attackerTotal > defenderTotal ? attacker.token : defender.token;
             if (this.isDamagingCombat) {
-                const combatResult = calculateCombatResult(Math.max(attackerTotal, 0), Math.max(defenderTotal, 0), Math.max(defender.result.values.at - calculateATReductionByQuality(attacker.result), 0), attacker.result.values.damage, defender.result.type === 'resistance' ? defender.result.values.surprised : false);
-                if (combatResult.canCounterAttack) {
+                const combatResult = calculateCombatResult(
+                    Math.max(attackerTotal, 0),
+                    Math.max(defenderTotal, 0),
+                    Math.max(taTotal, 0),
+                    damageTotal,
+                    defender.result.type === "resistance"
+                      ? defender.result.values.surprised
+                      : false
+                  );
+                  if (combatResult.canCounterAttack) {
                     this.modalData.calculations = {
                         difference: attackerTotal - defenderTotal,
                         canCounter: true,

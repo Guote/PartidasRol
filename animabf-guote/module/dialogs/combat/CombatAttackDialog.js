@@ -118,7 +118,7 @@ export class CombatAttackDialog extends FormApplication {
                     ? weapon.system.attack.final.value
                     : this.attackerActor.system.combat.attack.final.value;
                 const counterAttackBonus = this.modalData.attacker.counterAttackBonus ?? 0;
-                let formula = `1d100xa + ${counterAttackBonus} + ${attack} + ${modifier ?? 0} + ${fatigueUsed ?? 0}* 15`;
+                let formula = `1d100xa + ${counterAttackBonus} + ${attack} + ${modifier ?? 0} + ${fatigueUsed ?? 0}* 20`;
                 if (this.modalData.attacker.withoutRoll) {
                     // Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
@@ -233,7 +233,7 @@ export class CombatAttackDialog extends FormApplication {
         html.find('.send-psychic-attack').click(() => {
             const { powerUsed, modifier, psychicPotential, psychicProjection, critic, damage } = this.modalData.attacker.psychic;
             if (powerUsed) {
-                let formula = `1d100xa + ${psychicProjection} + ${modifier ?? 0}`;
+                let formula = `1d100xa + ${psychicProjection}[Proy. Psíquica] + ${modifier ?? 0}[Mod.]`;
                 if (this.modalData.attacker.withoutRoll) {
                     // Remove the dice from the formula
                     formula = formula.replace('1d100xa', '0');
@@ -244,12 +244,14 @@ export class CombatAttackDialog extends FormApplication {
                 }
                 const psychicProjectionRoll = new ABFFoundryRoll(formula, this.attackerActor.system);
                 psychicProjectionRoll.roll();
-                const psychicPotentialRoll = new ABFFoundryRoll(`1d100xa + ${psychicPotential.final}`, this.modalData.attacker.actor.system);
+                const powers = this.attackerActor.system.psychic.psychicPowers;
+                const power = powers.find(w => w._id === powerUsed);
+                console.log(`PODER USADO: `, power)
+                const psychicPotentialRoll = new ABFFoundryRoll(`1d100xa + ${psychicPotential.final}[Potencial] + ${power.system.bonus.value}[Bono Poder]`, this.modalData.attacker.actor.system);
                 psychicPotentialRoll.roll();
                 if (this.modalData.attacker.showRoll) {
                     const { i18n } = game;
-                    const powers = this.attackerActor.system.psychic.psychicPowers;
-                    const power = powers.find(w => w._id === powerUsed);
+                    
                     psychicPotentialRoll.toMessage({
                         speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }),
                         flavor: i18n.format('macros.combat.dialog.psychicPotential.title')
