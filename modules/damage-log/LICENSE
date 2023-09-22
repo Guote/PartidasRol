@@ -1,6 +1,14 @@
 MIT License
 
+<<<<<<<< HEAD:modules/damage-log/LICENSE
 Copyright (c) 2021-2022 Alan Davies
+========
+Copyright for portions of this are (c) 2020 Vance Cole as part of https://github.com/VanceCole/simplefog
+
+Copyright for portions of the ColorReplaceFilter are (c) 2013-2017 Mathew Groves, Chad Engler https://github.com/pixijs/filters/
+
+Everything else is Copyright (c) 2022 Chris Flanagan
+>>>>>>>> c8b99e6d6d28cbec942ce0f3ef1086bff0b56c81:modules/modules/fogmanager/LICENSE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

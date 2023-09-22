@@ -1,0 +1,56 @@
+{
+  "title": "Moulinette Game Icons (module)",
+  "description": "This module for Moulinette adds capabilities for searching and downloading icons from game-icons.net.",
+  "version": "11.1.1",
+  "esmodules": [
+    "moulinette-gameicons.js"
+  ],
+  "styles": [
+    "moulinette-gameicons.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    },
+    {
+      "lang": "fr",
+      "name": "French",
+      "path": "lang/fr.json",
+      "flags": {}
+    },
+    {
+      "lang": "ja",
+      "name": "日本語",
+      "path": "lang/ja.json",
+      "flags": {}
+    }
+  ],
+  "url": "https://github.com/SvenWerlen/moulinette-gameicons",
+  "download": "https://github.com/SvenWerlen/moulinette-gameicons/archive/v-11.1.1.zip",
+  "manifest": "https://raw.githubusercontent.com/SvenWerlen/moulinette-gameicons/main/module.json",
+  "id": "moulinette-gameicons",
+  "authors": [
+    {
+      "name": "Sven Werlen",
+      "flags": {}
+    }
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "moulinette-core",
+        "type": "module",
+        "compatibility": {
+          "minimum": "11.0.1"
+        }
+      }
+    ]
+  },
+  "compatibility": {
+    "minimum": "10",
+    "verified": "11"
+  }
+}

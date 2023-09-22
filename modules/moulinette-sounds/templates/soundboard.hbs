@@ -1,0 +1,33 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+  <p>
+    <a class="sounds" title="{{localize "mtte.soundboardSoundsTooltip"}}"><i class="fas fa-music"></i></a>
+    <a class="refresh" title="{{localize "mtte.soundboardRefreshTooltip"}}"><i class="fas fa-sync"></i></a>
+    <a class="help" title="{{localize "mtte.soundboardSoundsHelp"}}"><i class="fas fa-question-circle"></i></a>
+    <a class="export" title="{{localize "mtte.soundboardExportTooltip"}}"><i class="fas fa-file-export"></i></a>
+    <a class="import" title="{{localize "mtte.soundboardImportTooltip"}}"><i class="fas fa-file-import"></i></a>
+    <a class="delete" title="{{localize "mtte.soundboardDeleteTooltip"}}"><i class="fas fa-trash"></i></a>
+    <i class="helpMsg">{{{localize "mtte.soundboardDesc"}}}</i>
+  </p>
+
+  <div class="sounds">
+    {{#each sounds as |rows|}}
+      <div class="boardrow">
+      {{#each rows as |snd|}}
+        {{#if snd.name}}
+          <div class="snd used" data-slot="{{snd.idx}}" draggable="true">
+          {{#if snd.icon}}
+            {{#if snd.faIcon}}<i class="{{snd.icon}}" title="{{snd.name}}"></i>{{/if}}
+            {{#unless snd.faIcon}}<img class="icon" title="{{snd.name}}" src="{{snd.icon}}"/>{{/unless}}
+          {{/if}}
+          {{#unless snd.faIcon}}
+            {{snd.name}}
+          {{/unless}}
+          </div>
+        {{/if}}
+        {{#unless snd.name}}<div class="snd unused" data-slot="{{snd.idx}}" draggable="false">{{snd.idx}}</div>{{/unless}}
+      {{/each}}
+      </div>
+    {{/each}}
+  </div>
+
+</form>

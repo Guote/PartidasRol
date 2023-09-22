@@ -1,0 +1,49 @@
+{
+    "title": "MCDM: Core Support Module",
+    "description": "Implements the mechanics required by MCDM content and classes.",
+    "version": "1.1.4",
+    "authors": [
+        {
+            "name": "MCDM Productions",
+            "url": "https://www.mcdmproductions.com/"
+        },
+        {
+            "name": "Matthew Haentschke",
+            "url": "https://github.com/trioderegion",
+            "discord": "badgerwerks"
+        }
+    ],
+    "esmodules": [
+        "scripts/module.mjs",
+        "scripts/plugin/beastheart.mjs",
+        "scripts/plugin/illrigger.mjs"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+    "id": "mcdm-core",
+    "relationships": {
+        "systems": [
+            {
+                "id": "dnd5e",
+                "type": "system",
+                "manifest": "https://github.com/foundryvtt/dnd5e/releases/latest/download/system.json",
+                "compaibility": {
+                    "minimum": "2.0.0",
+                    "verified": "2.3.1"
+                }
+            }
+        ]
+    },
+    "compatibility": {
+        "minimum": "10",
+        "verified": "11"
+    },
+    "url": "https://github.com/trioderegion/mcdm-core",
+    "manifest": "https://github.com/trioderegion/mcdm-core/releases/latest/download/module.json",
+    "download": "https://github.com/trioderegion/mcdm-core/releases/download/1.1.4/module.zip"
+}

@@ -1,6 +1,10 @@
 MIT License
 
+<<<<<<<< HEAD:modules/dae/libs/LICENSE-tokenize-this.txt
 Copyright (c) 2016 shaunpersad
+========
+Copyright (c) 2021 Dean Vigoren (Vigorator)
+>>>>>>>> c8b99e6d6d28cbec942ce0f3ef1086bff0b56c81:modules/modules/foundryvtt-simple-calendar/LICENSE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

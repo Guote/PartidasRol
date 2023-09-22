@@ -1,0 +1,21 @@
+{
+  "mtte.backgroundColor": "Bg color",
+  "mtte.deletepreset": "Delete preset",
+  "mtte.enterPresetName": "Enter a text to label this preset",
+  "mtte.errorInvalidColor": "Invalid color format. Use #dddddd.",
+  "mtte.foregroundColor": "Fg color",
+  "mtte.forgingGameIconsSuccess": "Images were successfully downloaded! Path to folder was copied into your clipboard.",
+  "mtte.gameIcons": "Icons",
+  "mtte.gameIconsDescription": "Instructions : check all icons you want Moulinette to download.",
+  "mtte.gameIconsDisclaimer": "All images from <a href=\"https://game-icons.net\" target=\"_blank\">Game-icons.net</a> under <a href=\"http://creativecommons.org/licenses/by/3.0/\" target=\"_blank\">CC BY 3.0</a>. Mouse over to see the author. Click to download.",
+  "mtte.gameiconsPicker": "GameIcons Picker",
+  "mtte.howto": "Help",
+  "mtte.howtoToolTip": "See the available documentation (dynamic).",
+  "mtte.preset": "Color presets",
+  "mtte.presetBlackTransparent": "Black on transparent",
+  "mtte.presetBlackWhite": "Black on white",
+  "mtte.presetName": "Color preset",
+  "mtte.presetWhiteBlack": "White on black",
+  "mtte.saveaspreset": "Save as preset",
+  "mtte.search": "Type something to search… then ENTER (or click button)"
+}
