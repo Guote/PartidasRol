@@ -1,0 +1,9 @@
+{
+	"MonksBloodsplats.show-bloodsplat.name": "Blutspritzer anezeigen",
+	"MonksBloodsplats.show-bloodsplat.hint": "Wenn ein Monster stirbt, wird es zu einem Blutspritzer. Du kannst auch einstellen, dass der Token vor den Spielern versteckt wird",
+	"MonksBloodsplats.bloodsplat-colour.name": "Blutspritzerfarbe",
+
+	"MonksBloodsplats.bloodsplatoptions.false": "Keine Blutspritzer",
+	"MonksBloodsplats.bloodsplatoptions.true": "Benutze Blutspritzer, verstecke Tokens",
+	"MonksBloodsplats.bloodsplatoptions.both": "Benutze Blutspritzer, zeige Tokens"
+}

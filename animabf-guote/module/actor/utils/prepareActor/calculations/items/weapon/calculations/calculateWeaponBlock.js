@@ -3,7 +3,7 @@ import { calculateStrengthRequiredPenalty } from "../util/calculateStrengthRequi
 import { calculateShieldBlockBonus } from "../../../actor/combat/calculations/calculateShieldBlockBonus.js";
 export const calculateWeaponBlock = (weapon, data) =>
   weapon.system.isSummon
-    ? weapon.system.baseDef.value + weapon.data.block.special.value
+    ? weapon.system.baseDef.value + weapon.system.block.special.value
     : data.combat.block.final.value +
       weapon.system.block.special.value +
       weapon.system.quality.value +

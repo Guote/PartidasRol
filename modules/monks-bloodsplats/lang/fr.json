@@ -1,0 +1,5 @@
+{
+	"MonksBloodsplats.show-bloodsplat.name": "Afficher la tache de sang",
+	"MonksBloodsplats.show-bloodsplat.hint": "Lorsqu'un monstre meurt, affichez-le comme une tache de sang, en cachant l'image, les barres et les effets.  Il est mort après tout.",
+	"MonksBloodsplats.bloodsplat-colour.name": "Couleur du sang"
+}

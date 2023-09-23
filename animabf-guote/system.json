@@ -83,6 +83,6 @@
     ]
   },
   "primaryTokenAttribute": "characteristics.secondaries.lifePoints",
-  "gridDistance": 1,
+  "gridDistance": 1.5,
   "gridUnits": "m"
 }

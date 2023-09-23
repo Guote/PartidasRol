@@ -1,0 +1,5 @@
+{
+	"MonksBloodsplats.show-bloodsplat.name": "Mostrar Mancha de Sangue",
+	"MonksBloodsplats.show-bloodsplat.hint": "Sempre que uma criatura morrer, exibir uma mancha de sangue, escondendo a imagem, barras e efeitos.  Afinal, ele está morto.",
+	"MonksBloodsplats.bloodsplat-colour.name": "Cor da Mancha de Sangue"
+}

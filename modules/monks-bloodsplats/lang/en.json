@@ -1,0 +1,12 @@
+{
+	"MonksBloodsplats.show-bloodsplat.name": "Show Bloodsplat",
+	"MonksBloodsplats.show-bloodsplat.hint": "When a monster dies, display it as a blood splat. You can choose to hide the token for the players.",
+	"MonksBloodsplats.bloodsplat-colour.name": "Bloodsplat colour",
+	"MonksBloodsplats.bloodsplat-size.name": "Bloodsplat size",
+	"MonksBloodsplats.bloodsplat-size.hint": "Set the size of the blood splat in comparison to the original token size.",
+	"MonksBloodsplats.bloodsplat-opacity.name": "Bloodsplat Opacity",
+	"MonksBloodsplats.bloodsplat-opacity.hint": "Adjust the transparency of the token behnd the bloodsplat",
+
+	"MonksBloodsplats.bloodsplatoptions.true": "Hide tokens for players",
+	"MonksBloodsplats.bloodsplatoptions.both": "Show tokens for players"
+}
