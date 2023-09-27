@@ -1,0 +1,33 @@
+<form autocomplete="off">
+  <div class="form-group">
+    <label class="chooser-small-label">
+      {{localize 'PLAYLISTGROUP.name.select.label'}}
+    </label>
+    <input id="nameInput" name="name" type="text" value="{{data.name}}" />
+  </div>
+  <div class="form-group">
+    <label>{{localize 'PLAYLISTGROUP.playlists.select.label'}}</label>
+    <select id="selectPlaylists" class="chooser-select-icons">
+      {{#each playlists}} {{#if selected}}
+      <option value="{{key}}" selected="selected">{{localize value}}</option>
+      {{else}}
+      <option value="{{key}}">{{localize value}}</option>
+      {{/if}} {{/each}}
+    </select>
+    <button id="addPlaylistButton" type="button" class="chooser-form-button">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+  {{#each selectedPlaylists}}
+  <div class="form-group">
+    <label>{{value}}</label>
+    <button
+      class="remove-playlist-button chooser-form-button"
+      type="button"
+      value="{{key}}"
+    >
+      <i class="fas fa-trash-alt"></i>
+    </button>
+  </div>
+  {{/each}} {{> (buttonsTemplate)}}
+</form>

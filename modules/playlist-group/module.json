@@ -1,0 +1,41 @@
+{
+  "id": "playlist-group",
+  "title": "Playlist Group",
+  "description": "Functions to Group Playlist on a single sound play",
+  "version": "2.0.1",
+  "compatibility": {
+    "minimum": "8",
+    "verified": "10.287"
+  },
+  "authors": [
+    {
+      "name": "Skeroujvapluvit",
+      "flags": {}
+    }
+  ],
+  "relationships": {
+    "systems": [],
+    "requires": []
+  },
+  "esmodules": ["main.js"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json",
+      "flags": {}
+    }
+  ],
+  "styles": ["./styles/main.css", "./styles/common-chooser.css"],
+  "url": "https://gitlab.com/greenskin-foundryvtt/playlist-group",
+  "download": "https://gitlab.com/greenskin-foundryvtt/playlist-group/-/releases/2.0.1/downloads/dist/playlist-group.zip",
+  "manifest": "https://gitlab.com/greenskin-foundryvtt/playlist-group/-/releases/2.0.1/downloads/dist/module.json",
+  "readme": "https://gitlab.com/greenskin-foundryvtt/playlist-group/-/raw/2.0.1/README.md",
+  "changelog": "https://gitlab.com/greenskin-foundryvtt/playlist-group/-/raw/2.0.1/CHANGELOG.md"
+}

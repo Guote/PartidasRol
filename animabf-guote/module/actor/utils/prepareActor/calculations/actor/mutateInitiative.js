@@ -4,7 +4,10 @@ export const mutateInitiative = (data) => {
     const { general } = data;
     const penalty = Math.ceil(Math.min(general.modifiers.allActions.final.value + general.modifiers.physicalActions.value, 0) / 2) + general.modifiers.naturalPenalty.byArmors.value;
     const { initiative } = data.characteristics.secondaries;
-    initiative.final.value = initiative.base.value + penalty;
+
+    const activeEffectMod = data?.activeEffects?.characteristics?.secondaries?.initiative?.final?.value ?? 0
+    
+    initiative.final.value = initiative.base.value + penalty + activeEffectMod;
     const equippedWeapons = combat.weapons.filter(weapon => weapon.system.equipped.value);
     const firstTwoWeapons = equippedWeapons.filter(weapon => !weapon.system.isShield.value).slice(0, 2);
     const equippedShield = equippedWeapons.find(weapon => weapon.system.isShield.value);

@@ -42,8 +42,10 @@
 }; */
 
 export const mutateCombatData = (data) => {
+  const activeEffectModAtk = data?.activeEffects?.combat?.attack?.final?.value ?? 0
+  const activeEffectModDef = (data?.activeEffects?.combat?.block?.final?.value || data?.activeEffects?.combat?.dodge?.final?.value) ?? 0
   /* const [postureModHA, postureModHD] = applyPosture(data); */
-  data.combat.attack.final.value = data.combat.attack.base.value + data.general.modifiers.modFinal.attack.final.value;
-  data.combat.block.final.value = data.combat.block.base.value + data.general.modifiers.modFinal.defense.final.value;
-  data.combat.dodge.final.value = data.combat.dodge.base.value + data.general.modifiers.modFinal.defense.final.value;
+  data.combat.attack.final.value = data.combat.attack.base.value + data.general.modifiers.modFinal.attack.final.value + activeEffectModAtk;
+  data.combat.block.final.value = data.combat.block.base.value + data.general.modifiers.modFinal.defense.final.value + activeEffectModDef;
+  data.combat.dodge.final.value = data.combat.dodge.base.value + data.general.modifiers.modFinal.defense.final.value + activeEffectModDef;
 };

@@ -47,6 +47,7 @@ export const preloadTemplates = () => {
         `systems/${ABFSystemName}/templates/items/armor/armor.hbs`,
         `systems/${ABFSystemName}/templates/items/spell/spell.hbs`,
         `systems/${ABFSystemName}/templates/items/psychicPower/psychicPower.hbs`,
+        `systems/${ABFSystemName}/templates/items/inventoryItem/inventoryItem.hbs`,
         // Actor sheet parts
         `systems/${ABFSystemName}/templates/actor/parts/header/header.hbs`,
         `systems/${ABFSystemName}/templates/actor/parts/header/parts/top.hbs`,

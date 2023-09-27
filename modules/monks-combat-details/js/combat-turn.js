@@ -315,7 +315,19 @@ export class CombatTurn {
     */
     static checkCombatTurn(combat) {
         debug('checking combat started', combat, combat?.started);
+        let isSomeoneMissing = combat?.turns?.some(
+            (combatant) => !combatant?.initiative
+        );
+
         if (combat && combat.started) {
+
+            if (isSomeoneMissing) {
+                return setTimeout(() => {
+                  console.log("Waiting for every combatant to roll Initiative");
+                  CombatTurn.checkCombatTurn(combat);
+                }, "1000");
+              }
+              
             let entry = combat.combatant;
 
             let findNext = function (from) {
@@ -339,7 +351,7 @@ export class CombatTurn {
             let next = findNext(combat.turn);
             //if there wasn't one next after the current player, then start back at the beginning and try to find the next one
             if (next == undefined || next >= combat.turns.length)
-                next = findNext(-1);
+                next = null;
 
             let isActive = entry?.actor?.isOwner;
             let nxtentry = null;
@@ -350,14 +362,14 @@ export class CombatTurn {
                 isNext = nxtentry.actor?.isOwner; //_id === game.users.current.character?._id;
             }
 
-            debug('Check combat turn', entry?.name, nxtentry?.name, !game.user.isGM, isActive, isNext, entry, nxtentry);
+            console.log('Check combat turn', entry?.name, nxtentry?.name, !game.user.isGM, isActive, isNext, entry, nxtentry);
             if (entry !== undefined) {
+
                 if (isActive) {
                     CombatTurn.doDisplayTurn();
                 } else if (isNext) {
                     if (game.modules.get("hidden-initiative")?.active && combat.round == 1 && !game.user.isGM)  //If hidden initiatives is active, then don't show up next information
                         return;
-
                     CombatTurn.doDisplayNext();
                 }
             }

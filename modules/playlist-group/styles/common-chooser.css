@@ -1,0 +1,23 @@
+.chooser-actions-footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.chooser-actions-button {
+  flex: 1;
+}
+
+.chooser-form-button {
+  max-width: 32px;
+}
+
+.chooser-small-label {
+  max-width: 6em;
+}
+
+.chooser-select-img {
+  max-width: 36px;
+  max-height: 36px;
+}

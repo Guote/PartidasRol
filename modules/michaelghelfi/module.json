@@ -1,0 +1,26 @@
+{
+  "id": "michaelghelfi",
+  "name": "michaelghelfi",
+  "title": "Michael Ghelfi Studios Audio Pack",
+  "description": "<p>An official audio pack of professional quality ambience and music from ENNIES-awarded composer Michael Ghelfi & composer Filip Melvan. The sounds come from the greatest library of ambient sounds for TTRPGs and include 38 immersive ambiences and 17 memorable musical scores from our albums and Patreon. We have more than a thousand sounds to download on our website and Patreon. We have generous conditions for Streamers, Podcasters and content creators.</p>",
+  "version": "1.4",
+  "minimumCoreVersion": "0.6.6",
+  "compatibleCoreVersion": "9",
+  "author": "Michael Ghelfi Studios",
+  "packs": [
+    {
+      "name": "playlists",
+      "label": "Michael Ghelfi Studios",
+      "path": "/packs/playlists.db",
+      "entity": "Playlist",
+      "type": "Playlist"
+    }
+  ],
+  "compatibility": {
+    "minimum": "0.6.6",
+    "verified": "11"
+  },
+  "url": "https://michaelghelfi.com/",
+  "manifest": "https://foundryvtt.s3-us-west-2.amazonaws.com/modules/michaelghelfi/module.json",
+  "download": "https://foundryvtt.s3.us-west-2.amazonaws.com/modules/michaelghelfi/michaelghelfi-1.4.zip"
+}

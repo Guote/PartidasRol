@@ -1,0 +1,30 @@
+{{#> "systems/animabf-guote/templates/items/base/base-sheet.hbs"}}
+  {{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+    class="item-item-dialog"
+  }}
+    {{#> "systems/animabf-guote/templates/common/ui/group-header.hbs"}}
+      <div class='item-header'>
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          class="name"
+          hideTitle=true
+          inputType="text"
+          inputName=(concat "name")
+          inputValue=item.name
+        }}
+      </div>
+    {{/"systems/animabf-guote/templates/common/ui/group-header.hbs"}}
+    {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+      class="item-item-dialog"
+    }}
+      {{>
+      "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+        class="special"
+        title=(localize "Descripción")
+        inputType="text"
+        inputName="system.description"
+        inputValue=system.description
+      }}
+    {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+  {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}
+{{/"systems/animabf-guote/templates/items/base/base-sheet.hbs"}}

@@ -1,34 +1,24 @@
 {
-  "name": "Gaia-APS",
-  "title": "Amigos para siempre",
-  "description": "",
-  "authors": [],
-  "flags": {},
+  "title": "APS v9 (sesion40)",
   "version": "1.0.0",
-  "scripts": [],
-  "esmodules": [],
-  "styles": [],
-  "languages": [],
   "packs": [
     {
       "label": "mentalismo",
-      "entity": "Item",
       "name": "mentalismo",
       "path": "packs/mentalismo.db",
       "system": "animabf-guote",
-      "package": "world",
       "private": false,
-      "type": "Item"
+      "type": "Item",
+      "flags": {}
     },
     {
       "label": "Bestiario",
-      "entity": "Actor",
       "name": "bestiario",
       "path": "packs/bestiario.db",
       "system": "animabf-guote",
-      "package": "world",
       "private": false,
-      "type": "Actor"
+      "type": "Actor",
+      "flags": {}
     },
     {
       "label": "Escenas",
@@ -36,17 +26,18 @@
       "name": "escenas",
       "path": "packs/escenas.db",
       "system": "animabf-guote",
-      "package": "world",
-      "entity": "Scene",
-      "private": false
+      "private": false,
+      "flags": {}
     }
   ],
   "system": "animabf-guote",
-  "relationships": { "requires": [] },
-  "socket": false,
-  "protected": false,
   "coreVersion": "9.280",
   "resetKeys": false,
   "safeMode": false,
-  "systemVersion": "1.15.1"
+  "systemVersion": "1.15.1",
+  "id": "Gaia-APS",
+  "compatibility": {
+    "verified": "9.280",
+    "minimum": "9.280"
+  }
 }
