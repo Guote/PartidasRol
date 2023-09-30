@@ -1,0 +1,167 @@
+/* ------------------------------------ */
+/*				   Sass					*/
+/* This is your Sass entry file			*/
+/* ------------------------------------ */
+.app.window-app.mapperconfig .flexleft {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 5px;
+}
+
+.app.window-app.mapperconfig .flexleftsmall {
+  display: flex;
+  justify-content: left;
+}
+
+.app.window-app.mapperconfig .settingcontainer {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(128, 128, 128, 0.301);
+  border-radius: 6px;
+  padding-left: 7px;
+  padding-right: 7px;
+  padding-top: 5px;
+  margin-bottom: 5px;
+}
+
+.app.window-app.mapperconfig label {
+  display: block;
+  padding-left: 15px;
+  text-indent: -15px;
+  margin-right: 5px;
+}
+
+.app.window-app.mapperconfig input {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -2px;
+  *overflow: hidden;
+}
+
+.app.window-app.mapperconfig input.percentinput {
+  top: 1px;
+  width: 25px;
+  height: 18px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.app.window-app.mapperconfig input.sourceinput {
+  top: 1px;
+  max-width: 50px;
+  height: 25px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.app.window-app.mapperconfig input.pathinput {
+  top: 1px;
+  height: 25px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-bottom: 5px;
+}
+
+.app.window-app.mapperconfig .hoverexplain {
+  color: blue;
+  text-decoration: underline;
+  margin-left: 3px;
+}
+
+.app.window-app.mapperconfig .smallbutton {
+  max-height: 25px;
+  max-width: 60px;
+  line-height: 26px;
+}
+
+.app.window-app.mapperconfig .mapprogress {
+  height: 30px;
+  margin: 2px;
+  background-color: rgba(128, 128, 128, 0.301);
+  padding: 3px;
+  border-radius: 6px;
+}
+
+.app.window-app.mapperconfig .mapprogressbar {
+  height: 100%;
+  background-color: rgba(71, 116, 65, 0.301);
+  border-radius: 6px;
+  align-self: flex-start;
+  width: 5%;
+}
+
+.app.window-app.mapperconfig .mapprogresspercent {
+  position: absolute;
+}
+
+.flex20 {
+  flex: 0 0 auto;
+  width: 20%;
+  overflow-wrap: break-word;
+}
+
+.app.window-app.imageoptions .imagecontainerbox {
+  height: auto;
+}
+
+.app.window-app.imageoptions #imagelister {
+  display: flex;
+  overflow-x: scroll;
+  height: 80wh;
+}
+
+.app.window-app.imageoptions #newtitle {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+}
+
+.app.window-app.imageoptions button {
+  margin: 3px;
+}
+
+.imageboxborder {
+  max-height: 500px;
+  max-height: 500px;
+  max-width: 30%;
+  min-width: 30%;
+  border-radius: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.newimagebox {
+  min-width: 100%;
+  background-color: rgba(128, 128, 128, 0.212);
+  border-radius: 10px;
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.newimagebox.selected {
+  background-color: rgba(50, 175, 50, 0.5);
+}
+
+.newimagebox img {
+  max-height: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.newimagebox .imagetitle {
+  text-align: center;
+  overflow-wrap: break-word;
+  margin: 5px;
+}
+
+.newimagebox .imagematch {
+  text-align: center;
+  padding: 5px;
+  font-weight: bold;
+  font-size: large;
+}

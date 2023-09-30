@@ -1,0 +1,78 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+	
+
+	<div>
+		<p>Compendium to edit:</p>
+	<select id='packselector'>
+		<option value="">Can't find compendium</option>
+	</select>
+		<p>General settings</p>
+		<div class="settingcontainer">
+			<div class='flexleft'>
+				<label>Map images to: </label>
+				<label><input type="radio" id="portrait" name="editwhat" value="portrait"> Portrait
+				</label>
+				<label><input type="radio" id="token" name="editwhat" value="token"> Token </label>
+				<label><input type="radio" id="both" name="editwhat" value="both"> Both </label>
+			</div>
+			<div class="flexleft">
+				<label> <input type="checkbox" id="onlyempty" name="onlyempty" value="onlyempty" checked="checked"> Only
+					map entries that have no/default image</label>
+			</div>
+		</div>
+		<p>Auto mapping settings:</p>
+		<div class="settingcontainer">
+			<div class="flexleft">
+				<label>
+					<input type="checkbox" id="autoapply" name="autoapply" value="autoapply">
+					Automatically map image if match ratio is above</label> 
+					<input class="percentinput" id='autonr' name='path' value='90' placeholder='0' maxlength="3"
+						data-lpignore="true">
+					%
+
+			</div>
+			<div class="flexleft">
+				<div class="flexleft">
+					<label>If matches are tied:</label>
+
+					<label for="manualtie"><input type="radio" id="manualtie" name="resolveties" value="manualtie"
+							checked="checked"> manually choose</label>
+
+					<label for="randomtie"><input type="radio" id="randomtie" name="resolveties" value="randomtie">
+						randomly choose</label>
+				</div>
+			</div>
+		</div>
+		<p>Manually mapping settings:</p>
+		<div class="settingcontainer">
+			<div class="flexleft">
+				<label for="manualapply"><input type="checkbox" id="manualapply" name="manualapply" value="manualapply"
+						checked="checked"> Manually map image if match ratio is above</label> <input
+						class="percentinput" id='manualnr' name='path' value='75' placeholder='0' maxlength="3" data-lpignore="true"> %
+			</div>
+		</div>
+		<div class = "flexleftsmall">
+			<p>Path to images:</p>
+			<p class= "hoverexplain" title = "Select an image in the desired path, the path data will autofill"> ? </p>
+		</div>
+		<div class = "settingcontainer">
+			<div class='flexrow'>
+				<input class= "sourceinput" id='sourceinput' name='source' value='' placeholder='Source' class='flex20' data-lpignore="true">
+				<input class= "sourceinput" id='bucketinput' name='bucket' value='' placeholder='Bucket' class='flex20' data-lpignore="true">
+				<input class = "pathinput" id='pathinput' name='path' value='' placeholder='Path to images' data-lpignore="true">
+				<button class="smallbutton" id='pathpicker' class='flex20' >Select</button>
+			</div>
+		</div>
+	</div>
+	<button id='startmapper'>Start mapping</button>
+	<div class = "mapprogress" id = "mapprogress">
+		<div style="position: absolute; left:50%;">
+			<div id= "mapprogresspercent" style = "position:relative; left: -50%; top:4px;">0%</div>
+		</div>
+		<div class = "mapprogressbar" id="mapprogressbar">
+		</div>
+	</div>
+	<button id="undomap" disabled>Undo last mapping</button>
+	<button title = "Not yet implemented" id="logs" disabled>Logs</button>
+</form>
