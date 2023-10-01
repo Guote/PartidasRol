@@ -9,7 +9,10 @@
   "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v1.16.0",
   "download": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/download/v1.16.0/animabf-guote.zip",
   "bugs": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/issues",
-  "authors": [{ "name": "Linkaynn", "url": "https://www.jeseromero.com" }],
+  "authors": [
+    { "name": "Linkaynn", "url": "https://www.jeseromero.com" },
+    { "name": "Guote" }
+  ],
   "scripts": [],
   "esmodules": ["animabf-guote.mjs"],
   "styles": ["animabf-guote.css"],

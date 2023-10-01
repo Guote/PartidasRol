@@ -1,0 +1,54 @@
+{
+  "title": "Amigos para siempre",
+  "version": "1.0.0",
+  "packs": [
+    {
+      "label": "mentalismo",
+      "name": "mentalismo",
+      "path": "packs/mentalismo.db",
+      "system": "animabf-guote",
+      "private": false,
+      "type": "Item",
+      "flags": {}
+    },
+    {
+      "label": "Bestiario",
+      "name": "bestiario",
+      "path": "packs/bestiario.db",
+      "system": "animabf-guote",
+      "private": false,
+      "type": "Actor",
+      "flags": {}
+    },
+    {
+      "label": "Escenas",
+      "type": "Scene",
+      "name": "escenas",
+      "path": "packs/escenas.db",
+      "system": "animabf-guote",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "label": "Artefactos mágicos",
+      "type": "Item",
+      "name": "artefactos-magicos",
+      "path": "packs/artefactos-magicos.db",
+      "system": "animabf-guote",
+      "private": false,
+      "flags": {},
+      "package": "world"
+    }
+  ],
+  "system": "animabf-guote",
+  "coreVersion": "10.303",
+  "resetKeys": false,
+  "safeMode": false,
+  "systemVersion": "1.16.0",
+  "id": "Gaia-APS-v10",
+  "compatibility": {
+    "verified": "10.303",
+    "minimum": "10"
+  },
+  "background": "_APS%20images/wallpaperflare.com_wallpaper.jpg"
+}

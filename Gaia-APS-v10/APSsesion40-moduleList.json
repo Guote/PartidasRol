@@ -1,0 +1,671 @@
+{
+  "activeModules": [
+    {
+      "id": "AceEditorVTT",
+      "title": "AceEditorVTT",
+      "version": ""
+    },
+    {
+      "id": "autocomplete-whisper",
+      "title": "Autocomplete Whisper",
+      "version": ""
+    },
+    {
+      "id": "barbrawl",
+      "title": "Bar Brawl",
+      "version": ""
+    },
+    {
+      "id": "BonusDie",
+      "title": "Bonus Die",
+      "version": ""
+    },
+    {
+      "id": "chat-images",
+      "title": "Chat Images",
+      "version": ""
+    },
+    {
+      "id": "chat-indicators",
+      "title": "Chat Message Accessibility Indicators",
+      "version": ""
+    },
+    {
+      "id": "chat-portrait",
+      "title": "Chat Portrait",
+      "version": ""
+    },
+    {
+      "id": "combat-tracker-disposition",
+      "title": "Combat Tracker Disposition",
+      "version": ""
+    },
+    {
+      "id": "combat-utility-belt",
+      "title": "Combat Utility Belt",
+      "version": ""
+    },
+    {
+      "id": "df-settings-clarity",
+      "title": "DF Settings Clarity",
+      "version": ""
+    },
+    {
+      "id": "dice-so-nice",
+      "title": "Dice So Nice!",
+      "version": ""
+    },
+    {
+      "id": "dice-calculator",
+      "title": "Dice Tray",
+      "version": ""
+    },
+    {
+      "id": "easy-target",
+      "title": "Easy Target",
+      "version": ""
+    },
+    {
+      "id": "find-the-culprit",
+      "title": "Find the culprit",
+      "version": ""
+    },
+    {
+      "id": "fogmanager",
+      "title": "Fog Manager",
+      "version": ""
+    },
+    {
+      "id": "forien-quest-log",
+      "title": "Forien's Quest Log",
+      "version": ""
+    },
+    {
+      "id": "foundry_community_macros",
+      "title": "Foundry Community Macros",
+      "version": ""
+    },
+    {
+      "id": "healthEstimate",
+      "title": "Health Estimate",
+      "version": ""
+    },
+    {
+      "id": "hide-gm-rolls",
+      "title": "Hide GM Rolls",
+      "version": ""
+    },
+    {
+      "id": "image-hover",
+      "title": "Image Hover",
+      "version": ""
+    },
+    {
+      "id": "initiative-double-click",
+      "title": "Initiative Double Click",
+      "version": ""
+    },
+    {
+      "id": "lessfog",
+      "title": "Less Fog",
+      "version": ""
+    },
+    {
+      "id": "colorsettings",
+      "title": "lib - Color Settings",
+      "version": ""
+    },
+    {
+      "id": "lib-wrapper",
+      "title": "libWrapper",
+      "version": ".0"
+    },
+    {
+      "id": "multi-token-edit",
+      "title": "Mass Edit",
+      "version": ""
+    },
+    {
+      "id": "_mathjs",
+      "title": "Math.js",
+      "version": "vtt2"
+    },
+    {
+      "id": "monks-little-details",
+      "title": "Monk's Little Details",
+      "version": ""
+    },
+    {
+      "id": "monks-scene-navigation",
+      "title": "Monk's Scene Navigation",
+      "version": ""
+    },
+    {
+      "id": "moulinette-core",
+      "title": "Moulinette Core",
+      "version": ""
+    },
+    {
+      "id": "moulinette-gameicons",
+      "title": "Moulinette Game Icons (module)",
+      "version": ""
+    },
+    {
+      "id": "moulinette-imagesearch",
+      "title": "Moulinette Image Search (module)",
+      "version": ""
+    },
+    {
+      "id": "moulinette-scenes",
+      "title": "Moulinette Scenes (module)",
+      "version": ""
+    },
+    {
+      "id": "moulinette-tiles",
+      "title": "Moulinette Tiles (module)",
+      "version": ""
+    },
+    {
+      "id": "Next-Up",
+      "title": "Next Up",
+      "version": ""
+    },
+    {
+      "id": "one-page-parser",
+      "title": "One Page Parser",
+      "version": ""
+    },
+    {
+      "id": "pdfoundry",
+      "title": "PDFoundry",
+      "version": ""
+    },
+    {
+      "id": "pings",
+      "title": "Pings",
+      "version": ""
+    },
+    {
+      "id": "popout",
+      "title": "PopOut!",
+      "version": ""
+    },
+    {
+      "id": "popout-resizer",
+      "title": "Popout Resizer",
+      "version": ""
+    },
+    {
+      "id": "scene-clicker",
+      "title": "Scene Clicker",
+      "version": ""
+    },
+    {
+      "id": "selectiveshow",
+      "title": "Selective Show",
+      "version": ""
+    },
+    {
+      "id": "settings-extender",
+      "title": "Settings Extender",
+      "version": ""
+    },
+    {
+      "id": "token-hud-art-button",
+      "title": "Show Art",
+      "version": ""
+    },
+    {
+      "id": "foundryvtt-simple-calendar",
+      "title": "Simple Calendar",
+      "version": ""
+    },
+    {
+      "id": "simplefog",
+      "title": "Simplefog - Manual Fog of War",
+      "version": ""
+    },
+    {
+      "id": "smalltime",
+      "title": "SmallTime",
+      "version": ""
+    },
+    {
+      "id": "smol-foundry",
+      "title": "smol-foundry",
+      "version": ""
+    },
+    {
+      "id": "socketlib",
+      "title": "socketlib",
+      "version": ""
+    },
+    {
+      "id": "stream-view",
+      "title": "Stream View",
+      "version": ""
+    },
+    {
+      "id": "tabletop-rpg-music",
+      "title": "Tabletop RPG Music",
+      "version": ""
+    },
+    {
+      "id": "tidy-ui_game-settings",
+      "title": "Tidy UI - Game Settings",
+      "version": ""
+    },
+    {
+      "id": "vtta-tokenizer",
+      "title": "Tokenizer",
+      "version": ""
+    },
+    {
+      "id": "token-mold",
+      "title": "Token Mold",
+      "version": ""
+    },
+    {
+      "id": "WhisperBox",
+      "title": "Whisper Box",
+      "version": ""
+    },
+    {
+      "id": "whisper-dialog",
+      "title": "Whisper Dialog",
+      "version": ""
+    },
+    {
+      "id": "zoom-pan-options",
+      "title": "Zoom/Pan Options",
+      "version": ""
+    }
+  ],
+  "inactiveModules": [
+    {
+      "id": "av-maps-remake-by-narchy",
+      "title": "Abomination Vaults maps remake",
+      "version": ""
+    },
+    {
+      "id": "acelib",
+      "title": "Ace Library",
+      "version": ""
+    },
+    {
+      "id": "aoe-maps-remake-by-narchy",
+      "title": "Agents of Edgewatch maps remake",
+      "version": ""
+    },
+    {
+      "id": "baileywiki-maps",
+      "title": "Baileywiki Maps Pack",
+      "version": ""
+    },
+    {
+      "id": "caeora-maps-tokens-assets",
+      "title": "Caeora's Maps, Tokens, and Assets",
+      "version": ""
+    },
+    {
+      "id": "_CodeMirror",
+      "title": "CodeMirror",
+      "version": "fvtt5"
+    },
+    {
+      "id": "combat-carousel",
+      "title": "Combat Carousel",
+      "version": ""
+    },
+    {
+      "id": "combat-enhancements",
+      "title": "Combat Enhancements",
+      "version": ""
+    },
+    {
+      "id": "compendium-folders",
+      "title": "Compendium Folders",
+      "version": ""
+    },
+    {
+      "id": "cthulhu-architect-free-modern-maps",
+      "title": "Cthulhu Architect - Free Modern Maps",
+      "version": ""
+    },
+    {
+      "id": "custom-hotbar",
+      "title": "Custom Hotbar",
+      "version": ""
+    },
+    {
+      "id": "df-curvy-walls",
+      "title": "DF Curvy Walls",
+      "version": ""
+    },
+    {
+      "id": "dww-battlemaps",
+      "title": "Domille's Wondrous Works - Battlemap Collection",
+      "version": ""
+    },
+    {
+      "id": "dragonfiremaps",
+      "title": "Dragonfire Maps",
+      "version": ""
+    },
+    {
+      "id": "dragupload",
+      "title": "Drag Upload (Get Over Here!)",
+      "version": ""
+    },
+    {
+      "id": "foundry-drmapzo-free",
+      "title": "Dr. Mapzo free maps (unofficial)",
+      "version": ""
+    },
+    {
+      "id": "easy-exports",
+      "title": "Easy Exports",
+      "version": ""
+    },
+    {
+      "id": "pdf-sheet",
+      "title": "Export Sheet to PDF",
+      "version": ""
+    },
+    {
+      "id": "ez-print",
+      "title": "EZ-Print",
+      "version": ""
+    },
+    {
+      "id": "plaguestone-maps-remake-by-narchy",
+      "title": "Fall of Plaguestone maps remake",
+      "version": ""
+    },
+    {
+      "id": "fa-battlemaps",
+      "title": "Forgotten Adventures Battlemaps",
+      "version": ""
+    },
+    {
+      "id": "fragmaps-free",
+      "title": "Frag Maps - Modern, Cyberpunk and Sci-Fi Maps",
+      "version": ""
+    },
+    {
+      "id": "hourglass",
+      "title": "Hourglass",
+      "version": ""
+    },
+    {
+      "id": "image-fog",
+      "title": "Image Fog",
+      "version": ""
+    },
+    {
+      "id": "inlinewebviewer",
+      "title": "Inline Webviewer",
+      "version": ""
+    },
+    {
+      "id": "animated-maps",
+      "title": "Jack Kerouac's Animated Maps",
+      "version": ""
+    },
+    {
+      "id": "koboldworks-ready-up",
+      "title": "Koboldworks – Ready Up!",
+      "version": ""
+    },
+    {
+      "id": "koboldworks-turn-announcer",
+      "title": "Koboldworks – Turn Announcer",
+      "version": ""
+    },
+    {
+      "id": "lib-df-hotkeys",
+      "title": "Library: DF Hotkeys",
+      "version": ""
+    },
+    {
+      "id": "lib-df-buttons",
+      "title": "Library: DF Module Buttons",
+      "version": ""
+    },
+    {
+      "id": "scene-packer",
+      "title": "Library: Scene Packer",
+      "version": ""
+    },
+    {
+      "id": "macroeditor",
+      "title": "Macro Editor",
+      "version": ""
+    },
+    {
+      "id": "maestro",
+      "title": "Maestro",
+      "version": ""
+    },
+    {
+      "id": "malevolence-reimagined-maps-by-narchy",
+      "title": "Malevolence Reimagined Maps by Narchy",
+      "version": ""
+    },
+    {
+      "id": "milbys-maps-free",
+      "title": "Milby's Maps Free",
+      "version": ""
+    },
+    {
+      "id": "miskasmaps",
+      "title": "Miska's Maps - Battlemaps - Starter Pack",
+      "version": ""
+    },
+    {
+      "id": "monks-active-tiles",
+      "title": "Monk's Active Tile Triggers",
+      "version": ""
+    },
+    {
+      "id": "monks-enhanced-journal",
+      "title": "Monk's Enhanced Journal",
+      "version": ""
+    },
+    {
+      "id": "monks-tokenbar",
+      "title": "Monk's TokenBar",
+      "version": ""
+    },
+    {
+      "id": "moonlight-maps-free",
+      "title": "Moonlight Maps",
+      "version": ""
+    },
+    {
+      "id": "moulinette-sounds",
+      "title": "Moulinette Sounds & SoundPad (module)",
+      "version": ""
+    },
+    {
+      "id": "fvtt-party-resources",
+      "title": "Party Resources",
+      "version": ""
+    },
+    {
+      "id": "perfect-vision",
+      "title": "Perfect Vision",
+      "version": ""
+    },
+    {
+      "id": "pin-fixer",
+      "title": "Pin Fixer",
+      "version": ""
+    },
+    {
+      "id": "playlist-enhancer",
+      "title": "Playlist Enhancer",
+      "version": ""
+    },
+    {
+      "id": "plutonium",
+      "title": "Plutonium",
+      "version": ""
+    },
+    {
+      "id": "quick-insert",
+      "title": "Quick Insert - Search Widget",
+      "version": ""
+    },
+    {
+      "id": "resource-icons",
+      "title": "Resource Icons",
+      "version": ""
+    },
+    {
+      "id": "vtt-resource-tracker",
+      "title": "Resource Tracker",
+      "version": ""
+    },
+    {
+      "id": "rise-of-the-runelords-maps-by-narchy",
+      "title": "Rise of the Runelords Maps by Narchy",
+      "version": ""
+    },
+    {
+      "id": "ShowArtWork",
+      "title": "Show Art Work",
+      "version": ""
+    },
+    {
+      "id": "foundryvtt-show-notes",
+      "title": "Show Notes",
+      "version": ""
+    },
+    {
+      "id": "simple-name-generator",
+      "title": "Simple Name Generator",
+      "version": ""
+    },
+    {
+      "id": "scs",
+      "title": "Simultaneous Combat System",
+      "version": ""
+    },
+    {
+      "id": "sirzeelmaps",
+      "title": "SirZeel - Free maps",
+      "version": ""
+    },
+    {
+      "id": "_sortablejs",
+      "title": "SortableJS",
+      "version": "fvtt1"
+    },
+    {
+      "id": "SoundBoard",
+      "title": "SoundBoard by Blitz",
+      "version": ""
+    },
+    {
+      "id": "splatter",
+      "title": "Splatter",
+      "version": ""
+    },
+    {
+      "id": "tacticalmap-free",
+      "title": "TacticalMap Battlemaps",
+      "version": ""
+    },
+    {
+      "id": "tagger",
+      "title": "Tagger",
+      "version": ""
+    },
+    {
+      "id": "mad-cartographer-free-maps",
+      "title": "The MAD Cartographer | Free Battlemap Pack",
+      "version": ""
+    },
+    {
+      "id": "reclusive-cartographer-maps",
+      "title": "The Reclusive Cartographer | Free Foundry Content",
+      "version": ""
+    },
+    {
+      "id": "journal-thumbnail",
+      "title": "Thumbnails for Journal Entries",
+      "version": ""
+    },
+    {
+      "id": "t-is-for-target",
+      "title": "T is for Target",
+      "version": ""
+    },
+    {
+      "id": "token-attacher",
+      "title": "Token Attacher",
+      "version": ""
+    },
+    {
+      "id": "token-factions",
+      "title": "Token Factions",
+      "version": ""
+    },
+    {
+      "id": "token-frames",
+      "title": "Token Frames",
+      "version": ""
+    },
+    {
+      "id": "TokenHotbar",
+      "title": "Token Hotbar",
+      "version": ""
+    },
+    {
+      "id": "token-tooltip-alt",
+      "title": "Token Tooltip Alt",
+      "version": ""
+    },
+    {
+      "id": "troubles-in-otari-remade-maps",
+      "title": "Troubles in Otari maps remake",
+      "version": ""
+    },
+    {
+      "id": "dd-import",
+      "title": "Universal Battlemap Importer",
+      "version": ""
+    },
+    {
+      "id": "azgaar-foundry",
+      "title": "Unofficial Azgaar's Fantasy Map Generator Import",
+      "version": ""
+    },
+    {
+      "id": "wfrp4e-dotr-maps",
+      "title": "WFRP4E - Fan-made maps for Death on the Reik",
+      "version": ""
+    },
+    {
+      "id": "wfrp4e-eis-maps",
+      "title": "WFRP4E - Fan-made maps for Ennemy in Shadows",
+      "version": ""
+    },
+    {
+      "id": "wfrp4e-pbth-maps",
+      "title": "WFRP4E - Fan-made maps for Power Behind The Throne",
+      "version": ""
+    },
+    {
+      "id": "wfrp4e-ubersreik-maps",
+      "title": "WFRP4E - Fan-made maps for Ubersreik and its area",
+      "version": ""
+    },
+    {
+      "id": "zahi-cartography-free-maps",
+      "title": "Za'hi | Cartography - Free Maps",
+      "version": ""
+    }
+  ]
+}
