@@ -258,7 +258,8 @@
           "main": { "base": { "value": 0 }, "final": { "value": 0 } },
           "alternative": { "base": { "value": 0 }, "final": { "value": 0 } }
         },
-        "zeon": { "accumulated": 0, "value": 0, "max": 0 },
+        "zeon": { "value": 0, "max": 0 },
+        "zeonAccumulated": { "value": 0 },
         "zeonRegeneration": { "base": { "value": 0 }, "final": { "value": 0 } },
         "innateMagic": {
           "main": { "value": 0 },
