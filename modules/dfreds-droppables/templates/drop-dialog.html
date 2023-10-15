@@ -1,0 +1,22 @@
+<form id="drop-folder" onsubmit="event.preventDefault();">
+  <p>{{localize 'Droppables.DropExplanation'}}</p>
+  <div class="form-group">
+    <label>{{localize 'Droppables.DropStyle'}}</label>
+    <div class="form-fields">
+      <select name="drop-style">
+        {{#select dropStyle}}
+        <option value="stack">{{localize 'Droppables.StackedUp'}}</option>
+        <option value="random">{{localize 'Droppables.Randomly'}}</option>
+        <option value="horizontalLine">{{localize 'Droppables.HorizontalLine'}}</option>
+        <option value="verticalLine">{{localize 'Droppables.VerticalLine'}}</option>
+        {{/select}}
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize 'Droppables.Elevation'}}</label>
+    <div class="form-fields">
+      <input type="number" name="elevation" placeholder="{{localize 'Droppables.ElevationOptional'}}" value="{{startingElevation}}">
+    </div>
+  </div>
+</form>

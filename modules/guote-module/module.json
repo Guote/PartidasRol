@@ -1,0 +1,27 @@
+{
+  "id": "guote-module",
+  "title": "Guote Module",
+  "description": "Tweaks for Anima Beyond Fantasy",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Guote",
+      "flags": {}
+    }
+  ],
+  "compatibility": {
+    "minimum": "10",
+    "verified": "11",
+    "maximum": "11"
+  },
+  "relationships": {
+    "requires": [
+      {
+        "id": "combat-utility-belt",
+        "type": "module",
+        "compatibility": {}
+      }
+    ]
+  },
+  "scripts": ["guote-module.js"]
+}

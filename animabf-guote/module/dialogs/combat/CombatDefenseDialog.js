@@ -39,6 +39,7 @@ const getInitialData = (attacker, defender) => {
       combat: {
         fatigue: 0,
         multipleDefensesPenalty: 0,
+        ignoreDefenseCount: false,
         modifier: 0,
         weaponUsed: undefined,
         weapon: undefined,
@@ -124,11 +125,42 @@ export class CombatDefenseDialog extends FormApplication {
   activateListeners(html) {
     super.activateListeners(html);
     html.find(".send-defense").click((e) => {
-      const { fatigue, modifier, weapon, multipleDefensesPenalty, at } =
-        this.modalData.defender.combat;
+      const {
+        fatigue,
+        modifier,
+        weapon,
+        multipleDefensesPenalty,
+        ignoreDefenseCount = false,
+        at,
+      } = this.modalData.defender.combat;
       const type = e.currentTarget.dataset.type === "dodge" ? "dodge" : "block";
       let value;
       let baseDefense;
+
+      // Increase defense count penalty
+      if (!ignoreDefenseCount) {
+        let one = "Defensas: 1";
+        let two = "Defensas: 2";
+        let three = "Defensas: 3+";
+        const rem = (name) =>
+          game.cub.removeCondition(name, this.defenderActor);
+        const add = (name) => game.cub.addCondition(name, this.defenderActor);
+        let isCountOne = game.cub.hasCondition(one, this.defenderActor);
+        let isCountTwo = game.cub.hasCondition(two, this.defenderActor);
+        let isCountThree = game.cub.hasCondition(three, this.defenderActor);
+        console.log(isCountOne, isCountTwo, isCountThree);
+        if (isCountOne) {
+          add(two);
+          setTimeout(() => rem(one), 500);
+        } else if (isCountTwo) {
+          add(three);
+          setTimeout(() => rem(two), 500);
+        } else if (isCountThree) {
+        } else {
+          add(one);
+        }
+      }
+
       if (e.currentTarget.dataset.type === "dodge") {
         value = this.defenderActor.system.combat.dodge.final.value;
         baseDefense = this.defenderActor.system.combat.dodge.base.value;

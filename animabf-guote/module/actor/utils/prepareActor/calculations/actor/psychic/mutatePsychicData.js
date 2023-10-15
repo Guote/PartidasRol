@@ -1,8 +1,15 @@
+import { bulkMutateData } from "../../../utils/mutateData.js";
+
 export const mutatePsychicData = (data) => {
-    const allActionsPenalty = data.general.modifiers.allActions.final.value;
-    const { psychic } = data;
-    psychic.psychicProjection.final.value = Math.max(psychic.psychicProjection.base.value + allActionsPenalty, 0);
-    psychic.psychicProjection.imbalance.offensive.final.value = Math.max(psychic.psychicProjection.imbalance.offensive.base.value + allActionsPenalty, 0);
-    psychic.psychicProjection.imbalance.defensive.final.value = Math.max(psychic.psychicProjection.imbalance.defensive.base.value + allActionsPenalty, 0);
-    psychic.psychicPotential.final.value = Math.max(psychic.psychicPotential.base.value + Math.min(allActionsPenalty, 0), 0);
+  bulkMutateData(
+    data,
+    [
+      "psychic.psychicProjection",
+      "psychic.psychicProjection.imbalance.offensive",
+      "psychic.psychicProjection.imbalance.defensive",
+      "psychic.psychicPotential",
+    ],
+    data.general.modifiers.modFinal.general.final.value,
+    0
+  );
 };

@@ -1,4 +1,5 @@
 import { WeaponSize } from '../../../../../types/combat/WeaponItemConfig.js';
+import { mutateData } from '../../utils/mutateData.js';
 export const mutateInitiative = (data) => {
     const combat = data.combat;
     const { general } = data;
@@ -7,7 +8,12 @@ export const mutateInitiative = (data) => {
 
     const activeEffectMod = data?.activeEffects?.characteristics?.secondaries?.initiative?.final?.value ?? 0
     
-    initiative.final.value = initiative.base.value + penalty + activeEffectMod;
+    mutateData(
+      data,
+      "characteristics.secondaries.initiative",
+      Math.floor(data.general.modifiers.modFinal.general.final.value / 10) * 5
+    );
+    
     const equippedWeapons = combat.weapons.filter(weapon => weapon.system.equipped.value);
     const firstTwoWeapons = equippedWeapons.filter(weapon => !weapon.system.isShield.value).slice(0, 2);
     const equippedShield = equippedWeapons.find(weapon => weapon.system.isShield.value);

@@ -39,6 +39,7 @@
             "final": { "value": 0 },
             "dolor": 0,
             "critico": 0,
+            "condition": 0,
             "otro": 0
           },
           "modSobrenatural": {

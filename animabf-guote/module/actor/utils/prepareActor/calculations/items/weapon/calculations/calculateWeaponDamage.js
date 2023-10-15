@@ -12,6 +12,7 @@ const addSizeModifier = (weapon, damage) => {
 };
 export const calculateWeaponDamage = (weapon, data) => {
     const getDamage = () => {
+        const isFixedDamage = weapon.system.damage.isFixed?.value
         const weaponStrengthModifier = calculateWeaponStrengthModifier(weapon, data);
         const extraDamage = data.general.modifiers.extraDamage.value;
         if (weapon.system.isRanged.value && weapon.system.shotType.value === WeaponShotType.SHOT) {
@@ -24,7 +25,12 @@ export const calculateWeaponDamage = (weapon, data) => {
             }
             return 0;
         }
-        return addSizeModifier(weapon, weapon.system.damage.base.value) + weaponStrengthModifier + extraDamage + weapon.system.quality.value * 2;
+        return isFixedDamage
+          ? weapon.system.damage.base.value
+          : addSizeModifier(weapon, weapon.system.damage.base.value) +
+              weaponStrengthModifier +
+              extraDamage +
+              weapon.system.quality.value * 2;
     };
     return Math.max(getDamage(), 0);
 };

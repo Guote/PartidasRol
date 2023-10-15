@@ -8,7 +8,8 @@ export const mutatePenalties = (data) => {
       data.general.modifiers.modFisico.malus.value,
       calculateFatigue(data),
       data.general.modifiers.modFisico.dolor ?? 0,
-      data.general.modifiers.modFisico.critico ?? 0
+      data.general.modifiers.modFisico.critico ?? 0,
+      data.general.modifiers.modFisico.condition ?? 0
     );
   data.general.modifiers.modSobrenatural.final.value =
     data.general.modifiers.modSobrenatural.bonus.value +
