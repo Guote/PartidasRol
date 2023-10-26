@@ -46,11 +46,11 @@ inputName='defender.combat.weaponUsed'
 
 {{>
 "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title="No aumentar el contador de defensas esta vez"
+title="No aumentar el contador de defensas"
 disabled=this.defenseSent
 inputType="checkbox"
-inputName="defender.ignoreDefenseCount"
-inputValue=(is 'eq' this.defender.ignoreDefenseCount true)
+inputName="defender.combat.ignoreDefenseCount"
+inputValue=(is 'eq' this.defender.combat.ignoreDefenseCount true)
 }}
 
 {{!-- {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'

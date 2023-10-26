@@ -1,0 +1,27 @@
+.illandril-token-hud-scale--status-selector-scale #token-hud .status-effects {
+  width: 152px;
+  grid-template-columns: 38px 38px 38px 38px;
+}
+.illandril-token-hud-scale--status-selector-scale #token-hud .status-effects .effect-control {
+  width: 36px;
+  height: 36px;
+}
+
+.illandril-token-hud-scale--center-hud-buttons #tile-hud,
+.illandril-token-hud-scale--center-hud-buttons #drawing-hud {
+  display: flex;
+  align-items: center;
+}
+.illandril-token-hud-scale--center-hud-buttons #tile-hud > .col,
+.illandril-token-hud-scale--center-hud-buttons #drawing-hud > .col {
+  height: auto;
+  min-height: 100%;
+}
+
+.illandril-token-hud-scale--darken-hud-button-bg .placeable-hud .control-icon {
+  background: rgba(0, 0, 0, 0.8);
+}
+.illandril-token-hud-scale--darken-hud-button-bg #token-hud .status-effects,
+.illandril-token-hud-scale--darken-hud-button-bg #token-hud .attribute input {
+  background: rgba(0, 0, 0, 0.8);
+}

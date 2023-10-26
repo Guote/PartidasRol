@@ -621,7 +621,7 @@
   "macros.combat.dialog.psychicProjection.title": "Proyección psíquica",
   "macros.combat.dialog.requestPermission.title": " te ha enviado una petición de ataque hacia ",
   "macros.combat.dialog.rolled.title": "Tirada del dado",
-  "macros.combat.dialog.showResultsButton.title": "Enviar al chat los resultados",
+  "macros.combat.dialog.showResultsButton.title": "Enviar al chat y aplicar",
   "macros.combat.dialog.showRoll.title": "Mostrar tirada",
   "macros.combat.dialog.surprised.title": "Sorprendido",
   "macros.combat.dialog.spell.title": "Hechizo",

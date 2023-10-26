@@ -8,6 +8,7 @@ import { getUpdateObjectFromPath } from "./utils/prepareItems/util/getUpdateObje
 import { ABFItems } from "../items/ABFItems.js";
 import { ABFDialogs } from "../dialogs/ABFDialogs.js";
 import { ABFSystemName } from "../../animabf-guote.name.js";
+import { getFormula } from "../rolls/utils/getFormula.js";
 export default class ABFActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
@@ -192,7 +193,10 @@ export default class ABFActorSheet extends ActorSheet {
     if (dataset.roll) {
       const label = dataset.label ? `Rolling ${dataset.label}` : "";
       const mod = await openModDialog();
-      let formula = `${dataset.roll}+ ${mod}`;
+      let formula = getFormula({
+        values: [dataset.extra, mod],
+        labels: [`${dataset.label}`, "Mod"],
+      });
       if (parseInt(dataset.extra) >= 200)
         formula = formula.replace("xa", "xamastery");
       const roll = new ABFFoundryRoll(formula, this.actor.system);

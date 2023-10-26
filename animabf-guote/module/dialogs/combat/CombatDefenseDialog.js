@@ -5,6 +5,7 @@ import {
   WeaponCritic,
 } from "../../types/combat/WeaponItemConfig.js";
 import { ABFSettingsKeys } from "../../../utils/registerSettings.js";
+import { getFormula } from "../../rolls/utils/getFormula.js";
 const getInitialData = (attacker, defender) => {
   const showRollByDefault = !!game.settings.get(
     "animabf-guote",
@@ -130,7 +131,7 @@ export class CombatDefenseDialog extends FormApplication {
         modifier,
         weapon,
         multipleDefensesPenalty,
-        ignoreDefenseCount = false,
+        ignoreDefenseCount,
         at,
       } = this.modalData.defender.combat;
       const type = e.currentTarget.dataset.type === "dodge" ? "dodge" : "block";
@@ -170,9 +171,16 @@ export class CombatDefenseDialog extends FormApplication {
           : this.defenderActor.system.combat.block.final.value;
         baseDefense = this.defenderActor.system.combat.block.base.value;
       }
-      let formula = `1d100xa + ${modifier ?? 0} + ${fatigue ?? 0} * 15 - ${
-        (multipleDefensesPenalty ?? 0) * -1
-      } + ${value}`;
+
+      let rollModifiers = [
+        value,
+        fatigue * 15,
+        modifier,
+        multipleDefensesPenalty,
+      ];
+      let rollLabels = ["HD", "Cansancio", "Mod", "Def. múlt"];
+      let formula = getFormula({ values: rollModifiers, labels: rollLabels });
+
       if (this.modalData.defender.withoutRoll) {
         // Remove the dice from the formula
         formula = formula.replace("1d100xa", "0");
@@ -198,12 +206,7 @@ export class CombatDefenseDialog extends FormApplication {
           flavor,
         });
       }
-      const rolled =
-        roll.total -
-        (modifier ?? 0) -
-        (fatigue ?? 0) * 15 -
-        (multipleDefensesPenalty ?? 0) -
-        value;
+      const rolled = roll.total - rollModifiers;
       this.hooks.onDefense({
         type: "combat",
         values: {

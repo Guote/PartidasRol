@@ -1,21 +1,47 @@
 const getActorFromCombatant = (combatant) => {
   return game.actors.get(combatant.actorId);
 };
-const getTokenFronCombatant = (combatant) => {
+
+const getTokenFromCombatant = (combatant) => {
   return canvas.tokens.get(combatant.tokenId);
 };
+const getCurrentCombatant = (combat) => {
+  const combatantId = combat.current.combatantId;
+  const combatant = combat.combatants.get(combatantId);
+  const activeActor = game.actors.get(combatant.actorId);
+  const activeToken = canvas.tokens.get(combatant.tokenId);
 
-const triggerMacroIfActiveEffect = ({ actor, effectName, macroName }) => {
+  return {
+    currCombatant: combatant,
+    currActor: activeActor,
+    currToken: activeToken,
+  };
+};
+const getMainOwner = (tokenOrActor) => {
+  const ownsership = tokenOrActor?.actor?.ownership || tokenOrActor.ownership;
+  const activeOwnersId = Object.keys(ownsership).filter(
+    (id) => ownsership[id] === 3 && game.users.get(id).active
+  );
+  return {
+    activeOwnersId: activeOwnersId,
+  };
+};
+
+const triggerMacroIfActiveEffect = async ({
+  token,
+  effectName,
+  macroName,
+  extraCondition = true,
+}) => {
+  const hasEffect = game.cub.hasCondition(effectName, token);
+  if (!hasEffect || !extraCondition) return;
+
+  const actorName = token?.name || token?.actor?.name;
   const macroToTrigger = game.macros.find((m) => m.name === macroName);
-
-  const hasEffect = game.cub.hasCondition(effectName, actor);
-
-  if (hasEffect && !game.user.isGM) {
-    console.log(
-      `Actor ${actor.name}, has ${effectName} active. Triggering macro ${macroName}`
-    );
-    macroToTrigger.execute();
-  }
+  console.log(
+    `Actor ${actorName}, with tokenId ${token.id} has ${effectName} active. Triggering macro ${macroName}`
+  );
+  await macroToTrigger.execute({ token: token });
 };
 
 const applySurprise = (combat) => {
@@ -23,25 +49,15 @@ const applySurprise = (combat) => {
   const effectName = "Sorpresa";
   const preveerName = "Preveer Sorpresa";
 
-  // On round start, wait for everyone to roll
-  let isSomeoneMissing = combat?.turns?.some(
-    (combatant) => !combatant?.initiative
-  );
-
-  if (combat && combat.started) {
-    if (isSomeoneMissing) {
-      return setTimeout(() => {
-        console.log("Waiting for every combatant to roll Initiative");
-        applySurprise(combat);
-      }, "3000");
-    }
+  // Apply only from the GM side
+  if (combat && combat.started && game.user.isGM) {
     // Get surprised actors and apply effect
     let currentInitiative = game.combat?.combatants?.get(
       game.combat.current.combatantId
     ).initiative;
 
     combat.combatants.forEach((comb) => {
-      const token = getTokenFronCombatant(comb);
+      const token = getTokenFromCombatant(comb);
       const shouldBeSurprised = currentInitiative >= comb.initiative + 150;
 
       if (!shouldBeSurprised && game.cub.hasCondition(effectName, token)) {
@@ -61,33 +77,61 @@ const applySurprise = (combat) => {
 
 const triggerMaintenanceMacro = (combat, delta) => {
   // Trigger macros on round start if specific effect is active
-  if (combat.flags.world.newRound === true && delta?.round) {
-    combat.combatants.contents.forEach((comb) => {
-      const actor = getActorFromCombatant(comb);
-      const currentUserId = game.userId;
+  combat.combatants.contents.forEach((comb) => {
+    const token = getTokenFromCombatant(comb);
+    const { activeOwnersId } = getMainOwner(token);
+    const extraCondition =
+      (token.isOwner && !game.user.isGM) ||
+      (game.user.isGM && activeOwnersId.length === 1);
 
-      if (actor.ownership[currentUserId] !== 3 || game.user.isGM) {
-        return;
-      }
-
-      triggerMacroIfActiveEffect({
-        actor: actor,
-        effectName: "Usando Ki",
-        macroName: "Mantenimiento: Ki",
-      });
-      triggerMacroIfActiveEffect({
-        actor: actor,
-        effectName: "Usando Zeon",
-        macroName: "Mantenimiento: Zeon",
-      });
+    triggerMacroIfActiveEffect({
+      token: token,
+      effectName: "Usando Ki",
+      macroName: "Mantenimiento: Ki",
+      extraCondition: extraCondition,
     });
-  }
+    triggerMacroIfActiveEffect({
+      token: token,
+      effectName: "Usando Zeon",
+      macroName: "Mantenimiento: Zeon",
+      extraCondition: extraCondition,
+    });
+  });
 };
 
 Hooks.on("updateCombat", async (combat, delta) => {
-  // Trigger accumulation and maintenance macros
-  triggerMaintenanceMacro(combat, delta);
+  const { currToken } = getCurrentCombatant(combat);
 
-  // Apply surprise effect
-  applySurprise(combat);
+  // Update surprise Status on Combat Start and from turn 2 onwards
+  if (delta?.round === 1 || delta.hasOwnProperty("turn")) {
+    applySurprise(combat);
+  }
+
+  // Trigger macros for current combatant
+  // Trigger accumulation and maintenance macros on round start, before rolling
+  if (combat.flags.world.newRound === true && delta?.round) {
+    triggerMaintenanceMacro(combat, delta);
+  }
+  // Trigger macro on turn start for current actor
+  const conditionEnLlamas = "En Llamas";
+  const { activeOwnersId } = getMainOwner(currToken);
+  triggerMacroIfActiveEffect({
+    token: currToken,
+    effectName: conditionEnLlamas,
+    macroName: conditionEnLlamas,
+    extraCondition:
+      currToken.isOwner && (activeOwnersId.length === 1 || !game.user.isGM),
+  });
+});
+
+Hooks.on("updateCombatant", async function (combatant, data, options, userId) {
+  const combat = combatant.parent;
+  const isSomeoneMissing = combat?.turns?.some(
+    (combatant) => !combatant?.initiative
+  );
+
+  // Update surprise Status when last combatant rolls initiative
+  if (!isSomeoneMissing) {
+    applySurprise(combat);
+  }
 });

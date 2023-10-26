@@ -27,28 +27,35 @@ export const INITIAL_ACTOR_DATA = {
         bonus: { value: 0 },
         malus: { value: 0 },
         final: { value: 0 },
+        attack: {
+          conditionPen: 0,
+          conditionPBon: 0,
+        },
+        defense: {
+          conditionPen: 0,
+          conditionPBon: 0,
+        },
+        conditionPen: 0,
+        conditionPBon: 0,
       },
       modSobrenatural: {
         bonus: { value: 0 },
         malus: { value: 0 },
         final: { value: 0 },
-      },
-      modOtros: {
-        bonus: { value: 0 },
-        malus: { value: 0 },
-        final: { value: 0 },
+        attack: {
+          conditionPen: 0,
+          conditionPBon: 0,
+        },
+        defense: {
+          conditionPen: 0,
+          conditionPBon: 0,
+        },
+        conditionPen: 0,
+        conditionPBon: 0,
       },
       modManiobras: {
-        ha: {
-          bonus: { value: 0 },
-          malus: { value: 0 },
-          final: { value: 0 },
-        },
-        hd: {
-          bonus: { value: 0 },
-          malus: { value: 0 },
-          final: { value: 0 },
-        },
+        ha: 0,
+        hd: 0,
       },
       modFinal: {
         general: { base: { value: 0 }, final: { value: 0 } },

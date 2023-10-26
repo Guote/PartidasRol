@@ -8,6 +8,7 @@ export const calculateFatigue = (data) => {
     [2]: -40,
     [3]: -20,
   };
+
   if (data.flags?.fatigueNone) return 0;
 
   if (currentFatigue >= maxFatigue) return 0;

@@ -258,11 +258,16 @@ export class CombatTurn {
       async function (combatant, data, options, userId) {
         const combat = combatant.parent;
 
+        const isSomeoneMissing = combat?.turns?.some(
+          (combatant) => !combatant?.initiative
+        );
+
         if (
           combat &&
           combat.started &&
           combatant.actor.isOwner &&
-          data.defeated != undefined
+          data.defeated != undefined &&
+          !isSomeoneMissing
         ) {
           CombatTurn.checkCombatTurn(combat);
         }
@@ -451,14 +456,15 @@ export class CombatTurn {
     let isSomeoneMissing = combat?.turns?.some(
       (combatant) => !combatant?.initiative
     );
+    if (isSomeoneMissing) return;
 
     if (combat && combat.started) {
-      if (isSomeoneMissing) {
+      /* if (isSomeoneMissing) {
         return setTimeout(() => {
           console.log("Waiting for every combatant to roll Initiative");
           CombatTurn.checkCombatTurn(combat);
         }, "3000");
-      }
+      } */
 
       let entry = combat.combatant;
 
