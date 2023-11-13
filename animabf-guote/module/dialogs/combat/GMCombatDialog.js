@@ -239,7 +239,11 @@ export class GMCombatDialog extends FormApplication {
   applyValuesIfBeAble() {
     let didAttackerWin =
       this.modalData.calculations.winner === this.modalData.attacker.token;
-    if (didAttackerWin) {
+    if (
+      didAttackerWin &&
+      this.modalData.defender.actor.system.general.settings.defenseType
+        .value === ""
+    ) {
       game.cub?.addCondition("Acorralado", this.defenderActor);
     }
     if (this.modalData.attacker.result?.type === "combat") {

@@ -103,7 +103,14 @@ Hooks.on("updateCombat", async (combat, delta) => {
   const { currToken } = getCurrentCombatant(combat);
 
   // Update surprise Status on Combat Start and from turn 2 onwards
-  if (delta?.round === 1 || delta.hasOwnProperty("turn")) {
+  const isSomeoneMissing = combat?.turns?.some(
+    (combatant) => !combatant?.initiative
+  );
+
+  if (
+    (delta?.round === 1 || delta.hasOwnProperty("turn")) &&
+    !isSomeoneMissing
+  ) {
     applySurprise(combat);
   }
 

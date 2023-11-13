@@ -193,8 +193,10 @@ export default class ABFActorSheet extends ActorSheet {
     if (dataset.roll) {
       const label = dataset.label ? `Rolling ${dataset.label}` : "";
       const mod = await openModDialog();
+      console.log(dataset);
       let formula = getFormula({
-        values: [dataset.extra, mod],
+        dice: dataset.roll,
+        values: [dataset.rollvalue, mod],
         labels: [`${dataset.label}`, "Mod"],
       });
       if (parseInt(dataset.extra) >= 200)
