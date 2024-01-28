@@ -36,8 +36,21 @@
       "path": "packs/artefactos-magicos.db",
       "system": "animabf-guote",
       "private": false,
+      "flags": {}
+    },
+    {
+      "label": "Invocaciones (animabf-guote)",
+      "type": "Item",
+      "name": "invocaciones-animabf-guote",
+      "path": "packs/invocaciones-animabf-guote.db",
+      "system": "animabf-guote",
+      "private": false,
       "flags": {},
-      "package": "world"
+      "package": "world",
+      "id": "world.invocaciones-animabf-guote",
+      "packageType": "world",
+      "packageName": "Gaia-APS-v10",
+      "index": []
     }
   ],
   "system": "animabf-guote",

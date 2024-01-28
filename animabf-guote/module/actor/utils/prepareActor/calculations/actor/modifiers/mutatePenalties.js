@@ -61,7 +61,7 @@ export const mutatePenalties = (data, actor) => {
       getMaxAndMin(modSobArray).min +
       getMaxAndMin(modSobArray).max, // "suma de físico, sob, condition/ActiveEff",
     ataque:
-      data.general.modifiers?.modManiobras?.ha?.value ??
+      data.general.modifiers?.modManiobras?.ha?.final?.value ??
       0 +
         getMaxAndMin(modAttackFisArray).min +
         getMaxAndMin(modAttackFisArray).max +
@@ -70,7 +70,7 @@ export const mutatePenalties = (data, actor) => {
     // oculto: pen:  minimo de todo y condition,
     // oculto: bon:  max de todo y condition
     defense:
-      data.general.modifiers?.modManiobras?.hd?.value ??
+      data.general.modifiers?.modManiobras?.hd?.final?.value ??
       0 +
         getMaxAndMin(modDefenseFisArray).min +
         getMaxAndMin(modDefenseFisArray).max +
