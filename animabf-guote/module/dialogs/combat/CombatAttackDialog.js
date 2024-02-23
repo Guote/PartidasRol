@@ -45,6 +45,7 @@ const getInitialData = (attacker, defender, options = {}) => {
           special: macroCookies?.combat?.damage?.special ?? 0,
           final: macroCookies?.combat?.damage?.final ?? 0,
         },
+        ignoredTA: macroCookies?.combat?.ignoredTA ?? 0,
       },
       mystic: {
         modifier: macroCookies?.mystic?.modifier ?? 0,
@@ -54,6 +55,7 @@ const getInitialData = (attacker, defender, options = {}) => {
         spellGrade: macroCookies?.mystic?.spellGrade ?? "base",
         critic: macroCookies?.mystic?.critic ?? NoneWeaponCritic.NONE,
         damage: macroCookies?.mystic?.damage ?? 0,
+        ignoredTA: macroCookies?.mystic?.ignoredTA ?? 0,
       },
       psychic: {
         modifier: macroCookies?.psychic?.modifier ?? 0,
@@ -67,6 +69,7 @@ const getInitialData = (attacker, defender, options = {}) => {
         powerUsed: macroCookies?.psychic?.powerUsed ?? undefined,
         critic: macroCookies?.psychic?.critic ?? NoneWeaponCritic.NONE,
         damage: macroCookies?.psychic?.damage ?? 0,
+        ignoredTA: macroCookies?.psychic?.ignoredTA ?? 0,
       },
     },
     defender: {
@@ -144,6 +147,7 @@ export class CombatAttackDialog extends FormApplication {
         damage,
         weaponUsed,
         unarmed,
+        ignoredTA,
       } = this.modalData.attacker.combat;
 
       const { isAttackAccumulation, attackAccumulation } =
@@ -210,6 +214,7 @@ export class CombatAttackDialog extends FormApplication {
               Math.floor(
                 (isAttackAccumulation ? damage.final * 1.5 : damage.final) / 5
               ) * 5,
+            ignoredTA: ignoredTA,
             attack,
             weaponUsed,
             critic,
@@ -234,6 +239,7 @@ export class CombatAttackDialog extends FormApplication {
               criticSelected: critic,
               weapon: weapon,
               damage: damage,
+              ignoredTA: ignoredTA,
             },
           },
         });
@@ -247,6 +253,7 @@ export class CombatAttackDialog extends FormApplication {
         modifier,
         critic,
         damage,
+        ignoredTA,
       } = this.modalData.attacker.mystic;
 
       const { isAttackAccumulation, attackAccumulation } =
@@ -314,6 +321,7 @@ export class CombatAttackDialog extends FormApplication {
             magicProjection,
             critic,
             damage,
+            ignoredTA: ignoredTA,
             roll: rolled,
             total: roll.total,
             fumble: roll.fumbled,
@@ -332,6 +340,7 @@ export class CombatAttackDialog extends FormApplication {
               spellGrade: spellGrade,
               critic: critic,
               damage: damage,
+              ignoredTA: ignoredTA,
             },
           },
         });
@@ -345,6 +354,7 @@ export class CombatAttackDialog extends FormApplication {
         psychicProjection,
         critic,
         damage,
+        ignoredTA,
       } = this.modalData.attacker.psychic;
 
       if (powerUsed) {
@@ -415,6 +425,7 @@ export class CombatAttackDialog extends FormApplication {
             psychicProjection,
             critic,
             damage,
+            ignoredTA: ignoredTA,
             roll: rolled,
             total: psychicProjectionRoll.total,
             fumble: psychicProjectionRoll.fumbled,
@@ -443,6 +454,7 @@ export class CombatAttackDialog extends FormApplication {
               powerUsed: powerUsed,
               critic: critic,
               damage: damage,
+              ignoredTA: ignoredTA,
             },
           },
         });

@@ -52,6 +52,13 @@ disabled=this.attackSent
 inputName="attacker.psychic.damage"
 inputValue=this.attacker.psychic.damage
 }}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title='Reducción de TA'
+inputName="attacker.psychic.ignoredTA"
+inputValue=this.attacker.psychic.ignoredTA
+disabled=this.attackSent
+}}
 
 {{#if this.attackSent}}
 <div class='psychic-attack-sent'>

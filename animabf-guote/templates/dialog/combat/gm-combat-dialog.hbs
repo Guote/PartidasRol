@@ -117,6 +117,13 @@
                 inputValue=this.attacker.result.values.damage
               }}
               {{>
+                  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+                  title='Reducción de TA'
+                  inputName="attacker.result.values.ignoredTA"
+                  inputValue=this.attacker.result.values.ignoredTA
+                  disabled=true
+                }}
+              {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="roll"
                 title=(localize 'macros.combat.dialog.rolled.title')
@@ -183,6 +190,13 @@
                   inputType="text"
                   disabled=true
                   inputValue=this.attacker.result.values.damage
+                }}
+                {{>
+                  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+                  title='Reducción de TA'
+                  inputName="attacker.result.values.ignoredTA"
+                  inputValue=this.attacker.result.values.ignoredTA
+                  disabled=true
                 }}
               {{/if}}
               {{>
@@ -252,6 +266,13 @@
                   inputType="text"
                   disabled=true
                   inputValue=this.attacker.result.values.damage
+                }}
+                {{>
+                  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+                  title='Reducción de TA'
+                  inputName="attacker.result.values.ignoredTA"
+                  inputValue=this.attacker.result.values.ignoredTA
+                  disabled=true
                 }}
               {{/if}}
               {{>

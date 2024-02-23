@@ -51,6 +51,13 @@
   inputName="attacker.mystic.damage"
   inputValue=this.attacker.mystic.damage
 }}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title='Reducción de TA'
+inputName="attacker.mystic.ignoredTA"
+inputValue=this.attacker.mystic.ignoredTA
+disabled=this.attackSent
+}}
 
 {{#if this.attackSent}}
   <div class='mystic-attack-sent'>

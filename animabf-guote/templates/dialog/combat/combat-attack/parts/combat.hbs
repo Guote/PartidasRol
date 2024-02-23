@@ -76,6 +76,13 @@ disableSecondaryInput=true
 secondaryInputName="attacker.combat.damage.final"
 secondaryInputValue=this.attacker.combat.damage.final
 }}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title='Reducción de TA'
+inputName="attacker.combat.ignoredTA"
+inputValue=this.attacker.combat.ignoredTA
+disabled=this.attackSent
+}}
 
 
 {{#if this.attackSent}}

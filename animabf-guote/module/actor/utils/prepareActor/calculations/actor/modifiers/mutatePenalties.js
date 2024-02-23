@@ -14,10 +14,9 @@ export const mutatePenalties = (data, actor) => {
     data.general.modifiers.modFisico.bonus.value,
     data.general.modifiers.modFisico.malus.value,
     game?.cub?.hasCondition("Cansancio", actor) ? calculateFatigue(data) : 0,
-    data.general.modifiers.modFisico.dolor ?? 0,
-    data.general.modifiers.modFisico.critico ?? 0,
-    data.general.modifiers.modFisico.conditionBon ?? 0,
-    data.general.modifiers.modFisico.conditionPen ?? 0,
+    ...Object.values(_token.actor.system.general.modifiers.modFisico)?.filter(
+      (num) => Number.isInteger(num)
+    ), // Estamos usando: dolor, critico, presa, vuelo, conditionBon y conditionPen (modFisico.dolor, modFisico.critico...)
   ];
   let modSobArray = [
     data.general.modifiers.modSobrenatural.bonus.value,
@@ -46,7 +45,7 @@ export const mutatePenalties = (data, actor) => {
     data.general.modifiers.modSobrenatural?.defense?.conditionPen ?? 0,
   ];
 
-  const penalties = {
+  let penalties = {
     fis: {
       pen: getMaxAndMin(modFisArray).min, // mínimo de - userInput, condition/activeEff, cansancio u otras cosas que vengan de fórmula,
       bon: getMaxAndMin(modFisArray).max, // max de - userInput, condition/activeEff,
@@ -61,21 +60,19 @@ export const mutatePenalties = (data, actor) => {
       getMaxAndMin(modSobArray).min +
       getMaxAndMin(modSobArray).max, // "suma de físico, sob, condition/ActiveEff",
     ataque:
-      data.general.modifiers?.modManiobras?.ha?.final?.value ??
-      0 +
-        getMaxAndMin(modAttackFisArray).min +
-        getMaxAndMin(modAttackFisArray).max +
-        getMaxAndMin(modAttackSobArray).min +
-        getMaxAndMin(modAttackSobArray).max, // "pen+bon",
+      (data.general.modifiers?.modManiobras?.ha ?? 0) +
+      getMaxAndMin(modAttackFisArray).min +
+      getMaxAndMin(modAttackFisArray).max +
+      getMaxAndMin(modAttackSobArray).min +
+      getMaxAndMin(modAttackSobArray).max, // "pen+bon",
     // oculto: pen:  minimo de todo y condition,
-    // oculto: bon:  max de todo y condition
+    // oculto: bon:  max de todo y condition,
     defense:
-      data.general.modifiers?.modManiobras?.hd?.final?.value ??
-      0 +
-        getMaxAndMin(modDefenseFisArray).min +
-        getMaxAndMin(modDefenseFisArray).max +
-        getMaxAndMin(modDefenseSobArray).min +
-        getMaxAndMin(modDefenseSobArray).max, // "pen+bon",
+      (data.general.modifiers?.modManiobras?.hd ?? 0) +
+      getMaxAndMin(modDefenseFisArray).min +
+      getMaxAndMin(modDefenseFisArray).max +
+      getMaxAndMin(modDefenseSobArray).min +
+      getMaxAndMin(modDefenseSobArray).max, // "pen+bon",
     // oculto: pen:  minimo de todo y condition,
     // oculto: bon:  max de todo y condition
   };

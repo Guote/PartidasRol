@@ -59,6 +59,7 @@ export class GMCombatDialog extends FormApplication {
   }
   get isDamagingCombat() {
     const { attacker } = this.modalData;
+    console.log(attacker);
     const isPhysicalDamagingCombat = attacker.result?.type === "combat";
     const isMysticDamagingCombat =
       attacker.result?.type === "mystic" &&
@@ -190,10 +191,13 @@ export class GMCombatDialog extends FormApplication {
       const damageTotal =
         attacker.result.values.damage +
         this.modalData.attacker.customModifier_Damage;
-      const taTotal =
+      const taTotal = Math.max(
+        0,
         defender.result.values.at -
-        calculateATReductionByQuality(attacker.result) +
-        this.modalData.defender.customModifier_TA;
+          calculateATReductionByQuality(attacker.result) +
+          this.modalData.defender.customModifier_TA -
+          attacker.result.values.ignoredTA
+      );
 
       const winner =
         attackerTotal > defenderTotal ? attacker.token : defender.token;
