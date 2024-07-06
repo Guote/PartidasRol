@@ -1,3 +1,7 @@
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 const getActorFromCombatant = (combatant) => {
   return game.actors.get(combatant.actorId);
 };
@@ -140,5 +144,41 @@ Hooks.on("updateCombatant", async function (combatant, data, options, userId) {
   // Update surprise Status when last combatant rolls initiative
   if (!isSomeoneMissing) {
     applySurprise(combat);
+  }
+});
+
+// Apply conditions. To be run only from GM side
+Hooks.on("updateActor", (actor, updateData, options, userId) => {
+  if (game.user.isGM) {
+    let modSobFin = actor.system.general.modifiers.modSobrenatural.final.value;
+    let token = actor.getActiveTokens()[0];
+    let condPlus = "Fortalecimiento";
+    let condMinus = "Debilitación";
+
+    console.log("uopdating actor ", { actor, updateData, modSobFin });
+
+    if (modSobFin < 0) {
+      // Should have - and not +
+      if (game.cub.hasCondition(condPlus, token)) {
+        game.cub.removeCondition(condPlus, token);
+      }
+      if (!game.cub.hasCondition(condMinus, token)) {
+        game.cub.addCondition(condMinus, token);
+      }
+    } else if (modSobFin > 0) {
+      if (!game.cub.hasCondition(condPlus, token)) {
+        game.cub.addCondition(condPlus, token);
+      }
+      if (game.cub.hasCondition(condMinus, token)) {
+        game.cub.removeCondition(condMinus, token);
+      }
+    } else {
+      if (game.cub.hasCondition(condPlus, token)) {
+        game.cub.removeCondition(condPlus, token);
+      }
+      if (game.cub.hasCondition(condMinus, token)) {
+        game.cub.removeCondition(condMinus, token);
+      }
+    }
   }
 });

@@ -1,0 +1,47 @@
+<form class="flexcol conversation-entry-sheet" style="height: 100%">
+  <div class="flexrow header">
+    <p> {{localize 'CHUD.strings.currentParticipants'}} </p>
+
+    <button
+      type="button"
+      name="pull-participants-from-scene"
+      id="pull-participants-from-scene"
+      title="{{localize 'CHUD.actions.pullParticipants'}}"
+      class="header-action-button"
+    >
+      <i class="fas fa-up-from-bracket"></i>
+    </button>
+          
+    <button
+      type="button"
+      name="add-participant"
+      id="add-participant"
+      title="{{localize 'CHUD.actions.participant.add'}}"
+      class="header-action-button"
+    >
+      <i class="fas fa-user-plus"></i>
+    </button>
+  </div>
+
+  <div id="conversation-sheet-content-wrapper" class="drag-and-drop-wrapper">
+    <div id="conversation-sheet-dropzone" class="dropzone" >
+      <i class="far fa-square-plus"></i>
+      <p> {{localize 'CHUD.strings.dropActor'}} </p>
+    </div>
+
+    {{> "modules/conversation-hud/templates/fragments/conversation_participants_list.hbs" participants=participants isGM=isGM}}
+  </div>
+    
+  <div class="footer">
+    <footer class="sheet-footer flexrow">
+      <button
+        type="submit"
+        name="submit"
+        title="{{localize 'CHUD.actions.startConversation'}}"
+      >
+        <i class="fa fa-check"></i>
+        {{localize 'CHUD.actions.startConversation'}}
+      </button>
+    </footer>
+  </div>
+</form>

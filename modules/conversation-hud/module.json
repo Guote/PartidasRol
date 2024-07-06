@@ -1,0 +1,82 @@
+{
+  "id": "conversation-hud",
+  "title": "ConversationHUD",
+  "name": "conversation-hud",
+  "description": "A simple module that adds a nice HUD that display the portraits of all the characters present in a conversation.",
+  "version": "5.5.0",
+  "library": "false",
+  "compatibility": {
+    "minimum": 10,
+    "verified": 11,
+    "maximum": 11
+  },
+  "authors": [
+    {
+      "name": "Saervicus (Cristian Vasile)",
+      "discord": "Saervicus#7305",
+      "url": "https://github.com/CristianVasile23"
+    }
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "compatibility": {
+          "minimum": "1.12.4.0",
+          "verified": "1.12.12.0"
+        }
+      },
+      {
+        "id": "socketlib",
+        "type": "module",
+        "compatibility": {
+          "minimum": "1.0.10",
+          "verified": "1.0.12"
+        }
+      }
+    ]
+  },
+  "esmodules": ["js/init.js", "js/controls.js", "js/hooks.js"],
+  "styles": ["css/main.css"],
+  "packs": [
+    {
+      "name": "conversation-hud-macros",
+      "label": "ConversationHUD Macros",
+      "path": "packs/macros.db",
+      "type": "Macro"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "socket": true,
+  "url": "https://github.com/CristianVasile23/conversation-hud",
+  "manifest": "https://github.com/CristianVasile23/conversation-hud/releases/latest/download/module.json",
+  "download": "https://github.com/CristianVasile23/conversation-hud/releases/download/5.5.0/module.zip",
+  "license": "https://github.com/CristianVasile23/conversation-hud/blob/main/LICENSE",
+  "readme": "https://github.com/CristianVasile23/conversation-hud/blob/main/README.md",
+  "media": [
+    {
+      "type": "setup",
+      "url": "https://raw.githubusercontent.com/CristianVasile23/conversation-hud/main/docs/icons/setup.jpg",
+      "loop": false,
+      "flags": {}
+    },
+    {
+      "type": "cover",
+      "url": "https://raw.githubusercontent.com/CristianVasile23/conversation-hud/main/docs/icons/cover.jpg",
+      "loop": false,
+      "flags": {}
+    }
+  ]
+}

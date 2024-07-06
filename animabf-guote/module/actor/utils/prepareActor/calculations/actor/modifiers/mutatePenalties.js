@@ -19,8 +19,8 @@ export const mutatePenalties = (data, actor) => {
     ), // Estamos usando: dolor, critico, presa, vuelo, conditionBon y conditionPen (modFisico.dolor, modFisico.critico...)
   ];
   let modSobArray = [
-    data.general.modifiers.modSobrenatural.bonus.value,
-    data.general.modifiers.modSobrenatural.malus.value,
+    data.general.modifiers.modSobrenatural.bonus.value ?? 0,
+    data.general.modifiers.modSobrenatural.malus.value ?? 0,
     data.general.modifiers.modSobrenatural.conditionBon ?? 0,
     data.general.modifiers.modSobrenatural.conditionPen ?? 0,
   ];
