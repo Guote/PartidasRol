@@ -10,11 +10,11 @@
         class="characteristic"
         title=(localize (concat 'anima.ui.characteristics.' key))
         rollable=true
-        rollableDice='1d10ControlRoll'
+        rollableDice='1d100xa10TO100'
         rollableMessage=(localize (concat 'anima.ui.characteristics.' key))
         inputName=(concat "system.characteristics.primaries." key ".value")
         inputValue=char.value
-        rollValue=char.value
+        rollValue=(math char.value "*" 10)
         hasSecondaryInput=true
         disableSecondaryInput=true
         secondaryInputValue=char.mod

@@ -1,0 +1,250 @@
+{{#> "systems/animabf-guote/templates/items/base/base-sheet.hbs"}}
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+class="weapon-item-dialog"
+}}
+{{#> "systems/animabf-guote/templates/common/ui/group-header.hbs"}}
+<div class='weapon-header'>
+  {{>
+  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+  class="name"
+  hideTitle=true
+  inputType="text"
+  inputName="name"
+  inputValue=item.name
+  }}
+</div>
+{{/"systems/animabf-guote/templates/common/ui/group-header.hbs"}}
+{{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+class="weapon-item-dialog"
+}}
+{{#unless (and (is 'eq' system.isRanged.value true) (is 'eq' system.shotType.value 'shot'))}}
+{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+class="critic-primary"
+isVertical=true
+choices=config.iterables.combat.weapon.criticTypes
+title=(localize "anima.ui.combat.weapons.critic.primary.title")
+inputName="system.critic.primary.value"
+inputValue=system.critic.primary.value
+}}
+{{/unless}}
+{{#if (or (is 'eq' system.isRanged.value false) (is 'eq' system.shotType.value 'throw'))}}
+{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+class="critic-secondary"
+isVertical=true
+choices=config.iterables.combat.weapon.criticTypesWithNone
+title=(localize "anima.ui.combat.weapons.critic.secondary.title")
+inputName="system.critic.secondary.value"
+inputValue=system.critic.secondary.value
+}}
+{{/if}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="presence"
+title=(localize "anima.ui.combat.weapons.presence.base.title")
+inputName="system.presence.base.value"
+inputValue=system.presence.base.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="is-shield"
+title=(localize "anima.ui.combat.weapons.isShield.title")
+inputType="checkbox"
+inputName="system.isShield.value"
+inputValue=system.isShield.value
+}}
+{{>
+'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+class="size"
+isVertical=true
+choices=config.iterables.combat.weapon.sizes
+title=(localize "anima.ui.combat.weapons.size.title")
+inputName="system.size.value"
+inputValue=system.size.value
+}}
+{{>
+'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+class="size-proportion"
+isVertical=true
+choices=config.iterables.combat.weapon.sizeProportions
+title=(localize "anima.ui.combat.weapons.sizeProportion.title")
+inputName="system.sizeProportion.value"
+inputValue=system.sizeProportion.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="integrity"
+title=(localize "anima.ui.combat.weapons.integrity.base.title")
+inputName="system.integrity.base.value"
+inputValue=system.integrity.base.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="breaking"
+title=(localize "anima.ui.combat.weapons.breaking.base.title")
+inputName="system.breaking.base.value"
+inputValue=system.breaking.base.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="damage"
+title=(localize "anima.ui.combat.weapons.damage.base.title")
+inputName="system.damage.base.value"
+inputValue=system.damage.base.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="damage"
+title="Daño fijo"
+inputType="checkbox"
+inputName=(concat "system.damage.isFixed.value")
+inputValue=(is 'eq' system.damage.isFixed.value true)
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="damage"
+title="Ataque fijo"
+inputType="checkbox"
+inputName=(concat "system.attack.isFixed.value")
+inputValue=(is 'eq' system.attack.isFixed.value true)
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="damage"
+title="Parada fija"
+inputType="checkbox"
+inputName=(concat "system.block.isFixed.value")
+inputValue=(is 'eq' system.block.isFixed.value true)
+}}
+{{#if (or (is 'eq' system.block.isFixed.value true) (is 'eq' system.block.isFixed.value true))}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+title="Ataque Base"
+inputName=(concat "system.baseAtk.value")
+inputValue=system.baseAtk.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+title="Defensa Base"
+inputName=(concat "system.baseDef.value")
+inputValue=system.baseDef.value
+}}
+{{/if}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="initiative-base"
+title=(localize "anima.ui.combat.weapons.initiative.base.title")
+inputName="system.initiative.base.value"
+inputValue=system.initiative.base.value
+}}
+{{>
+'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+class="manageability-type"
+isVertical=true
+choices=config.iterables.combat.weapon.manageabilityTypes
+title=(localize "anima.ui.combat.weapon.manageabilityType.title")
+inputName="system.manageabilityType.value"
+inputValue=system.manageabilityType.value
+}}
+{{#if (or (is 'eq' system.manageabilityType.value 'one_hand') (is 'eq' system.manageabilityType.value
+'one_or_two_hands'))}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="fue-required"
+title=(localize "anima.ui.combat.weapons.strRequired.oneHand.title")
+inputName="system.strRequired.oneHand.base.value"
+inputValue=system.strRequired.oneHand.base.value
+hasSecondaryInput=true
+disableSecondaryInput=true
+secondaryInputName="system.strRequired.oneHand.final.value"
+secondaryInputValue=system.strRequired.oneHand.final.value
+}}
+{{/if}}
+{{#if (or (is 'eq' system.manageabilityType.value 'two_hands') (is 'eq' system.manageabilityType.value
+'one_or_two_hands'))}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="fue-required-two-hands"
+title=(localize "anima.ui.combat.weapons.strRequired.twoHands.title")
+inputName="system.strRequired.twoHands.base.value"
+inputValue=system.strRequired.twoHands.base.value
+hasSecondaryInput=true
+disableSecondaryInput=true
+secondaryInputName="system.strRequired.twoHands.final.value"
+secondaryInputValue=system.strRequired.twoHands.final.value
+}}
+{{/if}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="is-ranged"
+title=(localize "anima.ui.combat.weapons.isRanged.title")
+inputType="checkbox"
+inputName="system.isRanged.value"
+inputValue=system.isRanged.value
+}}
+{{#if system.isRanged.value}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="range"
+title=(localize "anima.ui.combat.weapons.range.base.title")
+inputName="system.range.base.value"
+inputValue=system.range.base.value
+}}
+{{>
+'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+class="shot-type"
+isVertical=true
+choices=config.iterables.combat.weapon.shotTypes
+title=(localize "anima.ui.combat.weapon.shotType.title")
+inputName="system.shotType.value"
+inputValue=system.shotType.value
+}}
+{{#if (is 'eq' system.shotType.value 'throw')}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="cadence"
+title=(localize "anima.ui.combat.weapons.cadence.title")
+inputName="system.cadence.value"
+inputValue=system.cadence.value
+}}
+{{else}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="has-own-strength"
+title=(localize "anima.ui.combat.weapons.hasOwnStr.title")
+inputType="checkbox"
+inputName="system.hasOwnStr.value"
+inputValue=system.hasOwnStr.value
+}}
+{{#if system.hasOwnStr.value}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="weapon-fue"
+title=(localize "anima.ui.combat.weapons.weaponStrength.title")
+inputName="system.weaponStrength.base.value"
+inputValue=system.weaponStrength.base.value
+hasSecondaryInput=true
+disableSecondaryInput=true
+secondaryInputName="system.weaponStrength.final.value"
+secondaryInputValue=system.weaponStrength.final.value
+}}
+{{/if}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="reload"
+title=(localize "anima.ui.combat.weapons.reload.base.title")
+inputName="system.reload.base.value"
+inputValue=system.reload.base.value
+}}
+{{/if}}
+{{/if}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="special"
+title=(localize "anima.ui.combat.weapons.special.title")
+inputType="text"
+inputName="system.special.value"
+inputValue=system.special.value
+}}
+{{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}
+{{/"systems/animabf-guote/templates/items/base/base-sheet.hbs"}}

@@ -17,6 +17,7 @@ class="weapon-item-dialog"
 {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
 class="weapon-item-dialog"
 }}
+{{#unless (is 'eq' system.isSummon.value true)}}
 {{#unless (and (is 'eq' system.isRanged.value true) (is 'eq' system.shotType.value 'shot'))}}
 {{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
 class="critic-primary"
@@ -91,6 +92,50 @@ title=(localize "anima.ui.combat.weapons.damage.base.title")
 inputName="system.damage.base.value"
 inputValue=system.damage.base.value
 }}
+{{/unless}}
+{{#if (is 'eq' system.isSummon.value true)}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+title="Dificultad"
+inputName=(concat "system.summonDif.value")
+inputValue=system.summonDif.value
+}}
+{{>
+  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+  title="Coste"
+  inputName=(concat "system.summonCost.value")
+  inputValue=system.summonCost.value
+  }}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+title="Ataque"
+inputName=(concat "system.baseAtk.value")
+inputValue=system.baseAtk.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+title="Defensa"
+inputName=(concat "system.baseDef.value")
+inputValue=system.baseDef.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="damage"
+title=(localize "anima.ui.combat.weapons.damage.base.title")
+inputName="system.damage.base.value"
+inputValue=system.damage.base.value
+}}
+{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+class="critic-primary"
+isVertical=true
+choices=config.iterables.combat.weapon.criticTypes
+title=(localize "anima.ui.combat.weapons.critic.primary.title")
+inputName="system.critic.primary.value"
+inputValue=system.critic.primary.value
+}}
+{{/if}}
+
+{{#unless (is 'eq' system.isSummon.value true)}}
 {{>
 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
 class="damage"
@@ -115,6 +160,21 @@ inputType="checkbox"
 inputName=(concat "system.block.isFixed.value")
 inputValue=(is 'eq' system.block.isFixed.value true)
 }}
+{{#if (or (is 'eq' system.block.isFixed.value true) (is 'eq' system.block.isFixed.value true))}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+title="Ataque Base"
+inputName=(concat "system.baseAtk.value")
+inputValue=system.baseAtk.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+title="Defensa Base"
+inputName=(concat "system.baseDef.value")
+inputValue=system.baseDef.value
+}}
+{{/if}}
+{{/unless}}
 {{>
 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
 class="initiative-base"
@@ -122,6 +182,8 @@ title=(localize "anima.ui.combat.weapons.initiative.base.title")
 inputName="system.initiative.base.value"
 inputValue=system.initiative.base.value
 }}
+
+{{#unless (is 'eq' system.isSummon.value true)}}
 {{>
 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
 class="manageability-type"
@@ -223,6 +285,7 @@ inputValue=system.reload.base.value
 }}
 {{/if}}
 {{/if}}
+{{/unless}}
 {{>
 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
 class="special"
@@ -230,6 +293,14 @@ title=(localize "anima.ui.combat.weapons.special.title")
 inputType="text"
 inputName="system.special.value"
 inputValue=system.special.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+class="damage"
+title="Es summon"
+inputType="checkbox"
+inputName=(concat "system.isSummon.value")
+inputValue=(is 'eq' system.isSummon.value true)
 }}
 {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
 {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

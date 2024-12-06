@@ -13,8 +13,9 @@ export const mutatePenalties = (data, actor) => {
   let modFisArray = [
     data.general.modifiers.modFisico.bonus.value,
     data.general.modifiers.modFisico.malus.value,
+
     game?.cub?.hasCondition("Cansancio", actor) ? calculateFatigue(data) : 0,
-    ...Object.values(_token.actor.system.general.modifiers.modFisico)?.filter(
+    ...Object.values(actor.system.general.modifiers?.modFisico)?.filter(
       (num) => Number.isInteger(num)
     ), // Estamos usando: dolor, critico, presa, vuelo, conditionBon y conditionPen (modFisico.dolor, modFisico.critico...)
   ];

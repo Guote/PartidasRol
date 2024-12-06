@@ -31,7 +31,16 @@ class="weapons"
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
   class="weapon"
   }}
+  {{#unless (is 'eq' weapon.system.isSummon.value true)}}
   {{#if (or (is 'eq' weapon.system.isRanged.value false) (is 'eq' weapon.system.shotType.value 'throw'))}}
+  {{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+  class="critic-primary"
+  isVertical=true
+  choices=config.iterables.combat.weapon.criticTypes
+  title=(localize "anima.ui.combat.weapons.critic.primary.title")
+  inputName="weapon.system.critic.primary.value"
+  inputValue=weapon.system.critic.primary.value
+  }}
   {{>
   'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
   class="critic-secondary"
@@ -112,14 +121,29 @@ class="weapons"
   inputName=(concat "system.dynamic.weapons." weapon._id ".system.knowledgeType.value")
   inputValue=weapon.system.knowledgeType.value
   }}
+  {{/unless}}
+  {{#if (is 'eq' system.isSummon.value true)}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+  title="Dificultad"
+  inputName=(concat "weapon.system.summonDif.value")
+  inputValue=weapon.system.summonDif.value
+  }}
+  {{>
+  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+  title="Coste"
+  inputName=(concat "weapon.system.summonCost.value")
+  inputValue=weapon.system.summonCost.value
+  }}
+  {{/if}}
   {{#if (is 'neq' weapon.system.special.value '')}}
   {{>
   "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
   class="special"
   title=(localize "anima.ui.combat.weapons.special.title")
   inputType="text"
-  inputName="system.special.value"
-  inputValue=system.special.value
+  inputName="weapon.system.special.value"
+  inputValue=weapon.system.special.value
   }}
   {{/if}}
   {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}

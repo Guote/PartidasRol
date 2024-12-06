@@ -60,6 +60,11 @@ export const mutateWeaponsData = (data) => {
         }
       }
     }
+    /* if (weapon.system.isSummon.value) {
+      weapon.system.summonData = {
+
+      };
+    } */
     return weapon;
   });
 };

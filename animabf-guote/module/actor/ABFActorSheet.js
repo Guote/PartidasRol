@@ -199,6 +199,15 @@ export default class ABFActorSheet extends ActorSheet {
         values: [dataset.rollvalue, mod],
         labels: [`${dataset.label}`, "Mod"],
       });
+      if (formula.includes("10TO100")) {
+        let totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);
+        console.log("entramos", {totalLevel})
+        formula = getFormula({
+          dice: dataset.roll,
+          values: [dataset.rollvalue, totalLevel*10, mod],
+          labels: [`${dataset.label}`, "Nivel", "Mod"],
+        }).replace("10TO100","");
+      }
       if (parseInt(dataset.extra) >= 200)
         formula = formula.replace("xa", "xamastery");
       const roll = new ABFFoundryRoll(formula, this.actor.system);
