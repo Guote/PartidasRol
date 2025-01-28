@@ -1,0 +1,89 @@
+{
+    "name": "gm-notes",
+    "id": "gm-notes",
+    "title": "GM Notes",
+    "description": "Adds the option to create Notes for Actors, Items, Lights, Tiles, Drawings and JournalEntrys only accessible to GMs",
+    "version": "10.0",
+    "authors": [
+        {
+            "name": "Bithir",
+            "email": "bithir@gmail.com",
+            "website": "https://bithir.co.uk/"
+        },
+        {
+            "name": "Felix#6196",
+            "comment": "Original Author"
+        }
+    ],
+    "minimumCoreVersion": 10,
+    "compatibleCoreVersion": 10,
+    "compatibility": {
+        "minimum": 10,
+        "verified": 12,
+        "maximum": 12
+    },
+    "esmodules": [
+        "./gm-notes.js"
+    ],
+    "scripts": [],
+    "styles": [
+        "./gm-notes.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "ja",
+            "name": "Japanese",
+            "path": "lang/ja.json"
+        },
+        {
+            "lang": "de",
+            "name": "German",
+            "path": "lang/de.json"
+        },
+        {
+            "lang": "fr",
+            "name": "French (FRANCE)",
+            "path": "lang/fr.json"
+        },
+        {
+            "lang": "it",
+            "name": "Italiano",
+            "path": "lang/it.json"
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português (Brasil)",
+            "path": "lang/pt_BR.json"
+        },
+        {
+            "lang": "pl",
+            "name": "Polski",
+            "path": "lang/pl.json"
+        },
+        {
+            "lang": "sv",
+            "name": "Svenska",
+            "path": "lang/sv.json"
+        },
+        {
+            "lang": "fi",
+            "name": "Suomi",
+            "path": "lang/fi.json"
+        },
+        {
+            "lang": "es",
+            "name": "Spanish",
+            "path": "lang/es.json"
+        }
+    ],
+    "url": "https://github.com/bithir/gm-notes",
+    "manifest": "https://github.com/bithir/gm-notes/releases/latest/download/module.json",
+    "download": "https://github.com/bithir/gm-notes/releases/download/10.0/module.zip",
+    "license": "LICENSE",
+    "readme": "README.md"
+}

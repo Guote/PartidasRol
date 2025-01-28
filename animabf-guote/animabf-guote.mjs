@@ -10,6 +10,7 @@ import { ABFConfig } from './module/ABFConfig.js';
 import ABFItem from './module/items/ABFItem.js';
 import { registerCombatWebsocketRoutes } from './module/combat/websocket/registerCombatWebsocketRoutes.js';
 import { attachCustomMacroBar } from './utils/attachCustomMacroBar.js';
+import NpcActorSheet from './module/actor/NpcAbfActorSheet.js';
 /* ------------------------------------ */
 /* Initialize system */
 /* ------------------------------------ */
@@ -27,8 +28,9 @@ Hooks.once('init', async () => {
     };
     CONFIG.Item.documentClass = ABFItem;
     // Register custom sheets (if any)
-    Actors.unregisterSheet('core', ActorSheet);
+    // Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('abf', ABFActorSheet, { makeDefault: true });
+    Actors.registerSheet('abf', NpcActorSheet);
     Items.unregisterSheet('core', ItemSheet);
     Items.registerSheet('abf', ABFItemSheet, {
         makeDefault: true
