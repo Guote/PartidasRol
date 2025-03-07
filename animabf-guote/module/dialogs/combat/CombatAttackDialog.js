@@ -166,7 +166,7 @@ export class CombatAttackDialog extends FormApplication {
           modifier,
         ];
         let formula = getFormula({
-          dice: isAttackAccumulation ? "2d100khxa" : "1d100xa",
+          dice: isAttackAccumulation ? "1d100xa" : "1d100xa",
           values: rollModifiers,
           labels: [
             "HA",
