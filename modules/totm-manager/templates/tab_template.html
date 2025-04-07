@@ -1,0 +1,15 @@
+<form>
+  <nav class="tabs" data-group="primary-tabs">
+    {{#each tabs}}
+    <a class="item" data-tab="{{label}}">{{title}}</a>
+    {{/each}}
+  </nav>
+
+  <section class="content">
+    {{#each tabs}}
+      <div class="tab" data-tab="{{label}}" data-group="primary-tabs">
+          {{{content}}}
+      </div>
+      {{/each}}
+  </section>
+</form>

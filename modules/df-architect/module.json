@@ -1,0 +1,85 @@
+{
+	"id": "df-architect",
+	"title": "DF Architect",
+	"description": "Architect for FoundryVTT provides a major overhaul of the Walls and Lighting features, as well as a few extra fun things like the Colour Picker and Alternate Grid Snap.",
+	"version": "4.0.0",
+	"author": "flamewave000#0001",
+	"compatibility": {
+		"minimum": 10,
+		"verified": 10.286
+	},
+	"relationships": {
+		"requires": [
+			{
+				"id": "lib-wrapper",
+				"type": "module",
+				"compatibility": {
+					"verified": "1.12.10.0"
+				}
+			},
+			{
+				"id": "colorsettings",
+				"type": "module",
+				"compatibility": {
+					"verified": "2.9.0"
+				}
+			}
+		]
+	},
+	"esmodules": ["src/df-architect.js"],
+	"styles": ["css/df-architect.css"],
+	"languages": [
+		{ "lang": "en", "name": "English", "path": "lang/en.json" },
+		{ "lang": "es", "name": "Español", "path": "lang/es.json" }
+	],
+	"packs": [
+		{
+			"name": "lights-dnd5e",
+			"label": "Light Templates: D&D5e",
+			"path": "packs/lights-dnd5e.db",
+			"entity": "Macro",
+			"module": "df-architect"
+		},
+		{
+			"name": "lights-pf1e",
+			"label": "Light Templates: Pathfinder 1E",
+			"path": "packs/lights-pf1e.db",
+			"entity": "Macro",
+			"module": "df-architect"
+		},
+		{
+			"name": "lights-pf2e",
+			"label": "Light Templates: Pathfinder 2E",
+			"path": "packs/lights-pf2e.db",
+			"entity": "Macro",
+			"module": "df-architect"
+		}
+	],
+	"bugs":		"https://github.com/flamewave000/dragonflagon-arch/issues/new/choose",
+	"url":		"https://github.com/flamewave000/dragonflagon-arch",
+	"license":	"https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/LICENSE",
+	"manifest":	"https://dragonflagon.cafe/mods/man/df-architect",
+	"download":	"https://dragonflagon.cafe/mods/pak/df-architect",
+	"readme":	"https://github.com/flamewave000/dragonflagon-arch/blob/master/README.md",
+	"changelog":"https://github.com/flamewave000/dragonflagon-arch/blob/master/CHANGELOG.md",
+	"manifestPlusVersion": "1.0.0",
+	"authors": [ { "name": "flamewave000", "discord": "flamewave000#0001", "url": "https://github.com/flamewave000" } ],
+	"media": [
+		{ "type": "cover", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/github-banner.png" },
+		{ "type": "icon", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/logo.png" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/general-alt-grid-snap.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/general-capture-cur.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/general-capture-all.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/general-capture-pad.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/general-capture-filter.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/lights-colourpicker.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/lights-showorigin.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/lights-template-create.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/lights-template-drag.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/lights-template-duplicate.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/walls-join-split.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/tiles-flatten-config.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/tiles-flatten-save.gif" },
+		{ "type": "screenshot", "url": "https://raw.githubusercontent.com/flamewave000/dragonflagon-arch/master/.assets/tiles-flatten-scene-replace.gif" }
+	]
+}

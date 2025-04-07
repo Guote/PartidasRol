@@ -1,0 +1,16 @@
+<li data-key='{{key}}' data-path='{{path}}' data-depth='{{depth}}' data-children='{{children.length}}' style='--depth:{{depth}};'
+	class='data-element {{data.type}}{{#if isDocument}} document{{/if}}{{#if isArray}} array{{/if}}
+	{{~#if isContainer}}
+		{{~#if isEmpty}} expanded empty{{else}} collapsed{{/if}}
+		{{~else if isNullish}} empty{{else}} value{{/if}}
+	{{~#if inRollData}} in-rolldata{{/if}}
+	{{~#if inDerivedData}} in-derived{{/if}}
+	{{~#if inSourceData}} in-source{{/if}}
+	{{~#if @root.isSourceData}}{{#unless inTemporaryData}} not-in-temporary{{/unless}}{{/if}}'>
+	{{!-- VALUE --}}
+	{{~> "modules/data-inspector/template/value.hbs"}}
+	{{!-- Sub items of arrays and objects --}}
+	{{~#if isContainer}}
+	{{~> "modules/data-inspector/template/object.hbs"}}
+	{{/if}}
+</li>

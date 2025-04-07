@@ -1,0 +1,11 @@
+//! DF: Disabled Active Check
+
+//! Get rid of this line
+
+//! Re-enable this line of code
+
+//! Remove this line
+
+//! TEMPORARY DISABLING OF CANVAS CAPTURE
+
+//! TEMPORARY DISABLING OF TILE FLATTENER

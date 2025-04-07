@@ -1,0 +1,10 @@
+{{#if children}}
+<ul class='data-list'>
+{{#each children as |data|}}
+{{~> "modules/data-inspector/template/object-data.hbs" data}}
+{{/each}}
+{{#if @root.functions}}
+<!-- TODO -->
+{{/if}}
+</ul>
+{{/if}}

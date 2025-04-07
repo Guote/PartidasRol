@@ -1,0 +1,19 @@
+<form class="dfarch-flatten-form">
+{{!-- Render Lighting --}}
+<input class="shrink" type="checkbox" id="lights" {{#if lights}}checked{{/if}} /><label class="grow" for="lights">{{localize 'DF_ARCHITECT.TileFlattener.RenderLighting'}}</label><div></div>
+{{!-- Background Image --}}
+<input class="shrink" type="checkbox" id="showBG" {{#if showBG}}checked{{/if}} /><label class="grow" for="showBG">{{localize 'DF_ARCHITECT.TileFlattener.RenderBackground'}}</label><div></div>
+{{!-- Render Hidden --}}
+<input class="shrink" type="checkbox" id="hidden" {{#if hidden}}checked{{/if}} {{#if select}}disabled{{/if}} /><label class="grow" for="hidden">{{localize 'DF_ARCHITECT.TileFlattener.RenderHiddenTiles'}}</label><div></div>
+{{!-- Hide Animated Tiles --}}
+<input class="shrink" type="checkbox" id="animated" {{#unless hideAnimated}}checked{{/unless}} /><label class="grow" for="animated">{{localize 'DF_ARCHITECT.TileFlattener.HideAnimatedTiles'}}</label><div></div>
+{{!-- Render Canvas or Selection --}}
+<input class="shrink" type="radio" name="selectOrCanvas" id="canvas" {{#unless select}}checked{{/unless}}><label class="grow" for="canvas">{{localize 'DF_ARCHITECT.TileFlattener.RenderEntireCanvas'}}</label><div></div><input class="shrink" type="radio" name="selectOrCanvas" id="tiles" {{#if select}}checked{{/if}}><label class="grow" for="tiles">{{localize 'DF_ARCHITECT.TileFlattener.RenderSelectedOnly'}}</label><div style="margin-bottom:1em"></div>
+{{!-- Select Roof, Floor, or Both --}}
+<input class="shrink" type="radio" name="layers" id="floor" {{#if (eq layers 0)}}checked{{/if}}><label class="grow" for="floor">{{localize 'DF_ARCHITECT.TileFlattener.RenderFloorTiles'}}</label><div></div><input class="shrink" type="radio" name="layers" id="roof" {{#if (eq layers 1)}}checked{{/if}}><label class="grow" for="roof">{{localize 'DF_ARCHITECT.TileFlattener.RenderRoofTiles'}}</label><div></div><input class="shrink" type="radio" name="layers" id="both" {{#if (eq layers 2)}}checked{{/if}}><label class="grow" for="both">{{localize 'DF_ARCHITECT.TileFlattener.RenderBothTiles'}}</label>
+{{!-- Image Padding --}}
+<div><p>{{{localize 'DF_ARCHITECT.TileFlattener.Margin'}}}</p></div><span class="grow">&nbsp;</span><table class="shrink"><tr><td></td><td><input class="overlayed" type="number" step="1" value="{{margin.t}}" id="top" {{#unless select}}disabled{{/unless}}><span class="input-overlay">px</span></td><td></td></tr><tr><td><input class="overlayed" type="number" step="1" value="{{margin.l}}" id="left" {{#unless select}}disabled{{/unless}}><span class="input-overlay">px</span></td><td><i class="fas fa-arrows-alt"></i></td><td><input class="overlayed" type="number" step="1" value="{{margin.r}}" id="right" {{#unless select}}disabled{{/unless}}><span class="input-overlay">px</span></td></tr><tr><td></td><td><input class="overlayed" type="number" step="1" value="{{margin.b}}" id="bottom" {{#unless select}}disabled{{/unless}}><span class="input-overlay">px</span></td><td></td></tr></table><span class="grow">&nbsp;</span>
+{{!-- File Format --}}
+<h3>{{localize 'DF_ARCHITECT.CaptureGameScreen.ScreenCapture.Format'}}</h3><select name="format" id="format"><option value="png" {{#if png}}selected{{/if}}>{{localize 'DF_ARCHITECT.CaptureGameScreen.ScreenCapture.FormatPNG'}}</option><option value="jpeg" {{#if jpeg}}selected{{/if}}>{{localize 'DF_ARCHITECT.CaptureGameScreen.ScreenCapture.FormatJPG'}}</option><option value="webp" {{#if webp}}selected{{/if}}>{{localize 'DF_ARCHITECT.CaptureGameScreen.ScreenCapture.FormatWEB'}}</option></select>
+{{!-- Quality --}}
+<h3>{{localize 'DF_ARCHITECT.CaptureGameScreen.ScreenCapture.Compression'}}</h3><output id="compression-output" class="shrink">{{compression}}</output><input class="grow" id="compression" name="compression" type="range" min="0" max="1" step="0.01" value="{{compression}}"></form>

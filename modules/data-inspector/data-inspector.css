@@ -1,0 +1,490 @@
+@charset "UTF-8";
+:root {
+  --data-inspector-entry-type-boolean: #355d99;
+  --data-inspector-entry-type-empty: darkred;
+  --data-inspector-entry-type-number: darkorchid;
+  --data-inspector-entry-type-function: #5e5858;
+  --data-inspector-entry-type-string: darkolivegreen;
+  --data-inspector-entry-nondefault-data: #ffa5a5;
+  --data-inspector-header-background: #68655f;
+  --data-inspector-header-font: #f3eeee;
+  --data-inspector-search-good-match: hsla(46, 100%, 50%, 0.25);
+  --data-inspector-search-decent-match: hsla(197, 71%, 73%, 0.1);
+  --data-inspector-selected: #edcb8e;
+  --data-inspector-details-separator: hsla(34, 17%, 36%, 0.25);
+  --data-inspector-border-hover: hsla(13, 12%, 29%, 0.58);
+  --data-inspector-entry-not-in-source: #255e74;
+  --data-inspector-entry-not-in-rolldata: #64486a;
+  --data-inspector-entry-hover-shadow: hsla(16, 100%, 50%, 0.37);
+  --data-inspector-entry-hover-background: hsla(98, 100%, 59%, 0.18);
+  --data-inspector-entry-hover-boxshadow: hsla(27, 21%, 29%, 0.39);
+  --data-inspector-tooltip-path: darkseagreen;
+  --data-inspector-tooltip-type: indianred;
+  --data-inspector-tooltip-children: indianred;
+  --data-inspector-tooltip-length: indianred;
+  --data-inspector-tooltip-background: #e7e1d9;
+  --data-inspector-tooltip-font: #444241;
+  --data-inspector-tooltip-border: #8b8383;
+  --data-inspector-tooltip-shadow: darkred;
+}
+
+.app.koboldworks.data-inspector form .warning,
+.app.koboldworks.data-inspector-editor form .warning {
+  align-self: center;
+  font-size: var(--font-size-16, 12pt);
+  text-shadow: 0 0 7px rgba(255, 0, 0, 0.4901960784);
+}
+
+.app.koboldworks.data-inspector-editor {
+  min-width: 480px;
+  min-height: 220px;
+}
+.app.koboldworks.data-inspector-editor form {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.app.koboldworks.data-inspector-editor form label {
+  flex: 0;
+}
+.app.koboldworks.data-inspector-editor form > .path input {
+  flex: 0;
+}
+.app.koboldworks.data-inspector-editor form > .path,
+.app.koboldworks.data-inspector-editor form > .type,
+.app.koboldworks.data-inspector-editor form > .buttons {
+  display: flex;
+  flex-direction: row;
+  flex: 0;
+}
+.app.koboldworks.data-inspector-editor form > .path > label,
+.app.koboldworks.data-inspector-editor form > .type > label,
+.app.koboldworks.data-inspector-editor form > .buttons > label {
+  flex: 0 4em;
+}
+.app.koboldworks.data-inspector-editor form > .path > input,
+.app.koboldworks.data-inspector-editor form > .type > input,
+.app.koboldworks.data-inspector-editor form > .buttons > input {
+  flex: 1 16em;
+}
+.app.koboldworks.data-inspector-editor form > .path > *,
+.app.koboldworks.data-inspector-editor form > .type > *,
+.app.koboldworks.data-inspector-editor form > .buttons > * {
+  flex: 1 50%;
+}
+.app.koboldworks.data-inspector-editor form > .path button,
+.app.koboldworks.data-inspector-editor form > .type button,
+.app.koboldworks.data-inspector-editor form > .buttons button {
+  width: unset;
+}
+.app.koboldworks.data-inspector-editor form .value {
+  flex: 1 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+}
+.app.koboldworks.data-inspector-editor form .value textarea {
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 1rem;
+  height: 100%;
+}
+.app.koboldworks.data-inspector-editor form .value .editor {
+  height: 100%;
+  width: 100%;
+  flex: 1 100%;
+  display: flex;
+}
+.app.koboldworks.data-inspector-editor form .warning.token {
+  text-align: center;
+}
+
+.app.koboldworks.data-inspector {
+  min-width: 520px;
+  min-height: 380px;
+}
+.app.koboldworks.data-inspector > .window-content {
+  overflow: hidden;
+}
+.app.koboldworks.data-inspector form {
+  height: 100%;
+  display: flex;
+  gap: 3px;
+  flex-direction: column;
+}
+.app.koboldworks.data-inspector form > .header {
+  display: grid;
+  grid-template-columns: 3fr minmax(min-content, 1fr);
+  grid-template-rows: min-content;
+  gap: 3px;
+}
+.app.koboldworks.data-inspector form > .header .main {
+  display: grid;
+  grid-template-columns: min-content auto;
+  gap: 3px;
+  align-items: center;
+  height: min-content;
+  flex: 1;
+}
+.app.koboldworks.data-inspector form > .header .main label {
+  display: contents;
+}
+.app.koboldworks.data-inspector form > .header .path-box,
+.app.koboldworks.data-inspector form > .header .search-box {
+  display: flex;
+  gap: 3px;
+  flex: 0;
+  align-items: center;
+}
+.app.koboldworks.data-inspector form > .header .settings {
+  display: flex;
+  flex-direction: column;
+  flex: 0;
+  gap: 3px;
+  align-items: center;
+}
+.app.koboldworks.data-inspector form > .header .settings label {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+.app.koboldworks.data-inspector form > .header .settings > h4 {
+  grid-column: span 2;
+  font-variant: small-caps;
+  margin: 0;
+  text-align: center;
+}
+.app.koboldworks.data-inspector form > .header .settings input[type=checkbox] {
+  margin: 0 5px;
+  height: 16px;
+  width: 16px;
+}
+.app.koboldworks.data-inspector form > .header .settings select {
+  line-height: 1;
+  height: unset;
+  width: min-content;
+}
+.app.koboldworks.data-inspector form > .header .main,
+.app.koboldworks.data-inspector form > .header .settings {
+  border: 1px solid rgba(106, 89, 78, 0.3607843137);
+  border-radius: 5px;
+  padding: 3px;
+  background-color: rgba(137, 122, 112, 0.1098039216);
+  height: 100%;
+}
+.app.koboldworks.data-inspector form > .type {
+  display: flex;
+  white-space: nowrap;
+  gap: 0.25em;
+}
+.app.koboldworks.data-inspector form > .type label {
+  flex: 1;
+}
+.app.koboldworks.data-inspector form > .type .value {
+  flex: 3;
+  font-weight: bold;
+}
+.app.koboldworks.data-inspector form input::placeholder {
+  opacity: 0.6;
+}
+.app.koboldworks.data-inspector form .hint {
+  flex: 0;
+}
+.app.koboldworks.data-inspector form > .data {
+  height: 100%;
+  overflow-y: scroll;
+  /*
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content;
+  gap: 1px;
+  */
+}
+.app.koboldworks.data-inspector form > .data .warning {
+  text-align: center;
+}
+.app.koboldworks.data-inspector form > .data.derived [data-path]:not(.in-source) .key, .app.koboldworks.data-inspector form > .data.rolldata [data-path]:not(.in-source) .key {
+  color: var(--data-inspector-entry-not-in-source);
+}
+.app.koboldworks.data-inspector form > .data.source [data-path]:not(.in-rolldata) .key {
+  color: var(--data-inspector-entry-not-in-rolldata);
+}
+.app.koboldworks.data-inspector form > .data .data-pools .absent.temporary, .app.koboldworks.data-inspector form > .data .data-pools .absent.source {
+  color: #c30808;
+}
+.app.koboldworks.data-inspector form > .headers {
+  display: flex;
+  overflow-y: scroll;
+  line-height: 1.5em;
+  align-items: center;
+  height: 2.5em;
+  background-color: var(--data-inspector-header-background);
+  color: var(--data-inspector-header-font);
+}
+.app.koboldworks.data-inspector form > .headers .key {
+  padding-left: 1.7em;
+}
+.app.koboldworks.data-inspector form > .data .key,
+.app.koboldworks.data-inspector form > .headers .key {
+  flex: 1 6em;
+}
+.app.koboldworks.data-inspector form > .data .value,
+.app.koboldworks.data-inspector form > .headers .value {
+  flex: 0 20em;
+}
+.app.koboldworks.data-inspector form > .data .data-pools,
+.app.koboldworks.data-inspector form > .headers .data-pools {
+  display: inline-flex;
+  flex: 0 4em;
+  gap: 1px;
+  justify-content: center;
+}
+.app.koboldworks.data-inspector form > .data .data-pools .pool,
+.app.koboldworks.data-inspector form > .headers .data-pools .pool {
+  flex: 0 1em;
+  text-align: center;
+}
+.app.koboldworks.data-inspector form ul {
+  border: 1px solid rgba(88, 74, 63, 0.1607843137);
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 0.7em;
+  flex: 1 100%;
+}
+.app.koboldworks.data-inspector form > ul {
+  border: none;
+  border-right: 1px solid rgba(88, 74, 63, 0.1490196078);
+}
+.app.koboldworks.data-inspector form ul > li:nth-child(2n+1) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.app.koboldworks.data-inspector form ul > li:nth-child(2n+0) {
+  background-color: transparent;
+}
+.app.koboldworks.data-inspector form ul > li.data-element.not-in-temporary .key {
+  text-shadow: 0 0 3px var(--data-inspector-entry-nondefault-data);
+}
+.app.koboldworks.data-inspector form ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app.koboldworks.data-inspector form ul > li {
+  padding-left: 0.7em;
+}
+.app.koboldworks.data-inspector form ul .note {
+  padding-left: 2em;
+  font-size: 9pt;
+  flex: 0;
+}
+.app.koboldworks.data-inspector form ul .details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.app.koboldworks.data-inspector form ul .details .extended-value {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.app.koboldworks.data-inspector form ul .details .value-details {
+  flex: 1 100%;
+}
+.app.koboldworks.data-inspector form ul .details .value,
+.app.koboldworks.data-inspector form ul .details .extended-value {
+  flex: 0 20em;
+}
+.app.koboldworks.data-inspector form ul .details .value {
+  flex: 0 20em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 20em;
+}
+.app.koboldworks.data-inspector form ul .details .value.container {
+  font-style: italic;
+  opacity: 0.6;
+}
+.app.koboldworks.data-inspector form ul .details .value.function {
+  font-style: italic;
+  color: var(--data-inspector-entry-type-function);
+}
+.app.koboldworks.data-inspector form ul .details .value.string {
+  color: var(--data-inspector-entry-type-string);
+}
+.app.koboldworks.data-inspector form ul .details .value.string::after, .app.koboldworks.data-inspector form ul .details .value.string::before {
+  content: '"';
+  opacity: 0.4;
+  color: unset;
+}
+.app.koboldworks.data-inspector form ul .details .value.boolean {
+  color: var(--data-inspector-entry-type-boolean);
+}
+.app.koboldworks.data-inspector form ul .details .value.boolean.true:before {
+  content: "🗹 ";
+}
+.app.koboldworks.data-inspector form ul .details .value.boolean.false:before {
+  content: "☐ ";
+}
+.app.koboldworks.data-inspector form ul .details .value.number {
+  font-style: italic;
+  color: var(--data-inspector-entry-type-number);
+}
+.app.koboldworks.data-inspector form ul .details .value.empty {
+  color: var(--data-inspector-entry-type-empty);
+}
+.app.koboldworks.data-inspector form ul .details .value.recursion {
+  font-style: italic;
+  color: var(--data-inspector-entry-type-empty);
+}
+.app.koboldworks.data-inspector form ul .details h4 {
+  flex: 0;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+}
+.app.koboldworks.data-inspector form ul .details:hover {
+  text-shadow: 0 0 5px var(--data-inspector-entry-hover-shadow);
+  background-color: var(--data-inspector-entry-hover-background);
+  box-shadow: 0 0 3px var(--data-inspector-entry-hover-boxshadow);
+}
+.app.koboldworks.data-inspector form ul li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  line-height: 1;
+  position: relative;
+}
+.app.koboldworks.data-inspector form ul li:hover > ul.data-list {
+  border-left: 1px solid var(--data-inspector-border-hover);
+}
+.app.koboldworks.data-inspector form ul li .details {
+  flex: 1;
+}
+.app.koboldworks.data-inspector form ul li:before {
+  content: " = ";
+  white-space: pre;
+  flex: 0 1em;
+  opacity: 0.4;
+}
+.app.koboldworks.data-inspector form ul li.expanded:before {
+  content: " - ";
+  opacity: unset;
+}
+.app.koboldworks.data-inspector form ul li.expanded:not(.empty) > .details {
+  border-bottom: 1px solid var(--data-inspector-details-separator);
+}
+.app.koboldworks.data-inspector form ul li.empty {
+  opacity: 0.6;
+}
+.app.koboldworks.data-inspector form ul li.empty .value.empty.string:before, .app.koboldworks.data-inspector form ul li.empty .value.empty.string:after {
+  opacity: unset;
+}
+.app.koboldworks.data-inspector form ul li.collapsed:before {
+  content: " + ";
+  opacity: unset;
+}
+.app.koboldworks.data-inspector form ul li.collapsed ul {
+  display: none;
+}
+.app.koboldworks.data-inspector form ul li.document:before, .app.koboldworks.data-inspector form ul li.function:before, .app.koboldworks.data-inspector form ul li.getter:before {
+  content: "~ ";
+}
+.app.koboldworks.data-inspector form ul li.getter .value:hover {
+  color: black;
+  text-shadow: 0 0 15px red;
+}
+.app.koboldworks.data-inspector form ul li[data-path]:hover {
+  opacity: unset;
+}
+.app.koboldworks.data-inspector form ul li[data-match-quality=good] {
+  background-color: var(--data-inspector-search-good-match);
+}
+.app.koboldworks.data-inspector form ul li[data-match-quality=bad].value {
+  display: none;
+}
+.app.koboldworks.data-inspector form ul li[data-match-quality=decent] {
+  background-color: var(--data-inspector-search-decent-match);
+}
+.app.koboldworks.data-inspector form ul li.hide {
+  display: none;
+}
+.app.koboldworks.data-inspector form ul li.data-element.selected {
+  background-color: var(--data-inspector-selected);
+}
+.app.koboldworks.data-inspector form ul li .value[data-id]:hover {
+  color: black;
+  opacity: unset;
+}
+.app.koboldworks.data-inspector form footer {
+  display: flex;
+  flex-flow: row;
+  gap: 3px;
+}
+.app.koboldworks.data-inspector form footer > .footnote {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.app.koboldworks.data-inspector form footer > .footnote > label,
+.app.koboldworks.data-inspector form footer > .footnote > span {
+  padding: 1px 3px;
+}
+
+.data-inspector-tooltip {
+  box-shadow: 0 0 2px var(--data-inspector-tooltip-shadow);
+  background-color: var(--data-inspector-tooltip-background);
+  color: var(--data-inspector-tooltip-font);
+  text-shadow: none;
+  border: 0.3px solid var(--data-inspector-tooltip-border);
+  border-radius: 0.5em;
+  border-bottom-left-radius: 0;
+  padding: 0.3em 0.5em;
+}
+.data-inspector-tooltip p:first-child {
+  margin-top: 0;
+}
+.data-inspector-tooltip .path {
+  color: var(--data-inspector-tooltip-path);
+}
+.data-inspector-tooltip .type {
+  color: var(--data-inspector-tooltip-type);
+}
+.data-inspector-tooltip .children {
+  color: var(--data-inspector-tooltip-children);
+}
+.data-inspector-tooltip .length {
+  color: var(--data-inspector-tooltip-length);
+}
+.data-inspector-tooltip .in-data {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  place-content: center;
+}
+.data-inspector-tooltip .in-data .data-source {
+  display: flex;
+  flex-direction: column;
+  flex: 0;
+  gap: 3px;
+  align-items: center;
+}
+.data-inspector-tooltip .in-data .data-source .header,
+.data-inspector-tooltip .in-data .data-source .value {
+  justify-content: center;
+  flex: 0;
+  margin: 0;
+  padding: 0.1em 0.3em;
+  white-space: nowrap;
+  font-weight: var(--font-size-11, 8pt);
+}
+.data-inspector-tooltip .in-data .data-source .header {
+  background-color: rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+.data-inspector-tooltip .in-data .data-source .value {
+  overflow: unset;
+}
+
+/*# sourceMappingURL=data-inspector.css.map */

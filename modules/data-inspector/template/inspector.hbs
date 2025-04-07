@@ -1,0 +1,93 @@
+<form autocomplete='off'>
+	<div class='header'>
+		<div class='main'>
+			<label>
+				<span class='label'>{{localize 'DataInspector.Path'}}</span>
+				<input class='path' type='text' placeholder='{{localize 'DataInspector.PathHint'}}' value='{{path}}'>
+			</label>
+			<label>
+				<span class='label'>{{localize 'DataInspector.Search'}}</span>
+				<input class='search' type='search' data-dtype='String' placeholder='{{localize 'DataInspector.Filter'}}' value='{{search}}' autofocus>
+			</label>
+		</div>
+		<div class='settings'>
+			<label class='mode' data-tooltip='{{localize 'DataInspector.Data.Legend'}}' data-tooltip-direction='UP'>
+				<span class='label'>{{localize 'DataInspector.Mode'}}</span>
+				<select id='{{uuid}}-source' class='type'>
+					{{#select dataType}}
+					<option value='rolldata'>{{localize 'DataInspector.Data.Roll'}}</option>
+					<option value='derived'>{{localize 'DataInspector.Data.Derived'}}</option>
+					<option value='source'>{{localize 'DataInspector.Data.Source'}}</option>
+					{{#if @root.data.hasOverrides}}
+					<option value='override'>{{localize 'DataInspector.Data.Override'}}</option>
+					{{/if}}
+					<option value='flags'>{{localize 'DataInspector.Data.Flags'}}</option>
+					{{/select}}
+				</select>
+			</label>
+
+			<label class='functions' data-tooltip='DataInspector.Settings.Functions' data-tooltip-direction='UP'>
+				<input type='checkbox' class='functions' {{checked includeFunctions}}>
+				<span class='label'>{{localize 'DataInspector.Settings.Functions'}}</span>
+			</label>
+
+			<label class='search' data-tooltip='DataInspector.Settings.Strictness' data-tooltip-direction='UP'>
+				<span class='label'>{{localize 'DataInspector.Settings.Strictness'}}</span>
+				<input type='range' data-dtype='Number' class='search-quality' min='0' max='1' step='0.01' value='{{resultQuality}}'>
+			</label>
+
+			{{!-- Include document data --}}
+			<!--
+			<input id='{{uuid}}-document' type='checkbox' class='document' {{checked includeDocument}}>
+			<label for='{{uuid}}-document' data-tooltip='Include getters and functions' data-tooltip-direction='UP'>{{localize 'DataInspector.Document'}}</label>
+			-->
+		</div>
+	</div>
+
+	<div class='type'>
+		<label>{{localize 'DataInspector.Type'}}:</label>
+		<span class='value' data-tooltip='{{typeLabel}}' data-tooltip-direction='UP'>{{type}}</span>
+
+		<label>{{localize 'DataInspector.Document'}}:</label>
+		<span class='value'>{{docType}}</span>
+
+		{{#if isSourceData}}
+		<label>{{localize 'DataInspector.DataModel'}}:</label>
+		<span class='value'>{{model}}</span>
+		{{/if}}
+	</div>
+
+	<p class='hint'>{{{localize 'DataInspector.Instructions'}}}</p>
+
+	<div class='headers'>
+		<label class='key'>{{localize 'DataInspector.Key'}}</label>
+
+		<label class='value'>{{localize 'DataInspector.Value'}}</label>
+
+		<div class='data-pools'>
+			{{#unless @root.isRollData}}<label class='pool rolldata' data-tooltip='Data present in roll data.' data-tooltip-direction='UP'>R</label>{{/unless}}
+			{{#unless @root.isDerivedData}}<label class='pool derived' data-tooltip='Data present in derived data.' data-tooltip-direction='UP'>D</label>{{/unless}}
+			{{#unless @root.isSourceData}}<label class='pool source' data-tooltip='Data present in source data.' data-tooltip-direction='UP'>S</label>{{/unless}}
+			{{#if @root.isSourceData}}<label class='pool temporary' data-tooltip='Data present in temporary document of same type.' data-tooltip-direction='UP'>T</label>{{/if}}
+		</div>
+	</div>
+
+	<div class='data {{dataType}}'>
+		{{#if data.isEmpty}}
+		<p class='warning'>{{localize 'DataInspector.NoData'}}</p>
+		{{else}}
+		{{~> "modules/data-inspector/template/object.hbs" data}}
+		{{/if}}
+	</div>
+
+	<footer>
+		<div class='footnote'>
+			<label>{{localize 'DataInspector.DataEntries'}}:</label>
+			<span class='value'>{{count}}</span>
+		</div>
+		<div class='footnote'>
+			<label>{{localize 'DataInspector.MaxDepth'}}:</label>
+			<span class='value'>{{depth}}</span>
+		</div>
+	</footer>
+</form>

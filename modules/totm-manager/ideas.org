@@ -1,0 +1,18 @@
+* UI Improvements
+
+** Tabs
+Probably the single most important improvement to do sooner rather than later is adding additional tabs to the manager window interface.
+
+- Images: current interface
+- Tiles: tile configuration; changes here would affect buttons (how many, names) for tiles in the Image tab
+   + Number of tiles (default is three)
+   + Tile names (default is speaker1, speaker2, scene)
+   + Opacity? 
+   + ???
+
+
+It would be nice to be able to set different glow effects and do things like alter lighting colors or effects from the manager. But where to put such options?
+
+Another issue is that things like glow effects are image specific not tile specific. 
+
+I could potentially create a third tab, call it "Effects". What would go in this tab? 
