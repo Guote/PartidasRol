@@ -149,14 +149,16 @@ Hooks.on("updateCombatant", async function (combatant, data, options, userId) {
 });
 
 // Apply conditions. To be run only from GM side
-Hooks.on("updateActor", (actor, updateData, options, userId) => {
+/* Hooks.on("updateActor", (actor, updateData, options, userId) => {
   if (game.user.isGM) {
     let modSobFin = actor.system.general.modifiers.modSobrenatural.final.value;
     let token = actor.getActiveTokens()[0];
     let condPlus = "Fortalecimiento";
     let condMinus = "Debilitación";
 
-    console.log("uopdating actor ", { actor, updateData, modSobFin });
+    console.log("updating actor ", { actor, updateData, modSobFin });
+
+    if (!token) return
 
     if (modSobFin < 0) {
       // Should have - and not +
@@ -182,7 +184,7 @@ Hooks.on("updateActor", (actor, updateData, options, userId) => {
       }
     }
   }
-});
+}); */
 
 /*********************************************************************************** 
  * Merge Simple Calendar and SmallTime Styles
