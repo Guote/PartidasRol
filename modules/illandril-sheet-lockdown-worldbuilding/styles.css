@@ -1,0 +1,20 @@
+.illandril-sheet-lockdown-worldbuilding--sheet.illandril-sheet-lockdown-worldbuilding--lock .illandril-sheet-lockdown-worldbuilding--toggleEditOff,
+.illandril-sheet-lockdown-worldbuilding--sheet:not(.illandril-sheet-lockdown-worldbuilding--lock) .illandril-sheet-lockdown-worldbuilding--toggleEditOn {
+  display: none !important;
+}
+
+.illandril-sheet-lockdown-worldbuilding--toggleEditOff {
+  color: #beb;
+}
+
+.illandril-sheet-lockdown-worldbuilding--toggleEditOn {
+  color: #faa;
+}
+
+.illandril-sheet-lockdown-worldbuilding--noPointerEvents {
+  pointer-events: none !important;
+}
+
+.illandril-sheet-lockdown-worldbuilding--hide {
+  display: none !important;
+}

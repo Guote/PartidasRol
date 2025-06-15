@@ -1,0 +1,16 @@
+{
+  "illandril-sheet-lockdown-worldbuilding": {
+    "setting": {
+      "debug": {
+        "label": "Debug Mode",
+        "hint": "Leave this disabled unless specifically asked to enable it by Illandril (otherwise, it will slow things down)."
+      },
+      "showToggleEditRole": {
+        "label": "Show Toggle Edit To",
+        "hint": "A Toggle Edit button will be shown to all users with at least the selected role, allowing them to modify all locked settings. Note: Changing this option will not impact already opened character sheets. Players will need to close and re-open their character sheet to see this change."
+      }
+    },
+    "toggleEditOn": "Locked (Click to Unlock)",
+    "toggleEditOff": "Unlocked (Click to Lock)"
+  }
+}

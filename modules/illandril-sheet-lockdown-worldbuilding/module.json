@@ -1,0 +1,65 @@
+{
+  "version": "2.0.4",
+  "manifestPlusVersion": "1.2.0",
+  "url": "https://github.com/illandril/FoundryVTT-sheet-lockdown-worldbuilding",
+  "bugs": "https://github.com/illandril/FoundryVTT-sheet-lockdown-worldbuilding/issues",
+  "flags": {
+    "allowBugReporter": true
+  },
+  "changelog": "https://github.com/illandril/FoundryVTT-sheet-lockdown-worldbuilding/releases",
+  "manifest": "https://github.com/illandril/FoundryVTT-sheet-lockdown-worldbuilding/releases/latest/download/module.json",
+  "download": "https://github.com/illandril/FoundryVTT-sheet-lockdown-worldbuilding/releases/download/v2.0.4/module.zip",
+  "compatibility": {
+    "minimum": 10,
+    "verified": 12
+  },
+  "esmodules": [
+    "module.js"
+  ],
+  "styles": [
+    "styles.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "license": "LICENSE",
+  "relationships": {
+    "systems": [
+      {
+        "id": "worldbuilding",
+        "type": "system",
+        "compatibility": {
+          "verified": "0.8.2"
+        }
+      }
+    ]
+  },
+  "media": [
+    {
+      "type": "setup",
+      "url": "https://github.com/illandril/FoundryVTT-sheet-lockdown-worldbuilding/raw/main/screenshots/setup.png"
+    },
+    {
+      "type": "cover",
+      "url": "https://github.com/illandril/FoundryVTT-sheet-lockdown-worldbuilding/raw/main/screenshots/examples-preview.png"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Joe Spandrusyszyn (illandril)",
+      "url": "https://github.com/illandril",
+      "email": "foundry-modules@illandril.net",
+      "discord": "joespan",
+      "ko-fi": "illandril",
+      "patreon": "illandril",
+      "reddit": "u/illandril"
+    }
+  ],
+  "id": "illandril-sheet-lockdown-worldbuilding",
+  "title": "Illandril's Character Sheet Lockdown (Simple World-building)",
+  "description": "Locks down character sheets (Simple World-building only) to prevent players from making changes to their character sheets. Note: This is not a secure lockdown, and player could get around it if they really wanted."
+}
