@@ -1,0 +1,31 @@
+<div class="rtucards shortcut"  style="{{style}}">
+    <div class="flexrow shortcut-line" style="{{lineStyle}}">
+        <img class="shortcut-icon draggable" 
+             src="{{icon}}">
+
+        {{#if contentDisplayed}}
+            <div class="flexrow card-list">
+                {{#each cards as |card| }}
+                    <div class="flexcol card-slot {{card.classes}}" 
+                        style="background-image: url('{{card.cardBg}}');"
+                        data-key="{{card.id}}">
+
+                    </div>
+                {{/each}}
+            </div>
+
+            {{#if summary.displayed}}
+                <div class="flexcol action-panel" style="width: 170px;">
+                    <span class="action-part">{{summary.text}}</span>
+                    <i class="far fa-eye action-part show"></i>
+                </div>
+            {{/if}}
+            {{#if navigation.displayed}}
+                <div class="flexcol action-panel">
+                    <i class="fas fa-angle-left action-part index-change {{#unless navigation.left}}disabled{{/unless}}" data-action="minus"></i>
+                    <i class="fas fa-angle-right action-part index-change {{#unless navigation.right}}disabled{{/unless}}" data-action="plus"></i>
+                </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</div>

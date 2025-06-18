@@ -1,0 +1,29 @@
+
+{
+  "id": "card-tokens",
+  "name": "card-tokens",
+  "title": "Card Tokens",
+  "description": "Drop cards onto the canvas as tokens",
+  "authors": [{"name":"Xaukael"}],
+  "version": "1.0.2",
+	"socket": true,
+  "compatibility": {
+      "minimum": "10",
+      "verified": "12"
+    },
+	"socket": true,
+  "scripts": ["card-tokens.js"],
+  "relationships": {
+      
+      "requires": [
+					{
+              "id": "socketlib",
+              "type": "module",
+              "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
+          }
+      ]
+  },
+  "url": "https://github.com/xaukael/card-tokens/",
+  "manifest": "https://github.com/xaukael/card-tokens/raw/main/module.json",
+  "download": "https://github.com/xaukael/card-tokens/raw/main/card-tokens.zip"
+}

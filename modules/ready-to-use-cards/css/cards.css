@@ -1,0 +1,383 @@
+.rtucards.cards {
+    background: unset;
+}
+.rtucards.cards .window-content {
+    background-image: unset;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.rtucards.cards .window-content .editable {
+    overflow: hidden;
+}
+.rtucards.cards .window-content .locked {
+    overflow: hidden;
+}
+
+.rtucards.cards .window-header {
+    background: black;
+}
+
+.rtucards.cards .scaled-scrollbar::-webkit-scrollbar {
+    width: 30px;
+}
+
+.rtucards.cards .scaled-scrollbar::-webkit-scrollbar-track {
+    background-color: rgba(80, 80, 80, 0.5);
+    -webkit-box-shadow: inset 0 0 20px black; 
+    box-shadow: inset 0 0 20px black; 
+    border-radius: 26px;
+    border-color: black;
+}
+ 
+.rtucards.cards .scaled-scrollbar::-webkit-scrollbar-thumb {
+    background-color: blanchedalmond;
+    -webkit-box-shadow: inset 0 0 20px black; 
+    box-shadow: inset 0 0 20px black; 
+    border-radius: 26px;
+    border-color: black;
+}
+
+.rtucards.cards .scaled-scrollbar::-webkit-scrollbar-button {
+	visibility: none;
+}
+.rtucards.cards .scaled-scrollbar::-webkit-scrollbar-corner {
+	visibility: none;
+}
+
+
+
+/*---------------------------------
+  Card slot template
+ ----------------------------------*/
+.rtucards.cards .main-card-slot {
+    flex: unset;
+    justify-content: center;
+}
+
+.rtucards.cards.resized .main-card-slot {
+    transform: scale(0.8);
+    transform-origin: top left;
+    max-width: 510px;
+    margin-right: -100px;
+}
+
+.rtucards .card-slot {
+    min-width: 470px;
+    max-width: 470px;
+    height: 772px;
+    margin: 20px;
+    padding: 20px 55px 20px 55px;
+    color: #000000cc;
+    background-repeat: no-repeat;
+    background-size: 470px 772px;
+    overflow: hidden;
+}
+
+.rtucards .card-slot.rotated {
+    transform: scale(-1);
+}
+
+
+.rtucards .card-slot .summary {
+    padding-top: 100px;
+    margin: 0px;
+    font-size: 7em;
+    text-align: center;
+    -webkit-text-fill-color: #cbceb5;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+}
+.rtucards.cards.resized .card-slot .summary {
+    padding-top: 80px;
+}
+
+/*---------------------------------
+  Current selection
+ ----------------------------------*/
+.rtucards .current-selection {
+    justify-content: center;
+    min-height: 500px;
+    max-height: 500px;
+}
+.rtucards.cards.resized .current-selection {
+    min-height: 400px;
+    max-height: 400px;
+}
+
+/*---------------------------------
+  Parameters panel
+ ----------------------------------*/
+.rtucards .current-selection .parameters-panel {
+    color: blanchedalmond;
+    align-self: flex-start;
+    overflow: hidden;
+    max-height: 850px;
+}
+.rtucards.cards.resized .current-selection .parameters-panel {
+    max-height: 680px;
+}
+
+.rtucards .parameters-panel .headers {
+    flex: unset;
+    margin-top: 20px;
+    text-align: center;
+}
+.rtucards.cards.resized .parameters-panel .headers {
+    margin-top: 16px;
+}
+
+.rtucards .parameters-panel .title {
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.rtucards .parameters-panel .cancel {
+    font-size: 1.2em;
+    flex: unset;
+    margin-right: 10px;
+}
+.rtucards.cards.resized .parameters-panel .cancel {
+    margin-right: 8px;
+}
+
+.rtucards .parameters-panel .cancel:hover {
+    cursor: pointer;
+    text-shadow: 0 0 4px white;
+}
+
+.rtucards .parameters-panel .action-button {
+    min-height: 30px;
+    line-height: 24px;
+    text-align: center;
+    border: 3px groove blanchedalmond;
+    margin-bottom: 5px;
+    background: black;
+    padding: 0px 40px;
+    max-width: fit-content;
+}
+
+.rtucards .parameters-panel .action-button:hover {
+    border-color: white;
+    text-decoration-line: underline;
+    cursor: pointer;
+}
+
+/*---------------------------------
+  Parameters panel, common components
+ ----------------------------------*/
+
+ .rtucards .parameters-panel .frame {
+    justify-content: center;
+    margin: 10px 0px;
+    padding: 5px 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: groove blanchedalmond;
+    border-radius: 8px;
+}
+
+.rtucards .parameters-panel .stack {
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 75px;
+    max-height: 100px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    background-position-x: center;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.rtucards.cards.resized .parameters-panel .stack {
+    min-width: 80px;
+    max-width: 80px;
+}
+
+
+.rtucards .parameters-panel .stack.not-here {
+    opacity: 0.8;
+}
+
+.rtucards .parameters-panel .stack.selected {
+    box-shadow: 0 0 5px white inset;
+}
+
+.rtucards .parameters-panel .stack:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px blanchedalmond inset;
+}
+
+.rtucards .parameters-panel .stack.selected:hover {
+    box-shadow: 0 0 5px white inset;
+}
+
+
+
+/*---------------------------------
+  Parameters panel - Card selection only
+ ----------------------------------*/
+.rtucards .parameters-cards .cards{
+    transform: scale(0.4);
+    transform-origin: top left;
+    margin-bottom: -1100px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: groove blanchedalmond;
+    border-radius: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 1600px;
+    max-width: 1600px;
+    min-height: 1850px;
+    max-height: 1850px;
+    overflow-y: scroll;
+}
+.rtucards.cards.resized .parameters-cards .cards {
+    transform: scale(0.32);
+    margin-bottom: -1250px;
+}
+
+.rtucards .parameters-cards .cards .card-slot.selected {
+    box-shadow: 0 0 100px white;
+}
+
+.rtucards .parameters-cards .cards .card-slot:hover {
+    cursor: pointer;
+    box-shadow: 0 0 100px blanchedalmond;
+}
+
+.rtucards .parameters-cards .cards .card-slot.selected:hover {
+    box-shadow: 0 0 100px white;
+}
+
+
+.rtucards .parameters-cards .bellow-cards {
+    margin-top: -550px;
+    margin-right: 50px;
+    margin-left: 10px;
+    justify-content: space-evenly;
+}
+
+.rtucards .parameters-cards .bellow-cards .action-button {
+    min-width: 160px;
+}
+
+.rtucards .parameters-cards .bellow-cards .action-button.change-stack {
+    color: firebrick;
+    border-color: firebrick;
+}
+
+/*---------------------------------
+  Parameters panel - Stack selection only
+ ----------------------------------*/
+ .rtucards .parameters-stacks {
+    align-items: center;
+}
+
+.rtucards .parameters-stacks .amount-edit {
+    max-width: fit-content;
+    margin: 10px;
+}
+
+.rtucards .parameters-stacks .amount-value {
+    max-width: fit-content;
+    line-height: 36px;
+}
+
+ /*---------------------------------
+  Available actions
+ ----------------------------------*/
+.rtucards .current-selection .action-panel {
+    color: blanchedalmond;
+    align-self: flex-start;
+    margin: 30px 10px 340px 10px;
+    overflow: auto;
+}
+
+.rtucards .action-panel .headers {
+    flex: unset;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+
+.rtucards .action-panel .card-action {
+    min-height: 30px;
+    line-height: 24px;
+    text-align: center;
+    border: 3px groove blanchedalmond;
+    margin-bottom: 5px;
+    background: black;
+}
+
+.rtucards .action-panel .card-action.separator {
+    margin-bottom: 25px;
+}
+
+.rtucards .action-panel .card-action:hover {
+    border-color: white;
+    text-decoration-line: underline;
+    cursor: pointer;
+}
+
+.rtucards .action-panel .card-action.red:hover {
+    border-color: red;
+    text-decoration-line: underline;
+    cursor: pointer;
+}
+
+/*---------------------------------
+  Card listing
+ ----------------------------------*/
+.rtucards .listing-panel {
+    margin-top: -210px;
+}
+.rtucards.cards.resized .listing-panel {
+    margin-top: -220px;
+}
+
+.rtucards .listing-panel .listing-icon {
+    min-width: 50px;
+    max-width: 50px;
+    font-size: 2.5em;
+    text-align: center;
+    -webkit-text-fill-color: #cbceb5;
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: black;    
+    margin-top: 200px;
+    cursor: pointer;
+}
+
+.rtucards .listing-panel .all-cards {
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.4);
+    transform-origin: top left;
+    min-height: 840px;
+    max-height: 840px;
+    min-width: 2950px;
+    overflow: scroll;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: groove;
+    border-radius: 30px;
+}
+
+.rtucards.cards.resized .listing-panel .all-cards {
+    transform: scale(0.32);
+    min-height: 830px;
+    max-height: 830px;
+}
+
+.rtucards .listing-panel .card-slot.selected {
+    box-shadow: 0 0 100px white;
+}
+
+.rtucards .listing-panel .card-slot:hover {
+    cursor: pointer;
+    box-shadow: 0 0 100px blanchedalmond;
+}
+
+.rtucards .listing-panel .card-slot.selected:hover {
+    box-shadow: 0 0 100px white;
+}
+
+

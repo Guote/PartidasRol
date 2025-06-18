@@ -1,0 +1,205 @@
+{{#* inline "deckDetails" }}
+
+    <!-- Core params -->
+    {{> coreParams params=deck.coreParams }}
+
+    <!-- Action groups -->
+    {{#each deck.groupsGui as |topLevelGroup| }}
+        {{> listConfigGroups groups=topLevelGroup }}
+    {{/each}}
+
+    <!-- Some space before next deck -->
+    <div class="deck-row details" >
+        <div class="unfolded-margin"></div>
+    </div>
+
+{{/inline}}
+
+{{#* inline "coreParams"}}
+
+    <div class="flexrow deck-row header">
+        <div>{{localize 'RTUCards.settings.config-actions.additionalData.headerDeck'}}</div>
+    </div>
+    <div class="deck-row details core-params" >
+        {{#each params as |param| }}
+            <div class="flexrow line" data-param="{{param.param}}">
+                <i class="toggle-button exact-width {{param.classes}}"></i>
+                <div class="action-param">{{param.label}}</div>
+                {{#if param.input.displayed}}
+                    <input type="text" class="param-input" value="{{param.input.text}}" >
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+
+{{/inline}}
+
+{{#* inline "listConfigGroups"}}
+
+    <div class="flexrow deck-row header">
+        <div>{{groups.header}}</div>
+    </div>
+
+    {{#each groups.list as |group| }}
+
+        <div class="deck-row details action-group" data-key="{{group.stackId}}" data-group="{{group.groupId}}">
+
+            <div class="flexrow line">
+                <i class="toggle-button exact-width group-check {{group.toggle.checkCss}}"></i>
+                <i class="toggle-button exact-width group-fold {{group.toggle.foldCss}}"></i>
+                <div>{{group.name}}</div>
+            </div>
+            {{#if group.unfolded}}
+                <!-- Description -->
+                <div class="flexrow line">
+                    <i class="toggle-button exact-width fas fa-info"></i>
+                    <div>{{group.description}}</div>
+                </div>
+
+                <!-- Radio button switching between grid and parameters -->
+                {{#if group.guiTabs.displayed }}
+                    <div class="flexrow line">
+                        <i class="toggle-button exact-width"></i>
+                        {{#each group.guiTabs.list as |tab|}}
+                            <div class="group-tab {{#if tab.selected}}selected{{/if}}" data-tab="{{tab.id}}">{{tab.header}}</div>
+                        {{/each}}
+                    </div>
+                {{/if}}
+
+                <!-- Parameters -->
+                {{#if group.guiTabs.paramDisplayed }}
+                    {{#each group.actionParameters as |param| }}
+                        {{> actionParams action=param }}
+                    {{/each}}
+                {{/if}}
+
+                <!-- Grid -->
+                {{#if group.guiTabs.gridDisplayed }}
+                    {{> actionGrid group=group }}
+                {{/if}}
+
+                <div class="unfolded-margin"></div>
+            {{/if}}
+        </div>
+    {{/each}}
+
+{{/inline}}
+
+{{#* inline "actionParams"}}
+        <div class="param-section" data-action="{{action.action}}">
+            <div class="flexrow line">
+                <i class="toggle-button exact-width fas fa-ellipsis-h"></i>
+                <div class="action-title">{{action.label.default}}</div>
+            </div>
+            <!-- First line is always here : Button label -->
+            <div class="flexrow line">
+                <i class="toggle-button exact-width far fa-closed-captioning"></i>
+                <div class="action-param">{{localize 'RTUCards.settings.config-actions.actionParams.buttonText'}}</div>
+                <input type="text" class="param-input button-text" 
+                       value="{{action.label.current}}" 
+                       placeholder="{{action.label.default}}" >
+            </div>
+            <!-- Then one line for each additional parameter -->
+            {{#each action.parameters as |param| }}
+                <div class="flexrow line">
+                    <i class="toggle-button exact-width"></i>
+                    <div class="action-param">{{param.label}}</div>
+
+                    {{#if param.checkbox.displayed }}
+                        <i class="param-boolean-input {{#if param.checkbox.default}}default{{/if}} 
+                                  far fa-{{#if param.checkbox.checked}}check-{{/if}}square"
+                           data-param="{{param.param}}" >
+                        </i>
+                    {{else}}
+                        <input  id="{{param.id}}"
+                                type="text" class="param-input real-param" 
+                                data-param="{{param.param}}"
+                                value="{{param.current}}" 
+                                placeholder="{{param.default}}"
+                                list="{{param.id}}-valid-values"
+                                title="{{param.validation.tooltip}}"
+                                {{#if param.validation.pattern}}
+                                    pattern="{{param.validation.pattern}}" 
+                                {{/if}}
+                                >
+                        <datalist id="{{param.id}}-valid-values">
+                            {{#each param.validation.datalist as |option|}}
+                                <option value="{{option}}"></option>
+                            {{/each}}
+                        </datalist>
+                    {{/if}}
+
+                </div>
+            {{/each}}
+        </div>
+{{/inline}}
+
+{{#* inline "actionGrid"}}
+    <div class="action-grid {{group.grid.css}}" data-key="{{group.stackId}}" data-group="{{group.groupId}}">
+        <div class="header right-col" style="grid-area: Fxxx;">{{group.grid.from}} →</div>
+        <div class="header left-col" style="grid-area: Txxx;">{{group.grid.target}} ↴</div>
+        <div class="header" style="grid-area: F-DE;">{{localize 'RTUCards.settings.config-actions.actionGrid.de'}}</div>
+        <div class="header" style="grid-area: F-DI;">{{localize 'RTUCards.settings.config-actions.actionGrid.di'}}</div>  
+        <div class="header" style="grid-area: F-Gx;">{{localize 'RTUCards.settings.config-actions.actionGrid.gx'}}</div>
+        <div class="header" style="grid-area: F-Px;">{{localize 'RTUCards.settings.config-actions.actionGrid.px'}}</div>
+        <div class="header" style="grid-area: F-GH;">{{localize 'RTUCards.settings.config-actions.actionGrid.hand'}}</div>
+        <div class="header" style="grid-area: F-GR;">{{localize 'RTUCards.settings.config-actions.actionGrid.revealed'}}</div>
+        <div class="header" style="grid-area: F-PH;">{{localize 'RTUCards.settings.config-actions.actionGrid.hand'}}</div>
+        <div class="header" style="grid-area: F-PR;">{{localize 'RTUCards.settings.config-actions.actionGrid.revealed'}}</div>
+
+        {{#if group.grid.lines.noTarget}}
+            <div class="header left-col" style="grid-area: T-NO;">{{localize 'RTUCards.settings.config-actions.actionGrid.noTarget'}}</div>
+        {{/if}}
+        {{#if group.grid.lines.deck}}
+            <div class="header left-col" style="grid-area: T-DE;">{{localize 'RTUCards.settings.config-actions.actionGrid.de'}}</div>
+        {{/if}}
+        {{#if group.grid.lines.discard}}
+            <div class="header left-col" style="grid-area: T-DI;">{{localize 'RTUCards.settings.config-actions.actionGrid.di'}}</div>
+        {{/if}}
+        {{#if group.grid.lines.gm}}
+            <div class="header left-col" style="grid-area: T-Gx;">{{localize 'RTUCards.settings.config-actions.actionGrid.gx'}}</div>
+            <div class="header" style="grid-area: T-GH;">{{localize 'RTUCards.settings.config-actions.actionGrid.hand'}}</div>
+            <div class="header" style="grid-area: T-GR;">{{localize 'RTUCards.settings.config-actions.actionGrid.revealed'}}</div>
+        {{/if}}
+        {{#if group.grid.lines.players}}
+            <div class="header left-col" style="grid-area: T-Px;">{{localize 'RTUCards.settings.config-actions.actionGrid.px'}}</div>
+            <div class="header" style="grid-area: T-PH;">{{localize 'RTUCards.settings.config-actions.actionGrid.hand'}}</div>
+            <div class="header" style="grid-area: T-PR;">{{localize 'RTUCards.settings.config-actions.actionGrid.revealed'}}</div>
+        {{/if}}
+
+        {{#each group.actions as |action| }}
+            <div style="grid-area: {{action.area}};" title="{{action.name.current}}" >
+                <i class="group-action {{action.classes}}" data-config="{{action.confKey}}"></i>
+            </div>
+        {{/each}}
+    </div>
+{{/inline}}
+
+<form>
+    <p class="notification info">{{localize 'RTUCards.settings.config-actions.title'}}</p>
+
+    <div class="flexcol deck-list">
+
+        {{#each stacks as |stack| }}
+            <div class="flexcol declared-deck" data-key={{stack.key}}>
+                <div class="flexrow deck-row">
+                    {{#if stack.gui.toggled}}
+                        <i class="far fa-check-square toggle-button {{#unless stack.gui.toggleLocked}}active deck{{/unless}}"></i>
+                        {{#if stack.gui.detailsDisplayed}}
+                            <i class="fas fa-sort-down toggle-button active show"></i>
+                        {{else}}
+                            <i class="fas fa-sort-up toggle-button active show"></i>
+                        {{/if}}
+                    {{else}}
+                        <i class="far fa-square toggle-button active deck"></i>
+                    {{/if}}
+                    <div>{{stack.gui.deck.name}}</div>
+                </div>
+                {{#if stack.gui.detailsDisplayed}}
+                    {{> deckDetails deck=stack }}
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+    <button class="save-stacks">{{localize "RTUCards.settings.config-actions.saveAndClose"}}</button>
+</form>

@@ -59,7 +59,7 @@ export const getBar = function (tokenDoc, barId) {
  * @returns {Object} An object containing the current and maximum value of the bar.
  */
 export const getActualBarValue = function (tokenDoc, bar, resolveValue = true) {
-    if (!bar) return { value: 0, max: 0, approximated: false };
+    if (!bar) return { value: 0, max: 0, approximated: false, subdivisionsMatchesMax: false };
 
     if (resolveValue && bar.attribute !== "custom") {
         // Resolve the attribute's value within the token's actor.
@@ -71,10 +71,11 @@ export const getActualBarValue = function (tokenDoc, bar, resolveValue = true) {
 
     // Apply approximation.
     if (bar.subdivisions && (bar.subdivisionsOwner || !tokenDoc.isOwner)) {
-        const approxValue = bar.value / (bar.max || 1) * bar.subdivisions;
+        const maxSubdivisions = bar.subdivisionsMatchesMax ? bar.max : bar.subdivitions
+        const approxValue = bar.value / (bar.max || 1) * maxSubdivisions;
         return {
             value: bar.invert ? Math.floor(approxValue) : Math.ceil(approxValue),
-            max: bar.subdivisions,
+            max: maxSubdivisions,
             approximated: true
         }
     }

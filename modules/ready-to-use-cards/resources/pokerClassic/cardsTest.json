@@ -1,0 +1,54 @@
+{
+  "name": "Testing description and faces",
+  "type": "deck",
+  "description": "For testing purpose",
+  "img": "modules/ready-to-use-cards/resources/pokerClassic/icons/back.webp",
+  "data": {},
+  "cards": [
+    {
+      "name": "The card name",
+      "description": "cards.hearts01.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts01.label",
+          "text": "Description de l'as de coeur",
+          "img": "modules/ready-to-use-cards/resources/pokerClassic/cards/card-hearts-1.svg"
+        },
+        {
+          "name": "cards.hearts07.label",
+          "text": "cards.hearts07.desc",
+          "img": "modules/ready-to-use-cards/resources/pokerClassic/cards/card-hearts-7.svg"
+        },
+        {
+          "name": "cards.hearts08.label",
+          "img": "modules/ready-to-use-cards/resources/pokerClassic/cards/card-hearts-8.svg"
+        },
+        {
+          "text": "cards.hearts09.desc",
+          "img": "modules/ready-to-use-cards/resources/pokerClassic/cards/card-hearts-9.svg"
+        },
+        {
+          "name": "Biggest value among faces",
+          "text": "cards.hearts10.desc",
+          "img": "modules/ready-to-use-cards/resources/pokerClassic/cards/card-hearts-10.svg"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    }
+  ],
+  "width": 2,
+  "height": 3,
+  "rotation": 0,
+  "displayCount": true,
+  "flags": {
+    "ready-to-use-cards": {
+      "default-parameters": {
+        "labelBaseKey" : "RTUCards.pokerClassic32.",
+        "resourceBaseDir" : "modules/ready-to-use-cards/resources/pokerClassic"
+      }
+    }
+  }
+}

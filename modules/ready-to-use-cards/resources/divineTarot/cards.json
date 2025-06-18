@@ -1,0 +1,1191 @@
+{
+  "name": "Tarot (arcanes)",
+  "type": "deck",
+  "description": "A 78 cards deck with major arcanas.",
+  "img": "modules/ready-to-use-cards/resources/divineTarot/icons/back.webp",
+  "data": {},
+  "cards": [
+    {
+      "name": "cards.hearts01.label",
+      "description": "cards.hearts01.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts01.label",
+          "text": "cards.hearts01.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_01.webp"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.hearts02.label",
+      "description": "cards.hearts02.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts02.label",
+          "text": "cards.hearts02.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_02.webp"
+        }
+      ],
+      "type": "base",
+      "value": 2
+    },
+    {
+      "name": "cards.hearts03.label",
+      "description": "cards.hearts03.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts03.label",
+          "text": "cards.hearts03.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_03.webp"
+        }
+      ],
+      "type": "base",
+      "value": 3
+    },
+    {
+      "name": "cards.hearts04.label",
+      "description": "cards.hearts04.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts04.label",
+          "text": "cards.hearts04.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_04.webp"
+        }
+      ],
+      "type": "base",
+      "value": 4
+    },
+    {
+      "name": "cards.hearts05.label",
+      "description": "cards.hearts05.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts05.label",
+          "text": "cards.hearts05.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_05.webp"
+        }
+      ],
+      "type": "base",
+      "value": 5
+    },
+    {
+      "name": "cards.hearts06.label",
+      "description": "cards.hearts06.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts06.label",
+          "text": "cards.hearts06.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_06.webp"
+        }
+      ],
+      "type": "base",
+      "value": 6
+    },
+    {
+      "name": "cards.hearts07.label",
+      "description": "cards.hearts07.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts07.label",
+          "text": "cards.hearts07.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_07.webp"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.hearts08.label",
+      "description": "cards.hearts08.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts08.label",
+          "text": "cards.hearts08.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_08.webp"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.hearts09.label",
+      "description": "cards.hearts09.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts09.label",
+          "text": "cards.hearts09.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_09.webp"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.hearts10.label",
+      "description": "cards.hearts10.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts10.label",
+          "text": "cards.hearts10.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_10.webp"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.heartsJack.label",
+      "description": "cards.heartsJack.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.heartsJack.label",
+          "text": "cards.heartsJack.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_11.webp"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.heartsKnight.label",
+      "description": "cards.heartsKnight.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.heartsKnight.label",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_12.webp"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.heartsQueen.label",
+      "description": "cards.heartsQueen.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.heartsQueen.label",
+          "text": "cards.heartsQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_13.webp"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+    {
+      "name": "cards.heartsKing.label",
+      "description": "cards.heartsKing.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.heartsKing.label",
+          "text": "cards.heartsKing.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/hearts_14.webp"
+        }
+      ],
+      "type": "base",
+      "value": 14
+    },
+
+    {
+      "name": "cards.spades01.label",
+      "description": "cards.spades01.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades01.label",
+          "text": "cards.spades01.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_01.webp"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.spades02.label",
+      "description": "cards.spades02.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades02.label",
+          "text": "cards.spades02.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_02.webp"
+        }
+      ],
+      "type": "base",
+      "value": 2
+    },
+    {
+      "name": "cards.spades03.label",
+      "description": "cards.spades03.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades03.label",
+          "text": "cards.spades03.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_03.webp"
+        }
+      ],
+      "type": "base",
+      "value": 3
+    },
+    {
+      "name": "cards.spades04.label",
+      "description": "cards.spades04.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades04.label",
+          "text": "cards.spades04.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_04.webp"
+        }
+      ],
+      "type": "base",
+      "value": 4
+    },
+    {
+      "name": "cards.spades05.label",
+      "description": "cards.spades05.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades05.label",
+          "text": "cards.spades05.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_05.webp"
+        }
+      ],
+      "type": "base",
+      "value": 5
+    },
+    {
+      "name": "cards.spades06.label",
+      "description": "cards.spades06.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades06.label",
+          "text": "cards.spades06.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_06.webp"
+        }
+      ],
+      "type": "base",
+      "value": 6
+    },
+    {
+      "name": "cards.spades07.label",
+      "description": "cards.spades07.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades07.label",
+          "text": "cards.spades07.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_07.webp"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.spades08.label",
+      "description": "cards.spades08.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades08.label",
+          "text": "cards.spades08.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_08.webp"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.spades09.label",
+      "description": "cards.spades09.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades09.label",
+          "text": "cards.spades09.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_09.webp"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.spades10.label",
+      "description": "cards.spades10.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades10.label",
+          "text": "cards.spades10.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_10.webp"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.spadesJack.label",
+      "description": "cards.spadesJack.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spadesJack.label",
+          "text": "cards.spadesJack.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_11.webp"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.spadesKnight.label",
+      "description": "cards.spadesKnight.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spadesKnight.label",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_12.webp"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.spadesQueen.label",
+      "description": "cards.spadesQueen.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spadesQueen.label",
+          "text": "cards.spadesQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_13.webp"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+    {
+      "name": "cards.spadesKing.label",
+      "description": "cards.spadesKing.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spadesKing.label",
+          "text": "cards.spadesKing.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/spades_14.webp"
+        }
+      ],
+      "type": "base",
+      "value": 14
+    },
+
+    {
+      "name": "cards.diamonds01.label",
+      "description": "cards.diamonds01.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds01.label",
+          "text": "cards.diamonds01.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_01.webp"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.diamonds02.label",
+      "description": "cards.diamonds02.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds02.label",
+          "text": "cards.diamonds02.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_02.webp"
+        }
+      ],
+      "type": "base",
+      "value": 2
+    },
+    {
+      "name": "cards.diamonds03.label",
+      "description": "cards.diamonds03.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds03.label",
+          "text": "cards.diamonds03.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_03.webp"
+        }
+      ],
+      "type": "base",
+      "value": 3
+    },
+    {
+      "name": "cards.diamonds04.label",
+      "description": "cards.diamonds04.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds04.label",
+          "text": "cards.diamonds04.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_04.webp"
+        }
+      ],
+      "type": "base",
+      "value": 4
+    },
+    {
+      "name": "cards.diamonds05.label",
+      "description": "cards.diamonds05.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds05.label",
+          "text": "cards.diamonds05.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_05.webp"
+        }
+      ],
+      "type": "base",
+      "value": 5
+    },
+    {
+      "name": "cards.diamonds06.label",
+      "description": "cards.diamonds06.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds06.label",
+          "text": "cards.diamonds06.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_06.webp"
+        }
+      ],
+      "type": "base",
+      "value": 6
+    },
+    {
+      "name": "cards.diamonds07.label",
+      "description": "cards.diamonds07.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds07.label",
+          "text": "cards.diamonds07.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_07.webp"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.diamonds08.label",
+      "description": "cards.diamonds08.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds08.label",
+          "text": "cards.diamonds08.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_08.webp"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.diamonds09.label",
+      "description": "cards.diamonds09.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds09.label",
+          "text": "cards.diamonds09.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_09.webp"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.diamonds10.label",
+      "description": "cards.diamonds10.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds10.label",
+          "text": "cards.diamonds10.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_10.webp"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.diamondsJack.label",
+      "description": "cards.diamondsJack.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamondsJack.label",
+          "text": "cards.diamondsJack.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_11.webp"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.diamondsKnight.label",
+      "description": "cards.diamondsKnight.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamondsKnight.label",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_12.webp"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.diamondsQueen.label",
+      "description": "cards.diamondsQueen.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamondsQueen.label",
+          "text": "cards.diamondsQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_13.webp"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+    {
+      "name": "cards.diamondsKing.label",
+      "description": "cards.diamondsKing.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamondsKing.label",
+          "text": "cards.diamondsKing.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/diamonds_14.webp"
+        }
+      ],
+      "type": "base",
+      "value": 14
+    },
+
+    {
+      "name": "cards.clubs01.label",
+      "description": "cards.clubs01.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs01.label",
+          "text": "cards.clubs01.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_01.webp"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.clubs02.label",
+      "description": "cards.clubs02.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs02.label",
+          "text": "cards.clubs02.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_02.webp"
+        }
+      ],
+      "type": "base",
+      "value": 2
+    },
+    {
+      "name": "cards.clubs03.label",
+      "description": "cards.clubs03.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs03.label",
+          "text": "cards.clubs03.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_03.webp"
+        }
+      ],
+      "type": "base",
+      "value": 3
+    },
+    {
+      "name": "cards.clubs04.label",
+      "description": "cards.clubs04.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs04.label",
+          "text": "cards.clubs04.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_04.webp"
+        }
+      ],
+      "type": "base",
+      "value": 4
+    },
+    {
+      "name": "cards.clubs05.label",
+      "description": "cards.clubs05.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs05.label",
+          "text": "cards.clubs05.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_05.webp"
+        }
+      ],
+      "type": "base",
+      "value": 5
+    },
+    {
+      "name": "cards.clubs06.label",
+      "description": "cards.clubs06.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs06.label",
+          "text": "cards.clubs06.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_06.webp"
+        }
+      ],
+      "type": "base",
+      "value": 6
+    },
+    {
+      "name": "cards.clubs07.label",
+      "description": "cards.clubs07.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs07.label",
+          "text": "cards.clubs07.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_07.webp"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.clubs08.label",
+      "description": "cards.clubs08.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs08.label",
+          "text": "cards.clubs08.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_08.webp"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.clubs09.label",
+      "description": "cards.clubs09.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs09.label",
+          "text": "cards.clubs09.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_09.webp"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.clubs10.label",
+      "description": "cards.clubs10.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs10.label",
+          "text": "cards.clubs10.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_10.webp"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.clubsJack.label",
+      "description": "cards.clubsJack.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubsJack.label",
+          "text": "cards.clubsJack.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_11.webp"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.clubsKnight.label",
+      "description": "cards.clubsKnight.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubsKnight.label",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_12.webp"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.clubsQueen.label",
+      "description": "cards.clubsQueen.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubsQueen.label",
+          "text": "cards.clubsQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_13.webp"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+    {
+      "name": "cards.clubsKing.label",
+      "description": "cards.clubsKing.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubsKing.label",
+          "text": "cards.clubsKing.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/clubs_14.webp"
+        }
+      ],
+      "type": "base",
+      "value": 14
+    },
+
+    {
+      "name": "cards.trumps00.label",
+      "description": "cards.trumps00.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps00.label",
+          "text": "cards.trumps00.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_00.webp"
+        }
+      ],
+      "type": "base",
+      "value": 0
+    },
+    {
+      "name": "cards.trumps01.label",
+      "description": "cards.trumps01.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps01.label",
+          "text": "cards.trumps01.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_01.webp"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.trumps02.label",
+      "description": "cards.trumps02.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps02.label",
+          "text": "cards.trumps02.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_02.webp"
+        }
+      ],
+      "type": "base",
+      "value": 2
+    },
+    {
+      "name": "cards.trumps03.label",
+      "description": "cards.trumps03.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps03.label",
+          "text": "cards.trumps03.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_03.webp"
+        }
+      ],
+      "type": "base",
+      "value": 3
+    },
+    {
+      "name": "cards.trumps04.label",
+      "description": "cards.trumps04.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps04.label",
+          "text": "cards.trumps04.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_04.webp"
+        }
+      ],
+      "type": "base",
+      "value": 4
+    },
+    {
+      "name": "cards.trumps05.label",
+      "description": "cards.trumps05.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps05.label",
+          "text": "cards.trumps05.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_05.webp"
+        }
+      ],
+      "type": "base",
+      "value": 5
+    },
+    {
+      "name": "cards.trumps06.label",
+      "description": "cards.trumps06.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps06.label",
+          "text": "cards.trumps06.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_06.webp"
+        }
+      ],
+      "type": "base",
+      "value": 6
+    },
+    {
+      "name": "cards.trumps07.label",
+      "description": "cards.trumps07.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps07.label",
+          "text": "cards.trumps07.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_07.webp"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.trumps08.label",
+      "description": "cards.trumps08.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps08.label",
+          "text": "cards.trumps08.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_08.webp"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.trumps09.label",
+      "description": "cards.trumps09.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps09.label",
+          "text": "cards.trumps09.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_09.webp"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.trumps10.label",
+      "description": "cards.trumps10.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps10.label",
+          "text": "cards.trumps10.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_10.webp"
+        }
+      ],
+      "type": "base",
+      "value": 0
+    },
+    {
+      "name": "cards.trumps11.label",
+      "description": "cards.trumps11.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps11.label",
+          "text": "cards.trumps11.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_11.webp"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.trumps12.label",
+      "description": "cards.trumps12.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps12.label",
+          "text": "cards.trumps12.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_12.webp"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.trumps13.label",
+      "description": "cards.trumps13.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps13.label",
+          "text": "cards.trumps13.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_13.webp"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+    {
+      "name": "cards.trumps14.label",
+      "description": "cards.trumps14.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps14.label",
+          "text": "cards.trumps14.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_14.webp"
+        }
+      ],
+      "type": "base",
+      "value": 14
+    },
+    {
+      "name": "cards.trumps15.label",
+      "description": "cards.trumps15.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps15.label",
+          "text": "cards.trumps15.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_15.webp"
+        }
+      ],
+      "type": "base",
+      "value": 15
+    },
+    {
+      "name": "cards.trumps16.label",
+      "description": "cards.trumps16.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps16.label",
+          "text": "cards.trumps16.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_16.webp"
+        }
+      ],
+      "type": "base",
+      "value": 16
+    },
+    {
+      "name": "cards.trumps17.label",
+      "description": "cards.trumps17.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps17.label",
+          "text": "cards.trumps17.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_17.webp"
+        }
+      ],
+      "type": "base",
+      "value": 17
+    },
+    {
+      "name": "cards.trumps18.label",
+      "description": "cards.trumps18.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps18.label",
+          "text": "cards.trumps18.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_18.webp"
+        }
+      ],
+      "type": "base",
+      "value": 18
+    },
+    {
+      "name": "cards.trumps19.label",
+      "description": "cards.trumps19.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps19.label",
+          "text": "cards.trumps19.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_19.webp"
+        }
+      ],
+      "type": "base",
+      "value": 19
+    },
+    {
+      "name": "cards.trumps20.label",
+      "description": "cards.trumps20.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps20.label",
+          "text": "cards.trumps20.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_20.webp"
+        }
+      ],
+      "type": "base",
+      "value": 20
+    },
+    {
+      "name": "cards.trumps21.label",
+      "description": "cards.trumps21.desc",
+      "suit": "trumps",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.trumps21.label",
+          "text": "cards.trumps21.desc",
+          "img": "modules/ready-to-use-cards/resources/divineTarot/cards/trumps_21.webp"
+        }
+      ],
+      "type": "base",
+      "value": 21
+    }
+  ],
+  "width": 2,
+  "height": 4,
+  "rotation": 0,
+  "displayCount": true,
+  "flags": {
+    "ready-to-use-cards": {
+      "default-parameters": {
+        "labelBaseKey" : "RTUCards.divineTarot.",
+        "resourceBaseDir" : "modules/ready-to-use-cards/resources/divineTarot"
+      }
+    }
+  }
+}

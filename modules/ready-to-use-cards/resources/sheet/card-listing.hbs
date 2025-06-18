@@ -1,0 +1,24 @@
+<div class="rtucards rtucards-message table-draw">
+    <ol class="table-results">
+        {{#each cards as |card|}}
+            <li class="flexrow table-result">
+                <img class="result-image" src="{{card.icon}}">
+                <div class="result-text">
+                    <a class="card-link" 
+                        data-player="{{card.player}}" 
+                        data-ref="{{card.ref}}"
+                        data-type="{{card.type}}"
+                        data-rotated="{{card.rotated}}">
+                        <i class="fas fa-suitcase"></i>&nbsp;{{card.name}}
+                    </a></div>
+            </li>
+            {{#each card.description as |line|}}
+                <li class="card-description">{{line}}</li>
+            {{/each}}
+            {{#if card.image}}
+                {{{card.image.htmlDiv}}}
+            {{/if}}
+
+        {{/each}}
+    </ol>
+</div>

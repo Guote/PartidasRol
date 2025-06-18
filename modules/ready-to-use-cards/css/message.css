@@ -1,0 +1,40 @@
+/* ------------------------
+  For card  manipulation
+  ------------------------*/
+
+.rtucards-message .result-image {
+  border: none;
+}
+
+.rtucards-message .result-text {
+  flex: 0 0 50px;
+}
+
+.rtucards-message .result-text.flavor {
+  min-width: 200px;
+  font-size: var(--font-size-12);
+}
+
+.rtucards-message .card-description {
+  font-style: oblique;
+  margin-left: 40px;
+}
+
+.rtucards-message .card-link {
+  background: #DDD;
+  padding: 1px 4px;
+  border: 1px solid #4b4a44;
+  border-radius: 2px;
+  white-space: nowrap;
+  word-break: break-all;  
+}
+
+/* ------------------------
+  For card  image in chat
+  ------------------------*/
+.rtucards-message .card-slot {
+  transform: scale(0.5);
+  transform-origin: top left;
+  margin-bottom: -370px;
+}
+

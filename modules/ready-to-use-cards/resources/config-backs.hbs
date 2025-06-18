@@ -1,0 +1,16 @@
+<form>
+    <p class="notification info">{{header}}</p>
+
+    {{#each lines as |line|}}
+        <div class="flexrow category-line">
+            <span class="line-title">{{line.title}}</span>
+            {{#each line.columns as |column|}}
+                <div class="flexcol img-col" title="{{column.img}}" data-type="{{column.type}}" data-target="{{column.target}}">
+                    <img class="{{column.type}}" src="{{column.img}}">
+                    <span>{{column.legend}}</span>
+                </div>
+            {{/each}}
+        </div>
+    {{/each}}
+
+</form>

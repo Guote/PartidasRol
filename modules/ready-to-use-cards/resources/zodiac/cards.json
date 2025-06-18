@@ -1,0 +1,200 @@
+{
+  "name": "Zodiac signs",
+  "type": "deck",
+  "description": "A small game with 12 cards, one for each sign.",
+  "img": "modules/ready-to-use-cards/resources/zodiac/icons/back.webp",
+  "data": {},
+  "cards": [
+    {
+      "name": "cards.zodiac01.label",
+      "description": "cards.zodiac01.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac01.label",
+          "text": "cards.zodiac01.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/aquarius.webp"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.zodiac02.label",
+      "description": "cards.zodiac02.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac02.label",
+          "text": "cards.zodiac02.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/aries.webp"
+        }
+      ],
+      "type": "base",
+      "value": 2
+    },
+    {
+      "name": "cards.zodiac03.label",
+      "description": "cards.zodiac03.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac03.label",
+          "text": "cards.zodiac03.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/cancer.webp"
+        }
+      ],
+      "type": "base",
+      "value": 3
+    },
+    {
+      "name": "cards.zodiac04.label",
+      "description": "cards.zodiac04.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac04.label",
+          "text": "cards.zodiac04.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/capricorn.webp"
+        }
+      ],
+      "type": "base",
+      "value": 4
+    },
+    {
+      "name": "cards.zodiac05.label",
+      "description": "cards.zodiac05.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac05.label",
+          "text": "cards.zodiac05.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/gemini.webp"
+        }
+      ],
+      "type": "base",
+      "value": 5
+    },
+    {
+      "name": "cards.zodiac06.label",
+      "description": "cards.zodiac06.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac06.label",
+          "text": "cards.zodiac06.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/leo.webp"
+        }
+      ],
+      "type": "base",
+      "value": 6
+    },
+    {
+      "name": "cards.zodiac07.label",
+      "description": "cards.zodiac07.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac07.label",
+          "text": "cards.zodiac07.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/libra.webp"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.zodiac08.label",
+      "description": "cards.zodiac08.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac08.label",
+          "text": "cards.zodiac08.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/pisces.webp"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.zodiac09.label",
+      "description": "cards.zodiac09.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac09.label",
+          "text": "cards.zodiac09.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/sagittarius.webp"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.zodiac10.label",
+      "description": "cards.zodiac10.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiac10.label",
+          "text": "cards.zodiac10.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/scorpio.webp"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.zodiac11.label",
+      "description": "cards.zodiac11.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiacJack.label",
+          "text": "cards.zodiacJack.desc",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/taurus.webp"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.zodiac12.label",
+      "description": "cards.zodiac12.desc",
+      "suit": "zodiac",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.zodiacKnight.label",
+          "img": "modules/ready-to-use-cards/resources/zodiac/cards/virgo.webp"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    }
+  ],
+  "width": 2,
+  "height": 4,
+  "rotation": 0,
+  "displayCount": true,
+  "flags": {
+    "ready-to-use-cards": {
+      "default-parameters": {
+        "labelBaseKey" : "RTUCards.zodiac.",
+        "resourceBaseDir" : "modules/ready-to-use-cards/resources/zodiac"
+      }
+    }
+  }
+}

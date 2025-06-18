@@ -1,0 +1,77 @@
+/* ------------------------
+  Config panel for choosing decks
+  ------------------------*/
+.rtucards.shortcut {
+  position: fixed;
+  z-index: 59; /* Behind the pause icon */
+  padding: 4px;
+  border: 3px groove;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.rtucards.shortcut .shortcut-line {
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+.rtucards.shortcut .shortcut-icon {
+  flex: unset;
+  border: none;
+  width: 500px;
+  height: 772px;
+  margin-right: 20px;
+  cursor: move;
+}
+
+.rtucards.shortcut .card-list {
+  overflow: auto;
+  max-height: 820px;
+}
+
+.rtucards.shortcut .card-slot {
+  min-width: 470px;
+  max-width: 470px;
+  height: 772px;
+  padding: 20px 55px 20px 55px;
+  margin-left: 30px;
+  color: #000000cc;
+  background-repeat: no-repeat;
+  background-size: 470px 772px;
+  overflow: hidden;
+}
+
+.rtucards.shortcut .card-slot.rotated {
+  transform: scale(-1);
+}
+
+.rtucards.shortcut .card-slot:hover {
+  cursor: pointer;
+  box-shadow: 0 0 100px blanchedalmond;
+}
+
+.rtucards.shortcut .action-panel {
+  flex: unset;
+  width: 100px;
+  margin-left: 20px;
+  justify-content: space-evenly;
+}
+
+.rtucards.shortcut .action-panel .action-part {
+  flex: unset;
+  font-size: 10em;
+  text-align: center;
+  -webkit-text-fill-color: #cbceb5;
+  -webkit-text-stroke-color: black;    
+}
+
+.rtucards.shortcut .action-panel .action-part.disabled {
+  opacity: 0.5;
+}
+
+.rtucards.shortcut .action-panel i.action-part:hover {
+  cursor: pointer;
+  text-shadow: 0 0 20px blanchedalmond;
+}
+
+

@@ -1,0 +1,30 @@
+<form>
+    <p class="notification info">{{localize 'RTUCards.settings.config-shortcuts.title'}}</p>
+
+    {{#each stacks as |stack| }}
+        <div class="flexcol stack-panel" data-stack="{{stack.key}}">
+            <div class="flexrow title-line">
+                {{#if stack.used}}
+                    <i class="far fa-check-square toggle-button"></i>
+                {{else}}
+                    <i class="far fa-square toggle-button"></i>
+                {{/if}}
+                <span class="title">{{stack.title}}</span>
+            </div>
+            <div class="flexrow">
+                <span class="header">{{localize 'RTUCards.settings.config-shortcuts.headers.shortcutIcon'}}</span>
+                <input type="text" class="icon-input" value="{{stack.icon}}" >
+            </div>
+            <div class="flexrow">
+                <span class="header">{{localize 'RTUCards.settings.config-shortcuts.headers.maxPerLine'}} {{stack.maxPerLine}}</span>
+                <input type="range" class="max-cards" min="0" max="20" value="{{stack.maxPerLine}}" >
+            </div>
+            <div class="flexrow">
+                <span class="header">{{localize 'RTUCards.settings.config-shortcuts.headers.cardScale'}} {{stack.scalePercent}}%</span>
+                <input type="range" class="card-scale" min="1" max="30" value="{{stack.scalePercent}}" >
+            </div>
+        </div>
+    {{/each}}
+
+    <button class="reset-stacks">{{localize "RTUCards.settings.config-shortcuts.reset"}}</button>
+</form>
