@@ -1,0 +1,26 @@
+{
+  "Actor": {
+    "types": ["character"],
+    "templates": {
+      "common": {
+        "actorType": null
+      }
+    },
+    "character": {
+      "templates": ["common"]
+    }
+  },
+  "Item": {
+    "types": ["asset"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "asset": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0
+    }
+  }
+}

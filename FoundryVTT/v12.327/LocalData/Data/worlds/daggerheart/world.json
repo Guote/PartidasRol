@@ -1,0 +1,14 @@
+{
+  "title": "Daggerheart",
+  "id": "daggerheart",
+  "system": "worldbuilding",
+  "joinTheme": "default",
+  "coreVersion": "12.327",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "systemVersion": "0.8.2",
+  "lastPlayed": "Sat Jun 21 2025 13:23:33 GMT+0200 (hora de verano de Europa central)",
+  "playtime": 278
+}

@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 5
+    },
+    "auditLog": "C:\\FoundryVTT\\v12.327\\LocalData\\Logs\\.0e4732b381ae8d3e044b69973490cd8e161d207c-audit.json",
+    "files": [
+        {
+            "date": 1750504719289,
+            "name": "C:\\FoundryVTT\\v12.327\\LocalData\\Logs\\debug.2025-06-21.log",
+            "hash": "e52b26c9bd58a5b814f14ba88d55a822cd71499df50858577d97797ae31f6926"
+        },
+        {
+            "date": 1750600423820,
+            "name": "C:\\FoundryVTT\\v12.327\\LocalData\\Logs\\debug.2025-06-22.log",
+            "hash": "cf8515a5220639e5e1296b0ebde379fc2319f4bd3bacb73485cd5f2d2738b6a2"
+        }
+    ],
+    "hashType": "sha256"
+}

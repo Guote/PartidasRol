@@ -1,0 +1,41 @@
+<div id="svelte-app"></div>
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="level"
+}}
+  {{#>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+  }}
+    {{>
+    "systems/animabf/templates/common/ui/add-item-button.hbs"
+      data="add-level"
+    }}
+    {{>
+    "systems/animabf/templates/common/ui/group-header-title.hbs"
+      title=(localize 'anima.ui.levelSection.title')
+    }}
+    <input type='number' class='input' value='{{calculateLevels system.general.levels}}' disabled='true'/>
+  {{/"systems/animabf/templates/common/ui/group-header.hbs"}}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="level"
+  }}
+    {{#each system.general.levels as |level|}}
+      <div data-item-id='{{level._id}}' class='level-row'>
+        {{>
+        "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+          class="name"
+          hideTitle=true
+          inputType="text"
+          inputName=(concat "system.dynamic.levels." level._id ".name")
+          inputValue=level.name
+        }}
+        {{>
+        "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+          class="level"
+          hideTitle=true
+          inputName=(concat "system.dynamic.levels." level._id ".system.level")
+          inputValue=level.system.level
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

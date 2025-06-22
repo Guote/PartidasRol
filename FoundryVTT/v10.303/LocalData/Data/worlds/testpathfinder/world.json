@@ -1,0 +1,11 @@
+{
+  "title": "testPathfinder",
+  "id": "testpathfinder",
+  "system": "pf1",
+  "coreVersion": "10.303",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
+  "systemVersion": "9.6"
+}

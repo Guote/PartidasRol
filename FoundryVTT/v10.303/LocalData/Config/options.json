@@ -1,0 +1,22 @@
+{
+  "dataPath": "C:/FoundryVTT/v10.303/LocalData",
+  "compressStatic": true,
+  "fullscreen": false,
+  "hostname": null,
+  "language": "en.core",
+  "localHostname": null,
+  "port": 30000,
+  "protocol": null,
+  "proxyPort": null,
+  "proxySSL": false,
+  "routePrefix": null,
+  "updateChannel": "stable",
+  "upnp": false,
+  "upnpLeaseDuration": null,
+  "awsConfig": null,
+  "passwordSalt": null,
+  "sslCert": null,
+  "sslKey": null,
+  "world": null,
+  "serviceConfig": null
+}

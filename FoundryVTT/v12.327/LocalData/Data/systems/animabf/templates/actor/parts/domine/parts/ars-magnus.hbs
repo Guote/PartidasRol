@@ -1,0 +1,23 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="ars-magnus"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.domine.arsMagnus.title")
+    addRowButtonData="add-ars-magnus"
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="ars-magnus"
+  }}
+    {{#each system.domine.arsMagnus as |arsMagnus|}}
+      <div data-item-id='{{arsMagnus._id}}' class='ars-magnus-row'>
+        <input
+          name='system.dynamic.arsMagnus.{{arsMagnus._id}}.name'
+          type='text'
+          class='input'
+          value='{{arsMagnus.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

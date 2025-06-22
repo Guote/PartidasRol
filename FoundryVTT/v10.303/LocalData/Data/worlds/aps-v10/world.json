@@ -1,0 +1,11 @@
+{
+  "title": "APS v10",
+  "id": "aps-v10",
+  "system": "animabf-guote",
+  "coreVersion": "10.303",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
+  "systemVersion": "1.16.0"
+}

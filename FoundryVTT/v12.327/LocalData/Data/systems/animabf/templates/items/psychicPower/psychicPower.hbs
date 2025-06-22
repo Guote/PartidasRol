@@ -1,0 +1,125 @@
+{{#> "systems/animabf/templates/items/base/base-sheet.hbs"}}
+  {{#> "systems/animabf/templates/common/ui/group.hbs"
+    class="psychic-power-item-dialog"
+  }}
+    {{#> "systems/animabf/templates/common/ui/group.hbs"
+      class="psychic-power"
+    }}
+      {{#> "systems/animabf/templates/common/ui/group-header.hbs"}}
+        <div class='psychic-power-header'>
+          <div class='first-row'>
+            {{>
+            "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+              class="name"
+              hideTitle=true
+              inputType="text"
+              inputName=(concat "name")
+              inputValue=item.name
+            }}
+          </div>
+          <div class='second-row'>
+            {{>
+            "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+              class="level"
+              title=(localize "anima.ui.psychic.psychicPowers.power.header.level.title")
+              inputType="text"
+              inputName=(concat "system.level.value")
+              inputValue=system.level.value
+            }}
+            {{>
+            'systems/animabf/templates/common/ui/custom-select-choices.hbs'
+              class="combat-type"
+              choices=xRoot.config.iterables.psychic.combatTypes
+              title=(localize "anima.ui.psychic.psychicPowers.power.header.combatType.title")
+              inputName=(concat "system.combatType.value")
+              inputValue=system.combatType.value
+            }}
+            {{>
+            'systems/animabf/templates/common/ui/custom-select-choices.hbs'
+              class="discipline"
+              choices=xRoot.config.iterables.psychic.disciplines
+              title=(localize "anima.ui.psychic.psychicPowers.power.header.discipline.title")
+              inputName=(concat "system.discipline.value")
+              inputValue=system.discipline.value
+            }}
+            {{>
+            'systems/animabf/templates/common/ui/custom-select-choices.hbs'
+              class="action-type"
+              choices=xRoot.config.iterables.psychic.actionTypes
+              title=(localize "anima.ui.psychic.psychicPowers.power.header.actionType.title")
+              inputName=(concat "system.actionType.value")
+              inputValue=system.actionType.value
+            }}
+          </div>
+        </div>
+      {{/"systems/animabf/templates/common/ui/group-header.hbs"}}
+      {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+        class="psychic-power"
+      }}
+        {{#each system.effects as |effect key|}}
+          <div class='effect-row'>
+            <input
+              type='text'
+              class='input difficulty'
+              disabled
+              value='{{key}}'
+            />
+            <input
+              type='text'
+              class='input description'
+              name='{{concat "system.effects." key ".value"}}'
+              value='{{effect.value}}'
+            />
+          </div>
+        {{/each}}
+        {{>
+        "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+          class="macro"
+          title=(localize "anima.ui.psychic.psychicPowers.power.header.macro.title")
+          inputType="text"
+          inputName=(concat "system.macro")
+          inputValue=system.macro
+        }}
+        <div class="description">
+          <p class='label'>{{localize "anima.ui.descriptionSection.title"}}</p>
+          {{editor system.enrichedDescription target="system.description.value" button=true owner=true editable=true}}
+        </div>
+      {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+      {{#> "systems/animabf/templates/common/ui/group-footer.hbs"}}
+        <div class='psychic-power-footer'>
+          {{>
+          "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+            class="has-maintenance"
+            title=(localize "anima.ui.psychic.psychicPowers.power.footer.hasMaintenance.title")
+            inputType="checkbox"
+            inputName=(concat "system.hasMaintenance.value")
+            inputValue=(is 'eq' system.hasMaintenance.value true)
+          }}
+          {{>
+          "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+            class="visible"
+            title=(localize "anima.ui.psychic.psychicPowers.power.footer.visible.title")
+            inputType="checkbox"
+            inputName=(concat "system.visible")
+            inputValue=(is 'eq' system.visible true)
+          }}
+          {{>
+          'systems/animabf/templates/common/ui/custom-select-choices.hbs'
+            class="critic"
+            title=(localize "anima.ui.psychic.psychicPowers.power.footer.critic.title")
+            choices=xRoot.config.iterables.combat.weapon.criticTypesWithNone
+            inputName=(concat "system.critic.value")
+            inputValue=system.critic.value
+          }}
+          {{>
+          "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+            class="bonus"
+            title=(localize "anima.ui.psychic.psychicPowers.power.footer.bonus.title")
+            inputName=(concat "system.bonus.value")
+            inputValue=system.bonus.value
+          }}
+        </div>
+      {{/"systems/animabf/templates/common/ui/group-footer.hbs"}}
+    {{/"systems/animabf/templates/common/ui/group.hbs"}}
+  {{/"systems/animabf/templates/common/ui/group.hbs"}}
+{{/"systems/animabf/templates/items/base/base-sheet.hbs"}}

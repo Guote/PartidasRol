@@ -1,0 +1,29 @@
+{
+    "id": "inline-macro-execution",
+    "title": "Inline Macro Execution",
+    "description": "Create inline macro executions with arguments",
+    "authors": [
+        {
+            "name": "Mesayah",
+            "discord": "mesayah#5042",
+            "email": "f.piechowski@gmail.com",
+            "url": "https://github.com/fpiechowski"
+        }
+    ],
+    "version": "1.1.0",
+    "compatibility": {
+        "minimum": "10",
+        "verified": "11"
+    },
+    "esmodules": [
+        "scripts/inline-macro-execution.js"
+    ],
+    "styles": [
+        "css/inline-macro-execution.css"
+    ],
+    "url": "https://github.com/fpiechowski/inline-macro-execution",
+    "manifest": "https://github.com/fpiechowski/inline-macro-execution/releases/latest/download/module.json",
+    "download": "https://github.com/fpiechowski/inline-macro-execution/releases/download/1.1.0/module.zip",
+    "changelog": "https://github.com/fpiechowski/inline-macro-execution/blob/master/CHANGELOG.md",
+    "readme": "https://github.com/fpiechowski/inline-macro-execution/blob/master/README.md"
+}

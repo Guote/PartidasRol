@@ -1,0 +1,11 @@
+{
+  "title": "textcortex",
+  "id": "textcortex",
+  "system": "cortexprime",
+  "coreVersion": "10.303",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
+  "systemVersion": "0.2.7"
+}

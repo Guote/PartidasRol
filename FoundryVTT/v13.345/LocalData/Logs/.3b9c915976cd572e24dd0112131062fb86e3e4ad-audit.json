@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 5
+    },
+    "auditLog": "C:\\FoundryVTT\\v13.345 - Node\\LocalData\\Logs\\.3b9c915976cd572e24dd0112131062fb86e3e4ad-audit.json",
+    "files": [
+        {
+            "date": 1750504856124,
+            "name": "C:\\FoundryVTT\\v13.345 - Node\\LocalData\\Logs\\debug.2025-06-21.log",
+            "hash": "ae7517bceee10e21ad428d2344873def31b7f95851a6d567c68c86980707df51"
+        }
+    ],
+    "hashType": "sha256"
+}

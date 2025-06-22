@@ -1,0 +1,32 @@
+id: simple-worldbuilding-plus
+title: Simple Worldbuilding Plus
+description: Adds roll rendering to the character sheet description and adds setting to define derived attributes.
+authors:
+  - name: Asacolips
+version: 1.2.1
+minimumCoreVersion: 11
+compatibleCoreVersion: 12
+compatibility:
+  minimum: 11
+  maximum: 12
+  verified: 12.327
+esmodules:
+  - module/simple-worldbuilding-plus.js
+styles:
+  - styles/dist/simple-worldbuilding-plus.css
+relationships:
+  systems:
+    - id: worldbuilding
+      type: system
+      manifest: https://raw.githubusercontent.com/foundryvtt/worldbuilding/release-082/system.json
+      compatability:
+        minimum: 0.8.2
+        verified: 0.8.2
+languages:
+  - lang: en
+    name: English
+    path: lang/en.json
+url: https://gitlab.com/asacolips-projects/foundry-mods/simple-worldbuilding-plus
+manifest: https://gitlab.com/asacolips-projects/foundry-mods/simple-worldbuilding-plus/raw/master/module.json
+download: https://gitlab.com/asacolips-projects/foundry-mods/simple-worldbuilding-plus/-/archive/1.2.1/simple-worldbuilding-plus-master.zip
+changelog: https://gitlab.com/asacolips-projects/foundry-mods/simple-worldbuilding-plus/-/raw/master/CHANGELOG.md

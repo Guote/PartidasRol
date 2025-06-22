@@ -1,0 +1,15 @@
+.breadcrumb {
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &.active {
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: none;
+      cursor: default;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="selected-spells"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.mystic.selectedSpells.title")
+    addRowButtonData="add-selected-spell"
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="selected-spells"
+  }}
+    {{#each system.mystic.selectedSpells as |spell|}}
+      <div data-item-id='{{this._id}}' class='selected-spell-row'>
+        {{>
+        "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+          class="name"
+          title=(localize "anima.ui.mystic.selectedSpells.name.title")
+          hideTitle=(is "gt" @index 0)
+          inputType="text"
+          inputName=(concat "system.dynamic.selectedSpells." this._id ".name")
+          inputValue=this.name
+        }}
+        {{>
+        "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+          class="cost"
+          title=(localize "anima.ui.mystic.selectedSpells.cost.title")
+          hideTitle=(is "gt" @index 0)
+          inputName=(concat "system.dynamic.selectedSpells." this._id ".system.cost.value")
+          inputValue=this.system.cost.value
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

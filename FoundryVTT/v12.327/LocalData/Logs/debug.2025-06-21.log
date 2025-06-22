@@ -1,0 +1,101 @@
+{"level":"info","message":"Running on Node.js - Version 20.13.0","timestamp":"2025-06-21 13:18:39"}
+{"level":"info","message":"Foundry Virtual Tabletop - Version 12 Build 327","timestamp":"2025-06-21 13:18:39"}
+{"level":"info","message":"User Data Directory - \"C:/FoundryVTT/v12.327/LocalData\"","timestamp":"2025-06-21 13:18:39"}
+{"level":"info","message":"Application Options:\n{\n  \"compressStatic\": true,\n  \"fullscreen\": false,\n  \"hostname\": null,\n  \"language\": \"en.core\",\n  \"localHostname\": null,\n  \"port\": 30000,\n  \"protocol\": null,\n  \"proxyPort\": null,\n  \"proxySSL\": false,\n  \"routePrefix\": null,\n  \"updateChannel\": \"stable\",\n  \"upnp\": false,\n  \"upnpLeaseDuration\": null,\n  \"awsConfig\": null,\n  \"compressSocket\": true,\n  \"cssTheme\": \"foundry\",\n  \"deleteNEDB\": false,\n  \"hotReload\": false,\n  \"passwordSalt\": null,\n  \"sslCert\": null,\n  \"sslKey\": null,\n  \"world\": null,\n  \"serviceConfig\": null,\n  \"telemetry\": false,\n  \"adminPassword\": null,\n  \"noBackups\": false\n}","timestamp":"2025-06-21 13:18:39"}
+{"level":"info","message":"Software license verification succeeded","timestamp":"2025-06-21 13:18:39"}
+{"level":"info","message":"Server started and listening on port 30000","timestamp":"2025-06-21 13:18:39"}
+{"level":"info","message":"Shutting down Foundry Virtual Tabletop server","timestamp":"2025-06-21 13:19:12"}
+{"level":"info","message":"Running on Node.js - Version 20.13.0","timestamp":"2025-06-21 13:22:25"}
+{"level":"info","message":"Foundry Virtual Tabletop - Version 12 Build 327","timestamp":"2025-06-21 13:22:25"}
+{"level":"info","message":"User Data Directory - \"C:/FoundryVTT/v12.327/LocalData\"","timestamp":"2025-06-21 13:22:25"}
+{"level":"info","message":"Application Options:\n{\n  \"compressStatic\": true,\n  \"fullscreen\": false,\n  \"hostname\": null,\n  \"language\": \"en.core\",\n  \"localHostname\": null,\n  \"port\": 30000,\n  \"protocol\": null,\n  \"proxyPort\": null,\n  \"proxySSL\": false,\n  \"routePrefix\": null,\n  \"updateChannel\": \"stable\",\n  \"upnp\": false,\n  \"upnpLeaseDuration\": null,\n  \"awsConfig\": null,\n  \"compressSocket\": true,\n  \"cssTheme\": \"foundry\",\n  \"deleteNEDB\": false,\n  \"hotReload\": false,\n  \"passwordSalt\": null,\n  \"sslCert\": null,\n  \"sslKey\": null,\n  \"world\": null,\n  \"serviceConfig\": null,\n  \"telemetry\": false,\n  \"adminPassword\": null,\n  \"noBackups\": false\n}","timestamp":"2025-06-21 13:22:25"}
+{"level":"info","message":"Software license verification succeeded","timestamp":"2025-06-21 13:22:25"}
+{"level":"info","message":"Server started and listening on port 30000","timestamp":"2025-06-21 13:22:25"}
+{"level":"info","message":"Created client session a65c89fcef60d5c43514ebdf","timestamp":"2025-06-21 13:22:25"}
+{"level":"info","message":"Core software stable update 12.343 is available!","timestamp":"2025-06-21 13:22:27"}
+{"level":"info","message":"Downloading package - 7%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 14%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 20%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 27%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 34%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 41%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 47%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 54%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 61%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 68%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 74%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 81%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 88%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 95%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Downloading package - 100%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 10%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 20%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 30%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 40%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 50%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 60%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 70%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 80%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 90%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installing package - 100%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Installed module combat-distances","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"complete - 100%","timestamp":"2025-06-21 13:22:47"}
+{"level":"info","message":"Connected to database \"actors\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 7%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"cards\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 14%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"messages\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 21%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"combats\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 29%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"fog\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 36%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"folders\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 43%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"items\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 50%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"journal\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 57%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"macros\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 64%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"playlists\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 71%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"tables\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 79%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"scenes\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 86%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"settings\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 93%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Connected to database \"users\"","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Loading World Data - 100%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 7%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 14%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 21%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 29%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 36%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 43%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 50%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 57%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 64%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 71%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 79%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 86%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 93%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Migrating World Data - 100%","timestamp":"2025-06-21 13:23:33"}
+{"level":"info","message":"Launching World | Complete","timestamp":"2025-06-21 13:23:33"}
+{"ip":"::1","level":"info","message":"User authentication successful for user Gamemaster","session":"a65c89fcef60d5c43514ebdf","timestamp":"2025-06-21 13:23:36"}
+{"level":"info","message":"No system update for Simple World-Building is currently available.","timestamp":"2025-06-21 13:23:37"}
+{"level":"info","message":"Vended World data to User [NlDKbau4i0W3JwQd] in 48ms","timestamp":"2025-06-21 13:23:37"}
+{"level":"info","message":"Created Token with id [lG1Tlf1Cg2hYtMyO] in parent Scene [jm3XbwXHKYGvRMFU]","timestamp":"2025-06-21 13:23:44"}
+{"level":"info","message":"No system update for Simple World-Building is currently available.","timestamp":"2025-06-21 13:23:54"}
+{"level":"info","message":"Vended World data to User [NlDKbau4i0W3JwQd] in 38ms","timestamp":"2025-06-21 13:23:54"}
+{"level":"info","message":"Deleted 9 ChatMessage documents","timestamp":"2025-06-21 13:24:00"}
+{"level":"info","message":"Created Setting with id [cKPnFdTJxeywKttK]","timestamp":"2025-06-21 13:24:52"}
+{"level":"info","message":"Deleted Token with id [lG1Tlf1Cg2hYtMyO] in parent Scene [jm3XbwXHKYGvRMFU]","timestamp":"2025-06-21 13:26:06"}
+{"level":"info","message":"Created Token with id [UwbbdGraGOHPP2cJ] in parent Scene [jm3XbwXHKYGvRMFU]","timestamp":"2025-06-21 13:26:10"}
+{"level":"info","message":"Created Scene with id [ljAJR3ImwXs0oeN1]","timestamp":"2025-06-21 13:28:16"}
+{"level":"info","message":"Activating scene test [ljAJR3ImwXs0oeN1]","timestamp":"2025-06-21 13:28:23"}
+{"level":"info","message":"Created Token with id [grsMM9Yk6vQIgPWy] in parent Scene [ljAJR3ImwXs0oeN1]","timestamp":"2025-06-21 13:28:27"}
+{"level":"info","message":"Created Token with id [lB6YQ4afUCo9azts] in parent Scene [ljAJR3ImwXs0oeN1]","timestamp":"2025-06-21 13:31:49"}
+{"level":"info","message":"Deleted Token with id [grsMM9Yk6vQIgPWy] in parent Scene [ljAJR3ImwXs0oeN1]","timestamp":"2025-06-21 13:31:52"}
+{"level":"info","message":"Shutting down Foundry Virtual Tabletop server","timestamp":"2025-06-21 13:34:39"}

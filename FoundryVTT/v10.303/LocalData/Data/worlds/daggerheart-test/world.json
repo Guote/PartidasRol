@@ -1,0 +1,11 @@
+{
+  "title": "Daggerheart Test",
+  "id": "daggerheart-test",
+  "system": "worldbuilding",
+  "coreVersion": "10.303",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
+  "systemVersion": "0.8.2"
+}

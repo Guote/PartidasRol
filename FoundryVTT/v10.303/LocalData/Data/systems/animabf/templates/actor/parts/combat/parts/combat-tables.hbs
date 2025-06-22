@@ -1,0 +1,23 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="combat-tables"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.combat.combatTables.title")
+    addRowButtonData="add-combat-table"
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="combat-tables"
+  }}
+    {{#each system.combat.combatTables as |combatTable|}}
+      <div data-item-id='{{combatTable._id}}' class='combat-table-row'>
+        <input
+          name='system.dynamic.combatTables.{{combatTable._id}}.name'
+          type='text'
+          class='input'
+          value='{{combatTable.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

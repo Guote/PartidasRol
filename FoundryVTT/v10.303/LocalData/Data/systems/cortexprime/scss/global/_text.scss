@@ -1,0 +1,11 @@
+.truncate {
+  width: toRem(340px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.text-center {
+  text-align: center;
+}
