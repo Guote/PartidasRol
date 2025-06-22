@@ -1,0 +1,2 @@
+# Ignore Logs folders in all FoundryVTT versions
+FoundryVTT/*/LocalData/Logs/
