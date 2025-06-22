@@ -1,0 +1,8 @@
+2025/06/23-01:21:44.773 a1cc Recovering log #4
+2025/06/23-01:21:44.780 a1cc Delete type=0 #4
+2025/06/23-01:21:44.780 a1cc Delete type=3 #2
+2025/06/23-01:23:05.014 2b24 Level-0 table #9: started
+2025/06/23-01:23:05.014 2b24 Level-0 table #9: 0 bytes OK
+2025/06/23-01:23:05.015 2b24 Delete type=0 #7
+2025/06/23-01:23:05.016 2b24 Manual compaction at level-0 from '!folders!1dQPltrHt3bFzqtu' @ 72057594037927935 : 1 .. '!items.effects!phbwzdSpellMaste.P5SxPZNi4KPzW8dD' @ 0 : 0; will stop at (end)
+2025/06/23-01:23:05.016 2b24 Manual compaction at level-1 from '!folders!1dQPltrHt3bFzqtu' @ 72057594037927935 : 1 .. '!items.effects!phbwzdSpellMaste.P5SxPZNi4KPzW8dD' @ 0 : 0; will stop at (end)

@@ -1,0 +1,16 @@
+{
+  "id": "player-fog-manager",
+  "title": "Player Fog Manager",
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Guote",
+      "flags": {}
+    }
+  ],
+  "esmodules": ["main.js"]
+}

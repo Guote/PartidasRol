@@ -1,0 +1,13 @@
+{
+  "title": "fogtest2",
+  "id": "fogtest2",
+  "system": "systemless",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "1.0.0",
+  "lastPlayed": "Mon Jun 23 2025 01:20:14 GMT+0200 (hora de verano de Europa central)",
+  "playtime": 184
+}

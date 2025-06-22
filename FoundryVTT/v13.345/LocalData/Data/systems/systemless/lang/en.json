@@ -1,0 +1,17 @@
+{
+  "SYSTEMLESS": {
+    "SheetLabels": {
+      "Actor": "Systemless Actor Sheet",
+      "Item": "Systemless Item Sheet"
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "actor": "Actor"
+    },
+    "Item": {
+      "item": "Item"
+    }
+  }
+}

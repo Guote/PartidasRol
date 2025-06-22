@@ -1,0 +1,24 @@
+{
+  "Actor": {
+    "types": ["actor"],
+    "templates": {
+      "base": {
+        "biography": ""
+      }
+    },
+    "actor": {
+      "templates": ["base"]
+    }
+  },
+  "Item": {
+    "types": ["item"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "item": {
+      "templates": ["base"]
+    }
+  }
+}

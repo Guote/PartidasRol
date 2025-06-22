@@ -1,0 +1,18 @@
+{
+  "name": "player-fog-manager",
+  "title": "Player Fog Manager",
+  "description": "Minimal module that adds a custom canvas layer and empty scene-control",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "Your Name"
+    }
+  ],
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.327",
+    "maximum": "12"
+  },
+  "type": "module",
+  "esmodules": ["main.js"]
+}

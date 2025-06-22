@@ -1,0 +1,13 @@
+{
+  "title": "fogtest",
+  "id": "fogtest",
+  "system": "worldbuilding",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "0.8.2",
+  "lastPlayed": "Mon Jun 23 2025 01:36:05 GMT+0200 (hora de verano de Europa central)",
+  "playtime": 744
+}

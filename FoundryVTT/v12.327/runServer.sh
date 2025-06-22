@@ -1,0 +1,8 @@
+# Path to your Foundry install
+# Path to the repo-local data folder (where this script lives)
+INSTALL_PATH="/c/FoundryVTT/FoundryVTT-12.327"
+REPO_DATA="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/LocalData"
+
+# Go to Foundry install folder
+cd "$INSTALL_PATH"
+node resources/app/main.mjs --dataPath="$REPO_DATA"

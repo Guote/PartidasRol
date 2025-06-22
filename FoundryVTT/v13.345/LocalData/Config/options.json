@@ -1,5 +1,5 @@
 {
-  "dataPath": "C:/FoundryVTT/v13.345 - Node/LocalData",
+  "dataPath": "C:/z - Git/PartidasRol/FoundryVTT/v13.345/LocalData",
   "compressStatic": true,
   "fullscreen": false,
   "hostname": null,
@@ -22,5 +22,6 @@
   "sslCert": null,
   "sslKey": null,
   "world": null,
-  "serviceConfig": null
+  "serviceConfig": null,
+  "telemetry": false
 }
