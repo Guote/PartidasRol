@@ -1,0 +1,72 @@
+<div>
+    {{> "modules/party-overview/templates/parts/Tabs.html"}}
+    <section class="content">
+        <div class="tab" data-tab="general" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">{{localize "party-overview.NAME"}}</div>
+                <div class="num" title="{{localize "D35E.Health"}}"><i class="fas fa-heart"></i></div>
+                <div class="num" title="{{localize "D35E.ArmorClass"}}"><i class="fas fa-shield-alt"></i></div>
+                <div class="num" title="{{localize "D35E.AC"}}: {{localize "D35E.ACTouch"}}"><i class="fas fa-hand-point-right"></i></div>
+                <div class="num" title="{{localize "D35E.AC"}}: {{localize "D35E.ACFlatFooted"}}"><i class="fas fa-surprise"></i></div>
+                <div class="num" title="{{localize "D35E.SkillSpt"}}"><i class="far fa-eye"></i></div>
+                <div class="num" title="{{localize "D35E.SavingThrowFort"}}"><i class="fas fa-hard-hat"></i></div>
+                <div class="num" title="{{localize "D35E.SavingThrowRef"}}"><i class="fas fa-running"></i></div>
+                <div class="num" title="{{localize "D35E.SavingThrowWill"}}"><i class="fas fa-brain"></i></div>
+            </div>
+
+            {{#each actors as | actor | }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="num">{{ actor.hp.value }}/{{ actor.hp.max }}</div>
+                <div class="num">{{ actor.armor }} </div>
+                <div class="num">{{ actor.touch }}</div>
+                <div class="num">{{ actor.flatFooted }}</div>
+                <div class="num">{{numberFormat actor.perception decimals=0 sign=true}}</div>
+                <div class="num">{{numberFormat actor.saves.fortitude decimals=0 sign=true}}</div>
+                <div class="num">{{numberFormat actor.saves.reflex decimals=0 sign=true}}</div>
+                <div class="num">{{numberFormat actor.saves.will decimals=0 sign=true}}</div>
+            </div>
+            {{/each}}
+        </div>
+		<!-- Languages -->
+        {{> "modules/party-overview/templates/parts/Languages.html"}}
+
+        <!-- Currency -->
+        <div class="tab" data-tab="currencies" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">Name</div>
+                <div class="num">{{localize "D35E.CurrencyPP"}}</div>
+                <div class="num">{{localize "D35E.CurrencyGP"}}</div>
+                <div class="num">{{localize "D35E.CurrencySP"}}</div>
+                <div class="num">{{localize "D35E.CurrencyCP"}}</div>
+                <div class="num">{{localize "D35E.CurrencyGP"}} ({{localize "party-overview.TOTAL"}})</div>
+            </div>
+
+            {{#each actors as | actor | }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="num">{{currency.pp}}</div>
+                <div class="num">{{currency.gp}}</div>
+                <div class="num">{{currency.sp}}</div>
+                <div class="num">{{currency.cp}}</div>
+                <div class="num"><b>{{actor.totalGP}}</b></div>
+            </div>
+            {{/each}}
+            <div class="table-row">
+                <div class="button">
+
+                </div>
+                <div class="text">{{localize "party-overview.TOTAL"}}</div>
+                <div class="num">{{totalCurrency.pp}}</div>
+                <div class="num">{{totalCurrency.gp}}</div>
+                <div class="num">{{totalCurrency.sp}}</div>
+                <div class="num">{{totalCurrency.cp}}</div>
+                <div class="num"><b>{{totalPartyGP}}</b></div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,69 @@
+{
+	"party-overview": {
+		"EnablePlayerAccess": {
+			"Name": "Donner accès à l'overview aux joueurs ?",
+			"Hint": "Permet de donner accès à la fenêtre Party aux joueurs."
+		},
+		"SystemProvider": {
+			"Name": "Fournisseur de Système",
+			"choices": {
+				"module": "Module {name}",
+				"native": "Générique",
+				"system": "System {name}"
+			}
+		},
+		"filter": {
+			"0": "Tout (Scène, non filtré)",
+			"1": "Tout (Scène)",
+			"2": "Caché (Scène)",
+			"3": "Tous ceux possédés",
+			"4": "Tous ceux sélectionnés"
+		},
+		"keybinds": {
+			"open": {
+				"name": "Ouvrir Party Overview",
+				"hint": "Ouvre Party Overview."
+			},
+			"close": {
+				"name": "Fermer Party Overview",
+				"hint": "Ferme Party Overview."
+			},
+			"toggle": {
+				"name": "Bascule Party Overview",
+				"hint": "Ouvre ou ferme Party Overview."
+			}
+		},
+		"GENERAL": "Général",
+		"LIMIT": "Limite",
+		"NAME": "Nom",
+		"PROFICIENCIES": "Compétences",
+		"TOTAL": "Total",
+		"WEALTH": "Richesse",
+		"EXPERIENCE": "Expérience",
+		"XP": "EXP",
+		"DND5E": {
+			"Traits": "Caractéristiques"
+		},
+		"cof": {
+			"attributes": {
+				"melee": {
+					"abbrev": "Cont"
+				},
+				"ranged": {
+					"abbrev": "Dist"
+				},
+				"magic": {
+					"abbrev": "Mag"
+				},
+				"size": {
+					"label": "Taille",
+					"abbrev": "Taille"
+				},
+				"level": {
+					"label": "Niveau",
+					"abbrev": "Niv"
+				}
+			}
+		}
+	}
+}

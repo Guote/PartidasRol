@@ -1,0 +1,23 @@
+<div>
+    <section class="content">
+        <div class="tab" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">{{localize "party-overview.NAME"}}</div>
+                <div class="text icon">{{localize "BITD.Stress"}}</i></div>
+                <div class="text icon">{{localize "BITD.Coins"}}</i></div>
+                <div class="text">{{localize "BITD.Harm"}}</i></div>
+            </div>
+
+            {{#each actors as | actor | }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="text icon">{{ actor.stress.value }}/{{ actor.stress.max }}</div>
+                <div class="text icon">{{ actor.coins }}</div>
+                <div class="text" style="white-space: normal;">{{ actor.harm }}</div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+</div>

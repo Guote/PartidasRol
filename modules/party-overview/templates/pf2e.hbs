@@ -1,0 +1,115 @@
+<div>
+    {{> "modules/party-overview/templates/parts/Tabs.html"}}
+    <section class="content">
+        <div class="tab" data-tab="general" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">{{localize "party-overview.NAME"}}</div>
+                <div class="num" title="{{localize "PF2E.HeroPointsLabel"}}">Hero</div>
+                <div class="num" title="{{localize "PF2E.HitPointsHeader"}}"><i class="fas fa-heart"></i></div>
+                <div class="num" title="{{localize "PF2E.ArmorClassLabel"}}"><i class="fas fa-shield-alt"></i></div>
+                <div class="num" title="{{localize "PF2E.Focus.label"}}"><i class="fas fa-hand-sparkles"></i></div>
+                <div class="num" title="{{localize "PF2E.PerceptionHeader"}}"><i class="far fa-eye"></i></div>
+                {{!-- <div class="num" title="{{localize "PF2E.Speed"}}"><i class="fas fa-tachometer-alt"></i></div> --}}
+                <div class="num" title="{{localize "PF2E.SavesFortitude"}}"><i class="fas fa-hard-hat"></i></div>
+                <div class="num" title="{{localize "PF2E.SavesReflex"}}"><i class="fas fa-running"></i></div>
+                <div class="num" title="{{localize "PF2E.SavesWill"}}"><i class="fas fa-brain"></i></div>
+            </div>
+
+            {{#each actors as | actor | }}
+            {{#if actor.show.general }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="num">{{ actor.heroPoints.value }}/{{ actor.heroPoints.max }}</div>
+                <div class="num">{{ actor.hp.value }}/{{ actor.hp.max }}</div>
+                <div class="num">{{ actor.armor }} {{#if actor.shieldAC}}({{numberFormat actor.shieldAC decimals=0 sign=true}}){{/if}}</div>
+                <div class="num">{{ actor.focus.value }}/{{ actor.focus.max }}</div>
+                <div class="num">{{ actor.perception }}</div>
+                {{!-- <div class="num">{{ actor.speed }}</div> --}}
+                <div class="num">{{ actor.saves.fortitude }}</div>
+                <div class="num">{{ actor.saves.reflex }}</div>
+                <div class="num">{{ actor.saves.will }}</div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+		<!-- Languages -->
+        <div class="tab" data-tab="languages" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">{{localize "party-overview.NAME"}}</div>
+                {{#each languages as | language | }}
+                <div class="text" style="flex: 1" title="{{language}}">{{language}}</div>
+                {{/each}}
+            </div>
+
+            {{#each actors as | actor | }}
+            {{#if actor.show.languages }}
+            <div class="table-row">
+                <div class="button">
+                    <button class="btn-toggle-visibility" data-actor="{{actor.id }}">
+                        {{#if actor.isHidden }}<i class="value fas fa-eye-slash"></i>{{else}}<i class="value fas fa-eye"></i>{{/if}}
+                    </button>
+                </div>
+                <div class="text">{{ actor.shortestName }}</div>
+                {{#each actor.languages as | language | }}
+                <div class="text" style="flex: 1">{{#if language}}<i class="fas fa-check"></i>{{else}}<i class="value fas fa-times" style="color: gray"></i>{{/if}}</div>
+                {{/each}}
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+
+
+        <!-- Lore -->
+        {{> "modules/party-overview/templates/parts/PF2e-Lore.html"}}
+
+        <!-- Currency -->
+        <div class="tab" data-tab="currencies" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">Name</div>
+                <div class="text icon" title='{{localize "PF2E.CurrencyPP"}}' style="text-transform: uppercase;">{{localize "PF2E.CurrencyAbbreviations.pp"}}</div>
+                <div class="text icon" title='{{localize "PF2E.CurrencyGP"}}' style="text-transform: uppercase;">{{localize "PF2E.CurrencyAbbreviations.gp"}}</div>
+                <div class="text icon" title='{{localize "PF2E.CurrencySP"}}' style="text-transform: uppercase;">{{localize "PF2E.CurrencyAbbreviations.sp"}}</div>
+                <div class="text icon" title='{{localize "PF2E.CurrencyCP"}}' style="text-transform: uppercase;">{{localize "PF2E.CurrencyAbbreviations.cp"}}</div>
+                <div class="text icon" style="white-space: initial;">{{localize "PF2E.StackGroupCoins"}} ({{localize "PF2E.CurrencyGP"}})</div>
+                <div class="text icon" style="white-space: initial;">{{localize "PF2E.Item.Plural"}} ({{localize "PF2E.CurrencyGP"}})</div>
+                <div class="text icon">{{localize "party-overview.TOTAL"}}</div>
+            </div>
+
+            {{#each actors as | actor | }}
+            {{#if actor.show.currency }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="text icon">{{currency.pp}}</div>
+                <div class="text icon">{{currency.gp}}</div>
+                <div class="text icon">{{currency.sp}}</div>
+                <div class="text icon">{{currency.cp}}</div>
+                <div class="text icon"><b>{{actor.totalGP}}</b></div>
+                <div class="text icon"><b>{{itemsValue}}</b></div>
+                <div class="text icon"><b>{{actor.sumItemsGP}}</b></div>
+            </div>
+            {{/if}}
+            {{/each}}
+            <div class="table-row">
+                <div class="button"></div>
+                <div class="text">{{localize "party-overview.TOTAL"}}</div>
+                <div class="text icon">{{totalCurrency.pp}}</div>
+                <div class="text icon">{{totalCurrency.gp}}</div>
+                <div class="text icon">{{totalCurrency.sp}}</div>
+                <div class="text icon">{{totalCurrency.cp}}</div>
+                <div class="text icon"><b>{{totalPartyGP}}</b></div>
+                <div class="text icon"><b>{{itemsValue}}</b></div>
+                <div class="text icon"><b>{{sumItemsGP}}</b></div>
+            </div>
+        </div>
+
+        <!-- Bulk -->
+        {{> "modules/party-overview/templates/parts/PF2e-Bulk.html"}}
+
+        {{> "modules/party-overview/templates/parts/PF2e-Proficiencies.html"}}
+    </section>
+</div>

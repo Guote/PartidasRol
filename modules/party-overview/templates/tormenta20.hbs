@@ -1,0 +1,99 @@
+<div>
+    {{> "modules/party-overview/templates/parts/Tabs.html"}}
+    <section class="content">
+        <div class="tab" data-tab="general" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">Name</div>
+                <div class="text icon" title="Pontos de Vida"><i class="fas fa-heart"></i></div>
+                <div class="text icon" title="Pontos de Mana"><i class="fas fa-magic"></i></div>
+                <div class="text icon" title="Defesa"><i class="fas fa-shield-alt"></i></div>
+                <div class="text icon" title="Luta"><i class="fas fa-fist-raised"></i></div>
+                <div class="text icon" title="Pontaria">🏹</i></div>
+                <div class="text icon" title="Fortitude"><i class="fas fa-hard-hat"></i></div>
+                <div class="text icon" title="Reflexo"><i class="fas fa-running"></i></div>
+                <div class="text icon" title="Vontade"><i class="fas fa-brain"></i></div>
+            </div>
+
+            {{#each actors as | actor | }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+
+                <div class="text icon">{{ actor.pv.value }}/{{ actor.pv.max }}</div>
+                <div class="text icon">{{ actor.pm.value }}/{{ actor.pm.max }}</div>
+                <div class="text icon">{{ actor.defesa }}</div>
+                <div class="text icon">{{ actor.pericias.luta.value }}</div>
+                <div class="text icon">{{ actor.pericias.pont.value }}</div>
+                <div class="text icon">{{ actor.pericias.fort.value }}</div>
+                <div class="text icon">{{ actor.pericias.refl.value }}</div>
+                <div class="text icon">{{ actor.pericias.vont.value }}</div>
+            </div>
+            {{/each}}
+        </div>
+        <!-- Languages -->
+        {{> "modules/party-overview/templates/parts/Languages.html"}}
+
+        <!-- Currency -->
+        <div class="tab" data-tab="dinheiro" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">{{localize "party-overview.NAME"}}</div>
+                <div class="text icon">Platina</div>
+                <div class="text icon">Ouro</div>
+                <div class="text icon">Prata</div>
+                <div class="text icon">Cobre</div>
+                <div class="text icon">Total (Prata)</div>
+            </div>
+
+            {{#each actors as | actor | }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="text icon">{{dinheiro.tl}}</div>
+                <div class="text icon">{{dinheiro.to}}</div>
+                <div class="text icon">{{dinheiro.tp}}</div>
+                <div class="text icon">{{dinheiro.tc}}</div>
+                <div class="text icon"><b>{{actor.dinheiroTotal}}</b></div>
+            </div>
+            {{/each}}
+            <div class="table-row">
+                <div class="button"></div>
+                <div class="text">Total</div>
+                <div class="text icon">{{totalCurrency.tl}}</div>
+                <div class="text icon">{{totalCurrency.to}}</div>
+                <div class="text icon">{{totalCurrency.tp}}</div>
+                <div class="text icon">{{totalCurrency.tc}}</div>
+                <div class="text icon"><b>{{totalPartyGP}}</b></div>
+            </div>
+        </div>
+
+    <!-- Proficencies-->
+    <div class="tab proficiencies" data-tab="pericias" data-group="party">
+        <div class="table-row header">
+            {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+            <div class="text">{{localize "party-overview.NAME"}}</div>
+            {{#each actors as | actor | }}
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="num party-overview-ellipsis party-overview-ellipsis-no-border" title="{{ actor.shortestName }}">
+                    {{ actor.shortestName }}
+                </div>
+            {{/each}}
+        </div>
+
+
+        {{#each pericias as | value key | }}
+        <div class="table-row">
+			<div></div>
+			<div class="text">{{localize value}}</div>
+			{{#each (partyOverviewGetSkillList key ../actors)}}
+				<div class="num" style="flex: 1;">
+					{{numberFormat this.value decimals=0 sign=true}}
+				</div>
+			{{/each}}
+		</div>
+        {{/each}}
+    </div>
+
+    </section>
+</div>

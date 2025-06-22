@@ -1,0 +1,25 @@
+<div class="tab" data-tab="bulk" data-group="party">
+	<div class="table-row header">
+		{{> "modules/party-overview/templates/parts/FilterButton.html"}}
+		<div class="text">{{localize "party-overview.NAME"}}</div>
+		<div class="num" style="flex: 1">{{localize "PF2E.BulkLabel"}}</div>
+		<div class="num" style="flex: 2">{{localize "PF2E.ConditionTypeEncumbered"}}</div>
+		<div class="num" style="flex: 1">{{localize "PF2E.BulkMaxLabel"}}</div>
+	</div>
+
+	{{#each actors as | actor | }}
+	<div class="table-row">
+		<div class="button">
+			<button class="btn-toggle-visibility" data-actor="{{actor.id }}">
+				{{#if actor.isHidden }}<i class="value fas fa-eye-slash"></i>{{else}}<i class="value fas fa-eye"></i>{{/if}}
+			</button>
+		</div>
+		<div class="text">{{ actor.shortestName }}</div>
+		{{#with actor.bulk}}
+		<div class="num" style="flex: 1">{{value.normal}} {{#if value.light}}({{value.light}} L){{/if}}</div>
+		<div class="num" style="flex: 2">{{encumberedAt}}</div>
+		<div class="num" style="flex: 1">{{max}}</div>
+		{{/with}}
+	</div>
+	{{/each}}
+</div>

@@ -1,0 +1,436 @@
+{
+  "title": "Pathfinder 1e Statblock Library",
+  "description": "Contains organized Statblocks for Pathfinder 1e from over 200 Books and 192 PFS Scenarios; including 23 Full Adventure Pathss, NPC Codexes, Tome of Horrors, Occult Bestiary, and various modules (Emerald Spire, Rappan Athuk, Sword of Air, The Lost City of Barakus (FGG)) that can be easily imported using SBC",
+  "version": "0.2.9",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10.291",
+    "maximum": "10"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf1",
+        "type": "system",
+        "manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/permalink/latest/downloads/system.json",
+        "compatibility": {
+          "minimum": "0.82.5",
+          "verified": "0.82.5"
+        }
+      }
+    ]
+  },
+  "id": "statblock-library",
+  "url": "https://github.com/baileymh/statblock-library",
+  "manifest": "https://github.com/baileymh/statblock-library/releases/download/0.2.9/module.json",
+  "download": "https://github.com/baileymh/statblock-library/releases/download/0.2.9/statblock-library.v0.2.9.zip",
+  "readme": "https://github.com/baileymh/statblock-library/blob/main/README.md",
+  "changelog": "https://github.com/baileymh/statblock-library/blob/main/changelog.md",
+  "scripts": [
+    "scripts/welcome-screen.js"
+  ],
+  "packs": [
+    {
+      "name": "sb-bestiaries1-3",
+      "label": "Bestiaries 1-3 (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-bestiaries1-3.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-bestiaries4-6",
+      "label": "Bestiaries 4-6 (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-bestiaries4-6.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-campaign-settings",
+      "label": "Companion and Campaign Settings (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-campaign-settings.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-academy-of-secrets",
+      "label": "Academy of Secrets (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-academy-of-secrets.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-clash-of-the-kingslayers",
+      "label": "Clash of the Kingslayers (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-clash-of-the-kingslayers.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-crucible-of-chaos",
+      "label": "Crucible of Chaos (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-crucible-of-chaos.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-dragons-demand",
+      "label": "The Dragon's Demand (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-dragons-demand.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-emerald-spire",
+      "label": "Emerald Spire Megadungeon (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-emerald-spire.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-monsters-dragons",
+      "label": "Monsters and Dragons (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-monsters-dragons.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-mythic-monsters",
+      "label": "Mythic Monsters (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-mythic-monsters.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-npcs-and-villians",
+      "label": "NPCs and Villians (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-npcs-and-villians.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-occult-bestiary",
+      "label": "Occult Bestiary (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-occult-bestiary.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-pfs",
+      "label": "PFS (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-pfs.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-house-on-hook-street",
+      "label": "The House on Hook Street (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-house-on-hook-street.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-plunder-and-peril",
+      "label": "Plunder & Peril (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-plunder-and-peril.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-rappan-athuk",
+      "label": "Rappan Athuk (FGG) (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-rappan-athuk.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-sword-of-air",
+      "label": "Sword of Air (FGG) (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-sword-of-air.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-tome-of-horrors",
+      "label": "Tome of Horrors (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-tome-of-horrors.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-lost-city-barakus",
+      "label": "The Lost City of Barakus (FGG) (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-lost-city-barakus.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-we-be-goblins",
+      "label": "We Be Goblins (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-we-be-goblins.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-carrion-crown",
+      "label": "AP - Carrion Crown (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-carrion-crown.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-council-of-thieves",
+      "label": "AP - Council of Thieves (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-council-of-thieves.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-curse-crimson-throne",
+      "label": "AP - Curse of the Crimson Throne (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-curse-crimson-throne.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-giantslayer",
+      "label": "AP - Giantslayer (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-giantslayer.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-hells-rebels",
+      "label": "AP - Hell's Rebels (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-hells-rebels.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-hells-vengeance",
+      "label": "AP - Hell's Vengeance (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-hells-vengeance.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-iron-gods",
+      "label": "AP - Iron Gods (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-iron-gods.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-ironfang-invasion",
+      "label": "AP - Ironfang Invasion (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-ironfang-invasion.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-jade-regent",
+      "label": "AP - Jade Regent (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-jade-regent.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-kingmaker",
+      "label": "AP - Kingmaker (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-kingmaker.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-mummys-mask",
+      "label": "AP - Mummy's Mask (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-mummys-mask.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-puzzle-box",
+      "label": "The Puzzle Box (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-puzzle-box.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-rise-of-runelords",
+      "label": "AP - Rise of the Runelords (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-rise-of-runelords.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-serpents-skull",
+      "label": "AP - Serpent's Skull (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-serpents-skull.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-skull-shackles",
+      "label": "AP - Skull & Shackles (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-skull-shackles.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-shattered-star",
+      "label": "AP - Shattered Star (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-shattered-star.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-reign-of-winter",
+      "label": "AP - Reign of Winter (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-reign-of-winter.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-return-of-runelords",
+      "label": "AP - Return of the Runelords (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-return-of-runelords.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-ruins-of-azlant",
+      "label": "AP - Ruins of Azlant (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-ruins-of-azlant.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-strange-aeons",
+      "label": "AP - Strange Aeons (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-strange-aeons.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-tomb-of-the-iron-medusa",
+      "label": "Tomb of the Iron Medusa (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-tomb-of-the-iron-medusa.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-tyrants-grasp",
+      "label": "AP - Tyrant's Grasp (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-tyrants-grasp.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-war-for-the-crown",
+      "label": "AP - War for the Crown (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-war-for-the-crown.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sb-wrath-righteous",
+      "label": "AP - Wrath of the Righteous (Statblocks)",
+      "system": "pf1",
+      "path": "packs/sb-wrath-righteous.db",
+      "type": "JournalEntry",
+      "private": false,
+      "flags": {}
+    }
+  ],
+  "authors": [
+    {
+      "name": "fadedshadow589#8270",
+      "flags": {}
+    }
+  ]
+}

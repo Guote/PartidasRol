@@ -1,0 +1,71 @@
+<div>
+    {{> "modules/party-overview/templates/parts/Tabs.html"}}
+    <section class="content">
+        <div class="tab" data-tab="general" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">{{localize "party-overview.NAME"}}</div>
+                <div class="num" title="{{localize "SFRPG.Health"}}"><i class="fas fa-heart"></i></div>
+                <div class="num" title="{{localize "SFRPG.Stamina"}}">SP</div>
+                <div class="num" title="{{localize "SFRPG.Resolve"}}">RP</div>
+                <div class="num" title="{{localize "SFRPG.EnergyArmorClass"}}"><i class="fas fa-shield-alt"></i></div>
+                <div class="num" title="{{localize "SFRPG.KineticArmorClass"}}"><i class="fas fa-bolt"></i></div>
+                <div class="num" title="{{localize "SFRPG.SkillPer"}}"><i class="far fa-eye"></i></div>
+                <div class="num" title="{{localize "SFRPG.FortitudeSave"}}"><i class="fas fa-hard-hat"></i></div>
+                <div class="num" title="{{localize "SFRPG.ReflexSave"}}"><i class="fas fa-running"></i></div>
+                <div class="num" title="{{localize "SFRPG.WillSave"}}"><i class="fas fa-brain"></i></div>
+            </div>
+
+            {{#each actors as | actor | }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="num">{{ actor.hp.value }}/{{ actor.hp.max }}</div>
+                <div class="num">{{ actor.sp.value }}/{{ actor.sp.max }}</div>
+                <div class="num">{{ actor.rp.value }}/{{ actor.rp.max }}</div>
+                <div class="num">{{ actor.armor }}</div>
+                <div class="num">{{ actor.kac }}</div>
+                <div class="num">{{ actor.perception }}</div>
+                <div class="num">{{ actor.saves.fortitude }}</div>
+                <div class="num">{{ actor.saves.reflex }}</div>
+                <div class="num">{{ actor.saves.will }}</div>
+            </div>
+            {{/each}}
+        </div>
+		<!-- Languages -->
+        {{> "modules/party-overview/templates/parts/Languages.html"}}
+
+        <!-- Lore -->
+        {{> "modules/party-overview/templates/parts/PF2e-Lore.html"}}
+
+        <!-- Currency -->
+        <div class="tab" data-tab="currencies" data-group="party">
+            <div class="table-row header">
+                {{> "modules/party-overview/templates/parts/FilterButton.html"}}
+                <div class="text">Name</div>
+                <div class="num">{{localize "SFRPG.Currencies.Credits"}}</div>
+                <div class="num">{{localize "SFRPG.Currencies.UPBs"}}</div>
+            </div>
+
+            {{#each actors as | actor | }}
+            <div class="table-row">
+                {{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+                <div class="text">{{ actor.shortestName }}</div>
+                <div class="num">{{currency.credit}}</div>
+                <div class="num">{{currency.upb}}</div>
+            </div>
+            {{/each}}
+            <div class="table-row">
+                <div class="button">
+
+                </div>
+                <div class="text">{{localize "party-overview.TOTAL"}}</div>
+                <div class="num">{{totalPartyCredits}}</div>
+                <div class="num">{{totalPartyUPB}}</div>
+            </div>
+        </div>
+
+        <!-- Bulk -->
+        {{!-- {{> "modules/party-overview/templates/parts/PF2e-Bulk.html"}} --}}
+    </section>
+</div>

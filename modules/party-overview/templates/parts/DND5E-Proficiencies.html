@@ -1,0 +1,25 @@
+<!-- prettier-ignore -->
+<div class="tab proficiencies" data-tab="proficiencies" data-group="party">
+	<div class="table-row header">
+		{{> "modules/party-overview/templates/parts/FilterButton.html"}}
+		<div class="text">{{localize "party-overview.NAME"}}</div>
+		{{#each actors as | actor | }}
+			{{> "modules/party-overview/templates/parts/ToggleVisibilityButton.html" actor=actor}}
+			<div class="num party-overview-ellipsis party-overview-ellipsis-no-border" title="{{ actor.shortestName }}">
+				{{ actor.shortestName }}
+			</div>
+		{{/each}}
+	</div>
+
+	{{#each skills as | value key | }}
+		<div class="table-row">
+			<div></div>
+			<div class="text">{{localize value.label}}</div>
+			{{#each (partyOverviewGetSkillList key ../actors)}}
+				<div class="num" style="flex: 1;" title="{{this.proficient}}">
+					{{numberFormat this.value decimals=0 sign=true}} <i class="{{this.icon}}"></i>
+				</div>
+			{{/each}}
+		</div>
+	{{/each}}
+</div>

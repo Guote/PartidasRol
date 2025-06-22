@@ -1,0 +1,69 @@
+{
+	"party-overview": {
+		"EnablePlayerAccess": {
+			"Name": "Permitir acesso do panorama aos jogadores?",
+			"Hint": "Permite aos jogadores acesso a janela de grupo."
+		},
+		"SystemProvider": {
+			"Name": "Provedor de Sistemas",
+			"choices": {
+				"module": "Módulo {name}",
+				"native": "Genérico",
+				"system": "Sistema {name}"
+			}
+		},
+		"keybinds": {
+			"open": {
+				"name": "Abrir o Party Overview",
+				"hint": "Abre a janela do Party Overview."
+			},
+			"close": {
+				"name": "Fechar Party Overview",
+				"hint": "Fecha a janela do Party Overview."
+			},
+			"toggle": {
+				"name": "Alternar o Party Overview",
+				"hint": "Abre ou fecha a janela do Party Overview."
+			}
+		},
+		"GENERAL": "Geral",
+		"LIMIT": "Limite",
+		"NAME": "Nome",
+		"PROFICIENCIES": "Proficiências",
+		"TOTAL": "Total",
+		"WEALTH": "Riqueza",
+		"DND5E": {
+			"Traits": "Traços"
+		},
+		"filter": {
+			"2": "Oculto (Cena)",
+			"0": "Todos (Cena, Sem filtro)",
+			"1": "Todos (Cena)",
+			"3": "Todos Próprios",
+			"4": "Todos Selecionados"
+		},
+		"EXPERIENCE": "Experiência",
+		"XP": "EXP",
+		"cof": {
+			"attributes": {
+				"melee": {
+					"abbrev": "Cont"
+				},
+				"ranged": {
+					"abbrev": "Rang"
+				},
+				"magic": {
+					"abbrev": "Mag"
+				},
+				"size": {
+					"label": "Tamanho",
+					"abbrev": "Tamanho"
+				},
+				"level": {
+					"label": "Nível",
+					"abbrev": "Niv"
+				}
+			}
+		}
+	}
+}
