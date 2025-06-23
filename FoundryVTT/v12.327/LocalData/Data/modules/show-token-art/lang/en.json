@@ -1,0 +1,9 @@
+{
+	"STA.TokenImg": "Token Image",
+	"STA.keybind.tokenImage.name": "Show Token Art.",
+	"STA.keybind.tokenImage.hint": "Shows the token of the selected or targeted actor(s).",
+
+	"STA.ActorImg": "Actor Image",
+	"STA.keybind.actorImage.name": "Show Actor Art.",
+	"STA.keybind.actorImage.hint": "Shows the avatar of the selected or targeted actor(s)."
+}

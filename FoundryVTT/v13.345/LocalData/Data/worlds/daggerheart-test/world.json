@@ -1,0 +1,14 @@
+{
+  "title": "DaggerHeart test",
+  "id": "daggerheart-test",
+  "system": "worldbuilding",
+  "background": "_Recursos/Cards/Daggerheart/Reference/Back.png",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "0.8.2",
+  "lastPlayed": "Tue Jun 24 2025 00:26:07 GMT+0200 (hora de verano de Europa central)",
+  "playtime": 4309
+}

@@ -1,0 +1,1687 @@
+{
+  "SWADE": {
+    "ButtonReset": "Reset",
+    "ButtonSubmit": "Wyślij",
+    "CommunityCharSheet": "Legacy Character Sheet",
+    "CommunityNPCSheet": "Community NPC Sheet",
+    "CommunityVicSheet": "Legacy Vehicle Sheet",
+    "CommunityItemSheet": "Community Item Sheet",
+    "ItemSheet": "Savage Worlds Item Sheet",
+    "HeadquartersSheet": "Savage Worlds Headquarters Sheet",
+    "Expand": "Rozszerz",
+    "OfficialSheet": "Savage Worlds Official Sheet by Pinnacle",
+    "ModHint": "Upewnij się, że modyfikator zawiera + lub -",
+    "ActionDeckPresetLight": "Talia Akcji (Jasny)",
+    "ActionDeckPresetDark": "Talia Akcji (Ciemny)",
+    "ActionDeckPresetPEG": "Talia Akcji (PEG)",
+    "Name": "Nazwa",
+    "disabledAE": "Wyłączony z powodu aktywnego efektu",
+    "Tough": "Wytrzymałość",
+    "Ancestry": "Pochodzenie",
+    "Archetype": "Archetyp",
+    "Pace": "Tempo",
+    "Running": "Bieganie",
+    "RunningDie": "Kość biegania",
+    "RunningMod": "Modyfikator biegania",
+    "RollRun": "Kliknij aby rzucić kością biegania",
+    "Adv": "Rozwinięcia",
+    "Rank": "Ranga",
+    "Inv": "Sprzęt",
+    "Summary": "Cechy",
+    "Pow": "Moce",
+    "WildCard": "Figura",
+    "Extra": "Blotka",
+    "Bennies": "Fuksy",
+    "BenniesCount": "Fuksy: {count}",
+    "TraitMod": "Modyfikator Cechy",
+    "SkillTest": "Test umiejętności",
+    "AttributeTest": "Test atrybutu",
+    "Attributes": "Atrybuty",
+    "Derived": "Cechy pochodne",
+    "AttrAgi": "Zręczność",
+    "AttrSma": "Spryt",
+    "AnimalSmarts": "Zwierzęcy Spryt",
+    "AnimalSmartsMarker": "Z",
+    "AttrSpr": "Duch",
+    "AttrStr": "Siła",
+    "AttrVig": "Wigor",
+    "Tweaks": "Poprawki",
+    "AttrAgiShort": "Zr",
+    "AttrSmaShort": "Sp",
+    "AttrSprShort": "Du",
+    "AttrStrShort": "Si",
+    "AttrVigShort": "Wi",
+    "Skills": "Umiejętności",
+    "Unskilled": "Improwizacja",
+    "CoreSkill": "Umiejętność podstawowa",
+    "CoreSkills": "Umiejętności podstawowe",
+    "LinkAttr": "Powiązany atrybut",
+    "GlobalMod": {
+      "Label": "Modyfikatory ogólne",
+      "Trait": "Wszystkie Cechy",
+      "Agility": "Zręczność i powiązane umiejętności",
+      "Smarts": "Spryt i powiązane umiejętności",
+      "Spirit": "Duch i powiązane umiejętności",
+      "Strength": "Siła i powiązane umiejętności",
+      "Vigor": "Wigor i powiązane umiejętności",
+      "Attack": "Wszystkie ataki",
+      "Damage": "Wszystkie obrażenia",
+      "AP": "Wszystkie Przebicia Pancerza"
+    },
+    "ArcaneSkill": "Umiejętność nadprzyrodzona",
+    "ActivateArcaneDevice": "Aktywuj artefakt",
+    "Die": "Kość",
+    "WildDie": "Kość Figury",
+    "Modifier": "Modyfikator",
+    "BenniesSpend": "Wydaj Fuksa",
+    "BenniesSpendGM": "Wydaj Fuksa MG",
+    "BenniesAdjustGM": "Dostosuj Fuksy MG",
+    "BenniesAdjustGMText": "Wprowadź liczbę Fuksów, jaką Mistrz Gry powinien obecnie mieć.",
+    "BenniesGive": "Daj Fuksa",
+    "BenniesRefresh": "Odśwież Fuksy",
+    "AllBenniesRefresh": "Odśwież wszystkie Fuksy",
+    "BenniesRefreshMessage": "Fuksy zostały odświeżone!",
+    "BenniesRefreshAllMessage": "Wszystkie Fuksy zostały odświeżone!",
+    "BenniesGMRefreshMessage": "Fuksy MG zostały odświeżone!",
+    "BenniesAddMessage": "otrzymał Fuksa!",
+    "BenniesGMAddMessage": "wziął dodatkowego Fuksa!",
+    "BenniesSpendMessage": "wydał Fuksa!",
+    "BenniesMax": "Fuksy po resecie",
+    "Elan": "Rozmach",
+    "EditSkill": "Edytuj umiejętność",
+    "EdEdge": "Edytuj Przewagę",
+    "EdHind": "Edytuj Zawadę",
+    "Ed": "Edytuj",
+    "EdF": "Edytuj {item}",
+    "EdRightClick": "Kliknij prawym przyciskiem, aby edytować",
+    "Del": "Usuń",
+    "Arcane": "Arkana",
+    "InnatePower": "Moc wrodzona",
+    "All": "Wszystko",
+    "HasPowers": "Ma moce",
+    "Weapons": "Broń",
+    "MeleeWeapons": "Broń biała",
+    "RangedWeapons": "Broń dystansowa",
+    "Armors": "Pancerze",
+    "WeaponsAndArmor": "Broń i pancerz",
+    "Shields": "Tarcze",
+    "Biography": "Historia postaci",
+    "Shaken": "W Szoku",
+    "Distr": "Zmylony",
+    "Vuln": "Odsłonięty",
+    "Stunned": "Porażony",
+    "Entangled": "Pochwycony",
+    "Bound": "Unieruchomiony",
+    "Aiming": "Celowanie",
+    "Berserk": "Berserk",
+    "Defending": "Obrona",
+    "Flying": "Latanie",
+    "Unfamiliar": {
+      "2": "Nieznany (-2)",
+      "4": "Nieznany (-4)"
+    },
+    "Follow": "Podąża za {name}",
+    "Unfollow": "Nie podąża za {name}",
+    "MakeGroupLeader": "Uczyń liderem grupy",
+    "RemoveGroupLeader": "Usuń lidera grupy",
+    "AddTokenFollowers": "Dodaj wybrane tokeny jako podążających",
+    "GroupByName": "Grupuj według nazwy",
+    "SetGroupColor": "Ustaw kolor grupy",
+    "SelectColor": "Wybierz kolor",
+    "Holding": "Wstrzymanie akcji",
+    "Hold": "Wstrzymaj akcję",
+    "ActAfterCurrentCombatant": "Działaj po tej postaci",
+    "ActBeforeCurrentCombatant": "Działaj teraz",
+    "LoseTurn": "Strata tury",
+    "Frightened": "Przerażony",
+    "Encumbered": "Obładowany",
+    "Prone": "Na ziemi",
+    "BleedingOut": "Konanie",
+    "Diseased": "Chory",
+    "HeartAttack": "Zawał serca",
+    "OnFire": "Płonie",
+    "Poisoned": "Zatruty",
+    "Reach": "Odległość",
+    "Torch": "Pochodnia",
+    "Invisible": "Niewidzialność",
+    "ColdBodied": "Wyziębienie",
+    "Smite": "Grom",
+    "Armor": "Pancerz",
+    "Protection": "Ochrona",
+    "Dmg": "Obrażenia",
+    "DmgOver": "Obrażenia akcji",
+    "ApOver": "Akcja PP",
+    "Resist": "Test odporności",
+    "ResistRolls": "Rzut na odporność",
+    "MacroActor": {
+      "Default": "Domyślny",
+      "Self": "Własny",
+      "Target": "Cel"
+    },
+    "Ap": "PP",
+    "APLong": "Przebicie Pancerza",
+    "RoF": "SzS",
+    "Mag": "Strzały",
+    "Parry": "Obrona",
+    "ShieldBonus": "Bonus tarczy",
+    "Notes": "Uwagi",
+    "ActionsEffects": "Akcje i stany",
+    "Actions": {
+      "Name": "Akcje",
+      "Hidden": {
+        "Label": "Ukryte",
+        "Hint": "Ukryte akcje nie są wyświetlane na arkuszu postaci"
+      },
+      "DisplayHidden": {
+        "Label": "Wyświetl ukryte akcje"
+      },
+      "Activities": {
+        "Label": "Aktywności",
+        "Hint": "SWID-y akcji powiązanych z tym przedmiotem"
+      }
+    },
+    "DmgModUni": "Modyfikator obrażeń",
+    "SkillModUni": "Modyfikator Cechy",
+    "ShotsUsed": "Zużycie pocisków",
+    "NaturalArmor": "Naturalny Pancerz",
+    "HitLocations": "Lokacje trafienia",
+    "Head": "Głowa",
+    "Torso": "Korpus",
+    "Arms": "Ręce",
+    "Legs": "Nogi",
+    "MinStrLong": "Minimalna Siła",
+    "MinStr": "Min. Siła",
+    "MinStrShort": "Min.Si",
+    "Desc": "Opis",
+    "Special": "Zdolności specjalne",
+    "Details": "Szczegóły",
+    "Equippable": "Ekwipowalny",
+    "ArcaneDevice": "Artefakt",
+    "Misc": "Różne",
+    "QuickAccess": "Szybki dostęp",
+    "Effects": "Stany",
+    "Hindrances": "Zawady",
+    "MajHind": "Poważna Zawada",
+    "Major": "(Poważna)",
+    "Minor": "(Drobna)",
+    "Edges": "Przewagi",
+    "ArcBack": "Zdolności nadprzyrodzone",
+    "Req": "Wymagania",
+    "Requirements": {
+      "Other": "Inne",
+      "And": "i",
+      "Or": "albo",
+      "Editor": {
+        "Header": "Edytuj wymagania dla {name}",
+        "AddHint": "Dodaj nowe wymaganie",
+        "DeleteHint": "Usuń to wymaganie",
+        "Label": "Etykieta",
+        "Value": "Wartość",
+        "SWID": "SWID"
+      },
+      "Combinator": "Łącznik"
+    },
+    "Conv": "Determinacja",
+    "Hesitant": "Niezdecydowany",
+    "LevelHeaded": "Opanowany",
+    "ImprovedLevelHeaded": "Wyjątkowo Opanowany",
+    "AutoCalc": "Automatyczne wyliczenia",
+    "InclArmor": "Automatycznie oblicza Wytrzymałość, włączając Pancerz",
+    "Label": "Etykieta",
+    "Enabled": "Włączony",
+    "Currency": "Waluta",
+    "CarryWeight": "Obładowanie",
+    "Eqd": "Wyp.",
+    "Equipped": "Wyposażony",
+    "Unequipped": "Niewyposażony",
+    "Quantity": "Ilość",
+    "Weight": "Waga",
+    "Price": "Cena",
+    "PP": "Punkty Mocy",
+    "PPShort": "P. Mocy",
+    "PPCost": "Koszt PM",
+    "CurPP": "Aktualne Punkty Mocy",
+    "MaxPP": "Maksymalne Punkty Mocy",
+    "Dur": "Trwanie",
+    "Trap": "Wariant",
+    "Wound": "Rana",
+    "Wounds": "Rany",
+    "WoundsMax": "Maksymalne Rany",
+    "Fatigue": "Zmęczenie",
+    "FatigueMax": "Maksymalne Zmęczenie",
+    "Incap": "Wyeliminowany",
+    "Init": "Inicjatywa",
+    "Draw": "Losuj",
+    "Reset": "Zresetuj",
+    "DrawInit": "Losuj inicjatywę",
+    "ActionDeckReset": "Przetasuj Karty Akcji",
+    "ActionDeckResetNotification": "Karty Akcji przetasowane",
+    "InitDraw": "wylosowano…",
+    "General": "Ogólne",
+    "Addi": "Dodatkowy",
+    "Status": "Stan",
+    "Handling": "Sterowność",
+    "Topspeed": "Maks. Prędkość",
+    "OutOfControl": "Utrata kontroli",
+    "Wrecked": "Zniszczony",
+    "Item": "Przedmiot",
+    "Cargo": "Ładunek",
+    "MaxCargo": "Maksymalna waga ładunku",
+    "CargoWeight": "Waga ładunku",
+    "Mods": "Modyfikacje",
+    "ModSlots": "Sloty na modyfikacje",
+    "MaxMods": "Maksimum modyfikacji",
+    "Operator": "Kierowca",
+    "ManCheck": "Test Manewrowania",
+    "AltSkill": "Alternatywna umiejętność",
+    "Class": "Klasyfikacja",
+    "Vehicular": "Broń pojazdu",
+    "VehicleMod": "Modyfikacja pojazdu",
+    "OpSkill": "Umiejętność Manewrowania",
+    "ShowBennyAnimation": "Pokaż animację Fuksa",
+    "ShowBennyAnimationDesc": "Odtwórz animację, gdy wydajesz Fuksa. Dostępne tylko, jeśli Dice So Nice! jest zainstalowane",
+    "WildDiePreset": "Szablon Kości Figury",
+    "WildDiePresetDesc": "Wybierz szablon dla twojej Kości Figury.",
+    "WildDieTheme": "Motyw Kości Figury",
+    "WildDieThemeDesc": "Wybierz motyw dla twojej Kości Figury. Wybierz 'Custom' by stworzyć własny albo 'None' jeśli nie chcesz aby twoja Kość Figury wyglądała inaczej. Miej na uwadze, że własnoręcznie stworzone Kości Figury aktualnie mogą być widziane tylko przez ciebie. Inni gracze będą je widzieć inaczej.",
+    "SettingConf": "Konfigurator ustawień",
+    "SettingConfLabel": "Otwórz konfigurator ustawień",
+    "SettingConfDesc": "Dostrój system tak, aby pasował do ustawień, w których grasz.",
+    "DiceConf": "Ustawienia Kości Figury",
+    "DiceConfDesc": "Skonfiguruj ustawienia integracji SWADE/Dice So Nice",
+    "DiceConfLabel": "Otwórz ustawienia Kości Figury",
+    "Formula": "Wzór",
+    "SitMod": "Mod sytuacyjny",
+    "RollMode": "Typ rzutu",
+    "RollExample": "np. +1d6x albo -2",
+    "Roll": "Rzut",
+    "RollNoun": "Rzut",
+    "RollRaise": "Przebicie",
+    "GroupRoll": "Rzut grupowy",
+    "Ok": "Ok",
+    "Cancel": "Anuluj",
+    "Redraw": "Przelosuj kartę",
+    "RedrawBenny": "Użyj Fuksa by przelosować kartę",
+    "Add": "Dodaj",
+    "ConfigInit": "Konfiguruj inicjatywę",
+    "IgnWounds": "Ignoruj Rany",
+    "Size": "Rozmiar",
+    "Scale": "Skala",
+    "PickACard": "Wybierz kartę dla {name}",
+    "NoCardsLeft": "Jest za mało kart w talii! Tylko {current} z {needed} wymaganych kart jest dostępne",
+    "OldCard": "Stara karta",
+    "ActionCard": "Karta Akcji",
+    "ConvictionActive": "Determinacja aktywna",
+    "ConvictionActivate": "{name} używa swojej Determinacji!",
+    "ConvictionEnd": "{name} nie jest zbyt Zdeterminowany",
+    "ConvictionExtend": "Czy chcesz zwiększyć swoją Determinację?",
+    "ConvictionExtendPrompt": "Czy chcesz wydać Fuksa aby zwiększyć swoją Determinację?",
+    "NoBennies": "Masz za mało Fuksów!",
+    "GM": "Mistrz Gry",
+    "Vehicles": "Pojazdy",
+    "AddStats": "Dodatkowe statystyki",
+    "Actors": "Aktorzy",
+    "Items": "Przedmioty",
+    "Max": "Maks",
+    "Curr": "Aktualny",
+    "DSNNone": "- Brak -",
+    "Duplicate": "Kopiuj",
+    "Reload": "Przeładowanie",
+    "Refresh": "Odśwież tę kartę",
+    "RefreshOnly": "Odśwież",
+    "NotOwnedError": "Musisz posiadać ten przedmiot/aktora by to zrobić",
+    "GrantsItemsError": "Odświeżanie nie działa na przedmioty, które przyznają przedmioty",
+    "NoUpdatedItemFound": "Nie znaleziono przedmiotu nadającego się do odświeżenia",
+    "Ammo": "Amunicja",
+    "AddOrReplaceActions": {
+      "Title": "Dodaj lub zamień akcje",
+      "Add": "Dodaj nową",
+      "Replace": "Zamień istniejącą",
+      "Content": "<p>Czy chcesz dodać akcje z {type} <strong>{source}</strong> jako nowe akcje lub wymienić istniejące akcje?</p>"
+    },
+    "ppReload": "Punkty Mocy do przeładowania",
+    "ReloadNotPossible": "Ten typ aktora nie przeładowuje",
+    "ReloadUnneeded": "Broń jest już w pełni załadowana",
+    "ReloadSuccess": "Broń została pomyślnie przeładowana",
+    "NotEnoughAmmo": "Nie masz wystarczającej ilości amunicji do tej akcji!",
+    "NotEnoughAmmoToReload": "Nie ma wystarczającej ilości amunicji do pełnego przeładowania",
+    "ReloadType": {
+      "Label": "Typ przeładowania",
+      "None": "Brak",
+      "Self": "Własne",
+      "Single": "Pojedyncze",
+      "Full": "Pełne",
+      "Magazine": "Magazynek",
+      "Battery": "Bateria",
+      "PP": "Punkty Mocy"
+    },
+    "NoAmmoSet": "Brak zestawu amunicji",
+    "NoAmmoPP": "Nie znaleziono Punktów Mocy odpowiadających ustawionej amunicji",
+    "NoDescription": "Brak dostępnego opisu",
+    "NoMags": "Nie masz w ekwipunku żadnych przedmiotów zużywalnych oznaczonych jako magazynki",
+    "RemoveAmmo": "Usuń amunicję",
+    "DiscardMagazine": "Usuń pusty magazynek",
+    "ConsumableType": {
+      "Label": "Podtyp",
+      "Regular": "Zwykły"
+    },
+    "Trapping": "Warianty",
+    "AddBenny": "Dodaj Fuksa",
+    "CurrentBennies": "Aktualne Fuksy",
+    "RerollWithBenny": "Przerzut z Fuksem",
+    "FreeReroll": "Darmowy Przerzut",
+    "AutoCalcParry": "Automatycznie oblicza Obronę, włączając tarczę",
+    "BaseParry": "Bazowa Obrona",
+    "Subtype": "Podtyp",
+    "SpecialAbility": "Zdolność specjalna",
+    "SpecialAbilities": "Zdolności specjalne",
+    "RacialAbilities": "Właściwości rasowe",
+    "ArchetypeAbilities": "Zdolności archetypu",
+    "About": "Dziennik",
+    "EdgesHindrances": "Przewagi i Zawady",
+    "GrantsPowers": "Daje moce",
+    "Crew": "Załoga",
+    "RequiredCrew": "Niezbędna załoga",
+    "Passengers": "Pasażerowie",
+    "String": "Tekst",
+    "Number": "Liczba",
+    "Checkbox": "Pole wyboru",
+    "Selection": "Wybór",
+    "WealthDie": {
+      "Label": "Kość Majątku",
+      "Broke": {
+        "Label": "Zrujnowany",
+        "Hint": "Jesteś zrujnowany!"
+      },
+      "Sides": "Ściany Kości Majątku",
+      "WildSides": "Ściany Kości Figury (Majątku)",
+      "Modifier": "Modyfikator Kości Majątku"
+    },
+    "TraitRolls": "Rzuty na Cechy",
+    "Trait": "Cecha",
+    "AltTrait": "Akcja Cechy",
+    "ClickSuggestions": "Kliknij, aby wyświetlić sugestie",
+    "Quick": "Błyskawiczny refleks",
+    "BonusDamage": "Dodatkowe obrażenia",
+    "Joker": "Joker",
+    "CustomWildDie": "- Niestandardowa Kość Figury -",
+    "Subtract": "Odejmij",
+    "DmgRolls": "Rzuty na obrażenia",
+    "SubtractPPDesc": "Odejmij koszt PM od dostępnych PM",
+    "AddPPDesc": "Dodaj koszt PM do dostępnych PM",
+    "RightClickZoom": "Kliknij prawym przyciskiem myszy, aby powiększyć",
+    "SysMigrationWarning": "Twoje dane systemu SWADE pochodzą ze zbyt starej wersji Foundry i nie można ich w sposób niezawodny przenieść do najnowszej wersji. Proces ten zostanie podjęty, ale mogą wystąpić błędy.",
+    "DeckShuffled": "Talia kart automatycznie potasowana",
+    "BasePace": "Bazowe Tempo",
+    "WarningPackLocked": "Nie możesz edytować zablokowanego kompendium. Najpierw je odblokuj",
+    "ActionCardEditor": "Edytor Kart Akcji",
+    "CardFace": "Tył karty",
+    "CardValue": "Wartość",
+    "CardSuit": "Kolor",
+    "Cards": {
+      "Spades": "Pik",
+      "Hearts": "Kier",
+      "Diamonds": "Karo",
+      "Clubs": "Trefl",
+      "Jokers": "Jokery",
+      "Two": "Dwójka",
+      "Three": "Trójka",
+      "Four": "Czwórka",
+      "Five": "Piątka",
+      "Six": "Szóstka",
+      "Seven": "Siódemka",
+      "Eight": "Ósemka",
+      "Nine": "Dziewiątka",
+      "Ten": "Dziesiątka",
+      "Jack": "Walet",
+      "Queen": "Królowa",
+      "King": "Król",
+      "Ace": "As",
+      "RedJoker": "Joker Czerwony / Pik",
+      "BlackJoker": "Joker Czarny / Kier",
+      "BlueJoker": "Joker Niebieski / Karo",
+      "GreenJoker": "Joker Zielony / Trefl"
+    },
+    "IsJoker": "Jest Jokerem",
+    "OpenACEditor": "Otwórz w edytorze Kart Akcji",
+    "Yes": "Tak",
+    "No": "Nie",
+    "Headquarters": {
+      "Advantage": "Przewagi",
+      "Complication": "Problemy",
+      "Form": "Formularz",
+      "Description": "Opis",
+      "Acquisition": "Nabycie",
+      "Maintenance": "Konserwacja",
+      "Upgrades": "Ulepszenia"
+    },
+    "SetActionDeck": "Ustaw talię jako Talię Akcji",
+    "ShowCharacterSummary": "Pokaż podsumowanie Postaci",
+    "CharacterSummary": "Podsumowanie Postaci",
+    "CharacterSummaryTypeErr": "Nie można użyć podsumowania postaci dla aktora typu {type}",
+    "CopyHtml": "Kopiuj HTML",
+    "CopyMarkdown": "Kopiuj Markdown",
+    "Imperial": "Imperialny",
+    "Metric": "Metryczny",
+    "ChangeBennyWarning": "Zmiana tych ustawień będzie wymagała odświeżenia strony!",
+    "3DBennies": "Fuksy 3D",
+    "WealthSelectionNoneOther": "Brak/Inny",
+    "Modifiers": "Modyfikatory",
+    "ActionTraitMod": "Modyfikator akcji Cechy",
+    "ActionDmgMod": "Modyfikator obrażeń akcji",
+    "ItemTraitMod": "Modyfikator Cechy",
+    "ItemDmgMod": "Modyfikator obrażeń",
+    "Duplicates": "Znaleziono duplikaty",
+    "DuplicateItemsBodyText": "Podczas dodawania {type} <strong>{name}</strong> do aktora {target} znaleziono następujące duplikaty (według nazwy i typu). Nazwy nowych elementów zostały zmienione, aby odzwierciedlały ich źródło.",
+    "NoActionDeckFound": "Nie znaleziono Talii Akcji, tworzę nową",
+    "NoActionDeckDiscardPileFound": "Nie znaleziono \"stosu odrzuconych\" Talii Akcji, tworzę nowy",
+    "Wealth": "Majątek",
+    "Characters": "Postacie",
+    "SettingRules": "Zasady światów",
+    "WorldBasics": "Podstawy świata",
+    "MAPenalty": {
+      "Label": "Kara za Wiele Akcji",
+      "None": "Brak"
+    },
+    "Mod": {
+      "Custom": {
+        "Add": "Dodaj niestandardowy modyfikator"
+      },
+      "Support": "Wsparcie",
+      "Preset": {
+        "Settings": "Predefiniowane modyfikatory",
+        "Choose": "Wybierz modyfikator…",
+        "Add": "Dodaj szablon"
+      },
+      "Value": "Wartość",
+      "Ignore": "Pominąć?",
+      "None": "Brak modyfikatorów w tym momencie",
+      "Active": "Aktywny"
+    },
+    "Illumination": {
+      "_name": "Oświetlenie",
+      "Dim": "Półmrok",
+      "Dark": "Mrok",
+      "Pitch": "Ciemność"
+    },
+    "Cover": {
+      "_name": "Osłona",
+      "Shield": "Osłona - tarcza",
+      "Light": "Lekka Osłona",
+      "Medium": "Średnia Osłona",
+      "Heavy": "Pełna Osłona",
+      "Total": "Zupełna Osłona"
+    },
+    "Range": {
+      "_name": "Zasięg",
+      "Medium": "Średni Zasięg",
+      "Long": "Daleki Zasięg",
+      "Extreme": "Ekstremalny Zasięg",
+      "_nameShort": "Zasięg"
+    },
+    "ModOther": "Inne modyfikatory",
+    "ModTrait": "Modyfikatory Cech",
+    "ModAttack": "Modyfikatory ataku",
+    "ModDamage": "Modyfikatory obrażeń",
+    "Snapfire": "Nieporęczna",
+    "UnstablePlatform": "Niestabilne podłoże",
+    "Weakness": "Słabość",
+    "Resistance": "Odporność",
+    "CannotAddRaceToRace": "Nie możesz dodać rasy/archetypu do rasy/archetypu!",
+    "LayOutChaseWithDeck": "Użyj talii by rozpocząć Pościg",
+    "ClearChaseCards": "Wyczyść scenę z Kart Pościgu",
+    "NoSceneAvailable": "Brak dostępnych scen lub płótno zostało wyłączone",
+    "ChaseCardsCleared": "Wszystkie Karty Pościgu zostały usunięte ze sceny.",
+    "SetUpChase": "Ustaw Pościg",
+    "ChaseLayout": "Układ",
+    "ChaseRows": "Rzędy",
+    "ChaseColumns": "Kolumny",
+    "ChaseNoDeck": "Udostępnij talię!",
+    "ChaseReset": "Talia \"{deck}\" została zresetowana.",
+    "Expiration": {
+      "TabLabel": "Zachowanie w czasie tury",
+      "Description": "<p>Efekty wygasają podczas <em>następnej tury celu lub później</em>.</p>",
+      "Behavior": "Zasady wygasania",
+      "BeginAuto": "Początek tury, automatycznie",
+      "BeginPrompt": "Początek tury, zapytanie",
+      "EndAuto": "Koniec tury, automatycznie",
+      "EndPrompt": "Koniec tury, zapytanie",
+      "None": "Brak",
+      "LooseTurnOnHold": "Utrata tury przy Wstrzymaniu Akcji",
+      "Remaining": "Pozostało"
+    },
+    "RemoveEffectTitle": "Usunąć {label} ?",
+    "RemoveEffectBody": "<p style=\"text-align: center;\">Usunąć <strong>{label}</strong> z <strong>{parent}</strong>?</p>",
+    "PPAbbreviation": "PM",
+    "ShowInChat": "Pokaż na czacie",
+    "ExpandDescription": "Rozwiń aby pokazać opis",
+    "Favorite": "Ulubione",
+    "Equip": "Załóż",
+    "RollDamage": "Rzut na obrażenia",
+    "SystemLinks": {
+      "Changelog": "Dziennik zmian",
+      "Wiki": "Wiki",
+      "ReportAnIssue": "Zgłoś problem"
+    },
+    "OpenOrigin": "Otwórz źródło",
+    "EffectsTemporary": "Tymczasowe stany",
+    "EffectsPermanent": "Permanentne stany",
+    "Ranks": {
+      "Novice": "Nowicjusz",
+      "Seasoned": "Doświadczony",
+      "Veteran": "Weteran",
+      "Heroic": "Heros",
+      "Legendary": "Legenda"
+    },
+    "Advances": {
+      "EditorTitle": "Edytor Rozwinięć",
+      "Toggle": "Przełącz stan planowanego Rozwinięcia",
+      "Delete": "Usuń Rozwinięcie",
+      "Planned": "Zaplanowane",
+      "Modes": {
+        "Legacy": "Legacy",
+        "Expanded": "Rozszerzony",
+        "Label": "Tryb"
+      },
+      "Types": {
+        "Edge": "Nowa Przewaga",
+        "SingleSkill": "Rozwój jednej umiejętności",
+        "TwoSkills": "Rozwój dwóch umiejętności",
+        "Attribute": "Rozwój atrybutu",
+        "Hindrance": "Obniżenie Zawady"
+      },
+      "Number": "Numer Rozwinięcia"
+    },
+    "AddAdvance": "Nowe Rozwinięcie",
+    "Appearance": "Wygląd",
+    "CharacterGoals": "Cele",
+    "Background": "Profil",
+    "ActiveEffects": {
+      "Add": "Dodaj aktywny stan",
+      "Source": "Źródło",
+      "ResetDuration": "Reset czasu trwania",
+      "AddGuided": "Otwórz kreator",
+      "AddUnguided": "Dodaj pusty stan",
+      "Conditional": "Efekt warunkowy",
+      "ConditionalTooltip": "Domyślnie ignoruj modyfikatory rzutów",
+      "AddModifier": "Dodaj modyfikator",
+      "ModifierCost": {
+        "Label": "Koszt modyfikatora",
+        "Hint": "Koszt punktów budowy lub mocy dla tego modyfikatora"
+      }
+    },
+    "Keybindings": {
+      "OpenFavoriteCards": {
+        "Name": "Otwórz ulubioną rękę kart",
+        "UserConfigLabel": "Ulubiona ręka kart",
+        "Hint": "Możesz ustawić swoją ulubioną rękę w konfiguracji użytkownika",
+        "NoCardsWarning": "Nie masz ulubionej ręki kart!",
+        "HandNone": "Brak"
+      },
+      "Bennies": {
+        "Name": "Wydaj/otrzymaj a Fuksa",
+        "Hint": "Naciśnij aby wydać Fuksa, przytrzymaj dodatkowo Alt aby zamiast tego otrzymać Fuksa"
+      }
+    },
+    "Settings": {
+      "ArbitFields": "Dowolne ustawianie pól",
+      "CharSheetDefaultWidth": {
+        "Name": "Domyślna szerokość karty postaci",
+        "Hint": "Szerokość karty postaci otwartej po raz pierwszy, w pikselach. Domyślnie: 650."
+      },
+      "HighlightTemplate": {
+        "Name": "Zawsze podświetlaj Wzorniki",
+        "Hint": "Gdy włączone, Wzorniki zawsze podświetlają siebie zamiast siatki."
+      },
+      "InitDiscardPile": {
+        "Name": "Stos odrzuconych inicjatywy"
+      },
+      "InitCardDeck": {
+        "Name": "Talia kart używana do inicjatywy"
+      },
+      "ParryBase": {
+        "Name": "Umiejętność Walki SWID",
+        "Hint": "Umiejętność, która będzie używana do obliczania Obrony aktorów. Więcej informacji o Savage Worlds ID w dokumentacji!"
+      },
+      "UseAttributeShorts": {
+        "Name": "Używaj skróconych nazw atrybutów",
+        "Hint": "Użyj tej opcji, jeśli chcesz widzieć skrócone wersje nazw atrybutów w kartach postaci graczy i NPC, na przykład Zr zamiast Zręczność, Sp zamiast Spryt, itd. Musisz zamknąć i otworzyć ponownie wszystkie karty, by zobaczyć zmiany."
+      },
+      "WeightUnit": {
+        "Name": "Jednostka wagi",
+        "Hint": "Ustawia mierzenie wagi w funtach lub kilogramach. Zmiana miary nie zmieni wagi w ustawieniach przedmiotów, a jedynie jak liczone będzie Obładowanie"
+      },
+      "HideNpcItemChatCards": {
+        "Name": "Ukryj karty przedmiotów NPC na czacie",
+        "Hint": "Gdy włączone, karty przedmiotów NPC są automatycznie wysyłane jako szept do wszystkich Mistrzów Gry, zamiast postowania ich w sposób umożliwiający zobaczenie wszystkim graczom"
+      },
+      "EnableBennyNotify": {
+        "Name": "Powiadomienia o Fuksach",
+        "Hint": "Wyświetla wiadomość na czacie, kiedy Fuksy są wydawane, otrzymywane albo odświeżane."
+      },
+      "HideWC": {
+        "Name": "Ukryj Figury NPC",
+        "Hint": "Nie pokazuj graczom którzy spośród NPC są Figurami"
+      },
+      "CreateInitChat": {
+        "Name": "Twórz wiadomości na czacie przy losowaniu inicjatywy",
+        "Hint": "Jeśli opcja jest włączona, wylosowane Karty Akcji zostaną pokazane na czacie."
+      },
+      "AutoInit": {
+        "Name": "Automatyczna inicjatywa",
+        "Hint": "Automatycznie losuj Karty Akcji w każdej rundzie"
+      },
+      "Bumpmaps": "Mapy wypukłości",
+      "Benny3DFront": {
+        "Name": "Przednia tekstura",
+        "Hint": "Przednia tekstura Fuksa 3D"
+      },
+      "Benny3DBack": {
+        "Name": "Tylna tekstura",
+        "Hint": "Tylna tekstura Fuksa 3D"
+      },
+      "Benny3DBackBump": {
+        "Name": "Tylna mapa wypukłości",
+        "Hint": "Tylna mapa wypukłości Fuksa"
+      },
+      "Benny3DFrontBump": {
+        "Hint": "Przednia mapa wypukłości Fuksa",
+        "Name": "Przednia mapa wypukłości"
+      },
+      "CoreSkillsList": {
+        "Name": "Lista umiejętności podstawowych",
+        "Hint": "Wprowadź nazwy umiejętności oddzielone przecinkiem aby zdefiniować je jako podstawowe dla wszystkich aktorów"
+      },
+      "CoreSkillsPack": {
+        "Name": "Kompendium umiejętności podstawowych",
+        "Hint": "Wybierz z którego kompendium zostaną zaczerpnięte umiejętności podstawowe"
+      },
+      "WealthType": {
+        "Name": "Tryb Majątku",
+        "Hint": "Wybierz sposób śledzenia Majątku postaci i waluty"
+      },
+      "CurrencyName": {
+        "Name": "Nazwa waluty",
+        "Hint": "Nazwij swoją walutę"
+      },
+      "JokersWild": {
+        "Name": "Jokery szaleją!",
+        "Hint": "Kiedy postać gracza dostanie podczas walki jokera, wszyscy w drużynie otrzymują po Fuksie"
+      },
+      "AmmoManagement": {
+        "Name": "Zarządzanie amunicją",
+        "Hint": "Automatyzuje zużywanie amunicji. Sprawdź dokumentację by poznać szczegóły."
+      },
+      "PCAmmoFromInventory": {
+        "Name": "PC używają amunicji z ekwipunku",
+        "Hint": "Po aktywacji sprzęt lub przedmiot zużywalny ustawiony jako amunicja zostanie użyty podczas przeładowania broni"
+      },
+      "NPCAmmoFromInventory": {
+        "Name": "NPC używają amunicji z ekwipunku"
+      },
+      "VehicleAmmoFromInventory": {
+        "Name": "Pojazdy używają amunicji z ekwipunku"
+      },
+      "EnableWoundPace": {
+        "Name": "Dostosuj Tempo do Ran",
+        "Hint": "Gdy włączone, Rany automatycznie wpływają na Tempo"
+      },
+      "EnableConv": {
+        "Name": "Determinacja",
+        "Hint": "Włącza zasady Determinacji"
+      },
+      "NoPowerPoints": {
+        "Name": "Bez Punktów Magii",
+        "Hint": "Włączenie tej opcji ukrywa wszelkie interakcje z Punktami Mocy"
+      },
+      "AlwaysGeneralPP": {
+        "Name": "Zawsze pokazuj ogólne Punkty Mocy",
+        "Hint": "Gdy włączone, ogólne Punkty Mocy będą zawsze wyświetlane, nawet jeśli wszystkie moce są powiązane ze zdolnościami nadprzyrodzonymi"
+      },
+      "ApplyEncumbrance": {
+        "Name": "Zastosuj kary za Obładowanie",
+        "Hint": "Dodaje kary za Obładowanie. Weź pod uwagę, że ta opcja w chwili obecnej NIE JEST UWZGLĘDNIONA podczas testów {vigor}u przy rzutach na {fatigue}!"
+      },
+      "VehicleMods": {
+        "Name": "Modyfikacje pojazdu",
+        "Hint": "Pojazdy i Pancerz używają slotów na modyfikacje"
+      },
+      "VehicleEdges": {
+        "Name": "Przewagi pojazdów",
+        "Hint": "Pojazdy używają Przewag i Zawad"
+      },
+      "VehicleSkills": {
+        "Name": "Umiejętności prowadzenia pojazdów",
+        "Hint": "Wprowadź nazwy umiejętności oddzielone przecinkiem aby zdefiniować je jako umiejętności prowadzenia pojazdów"
+      },
+      "BennyImageSheet": {
+        "Name": "Fuks",
+        "Hint": "Wybierz obraz dla Fuksów do użycia na karcie postaci"
+      },
+      "HardChoices": {
+        "Name": "Koło Fortuny",
+        "Hint": "Wybranie tej opcji włącza zasady Koła Fortuny"
+      },
+      "CardSound": {
+        "Name": "Dźwięk kart",
+        "Hint": "Włącza krótki dźwięk podczas losowania kart inicjatywy"
+      },
+      "StartingCurrency": {
+        "PC": {
+          "Name": "Początkowa waluta postaci gracza",
+          "Hint": "Ustala wartość waluty, którą aktor postaci gracza otrzymuje podczas tworzenia"
+        },
+        "NPC": {
+          "Hint": "Ustala wartość waluty, którą aktor NPC otrzymuje podczas tworzenia",
+          "Name": "Początkowa waluta NPC"
+        }
+      },
+      "NPCCurrency": {
+        "Name": "NPC używają waluty",
+        "Hint": "Gdy włączone, wszyscy NPC mają takie same opcje waluty jak bohaterowie graczy"
+      },
+      "DumbLuck": {
+        "Name": "Szczęśliwy Traf",
+        "Hint": "Wybranie tej opcji włącza zasady Szczęśliwego Trafu"
+      },
+      "WoundCap": {
+        "Name": "Limit Ran",
+        "Hint": "Wybranie tej opcji włącza zasady Limitu Ran podczas obliczania otrzymanych Ran."
+      },
+      "UnarmoredHero": {
+        "Name": "W Samej Przepasce",
+        "Hint": "Wybranie tej opcji włącza zasady W Samej Przepasce podczas rzutów na Wyparowanie"
+      },
+      "GrittyDamage": {
+        "Name": "Paskudne Obrażenia",
+        "Hint": "Wybranie tej opcji włącza zasady Paskudnych Ran i pozwala na wybranie Tabeli Urazów do rzutów."
+      },
+      "InjuryTable": {
+        "Name": "Tabela Urazów",
+        "Hint": "Wybierz odpowiednią tabelę do rzucania do wykorzystania w automatycznych rzutach Paskudnych Urazów."
+      },
+      "HeroesNeverDie": {
+        "Name": "Bohaterowie Nie Umierają",
+        "Hint": "Wybranie tej opcji włącza zasady Bohaterowie Nie Umierają podczas ustalania skutków Eliminacji"
+      },
+      "ArmorStacking": {
+        "Choices": {
+          "Core": "Zasady Savage Worlds Adventure Edition",
+          "SWPF": "Pathfinder®️ for Savage Worlds"
+        },
+        "Name": "Sumowanie Pancerza",
+        "Hint": "Wybierz które zasady będą stosowane przy sumowaniu Pancerza (obliczaniu wartości w przypadku jego kilku warstw)"
+      },
+      "StaticGmBennies": {
+        "Name": "Statyczne Fuksy MG",
+        "Hint": "Ustala stałą wartość liczby Fuksów MG, które otrzymuje on podczas odświeżania zamiast wyliczania ich na podstawie aktywnych graczy."
+      },
+      "GmBennies": {
+        "Name": "Fuksy Mistrza Gry",
+        "Hint": "Ustaw ile Fuksów powinien otrzymać MG podczas odświeżania"
+      },
+      "VehicleEnergy": {
+        "Name": "Energia pojazdu",
+        "Hint": "Pojazdy i Pancerz używają energii"
+      }
+    },
+    "EffectCallbacks": {
+      "Shaken": {
+        "RollSpirit": "Rzut na Ducha",
+        "Title": "Usuń Szok z {name}",
+        "Flavor": "Test Ducha aby usunąć Szok",
+        "UnshakeModifier": "Modyfikator wyjścia z Szoku",
+        "Question": "Co chcesz zrobić?",
+        "Success": "Nie jesteś już W Szoku"
+      },
+      "Stunned": {
+        "Title": "Test Wigoru aby usunąć Porażenie",
+        "Fail": "Nadal jesteś Porażony",
+        "Success": "Nie jesteś już Porażony, ale pozostajesz Odsłonięty",
+        "Raise": "Nie jesteś już ani Porażony, ani Odsłonięty",
+        "UnStunModifier": "Modyfikator wyjścia z Porażenia"
+      },
+      "BleedingOut": {
+        "Title": "Test Wigoru aby odeprzeć Konanie",
+        "Fail": "Umierasz",
+        "Success": "Jeszcze się trzymasz... ledwo...",
+        "Raise": "Udało ci się ustabilizować",
+        "BleedOutModifier": "Modyfikator Konania",
+        "IgnoreWounds": "Konanie ignorujące Rany"
+      }
+    },
+    "Validation": {
+      "OnlyOneRace": "Możesz mieć tylko jedną rasę na raz!",
+      "OnlyOneArchetype": "Możesz mieć tylko jeden archetyp na raz.",
+      "OnlyOneAncestry": "Możesz mieć tylko jedno pochodzenie na raz.",
+      "InvalidBasePace": "Nie możesz ustawić podstawowego Tempa na typ tempa bez wartości.",
+      "NoGroupCombatants": "Grupy aktorów nie mogą być uczestnikami walki."
+    },
+    "DocumentLink": "Link",
+    "DocumentTweaks": "Poprawki",
+    "TargetVulnerable": "Cel jest Odsłonięty",
+    "WildAttack": "Wściekły Atak",
+    "DesperateAttack": {
+      "2": "Desperacki Atak (2)",
+      "4": "Desperacki Atak (4)"
+    },
+    "CalledShot": {
+      "HeadOrVitals": "Strzał mierzony: Głowa i inne wrażliwe miejsca",
+      "Hand": "Strzał mierzony: Dłoń",
+      "Limbs": "Strzał mierzony: Kończyna"
+    },
+    "ItemType": "Typ przedmiotu",
+    "Source": "Źródło",
+    "MigrateCompendium": "Wymuś przeniesienie kompendium",
+    "Properties": "Właściwości",
+    "AddAction": "Dodaj akcję",
+    "DialogConfirmPrompt": "Jesteś pewien?",
+    "DeleteEmbeddedActionPrompt": "Czy na pewno chcesz usunąć akcję {action}?",
+    "DeleteEmbeddedPowerPrompt": "Czy na pewno chcesz usunąć moc {power}?",
+    "TrademarkWeapon": {
+      "Label": "Ulubiona Broń",
+      "None": "Nie",
+      "Regular": "Ulubiona Broń",
+      "Improved": "Ukochana Broń"
+    },
+    "OffHandPenalty": "Kara za słabszą rękę",
+    "ItemEquipStatus": {
+      "Label": "Umiejscowienie",
+      "Stored": "Zmagazynowane",
+      "Carried": "Przy sobie",
+      "Equipped": "Wyekwipowane",
+      "Installed": "Zainstalowane",
+      "OffHand": "Słabsza ręka",
+      "MainHand": "Główna ręka",
+      "TwoHands": "Dwie ręce",
+      "Added": "Dodane",
+      "Readied": "Przygotowane"
+    },
+    "DestroyOnEmpty": "Usuń gdy puste",
+    "Charges": "Ładunki",
+    "Consumable": {
+      "Use": "Użyj",
+      "Consumables": "Przedmioty zużywalne",
+      "NotEnoughCharges": "Za mało ładunków!",
+      "ChargesUsed": "<p>{charges} ładunki/ów użytych na <em>{name}</em></p>"
+    },
+    "EmptyAncestralAbilitiesHint": "<strong>Uwaga:</strong> Ta funkcja została wyłączona na rzecz przyznawania przedmiotów. Jeśli tworzysz nowe {ancestry} albo {archetype}, przeciągnij i upuść przedmioty na jego kartę. Przeciągnięte {ancestry} albo {archetype} automatycznie dodadzą te przedmioty do karty postaci aktora.",
+    "NoTokenSelectedForResistRoll": "Aby wykonać rzut na odporność, najpierw zaznacz token",
+    "Templates": {
+      "Cone": {
+        "Short": "Zionięcie",
+        "Long": "Wzornik Zionięcia"
+      },
+      "Stream": {
+        "Short": "Strumień",
+        "Long": "Wzornik Strumienia"
+      },
+      "Small": {
+        "Short": "Mały",
+        "Long": "Mały Wzornik Wybuchu"
+      },
+      "Medium": {
+        "Short": "Średni",
+        "Long": "Średni Wzornik Wybuchu"
+      },
+      "Large": {
+        "Short": "Duży",
+        "Long": "Duży Wzornik Wybuchu"
+      },
+      "Available": "Dostępne Wzorniki",
+      "Possible": "Możliwe Wzorniki"
+    },
+    "CompendiumTOC": {
+      "Toggle": "Przełącz używanie spisu treści kompendium",
+      "Dialog": {
+        "Title": "Potwierdź przełączenie",
+        "Content": "Aby zmiana odniosła skutek, Foundry VTT oraz wszyscy podłączeni klienci zostaną ponownie załadowani. Proszę potwierdzić."
+      },
+      "Header": "Zawartość"
+    },
+    "Category": "Kategoria",
+    "ItemIsAmmo": "Jest amunicją",
+    "Vision": {
+      "SeeHeat": "Widzi ciepło",
+      "SenseHeat": "Wyczuwa ciepło",
+      "Infravision": "Infrawizja"
+    },
+    "Attribute": "Atrybut",
+    "BaseDie": "Kość bazowa",
+    "AttributeManager": {
+      "Title": "Zarządzanie atrybutami {name}",
+      "Open": "Zarządzaj atrybutami"
+    },
+    "HeavyArmor": "Ciężki pancerz",
+    "HeavyWeapon": "Broń ciężka",
+    "UsesTOC": "Używaj spisu treści kompendium",
+    "TOCBlockList": "Spis treści kompendium lista blokad",
+    "TOCSettings": {
+      "Label": "Otwórz ustawienia spisu treści kompendium",
+      "Name": "Ustawienia spisu treści kompendium",
+      "Hint": "Konfiguruj aplikację spisu treści kompendium"
+    },
+    "DieSides": "Ścianki kości",
+    "WildDieSides": "Ścianki Kości Figury",
+    "EncumbranceSteps": "Poziomy Obładowania",
+    "EffectWizard": {
+      "Preview": "Podejrzyj",
+      "Change": "Zmień",
+      "Mode": "Tryb",
+      "Value": "Wartość",
+      "Changes": "Zmiany",
+      "SelectAttribute": "Wybierz atrybut",
+      "EnterSkill": {
+        "Label": "Wpisz umiejętność",
+        "Hint": "Możesz wpisać dowolną nazwę umiejętności lub wybrać ją z listy sugestii"
+      }
+    },
+    "OtherStats": "Inne statystyki",
+    "AdditionalStats": {
+      "SelectHint": "Wprowadź listę opcji oddzielonych średnikami",
+      "Key": "Klucz statystyki",
+      "Label": "Etykieta",
+      "Type": "Typ",
+      "HasMaxValue": "Ma maksymalną wartość",
+      "Current": "Aktualne {stat}",
+      "Max": "Maks {stat}",
+      "KeyErr": "Klucz dodatkowej statystyki {invalid} jest błędny i został zmieniony na {key}",
+      "Value": "Wartość",
+      "MaxLabel": "Maksimum",
+      "OptionLabel": "Opcja"
+    },
+    "MessageOnUse": {
+      "Label": "Wiadomość przy użyciu",
+      "Hint": "Wyświetla wiadomość, gdy przedmiot zostaje użyty"
+    },
+    "ItemGrants": {
+      "EmptyHint": "Ten przedmiot obecnie nie przyznaje przedmiotów",
+      "Header": "Przyznawanie przedmiotów",
+      "When": "Przyznaje przedmioty, gdy",
+      "Mutation": "Mutacja"
+    },
+    "IgnFatigue": "Ignoruj Zmęczenie",
+    "BaseDamage": "Bazowe obrażenia",
+    "RefreshPP": "Odśwież Punkty Mocy",
+    "Targets": "Cele",
+    "Rolls": {
+      "RollResult": "Wynik rzutu",
+      "SwadeRoll": "Rzut",
+      "DamageRoll": "Rzut na obrażenia",
+      "TraitRoll": "Rzut na Cechę",
+      "Critfail": {
+        "Critfail": "KATASTROFA",
+        "ConfirmDie": "Potwierdzenie kości",
+        "Unconfirmed": "Katastrofa nie potwierdzona",
+        "Possible": "MOŻLIWA KATASTROFA",
+        "Confirmed": "Potwierdzenie Katastrofy",
+        "Confirm": "Potwierdź"
+      },
+      "Free": "Za darmo",
+      "Benny": "Fuks",
+      "GMBenny": "Fuks MG"
+    },
+    "LoadedAmmo": "Załadowana amunicja",
+    "DamageApplicator": {
+      "ApplyDamage": {
+        "Label": "Ustal obrażenia",
+        "Hint": "Kliknij aby ustalić obrażenia wybranego tokenu"
+      },
+      "SoakModifier": "Modyfikator Wyparowania",
+      "WoundsAboutToBeTaken": "<p><strong>{name}</strong> otrzyma <strong>{wounds}</strong>!</p>",
+      "SoakDialog": {
+        "SoakRoll": "Test Wigoru w celu Wyparowania",
+        "WoundedTitle": "Rzuć aby Wyparować Rany dla {name}?",
+        "UnwoundedTitle": "Dostosuj obrażenia aby ustalić status dla {name}?",
+        "WoundedPrompt": "<p>{name} otrzyma {wounds}. Czy chcesz podjąć próbę Wyparowania?</p>",
+        "ShakenPrompt": "<p>{name} zaraz będzie W Szoku.</p>",
+        "UnharmedPrompt": "<p>{name} może być nienaruszony.</p>",
+        "Benny": "Wydaj Fuksa w celu Wyparowania",
+        "GMBenny": "Wydaj Fuksa MG w celu Wyparowania",
+        "Free": "Darmowe Wyparowanie",
+        "TakeWounds": "Otrzymaj {wounds}",
+        "AdjustDamage": "Dostosuj obrażenia",
+        "ApplyShaken": "Zastosuj Szok",
+        "Accept": "Akceptuj",
+        "NoVehicleSoak": "Wyparowanie w przypadku pojazdów nie jest jeszcze wspierane"
+      },
+      "RerollSoakDialog": {
+        "Title": "Przerzuć aby Wyparować Rany dla {name}?",
+        "Prompt": "<p>{name} otrzyma {wounds}. Czy chcesz przerzucić Wyparowanie?</p>",
+        "PromptCritFail": "<p>{name} otrzyma {wounds}. Katastrofa nie pozwala na przerzuty.</p>",
+        "Benny": "Wydaj Fuksa aby przerzucić",
+        "GMBenny": "Wydaj Fuksa MG aby przerzucić",
+        "Free": "Darmowy przerzut",
+        "TakeWounds": "Otrzymaj {wounds}"
+      },
+      "AdjustDamagePrompt": "<p>Dostosuj obrażenia do dowolnych zdolności i efektów, które {name} może mieć.</p>",
+      "Result": {
+        "NoSignificantDamage": "<p><strong>{name}</strong> nie ponosi znacznych szkód.</p>",
+        "SoakedAll": "<p><strong>{name}</strong> Wyparował wszystkie Rany i nie jest W Szoku!</p>",
+        "IsShaken": "<p><strong>{name}</strong> jest <strong>W Szoku</strong>!</p>",
+        "IsShakenWithWounds": "<p><strong>{name}</strong> jest <strong>W Szoku</strong> i otrzymał <strong>{wounds}</strong>!</p>",
+        "IsIncapacitated": "<p><strong>{name}</strong> jest <strong>Wyeliminowany!</strong></p>"
+      },
+      "Incapacitation": {
+        "InjuryRoll": "Wyeliminowany: Test Wigoru w celu uniknięcia Urazu",
+        "Dies": "<p><strong>{name}</strong> umiera z powodu obrażeń!</p>",
+        "PermanentInjury": "<p><strong>{name}</strong> doznaje trwałego Urazu oraz <strong>Kona!</strong></p>",
+        "PermanentInjuryHND": "<p><strong>{name}</strong> doznaje trwałego Urazu!</p>",
+        "TemporaryInjury": "<p><strong>{name}</strong> doznaje Urazu, który trwa do pełnego wyleczenia Ran.</p>",
+        "ShortInjury": "<p><strong>{name}</strong> doznaje Urazu, który trwa 24 godziny, albo pełnego wyleczenia Ran (cokolwiek wydarzy się pierwsze).</p>",
+        "TakeFail": "Doznaje trwałego Urazu",
+        "TakeSuccess": "Doznaje Urazu, który trwa do pełnego wyleczenia Ran",
+        "Title": "Przerzut Urazu dla {name}?",
+        "Prompt": "<p>{name} dozna Urazu. Czy chcesz przerzucić test Wigoru?</p>"
+      },
+      "NoInjuryTable": "Żadna Tabela Urazów nie została wybrana. Sprawdź ustawienia SWADE",
+      "NoTargetsSelected": "Wybierz cel, dla którego mają zostać zastosowane obrażenia."
+    },
+    "NumberOfDice": {
+      "Label": "Liczba kości",
+      "Hint": "Ustala ile kości Cech zostanie rzuconych dla tej akcji"
+    },
+    "ResourcesUsed": {
+      "Label": "Użyte zasoby",
+      "Hint": "Ile zasobu zostanie użyte dla tej akcji"
+    },
+    "CouldNotFindMacro": "Nie znaleziono makra z UUID {uuid}",
+    "Magazine": {
+      "NoneLoaded": "Nie załadowano magazynku",
+      "Select": "Wybierz magazynek"
+    },
+    "DmgMod": "Modyfikator obrażeń",
+    "Auras": {
+      "TabHeader": "Auramanta",
+      "Enabled": "Włączona",
+      "Color": "Kolor",
+      "Range": "Promień aury",
+      "Alpha": "Przezroczystość aury",
+      "WallConstraints": {
+        "Label": "Ograniczona ścianami",
+        "Hint": "Ten przełącznik decyduje o tym, czy aura jest ograniczona przez ściany blokujące światło, czy może przez nie przechodzić"
+      },
+      "UserAura1": "Aura 1",
+      "UserAura2": "Aura 2"
+    },
+    "Aura": {
+      "Visibility": {
+        "Label": "Widziana przez",
+        "Hint": "Wybierz, które tokeny (według nastawienia) mogą zobaczyć tę aurę. Zawsze możesz zobaczyć wszystkie aury tokenu, do którego masz przynajmniej uprawnienia obserwatora"
+      }
+    },
+    "TOURS": {
+      "ERROR": {
+        "ActorCreatePermission": "Ten przewodnik wymaga uprawnień do tworzenia aktorów",
+        "SettingPermission": "Ten przewodnik wymaga uprawnień do modyfikowania zasad świata",
+        "JournalCreatePermission": "Ten przewodnik wymaga uprawnień do tworzenia wpisów w dzienniku"
+      },
+      "AMMUNITION": {
+        "Title": "Amunicja",
+        "Description": "Ten przewodnik pokaże ci, jak korzystać z automatycznego zarządzania amunicją",
+        "Actor": "Przewodnik po amunicji demonstracyjna postać",
+        "Items": {
+          "NONE": "Długi łuk",
+          "SELF": "Nóż do rzucania",
+          "SINGLE": "Rewolwer",
+          "FULL": "Wodny pistolet",
+          "MAGAZINE": "Karabin Steyr AUG",
+          "BATTERY": "Pistolet laserowy",
+          "PP": "Magiczny pistolet"
+        },
+        "GameSettings": {
+          "Title": "Ustawienia gry",
+          "Content": "Na początek zarządzanie amunicją musi być włączone w ustawieniach systemu."
+        },
+        "SwadeSettings": {
+          "Title": "Ustawienia SWADE",
+          "Content": "Ustawienia amunicji znajdują się w ustawieniach <em>Savage Worlds</em>"
+        },
+        "AmmoSettings": {
+          "Title": "Ustawienia amunicji",
+          "Content": "Kontrolują one czy amunicja jest automatycznie zużywana przez broń zasięgową."
+        },
+        "AmmoManagement": {
+          "Title": "Zarządzanie amunicją",
+          "Content": "To ustawienie kontroluje, czy użycie broni dystansowej zużywa jakąkolwiek amunicję, zarówno z wewnętrznego licznika strzałów broni, jak i z ekwipunku."
+        },
+        "PCInventory": {
+          "Title": "Amunicja z ekwipunku",
+          "Content": "Kolejne trzy ustawienia kontrolują, czy przy przeładowaniu broni zużywane są zewnętrzne przedmioty, w zależności od typu aktora. Jeśli te opcje są odznaczone, ale zarządzanie amunicją jest włączone, aktorzy danego typu będą zużywać strzały z przedmiotu, ale będą mogły swobodnie przeładowywać. Pozwala to na styl zarządzania amunicją w stylu arcade, gdzie ważne jest śledzenie samego przeładowania, ale długoterminowe zużycie amunicji nie ma znaczenia."
+        },
+        "CharacterWeapons": {
+          "Title": "Broń postaci",
+          "Content": "Lista broni postaci znajduje się w zakładce sprzęt."
+        },
+        "ReloadNone": {
+          "Title": "Typ przeładowania — brak",
+          "Content": "Ta broń całkowicie ignoruje licznik strzałów, pobierając amunicję bezpośrednio z powiązanego przedmiotu. To ustawienie najlepiej sprawdza się w przypadku broni korzystających wyłącznie z zewnętrznej amunicji, takich jak kołczan ze strzałami czy karabin bębenkowy."
+        },
+        "AmmoNone": {
+          "Title": "Pole amunicji",
+          "Content": "To ustawienie powinno być przypisane do przedmiotu wyposażenia (np. strzały) lub przedmiotu zużywalnego (np. beczka z nabojami) w ekwipunku postaci. Ilość przedmiotów wyposażenia jest zużywana bezpośrednio. W przypadku przedmiotów zużywalnych, zużywane są ich ładunki, przy czym każda ilość reprezentuje pełny zestaw ładunków. Nazwa w tym polu musi <em>dokładnie</em> odpowiadać nazwie przedmiotu, który ma być zużyty."
+        },
+        "ReloadSelf": {
+          "Title": "Typ przeładowania — własne",
+          "Content": "Te bronie używają własnej ilości do resetowania licznika strzałów. To ustawienie najlepiej sprawdza się w przypadku broni rzucanych lub innych przedmiotów, które są samowystarczalne i zużywają się podczas użycia."
+        },
+        "AmmoSelf": {
+          "Title": "Pole amunicji",
+          "Content": "To pole jest ignorowane, gdy typ przeładowania jest ustawiony na własne"
+        },
+        "ReloadSingle": {
+          "Title": "Typ przeładowania — pojedyncze",
+          "Content": "Te bronie przeładowują pojedynczy strzał przy każdym naciśnięciu przycisku przeładowania. To ustawienie jest idealne dla rewolwerów lub innych broni z ciężką amunicją, które przeładowuje się powoli."
+        },
+        "AmmoSingle": {
+          "Title": "Pole amunicji",
+          "Content": "To pole działa podobnie do przeładuj — brak, ale ilość lub ładunki są zużywane podczas przeładowania, a nie podczas strzelania, ponieważ strzelanie zużywa liczbę strzałów w liczniku."
+        },
+        "ReloadFull": {
+          "Title": "Typ przeładowania — pełne",
+          "Content": "Ta broń resetują cały licznik strzałów przy każdym naciśnięciu przycisku przeładowania. To ustawienie może być używane jako uproszczona wersja metody magazynków lub dla broni, które nie mają wymiennych magazynków, takich jak broń z rezerwuarami cieczy."
+        },
+        "AmmoFull": {
+          "Title": "Pole amunicji",
+          "Content": "To pole działa podobnie do przeładuj — brak, ale ilość lub ładunki są zużywane podczas przeładowania, zamiast podczas strzelania, ponieważ strzelanie zużywa licznik strzałów."
+        },
+        "ReloadMagazine": {
+          "Title": "Typ przeładowania — magazynek",
+          "Content": "Te bronie używają w pełni wymiennych magazynków, które można zamieniać w razie potrzeby, śledząc liczbę strzałów pozostałych w każdym magazynku."
+        },
+        "AmmoMagazine": {
+          "Title": "Pole amunicji",
+          "Content": "Przedmiot nazwany tutaj MUSI być przedmiotem zużywalnym z podtypem magazynek, aby działał poprawnie. Ponadto, ładunki przedmiotu zużywalnego powinny odpowiadać licznikowi strzałów broni."
+        },
+        "ReloadBattery": {
+          "Title": "Typ przeładowania — bateria",
+          "Content": "Ta broń działa podobnie do magazynków, ale z wymiennymi akumulatorami, które są zużywane proporcjonalnie do liczby oddanych strzałów."
+        },
+        "AmmoBattery": {
+          "Title": "Pole amunicji",
+          "Content": "Przedmiot nazwany tutaj MUSI być przedmiotem zużywalnym z podtypem bateria, aby działał poprawnie. Ponadto maksymalna liczba ładunków przedmiotu zużywalnego powinna wynosić 100."
+        },
+        "ReloadPP": {
+          "Title": "Typ przeładowania — Punkty Mocy",
+          "Content": "Te bronie nie przeładowują się fizyczną amunicją, lecz poprzez wyczerpywanie punktów mocy posiadacza, jak to ma miejsce w <em>Rifts® for Savage Worlds</em>"
+        },
+        "AmmoPP": {
+          "Title": "Pole amunicji",
+          "Content": "Zamiast podawać nazwę przedmiotu, wskaż ważny typ umiejętności nadprzyrodzonej postaci, taki jak Ogólne, Magia, Cuda czy Psionika"
+        }
+      },
+      "TWEAKS": {
+        "Title": "Poprawki",
+        "Description": "Naucz się unikalnych modyfikacji karty w menu poprawek",
+        "Actor": "Przewodnik po poprawkach demonstracyjna postać",
+        "AccessTweaks": {
+          "Title": "Dostęp do poprawek",
+          "Content": "Menu poprawek znajduje się w nagłówku każdego arkusza postaci i oferuje dodatkowe opcje konfiguracyjne"
+        },
+        "TraitTweaks": {
+          "Title": "Poprawki Cech",
+          "Content": "Ta zakładka oferuje szeroki zestaw dodatkowych pól, które umożliwiają dostosowanie Cech postaci"
+        },
+        "Advances": {
+          "Title": "Rodzaj Rozwinięć",
+          "Content": "Rozszerzony rozwój (domyślne) oferuje ulepszone zarządzanie danymi, które określają rodzaj rozwoju i automatycznie obliczają rangę postaci. Rozwój Legacy to po prostu duże pole tekstowe, w którym możesz napisać, co chcesz, bez zarządzania danymi."
+        },
+        "Unshake": {
+          "Title": "Modyfikator wyjścia z Szoku",
+          "Content": "Dodaje premię do automatycznego rzutu na Szok, który jest wywoływany na początku tury postaci W Szoku."
+        },
+        "Soak": {
+          "Title": "Modyfikator Wyparowania",
+          "Content": "Dodaje premię do rzutu na Wyparowanie, który jest wywoływany przez przycisk odbierający obrażenia na kartach obrażeń."
+        },
+        "Initiative": {
+          "Title": "Modyfikatory inicjatywy",
+          "Content": "Modyfikuje sposób obsługi inicjatywy postaci zgodnie z zasadami zawartymi w podstawowej książce zasad."
+        },
+        "AutoCalc": {
+          "Title": "Automatyczne wyliczenia",
+          "Content": "Przełącza, czy statystyki postaci są obliczane na podstawie jej atrybutów i wyposażenia, czy ustalane ręcznie."
+        }
+      },
+      "ADDSTATS": {
+        "Title": "Dodatkowe statystyki",
+        "Description": "Naucz się jak skonfigurować dodatkowe statystyki w swoim świecie gry",
+        "Actor": "Przewodnik po dodatkowych statystykach demonstracyjna postać",
+        "GameSettings": {
+          "Title": "Ustawienia gry",
+          "Content": "Na początek dodatkowe statystyki muszą być skonfigurowane w ustawieniach systemu."
+        },
+        "SwadeSettings": {
+          "Title": "Ustawienia SWADE",
+          "Content": "Dodatkowe statystyki znajdują się w ustawieniach <em>Savage Worlds</em>."
+        },
+        "StatSettings": {
+          "Title": "Konfiguracja dodatkowych statystyk",
+          "Content": "Wszystkie statystyki muszą najpierw zostać utworzone na tej stronie, aby mogły być później włączone dla aktorów i przedmiotów."
+        },
+        "StatKey": {
+          "Title": "Klucz statystyki",
+          "Content": "Klucze statystyk określają, jak dodatkowa statystyka jest oznaczona w danych (actor.system.additionalStats.stat-key) i muszą być unikalne."
+        },
+        "StatLabel": {
+          "Title": "Etykieta",
+          "Content": "Tekst, który będzie wyświetlany na karcie postaci."
+        },
+        "StatDType": {
+          "Title": "Typ",
+          "Content": "Każdy typ ma unikalne zasady."
+        },
+        "HasMax": {
+          "Title": "Ma maksymalną wartość",
+          "Content": "Dodaje pole do wskazania maksymalnej wartości dodatkowej statystyki oraz jej bieżącej wartości (dostępne tylko dla liczb i tekstu)."
+        },
+        "ActorDisplay": {
+          "Title": "Dodatkowe statystyki na karcie aktora",
+          "Content": "Dodatkowe statystyki, które są włączone dla postaci, wyświetlają się w zakładce podsumowania."
+        },
+        "Checkbox": {
+          "Title": "Dodatkowe statystyki - pole wyboru",
+          "Content": "Pole wyboru może zawierać wartości prawdę i fałsz."
+        },
+        "Number": {
+          "Title": "Dodatkowe statystyki - liczba",
+          "Content": "Akceptowana jest każda liczba, w tym liczby dziesiętne."
+        },
+        "Die": {
+          "Title": "Dodatkowe statystyki - kość",
+          "Content": "Pierwsze pole akceptuje każdy prawidłowy zapis rzutu kostką w Foundry; dodaj „x”, aby kostka eksplodowała (np. 1d6x). Drugie pole to liczba, która jest dodawana do wyniku. Kliknij etykietę, aby wykonać rzut kostką."
+        },
+        "Text": {
+          "Title": "Dodatkowe statystyki - tekst",
+          "Content": "Proste pole tekstowe; szerokość nie jest zbyt duża, więc długie fragmenty tekstu powinny być umieszczane w opisie lub innych polach."
+        },
+        "Selection": {
+          "Title": "Dodatkowe statystyki - wybór",
+          "Content": "Stała lista opcji oparta na ustawieniach gry."
+        },
+        "AccessTweaks": {
+          "Title": "Włączanie i wyłączanie dodatkowych statystyk",
+          "Content": "Dodatkowe statystyki mogą być włączane lub wyłączane w zakładce dodatkowe statystyki w menu poprawek."
+        },
+        "AddStatTweaks": {
+          "Title": "Zakładka dodatkowe statystyki",
+          "Content": "Każda dodatkowa statystyka jest domyślnie wyłączona i musi być włączana indywidualnie dla każdego aktora lub przedmiotu."
+        }
+      },
+      "AURAS": {
+        "Title": "Aury",
+        "Description": "Wprowadzone w wersji 3.2, aury tworzą trwałe wizualizacje, które podążają za tokenami.",
+        "Actor": "Przewodnik po aurach demonstracyjna postać",
+        "AccessAuras": {
+          "Title": "Dostęp do aur",
+          "Content": "Aury można znaleźć w menu poprawek"
+        },
+        "Auramancer": {
+          "Title": "Zakładka aur",
+          "Content": "Aury mają swoją własną zakładkę w menu poprawek. Postacie mogą mieć maksymalnie dwie aury."
+        },
+        "Enable": {
+          "Title": "Włączanie aur",
+          "Content": "Każda aura może być włączana indywidualnie; działają również w pełni z niezwiązanymi tokenami, co pozwala na ustawienie aur osobno, nawet jeśli mają wspólne źródło aktora."
+        },
+        "Constrained": {
+          "Title": "Ograniczenie ścianami",
+          "Content": "Ten przełącznik decyduje, czy aura jest ograniczona przez ściany blokujące światło, czy może przez nie przechodzić."
+        },
+        "Radius": {
+          "Title": "Promień aury",
+          "Content": "Promień aury, mierzony w jednostkach siatki. Wskazówka jednostki wyświetlana tutaj odpowiada jednostce miary bieżącej sceny."
+        },
+        "Color": {
+          "Title": "Kolor i przezroczystość aury",
+          "Content": "Aury wyświetlają się podobnie do okrągłych szablonów obszaru wokół postaci źródłowej; te ustawienia pozwalają kontrolować ich wizualny wygląd."
+        },
+        "Visibility": {
+          "Title": "Widoczność aury",
+          "Content": "Wybierz, które tokeny (według nastawienia) mogą zobaczyć tę aurę. Zawsze możesz zobaczyć wszystkie aury tokenu, do którego masz przynajmniej uprawnienia obserwatora."
+        }
+      },
+      "ADVANCES": {
+        "Title": "Rozwinięcia",
+        "Description": "Naucz się jak SWADE śledzi Rozwinięcia postaci",
+        "Actor": "Przewodnik po Rozwinięciach demonstracyjna postać",
+        "AccessAdvanceMode": {
+          "Title": "Ustawianie typu Rozwinięć",
+          "Content": "Typ Rozwinięć postaci można przełączyć w menu poprawek."
+        },
+        "Mode": {
+          "Title": "Wybór rodzaju Rozwinięć"
+        },
+        "AdvanceTab": {
+          "Title": "Zakładka Rozwinięć",
+          "Content": "Rozwinięcia są konfigurowane w głównej zakładce „dziennik”."
+        },
+        "Create": {
+          "Title": "Tworzenie Rozwinięcia",
+          "Content": "Ten przycisk tworzy nowe rozwinięcie do wykorzystania"
+        },
+        "Editor": {
+          "Title": "Edytor Rozwinięć",
+          "Content": "Ten formularz umożliwia konfigurację nowego Rozwinięcia."
+        },
+        "Type": {
+          "Title": "Wybór typu Rozwinięcia",
+          "Content": "Wybierz, jaki to rodzaj Rozwinięcia. Obecnie nie uruchamia to dodatkowej walidacji ani wyboru, ale przyszłe aktualizacje systemu mogą to zmienić."
+        },
+        "Rank": {
+          "Title": "Ranga Rozwinięcia",
+          "Content": "Ranga, jaką twoja postać osiągnie po zdobyciu tego Rozwinięcia. Nie można jej edytować bezpośrednio, ponieważ jest wyliczana na podstawie całkowitej liczby postępów twojej postaci."
+        },
+        "Number": {
+          "Title": "Numer Rozwinięcia",
+          "Content": "To ustawienie kontroluje kolejność Rozwinięć. Zmiana tej wartości przeniesie postęp na wcześniejsze miejsce na liście."
+        },
+        "Planned": {
+          "Title": "Planowane Rozwinięcia",
+          "Content": "Możesz oznaczyć postępy jako zaplanowane, aby nie były liczone do rangi twojej postaci."
+        },
+        "Notes": {
+          "Title": "Notatki Rozwinięcia",
+          "Content": "Zamieść tutaj wszelkie istotne informacje dotyczące twojego Rozwinięcia; jakie cechy zwiększyłeś, jakie przewagi wybrałeś itp."
+        },
+        "SaveChanges": {
+          "Title": "Przycisk zapisu zmian",
+          "Content": "Zmiany NIE są automatycznie zapisywane na postaci. Musisz użyć przycisku zapisu w edytorze ProseMirror lub tego przycisku „zapisz zmiany”"
+        }
+      },
+      "HEADQUARTERS": {
+        "Title": "Siedziby",
+        "Description": "Dowiedz się o nowym typie strony w dzienniku, siedziba! Przydatne dla fortec w <em>Fantasy Companion</em>, schronisk w <em>Horror Companion</em> i baz w <em>Super Powers Companion</em>.",
+        "JournalEntry": "Przewodnik po siedzibach dziennik",
+        "HeadquartersPage": "Przewodnik po siedzibach strona",
+        "CreateJournal": {
+          "Title": "Stwórz dziennik",
+          "Content": "Siedziba musi być tworzona w ramach nadrzędnego dziennika."
+        },
+        "CreatePage": {
+          "Title": "Stwórz stronę siedziby",
+          "Content": "Siedziby są nowym typem strony w dzienniku, podobnie jak tekst, obraz i PDF."
+        },
+        "HQPage": {
+          "Title": "Strona siedziby",
+          "Content": "Siedziby są podobne do stron tekstowych, ale oferują bardziej strukturalne wprowadzenie. Sekcje są wzorowane na czterech krokach przedstawionych w każdym z podręczników."
+        },
+        "Advantage": {
+          "Title": "Przewagi",
+          "Content": "Konkretne przewagi zależą od gatunku, w który grasz; możesz przeciągnąć wyniki rzutów do tej sekcji."
+        },
+        "Complication": {
+          "Title": "Problemy",
+          "Content": "Podobnie jak w przypadku przewag, możesz przeciągnąć wyniki rzutów do tej sekcji."
+        },
+        "Form": {
+          "Title": "Formularz",
+          "Content": "Sekcja formularza jest podzielona na trzy części, abyś miał miejsce na opisanie każdego aspektu swojej siedziby."
+        },
+        "Upgrades": {
+          "Title": "Ulepszenia",
+          "Content": "Możesz wymienić swoje ulepszenia tutaj. To pole akceptuje pełne formatowanie HTML, więc możesz użyć listy punktowanej, tabeli lub innego systemu organizacyjnego, który ci odpowiada."
+        }
+      }
+    },
+    "SWID": {
+      "Long": "Savage Worlds ID",
+      "Short": "SWID",
+      "Regenerate": "Napraw Savage Worlds ID",
+      "ChangeWarning2": "Zmiana Savage Worlds ID przedmiotu może spowodować przerwanie odniesień do przedmiotu! Postępuj ostrożnie i tylko jeśli jesteś pewien.",
+      "ChangeWarning3": "Czy chcesz kontynuować?",
+      "ChangeWarning1": "Postępuj ostrożnie!"
+    },
+    "HindranceSeverity": {
+      "Label": "Opcje poziomu",
+      "Major": "Tylko poważna",
+      "Minor": "Tylko drobna",
+      "Either": "Obie"
+    },
+    "Weapon": {
+      "RangeType": {
+        "Label": "Typ Zasięgu",
+        "Melee": "Zwarcie",
+        "Ranged": "Zasięg",
+        "Mixed": "Miks"
+      }
+    },
+    "NpcWildCardsOnScene": "Figury NPC na scenie",
+    "PlayerCardDrawHelper": {
+      "Title": "Pomoc do losowania kart dla graczy SWADE"
+    },
+    "CardDrawMsgSize": {
+      "None": "brak",
+      "Compact": "Kompaktowe",
+      "Large": "Duże"
+    },
+    "SelectNewGroupLeader": "Wybierz nowego lidera grupy",
+    "ToggleIncap": "Przełącz Wyeliminowanie",
+    "AmbushAssistant": {
+      "OnHold": "Wstrzymana Akcja",
+      "NormalDraw": "Zwykła tura",
+      "NoTurn": "Brak tury",
+      "Title": "Asystent Zaskoczenia",
+      "Hint": "Przeciągnij i upuść walczących aby ustawić rundę Zaskoczenia",
+      "Unassigned": "Nieprzypisani"
+    },
+    "Combat": {
+      "DealAll": "Rozdaj wszystkim",
+      "DealNPC": "Rozdaj NPC",
+      "StartSurpriseRound": "Rozpocznij rundę Zaskoczenia",
+      "AdvanceRoundTitle": "Rozpocząć następną rundę?",
+      "AdvanceRoundContent": "Czy chcesz rozpocząć następną rundę?",
+      "RevertRoundTitle": "Powrócić do poprzedniej rundy?",
+      "RevertRoundContent": "Czy chcesz powrócić do poprzedniej rundy?",
+      "DiscardedCards": "Odrzucone karty",
+      "Redraw": "Karta przelosowana",
+      "RedrawDialog": {
+        "Content": "Wylosować nową kartę przy użyciu Fuksa, czy za darmo?"
+      },
+      "LinkScene": "Powiąż scenę"
+    },
+    "FollowerCount": "{count} podążający",
+    "Benny": "Fuks",
+    "Free": "Za darmo",
+    "SettingConfigurator": {
+      "WorldTables": "Tabele świata",
+      "WorldCompendiums": "Kompendia świata"
+    },
+    "GroupSheet": "Savage Worlds Group Sheet",
+    "RunningHint": {
+      "Header": "<strong>Całkowity dystans biegu.</strong>",
+      "Reminder": "<p>Bieganie podczas twojej tury powoduje karę -2 do wszystkich twoich akcji.</p>"
+    },
+    "Advance": "Rozwinięcie",
+    "BenniesMaxNum": "Maksimum Fuksów",
+    "ShotsCurrent": "Aktualne pociski",
+    "Value": "Wartość",
+    "MaxLabel": "Maksimum",
+    "SpeedUnit": "Jednostka",
+    "Stats": "Statystyki",
+    "AncestralAbilities": "Zdolności pochodzenia",
+    "BuildCost": "Koszt budowy",
+    "CannotAddAncestryToAncestry": "Nie możesz dodać pochodzenia/archetypu do pochodzenia/archetypu!",
+    "ActionsOverride": "Nadpisz",
+    "ID": "ID",
+    "SortNum": "Numer porządkowy",
+    "ChargesMax": "Maksimum ładunków",
+    "IgnFatigueWounds": "Ignoruj Rany/Zmęczenie",
+    "FatigueWounds": "Rany/Zmęczenie",
+    "Group": {
+      "Sheet": {
+        "Members": {
+          "Header": "Członkowie",
+          "Hint": "Ady dodać członków albo przeciągnij i upuść ich na kartę, albo skopiuj i wklej ich UUID. Działa to również z tokenami aktorów w scenie.",
+          "Empty": "Na razie brak członków"
+        },
+        "Lock": {
+          "Label": "Przełącz blokadę karty",
+          "Hint": "Gdy karta jest zablokowana, żaden aktor nie może zostać dodany ani usunięty z grupy"
+        },
+        "Stash": {
+          "Header": "Schowek",
+          "Empty": "Brak przedmiotów"
+        }
+      }
+    },
+    "Supplies": {
+      "Level": {
+        "Out": "Brak",
+        "Low": "Mało",
+        "High": "Dużo",
+        "VeryHigh": "Bardzo dużo"
+      },
+      "Ammo": {
+        "Label": "Amunicja"
+      },
+      "Fuel": {
+        "Label": "Paliwo"
+      },
+      "Food": {
+        "Label": "Żywność"
+      },
+      "Supply": {
+        "Label": "Zasób"
+      },
+      "Label": "Zasoby"
+    },
+    "DeleteFromParentWarningPermanent": "{name} zostanie trwale usunięty z {parent} i nie może to zostać cofnięte.",
+    "DeleteFromParentWarning": "{name} zostanie trwale usunięty z {parent}.",
+    "HindMajor": "Poważna",
+    "HindMinor": "Drobna",
+    "Movement": {
+      "Pace": {
+        "Base": {
+          "Hint": "Które Tempo jest domyślne dla aktora",
+          "Label": "Podstawowe Tempo"
+        },
+        "Ground": {
+          "Label": "Na ziemi"
+        },
+        "Fly": {
+          "Label": "Lot"
+        },
+        "Swim": {
+          "Label": "Pływanie"
+        },
+        "Burrow": {
+          "Label": "Pod ziemią"
+        }
+      },
+      "Running": {
+        "Dialog": {
+          "Title": "Bieganie",
+          "Content": "Wybierz jak chcesz biegać"
+        },
+        "OutOfCombat": "Możesz biec z prędkością {pace} przez {minutes} minut poza walką"
+      },
+      "Base": "Podstawowy ruch",
+      "Other": "Inne Prędkości Ruchu"
+    },
+    "NoCCMActive": "Moduł Complete Card Management nie jest aktywny.",
+    "ChaseDiscard": "Stos kart odrzuconych",
+    "ApplicableEffects": "Efekty do zastosowania",
+    "NoCCMInstall": "Moduł Complete Card Management nie jest zainstalowany.",
+    "CouldNotFindTarget": "Makro wymaga wybrania celu!",
+    "RemoveEffectLabel": "Usuń efekt",
+    "Energy": {
+      "Value": "Aktualna energia",
+      "Label": "Energia",
+      "Max": "Maksymalna energia",
+      "Enable": "Włącz energię"
+    },
+    "Complication": "Komplikacja",
+    "EffectsInactive": "Nieaktywne efekty",
+    "DramaticTask": {
+      "Successes": "Sukcesy",
+      "MaxRounds": {
+        "Label": "Maksimum rund",
+        "Hint": "Ile rund trwa \"wyścig z czasem\"?"
+      },
+      "MaxTokens": {
+        "Label": "Sukcesy",
+        "Hint": "Docelowa liczba sukcesów, które uczestnicy muszą osiągnąć"
+      }
+    },
+    "VehicleSheet": "Savage Worlds Vehicle Sheet",
+    "VehicleAttributes": {
+      "Label": "Atrybuty pojazdu",
+      "Agility": "Pojazd ma Zręczność",
+      "Spirit": "Pojazd ma Ducha",
+      "Smarts": "Pojazd ma Spryt",
+      "Strength": "Pojazd ma Siłę",
+      "Vigor": "Pojazd ma Wigor"
+    },
+    "OperatorIdHint": "Porzuć aktora lub wybierz token",
+    "Vehicle": {
+      "Cargo": {
+        "Capacity": "Pojemność ładunku"
+      },
+      "Crew": {
+        "Add": "Dodaj członka załogi",
+        "Remove": "Usuń członka załogi",
+        "Role": "Rola",
+        "Roles": {
+          "Operator": "Kierowca",
+          "Gunner": "Strzelec",
+          "Other": "Inna"
+        }
+      }
+    },
+    "ChaseLayoutError": "Za mało miejsca na scenie, aby przeprowadzić pościg.",
+    "AttrSmaShortPowerRange": "Sp",
+    "Burrowing": "Tunelowanie",
+    "PPMods": "Modyfikatory Mocy",
+    "Scales": {
+      "Description": "Skala: {scale} ({name})",
+      "LargerThan": "Większy niż {scale}",
+      "SmallerThan": "Mniejszy niż {scale}",
+      "Names": {
+        "Tiny": "Malutki",
+        "VerySmall": "Mały",
+        "Small": "Nieduży",
+        "Large": "Duży",
+        "Huge": "Wielki",
+        "Gargantuan": "Gigantyczny",
+        "Normal": "Przeciętny"
+      }
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Postać gracza",
+      "npc": "NPC",
+      "vehicle": "Pojazd",
+      "group": "Grupa"
+    },
+    "Item": {
+      "weapon": "Broń",
+      "armor": "Pancerz",
+      "shield": "Tarcza",
+      "gear": "Sprzęt",
+      "edge": "Przewaga",
+      "hindrance": "Zawada",
+      "skill": "Umiejętność",
+      "power": "Moc",
+      "ability": "Zdolność",
+      "consumable": "Przedmiot zużywalny",
+      "action": "Akcja",
+      "ancestry": "Pochodzenie"
+    },
+    "Card": {
+      "adventure": "Karta Przygody",
+      "poker": "Karta Pokerowa"
+    },
+    "JournalEntryPage": {
+      "headquarters": "Siedziby"
+    },
+    "Combat": {
+      "chase": "Pościg",
+      "dramaticTask": "Wyścig z czasem"
+    },
+    "ActiveEffect": {
+      "modifier": "Modyfikator"
+    }
+  }
+}

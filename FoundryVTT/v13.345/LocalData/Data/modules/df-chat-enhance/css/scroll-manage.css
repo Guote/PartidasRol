@@ -1,0 +1,18 @@
+div.jump-to-bottom.new > a {
+	box-shadow: 0 0 10px red inset;
+	animation: dfce-sm-pulse 1s infinite;
+}
+
+@keyframes dfce-sm-pulse {
+	0% {
+		box-shadow: 0 0 0px red inset;
+	}
+
+	50% {
+		box-shadow: 0 0 10px red inset;
+	}
+
+	100% {
+		box-shadow: 0 0 0px red inset;
+	}
+}

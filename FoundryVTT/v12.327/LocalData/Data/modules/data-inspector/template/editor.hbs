@@ -1,0 +1,68 @@
+<section class='editor-view'>
+	<div class='path'>
+		<label>{{localize 'DataInspector.Path'}}:</label>
+		<input name='path' type='text' data-dtype='String' value='{{path}}' readonly>
+	</div>
+
+	<div class='type'>
+		<label>{{localize 'DataInspector.Type'}}:</label>
+		{{#if isUnsupported}}
+		<label name='type'>{{typeName}}</label>
+		{{else}}
+		<select name='type'>
+			{{selectOptions types selected=typeName}}
+		</select>
+		{{/if}}
+	</div>
+
+	<div class='value'>
+		{{#if isUnsupported}}
+		<p class='warning'>
+			<i class='fa-solid fa-exclamation-triangle'></i>
+			{{localize 'DataInspector.Editor.Dangerous'}}
+		</p>
+		{{else if deadType}}
+			<h3>{{#if (eq typeName 'null')}}{{localize 'DataInspector.DataValue.Null'}}{{else}}{{localize 'DataInspector.DataValue.Undefined'}}{{/if}}</h3>
+			{{#if (eq typeName 'null')}}
+			<input type='hidden' data-dtype='Boolean' name='value' value='true'>
+			{{else}}
+			<input type='hidden' data-dtype='Boolean' name='value' value='true'>
+			{{/if}}
+		{{else}}
+			{{#if (and isString isLongString)}}
+				{{#if isHTML}}
+				{{editor enriched target='value' editable=isEditable button=false engine='prosemirror'}}
+				{{else}}
+				<textarea data-dtype='String' name='value'>{{{value}}}</textarea>
+				{{/if}}
+			{{else}}
+				{{#if simpleType}}
+					{{#if (eq typeName 'string')}}
+					<input value='{{value}}' name='value' type='text' data-dtype='String'>
+					{{else if (eq typeName 'number')}}
+					<input value='{{value}}' name='value' type='number' step='any' data-dtype='Number'>
+					{{else if (eq typeName 'boolean')}}
+					<input name='value' type='checkbox' data-dtype='Boolean' {{checked value}}>
+					{{else}}
+					<h3>{{localize 'DataInspector.DataValue.Error.Unidentified'}}</h3>
+					{{/if}}
+				{{else}}
+				<h3>{{localize 'DataInspector.DataValue.Error.Unidentified'}}</h3>
+				{{/if}}
+			{{/if}}
+		{{/if}}
+	</div>
+
+	{{#if (ne type originalType)}}
+	{{#unless similarType}}
+	<p class='warning'>
+		<i class='fa-solid fa-exclamation-triangle'></i>
+		{{localize 'DataInspector.Editor.TypeWarning'}}
+	</p>
+	{{/unless}}
+	{{/if}}
+
+	{{#if isToken}}
+	<p class='token warning'>{{localize 'DataInspector.Editor.TokenWarning'}}</p>
+	{{/if}}
+</section>

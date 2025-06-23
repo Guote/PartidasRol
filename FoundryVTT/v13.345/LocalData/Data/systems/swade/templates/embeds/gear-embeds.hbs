@@ -1,0 +1,28 @@
+<div>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="{{#if quantity}}1{{/if}}{{#if weight}}1{{/if}}{{#if price}}1{{/if}}">
+                        {{parent.name}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {{#if quantity}}<td>{{localize 'SWADE.Quantity'}}</td>{{/if}}
+                    {{#if weight}}<td>{{localize 'SWADE.Weight'}}</td>{{/if}}
+                    {{#if price}}<td>{{localize 'SWADE.Price'}}</td>{{/if}}
+                </tr>            
+                <tr>
+                    {{#if quantity}}<td>{{quantity}}</td>{{/if}}
+                    {{#if weight}}<td>{{weight}}</td>{{/if}}
+                    {{#if price}}<td>{{price}}</td>{{/if}}
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        {{{enrichedDescription}}}
+    </section>
+</div>

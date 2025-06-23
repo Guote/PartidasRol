@@ -1,0 +1,323 @@
+body .find-the-culprit-app.application {
+  --ftc-button-gap: 0.25rem;
+  --ftc-app-gap: 0.25rem;
+  --ftc-state-pinned-color: var(--color-level-warning);
+  --ftc-state-excluded-color: var(--color-level-error);
+  --ftc-state-culprit-color: var(--color-level-error);
+  --ftc-state-suspect-color: var(--color-level-info);
+  --ftc-state-active-color: var(--color-level-info);
+  --ftc-state-exonerated-color: var(--color-level-success);
+  --ftc-state-exoneratedButActive-color: var(--color-level-success);
+  --ftc-state-inactive-color: var(--color-light-5);
+  --ftc-module-list-border-color: var(--color-light-4);
+  --ftc-module-list-li-separator-color: var(--color-dark-5);
+  --ftc-state-button-text-shadow: 0px 0px 3px var(--color-text-primary), 0px 0px 3px var(--color-text-primary);
+  --ftc-tr-border: none;
+  --ftc-table-header-button-color: var(--color-light-1);
+}
+body.theme-light:not(.pathfinderui-v3) .find-the-culprit-app.application:not([data-color-scheme]) {
+  --ftc-module-list-border-color: var(--color-dark-5);
+  --ftc-tr-border: 1px solid var(--color-text-primary);
+}
+body.theme-dark:not(.pathfinderui-v3) .find-the-culprit-app.application:not([data-color-scheme]) {
+  --ftc-state-button-text-shadow: none;
+}
+body .find-the-culprit-app.application[data-color-scheme] {
+  --ftc-module-list-border-color: var(--window-app-border-color);
+}
+body .find-the-culprit-app.application[data-color-scheme] button:disabled {
+  box-shadow: none;
+  border: none;
+}
+body .find-the-culprit-app.application[data-color-scheme] button:disabled:not(.display-only) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+body .find-the-culprit-app.application[data-color-scheme] fieldset {
+  --fieldset-border-color: var(--window-app-border-color);
+  --fieldset-background-color: transparent;
+  --fieldset-legend-color: var(--color-text-primary);
+}
+body .find-the-culprit-app.application[data-color-scheme][data-theme^=discord] {
+  --ftc-tr-border: 1px solid var(--window-app-border-color);
+}
+body .find-the-culprit-app.application[data-color-scheme=light] {
+  --ftc-table-header-button-color: var(--color-text-dark-primary);
+}
+body .find-the-culprit-app.application[data-color-scheme=light][data-theme=crb] {
+  --ftc-module-list-border-color: var(--color-light-5);
+  --ftc-app-gap: 0.5rem;
+  --ftc-button-gap: 0.5rem;
+}
+body .find-the-culprit-app.application[data-color-scheme=light][data-theme=crb] .ftc-module-list li {
+  padding-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+body .find-the-culprit-app.application[data-color-scheme=light][data-theme=discord-light],
+body .find-the-culprit-app.application[data-color-scheme=light][data-theme=discord-light] h2 {
+  color: var(--color-text-dark-primary);
+}
+body .find-the-culprit-app.application[data-color-scheme=light][data-theme=discord-light] fieldset {
+  --fieldset-legend-color: var(--color-text-dark-primary);
+}
+body .find-the-culprit-app.application[data-color-scheme=light][data-theme=dnd5e2] {
+  --ftc-tr-border: 1px solid var(--window-app-border-color);
+}
+body .find-the-culprit-app.application[data-color-scheme=dark] {
+  --ftc-state-button-text-shadow: none;
+}
+body .find-the-culprit-app.application[data-color-scheme=dark][data-theme=crb] {
+  --ftc-button-gap: 0.35rem;
+  --ftc-app-gap: 0.35rem;
+}
+body.pathfinderui-v3 .find-the-culprit-app.application {
+  --ftc-state-button-text-shadow: none;
+}
+body.pathfinderui-v3 .find-the-culprit-app.application button.ftc-state-button.display-only {
+  box-shadow: none;
+  border: none;
+}
+body.pathfinderui-v3 .find-the-culprit-app.application button.ftc-state-button:not(.display-only):disabled {
+  background-color: color-mix(in srgb, var(--color-warm-3), black 40%);
+}
+
+:is(div, dialog).find-the-culprit-app.application {
+  gap: 0;
+}
+:is(div, dialog).find-the-culprit-app.application div.specificity {
+  display: contents;
+}
+:is(div, dialog).find-the-culprit-app.application .dialog-content,
+:is(div, dialog).find-the-culprit-app.application .window-content,
+:is(div, dialog).find-the-culprit-app.application .dialog-form {
+  gap: var(--ftc-app-gap);
+}
+:is(div, dialog).find-the-culprit-app.application .dialog-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+:is(div, dialog).find-the-culprit-app.application .window-content {
+  padding: 0.5rem 0.75rem;
+}
+:is(div, dialog).find-the-culprit-app.application .window-content.ftc-main {
+  padding-top: 0.25rem;
+}
+:is(div, dialog).find-the-culprit-app.application .window-content p {
+  padding: 0.25rem;
+  margin: 0;
+}
+:is(div, dialog).find-the-culprit-app.application .window-content div.button-row,
+:is(div, dialog).find-the-culprit-app.application .window-content footer.form-footer {
+  display: flex;
+  flex-flow: row wrap;
+  gap: var(--ftc-button-gap);
+  justify-content: space-between;
+}
+:is(div, dialog).find-the-culprit-app.application .window-content footer.form-footer button {
+  height: calc(1.25 * var(--input-height));
+}
+:is(div, dialog).find-the-culprit-app.application table td:first-child {
+  width: 10rem;
+}
+:is(div, dialog).find-the-culprit-app.application table td ul {
+  margin: 0;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset {
+  gap: 0.25rem;
+  padding: 0.5rem;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset table {
+  margin: 0;
+  padding: 0.25rem 0.5rem;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset table tr {
+  border-bottom: var(--ftc-tr-border);
+}
+:is(div, dialog).find-the-culprit-app.application fieldset table th:first-child {
+  width: 40%;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset table th:first-child div.copy-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  float: right;
+  height: 100%;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset table th:first-child div.copy-button-wrapper button.ftc-copy-button {
+  color: var(--ftc-table-header-button-color);
+  box-shadow: none;
+  font-size: 0.5rem;
+  height: 1rem;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset table td:first-child {
+  width: 40%;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset table td ul {
+  max-height: 9rem;
+  overflow-y: auto;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+:is(div, dialog).find-the-culprit-app.application fieldset.module-states {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: repeat(4, auto);
+}
+:is(div, dialog).find-the-culprit-app.application fieldset.module-states div {
+  display: grid;
+  grid-template-columns: 1.5rem auto;
+  column-gap: 0.25rem;
+  align-items: center;
+}
+:is(div, dialog).find-the-culprit-app.application ul.instructions {
+  margin: 0.25rem 0;
+}
+:is(div, dialog).find-the-culprit-app.application button {
+  min-width: fit-content;
+  flex: 1 1 fit-content;
+}
+:is(div, dialog).find-the-culprit-app.application button:not(:has(span)) {
+  aspect-ratio: 1/1;
+  flex-grow: 0;
+}
+:is(div, dialog).find-the-culprit-app.application button:not(:has(span)) i {
+  margin-right: 0;
+}
+:is(div, dialog).find-the-culprit-app.application button.minimal {
+  flex-grow: 0;
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button {
+  height: 1.75rem;
+  width: fit-content;
+  position: relative;
+  text-shadow: var(--ftc-state-button-text-shadow);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button.display-only {
+  background: none;
+  height: 1.5rem;
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button .corner-icon {
+  color: var(--ftc-state-pinned-color);
+  position: absolute;
+  top: 0.15rem;
+  right: 0.15rem;
+  font-size: 50%;
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=suspect] {
+  --dui-button-text-color: var(--ftc-state-suspect-color);
+  color: var(--ftc-state-suspect-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=suspect]:disabled {
+  --dui-button-text-color: var(--ftc-state-suspect-color);
+  color: var(--ftc-state-suspect-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=pinned] {
+  --dui-button-text-color: var(--ftc-state-pinned-color);
+  color: var(--ftc-state-pinned-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=pinned]:disabled {
+  --dui-button-text-color: var(--ftc-state-pinned-color);
+  color: var(--ftc-state-pinned-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=excluded] {
+  --dui-button-text-color: var(--ftc-state-excluded-color);
+  color: var(--ftc-state-excluded-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=excluded]:disabled {
+  --dui-button-text-color: var(--ftc-state-excluded-color);
+  color: var(--ftc-state-excluded-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=active] {
+  --dui-button-text-color: var(--ftc-state-active-color);
+  color: var(--ftc-state-active-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=active]:disabled {
+  --dui-button-text-color: var(--ftc-state-active-color);
+  color: var(--ftc-state-active-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=inactive] {
+  --dui-button-text-color: var(--ftc-state-inactive-color);
+  color: var(--ftc-state-inactive-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=inactive]:disabled {
+  --dui-button-text-color: var(--ftc-state-inactive-color);
+  color: var(--ftc-state-inactive-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=exonerated] {
+  --dui-button-text-color: var(--ftc-state-exonerated-color);
+  color: var(--ftc-state-exonerated-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=exonerated]:disabled {
+  --dui-button-text-color: var(--ftc-state-exonerated-color);
+  color: var(--ftc-state-exonerated-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=exoneratedButActive] {
+  --dui-button-text-color: var(--ftc-state-exoneratedButActive-color);
+  color: var(--ftc-state-exoneratedButActive-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=exoneratedButActive]:disabled {
+  --dui-button-text-color: var(--ftc-state-exoneratedButActive-color);
+  color: var(--ftc-state-exoneratedButActive-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=culprit] {
+  --dui-button-text-color: var(--ftc-state-culprit-color);
+  color: var(--ftc-state-culprit-color);
+}
+:is(div, dialog).find-the-culprit-app.application button.ftc-state-button[data-ftc-state=culprit]:disabled {
+  --dui-button-text-color: var(--ftc-state-culprit-color);
+  color: var(--ftc-state-culprit-color);
+}
+:is(div, dialog).find-the-culprit-app.application span.ftc-prompt {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 140%;
+  padding: 0.5rem;
+}
+:is(div, dialog).find-the-culprit-app.application .ftc-module-list {
+  margin: 0;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--ftc-module-list-border-color);
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  max-height: 25vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  list-style-type: none;
+}
+:is(div, dialog).find-the-culprit-app.application .ftc-module-list li {
+  padding-top: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.25rem;
+  align-items: center;
+  border-top: 1px dashed var(--ftc-module-list-li-separator-color);
+}
+:is(div, dialog).find-the-culprit-app.application .ftc-module-list li:nth-child(1 of :not(.hidden)) {
+  padding-top: 0;
+  border-top: none;
+}
+:is(div, dialog).find-the-culprit-app.application .ftc-module-list li:has([data-ftc-state=culprit]) label {
+  border-bottom: 1px dashed var(--color-level-error);
+}
+:is(div, dialog).find-the-culprit-app.application h2 {
+  border-bottom: none;
+  text-shadow: none;
+  font-family: var(--font-primary);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin: 0;
+}
+:is(div, dialog).find-the-culprit-app.application h2.error-heading i {
+  margin-right: 0.25rem;
+  color: var(--color-level-error);
+}
+
+aside#tooltip.ftc-module-tooltip {
+  text-align: left;
+}
+aside#tooltip.ftc-module-tooltip div {
+  margin-top: 0.5rem;
+}
+
+/*# sourceMappingURL=find-the-culprit.css.map */

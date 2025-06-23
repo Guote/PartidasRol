@@ -1,0 +1,1362 @@
+﻿:root {
+    --mej-light-0: 255, 255, 255;
+    --mej-light-1: 238, 238, 238;
+    --mej-light-2: 221, 221, 221;
+    --mej-light-3: 204, 204, 204;
+    --mej-light-4: 187, 187, 187;
+    --mej-light-5: 170, 170, 170;
+    --mej-light-6: 153, 153, 153;
+    --mej-light-7: 136, 136, 136;
+    --mej-dark-7: 119, 119, 119;
+    --mej-dark-6: 102, 102, 102;
+    --mej-dark-5: 85, 85, 85;
+    --mej-dark-4: 68, 68, 68;
+    --mej-dark-3: 51, 51, 51;
+    --mej-dark-2: 34, 34, 34;
+    --mej-dark-1: 17, 17, 17;
+    --mej-dark-0: 0, 0, 0;
+    --mej-cream: rgba(255, 255, 240, 0.8);
+    --mej-font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+    --mej-background: url(../../../ui/parchment.jpg) repeat;
+    --mej-header-border-color: rgb(192, 192, 192);
+    --mej-header-background: rgb(220, 220, 220);
+    --mej-header-color: var(--color-text-dark-primary);
+    --mej-header-tab-color: var(--mej-header-color);
+    --mej-header-tab-btn-color: rgb(103, 102, 99);
+    --mej-header-tab-background: rgba(255, 255, 240, 0.5);
+    --mej-header-tab-border: 1px solid rgb(181, 179, 164);
+    --mej-header-tab-active: rgba(255, 255, 255, 0.9);
+    --mej-header-tab-hover: inherit;
+    --mej-header-tab-active-hover: inherit;
+    --mej-header-bookmark-color: var(--mej-header-color);
+    --mej-header-bookmark-background: rgba(255, 255, 255, 0.3);
+    --mej-header-bookmark-border: rgb(192, 192, 192);
+    --mej-header-bookmark-hover: rgba(0, 0, 0, 0.1);
+    --mej-header-add-bookmark-background: var(--mej-header-bookmark-background);
+    --mej-header-add-bookmark-border: var(--mej-header-bookmark-border);
+    --mej-header-add-bookmark-color: var(--mej-header-bookmark-color);
+    --mej-header-add-bookmark-hover: var(--mej-header-bookmark-hover);
+    --mej-header-nav-color: var(--mej-header-color);
+    --mej-header-nav-background: rgb(233, 231, 225);
+    --mej-header-nav-btn-background: var(--mej-cream);
+    --mej-header-nav-btn-border: rgb(192, 192, 192);
+    --mej-header-nav-btn-disabled: rgb(136, 136, 136);
+    --mej-header-nav-btn-background-disabled: inherit;
+    --mej-header-nav-btn-border-disabled: inherit;
+    --mej-header-nav-btn-background-hover: var(--mej-header-nav-btn-background);
+    --mej-header-nav-input-border: rgb(122, 121, 113);
+    --mej-header-nav-input-background: rgba(0, 0, 0, 0.05);
+    --mej-header-nav-input-color: rgb(25, 24, 19);
+    --mej-header-nav-input-placeholder-color: var(--color-text-dark-secondary);
+    --mej-header-nav-input-focus-background: rgba(255, 255, 250, 0.4);
+    --mej-header-nav-input-focus-border: rgb(192, 192, 192);
+    --mej-header-nav-input-focus-color: var(--mej-header-nav-input-color);
+    --mej-header-nav-input-error-background: rgba(255, 0, 0, 0.1);
+    --mej-header-nav-vertical-line: rgb(238, 237, 224);
+    --mej-footer-color: var(--color-text-dark-primary);
+    --mej-footer-background: rgb(233, 231, 225);
+    --mej-footer-border: rgb(192, 192, 192);
+    --mej-footer-btn-background: var(--mej-cream);
+    --mej-footer-btn-background-hover: var(--mej-footer-btn-background);
+    --mej-footer-btn-border: rgb(192, 192, 192);
+    --mej-footer-btn-disabled: rgb(136, 136, 136);
+    --mej-footer-btn-background-disabled: inherit;
+    --mej-footer-btn-border-disabled: inherit;
+    --mej-sheet-color: var(--color-text-dark-primary);
+    --mej-sheet-header-border: rgb(120, 46, 34);
+    --mej-sheet-header-name-color: var(--mej-sheet-header-input-color);
+    --mej-sheet-header-name-background: none;
+    --mej-sheet-header-name-background-hover: none;
+    --mej-sheet-header-input-color: var(--color-text-dark-primary);
+    --mej-sheet-header-input-border: 1px solid rgb(122, 121, 113);
+    --mej-sheet-header-input-background: rgba(0, 0, 0, 0.05);
+    --mej-sheet-header-label-color: rgb(75, 74, 68);
+    --mej-sheet-header-button-color: var(--primary-font);
+    --mej-sheet-header-button-background: rgba(0, 0, 0, 0.1);
+    --mej-sheet-header-detail-input-color: rgb(25, 24, 19);
+    --mej-sheet-header-search-color: var(--mej-sheet-header-input-color);
+    --mej-sheet-header-search-placeholder: var(--color-text-dark-secondary);
+    --mej-sheet-header-search-background: var(--mej-sheet-header-input-background);
+    --mej-sheet-header-search-background-hover: var(--mej-sheet-header-input-background);
+    --mej-sheet-header-search-border: --mej-sheet-header-input-border;
+    --mej-sheet-detailed-header-border: rgb(238, 237, 224);
+    --mej-sheet-tab-color: var(--mej-sheet-color);
+    --mej-sheet-tab-color-hover: inherit;
+    --mej-sheet-tab-color-active: var(--mej-sheet-tab-color);
+    --mej-sheet-tab-background: rgba(255, 255, 255, 0.3);
+    --mej-sheet-tab-bottom-border: rgb(238, 237, 224);
+    --mej-sheet-tab-border: 3px solid rgb(181, 179, 164);
+    --mej-sheet-tab-border-active: rgb(68, 25, 26);
+    --mej-sheet-tab-border-items: rgb(187, 178, 114);
+    --mej-sheet-page-control-color: var(--mej-sheet-color);
+    --mej-sheet-page-control-background: rgb(192, 192, 192);
+    --mej-sheet-page-control-background-hover: var(--mej-sheet-page-control-background);
+    --mej-sheet-details-section-border: rgb(238, 237, 224);
+    --mej-sheet-input-border: 1px solid rgb(122, 121, 113);
+    --mej-sheet-input-background: rgba(0, 0, 0, 0.05);
+    --mej-sheet-input-color: var(--color-text-dark-primary);
+    --mej-itemlist-background: rgba(0, 0, 0, 0.05);
+    --mej-itemlist-colour: rgb(122, 121, 113);
+    --mej-itemlist-border: rgb(238, 237, 224);
+    --mej-itemlist-item-border: rgb(201, 199, 184);
+    --mej-itemlist-item-name: rgb(25, 24, 19);
+    --mej-itemlist-item-content: rgb(51, 51, 51);
+    --mej-itemlist-item-disabled: rgb(128, 128, 128);
+    --mej-itemlist-alternate-row: rgba(255, 255, 255, 0.3);
+    --mej-itemlist-control-background: rgba(255, 255, 255, 0.4);
+    --mej-itemlist-control-border: rgb(192, 192, 192);
+    --mej-itemlist-control-color: var(--mej-itemlist-colour);
+    --mej-itemlist-control-color-hover: var(--mej-itemlist-colour);
+    --mej-itemlist-header-color: var(--mej-itemlist-colour);
+    --mej-itemlist-header-control-color: var(--mej-itemlist-colour);
+    --mej-itemlist-input-color: rgb(25, 24, 19);
+    --mej-itemlist-input-border: transparent;
+    --mej-itemlist-input-background: rgba(0, 0, 0, 0.05);
+    --mej-objective-background: rgba(47, 80, 132, 0.8);
+    --mej-objective-border: rgb(92, 135, 185);
+    --mej-objective-color: rgb(240, 240, 224);
+    --mej-objective-header-background: rgba(255, 255, 255, 0.2);
+    --mej-objective-header-border: rgba(255, 255, 255, 0.3);
+    --mej-objective-item-border: rgba(255, 255, 255, 0.2);
+    --mej-quest-status-default: 128, 128, 128;
+    --mej-quest-status-available: 47, 150, 180;
+    --mej-quest-status-inprogress: 248, 148, 6;
+    --mej-quest-status-completed: 81, 163, 81;
+    --mej-quest-status-failed: 136, 26, 26;
+    --mej-slideshow-add-slide: rgba(0, 0, 0, 0.2);
+    --mej-slideshow-duration-border: rgb(0, 24, 74);
+    --mej-slideshow-duration-background: rgba(0, 0, 0, 0.5);
+    --mej-slideshow-duration-bar: rgb(28, 66, 250);
+    --mej-slideshow-duration-color: rgb(255, 255, 255);
+    --mej-list-progress-border: rgb(178, 195, 255);
+    --mej-list-progress-background: rgb(93, 73, 255);
+    --mej-currency-background: rgba(var(--mej-light-5), 0.5);
+    --mej-request-card-border: rgb(255, 255, 255);
+    --mej-request-card-img-border: 1px solid #c0c0c0;
+    --mej-active-color: rgb(255, 100, 0);
+    --mej-instruction: rgb(128, 128, 128);
+    --mej-icon-background: rgba(236, 233, 223, 1);
+    --mej-icon-shadow: rgba(0, 0, 0, 0.4);
+    --mej-icon-outline: rgba(0, 0, 0, 0.4);
+    --mej-blank-color: rgba(0, 0, 0, 0.5);
+    --mej-blank-recent-background: rgba(255, 255, 255, 0.3);
+    --mej-blank-recent-border: rgba(255, 255, 255, 0.5);
+    --mej-blank-link-hover: rgba(0, 0, 0, 0.8);
+    --mej-sidebar-background: url(../../../ui/parchment.jpg) repeat;
+    --mej-sidebar-button-background: rgba(0, 0, 0, 0.1);
+    --mej-sidebar-button-border: rgb(238, 237, 224);
+    --mej-sidebar-input-border: rgb(192, 192, 192);
+    --mej-sidebar-input-background: var(--mej-cream);
+    --mej-sidebar-input-background-focus: var(--mej-cream);
+    --mej-sidebar-input-color: var(--color-text-dark-primary);
+    --mej-sidebar-input-placeholder-color: var(--color-text-dark-secondary);
+    --mej-sidebar-label-color: var(--mej-sheet-color);
+    --mej-sidebar-folder-border-collapsed: rgb(139, 138, 131);
+    --mej-sidebar-folder-border: rgb(116, 115, 109);
+    --mej-sidebar-folder-background-collapsed: rgb(154, 154, 147);
+    --mej-sidebar-folder-background: rgb(133, 131, 124);
+    --mej-sidebar-folder-color-collapsed: rgb(51, 51, 51);
+    --mej-sidebar-folder-context-color: var(--color-text-dark-primary);
+    --mej-sidebar-subfolder-border: rgb(156, 154, 148);
+    --mej-sidebar-document-color: var(--color-text-dark-primary);
+    --mej-sidebar-document-border-top: rgb(195, 193, 182);
+    --mej-sidebar-document-border-botom: rgb(154, 152, 144);
+    --mej-adventure-toc-background: url(../../../ui/denim075.png) repeat;
+    --mej-adventure-toc-item-background: rgba(0, 0, 0, 0.4);
+    --mej-adventure-toc-border-highlight: var(--color-border-highlight);
+    --mej-sheet-button-background: rgb(192, 192, 192);
+    --mej-sheet-button-background-hover: var(--mej-sheet-button-background);
+    --mej-sheet-button-color: var(--mej-sheet-color);
+    --mej-context-x: 0px;
+    --mej-context-y: 0px;
+}
+
+.monks-enhanced-journal .window-content {
+    padding: 0px !important;
+    background: var(--mej-background) !important;
+}
+
+/*
+.monks-enhanced-journal:not(.category-filter) {
+    height: 100%;
+    flex-wrap: nowrap;
+}
+*/
+
+/* Highlight the sheet item on the title bar */
+.monks-enhanced-journal > header a.subsheet {
+    background: rgba(255, 255, 255, 0.1);
+    margin-left: 0px;
+    padding-left: 8px;
+}
+
+.monks-enhanced-journal > header a.subsheet.first {
+    margin-left: 4px;
+    padding-left: 4px;
+}
+
+.monks-enhanced-journal > header a.subsheet.last {
+    padding-right: 4px;
+}
+
+.monks-enhanced-journal > header a.polyglot-button {
+    display: none;
+}
+
+/* Styling if a journal entry is shown as an image popout */
+.window-app.image-popout.monks-enhanced-journal.sheet .window-content {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.window-app.image-popout.monks-enhanced-journal.sheet .header-name,
+.window-app.image-popout.monks-enhanced-journal.sheet .header-name button.play-journal-sound:not(.active) {
+    color: #fff;
+}
+
+/* Enhanced Journal styles */
+.monks-enhanced-journal .enhanced-journal {
+    height: 100%;
+    width: 100%;
+    margin-top: 0px;
+    flex-wrap: nowrap;
+}
+
+/* Header */
+.monks-enhanced-journal .enhanced-journal-header {
+    background-color: var(--mej-header-background);
+    flex-grow: 0;
+}
+
+.monks-enhanced-journal .enhanced-journal-header > * {
+    flex: 0 0 30px;
+    border-bottom: 1px solid var(--mej-header-border-color);
+}
+
+/* Tab Bar */
+.monks-enhanced-journal .tab-bar {
+    position: relative;
+    transition: padding-right 0.5s;
+    padding: 4px 2px 0px 4px;
+    flex: 0 0 34px;
+    color: var(--mej-header-tab-color);
+}
+
+.monks-enhanced-journal.condensed .tab-bar {
+    display: none;
+}
+
+.monks-enhanced-journal .enhanced-journal.collapse .enhanced-journal-header .tab-bar {
+    padding-right: 30px;
+}
+
+.monks-enhanced-journal .enhanced-journal.collapse .enhanced-journal-header .tab-bar #context-menu {
+    left: var(--mej-context-x);
+    width: 225px;
+}
+
+.monks-enhanced-journal .tab-bar .tab-row {
+    padding-top: 1px;
+}
+
+.monks-enhanced-journal .tab-bar .journal-tab {
+    max-width: 150px;
+    height: 100%;
+    padding: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    line-height: 20px;
+    background: var(--mej-header-tab-background);
+    border: var(--mej-header-tab-border);
+    position: relative;
+    font-family: 'Signika', sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    flex-wrap: nowrap;
+    font-size: var(--font-size-14);
+}
+
+.monks-enhanced-journal .tab-bar .journal-tab.active,
+.monks-enhanced-journal .tab-bar .journal-tab:last-child {
+    flex: 0 0 150px;
+}
+
+.monks-enhanced-journal .tab-bar .journal-tab .tab-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.monks-enhanced-journal .tab-bar .journal-tab:hover {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background-color: var(--mej-header-tab-hover);
+}
+
+.monks-enhanced-journal .tab-bar .journal-tab.active {
+    font-weight: bold;
+    background-color: var(--mej-header-tab-active);
+    outline: none;
+}
+
+.monks-enhanced-journal .tab-bar .tab-button {
+    flex: 0 0 30px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--mej-header-tab-btn-color);
+}
+
+.monks-enhanced-journal .tab-bar .tab-button:hover {
+    opacity: 0.9;
+    text-shadow: 0 0 8px red;
+}
+
+.monks-enhanced-journal .enhanced-journal .enhanced-journal-header .tab-bar .tab-button.sidebar-toggle {
+    float: left;
+    position: absolute;
+    top: 4px;
+    right: -32px;
+    font-size: 20px;
+    width: 30px;
+    transition: right 0.5s;
+}
+
+.monks-enhanced-journal .enhanced-journal.collapse .enhanced-journal-header .tab-bar .tab-button.sidebar-toggle {
+    right: 0px;
+    top: 4px;
+}
+
+.monks-enhanced-journal .tab-bar .close {
+    flex: 0 0 10px;
+    opacity: 0.6;
+    cursor: pointer;
+    justify-content: flex-end;
+    align-content: flex-end;
+    padding-left: 2px;
+}
+
+.monks-enhanced-journal .tab-bar .close:hover {
+    opacity: 0.8;
+}
+
+/* Bookmark bar */
+.monks-enhanced-journal .enhanced-journal-header .bookmark-bar {
+    padding-left: 2px;
+    flex: 0 0 36px;
+    color: var(--mej-header-bookmark-color);
+}
+
+.monks-enhanced-journal.condensed .enhanced-journal-header .tab-bar {
+    display: none;
+}
+
+.monks-enhanced-journal.hide-bookmark .enhanced-journal-header .bookmark-bar {
+    display: none;
+}
+
+.monks-enhanced-journal .enhanced-journal-header .bookmark-bar .bookmark-button {
+    height: 28px;
+    border-radius: 28px;
+    margin-left: 4px;
+    margin-top: 4px;
+    line-height: 27px;
+    padding: 0px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    flex-wrap: nowrap;
+    flex-grow: 0;
+    white-space: nowrap;
+    border: 1px solid var(--mej-header-bookmark-border);
+    background: var(--mej-header-bookmark-background);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .bookmark-bar .bookmark-button.add-bookmark {
+    border-radius: 4px;
+    flex: 0 0 24px;
+    height: 24px;
+    margin-top: 6px;
+    font-size: 16px;
+    padding-left: 2px;
+    line-height: 22px;
+    text-overflow: clip;
+    margin-left: 2px;
+    overflow: hidden;
+    border: 1px solid var(--mej-header-add-bookmark-border);
+    background: var(--mej-header-add-bookmark-background);
+    color: var(--mej-header-add-bookmark-color);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .bookmark-bar .bookmark-button > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.monks-enhanced-journal .enhanced-journal-header .bookmark-bar .bookmark-button:not(.add-bookmark) i {
+    margin-top: 4px;
+    margin-right: 2px;
+}
+
+.monks-enhanced-journal .enhanced-journal-header .bookmark-bar .bookmark-button:hover {
+    background: var(--mej-header-bookmark-hover);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .bookmark-bar .bookmark-button.add-bookmark:hover {
+    background: var(--mej-header-add-bookmark-hover);
+}
+/* Navigation bar */
+.monks-enhanced-journal .enhanced-journal-header .navigation {
+    color: var(--mej-header-nav-color);
+    background: var(--mej-header-nav-background);
+    padding: 2px;
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation hr.vertical {
+    height: 100%;
+    width: 1px;
+    border-right: 2px groove var(--mej-header-nav-vertical-line);
+    flex: 0 0 1px;
+    margin: 0px 2px;
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .button-group {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .nav-button {
+    flex: 0 0 24px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 14px;
+    margin-right: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid var(--mej-header-nav-btn-border);
+    margin-top: 1px;
+    background: var(--mej-header-nav-btn-background);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .nav-button:not(.disabled):hover {
+    box-shadow: 0 0 5px red;
+    cursor: pointer;
+    background: var(--mej-header-nav-btn-background-hover);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .nav-button.disabled {
+    color: var(--mej-header-nav-btn-disabled);
+    background: var(--mej-header-nav-btn-background-disabled);
+    border-color: var(--mej-header-nav-btn-border-disabled);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .nav-input {
+    margin-right: 4px !important;
+    margin-top: 1px;
+    height: 25px !important;
+    border-radius: 4px;
+    flex: 0 0 200px;
+    border: 1px solid var(--mej-header-nav-input-border);
+    background: var(--mej-header-nav-input-background);
+    color: var(--mej-header-nav-input-color);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .nav-input::placeholder {
+    color: var(--mej-header-nav-input-placeholder-color);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .nav-input:focus {
+    background: var(--mej-header-nav-input-focus-background);
+    border: 1px solid var(--mej-header-nav-input-focus-border);
+    color: var(--mej-header-nav-input-focus-color);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .nav-text {
+    flex-shrink: 1;
+    flex-basis: auto;
+    flex-grow: 0;
+    padding: 4px;
+    font-size: 12px;
+    line-height: 10px;
+}
+
+/*
+.monks-enhanced-journal .enhanced-journal-header .navigation .title input {
+    font-size: 18px;
+    text-align: center;
+    border: 0px;
+    background: transparent;
+}
+*/
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .search.error {
+    background-color: var(--mej-header-nav-input-error-background);
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation .button-group .nav-text i.fa-search {
+    padding-top: 4px;
+}
+
+.monks-enhanced-journal .enhanced-journal-header .navigation #context-menu li {
+    text-align: left;
+}
+
+/* Footer */
+.monks-enhanced-journal .enhanced-journal-footer {
+    color: var(--mej-footer-color);
+    background-color: var(--mej-footer-background);
+    padding: 2px;
+    flex: 0 0 20px;
+    line-height: 20px;
+    font-size: 16px;
+    padding: 5px 6px;
+    border-top: 1px solid var(--mej-footer-border);
+}
+
+.monks-enhanced-journal .enhanced-journal-footer .nav-button {
+    flex: 0 0 24px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 14px;
+    margin-right: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid var(--mej-footer-btn-border);
+    margin-top: 1px;
+    background: var(--mej-footer-btn-background);
+}
+
+.monks-enhanced-journal .enhanced-journal-footer .nav-button.navigate {
+    flex: 0 0 50px;
+}
+
+.monks-enhanced-journal .enhanced-journal-footer .nav-button.navigate i:first-child {
+    margin-right: 4px;
+}
+
+.monks-enhanced-journal .enhanced-journal-footer .nav-button:not(.disabled):hover {
+    box-shadow: 0 0 5px red;
+    cursor: pointer;
+    background: var(--mej-footer-btn-background-hover);
+    text-shadow: 0 0 8px red;
+}
+
+.monks-enhanced-journal .enhanced-journal-footer .nav-button.disabled {
+    color: var(--mej-footer-btn-disabled);
+    background: var(--mej-footer-btn-background-disabled);
+    border-color: var(--mej-footer-btn-border-disabled);
+}
+
+.monks-enhanced-journal .enhanced-journal.collapse .enhanced-journal-footer {
+    padding-right: 26px;
+}
+
+.monks-enhanced-journal .content[document-type='actor'] + .enhanced-journal-footer {
+    display: none;
+}
+
+/* Enhanced Browser content */
+.monks-enhanced-journal .enhanced-journal-body {
+    height: 100%;
+    /*overflow: hidden; Can't be hidden due to the sidebar toggle*/
+}
+.monks-enhanced-journal .content {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.monks-enhanced-journal .enhanced-journal .enhanced-journal-body .content[document-type='actor'] form {
+    overflow-y: auto;
+}
+
+.monks-enhanced-journal .content > section {
+    height: 100%;
+    overflow: hidden;
+}
+
+.monks-enhanced-journal .content > section.kanka-journal {
+    overflow: auto;
+}
+
+.monks-enhanced-journal .content .notification {
+    position: absolute;
+    float: left;
+    width: calc(100% - 20px);
+    top: 0px;
+    margin: 5px 10px;
+}
+
+.monks-enhanced-journal .content .sheet.journal-sheet {
+    min-height: unset;
+    min-width: unset;
+}
+
+.monks-enhanced-journal .enhanced-journal .journal-subsheet .window-resizable-handle {
+    display: none;
+}
+
+/* Sidebar */
+.monks-enhanced-journal .directory-sidebar {
+    flex: 0 0 300px;
+    width: 300px;
+    height: 100%;
+    background: var(--mej-sidebar-background);
+    border-left: 1px solid var(--mej-header-border-color);
+    transition: width 0.5s, flex 0.5s;
+}
+
+.monks-enhanced-journal.condensed .directory-sidebar {
+    display: none;
+}
+
+.monks-enhanced-journal .enhanced-journal.collapse .directory-sidebar {
+    flex: 0 0 0px;
+    width: 0px;
+}
+
+#journal .entry-name > i,
+#journal-directory .entry-name > i {
+    margin-right: 8px;
+    margin-left: 4px;
+    flex: 0 0 15px;
+}
+
+.monks-enhanced-journal .directory .action-buttons {
+    padding-left: 30px;
+}
+
+.monks-enhanced-journal .directory .directory-header .header-actions.action-buttons button {
+    line-height: 24px;
+    background: var(--mej-sidebar-button-background);
+    border: 2px groove var(--mej-sidebar-button-border);
+}
+
+.monks-enhanced-journal .directory .directory-header .header-search input {
+    height: var(--form-field-height);
+    border: 1px solid var(--mej-sidebar-input-border);
+    background: var(--mej-sidebar-input-background);
+}
+
+.monks-enhanced-journal .directory .directory-header .header-search input:hover,
+.monks-enhanced-journal .directory .directory-header .header-search input:focus,
+.monks-enhanced-journal .directory .directory-header .header-search input:active {
+    background: var(--mej-sidebar-input-background-focus);
+}
+
+.monks-enhanced-journal .directory .directory-header .header-search input::placeholder {
+    color: var(--mej-sidebar-input-placeholder-color);
+}
+
+.monks-enhanced-journal .directory-sidebar > section {
+    display: flex !important;
+    height: 100%;
+}
+
+.monks-enhanced-journal .directory-sidebar > section .directory-header {
+    background-color: var(--mej-header-background);
+    border-bottom: 1px solid var(--mej-header-border-color);
+    color: var(--mej-sidebar-label-color);
+    margin-bottom: 0px;
+    padding-bottom: 3px;
+}
+
+.monks-enhanced-journal .directory .directory-item.active {
+    background: #cfcdc2;
+}
+
+.monks-enhanced-journal .directory .directory-list .directory-item {
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.monks-enhanced-journal .directory li.folder > .folder-header {
+    border-top: 1px solid var(--mej-sidebar-folder-border-collapsed);
+    border-bottom: none;
+    width: 100%;
+    background: var(--mej-sidebar-folder-background-collapsed);
+    flex: 1;
+    color: var(--color-text-light-highlight);
+}
+
+.monks-enhanced-journal .directory li.folder:not(.collapsed) > .folder-header {
+    border-top: 1px solid var(--mej-sidebar-folder-border);
+    background: var(--mej-sidebar-folder-background);
+}
+
+.monks-enhanced-journal .directory li.folder.collapsed > .folder-header:not(.customcolor) {
+    color: var(--mej-sidebar-folder-color-collapsed);
+}
+
+.monks-enhanced-journal .directory li.folder .folder-header.context {
+    border-top: 1px solid var(--mej-active-color);
+    border-bottom: 1px solid var(--mej-active-color);
+}
+
+.monks-enhanced-journal .directory li.folder .folder-header.context,
+.monks-enhanced-journal .directory li.folder .folder-header.context h3 {
+    color: var(--mej-sidebar-folder-context-color);
+}
+
+.monks-enhanced-journal .directory .subdirectory {
+    border-left: 4px solid var(--mej-sidebar-subfolder-border);
+    border-bottom: 4px solid var(--mej-sidebar-subfolder-border);
+    margin-bottom: 0px;
+    width: 100%;
+}
+
+/*
+.monks-enhanced-journal .directory .journalentry.folder .subdirectory {
+    border-left-color: rgba(0, 0, 0, 0.1);
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.monks-enhanced-journal .directory .subdirectory .subdirectory {
+    margin-bottom: 0px;
+}
+    */
+
+.monks-enhanced-journal .directory .subdirectory .folder {
+    border-left: 6px solid transparent;
+    border-color: transparent;
+}
+
+.monks-enhanced-journal .directory li.journalentry,
+.monks-enhanced-journal .directory li.journalentrypage {
+    line-height: 32px;
+    border-top: 1px solid var(--mej-sidebar-document-border-top);
+    border-bottom: 1px solid var(--mej-sidebar-document-border-botom);
+    color: var(--mej-sidebar-document-color);
+}
+
+#journal li.journalentry .entry-name,
+.monks-enhanced-journal .directory li.journalentry .entry-name {
+    flex-wrap: nowrap;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+/*
+.monks-enhanced-journal .directory.sidebar-tab .directory-list .entry.selected {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.monks-enhanced-journal .directory.sidebar-tab .directory-list .entry.selected h4 {
+    font-weight: bold;
+}
+    */
+
+.monks-enhanced-journal .directory li.journalentry:not(.folder) .entry-name {
+    margin: 0 0.25em;
+}
+
+#journal li.journalentry[status] .entry-name > i,
+.monks-enhanced-journal .directory li.journalentry[status] .entry-name > i {
+    margin-left: 6px;
+}
+
+#journal li.journalentry[status] .entry-name,
+.monks-enhanced-journal .directory li.journalentry[status] .entry-name {
+    border-left: 0.45em solid rgb(var(--mej-quest-status-default));
+    margin-left: 0px;
+}
+
+#journal li.journalentry[status='available'] .entry-name,
+.monks-enhanced-journal .directory li.journalentry[status='available'] .entry-name {
+    border-left-color: rgb(var(--mej-quest-status-available));
+}
+
+#journal li.journalentry[status='inprogress'] .entry-name,
+.monks-enhanced-journal .directory li.journalentry[status='inprogress'] .entry-name {
+    border-left-color: rgb(var(--mej-quest-status-inprogress));
+}
+
+#journal li.journalentry[status='completed'] .entry-name,
+.monks-enhanced-journal .directory li.journalentry[status='completed'] .entry-name {
+    border-left-color: rgb(var(--mej-quest-status-completed));
+}
+
+#journal li.journalentry[status='failed'] .entry-name,
+.monks-enhanced-journal .directory li.journalentry[status='failed'] .entry-name {
+    border-left-color: rgb(var(--mej-quest-status-failed));
+}
+
+.directory .directory-item.journalentry .permissions {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 10px;
+    height: 20px;
+    padding: 2px 4px;
+    border-bottom-left-radius: 4px;
+    line-height: 14px;
+}
+
+.monks-enhanced-journal .directory .directory-item.journalentry .permissions {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.directory .directory-item.journalentry .permissions i {
+    font-size: 13px;
+    text-shadow: 1px 1px 3px #000;
+}
+
+.directory .directory-item.journalentry .permissions:empty {
+    display: none;
+}
+
+.directory .directory-item.journalentry .permissions div {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 100%;
+    text-align: center;
+    color: #000;
+    font-weight: 700;
+    background: #97dff4;
+    border: 1px solid #000;
+    margin-right: 2px;
+    text-shadow: none;
+}
+.directory .directory-item.journalentry .permissions i + div,
+.directory .directory-item.journalentry .permissions i + i {
+    margin-left: 5px;
+}
+
+.directory .directory-item.folder .default-type {
+    flex: 0 0 20px;
+}
+
+.monks-enhanced-journal li.folder > .folder-header .create-button .fa-plus {
+    padding-left: 2px;
+}
+
+.directory .directory-item.journalentry.folder > .entry-name {
+    margin-left: 0px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.directory .directory-item.journalentry.folder > .entry-name > i {
+    cursor: pointer;
+}
+
+.directory .directory-item.journalentry.folder.collapsed > .entry-name {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.monks-enhanced-journal .directory .directory-item.journalentry.folder > .entry-name {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.directory .directory-item.journalentry {
+    position: relative;
+}
+
+/* -----------------Foundry changes----------------------- */
+.dialog p.notes {
+    font-size: var(--font-size-12);
+    line-height: var(--line-height-16);
+    color: var(--color-text-dark-secondary);
+    margin: 3px 0;
+}
+
+/* Inline links */
+a.journal-link {
+    background: #ddd;
+    padding: 1px 4px;
+    border: 1px solid #4b4a44;
+    border-radius: 2px;
+    white-space: nowrap;
+    word-break: break-all;
+    color: var(--color-text-dark-primary);
+    position: relative;
+    padding-left: 16px;
+    text-decoration: none;
+}
+
+a.journal-link::before {
+    content: '\f02e';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    left: 3px;
+    top: 3px;
+    position: absolute;
+    color: #7a7971;
+}
+
+a.journal-link:hover {
+    text-shadow: none;
+}
+
+a.picture-link {
+    background: #ddd;
+    padding: 1px 4px;
+    border: 1px solid #4b4a44;
+    border-radius: 2px;
+    white-space: nowrap;
+    word-break: break-all;
+}
+
+/*
+a.picture-link i,
+a.inline-request-roll i {
+    color: #7a7971;
+}
+    */
+
+a.picture-link.broken {
+    background: rgba(255, 0, 0, 0.05);
+    border: 1px dashed red;
+}
+
+span.unknown-link {
+    background: #ddd;
+    padding: 1px 4px;
+    border: 1px solid var(--color-border-dark-tertiary);
+    border-radius: 2px;
+    white-space: nowrap;
+    word-break: break-all;
+}
+
+#actors .directory-list li.directory-item.actor {
+    position: relative;
+}
+
+body[inline-roll-styling="true"] a.entity-link,
+body[inline-roll-styling="true"] aside.locked-tooltip.link-matches a.content-link,
+body[inline-roll-styling="true"] a.content-link,
+body[inline-roll-styling="true"] a.inline-roll,
+body[inline-roll-styling="true"] a.picture-link,
+body[inline-roll-styling="true"] a.sound-link,
+body[inline-roll-styling="true"] a.inline-request-roll,
+body[inline-roll-styling="true"] a.tile-trigger-link {
+    color: var(--color-text-hyperlink);
+    background: transparent;
+    padding: 0px;
+    border: 0px;
+}
+
+body[inline-roll-styling="true"] aside.locked-tooltip.link-matches a.content-link[data-uuid^="Compendium"]::before {
+    color: var(--color-text-hyperlink);
+    opacity: 0.6;
+}
+
+body[inline-roll-styling="true"] aside.locked-tooltip.link-matches a.content-link {
+    margin-right: 10px;
+}
+
+body[inline-roll-styling="true"] a.entity-link i,
+body[inline-roll-styling="true"] a.content-link i,
+body[inline-roll-styling="true"] a.inline-roll,
+body[inline-roll-styling="true"] a.picture-link i,
+body[inline-roll-styling="true"] a.sound-link i,
+body[inline-roll-styling="true"] a.inline-request-roll i,
+body[inline-roll-styling="true"] a.tile-trigger-link i {
+    color: var(--color-text-hyperlink);
+}
+
+.inline-roll-styling a.content-link.broken,
+.inline-roll-styling a.picture-link.broken,
+.inline-roll-styling a.inline-request-roll.broken,
+.inline-roll-styling a.tile-trigger-link.broken {
+    color: red;
+    text-decoration: line-through;
+}
+
+.inline-roll-styling a.content-link.broken i,
+.inline-roll-styling a.picture-link.broken i,
+.inline-roll-styling a.inline-request-roll.broken i,
+.inline-roll-styling a.tile-trigger-link.broken i {
+    color: red;
+}
+/* Show to Players */
+.journal-show-dialog .show-to-players {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+
+.journal-show-dialog .show-to-players > label {
+    text-align: left;
+}
+
+.journal-show-dialog input[type='radio'] {
+    display: none;
+}
+
+.journal-show-dialog input[type='radio']:disabled + label {
+    color: var(--color-text-dark-inactive);
+}
+
+.journal-show-dialog input[type='radio']:checked + label {
+    color: var(--color-text-hyperlink);
+}
+
+.journal-show-dialog input[type='radio']:not(:disabled) + label:hover {
+    cursor: pointer;
+    text-shadow: 0 0 8px red;
+}
+
+/* Journal Table of Contents */
+.journal-entry.journal-sheet .directory .directory-list {
+    padding-right: 0px;
+}
+
+.journal-entry.journal-sheet .directory .directory-list .directory-item {
+    padding-right: 0.5rem;
+}
+
+.sheet.journal-entry .pages-list .page-heading {
+    position: relative;
+    width: 100%;
+}
+
+.sheet.journal-entry .pages-list .page-heading .page-ownership {
+    width: unset;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    pointer-events: all;
+    cursor: pointer;
+}
+
+.sheet.journal-entry .pages-list .page-heading .page-ownership div {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 100%;
+    text-align: center;
+    color: #000;
+    font-weight: 700;
+    background: #97dff4;
+    border: 1px solid #000;
+    margin-right: 2px;
+    text-shadow: none;
+}
+
+.sheet.journal-entry .pages-list .page-heading .page-ownership div {
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.sheet.journal-entry .pages-list .page-heading .page-ownership i + div {
+    margin-left: 5px;
+}
+
+.sheet.journal-entry .journal-entry-page header h1 {
+    margin: 0px;
+}
+
+.sheet.journal-entry .pages-list .page-icon {
+    margin-right: 4px;
+}
+
+.sheet.journal-entry .pages-list .directory-item {
+    align-items: flex-start;
+}
+
+.sheet.journal-entry .pages-list .directory-item.active:first-of-type {
+    border-top: 1px solid var(--mej-adventure-toc-border-highlight);
+}
+
+.sheet.journal-entry .pages-list .directory-item.active:last-of-type {
+    border-bottom: 1px solid var(--mej-adventure-toc-border-highlight);
+}
+
+.sheet.journal-entry .pages-list .directory-item:not(.active) + .active {
+    border-top: 1px solid var(--mej-adventure-toc-border-highlight);
+}
+
+.sheet.journal-entry .pages-list .directory-item.active + :not(.active) {
+    border-top: 1px solid var(--mej-adventure-toc-border-highlight);
+}
+
+/*
+.sheet.journal-entry .pages-list .directory-item.active:last-of-type,
+.sheet.journal-entry .pages-list .directory-item.active:first-of-type {
+    border-top: 1px solid var(--color-border-dark);
+}
+
+.sheet.journal-entry .pages-list .directory-item:not(.active) + .active {
+    border-bottom: 1px solid var(--color-border-dark-3);
+}
+    */
+
+/*
+.sheet.journal-entry .pages-list .directory-item.active + :not(.active) {
+    border-top: 1px solid var(--color-border-dark);
+}
+*/
+
+.sheet.journal-entry .pages-list .directory-item:last-child,
+.sheet.journal-entry .pages-list .directory-item:first-child {
+    border-bottom: 1px solid transparent;
+}
+
+/*
+.sheet.journal-entry .pages-list .directory-item.active {
+    background: rgba(92, 135, 185, 0.2);
+}
+    */
+
+.sheet.journal-entry .pages-list .directory-item.active {
+    background-color: var(--mej-adventure-toc-item-background);
+}
+
+.monks-enhanced-journal .enhanced-journal .journal-sheet-container .sidebar .directory-header,
+.monks-enhanced-journal .enhanced-journal .journal-sheet-container .sidebar .action-buttons,
+.monks-enhanced-journal .enhanced-journal .journal-sheet-container .window-resizable-handle {
+    display: none;
+}
+
+.monks-enhanced-journal .enhanced-journal .journal-sheet-container .sidebar.directory {
+    background: var(--mej-adventure-toc-background);
+}
+
+.monks-enhanced-journal .enhanced-journal .sheet.journal-entry .journal-sheet-container {
+    width: unset !important;
+    height: unset !important;
+    left: unset !important;
+    pointer-events: all !important;
+}
+
+.monks-enhanced-journal .enhanced-journal .sheet.journal-entry .journal-entry-content {
+    border: 0px;
+    background: var(--mej-background);
+}
+
+.sheet.journal-entry .no-file-notification {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    color: var(--tertiary-color);
+}
+
+/* Select with Folders */
+.journal-select {
+    position: relative;
+    width: 100%;
+    height: 27px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #7a7971;
+    border-radius: 3px;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+}
+
+.journal-select:focus {
+    box-shadow: 0 0 5px #ff0000;
+    outline: none;
+}
+
+.journal-select > div > span {
+    line-height: 26px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.journal-select > div > i {
+    flex: 0 0 12px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 11px;
+    color: #000;
+}
+
+.journal-list {
+    display: none;
+    max-height: 250px;
+    overflow-y: auto;
+    margin: 0px 5px;
+    color: black;
+    position: absolute;
+    float: left;
+    left: -1px;
+    top: 100%;
+    background: url(../../../ui/parchment.jpg) repeat;
+    border: 1px solid #808080;
+    width: calc(100% + 2px);
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+}
+
+.scene-sheet .journal-list {
+    max-height: 250px;
+}
+
+.journal-select.open .journal-list,
+.journal-list.open {
+    display: block;
+}
+
+.journal-list .journal-item .journal-title {
+    padding: 4px;
+    cursor: pointer;
+    min-height: 25px;
+    width: 100%;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.journal-list .journal-item.note-item .journal-title {
+    padding: 1px 4px;
+    overflow: hidden;
+}
+
+.journal-list .journal-item .journal-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    border: 2px solid #000000;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 2px;
+    flex: 0 0 30px;
+}
+
+.journal-list .journal-item .journal-text {
+    line-height: 30px;
+    padding-left: 4px;
+}
+
+.journal-list .journal-item .journal-text.custom-text {
+    color: #333333;
+}
+
+.journal-list .journal-item:not(.folder):hover,
+.journal-list .journal-item.selected {
+    background-color: #1e90ff;
+    color: #fff;
+}
+
+.journal-list .journal-item.folder > .journal-title {
+    background: rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+.journal-list .journal-item.folder > .journal-title:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.journal-list .subfolder {
+    border-left: 4px solid #c0c0c0;
+    border-bottom: 4px solid #c0c0c0;
+}
+
+.journal-list .subfolder .journal-item {
+    margin-left: 5px;
+}
+
+.journal-list .journal-item.folder .journal-title i {
+    margin-right: 8px;
+}
+
+.journal-list .journal-item.folder.collapse .journal-title i.fa-folder-open:before {
+    content: '\f07b';
+}
+
+.journal-list .journal-item.folder.collapse > ul {
+    display: none;
+}
+
+.journal-select .journal-list .subfolder {
+    padding-left: 1px;
+    margin-top: 0px;
+    list-style-type: none;
+    margin-bottom: 0px;
+}
+
+#customise-pages .window-content {
+    padding: 0px;
+}
+
+#customise-pages aside.sidebar {
+    flex: 0 0 220px;
+    height: 100%;
+    padding: 1rem;
+    border-right: 1px solid var(--color-border-light-primary);
+    font-size: var(--font-size-12);
+}
+
+#customise-pages aside.sidebar nav.page-tabs {
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden auto;
+}
+
+#customise-pages aside.sidebar nav.page-tabs .category-tab {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--color-border-light-primary);
+    text-align: left;
+}
+
+#customise-pages aside.sidebar nav.page-tabs .category-tab.active {
+    font-weight: bold;
+    border-bottom: 1px solid var(--color-underline-active);
+}
+
+#customise-pages aside.sidebar nav.page-tabs .category-tab > a {
+    flex: 1;
+}
+
+#customise-pages aside.sidebar .reset-all {
+    flex: 0;
+    margin-right: 0.5rem;
+}
+
+#customise-pages section .tab {
+    height: 100%;
+    overflow: hidden;
+}
+
+#customise-pages .sheet-body {
+    height: calc(100% - 35px);
+}
+
+#customise-pages .sheet-body .item-list {
+    padding-bottom: 5px;
+}
+
+#customise-pages .categories {
+    height: 100%;
+}
+
+#customise-pages .categories footer {
+    margin: 1rem;
+    flex: 0;
+}
+
+#customise-pages .tab[data-tab="tabs"] {
+    padding: 0px 8px;
+}
+
+#customise-page .monks-journal-sheet,
+#customise-page .monks-journal-sheet > div,
+#customise-page .monks-journal-sheet .sheet-body,
+#customise-page .monks-journal-sheet .tab[data-tab="fields"] {
+    overflow: hidden !important;
+}
+
+#customise-pages .shop-config-type-label:last-child,
+#customise-page .shop-config-type-label:last-child {
+    display: none;
+}

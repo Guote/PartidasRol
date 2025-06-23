@@ -1,0 +1,68 @@
+{
+    "title": "Settings - Client to World",
+    "description": "Change client settings into world settings.",
+    "id": "settings-world-client-swap",
+    "version": "1.0.2",
+    "authors": [
+        {
+            "name": "theripper93",
+            "email": "tsplab@gmail.com",
+            "url": "https://www.patreon.com/theripper93"
+        }
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "languages/en.json"
+        },
+        {
+            "lang": "ja",
+            "name": "日本語",
+            "path": "languages/ja.json"
+        },
+        {
+            "lang": "de",
+            "name": "Deutsch",
+            "path": "languages/de.json"
+        },
+        {
+            "lang": "fr",
+            "name": "Français",
+            "path": "languages/fr.json"
+        },
+        {
+            "lang": "es",
+            "name": "Español",
+            "path": "languages/es.json"
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português (Brasil)",
+            "path": "languages/pt-br.json"
+        },
+        {
+            "lang": "it",
+            "name": "Italiano",
+            "path": "languages/it.json"
+        }
+    ],
+    "scripts": [],
+    "esmodules": [
+        "index.js"
+    ],
+    "styles": [
+        "styles/module.css"
+    ],
+    "packs": [],
+    "url": "https://github.com/theripper93/settings-world-client-swap",
+    "manifest": "https://github.com/theripper93/settings-world-client-swap/releases/latest/download/module.json",
+    "download": "https://github.com/theripper93/settings-world-client-swap/releases/download/1.0.2/module.zip",
+    "relationships": {
+        "requires": []
+    },
+    "compatibility": {
+        "minimum": "12",
+        "verified": "12"
+    }
+}

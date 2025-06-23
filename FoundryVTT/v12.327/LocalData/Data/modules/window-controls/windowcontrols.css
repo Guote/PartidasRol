@@ -1,0 +1,71 @@
+:root {
+    --minibarw: unset;
+    --minibarbot: unset;
+    --minibartop: unset;
+    --minibarleft: unset;
+    --wcbordercolor: unset;
+    --wcshadowcolor: unset;
+    --wcshadowstrength: unset;
+    --minimizedpos: absolute;
+    --minisidebaradj: calc(100vh - 10px);
+    --miniminh: unset;
+    --minimaxh: unset;
+    --taskbarcolor: #0000;
+}
+
+#minimized-bar {
+    position: absolute;
+    width: var(--minibarw);
+    height: 38px;
+    bottom: var(--minibarbot);
+    top: var(--minibartop);
+    border-radius: 5px;
+    left: var(--minibarleft);
+    opacity: 75%;
+    border: 1px solid var(--wcbordercolor);
+    box-shadow: 0 0 var(--wcshadowstrength) 0 var(--wcshadowcolor);
+    z-index: 0;
+    transition: 0.25s ease-out 0.25s;
+}
+
+#window-controls-persistent {
+    position: absolute;
+    width: 100%;
+    display: table-row;
+    background-color: var(--taskbarcolor);
+}
+
+#sidebar {
+    height: var(--minisidebaradj);
+}
+
+#client-settings {
+    min-height: var(--miniminh);
+    max-height: var(--minimaxh);
+}
+
+.window-app.minimized {
+    position: var(--minimizedpos);
+}
+
+.window-app.minimized .window-header {
+    border: 1px solid var(--wcbordercolor);
+    box-shadow: 0 0 var(--wcshadowstrength) 0 var(--wcshadowcolor);
+}
+
+.minimized.window-app .window-header a {
+    margin: 0 0 0 2px;
+}
+
+.minimized-pinned {
+    background-color: var(--wcbordercolor);
+    border-radius: 5px 5px 0 0;
+}
+
+.hidden-placeholder h4:hover {
+    text-shadow: 0 1px darkred;
+}
+
+.hidden-placeholder {
+    visibility: hidden;
+}

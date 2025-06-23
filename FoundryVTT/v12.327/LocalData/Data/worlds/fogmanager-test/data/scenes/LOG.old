@@ -1,3 +1,15 @@
-2025/06/23-00:19:54.844 7f04 Recovering log #37
-2025/06/23-00:19:54.851 7f04 Delete type=0 #37
-2025/06/23-00:19:54.851 7f04 Delete type=3 #35
+2025/06/23-21:11:47.714 1b3c Recovering log #60
+2025/06/23-21:11:47.720 1b3c Delete type=0 #60
+2025/06/23-21:11:47.721 1b3c Delete type=3 #57
+2025/06/23-21:15:44.728 f28 Level-0 table #67: started
+2025/06/23-21:15:44.740 f28 Level-0 table #67: 1609 bytes OK
+2025/06/23-21:15:44.743 f28 Delete type=0 #65
+2025/06/23-21:15:44.743 f28 Manual compaction at level-0 from '!scenes!fThUZUPLuD7nXnM2' @ 72057594037927935 : 1 .. '!scenes.tiles!fThUZUPLuD7nXnM2.1MO6rsYox5XCIKGX' @ 0 : 0; will stop at (end)
+2025/06/23-21:15:44.744 f28 Manual compaction at level-1 from '!scenes!fThUZUPLuD7nXnM2' @ 72057594037927935 : 1 .. '!scenes.tiles!fThUZUPLuD7nXnM2.1MO6rsYox5XCIKGX' @ 0 : 0; will stop at '!scenes.tiles!fThUZUPLuD7nXnM2.1MO6rsYox5XCIKGX' @ 16 : 1
+2025/06/23-21:15:44.744 f28 Compacting 1@1 + 1@2 files
+2025/06/23-21:15:44.751 f28 Generated table #68@1: 2 keys, 1609 bytes
+2025/06/23-21:15:44.751 f28 Compacted 1@1 + 1@2 files => 1609 bytes
+2025/06/23-21:15:44.755 f28 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/06/23-21:15:44.756 f28 Delete type=2 #63
+2025/06/23-21:15:44.756 f28 Delete type=2 #67
+2025/06/23-21:15:44.775 f28 Manual compaction at level-1 from '!scenes.tiles!fThUZUPLuD7nXnM2.1MO6rsYox5XCIKGX' @ 16 : 1 .. '!scenes.tiles!fThUZUPLuD7nXnM2.1MO6rsYox5XCIKGX' @ 0 : 0; will stop at (end)

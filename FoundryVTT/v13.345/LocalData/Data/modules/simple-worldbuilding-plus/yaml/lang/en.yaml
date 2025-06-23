@@ -1,0 +1,9 @@
+simpleWorldbuildingPlus:
+  settings:
+    derived:
+      name: Derived Attributes
+      label: Configure derived attributes
+      hint: Enter derived attributes in the format <strong>||key|formula||</strong>, such as <strong>||str.mod|floor((@abil.str - 10) /2)||</strong>.<br/>Enter one attribute per line.
+  migrations:
+    _104:
+      success: "Successfully migrated derived attributes from SWP_DERIVED journal entry to the <strong>Derived</strong> setting under this module's settings."

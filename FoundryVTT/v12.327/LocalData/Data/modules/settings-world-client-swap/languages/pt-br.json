@@ -1,0 +1,5 @@
+{
+    "settings-world-client-swap": {
+        "notification": "Configuração para {setting} definida como {value}. \nPor favor, recarregue o jogo para que as alterações tenham efeito. \nAs alterações na configuração não serão salvas até a próxima recarga."
+    }
+}

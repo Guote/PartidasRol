@@ -1,0 +1,23 @@
+<div class="body-config">
+    <li class="profiles-header flexrow">
+        <div class="profile-title">
+            Profiles
+        </div>
+        <div class="profile-controls">
+            <a class="fa-solid fa-user-plus" data-action="createProfile"></a>
+        </div>
+    </li>
+    <ol class="profile-list">
+        {{#each profiles as |profile|}}
+        <li class="profile flexrow" data-id="{{profile.id}}">
+            <div class="profile-name flexrow">
+                {{profile.name}}
+            </div>
+            <div class="profile-controls">
+                <a class="fa-solid fa-pen-to-square" data-action="editProfile"></a>
+                <a class="fa-solid fa-trash" data-action="deleteProfile"></a>
+            </div>
+        </li>
+        {{/each}}
+    </ol>
+</div>

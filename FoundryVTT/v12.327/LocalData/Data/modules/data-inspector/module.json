@@ -1,0 +1,38 @@
+{
+	"id": "data-inspector",
+	"title": "Koboldworks – Data Inspector 🔍",
+	"description": "Data inspection tool for Actor and Item documents.",
+	"version": "5.2",
+	"authors": [
+		{
+			"name": "MKAh",
+			"url": "https://gitlab.com/mkahvi",
+			"discord": "manaflower",
+			"ko-fi": "mkahvi"
+		}
+	],
+	"esmodules": ["data-inspector.mjs"],
+	"styles": ["data-inspector.css"],
+	"languages": [
+		{
+			"lang": "en",
+			"path": "lang/en.json"
+		}
+	],
+	"compatibility": {
+		"minimum": 12,
+		"verified": 13
+	},
+	"flags": {
+		"hotReload": {
+			"extensions": ["css", "hbs", "json"]
+		}
+	},
+	"license": "https://gitlab.com/koboldworks/agnostic/data-inspector/-/raw/main/LICENSE",
+	"changelog": "https://gitlab.com/koboldworks/agnostic/data-inspector/-/raw/main/CHANGELOG.md",
+	"readme": "https://gitlab.com/koboldworks/agnostic/data-inspector/-/raw/main/README.md",
+	"manifest": "https://gitlab.com/koboldworks/agnostic/data-inspector/-/releases/permalink/latest/downloads/module.json",
+	"download": "https://gitlab.com/koboldworks/agnostic/data-inspector/-/releases/5.2/downloads/data-inspector.zip",
+	"url": "https://gitlab.com/koboldworks/agnostic/data-inspector",
+	"bugs": "https://gitlab.com/koboldworks/agnostic/data-inspector/-/issues"
+}

@@ -1,0 +1,48 @@
+<header>
+	<fieldset class='main'>
+		<label>
+			<span class='label'>{{localize 'DataInspector.Path'}}</span>
+			<input name='path' class='path' type='text' placeholder='{{localize 'DataInspector.PathHint'}}' value='{{path}}'>
+		</label>
+		<label>
+			<span class='label'>{{localize 'DataInspector.Search'}}</span>
+			<input name='search' class='search' type='search' data-dtype='String' placeholder='{{localize 'DataInspector.Filter'}}' value='{{search}}' autofocus>
+		</label>
+	</fieldset>
+
+	<fieldset class='settings'>
+		<label class='mode' data-tooltip='{{localize 'DataInspector.Data.Legend'}}' data-tooltip-direction='UP'>
+			<span class='label'>{{localize 'DataInspector.Mode'}}</span>
+			<select name='mode' class='type source-type'>
+				{{selectOptions dataTypes selected=dataType localize=true}}
+			</select>
+		</label>
+
+		<label class='functions' data-tooltip='DataInspector.Settings.Functions' data-tooltip-direction='UP'>
+			<input type='checkbox' class='functions' {{checked includeFunctions}}>
+			<span class='label'>{{localize 'DataInspector.Settings.Functions'}}</span>
+		</label>
+
+		<label class='search-quality' data-tooltip='DataInspector.Settings.Strictness' data-tooltip-direction='UP'>
+			<span class='label'>{{localize 'DataInspector.Settings.Strictness'}}</span>
+			<input type='range' data-dtype='Number' class='search-quality' min='0' max='1' step='0.01' value='{{resultQuality}}'>
+		</label>
+	</fieldset>
+
+	<div class='details'>
+		<div class='type'>
+			{{#if typeLabel}}
+			<label>{{localize 'DataInspector.Type'}}:</label>
+			<span class='value' data-tooltip='{{typeLabel}}' data-tooltip-direction='UP'>{{type}}</span>
+			{{/if}}
+
+			<label>{{#if isDocument}}{{localize 'DataInspector.Document'}}{{else}}{{localize 'DataInspector.Class'}}{{/if}}:</label>
+			<span class='value'>{{objectType}}</span>
+
+			{{#if model}}
+			<label>{{localize 'DataInspector.DataModel'}}:</label>
+			<span class='value'>{{model}}</span>
+			{{/if}}
+		</div>
+	</div>
+</header>

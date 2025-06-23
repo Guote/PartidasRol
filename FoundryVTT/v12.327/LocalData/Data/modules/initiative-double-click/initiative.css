@@ -1,0 +1,11 @@
+#combat li.combatant .double-click-initiative {
+	flex: 0 0 auto;
+	gap: 4px;
+	text-align: center;
+}
+#combat li.combatant .double-click-disabled {
+	color: grey;
+}
+#combat li.combatant .double-click-disabled a {
+	cursor: default;
+}

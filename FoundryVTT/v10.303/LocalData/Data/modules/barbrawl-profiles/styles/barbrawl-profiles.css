@@ -1,0 +1,102 @@
+.barbrawl-profile-config,
+.barbrawl-profile-dialog {
+    .header-container {
+        .input-name-container input {
+            height: 2.1rem;
+            font-size: 1.6rem;
+        }
+
+        .add-button {
+            flex: 0;
+            font-size: 30px;
+            margin: 0 0.5rem;
+        }
+    }
+
+    .body-config {
+        padding: 0.5rem;
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .delete-btn {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            transition: 400ms;
+            &:hover {
+                opacity: 1;
+                font-size: 1;
+            }
+        }
+
+
+        .profiles-header {
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+            font-size: large;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.4rem 0.4rem 0 0;
+            color: white;
+        }
+
+        .profile-list {
+            padding: 0.2rem 0.5rem;
+            font-weight: bold;
+            font-size: medium;
+            list-style: none;
+            margin: 0;
+            min-height: 24px;
+            background-color: rgba(0, 0, 0, 0.3);
+
+            .profile-name {
+                height: 1.5rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .profile-controls {
+            display: flex;
+            flex: 0 0 50px;
+            justify-content: flex-end;
+
+            a {
+                font-size: small;
+                margin: 0 0.2rem;
+            }
+        }
+
+        .indent-details {
+            overflow-y: auto;
+            max-height: 300px;
+
+            .advanced-details {
+                overflow-x: hidden;
+            }
+
+            .form-fields {
+                label {
+                    flex: 0 0 50px;
+
+                    span {
+                        white-space: nowrap;
+                    }
+
+                }
+
+                input.color {
+                    text-align: center;
+                    min-width: 8ch;
+                    padding: 0;
+                }
+            }
+
+            p.notes {
+                color: inherit;
+                opacity: 0.7;
+            }
+        }
+    }
+}

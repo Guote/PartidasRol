@@ -1,0 +1,30 @@
+<div class="flexrow">
+  <fieldset class="module-states">
+    <legend>{{localize "FindTheCulprit.Instructions.ModuleStates"}}</legend>
+    {{#each icons.module as |icon state|}}
+    <div>
+      <button type="button" class="ftc-state-button display-only" data-ftc-state="{{state}}" disabled>
+        <i class="fa-solid {{icon}}"></i>
+      </button>
+      <label>{{{localize (concat "FindTheCulprit.StateTooltip." state)}}}</label>
+    </div>
+    {{/each}}
+  </fieldset>
+</div>
+<ul class="instructions">
+  <li>
+    {{localize "FindTheCulprit.Instructions.Controls"}}
+  </li>
+  <li>
+    {{{localize "FindTheCulprit.Instructions.Tooltips"}}}
+  </li>
+  <li>
+    {{{localize "FindTheCulprit.Instructions.Usage"}}}
+  </li>
+  <li>
+    {{{localize "FindTheCulprit.Instructions.Disclaimer"}}}
+  </li>
+  <li>
+    {{{localize "FindTheCulprit.Instructions.Reassurance"}}}
+  </li>
+</ul>

@@ -1,0 +1,91 @@
+/* Autocompleter summon button */
+button.autocompleter-summon {
+    position: fixed;
+    padding: 0;
+    max-height: 22px;
+    max-width: 22px;
+    line-height: 0;
+    z-index: 9999;
+}
+
+button.autocompleter-summon > i {
+    margin: 0;
+    text-align: center;
+    color: #555555;
+}
+
+/* Autocompleter application */
+.window-app.app.autocompleter {
+    min-height: 25px;
+    box-shadow: 0 0 5px #555555;
+    border-radius: 5px;
+}
+
+.autocompleter .window-content {
+    padding: 3px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.autocompleter ol.aip-list {
+    margin: 2px;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.autocompleter ol.aip-list li.aip-data-entry {
+    background: #99999922;
+    padding: 1px 3px;
+    margin: 1px 0;
+    font-size: 0.8rem;
+}
+
+.autocompleter ol.aip-list li.aip-data-entry.highlighted {
+    background: #55559922;
+}
+
+.autocompleter ol.aip-list li.aip-data-entry .aip-key-prefix {
+    flex: 0;
+    opacity: 50%;
+}
+
+.autocompleter ol.aip-list li.aip-data-entry .aip-key {
+    flex: 1 1 auto;
+}
+
+.autocompleter ol.aip-list li.aip-data-entry .aip-key .match {
+    text-decoration: underline;
+}
+
+.autocompleter ol.aip-list li.aip-data-entry .aip-value {
+    flex: 0 0 40px;
+    opacity: 50%;
+    padding: 0 3px;
+    text-align: right;
+    font-family: monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #99999955;
+}
+
+.autocompleter .aip-form > :not(:last-child) {
+    margin-right: 2px;
+}
+
+.autocompleter input.aip-input {
+    flex: 1;
+}
+
+.autocompleter button.aip-insert {
+    flex: 0 0 25px;
+    text-align: center;
+    line-height: unset;
+    margin: 0;
+}
+
+.autocompleter button.aip-insert > i {
+    margin: unset;
+}

@@ -1,3 +1,7 @@
-2025/06/15-22:14:32.719 a684 Recovering log #12
-2025/06/15-22:14:32.725 a684 Delete type=0 #12
-2025/06/15-22:14:32.726 a684 Delete type=3 #10
+2025/06/23-23:22:00.895 a774 Recovering log #26
+2025/06/23-23:22:00.904 a774 Delete type=0 #26
+2025/06/23-23:22:00.904 a774 Delete type=3 #24
+2025/06/23-23:23:42.083 8bfc Level-0 table #31: started
+2025/06/23-23:23:42.092 8bfc Level-0 table #31: 254 bytes OK
+2025/06/23-23:23:42.095 8bfc Delete type=0 #29
+2025/06/23-23:23:42.099 8bfc Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)

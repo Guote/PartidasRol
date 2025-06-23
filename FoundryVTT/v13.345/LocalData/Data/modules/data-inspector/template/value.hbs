@@ -1,0 +1,68 @@
+<div class='details'>
+	<label class='key' data-copy='path'>{{#if inArray}}[{{@index}}]{{else}}{{key}}{{/if}}</label>
+	{{#if recursionPoint}}
+		<label class='value recursion' data-copy='value'>{{localize 'DataInspector.Link'}}: <span class='path'>{{recursionPoint}}</span></label>
+	{{else if isGetter}}
+		<label class='value getter {{css}}'>{{localize 'DataInspector.DataValue.Getter'}}</label>
+	{{else if isFunction}}
+		<label class='value function {{css}}'>{{localize 'DataInspector.DataValue.Function'}}</label>
+	{{else if isEmptyPrimitive}}
+		<label class='value {{type}} {{css}} type-null'>{{type}}</label>
+	{{else if (or isCustom isUndesirable)}}
+		<label class='value {{type}} {{css}} type-{{className}}'>{ {{~className~}} }</label>
+	{{else if (or isContainer isDocument isUndesirable)}}
+		{{!-- Container with contents --}}
+		<label class='value container {{type}} {{css}} type-{{className}}{{#if isModel}} model-{{identifier}}{{/if}}'
+			data-copy='value'>
+			{{#if isArray}}
+				{{#if isEmpty}}[<span class='child-count'>0</span>]{{else}}[0...<span class='child-count'>{{children.length}}</span>]{{/if}}
+			{{else if isModel}}
+				{ {{~identifier~}} } [<span class='child-count'>{{children.length}}</span>]
+			{{else}}
+				{{~#if (eq className 'Object')}}
+					{...<span class='child-count'>{{children.length}}</span>}
+				{{else}}
+					{ {{~className~}}{{#if isDocument}}:{{documentId}}{{/if~}} }
+					[<span class='child-count'>{{children.length}}</span>]
+				{{/if}}
+			{{/if}}
+			{{#if hasName}}
+			<span class='value-name'>{{name}}</span>
+			{{/if}}
+			{{#if hasValues}}
+			<span class='value-details'>
+				{{#with values}}
+				{{#unless noValues}}
+				[
+				{{#if isValue}}
+				<label>{{localize 'DataInspector.DataValue.Value'}}: {{#if haveValue}}<span class='value'>{{value}}</span>{{/if}}{{#if isValueOf}} / {{/if}}{{#if haveMax}}<span class='max'>{{max}}</span>{{/if}}</label>
+				{{/if}}
+				{{#if haveTotal}}
+				{{#if isValue}};{{/if}}
+				<label>{{localize 'DataInspector.DataValue.Total'}}: <span class='total'>{{total}}</span></label>
+				{{/if}}
+				]
+				{{/unless}}
+				{{/with}}
+			</span>
+			{{/if}}
+		</label>
+	{{else}}
+		{{!-- Basic value --}}
+		{{#if isBigString}}
+		<div class='extended-value'>
+			<label class='value-details'>({{localize 'DataInspector.DataValue.Length' length=value.length}})</label>
+		{{/if}}
+		<label class='value basic {{type}} {{#if isNullish}}empty{{else if isBigString}}big{{/if}} {{css}}' data-copy='value'>{{formattedValue}}</label>
+		{{#if isBigString}}
+		</div>
+		{{/if}}
+	{{/if}}
+
+	<div class='data-pools'>
+		{{#unless @root.isRollData}}<span class='pool rolldata {{#if inRollData}}{{#if (gt inRollData 1)}}deformed'>?{{else}}present'>✓{{/if}}{{else}}absent'>✗{{/if}}</span>{{/unless}}
+		{{#unless @root.isDerivedData}}<span class='pool derived {{#if inDerivedData}}{{#if (gt inDerivedData 1)}}deformed'>?{{else}}present'>✓{{/if}}{{else}}absent'>✗{{/if}}</span>{{/unless}}
+		{{#unless @root.isSourceData}}<span class='pool source {{#if inSourceData}}{{#if (gt inSourceData 1)}}deformed'>?{{else}}present'>✓{{/if}}{{else}}absent'>✗{{/if}}</span>{{/unless}}
+		{{#if @root.isSourceData}}<span class='pool temporary {{#if inTemporaryData}}{{#if (gt inTemporaryData 1)}}deformed'>?{{else}}present'>✓{{/if}}{{else}}absent'>✗{{/if}}</span>{{/if}}
+	</div>
+</div>

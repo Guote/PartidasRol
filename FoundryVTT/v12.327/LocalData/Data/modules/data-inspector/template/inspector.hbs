@@ -1,0 +1,27 @@
+<section class='datatree'>
+	<p class='hint'>
+		<i class='fa-solid fa-circle-info' inert></i>
+		{{{localize 'DataInspector.Instructions'}}}
+	</p>
+
+	<div class='headers'>
+		<label class='key'>{{localize 'DataInspector.Key'}}</label>
+
+		<label class='value'>{{localize 'DataInspector.Value'}}</label>
+
+		<div class='data-pools'>
+			{{#unless @root.isRollData}}<label class='pool rolldata' data-tooltip='Data present in roll data.' data-tooltip-direction='UP'>R</label>{{/unless}}
+			{{#unless @root.isDerivedData}}<label class='pool derived' data-tooltip='Data present in derived data.' data-tooltip-direction='UP'>D</label>{{/unless}}
+			{{#unless @root.isSourceData}}<label class='pool source' data-tooltip='Data present in source data.' data-tooltip-direction='UP'>S</label>{{/unless}}
+			{{#if @root.isSourceData}}<label class='pool temporary' data-tooltip='Data present in temporary document of same type.' data-tooltip-direction='UP'>T</label>{{/if}}
+		</div>
+	</div>
+
+	<div class='dataview {{dataType}} scroll'>
+		{{#if data.isEmpty}}
+		<p class='warning'>{{localize 'DataInspector.NoData'}}</p>
+		{{else}}
+		{{~> 'modules/data-inspector/template/object.hbs' data}}
+		{{/if}}
+	</div>
+</section>

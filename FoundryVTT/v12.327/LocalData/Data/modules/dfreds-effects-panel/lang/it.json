@@ -1,0 +1,61 @@
+{
+    "EffectsPanel": {
+        "SettingPlayer": "Giocatore",
+        "SettingTrustedPlayer": "Giocatore Fidato",
+        "SettingAssistantGM": "Assistente DM",
+        "SettingGameMaster": "DM",
+        "SettingNone": "Nessuno",
+        "SettingDialog": "Dialogo",
+        "SettingDelete": "Cancella",
+        "SettingDisable": "Disattiva",
+
+        "SettingShowDisabledEffects": "Mostra Effetti Disattivati",
+        "SettingShowDisabledEffectsHint": "Se abilitati, gli effetti disabilitati verranno visualizzati nel pannello con una sfumatura grigia.",
+        "SettingShowPassiveEffects": "Mostra Effetti Passivi",
+        "SettingShowPassiveEffectsHint": "Se abilitato, gli effetti passivi verranno visualizzati nel pannello.",
+        "SettingShowDurationOverlays": "Mostra Overlays Durata",
+        "SettingShowDurationOverlaysHint": "Se abilitato, verrà mostrata un'icona sovrapposta su ciascun effetto per indicarne la durata.",
+        "SettingIconSize": "Dimensione icona",
+        "SettingIconSizeHint": "Definisce la dimensione delle icone nel pannello degli effetti.",
+        "SettingPassiveEffectsRightClickBehavior": "Effetti passivi Comportamento del tasto destro",
+        "SettingPassiveEffectsRightClickBehaviorHint": "Definisce il comportamento quando si fa clic con il pulsante destro del mouse su un effetto passivo.",
+        "SettingTemporaryEffectsRightClickBehavior": "Effetti temporanei Comportamento del tasto destro",
+        "SettingTemporaryEffectsRightClickBehaviorHint": "Definisce il comportamento quando si fa clic con il pulsante destro del mouse su un effetto temporaneo.",
+        "SettingAllowRightClick": "Consenti clic destro",
+        "SettingAllowRightClickHint": "Definisce il livello minimo di autorizzazione per eseguire il comportamento del clic destro su un effetto. Impostandolo su Nessuno non sarà mai consentito il clic destro su un effetto.",
+        "SettingViewPermission": "Permessi Visualizzazione",
+        "SettingViewPermissionHint": "Definisce il livello minimo di autorizzazione per vedere il pannello degli effetti. Impostandolo su Nessuno non verrà mai mostrato il pannello degli effetti.",
+        "SettingViewDetailsPermission": "Permessi Vedi Dettagli",
+        "SettingViewDetailsPermissionHint": "Definisce il livello minimo di autorizzazione per vedere i dettagli degli effetti nel pannello come la durata e la descrizione. Impostandolo su Nessuno non verrà mai mostrato alcun dettaglio.",
+
+        "Unlimited": "Illimitato",
+        "Expired": "Esaurito",
+
+        "OneYear": "1 anno",
+        "OneWeek": "1 settimana",
+        "OneRound": "1 round",
+        "OneTurn": "1 turno",
+        "OneSecond": "1 secondo",
+
+        "ManyYears": "{years} anni",
+        "ManyWeeks": "{weeks} settimane",
+        "ManyDays": "{days} giorni",
+        "ManyHours": "{hours} ore",
+        "ManyMinutes": "{minutes} minuti",
+        "ManyTurns": "{turns} turni",
+        "ManyRounds": "{rounds} rounds",
+        "ManySeconds": "{seconds} secondi",
+
+        "DeleteOrDisableEffect": "Cancella o Disattiva Effetto",
+        "DeleteOrDisableEffectContent": "Cancella o Disattiva {effect}",
+        "Delete": "Cancella",
+        "Enable": "Attiva",
+        "Disable": "Disattiva",
+
+        "TurnEnd": "Fine Turno",
+        "TurnStart": "Inizio Turno",
+        "NextD20Roll": "Prossimo Tiro D20",
+        "NextDamageRoll": "Prossimo Tiro Danno",
+        "RestComplete": "Riposo Completato"
+    }
+}

@@ -1,0 +1,187 @@
+{{#*inline "cardDisplay"}}
+    <div class="flexcol card-slot {{card.classes}}" 
+         style="background-image: url('{{card.cardBg}}');" 
+         data-key="{{card.id}}">
+        {{#unless card.displayed }}
+            <p class="summary">{{card.summary}}</p>
+        {{/unless}}
+    </div>
+{{/inline}}
+
+{{#*inline "paramPartStackSelection"}}
+    {{#if header}}
+        <div class="headers">{{header}}</div>
+    {{/if}}
+
+    <div class="flexrow frame stacks">
+        {{#each stacks as |stack|}}
+            <div class="stack {{stack.classes}}"
+                style="background-image: url('{{stack.icon}}');"
+                data-key="{{stack.id}}">
+                {{stack.name}}
+            </div>
+        {{/each}}
+    </div>
+{{/inline}}
+
+{{#*inline "showListingIcon"}}
+    <div class="listing-icon toggle">
+        {{#if opened}}
+            <i class="fas fa-eye-slash"></i>
+        {{else}}
+            <i class="fas fa-list"></i>
+        {{/if}}
+    </div>
+{{/inline}}
+
+{{#*inline "showSortIcon"}}
+    {{#if sort.canBeChosen}}
+        <div class="listing-icon change-sort">
+            {{#if sort.noSort}}
+                <i class="fa-solid fa-sort"></i>
+            {{/if}}
+            {{#if sort.asc}}
+                <i class="fa-solid fa-arrow-up-1-9"></i>
+            {{/if}}
+            {{#if sort.desc}}
+                <i class="fa-solid fa-arrow-down-1-9"></i>
+            {{/if}}
+        </div>
+    {{/if}}    
+{{/inline}}
+
+
+{{#*inline "editBackIcon"}}
+    {{#if displayed}}
+        <div class="listing-icon edit-backs">
+            <i class="fas fa-image"></i>
+        </div>
+    {{/if}}
+{{/inline}}
+
+
+{{#*inline "selectCardsParameters"}}
+    <div class="parameters-cards">
+
+        {{#if param.displayStacks}}
+            {{> paramPartStackSelection stacks=param.availableStacks}}
+
+        {{else}}
+            <div class="flexrow cards scaled-scrollbar">
+                {{#each param.sortedCardList as |card|}}
+                    {{> cardDisplay card=card}}
+                {{/each}}
+            </div>
+
+            <div class="flexrow bellow-cards">
+                {{#if param.changeStack.displayed}}
+                    <div class="action-button change-stack">
+                        <i class="fas fa-undo"></i>
+                        {{param.changeStack.label}}
+                    </div>
+                {{/if}}
+                {{#if param.isReady}}
+                    <div class="action-button selection-ok">
+                        <i class="fas fa-check"></i>
+                        {{param.buttonLabel}}
+                    </div>
+                {{/if}}
+            </div>
+
+        {{/if}}
+
+    </div>
+{{/inline}}
+
+{{#*inline "selectStacksParameters"}}
+    <div class="flexcol parameters-stacks">
+        {{#if param.handsDisplayed}}
+            {{> paramPartStackSelection header=param.labels.headerHands stacks=param.hands}}
+        {{/if}}
+
+        {{#if param.revealedCardsDisplayed}}
+            {{> paramPartStackSelection header=param.labels.headerRevealed stacks=param.revealedCards}}
+        {{/if}}
+
+        {{#if param.specifyAmount}}
+            <div class="headers">{{param.labels.headerAmount}}</div>
+            <div class="flexrow frame amount-panel">
+                <a class="amount-edit" data-action="minus" ><i class="far fa-minus-square"></i></a>
+                <span class="amount-value">{{param.amount}}</span>
+                <a class="amount-edit" data-action="plus"><i class="far fa-plus-square"></i></a>
+            </div>
+        {{/if}}
+
+        {{#if param.isReady}}
+            <div class="action-button selection-ok">
+                {{param.labels.button}}
+            </div>
+        {{/if}}
+    </div>
+{{/inline}}
+
+{{#*inline "actionListing"}}
+    <div class="flexcol action-panel">
+        {{#if onSide.actions.length}}
+            <div class="headers">{{onSide.header}}</div>
+        {{/if}}
+        {{#each onSide.actions as |action|}}
+            <div class="card-action {{action.classes}}" data-action="{{action.action}}">
+                {{action.label}}
+            </div>
+        {{/each}}
+    </div>
+{{/inline}}
+
+<form class="{{cssClass}}" autocomplete="off">
+
+    <div class="flexrow current-selection">
+
+        {{#if parameters.none}}
+            {{> actionListing onSide=onLeft}}
+        {{/if}}
+
+        <div class="flexrow main-card-slot" >
+            {{> cardDisplay card=currentSelection}}
+        </div>
+
+        {{#if parameters.none}}
+            {{> actionListing onSide=onRight}}
+        {{else}}
+            <div class="flexcol parameters-panel">
+                <div class="flexrow headers">
+                    <div class="title">{{parameters.title}}</div>
+                    <i class="fas fa-times cancel"></i>
+                </div>
+
+                {{#if parameters.needCards}}
+                    {{> selectCardsParameters param=parameters}}
+                {{/if}}
+
+                {{#if parameters.needStacks}}
+                    {{> selectStacksParameters param=parameters}}
+                {{/if}}
+
+            </div>
+        {{/if}}
+    </div>
+
+
+    {{#if listing.allowed }}
+        <div class="flexrow listing-panel">
+            
+            {{> showListingIcon opened=listing.opened }}
+            {{> editBackIcon displayed=listing.editBack.displayed}}
+            {{> showSortIcon sort=listing.sort }}
+
+            {{#if listing.opened}}
+                <div class="flexrow all-cards scaled-scrollbar">
+                    {{#each listing.cards as |card|}}
+                        {{> cardDisplay card=card}}
+                    {{/each}}
+                </div>
+            {{/if}}
+        </div>
+    {{/if}}
+
+</form>

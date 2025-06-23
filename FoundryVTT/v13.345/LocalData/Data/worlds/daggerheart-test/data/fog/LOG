@@ -1,0 +1,8 @@
+2025/06/23-23:58:33.874 5760 Recovering log #30
+2025/06/23-23:58:33.881 5760 Delete type=0 #30
+2025/06/23-23:58:33.881 5760 Delete type=3 #28
+2025/06/24-00:26:08.021 5780 Level-0 table #35: started
+2025/06/24-00:26:08.021 5780 Level-0 table #35: 0 bytes OK
+2025/06/24-00:26:08.024 5780 Delete type=0 #33
+2025/06/24-00:26:08.029 5780 Manual compaction at level-0 from '!fog!lykjX9lowkIBTh9a' @ 72057594037927935 : 1 .. '!fog!lykjX9lowkIBTh9a' @ 0 : 0; will stop at (end)
+2025/06/24-00:26:08.029 5780 Manual compaction at level-1 from '!fog!lykjX9lowkIBTh9a' @ 72057594037927935 : 1 .. '!fog!lykjX9lowkIBTh9a' @ 0 : 0; will stop at (end)

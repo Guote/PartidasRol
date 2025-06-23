@@ -1,0 +1,319 @@
+
+<div class="body-config">
+    {{#each barData}}
+    <details>
+        <summary>{{this.id}} <a class="delete-btn fa-solid fa-trash" data-action="deleteResource"
+                data-id="{{this.id}}" data-tooltip="Delete {{this.id}}"></a></summary>
+        <div class="indent-details" id="{{this.id}}">
+            <div class="form-group">
+                <label>{{localize "barbrawl.config.attribute"}}:</label>
+                <div class="form-fields">
+                    <input type="text" class="input-attribute"
+                        name="barData.{{this.id}}.attribute"
+                        value="{{this.attribute}}"
+                        list="{{this.id}}-attribute-list" />
+                    <datalist id="{{this.id}}-attribute-list">
+                        <option value="custom">custom</option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="form-group group-value"
+                style="{{#unless (eq this.attribute "custom")}} display=none
+                {{/unless}}">
+                <label>{{localize "barbrawl.config.value"}}:</label>
+                <div class="form-fields">
+                    <input type="number"
+                        name="barData.{{this.id}}.value"
+                        value="{{this.value}}" />
+                    <span class="sep">/</span>
+                    <input type="number"
+                        name="barData.{{this.id}}.max"
+                        value="{{this.max}}" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>{{localize "barbrawl.config.color"}}:</label>
+                <div class="form-fields">
+                    {{formInput this.mincolor.field
+                    value=this.mincolor.value }}
+                    {{formInput this.maxcolor.field
+                    value=this.maxcolor.value }}
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>{{localize "barbrawl.config.position"}}:</label>
+                <div class="form-fields">
+                    <select
+                        name="barData.{{this.id}}.position">
+                        {{selectOptions @root.positionOptions
+                        selected=this.position localize=true}}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize
+                    "barbrawl.config.otherVisibility"}}:</label>
+                <div class="form-fields">
+                    <select
+                        name="barData.{{this.id}}.otherVisibility"
+                        data-dtype="Number">
+                        {{selectOptions @root.otherVisibilityOptions
+                        selected=this.otherVisibility localize=true}}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>{{localize
+                    "barbrawl.config.ownerVisibility"}}:</label>
+                <div class="form-fields">
+                    <select
+                        name="barData.{{this.id}}.ownerVisibility"
+                        data-dtype="Number">
+                        {{selectOptions @root.ownerVisibilityOptions
+                        selected=this.ownerVisibility localize=true}}
+                    </select>
+                </div>
+            </div>
+
+            <details class="advanced-details">
+                <summary>{{localize "barbrawl.config.advanced"}}</summary>
+
+                <div class="form-group">
+                    <label>{{localize
+                        "barbrawl.config.gmVisibility"}}:</label>
+                    <div class="form-fields">
+
+                        <select
+                            name="barData.{{this.id}}.gmVisibility"
+                            data-dtype="Number">
+                            {{selectOptions @root.gmVisibilityOptions
+                            selected=this.gmVisibility localize=true}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.hide"}}:</label>
+                    <div class="form-fields">
+                        <label>
+                            <input type="checkbox"
+                                name="barData.{{this.id}}.hideFull"
+                                {{#if
+                                this.hideFull}}checked{{/if}} />
+                            <span>{{localize
+                                "barbrawl.config.hideFull"}}</span>
+                        </label>
+                        <span class="sep" style="margin: 0;">-</span>
+                        <label>
+                            <input type="checkbox"
+                                name="barData.{{this.id}}.hideEmpty"
+                                {{checked this.hideEmpty}} />
+                            <span>{{localize
+                                "barbrawl.config.hideEmpty"}}</span>
+                        </label>
+                        <span class="sep" style="margin: 0;">-</span>
+                        <label>
+                            <input type="checkbox"
+                                name="barData.{{this.id}}.hideCombat"
+                                {{checked this.hideCombat}} />
+                            <span>{{localize
+                                "barbrawl.config.hideCombat"}}</span>
+                        </label>
+                        <span class="sep" style="margin: 0;">-</span>
+                        <label>
+                            <input type="checkbox"
+                                name="barData.{{this.id}}.hideNoCombat"
+                                {{checked this.hideNoCombat}} />
+                            <span>{{localize
+                                "barbrawl.config.hideNoCombat"}}</span>
+                        </label>
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.hideHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.hideHud"}}:</label>
+                    <div class="form-fields">
+                        <input type="checkbox"
+                            name="barData.{{this.id}}.hideHud"
+                            {{checked
+                            this.hideHud}} />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.indent"}}:</label>
+                    <div class="form-fields">
+                        <label>
+                            <input type="number"
+                                name="barData.{{this.id}}.indentLeft"
+                                min="-100" max="100"
+                                value="{{this.indentLeft}}" />
+                            <span>% {{localize
+                                "barbrawl.config.indentLeft"}}</span>
+                        </label>
+                        <span class="sep" style="margin: 0;">-</span>
+                        <label>
+                            <input type="number"
+                                name="barData.{{this.id}}.indentRight"
+                                min="-100" max="100"
+                                value="{{this.indentRight}}" />
+                            <span>% {{localize
+                                "barbrawl.config.indentRight"}}</span>
+                        </label>
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.indentHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize
+                        "barbrawl.config.shareHeight"}}:</label>
+                    <div class="form-fields">
+                        <input type="checkbox"
+                            name="barData.{{this.id}}.shareHeight"
+                            {{checked
+                            this.shareHeight}} />
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.shareHeightHint"}}</p>
+                </div>
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.style"}}:</label>
+                    <div class="form-fields">
+                        <select
+                            name="barData.{{this.id}}.style">
+                            {{selectOptions @root.stylesOptions
+                            selected=this.style localize=true}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.label"}}:</label>
+                    <div class="form-fields">
+                        <input type="text"
+                            name="barData.{{this.id}}.label"
+                            value="{{this.label}}" />
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.labelHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize
+                        "barbrawl.config.ignoreLimits"}}:</label>
+                    <div class="form-fields">
+                        <label>
+                            <input class="ignore-limit" type="checkbox"
+                                name="barData.{{this.id}}.ignoreMin"
+                                {{checked this.ignoreMin}} {{#if (ne
+                                this.attribute "custom"
+                                )}}disabled{{/if}} />
+                            <span>{{localize
+                                "barbrawl.config.ignoreMin"}}</span>
+                        </label>
+                        <span class="sep" style="margin: 0;">-</span>
+                        <label>
+                            <input class="ignore-limit" type="checkbox"
+                                name="barData.{{this.id}}.ignoreMax"
+                                {{checked this.ignoreMax}} {{#if (ne
+                                this.attribute "custom"
+                                )}}disabled{{/if}} />
+                            <span>{{localize
+                                "barbrawl.config.ignoreMax"}}</span>
+                        </label>
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.ignoreLimitsHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.invert"}}:</label>
+                    <div class="form-fields">
+                        <input type="checkbox"
+                            name="barData.{{this.id}}.invert"
+                            {{checked this.invert}} />
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.invertHint"}}</p>
+                    <label>{{localize
+                        "barbrawl.config.invertDirection"}}:</label>
+                    <div class="form-fields">
+                        <input type="checkbox"
+                            name="barData.{{this.id}}.invertDirection"
+                            {{checked this.invertDirection}} />
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.invertDirectionHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize
+                        "barbrawl.config.approximate"}}:</label>
+                    <div class="form-fields">
+                        <input type="number"
+                            name="barData.{{this.id}}.subdivisions"
+                            min="0" max="20"
+                            value="{{this.subdivisions}}" />
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.approximateHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize
+                        "barbrawl.config.approximateOwner"}}:</label>
+                    <div class="form-fields">
+                        <input type="checkbox"
+                            name="barData.{{this.id}}.subdivisionsOwner"
+                            {{checked this.subdivisionsOwner}} />
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.approximateOwnerHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.fgImage"}}:</label>
+                    <div class="form-fields">
+                        {{formInput this.fgImage.field
+                        value=this.fgImage.value }}
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.fgImageHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.bgImage"}}:</label>
+                    <div class="form-fields">
+                        {{formInput this.bgImage.field
+                        value=this.bgImage.value }}
+
+                    </div>
+                    <p class="notes">{{localize
+                        "barbrawl.config.bgImageHint"}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "barbrawl.config.opacity"}}:</label>
+                    <div class="form-fields">
+                        <label>
+                            <input type="number" class="indent-input"
+                                name="barData.{{this.id}}.opacity"
+                                min="0"
+                                max="100" value="{{this.opacity}}" />
+                            <span>% Opacity</span>
+                        </label>
+                    </div>
+                </div>
+
+            </details>
+
+        </div>
+    </details>
+    {{/each}}
+</div>

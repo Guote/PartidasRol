@@ -1,0 +1,90 @@
+{{#*inline "item"}}
+  <li class='item' data-document-class='Item' data-drag="true" data-item-id='{{id}}'>
+    <details data-summary-id="{{id}}">
+      <summary>
+        <img src={{img}} class='img' />
+        <div>(x{{quantity}}) {{name}}</div>
+        <div class='controls flexrow'>
+          <button type='button' class='icon' data-action='openItem'>
+            <i class='fa-solid fa-pen-to-square'></i>
+          </button>
+          <button type='button' class='icon' data-action='deleteItem'>
+            <i class='fa-solid fa-trash'></i>
+          </button>
+        </div>
+      </summary>
+      <span class='content'>{{{description}}}</span>
+    </details>
+  </li>
+{{/inline}}
+
+<section
+  class='{{tabs.stash.tabCssClass}} stash'
+  data-group='primary'
+  data-tab='stash'
+>
+<fieldset>
+  <legend>{{settingrules.currencyName}}</legend>
+  <div class="form-group">
+    <label for="currency">{{settingrules.currencyName}}</label>
+    <input
+      id="currency"
+      type="number"
+      name="system.currency"
+      value="{{system.currency}}"
+      data-dtype="Number"
+      placeholder="{{localize "SWADE.Currency"}}"
+    />
+  </div>
+</fieldset>
+  <fieldset>
+    <legend>{{localize 'SWADE.Weapons'}}</legend>
+    <ol class='fieldset-list'>
+      {{#each itemTypes.weapon}}
+        {{> item}}
+      {{else}}
+      <li class="hint">{{localize "SWADE.Group.Sheet.Stash.Empty"}}</li>
+      {{/each}}
+    </ol>
+  </fieldset>
+  <fieldset>
+    <legend>{{localize 'SWADE.Armors'}}</legend>
+    <ol class='fieldset-list'>
+      {{#each itemTypes.armor}}
+        {{> item}}
+      {{else}}
+      <li class="hint">{{localize "SWADE.Group.Sheet.Stash.Empty"}}</li>
+      {{/each}}
+    </ol>
+  </fieldset>
+  <fieldset>
+    <legend>{{localize 'SWADE.Shields'}}</legend>
+    <ol class='fieldset-list'>
+      {{#each itemTypes.shield}}
+        {{> item}}
+      {{else}}
+      <li class="hint">{{localize "SWADE.Group.Sheet.Stash.Empty"}}</li>
+      {{/each}}
+    </ol>
+  </fieldset>
+  <fieldset>
+    <legend>{{localize 'SWADE.Consumable.Consumables'}}</legend>
+    <ol class='fieldset-list'>
+      {{#each itemTypes.consumable}}
+        {{> item}}
+      {{else}}
+      <li class="hint">{{localize "SWADE.Group.Sheet.Stash.Empty"}}</li>
+      {{/each}}
+    </ol>
+  </fieldset>
+  <fieldset>
+    <legend>{{localize 'SWADE.Misc'}}</legend>
+    <ol class='fieldset-list'>
+      {{#each itemTypes.gear}}
+        {{> item}}
+      {{else}}
+      <li class="empty hint">{{localize "SWADE.Group.Sheet.Stash.Empty"}}</li>
+      {{/each}}
+    </ol>
+  </fieldset>
+</section>

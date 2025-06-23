@@ -1,0 +1,64 @@
+{
+    "id": "sfc",
+    "title": "SWADE Fantasy Currencies",
+    "description": "<p>A module that overrides the default currency behaviour of SWADE and replaces it with a configurable set of currencies.</p>",
+    "compatibility": {
+        "minimum": "10",
+        "verified": "12.328"
+    },
+    "packs": [
+        {
+            "label": "SFC Macros",
+            "type": "Macro",
+            "name": "sfc-macros",
+            "path": "packs/macros",
+            "system": "swade",
+            "package": "sfc"
+        }
+    ],
+    "version": "0.11.0",
+    "relationships": {
+        "systems": [
+            {
+                "id": "swade",
+                "type": "system",
+                "manifest": "https://gitlab.com/api/v4/projects/16269883/packages/generic/swade/latest/system.json",
+                "compatibility": {
+                    "minimum": "2.2.5",
+                    "verified": "4.0.1"
+                }
+            }
+        ]
+    },
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json",
+            "flags": {}
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português (Brasil)",
+            "path": "lang/pt-BR.json",
+            "flags": {}
+        }
+    ],
+    "esmodules": [
+        "sfc.js"
+    ],
+    "styles": [
+        "styles/sfc.css"
+    ],
+    "url": "https://github.com/ddbrown30/sfc",
+    "manifest": "https://github.com/ddbrown30/sfc/releases/download/0.11.0/module.json",
+    "download": "https://github.com/ddbrown30/sfc/releases/download/0.11.0/module.zip",
+    "bugs": "https://github.com/ddbrown30/sfc/issues",
+    "authors": [
+        {
+            "name": "Dan Brown",
+            "discord": "thechemist30",
+            "flags": {}
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+{
+    "settings-world-client-swap": {
+        "notification": "{setting} の構成が {value} に設定されました。\n変更を有効にするには、ゲームをリロードしてください。\n設定への変更は、次回リロードするまで保存されません。"
+    }
+}

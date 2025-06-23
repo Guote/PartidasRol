@@ -1,0 +1,32 @@
+{
+    "Droppables": {
+        "DropActorsFolder": "Colocar Carpeta de Actores",
+        "DropButton": "Colocar",
+        "DropStyle": "Colocar Estilo",
+        "DropExplanation": "¿Cómo le gustaría distribuir los actores de la carpeta en el lienzo?",
+        "StackedUp": "Apilados",
+        "Randomly": "Al Azar",
+        "HorizontalLine": "En Fila de Izquierda a Derecha",
+        "VerticalLine": "En Fila de Arriba hacia Abajo",
+        "Elevation": "Elevación",
+        "ElevationOptional": "Elevación (opcional)",
+
+        "DropJournalFolder": "Colocar carpeta de Diario",
+        "DropJournalFolderExplanation": "¿Colocar todos los registros del diario {folderName} como marcadores?",
+
+        "ActorUploadExplanation": "Select the actor type for each file. (Spanish localization needed).",
+        "TokenActorTypes": "Token Actor Types",
+        "Confirm": "Confirm",
+
+        "SettingDropStyle": "Colocar Estilo",
+        "SettingDropStyleHint": "Así es como los ítemes de la carpeta se colocarían en el lienzo. Elegir \"Ventana de Diálogo\" pedirá seleccionar una opción para cada uno.",
+        "SettingDropStyleDialog": "Ventana de Diálogo",
+        "SettingDropStyleStack": "Apilar",
+        "SettingDropStyleRandom": "Al azar",
+        "SettingDropStyleHorizontalLine": "Línea Horizontal",
+        "SettingDropStyleVerticalLine": "Línea Vertical",
+
+        "SettingEnableCanvasDragUpload": "Enable Canvas Drag/Upload (Translation Needed)",
+        "SettingEnableCanvasDragUploadHint": "If enabled, you can drag and upload tokens, tiles, audio, and journal entries onto the canvas based on the selected layer. (Translation Needed)"
+    }
+}

@@ -1,0 +1,250 @@
+/* Card Sheet */
+.ccm.card, .ccm.cards {
+  max-height: 90%;
+
+  header {
+    img {
+      flex: 0 0 64px;
+      height: 64px;
+      margin-right: 6px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: unset;
+      [name=name] {
+        font-size: 18px;
+        height: 48px;
+        line-height: 48px;
+        margin: 8px 2%;
+        width: 96%;
+      }
+    }
+
+  }
+
+  &.docked {
+    left: 250px;
+    bottom: 150px;
+    width: calc(100% - 250px - 312px);
+    [data-application-part="cardList"] {
+      .cards {
+        list-style: none;
+        padding: 0;
+        min-height: 100px;
+        margin: 0;
+        .card {
+          padding-left: 0;
+          height: 100px;
+          width: fit-content;
+          display: inline-block;
+
+          [data-action="playCard"] {
+            padding: 0 20px;
+            position: absolute;
+            display: flex;
+            width: fit-content;
+            height: 100px;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            opacity: 0;
+            transition: inherit;
+            z-index: 1;
+
+            &:hover {
+              opacity: 1;
+
+              &+ img {
+                opacity: 0.5;
+                transition: inherit;
+              }
+            }
+          }
+          img {
+            height: 100px;
+            width: fit-content;
+          }
+        }
+      }
+    }
+  }
+
+  .sheet-tabs.tabs .item .fa-solid {
+    font-size: 14px;
+  }
+
+  .tab.scrollable {
+    padding: 5px;
+  }
+
+  .form-group.face {
+    [data-action=addFace] {
+      flex: 0 0 var(--input-height);
+      height: var(--input-height);
+      line-height: var(--input-height);
+
+      .fa-solid {
+        margin: 0;
+      }
+    }
+  }
+
+  .faces legend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    padding: 0 5px;
+
+    input {
+      height: 24px;
+    }
+
+    [data-action=deleteFace] {
+      flex: 0 0 24px;
+      height: 24px;
+      line-height: 24px;
+      font-size: 12px;
+      padding: 0;
+
+      .fa-solid {
+        margin: 0;
+      }
+    }
+  }
+
+  [data-tab=cards] {
+
+    .cards {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      min-height: 200px;
+    }
+
+    .header, .card {
+      display: flex;
+
+      &.card { padding-left: 0; }
+
+      > * {
+        flex: 0 0 60px;
+        text-align: center;
+        margin: auto;
+      }
+
+      .sort {
+        position: relative;
+        transition: opacity 200ms ease;
+
+        [data-action="playCard"],
+        [data-action="viewCard"] {
+          position: absolute;
+          display: flex;
+          width: 100%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+          font-size: 30px;
+          opacity: 0;
+          transition: inherit;
+          z-index: 1;
+
+          &:hover {
+            opacity: 1;
+
+            &+ img {
+              opacity: 0.5;
+              transition: inherit;
+            }
+          }
+        }
+      }
+
+      img {
+        width: 40px;
+        flex: 0 0 40px;
+        margin: 0 10px;
+        border: none;
+      }
+
+      .name {
+        flex: 1;
+        text-align: left;
+      }
+
+      .face {
+        display: grid;
+        a[disabled] {
+          opacity: 0.5;
+        }
+      }
+
+      &.card .controls {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      .drawn input:checked::before { color: var(--checkbox-checked-color); }
+    }
+  }
+}
+
+/* Temp fix for core styling issue. */
+.theme-light :is(.ccm) nav.tabs .item {
+  color: var(--color-dark-3);
+  &.active { text-shadow: 0 0 8px var(--color-shadow-primary); }
+}
+
+/* Styling for various cards dialogs. */
+.ccm.dialog {
+  &.pass, &.deal, &.play, &.draw {
+    .dialog-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+}
+.ccm.scry {
+  max-height: 90%;
+
+  [data-application-part=cards] {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-right: 0.5rem;
+    max-height: 45rem;
+
+    .thumbnail {
+      /* opacity: 0.5; */
+      &:hover {
+        opacity: 0.5;
+        transition: inherit;
+      }
+    }
+
+    .overlay {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      height: 251px;
+      width: 168px;
+      opacity: 0;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+#players {
+  .card-count {
+    flex: 0 0 22px;
+    text-align: center;
+  }
+}

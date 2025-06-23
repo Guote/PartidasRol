@@ -1,0 +1,1410 @@
+{
+  "SWADE": {
+    "ButtonReset": "Zurücksetzen",
+    "ButtonSubmit": "Einreichen",
+    "CommunityCharSheet": "Legacy Charakterbogen",
+    "CommunityNPCSheet": "Community NSC-Bogen",
+    "CommunityVicSheet": "Alter Fahrzeugbogen",
+    "CommunityItemSheet": "Community Gegenstandsbogen",
+    "ModHint": "Bitte stell sicher das alle Modifikatoren ein + oder - enthalten",
+    "ActionDeckPresetLight": "Aktionskarten (Hell)",
+    "ActionDeckPresetDark": "Aktionskarten (Dunkel)",
+    "Name": "Name",
+    "Tough": "Robustheit",
+    "Ancestry": "Volk",
+    "Archetype": "Archetyp",
+    "Pace": "Bew.",
+    "Running": "Sprinten",
+    "RunningDie": "Sprintwürfel",
+    "RollRun": "Klicke zum Sprinten",
+    "Adv": "Aufstiege",
+    "Rank": "Rang",
+    "Inv": "Inventar",
+    "Summary": "Übersicht",
+    "Pow": "Mächte",
+    "WildCard": "Wildcard",
+    "Extra": "Statist",
+    "Bennies": "Bennys",
+    "Shaken": "Angeschl.",
+    "Distr": "Abgelenkt",
+    "Vuln": "Verwundbar",
+    "Stunned": "Betäubt",
+    "Entangled": "Festgehalten",
+    "Bound": "Gebunden",
+    "TraitMod": "Eigenschaftsmodifikator",
+    "SkillTest": "Fertigkeitsprobe",
+    "AttributeTest": "Attributsprobe",
+    "Attributes": "Attribute",
+    "Derived": "Abgeleitete Werte",
+    "AttrAgi": "Geschick",
+    "AttrSma": "Verstand",
+    "AnimalSmarts": "Tierische Intelligenz",
+    "AnimalSmartsMarker": "T",
+    "AttrSpr": "Willenskraft",
+    "AttrStr": "Stärke",
+    "AttrVig": "Konstitution",
+    "Tweaks": "Optionen",
+    "AttrAgiShort": "Ges",
+    "AttrSmaShort": "Ver",
+    "AttrSprShort": "Wil",
+    "AttrStrShort": "Stä",
+    "AttrVigShort": "Kon",
+    "Skills": "Fertigkeiten",
+    "Unskilled": "Ungeübt",
+    "LinkAttr": "Verbundenes Attribut",
+    "ArcaneSkill": "Arkane Fertigkeit",
+    "ActivateArcaneDevice": "Apparatur aktivieren",
+    "Die": "Würfel",
+    "WildDie": "Wildcard-Würfel",
+    "Modifier": "Modifikator",
+    "BenniesSpend": "Benny ausgeben",
+    "BenniesGive": "Einen Benny geben",
+    "BenniesRefresh": "Bennys auffrischen",
+    "AllBenniesRefresh": "Alle Bennys auffrischen",
+    "BenniesRefreshMessage": "Bennys wurden aufgefrischt!",
+    "BenniesRefreshAllMessage": "Alle Bennys wurden aufgefrischt!",
+    "BenniesGMRefreshMessage": "SL-Bennys wurden aufgefrischt!",
+    "BenniesAddMessage": "hat einen Benny erhalten!",
+    "BenniesGMAddMessage": "hat einen Benny genommen!",
+    "BenniesSpendMessage": "setzt einen Benny ein!",
+    "BenniesMax": "Maximale Bennys",
+    "EditSkill": "Fertigkeit ändern",
+    "EdEdge": "Talent ändern",
+    "EdHind": "Handicap ändern",
+    "Ed": "Ändern",
+    "Del": "Löschen",
+    "Arcane": "Arkan",
+    "All": "Alle",
+    "HasPowers": "hat Mächte",
+    "Weapons": "Waffen",
+    "MeleeWeapons": "Nahkampfwaffen",
+    "RangedWeapons": "Fernkampfwaffen",
+    "Armors": "Rüstungen",
+    "Shields": "Schilde",
+    "Armor": "Rüstung",
+    "WeaponsAndArmor": "Waffen & Rüstungen",
+    "Dmg": "Schaden",
+    "DmgOver": "Aktionsschaden",
+    "Resist": "Widerstand",
+    "ResistRolls": "Widerstandsproben",
+    "Ap": "PB",
+    "APLong": "Panzerbrechend",
+    "RoF": "Feuerrate",
+    "Mag": "Schuss",
+    "Parry": "Parade",
+    "Notes": "Notizen",
+    "ActionsEffects": "Aktionen & Effekte",
+    "Actions": {
+      "Name": "Aktionen",
+      "Hidden": {
+        "Label": "Versteckt",
+        "Hint": "Versteckte Aktionen werden nicht auf dem Bogen angezeigt"
+      },
+      "DisplayHidden": {
+        "Label": "Versteckte Aktionen anzeigen"
+      },
+      "Activities": {
+        "Label": "Aktivitäten",
+        "Hint": "SWIDs von mit diesem Item verbundenen Aktionen"
+      }
+    },
+    "DmgModUni": "Schadensmodifikator",
+    "SkillModUni": "Eigenschaftsmodifikator",
+    "ShotsUsed": "Schuss verbraucht",
+    "Duplicate": "Duplizieren",
+    "NaturalArmor": "Natürliche Rüstung",
+    "HitLocations": "Trefferzonen",
+    "Head": "Kopf",
+    "Torso": "Torso",
+    "Arms": "Arme",
+    "Legs": "Beine",
+    "MinStrLong": "Mindeststärke",
+    "MinStr": "Min. Stärke",
+    "MinStrShort": "Min. Stä",
+    "Desc": "Beschreibung",
+    "Special": "Spezialfähigkeiten",
+    "Details": "Details",
+    "Equippable": "Ausrüstbar",
+    "ArcaneDevice": "Arkane Apparatur",
+    "Misc": "Sonstiges",
+    "QuickAccess": "Schnellzugriff",
+    "Effects": "Effekte",
+    "Hindrances": "Handicaps",
+    "MajHind": "Schweres Handicap",
+    "Major": "(Schwer)",
+    "Minor": "(Leicht)",
+    "Edges": "Talente",
+    "ArcBack": "Arkaner Hintergrund",
+    "Req": "Voraussetzungen",
+    "Conv": "Entschlossenheit",
+    "UseConv": "ist fest entschlossen!",
+    "Hesitant": "Zögerlich",
+    "LevelHeaded": "Kühler Kopf",
+    "ImprovedLevelHeaded": "Sehr kühler Kopf",
+    "AutoCalc": "Automatische Berechnungen",
+    "InclArmor": "Automatisch Robustheit und Rüstung berechnen",
+    "Label": "Bezeichnung",
+    "HasMaxValue": "Hat Maximalwert",
+    "Enabled": "aktiviert",
+    "Currency": "Währung",
+    "CarryWeight": "Belastung",
+    "Eqd": "Ausger.",
+    "Equipped": "Ausgerüstet",
+    "Unequipped": "Nicht getragen",
+    "Quantity": "Anzahl",
+    "Weight": "Gewicht",
+    "Price": "Kosten",
+    "PP": "Machtpunkte",
+    "PPShort": "Machtp.",
+    "PPCost": "MP-Kosten",
+    "CurPP": "Aktuelle Machtpunkte",
+    "MaxPP": "Maximale Machtpunkte",
+    "Dur": "Dauer",
+    "Trap": "Ausprägung",
+    "Wound": "Wunde",
+    "Wounds": "Wunden",
+    "WoundsMax": "Maximale Wunden",
+    "Fatigue": "Erschöpfung",
+    "FatigueMax": "Maximale Erschöpfung",
+    "Incap": "Ausgeschaltet",
+    "Init": "Initiative",
+    "ActionDeckReset": "Aktionskartendeck zurücksetzen",
+    "ActionDeckResetNotification": "Aktionskartendeck wurde zurückgesetzt",
+    "InitDraw": "zog…",
+    "Addi": "Zusätzlich",
+    "Status": "Status",
+    "Handling": "Manövrierf.",
+    "Topspeed": "Höchstgeschw.",
+    "OutOfControl": "Außer Kontrolle",
+    "Wrecked": "Zerstört",
+    "Item": "Gegenstand",
+    "Cargo": "Fracht",
+    "MaxCargo": "Maximales Fracht-Gewicht",
+    "CargoWeight": "Fracht-Gewicht",
+    "Mods": "Mods",
+    "ModSlots": "Mod-Plätze",
+    "MaxMods": "Maximale Mods",
+    "Operator": "Operator",
+    "ManCheck": "Manöver-Probe",
+    "AltSkill": "Fertigkeitsname",
+    "Class": "Klassifikation",
+    "Vehicular": "Fahrzeugwaffe",
+    "VehicleMod": "Fahrzeugmod",
+    "SettingConf": "Setting-Konfigurator",
+    "SettingConfLabel": "Öffne Setting-Konfigurator",
+    "SettingConfDesc": "Hier kannst du dein Setting definieren und Dinge wie Grundfertigkeiten, Settingregeln, usw. einstellen.",
+    "Formula": "Formel",
+    "SitMod": "Situativer Mod",
+    "RollMode": "Wurfmodus",
+    "RollExample": "z.B. +1d6x oder -2",
+    "Roll": "Würfeln",
+    "RollRaise": "Steigerungswurf",
+    "GroupRoll": "Gruppenprobe",
+    "Ok": "OK",
+    "Cancel": "Abbruch",
+    "Redraw": "Karte ziehen",
+    "Add": " ",
+    "ConfigInit": "Initiative konfigurieren",
+    "IgnWounds": "Wunden ignorieren",
+    "Size": "Größe",
+    "Scale": "Größenkategorie",
+    "PickACard": "Wähle eine Karte für {name}",
+    "NoCardsLeft": "Es sind nicht genug Karten im Deck! Es sind nur {current] von {needed} benötigten Karten verfügbar",
+    "OldCard": "Alte Karte",
+    "ActionCard": "Aktionskarte",
+    "ConvictionActivate": "{name} aktiviert Entschlossenheit!",
+    "ConvictionExtend": "Entschlossenheit einsetzen?",
+    "ConvictionEnd": "{name} schwankt in der Entschlossenheit",
+    "NoBennies": "Nicht genug Bennys!",
+    "GM": "Spielleitung",
+    "Vehicles": "Fahrzeuge",
+    "AddStats": "Weitere Werte",
+    "Actors": "Akteur",
+    "Items": "Items",
+    "Max": "Max",
+    "Curr": "Aktuell",
+    "Aiming": "Zielen",
+    "Ammo": "Munition",
+    "Berserk": "Berserkerrausch",
+    "BleedingOut": "Verblutend",
+    "DSNNone": "- Kein -",
+    "Defending": "Verteidigend",
+    "DiceConf": "Wildcard-Würfel Konfiguration",
+    "DiceConfDesc": "Verwalte Einstellungen der SWADE/Dice So Nice integration",
+    "DiceConfLabel": "Wildcard-Würfel Konfiguration Öffnen",
+    "Diseased": "Erkrankt",
+    "Encumbered": "Überladen",
+    "Flying": "Fliegend",
+    "Frightened": "Verängstigt",
+    "General": "Generell",
+    "HeartAttack": "Herzinfarkt",
+    "Follow": "Folge {name}",
+    "Unfollow": "Folge {name} nicht",
+    "MakeGroupLeader": "Gruppenleiter machen",
+    "RemoveGroupLeader": "Gruppenleiter entfernen",
+    "AddTokenFollowers": "Ausgewählte Figuren als Gefolgsleute hinzufügen",
+    "GroupByName": "Nach Namen gruppieren",
+    "SetGroupColor": "Gruppenfarbe einstellen",
+    "SelectColor": "Wähle eine Farbe",
+    "Holding": "Aufgespart",
+    "Invisible": "Unsichtbar",
+    "Hold": "Abwarten",
+    "ActBeforeCurrentCombatant": "Jetzt handeln",
+    "ActAfterCurrentCombatant": "Nach aktuellem Teilnehmer handeln",
+    "LoseTurn": "Zug aussetzen umschalten",
+    "ReloadType": {
+      "Label": "Nachladeprozedere",
+      "None": "Kein",
+      "Single": "Einzel",
+      "Full": "Voll",
+      "Magazine": "Magazin",
+      "Battery": "Batterie",
+      "PP": "Machtpunkte",
+      "Self": "Selbst"
+    },
+    "ConsumableType": {
+      "Label": "Subtyp",
+      "Regular": "Regulär"
+    },
+    "NoAmmoSet": "Keine Munition ausgewählt",
+    "NoAmmoPP": "Nicht genug Machtpunkte vorhanden",
+    "NoMags": "Keine Magazine vorhanden",
+    "RemoveAmmo": "Munition entfernen",
+    "NotEnoughAmmo": "Du hast nicht genug Munition für diese Aktion!",
+    "NotEnoughAmmoToReload": "Es gibt nicht genug Munition zum nachladen",
+    "OfficialSheet": "Offizieller Charakterbogen",
+    "OnFire": "Brennend",
+    "OpSkill": "Manöverfertigkeit",
+    "Poisoned": "Vergiftet",
+    "Prone": "Liegend",
+    "Reach": "Reichweite",
+    "Refresh": "Aktualisiere diese Karte",
+    "Reload": "Nachladen",
+    "ReloadSuccess": "Die Waffe wurde erfolgreich nachgeladen",
+    "ReloadNotPossible": "Nachladen nicht möglich",
+    "ReloadUnneeded": "Die Waffe ist bereits voll geladen",
+    "ShowBennyAnimation": "Zeige die Benny-Animation",
+    "ShowBennyAnimationDesc": "Spielt eine 3D-Animation ab, wenn ein Benny ausgegeben wird",
+    "Smite": "Waffe verbessert",
+    "Protection": "Schutz",
+    "Torch": "Lichtquelle",
+    "WildDiePreset": "Wildcard-Würfel Voreinstellung",
+    "WildDiePresetDesc": "Wähle ein DSN-Preset für deinen Wildcard-Würfel.",
+    "WildDieTheme": "Wildcard-Würfel Thema",
+    "WildDieThemeDesc": "Wähle ein DSN-Theme für den Wildcard-Würfel. Wähle \"Custom\", wenn ein eigener erstellt werden soll, oder \"Kein\" wenn der Wildcard-Würfel nicht anders aussehen soll. Bitte beachte, dass selbst erstellte Wildcard-Würfel derzeit nur von dir selber gesehen werden können. Andere Spieler werden diese anders sehen.",
+    "Trapping": "Ausprägung",
+    "AddBenny": "Einen Benny hinzufügen",
+    "CurrentBennies": "Derzeitige Bennys",
+    "RerollWithBenny": "Mit Benny nochmal würfeln",
+    "FreeReroll": "Freier Neuwurf",
+    "AutoCalcParry": "Automatisch Parade berechnen, inklusive Schilde",
+    "Subtype": "Unterkategorie",
+    "SpecialAbility": "Spezialfähigkeit",
+    "SpecialAbilities": "Spezialfähigkeiten",
+    "AncestralAbilities": "Volkseigenschaften",
+    "ArchetypeAbilities": "Archetypeigenschaften",
+    "About": "Mehr",
+    "EdgesHindrances": "Talente",
+    "GrantsPowers": "Gewährt Mächte",
+    "Passengers": "Passagiere",
+    "Crew": "Besatzung",
+    "String": "Text",
+    "Number": "Nummer",
+    "Checkbox": "Kontrollkästchen",
+    "Selection": "Auswahl",
+    "WealthDie": {
+      "Label": "Wohlstandswürfel",
+      "Broke": {
+        "Label": "Pleite",
+        "Hint": "Du bist pleite!"
+      },
+      "Sides": "Wohlstandswürfelseiten",
+      "WildSides": "Wohlstandswürfel Seitenzahl",
+      "Modifier": "Wohlstandswürfel Modifikator"
+    },
+    "WealthSelectionNoneOther": "Keines / Anderes",
+    "TraitRolls": "Eigenschaftswürfe",
+    "Trait": "Eigenschaft",
+    "AltTrait": "Aktionseigenschaft",
+    "ClickSuggestions": "Klicke hier für Vorschläge",
+    "Quick": "Schnell",
+    "BonusDamage": "Bonusschaden",
+    "CoreSkill": "Grundfertigkeit",
+    "CoreSkills": "Grundfertigkeiten",
+    "Joker": "Joker",
+    "DmgRolls": "Schadenswürfe",
+    "SubtractPPDesc": "MP-Kosten von den verfügbaren MP abziehen",
+    "AddPPDesc": "MP-Kosten zu den verfügbaren MP hinzurechnen",
+    "RightClickZoom": "Für größere Ansicht rechtsklicken",
+    "SysMigrationWarning": "Deine SWADE-Systemdaten stammen aus einer zu alten Foundry-Version und können nicht zuverlässig auf die neueste Version migriert werden. Der Vorgang wird versucht, es können jedoch Fehler auftreten.",
+    "DeckShuffled": "Kartens automatisch gemischt",
+    "BasePace": "Basisbewegung",
+    "WarningPackLocked": "Dieses Kompendium ist gesperrt. Zum Bearbeiten bitte das Kompendium entsperren.",
+    "ActionCardEditor": "Aktionskarteneditor",
+    "CardFace": "Kartenillustration",
+    "CardValue": "Wert",
+    "IsJoker": "Ist ein Joker",
+    "CardSuit": "Symbol",
+    "OpenACEditor": "Im Aktionskarteneditor öffnen",
+    "Yes": "Ja",
+    "No": "Nein",
+    "ShowCharacterSummary": "Charakterübersicht anzeigen",
+    "CharacterSummary": "Charakterübersicht",
+    "CopyHtml": "HTML kopieren",
+    "CopyMarkdown": "Markdown kopieren",
+    "Metric": "Metrisch",
+    "Imperial": "Imperial",
+    "3DBennies": "3D-Bennies",
+    "Modifiers": "Modifikatoren",
+    "Duplicates": "Duplikate Gefunden",
+    "Wealth": "Vermögen",
+    "Characters": "Charaktere",
+    "MAPenalty": {
+      "Label": "Mehrfachaktionsabzug",
+      "None": "Keine"
+    },
+    "Mod": {
+      "Custom": {
+        "Add": "Eigenen Modifikator hinzufügen"
+      },
+      "Support": "Unterstützung",
+      "Preset": {
+        "Choose": "Modifikator wählen…",
+        "Add": "Voreinstellung hinzufügen",
+        "Settings": "Modifikator-Voreinstellungen"
+      },
+      "Value": "Wert",
+      "Ignore": "Ignorieren?",
+      "None": "Aktuell keine Modifikatoren",
+      "Active": "Aktiv"
+    },
+    "Illumination": {
+      "_name": "Beleuchtung",
+      "Dim": "Düster",
+      "Dark": "Dunkel",
+      "Pitch": "Finsternis"
+    },
+    "Cover": {
+      "_name": "Deckung",
+      "Shield": "Deckung - Schild",
+      "Light": "Leichte Deckung",
+      "Medium": "Mittlere Deckung",
+      "Heavy": "Schwere Deckung",
+      "Total": "Vollständige Deckung"
+    },
+    "Range": {
+      "_name": "Reichweite",
+      "Medium": "Reichweite, Mittel",
+      "Long": "Reichweite, Weit",
+      "Extreme": "Reichweite, Extrem",
+      "_nameShort": "RW"
+    },
+    "ModOther": "Andere Modifikatioren",
+    "Snapfire": "Schnellschuss",
+    "UnstablePlatform": "Unsicheren Grund",
+    "NoSceneAvailable": "Es ist keine Szene verfügbar oder die Spielfläche wurde ausgeschaltet",
+    "SetUpChase": "Verfolgungsjagd erstellen",
+    "NotADeckCompendium": "Bei diesem Compendium scheint es sich nicht um ein Legacy Deck zu handeln",
+    "ConvertToDeck": "Zu Deck konvertieren",
+    "PPAbbreviation": "MP",
+    "ShowInChat": "Im Chat anzeigen",
+    "ExpandDescription": "Beschreibung anzeigen",
+    "Favorite": "Favorisieren",
+    "Equip": "Ausrüsten",
+    "RollDamage": "Schaden würfeln",
+    "SystemLinks": {
+      "Changelog": "Changelog",
+      "Wiki": "Wiki",
+      "ReportAnIssue": "Fehler melden"
+    },
+    "Biography": "Biografie",
+    "OpenOrigin": "Ursprung öffnen",
+    "EffectsTemporary": "Temporäre Effekte",
+    "EffectsPermanent": "Permanente Effekte",
+    "Ranks": {
+      "Novice": "Anfänger",
+      "Seasoned": "Fortgeschritten",
+      "Veteran": "Veteran",
+      "Heroic": "Heroisch",
+      "Legendary": "Legendär"
+    },
+    "Advances": {
+      "Planned": "Geplant",
+      "Number": "Steigerung Nummer",
+      "Toggle": "Geplant umschalten",
+      "Types": {
+        "Attribute": "Attribut erhöhen",
+        "Edge": "Neues Talent",
+        "Hindrance": "Handicap ablegen",
+        "TwoSkills": "Zwei Fertigkeiten",
+        "SingleSkill": "Eine Fertigkeit"
+      },
+      "Delete": "Aufstieg löschen",
+      "EditorTitle": "Aufstiegseditor",
+      "Modes": {
+        "Legacy": "Legacy",
+        "Expanded": "Erweitert",
+        "Label": "Modus"
+      }
+    },
+    "Appearance": "Erscheinungsbild",
+    "CharacterGoals": "Ziele",
+    "Background": "Hintergrund",
+    "ActiveEffects": {
+      "Add": "Neuer Aktiver Effekt",
+      "Source": "Quelle",
+      "ResetDuration": "Dauer zurücksetzen",
+      "AddGuided": "Wizard öffnen",
+      "AddUnguided": "Leeren Effekt hinzufügen",
+      "Conditional": "Bedingter Effekt",
+      "ConditionalTooltip": "Würfelmodifikatoren per Default ignorieren",
+      "AddModifier": "+ Modifikator",
+      "ModifierCost": {
+        "Hint": "Build- oder MP-Kosten für Modifikator",
+        "Label": "Modifikator-Kosten"
+      }
+    },
+    "EffectCallbacks": {
+      "Shaken": {
+        "RollSpirit": "Willenskraft würfeln",
+        "Title": "Angeschlagen von {name} entfernen",
+        "Flavor": "Willenskraftsprobe zur Entfernung von Angeschlagen",
+        "UnshakeModifier": "Angeschlagen Resistenz",
+        "Question": "Was willst du tun?",
+        "Success": "Du bist nicht mehr Angeschlagen"
+      },
+      "Stunned": {
+        "Title": "Konstitutionsprobe zum Entfernen von Betäubt",
+        "Fail": "Du bleibst betäubt",
+        "Success": "Du bist nicht mehr Betäubt aber bleibst Verwundbar",
+        "Raise": "Du bist nicht mehr Betäubt und auch nicht Verwundbar",
+        "UnStunModifier": "Betäubt Resistenz"
+      },
+      "BleedingOut": {
+        "Title": "Konstitutionsprobe gegen Ausbluten",
+        "Fail": "Du stirbst",
+        "Success": "Du überlebst – noch.",
+        "Raise": "Die Blutung stoppt",
+        "BleedOutModifier": "Verbluten-Modifikator",
+        "IgnoreWounds": "Verbluten Wunden Ignorieren"
+      }
+    },
+    "BenniesSpendGM": "SL-Benny ausgeben",
+    "ActionDmgMod": "Akionsschadensmodifikator",
+    "AddAdvance": "Aufstieg hinzufügen",
+    "ConvictionActive": "Entschlossen",
+    "DrawInit": "Initiative ziehen",
+    "Expand": "Ausklappen",
+    "Expiration": {
+      "BeginAuto": "Automatisch am Anfang des Zuges",
+      "BeginPrompt": "Am Anfang des Zuges mit Nachfrage",
+      "Behavior": "Verhalten bei Ablauf",
+      "EndAuto": "Automatisch am Ende des Zuges",
+      "EndPrompt": "Am Anfang des Zuges, mit Nachfrage",
+      "None": "Keins",
+      "TabLabel": "Zugverhalten",
+      "Description": "<p>Effekte laufen während des <em>nächsten Zuges (oder später)</em> des Zieles aus</p>",
+      "LooseTurnOnHold": "Verliere Zug wenn dieser Aufgespart wurde",
+      "Remaining": "Verbleibend"
+    },
+    "ClearChaseCards": "Verfolgungsjagdkarten von der Szene entfernen",
+    "ChaseCardsCleared": "Alle Verfolgungsjagdkarten wurden aus der Szene entfernt.",
+    "ItemDmgMod": "Schadensmodifikator",
+    "RemoveEffectTitle": "{label} entfernen?",
+    "RemoveEffectBody": "<p style=\"text-align: center;\"><strong>{label}</strong> von <strong>{parent}</strong>entfernen?</p>",
+    "WorldBasics": "Basiseinstellungen",
+    "NoActionDeckFound": "Kein Aktionskartendeck gefunden, es wird eines erstellt",
+    "NoActionDeckDiscardPileFound": "Kein Aktionskarten-Ablagestapel gefunden, es wird einer erstellt",
+    "Subtract": "Abziehen",
+    "ChangeBennyWarning": "Nach Änderung dieser Einstellungen muss die Seite neu geladen werden!",
+    "CannotAddAncestryToAncestry": "Ein Volk/Archetyp kann nicht zu einem Volk/Archetyp hinzugefügt werden!",
+    "Keybindings": {
+      "Bennies": {
+        "Name": "Benny Ausgeben/Erhalten",
+        "Hint": "Taste(n) drücken, um einen Benny auszugeben; dabei ALT gedrückt halten, um stattdessen einen Benny zu bekommen"
+      },
+      "OpenFavoriteCards": {
+        "Hint": "Die favorisierte Kartenhand kann in der Userkonfiguration gesetzt werden",
+        "Name": "Favorisierte Kartenhand öffnen",
+        "NoCardsWarning": "Es wurde keine favorisierte Kartenhand gesetzt!",
+        "UserConfigLabel": "Favorisierte Kartenhand",
+        "HandNone": "Kein(e)"
+      }
+    },
+    "Settings": {
+      "HighlightTemplate": {
+        "Name": "Schablonen immer ausmalen",
+        "Hint": "Wenn diese Einstellung eingeschaltet ist, werden Schablonen immer ausgemalt (anstatt nur das Raster)."
+      },
+      "FantasyCompanionEntangle": {
+        "Name": "Festgehalten Status nach Fantasy Companion",
+        "Hint": "Verwende die Fantasy Companion Version des Festgehalten Status. Die Seite muss neu geladen werden, damit die Änderung in Kraft tritt."
+      },
+      "InitDiscardPile": {
+        "Name": "Initiative-Ablagestapel"
+      },
+      "InitCardDeck": {
+        "Name": "Aktionskartendeck"
+      },
+      "ParryBase": {
+        "Name": "Parade-Fertigkeit-SWID",
+        "Hint": "Der SWID der Fertigkeit, die zur Berechnung des Paradewerts benutzt wird. Siehe Dokumentation zur Savage Worlds ID!"
+      },
+      "UseShortenedAttributes": {
+        "Name": "Attributsnamen abkürzen",
+        "Hint": "Wenn du diese Option aktivierst, werden die Attribute auf dem SC und NSC Bogen als Abkürzungen angegeben, also Ges statt Geschicklichkeit, Ver statt Verstand, etc. Schließe und öffne alle offenen Bögen wenn du diese Einstellung änderst."
+      },
+      "WeightUnit": {
+        "Name": "Gewichtseinheit",
+        "Hint": "Gib an ob Gewichtsangaben in Pfund (Imperial) oder Kilogramm (Metrisch) gerechnet werden"
+      },
+      "HideNpcItemChatCards": {
+        "Name": "Verstecke NSC Item Chat Karten",
+        "Hint": "Wenn diese Option aktiviert ist, werden Chat-Karten für NSC-Items automatisch als Flüstern an alle Spielleiter gesendet, anstatt für alle sichtbar zu sein"
+      },
+      "EnableBennyNotify": {
+        "Name": "Nachrichten zu Bennys",
+        "Hint": "Zeige Chatnachricht beim Nehmen, Einsetzen oder Auffrischen von Bennys."
+      },
+      "HideWC": {
+        "Name": "NSC-Wildcards verstecken",
+        "Hint": "Spielern nicht anzeigen, welche NSCs Wildcards sind"
+      },
+      "CreateInitChat": {
+        "Name": "Chatnachrichten für Initiative",
+        "Hint": "Wenn aktiviert werden gezogene Aktionskarten im Chat ausgegeben."
+      },
+      "AutoInit": {
+        "Name": "Automatische Initiative",
+        "Hint": "Aktionskarten jede Runde automatisch ziehen"
+      },
+      "CardSound": {
+        "Name": "Kartengeräusch",
+        "Hint": "Kartengeräusch beim Ziehen der Initiative-Aktionskarten abspielen"
+      },
+      "Benny3DFront": {
+        "Name": "Vordere Textur",
+        "Hint": "Vordere Textur des Bennys"
+      },
+      "Benny3DBack": {
+        "Name": "Hintere Textur",
+        "Hint": "Hintere Textur des Bennys"
+      },
+      "Benny3DBackBump": {
+        "Name": "Bump Map Rückseite",
+        "Hint": "Bump Map der Rückseite"
+      },
+      "Benny3DFrontBump": {
+        "Hint": "Bump Map der Vorderseite",
+        "Name": "Bump Map Vorderseite"
+      },
+      "CoreSkillsList": {
+        "Name": "Liste der Grundfertigkeiten",
+        "Hint": "Gib hier die Namen der Grundfertigkeiten deines Settings an. Zum Beispiel so: Allgemeinwissen, Athletik, Heimlichkeit, Überreden, Wahrnehmung"
+      },
+      "CoreSkillsPack": {
+        "Name": "Kompendium mit Grundfertigkeiten",
+        "Hint": "Wähle aus, aus welchem Kompendium die Grundfertigkeiten bezogen werden"
+      },
+      "WealthType": {
+        "Name": "Kapitalsystem",
+        "Hint": "Wähle aus welches System zur Buchführung auf dem Charakterbogen genutzt werden soll"
+      },
+      "CurrencyName": {
+        "Name": "Währungsname",
+        "Hint": "Benenne die gängigste Währung deines Settings"
+      },
+      "JokersWild": {
+        "Name": "Bennys für Joker",
+        "Hint": "Mit dieser Einstellung erhalten alle Spielercharaktere einen Benny, wenn einer einen Joker zieht"
+      },
+      "AmmoManagement": {
+        "Name": "Munitionsmanagement",
+        "Hint": "Automatisiert Munuitionsverbrauch. Siehe Dokumentation."
+      },
+      "PCAmmoFromInventory": {
+        "Name": "SCs laden Munition aus ihrem Inventar nach",
+        "Hint": "Wenn diese Option aktiviert ist, kann die Option zum Einstellen eines \"Ausrüstung\"-Gegenstands als Munition festgelegt werden und wird beim Nachladen der Waffe verwendet"
+      },
+      "NPCAmmoFromInventory": {
+        "Name": "NSCs laden Munition aus ihrem Inventar nach"
+      },
+      "VehicleAmmoFromInventory": {
+        "Name": "Fahrzeuge nutzen Munition aus ihrem Inventar"
+      },
+      "EnableWoundPace": {
+        "Name": "Wunden beeinflussen Bewegung",
+        "Hint": "Wenn aktiviert, wird die Bewegung automatisch durch Wunden angepasst"
+      },
+      "EnableConv": {
+        "Name": "Entschlossenheit",
+        "Hint": "Settingregel \"Entschlossenheit\" verwenden"
+      },
+      "NoPowerPoints": {
+        "Name": "Keine Machtpunkte",
+        "Hint": "Wenn diese Option aktiviert ist, werden alle Machtpunkt-Interaktionen ausgeblendet"
+      },
+      "AlwaysGeneralPP": {
+        "Name": "Immer generelle Machtpunkte anzeigen",
+        "Hint": "Wenn diese Option aktiviert ist, wird der Mächte Abschnitt \"Generell\" immer angezeigt, selbst wenn alle Mächte einen zugeordneten Arkanen Hintergrund haben"
+      },
+      "ApplyEncumbrance": {
+        "Name": "Belastungsabzüge anwenden",
+        "Hint": "Belastungsabzüge anwenden. Dies unterstützt aktuell KEINE {vigor}sproben zum Widerstand gegen {fatigue}!"
+      },
+      "VehicleMods": {
+        "Name": "Fahrzeug-Modifikationen",
+        "Hint": "Fahrzeuge/Rüstung nutzen Modifikations-Plätze"
+      },
+      "VehicleEdges": {
+        "Name": "Fahrzeug-Talente",
+        "Hint": "Fahrzeuge nutzen Talente und Handicaps"
+      },
+      "BennyImageSheet": {
+        "Name": "Benny",
+        "Hint": "Wählt, welches Bild Bennys auf dem Charakterbogen darstellt"
+      },
+      "HardChoices": {
+        "Name": "Schwere Entscheidungen",
+        "Hint": "Schaltet die Settingregel Schwere Entscheidungen ein"
+      },
+      "UseAttributeShorts": {
+        "Hint": "Aktivieren Sie diese Option, wenn Sie abgekürzte Attributnamen auf den PC- und NPC-Bögen sehen möchten, z. B. Agi statt Beweglichkeit, Sma statt Smarts usw. Sie müssen alle geöffneten Bögen schließen und erneut öffnen, damit diese Option wirksam wird.",
+        "Name": "Verkürzte Attributnamen verwenden"
+      },
+      "StartingCurrency": {
+        "PC": {
+          "Name": "Startwährung Spielercharaktere",
+          "Hint": "Legen Sie den Währungsbetrag fest, den Spielercharaktere bei der Erstellung erhalten"
+        },
+        "NPC": {
+          "Name": "Startwährung NSCs",
+          "Hint": "Legen Sie den Währungsbetrag fest, den NSCs bei der Erstellung erhalten"
+        }
+      },
+      "NPCCurrency": {
+        "Name": "NPCs verwenden Währung",
+        "Hint": "Wenn aktiviert, haben alle NSCs dieselben Währungsoptionen wie Spielercharaktere"
+      },
+      "DumbLuck": {
+        "Name": "Narrenglück",
+        "Hint": "Schaltet die Settingregel Narrenglück ein"
+      },
+      "WoundCap": {
+        "Name": "Wundobergrenze",
+        "Hint": "Schaltet die Settingregel Wundobergrenze ein."
+      },
+      "GrittyDamage": {
+        "Name": "Fieser Schaden",
+        "Hint": "Schaltet die Settingregel Fieser Schaden ein."
+      },
+      "InjuryTable": {
+        "Name": "Verletzungstabelle",
+        "Hint": "Wähle die Tabelle aus welche für Verletzungen bei Fiesem Schaden verwendet werden soll."
+      },
+      "UnarmoredHero": {
+        "Name": "Ungepanzerter Held",
+        "Hint": "Schaltet die Settingregel Ungepanzerter Held für Schaden wegstecken ein"
+      },
+      "ArbitFields": "Beliebige Einstellungen",
+      "VehicleSkills": {
+        "Hint": "Kommaseparierte Liste von Fertigkeiten für den Betrieb von allen Fahrzeugen",
+        "Name": "Fahrzeug-Fertigkeiten"
+      },
+      "HeroesNeverDie": {
+        "Name": "Helden Sterben Nie",
+        "Hint": "Schaltet die Settingregel Helden Sterben Nie ein"
+      },
+      "CharSheetDefaultWidth": {
+        "Hint": "Breite des Charakterbogens beim ersten Öffnen, in Pixeln. Default: 650.",
+        "Name": "Standardbreite für Charakterbögen"
+      },
+      "GmBennies": {
+        "Hint": "Legt fest, wieviele Bennys die Spielleitung beim Auffrischen erhält",
+        "Name": "SL-Bennys"
+      },
+      "StaticGmBennies": {
+        "Hint": "Setzt eine feste Zahl Bennys, welche die SL beim Auffrischen erhält (statt die Zahl aktiver Spieler zu nutzen).",
+        "Name": "Feste SL-Bennys"
+      },
+      "ArmorStacking": {
+        "Choices": {
+          "Core": "Savage Worlds Abenteuer-Edition Kernregeln",
+          "SWPF": "Pathfinder®️ für Savage Worlds"
+        },
+        "Name": "Rüstung stapeln",
+        "Hint": "Legt fest, wie das Tragen mehrerer Rüstungen abgehandelt wird"
+      },
+      "Bumpmaps": "Bumpmaps",
+      "VehicleEnergy": {
+        "Hint": "Fahrzeuge/Rüstung nutzen Energie",
+        "Name": "Fahrzeug-Energie"
+      }
+    },
+    "Validation": {
+      "OnlyOneAncestry": "Ein Charakter kann nur ein Volk auf einmal haben.",
+      "OnlyOneArchetype": "Ein Charakter kann nur einen Archetypen auf einmal haben.",
+      "NoGroupCombatants": "Gruppenakteure können keine Kampfteilnehmer sein.",
+      "InvalidBasePace": "Die Grundbewegegung kann nicht auf eine Beweungsart ohne Wert gesetzt werden."
+    },
+    "SettingRules": "Settingregeln",
+    "DuplicateItemsBodyText": "Während <strong>({type}) {name}</strong> zum Akteur {target} hinzugefügt wurde sind die folgenden Duplikate festgestellt worde. Diese Duplikaten wurden umbennant um ihre Quelle zu zeigen.",
+    "LayOutChaseWithDeck": "Deck für Verfolgungsjagd verwenden",
+    "ActionTraitMod": "Aktionseigenschaftsmodifikator",
+    "ItemTraitMod": "Eigenschaftsmodifikator",
+    "TargetVulnerable": "Ziel ist Verwundbar",
+    "WildAttack": "Rücksichtsloser Angriff",
+    "DocumentTweaks": "Optionen",
+    "ItemType": "Typ",
+    "Source": "Quelle",
+    "MigrateCompendium": "Kompendium-Migration erzwingen",
+    "Properties": "Eigenschaften",
+    "AddAction": "Aktion hinzufügen",
+    "DeleteEmbeddedActionPrompt": "Sicher, dass die Aktion {action} gelöscht werden soll?",
+    "DeleteEmbeddedPowerPrompt": "Sicher, dass die Macht {power} gelöscht werden soll?",
+    "TrademarkWeapon": {
+      "Label": "Lieblingswaffe",
+      "None": "Keine Lieblingswaffe",
+      "Regular": "Lieblingswaffe",
+      "Improved": "Absolute Lieblingswaffe"
+    },
+    "OffHandPenalty": "Falsche Hand",
+    "ItemEquipStatus": {
+      "Label": "Lage",
+      "Stored": "Gelagert",
+      "Carried": "Getragen",
+      "Equipped": "Ausgerüstet",
+      "Installed": "Montiert",
+      "OffHand": "Nebenhand",
+      "MainHand": "Haupthand",
+      "TwoHands": "Beidhändig",
+      "Added": "Hinzugefügt",
+      "Readied": "Bereit"
+    },
+    "DestroyOnEmpty": "Zerstören, wenn leer",
+    "Charges": "Ladungen",
+    "Consumable": {
+      "Use": "Benutzen",
+      "Consumables": "Verbrauchsgegenstände",
+      "NotEnoughCharges": "Nicht genug Ladungen!",
+      "ChargesUsed": "<p>{charges} Ladung(en) von <em>{name}</em> genutzt</p>"
+    },
+    "ItemSheet": "Savage Worlds Itembogen",
+    "EmptyAncestralAbilitiesHint": "<strong>Warnung:</strong> Dieses Feature ist veraltet. Beim Erstellen von einem neuen {ancestry}/{archetype} sollten stattdessen Items in den Reiter Eigenschaften gezogen werden. Dann fügen {ancestry} bzw. {archetype} Akteuren diese Items hinzu, wenn sie auf sie angewendet werden.",
+    "NoTokenSelectedForResistRoll": "Spielfigur für Widerstandsprobe auswählen",
+    "Templates": {
+      "Cone": {
+        "Short": "Kegel",
+        "Long": "Kebelschablone"
+      },
+      "Stream": {
+        "Short": "Strahl",
+        "Long": "Strahlschablone"
+      },
+      "Small": {
+        "Short": "KFS",
+        "Long": "Kleine Flächenschablone"
+      },
+      "Medium": {
+        "Short": "MFS",
+        "Long": "Mittlere Flächenschablone"
+      },
+      "Large": {
+        "Short": "GFS",
+        "Long": "Große Flächenschablone"
+      },
+      "Available": "Verfügbare Schablonen",
+      "Possible": "Mögliche Schablonen"
+    },
+    "CompendiumTOC": {
+      "Dialog": {
+        "Title": "Umschalten bestätigen",
+        "Content": "Damit die Änderung wirksam wird, werden Foundry VTT und alle verbundenen Clients neu geladen. Bitte bestätigen."
+      },
+      "Header": "Inhalt",
+      "Toggle": "Compendium TOC aus-/einschalten"
+    },
+    "Category": "Item Kategorie",
+    "ItemIsAmmo": "Ist Munition",
+    "Vision": {
+      "SeeHeat": "Wärme sehen",
+      "SenseHeat": "Wärme spüren",
+      "Infravision": "Wärmesicht"
+    },
+    "Attribute": "Attribut",
+    "BaseDie": "Würfelbasis",
+    "AttributeManager": {
+      "Title": "Eigenschaften von {name} verwalten",
+      "Open": "Eigenschaften bearbeiten"
+    },
+    "HeavyWeapon": "Schwere Waffe",
+    "HeavyArmor": "Schwere Panzerung",
+    "TOCSettings": {
+      "Label": "Compendium TOC Einstellungen öffnen",
+      "Name": "Compendium TOC Einstellungen",
+      "Hint": "Konfigurieren Sie die Compendum TOC-Anwendung"
+    },
+    "DieSides": "Würfelseiten",
+    "WildDieSides": "Wildcard-Würfel Seiten",
+    "EncumbranceSteps": "Belastungsschritte",
+    "EffectWizard": {
+      "Preview": "Vorschau",
+      "Change": "Änderung",
+      "Mode": "Modus",
+      "Value": "Wert",
+      "Changes": "Änderungen",
+      "SelectAttribute": "Attribut wählen",
+      "EnterSkill": {
+        "Label": "Fertigkeit auswählen",
+        "Hint": "Beliebigen Fertigkeitsnamen eingeben oder einen aus der Liste der Vorschläge auswählen"
+      }
+    },
+    "OtherStats": "Andere Stats",
+    "HotbarDropOwnedItemWarning": "Macros können nur für Items erstellt werden die Akteuren gehören!",
+    "AdditionalStats": {
+      "SelectHint": "Durch Semikolon getrennte Liste von Optionen eingeben",
+      "Current": "{stat} aktuell",
+      "Type": "Typ",
+      "HasMaxValue": "Hat Maximalwert",
+      "Max": "Max. {stat}",
+      "Key": "Wertschlüssel",
+      "Label": "Bezeichnung",
+      "KeyErr": "Weitere Werte Schlüssel {invalid} ist ungültig und wurde geändert zu {key}",
+      "OptionLabel": "Option",
+      "Value": "Wert",
+      "MaxLabel": "Maximum"
+    },
+    "MessageOnUse": {
+      "Label": "Nachricht bei Verwendung",
+      "Hint": "Zeigt eine Chat-Nachricht an, wenn dieses Item verwendet wird"
+    },
+    "ItemGrants": {
+      "EmptyHint": "Dieses Item gewährt derzeit keine Items",
+      "Header": "Gewährte Items",
+      "When": "Items gewähren wenn",
+      "Mutation": "Mutation"
+    },
+    "IgnFatigue": "Erschöpfung ignorieren",
+    "BaseDamage": "Basisschaden",
+    "RefreshPP": "Machtpunkte auffrischen",
+    "Targets": "Ziele",
+    "Rolls": {
+      "RollResult": "Würfelergebnis",
+      "SwadeRoll": "Wurf",
+      "DamageRoll": "Schadenswurf",
+      "TraitRoll": "Eigenschaftswurf",
+      "Critfail": {
+        "Critfail": "KRITISCHER PATZER",
+        "ConfirmDie": "Bestätigungswürfel",
+        "Confirmed": "Bestätigung von kritischem Patzer",
+        "Confirm": "Bestätigen",
+        "Unconfirmed": "Kritischer Patzer nicht bestätigt",
+        "Possible": "MÖGLICHER KRITISCHER PATZER"
+      },
+      "Benny": "Benny",
+      "GMBenny": "SL-Benny",
+      "Free": "Frei"
+    },
+    "LoadedAmmo": "Geladene Munition",
+    "DamageApplicator": {
+      "ApplyDamage": {
+        "Label": "Schaden berechnen",
+        "Hint": "Klicken, um Schaden für gewählte Figur zu berechnen"
+      },
+      "WoundsAboutToBeTaken": "<p><strong>{name}</strong> droht, <strong>{wounds}</strong> zu erleiden!</p>",
+      "SoakDialog": {
+        "WoundedTitle": "Für {name} Schaden wegstecken würfeln?",
+        "UnwoundedTitle": "Schaden anpassen, um Status für {name} zu bestimmen?",
+        "WoundedPrompt": "<p>{name} erwartet {wounds}. Schaden wegstecken?</p>",
+        "ShakenPrompt": "<p>{name} droht, Angeschlagen zu werden.</p>",
+        "UnharmedPrompt": "<p>{name} könnte unversehrt bleiben.</p>",
+        "Benny": "Benny nutzen, um Schaden wegzustecken",
+        "GMBenny": "SL-Benny nutzen, um Schaden wegzustecken",
+        "Free": "Frei Schaden wegstecken",
+        "TakeWounds": "{wounds} erleiden",
+        "AdjustDamage": "Schaden anpassen",
+        "ApplyShaken": "Angeschlagen-Zustand anwenden",
+        "Accept": "Annehmen",
+        "SoakRoll": "Schaden Wegstecken (Konstitutionsprobe)",
+        "NoVehicleSoak": "Schaden wegstecken wird für Fahrzeuge noch nicht unterstützt"
+      },
+      "RerollSoakDialog": {
+        "Title": "Schaden wegstecken für {name} neu würfeln?",
+        "Prompt": "<p>{name} erwartet {wounds}. Schaden wegstecken neu würfeln?</p>",
+        "Benny": "Für Benny erneut würfeln",
+        "GMBenny": "Für SL-Benny erneut würfeln",
+        "Free": "Frei erneut würfeln",
+        "TakeWounds": "{wounds} erleiden",
+        "PromptCritFail": "<p>{name} erwartet {wounds}. Ein kritischer Patzer verhindert Wiederholungswürfe.</p>"
+      },
+      "AdjustDamagePrompt": "<p>Schaden entsprechend Fähigkeiten/Effekten von {name} anpassen.</p>",
+      "Result": {
+        "NoSignificantDamage": "<p><strong>{name}</strong> nimmt keinen signifikanten Schaden.</p>",
+        "SoakedAll": "<p><strong>{name}</strong> hat allen Schaden weggesteckt und ist nicht Angeschlagen!</p>",
+        "IsShaken": "<p><strong>{name}</strong> ist <strong>Angeschlagen</strong>!</p>",
+        "IsShakenWithWounds": "<p><strong>{name}</strong> ist <strong>Angeschlagen</strong> mit <strong>{wounds}</strong>!</p>",
+        "IsIncapacitated": "<p><strong>{name}</strong> ist <strong>Ausgeschaltet!</strong></p>"
+      },
+      "NoInjuryTable": "Keine Verletzungstabelle gewählt. Siehe SWADE-Einstellungen",
+      "NoTargetsSelected": "The User who rolled damage must select one or more Targets.",
+      "SoakModifier": "Schaden-Wegstecken-Modifikator",
+      "Incapacitation": {
+        "Dies": "<p><strong>{name}</strong> stirbt durch den Schaden!</p>",
+        "PermanentInjury": "<p><strong>{name}</strong> erleidet eine permanente Verletzung und <strong>Verblutet</strong>!</p>",
+        "PermanentInjuryHND": "<p><strong>{name}</strong> erleidet eine permanente Verletzung!</p>",
+        "TemporaryInjury": "<p><strong>{name}</strong> erleidet eine Verletzung, die anhält, bis alle Wunden geheilt sind.</p>",
+        "ShortInjury": "<p><strong>{name}</strong> erleidet eine Verletzung, die 24 Stunden anhält, oder bis alle Wunden geheilt sind (je nachdem, was zuerst eintrifft).</p>",
+        "Title": "Verletzungsgrad für {name} neu würfeln?",
+        "TakeFail": "Erleide permanente Verletzung",
+        "Prompt": "<p>{name} droht eine Verletzung. Konstitutionsprobe wiederholen?</p>",
+        "InjuryRoll": "Konstitutionsprobe gegen Verletzung durch Ausgeschaltet",
+        "TakeSuccess": "Erleide Verletzung bis alle Wunden geheilt wurden"
+      }
+    },
+    "CustomWildDie": "- Persönlicher Wildcard-Würfel -",
+    "RunningMod": "Sprintmodifikator",
+    "ColdBodied": "Kalt",
+    "ppReload": "Zum nachladen benötigte MP",
+    "UsesTOC": "Compendium TOC Verwenden",
+    "TOCBlockList": "Compendium TOC Blockliste",
+    "RollNoun": "Würfelwurf",
+    "TOURS": {
+      "ADDSTATS": {
+        "ActorDisplay": {
+          "Content": "Zusätzliche Werte, die im Übersichtsreiter von Akteuren angezeigt werden können."
+        }
+      },
+      "TWEAKS": {
+        "Soak": {
+          "Content": "Bonus für Würfe auf Wunden wegstecken, wenn die Schadens-Buttons der System-Chatkarten genutzt werden.",
+          "Title": "Schaden-Wegstecken-Modifikator"
+        },
+        "Title": "Optionen"
+      },
+      "AMMUNITION": {
+        "Title": "Munition"
+      },
+      "HEADQUARTERS": {
+        "Upgrades": {
+          "Content": "Aufwertungen können hier aufgeführt werden. HTML wird vollständig unterstützt, Stichpunktlisten, Tabellen und ähnliches können also beliebig genutzt werden.",
+          "Title": "Aufwertungen"
+        }
+      },
+      "ERROR": {
+        "ActorCreatePermission": "Diese Tour erfordert die Berechtigung, Akteure zu erstellen",
+        "SettingPermission": "Diese Tour erfordert die Veränderung von Welteinstellungen",
+        "JournalCreatePermission": "Diese Tour erfordert die Berechtigung, Notizen zu erstellen"
+      }
+    },
+    "RequiredCrew": "Nötige Besatzung",
+    "NumberOfDice": {
+      "Hint": "Anzahl Eigens.-Würfel, die für diese Aktion gewürfelt werden",
+      "Label": "Würfel"
+    },
+    "DmgMod": "Schaden-Modifikator",
+    "Auras": {
+      "Enabled": "Aktiviert",
+      "WallConstraints": {
+        "Label": "Durch Wände beschränkt",
+        "Hint": "Schaltet um, ob die Aura durch Wände begrenzt wird, die Licht blockieren, oder diese durchdringt"
+      },
+      "UserAura2": "Aura 2",
+      "TabHeader": "Auramancer",
+      "Color": "Farbe",
+      "Range": "Aura-Radius",
+      "Alpha": "Aura-Transparenz",
+      "UserAura1": "Aura 1"
+    },
+    "AmbushAssistant": {
+      "NormalDraw": "Normal Ziehen",
+      "Title": "Hinterhalt-Assistent",
+      "Hint": "Kampfteilnehmer per Drag & Drop für Überraschungsrunde zuweisen",
+      "Unassigned": "Nicht zugewiesen",
+      "OnHold": "Aufgespart",
+      "NoTurn": "Kein Zug"
+    },
+    "Combat": {
+      "StartSurpriseRound": "Überraschungsrunde starten",
+      "AdvanceRoundTitle": "Nächste Runde?",
+      "AdvanceRoundContent": "Zur nächsten Runde fortfahren?",
+      "RevertRoundTitle": "Zur letzten Runde zurückkehren?",
+      "DiscardedCards": "Abgelegte Karten",
+      "Redraw": "Karten-Neuziehen",
+      "RevertRoundContent": "Zur letzten Runde zurückkehren?",
+      "RedrawDialog": {
+        "Content": "Frei oder für Benny neue Karte ziehen?"
+      },
+      "DealAll": "Alle austeilen",
+      "DealNPC": "NSCs austeilen",
+      "LinkScene": "Szene verknüpfen"
+    },
+    "GlobalMod": {
+      "Trait": "Alle Eigenschaften",
+      "Spirit": "Willenskraft und Wil.-Fertigkeiten",
+      "Label": "Globale Modifikatoren",
+      "Agility": "Geschicklichkeit und Ges.-Fertigkeiten",
+      "Smarts": "Verstand und Ver.-Fertigkeiten",
+      "Strength": "Stärke und Stä.-Fertigkeiten",
+      "Vigor": "Konstitution und Kon.-Fertigkeiten",
+      "Attack": "Alle Angriffe",
+      "Damage": "Aller Schaden",
+      "AP": "Alles Panzerbrechende"
+    },
+    "Requirements": {
+      "Editor": {
+        "AddHint": "Neue Voraussetzung",
+        "DeleteHint": "Voraussetzung löschen",
+        "Label": "Bezeichnung",
+        "Value": "Wert",
+        "SWID": "SWID",
+        "Header": "Voraussetzungen für {name} bearbeiten"
+      },
+      "Combinator": "Kombinator",
+      "Other": "Andere",
+      "And": "und",
+      "Or": "oder"
+    },
+    "RedrawBenny": "Karte mit Benny ziehen",
+    "CalledShot": {
+      "HeadOrVitals": "Angesagtes Ziel: Kopf oder lebensw. Organe",
+      "Limbs": "Angesagtes Ziel: Gliedmaßen",
+      "Hand": "Angesagtes Ziel: Hand"
+    },
+    "HindranceSeverity": {
+      "Either": "Leicht/Schwer",
+      "Label": "Schweregrad",
+      "Major": "Nur Schwer",
+      "Minor": "Nur Leicht"
+    },
+    "ModAttack": "Angriff-Modifikatoren",
+    "ModTrait": "Eigenschaft-Modifikatoren",
+    "Aura": {
+      "Visibility": {
+        "Label": "Sichtbar für",
+        "Hint": "Wählt, welche Figuren (nach Gesinnung) diese Aura sehen. Du siehst immer Auren für Figuren, von denen du mindestens Beobachter bist"
+      }
+    },
+    "SWID": {
+      "Long": "Savage Worlds ID",
+      "Short": "SWID",
+      "Regenerate": "Savage Worlds ID neu generieren",
+      "ChangeWarning2": "Die Savage Worlds ID zu ändern, kann Verweise auf dieses Item ungültig machen! Hier ist Vorsicht geboten.",
+      "ChangeWarning3": "Fortfahren?",
+      "ChangeWarning1": "Vorsicht!"
+    },
+    "DesperateAttack": {
+      "2": "Verzweifelter Angriff (2)",
+      "4": "Verzweifelter Angriff (4)"
+    },
+    "ShieldBonus": "Schildbonus",
+    "Unfamiliar": {
+      "2": "Ungewohnt (-2)",
+      "4": "Ungewohnt (-4)"
+    },
+    "Weapon": {
+      "RangeType": {
+        "Mixed": "Gemischt",
+        "Melee": "Nahkampf",
+        "Ranged": "Fernkampf",
+        "Label": "Reichweitentyp"
+      }
+    },
+    "HeadquartersSheet": "Savage Worlds Stützpunkt-Bogen",
+    "Elan": "Elan",
+    "InnatePower": "Angeborene Macht",
+    "MacroActor": {
+      "Default": "Default",
+      "Self": "Selbst",
+      "Target": "Ziel"
+    },
+    "RefreshOnly": "Auffrischen",
+    "NotOwnedError": "Item/Akteur muss im Besitz sein",
+    "AddOrReplaceActions": {
+      "Title": "Aktionen hinzufügen/ersetzen",
+      "Replace": "Existierende ersetzen",
+      "Add": "Neu hinzufügen",
+      "Content": "<p>Sollen die Aktionen von <strong>{source}</strong> ({type}) als neue Aktionen hinzugefügt, oder existierende ersetzt werden?</p>"
+    },
+    "Headquarters": {
+      "Advantage": "Vorteil",
+      "Complication": "Komplikation",
+      "Form": "Form",
+      "Description": "Beschreibung",
+      "Acquisition": "Erwerb",
+      "Maintenance": "Wartung",
+      "Upgrades": "Aufwertungen"
+    },
+    "SetActionDeck": "Kartenstapel als Aktionskartendeck nutzen",
+    "NpcWildCardsOnScene": "NSC-Wildcards in Szene",
+    "CardDrawMsgSize": {
+      "Compact": "Kompakt",
+      "Large": "Groß",
+      "None": "Keine"
+    },
+    "SelectNewGroupLeader": "Neuen Gruppenleiter wählen",
+    "ToggleIncap": "Ausgeschaltet umschalten",
+    "Free": "Frei",
+    "Benny": "Benny",
+    "FollowerCount": "{count} Gefolgsleute",
+    "ModDamage": "Schaden-Modifikatoren",
+    "Weakness": "Anfälligkeit",
+    "Resistance": "Widerstand",
+    "BaseParry": "Parade-Grundwert",
+    "BenniesCount": "{count} Bennys",
+    "NoDescription": "Keine Beschreibung verfügbar",
+    "Magazine": {
+      "NoneLoaded": "Kein Magazin geladen",
+      "Select": "Magazin wählen"
+    },
+    "GrantsItemsError": "Auffrischen funktioniert nicht für Items, die andere Items gewähren",
+    "NoUpdatedItemFound": "Kein passendes Item für Auffrischen gefunden",
+    "DiscardMagazine": "Leere Magazine verwerfen",
+    "PlayerCardDrawHelper": {
+      "Title": "SWADE Spieler Karten Ziehhelfer"
+    },
+    "CouldNotFindMacro": "Kein Makro mit UUID {uuid} gefunden",
+    "ResourcesUsed": {
+      "Label": "Genutzte Ressourcen",
+      "Hint": "Wie viel einer Ressource für diese Aktion genutzt wird"
+    },
+    "Draw": "Ziehen",
+    "Reset": "Reset",
+    "Cards": {
+      "Spades": "Pik",
+      "Hearts": "Herz",
+      "Diamonds": "Karo",
+      "Clubs": "Kreuz",
+      "Jokers": "Joker",
+      "Two": "Zwei",
+      "Three": "Drei",
+      "Four": "Vier",
+      "Five": "Fünf",
+      "Six": "Sechs",
+      "Seven": "Sieben",
+      "Nine": "Neun",
+      "Ten": "Zehn",
+      "Jack": "Bube",
+      "Queen": "Dame",
+      "King": "König",
+      "Eight": "Acht",
+      "Ace": "Ass",
+      "RedJoker": "Roter Joker / Pik Joker",
+      "BlackJoker": "Schwarzer Joker / Herz Joker",
+      "BlueJoker": "Blauer Joker / Karo Joker",
+      "GreenJoker": "Grüner Joker / Kreuz Joker"
+    },
+    "CharacterSummaryTypeErr": "Charakterübersicht kann nicht für Akteure vom Typ {type} genutzt werden",
+    "ChaseLayout": "Layout",
+    "ChaseRows": "Zeilen",
+    "ChaseColumns": "Spalten",
+    "ChaseNoDeck": "Bitte Deck festlegen!",
+    "ChaseReset": "Deck \"{deck}\" zurückgesetzt.",
+    "DialogConfirmPrompt": "Sicher?",
+    "ConvictionExtendPrompt": "Benny ausgeben, um Entschlossenheit zu verlängern?",
+    "SettingConfigurator": {
+      "WorldCompendiums": "Weltkompendien",
+      "WorldTables": "Welttabellen"
+    },
+    "ApOver": "Aktion PB",
+    "Group": {
+      "Sheet": {
+        "Members": {
+          "Empty": "Keine Mitglieder",
+          "Header": "Mitglieder",
+          "Hint": "Mitglieder zum Hinzufügen per Drag&Drop in den Bogen ziehen oder UUID einfügen. Funktioniert auch mit Spielfigur-Akteuren in einer Szene."
+        },
+        "Stash": {
+          "Header": "Lager",
+          "Empty": "Keine Items"
+        },
+        "Lock": {
+          "Label": "Bogen (ent)sperren",
+          "Hint": "Gesperrt können keine Akteure hinzugefügt oder entfernt werden"
+        }
+      }
+    },
+    "GroupSheet": "Savage Worlds Gruppenbogen",
+    "Advance": "Aufstieg",
+    "BenniesMaxNum": "Maximale Bennys",
+    "EdF": "{item} bearbeiten",
+    "EdRightClick": "[Rechtsklick] zum Bearbeiten",
+    "Value": "Wert",
+    "SpeedUnit": "Einheit",
+    "Stats": "Werte",
+    "ID": "ID",
+    "SortNum": "Sortier-Nr.",
+    "IgnFatigueWounds": "Wunden/Erschöpfung ignorieren",
+    "FatigueWounds": "Wunden/Erschöpfung",
+    "ShotsCurrent": "Aktuelle Schüsse",
+    "ActionsOverride": "Überschreiben",
+    "DeleteFromParentWarningPermanent": "{name} wird permanent aus {parent} gelöscht und kann nicht wiederhergestellt werden.",
+    "DeleteFromParentWarning": "{name} wird permanent aus {parent} gelöscht.",
+    "ActionDeckPresetPEG": "Aktionskartendeck (PEG)",
+    "disabledAE": "Inaktiv durch Aktiven Effekt",
+    "RunningHint": {
+      "Header": "<strong>Gesamt-Sprintdistanz.</strong>",
+      "Reminder": "<p>Durchs Sprinten erleiden alle Aktionen im Zug einen Abzug von -2.</p>"
+    },
+    "BenniesAdjustGM": "SL-Bennys anpassen",
+    "BenniesAdjustGMText": "Anzahl Bennys, welche die SL gerade haben sollte.",
+    "HindMajor": "Schwer",
+    "HindMinor": "Leicht",
+    "MaxLabel": "Maximum",
+    "BuildCost": "Wert",
+    "ChargesMax": "Max. Ladungen",
+    "NoCCMInstall": "Das 'Complete Card Management'-Modul ist nicht installiert.",
+    "NoCCMActive": "Das 'Complete Card Management'-Modul ist nicht aktiv.",
+    "ChaseDiscard": "Ablagestapel",
+    "CouldNotFindTarget": "Dieses Makro erfordert ein ausgewähltes Ziel!",
+    "Movement": {
+      "Base": "Grundbewegung",
+      "Pace": {
+        "Base": {
+          "Label": "Grundbewegung",
+          "Hint": "Default-Bewegung für diesen Akteur"
+        },
+        "Ground": {
+          "Label": "Boden"
+        },
+        "Fly": {
+          "Label": "Fliegen"
+        },
+        "Burrow": {
+          "Label": "Graben"
+        },
+        "Swim": {
+          "Label": "Schwimmen"
+        }
+      },
+      "Other": "Andere Bewegung",
+      "Running": {
+        "OutOfCombat": "Kann außerhalb vom Kampf mit {pace} Bewegung für {minutes} Minuten rennen",
+        "Dialog": {
+          "Title": "Rennen",
+          "Content": "Wählen, wie gerannt werden soll"
+        }
+      }
+    },
+    "ApplicableEffects": "Anwendbare Effekte",
+    "Supplies": {
+      "Ammo": {
+        "Label": "Munition"
+      },
+      "Fuel": {
+        "Label": "Treibstoff"
+      },
+      "Level": {
+        "VeryHigh": "Sehr Hoch",
+        "Out": "Leer",
+        "Low": "Niedrig",
+        "High": "Hoch"
+      },
+      "Food": {
+        "Label": "Nahrung"
+      },
+      "Supply": {
+        "Label": "Vorrat"
+      },
+      "Label": "Vorräte"
+    },
+    "RemoveEffectLabel": "Effekt entfernen",
+    "VehicleAttributes": {
+      "Label": "Fahrzeugattribute",
+      "Agility": "Fahrzeug Hat Geschick",
+      "Spirit": "Fahrzeug Hat Willenskraft",
+      "Strength": "Fahrzeug Hat Stärke",
+      "Vigor": "Fahrzeug Hat Konstitution",
+      "Smarts": "Fahrzeug Hat Verstand"
+    },
+    "Energy": {
+      "Max": "Max. Energie",
+      "Enable": "Energie aktiv",
+      "Label": "Energie",
+      "Value": "Akt. Energie"
+    },
+    "OperatorIdHint": "Akteur reinziehen oder Figur wählen",
+    "VehicleSheet": "Savage Worlds Fahrzeugbogen",
+    "Complication": "Komplikation",
+    "EffectsInactive": "Inaktive Effekte",
+    "DramaticTask": {
+      "Successes": "Erfolge",
+      "MaxRounds": {
+        "Label": "Maximale Runden",
+        "Hint": "Wie viele Runden dauert die Dramatische Aufgabe?"
+      },
+      "MaxTokens": {
+        "Label": "Erfolge",
+        "Hint": "Zielzahl Erfolge, die Teilnehmer erlangen müssen"
+      }
+    },
+    "ChaseLayoutError": "Zu wenig Platz in der Szene für das Verfolgungs-Layout.",
+    "Vehicle": {
+      "Cargo": {
+        "Capacity": "Frachtkapazität"
+      },
+      "Crew": {
+        "Add": "Besatzung hinzufügen",
+        "Remove": "Besatzung entfernen",
+        "Role": "Rolle",
+        "Roles": {
+          "Gunner": "Schütze",
+          "Other": "Andere",
+          "Operator": "Fahrer"
+        }
+      }
+    },
+    "AttrSmaShortPowerRange": "Ver",
+    "Burrowing": "Graben",
+    "PPMods": "Machtmodifikatoren",
+    "Scales": {
+      "LargerThan": "Größer als {scale}",
+      "SmallerThan": "Kleiner als {scale}",
+      "Names": {
+        "Tiny": "Winzig",
+        "VerySmall": "Sehr klein",
+        "Small": "Klein",
+        "Normal": "Normal",
+        "Large": "Groß",
+        "Huge": "Riesig",
+        "Gargantuan": "Gigantisch"
+      },
+      "Description": "Größe: {scale} ({name})"
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "npc": "NSC",
+      "vehicle": "Fahrzeug",
+      "character": "Charakter",
+      "group": "Gruppe"
+    },
+    "Item": {
+      "action": "Aktion",
+      "consumable": "Verbrauchsgegenstand",
+      "ability": "Eigenschaft",
+      "power": "Macht",
+      "hindrance": "Handicap",
+      "shield": "Schild",
+      "armor": "Rüstung",
+      "edge": "Talent",
+      "gear": "Ausrüstung",
+      "weapon": "Waffe",
+      "skill": "Fertigkeit",
+      "ancestry": "Volk"
+    },
+    "Card": {
+      "poker": "Pokerkarte",
+      "adventure": "Abenteuerkarte"
+    },
+    "JournalEntryPage": {
+      "headquarters": "Stützpunkte"
+    },
+    "Combat": {
+      "dramaticTask": "Dramatische Aufgabe",
+      "chase": "Verfolgung"
+    },
+    "ActiveEffect": {
+      "modifier": "Modifikator"
+    }
+  }
+}

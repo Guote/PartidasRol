@@ -1,0 +1,205 @@
+<section id="effects-panel" class="effect-panel" style="{{topStyle}}">
+    {{#if (canViewEffectsPanel)}}
+        <div id="effects-panel-drag-handler" />
+        {{#each temporaryEffects as |effect|}}
+            <div
+                class="effect-item"
+                style="height: {{effectsPanelItemSize}}px;"
+            >
+                <div class="effect-info">
+                    <h1>
+                        {{effect.name}}
+                    </h1>
+                    {{#if (canViewEffectDetails)}}
+                        <div class="effect-info-details">
+                            {{#if effect.description}}
+                                <h2>
+                                    {{{effect.description}}}
+                                </h2>
+                            {{/if}}
+                            <div class="panel-tags">
+                                <div class="panel-tag panel-tag_primary">
+                                    temporary
+                                </div>
+                                <div class="panel-tag panel-tag_secondary">
+                                    {{effect.timeLabel}}
+                                </div>
+                                {{#if effect.flags.core.overlay}}
+                                    <div class="panel-tag panel-tag_tertiary">
+                                        overlay
+                                    </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+                <div
+                    class="temporary icon"
+                    data-effect-id="{{effect._id}}"
+                    style="background-image: url('{{effect.img}}'); height: {{effectsPanelIconSize}}px; width: {{effectsPanelIconSize}}px;"
+                >
+                    {{#if (showDurationOverlays)}}
+                        {{#if effect.isExpired}}
+                            <i class="expired badge fas fa-clock"></i>
+                        {{else if effect.isTemporary}}
+                            <i class="badge fas fa-clock"></i>
+                        {{else}}
+                            <i class="unlimited badge fas fa-infinity"></i>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        {{/each}}
+
+        {{#if (and temporaryEffects.length passiveEffects.length)}}
+            <hr style="width: {{effectsPanelIconSize}}px;" />
+        {{/if}}
+
+        {{#each passiveEffects as |effect|}}
+            <div
+                class="effect-item"
+                style="height: {{effectsPanelItemSize}}px;"
+            >
+                <div class="effect-info">
+                    <h1>
+                        {{effect.name}}
+                    </h1>
+                    {{#if (canViewEffectDetails)}}
+                        <div class="effect-info-details">
+                            {{#if effect.description}}
+                                <h2>
+                                    {{{effect.description}}}
+                                </h2>
+                            {{/if}}
+                            <div class="panel-tags">
+                                <div class="panel-tag panel-tag_primary">
+                                    passive
+                                </div>
+                                <div class="panel-tag panel-tag_secondary">
+                                    {{effect.timeLabel}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+                <div
+                    class="passive icon"
+                    data-effect-id="{{effect._id}}"
+                    style="background-image: url('{{effect.img}}'); height: {{effectsPanelIconSize}}px; width: {{effectsPanelIconSize}}px;"
+                >
+                    {{#if (showDurationOverlays)}}
+                        <i class="unlimited badge fas fa-infinity"></i>
+                    {{/if}}
+                </div>
+            </div>
+        {{/each}}
+
+        {{#if
+            (and
+                (or
+                    disabledTemporaryEffects.length
+                    disabledPassiveEffects.length
+                )
+                (or temporaryEffects.length passiveEffects.length)
+            )
+        }}
+            <hr style="width: {{effectsPanelIconSize}}px;" />
+        {{/if}}
+
+        {{#each disabledTemporaryEffects as |effect|}}
+            <div
+                class="effect-item"
+                style="height: {{effectsPanelItemSize}}px;"
+            >
+                <div class="effect-info">
+                    <h1>
+                        {{effect.name}}
+                    </h1>
+                    {{#if (canViewEffectDetails)}}
+                        <div class="effect-info-details">
+                            {{#if effect.description}}
+                                <h2>
+                                    {{{effect.description}}}
+                                </h2>
+                            {{/if}}
+                            <div class="panel-tags">
+                                <div class="panel-tag panel-tag_primary">
+                                    temporary
+                                </div>
+                                <div class="panel-tag panel-tag_secondary">
+                                    {{effect.timeLabel}}
+                                </div>
+                                <div class="panel-tag panel-tag_tertiary">
+                                    disabled
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+                <div
+                    class="disabled temporary icon"
+                    data-effect-id="{{effect._id}}"
+                    style="background-image: url('{{effect.img}}'); height: {{effectsPanelIconSize}}px; width: {{effectsPanelIconSize}}px;"
+                >
+                    {{#if (showDurationOverlays)}}
+                        {{#if effect.isExpired}}
+                            <i class="expired badge fas fa-clock"></i>
+                        {{else if effect.isTemporary}}
+                            <i class="badge fas fa-clock"></i>
+                        {{else}}
+                            <i class="unlimited badge fas fa-infinity"></i>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        {{/each}}
+
+        {{#each disabledPassiveEffects as |effect|}}
+            <div
+                class="effect-item"
+                style="height: {{effectsPanelItemSize}}px;"
+            >
+                <div class="effect-info">
+                    <h1>
+                        {{effect.name}}
+                    </h1>
+                    {{#if (canViewEffectDetails)}}
+                        <div class="effect-info-details">
+                            {{#if effect.description}}
+                                <h2>
+                                    {{{effect.description}}}
+                                </h2>
+                            {{/if}}
+                            <div class="panel-tags">
+                                <div class="panel-tag panel-tag_primary">
+                                    passive
+                                </div>
+                                <div class="panel-tag panel-tag_secondary">
+                                    {{effect.timeLabel}}
+                                </div>
+                                <div class="panel-tag panel-tag_tertiary">
+                                    disabled
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+                <div
+                    class="disabled passive icon"
+                    data-effect-id="{{effect._id}}"
+                    style="background-image: url('{{effect.img}}'); height: {{effectsPanelIconSize}}px; width: {{effectsPanelIconSize}}px;"
+                >
+                    {{#if (showDurationOverlays)}}
+                        {{#if effect.isExpired}}
+                            <i class="expired badge fas fa-clock"></i>
+                        {{else if effect.isTemporary}}
+                            <i class="badge fas fa-clock"></i>
+                        {{else}}
+                            <i class="unlimited badge fas fa-infinity"></i>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        {{/each}}
+    {{/if}}
+</section>

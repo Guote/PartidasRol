@@ -1,0 +1,38 @@
+<h2 class="culprit-header">{{localize "FindTheCulprit.FoundTheCulprit.Header"}}</h2>
+{{#if (or confirmStep culprit.active)}}
+  <p>{{localize "FindTheCulprit.FoundTheCulprit.CulpritConfirmed"}}</p>
+{{else if (not culprit.active)}}
+  <p>{{localize "FindTheCulprit.FoundTheCulprit.OfferConfirmStep"}}</p>
+{{/if}}
+
+{{#if pinned.length}}
+  <p>{{localize "FindTheCulprit.FoundTheCulprit.HasPinned" count=pinned.length}}</p>
+{{/if}}
+<ul class="ftc-module-list">
+  <li>
+    <div
+      class="tooltip-wrapper"
+      data-tooltip="{{localize 'FindTheCulprit.StateTooltip.culprit'}}"
+      data-tooltip-direction="LEFT"
+    >
+      <button class="ftc-state-button display-only" type="button" data-ftc-state="culprit" disabled>
+        <i class="fa-solid {{icons.module.culprit}}"></i>
+      </button>
+    </div>
+    <label>{{culprit.title}}</label>
+  </li>
+  {{#each pinned}}
+    <li>
+      <div
+        class="tooltip-wrapper"
+        data-tooltip="{{localize 'FindTheCulprit.StateTooltip.pinned'}}"
+        data-tooltip-direction="LEFT"
+      >
+        <button class="ftc-state-button display-only" type="button" data-ftc-state="pinned" disabled>
+          <i class="fa-solid {{@root.icons.module.pinned}}"></i>
+        </button>
+      </div>
+      <label>{{this}}</label>
+    </li>
+  {{/each}}
+</ul>

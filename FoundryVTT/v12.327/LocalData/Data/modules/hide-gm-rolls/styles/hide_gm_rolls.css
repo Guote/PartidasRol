@@ -1,0 +1,15 @@
+#chat-log li.message.gm-roll-hidden {
+	display: none;
+}
+
+#chat-log div.item-card div.card-content.gm-roll-hidden {
+	display: none;
+	margin: 0;
+	padding: 0;
+}
+
+#chat-log .dice-total.gm-roll-chevron-hidden:after {
+	display: none;
+	margin: 0;
+	padding: 0;
+}

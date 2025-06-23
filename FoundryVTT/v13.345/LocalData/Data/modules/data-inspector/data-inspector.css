@@ -1,0 +1,621 @@
+@charset "UTF-8";
+.application.data-inspector {
+  --entry-type-boolean: #355d99;
+  --entry-type-empty: darkred;
+  --entry-type-number: darkorchid;
+  --entry-type-function: #5e5858;
+  --entry-type-string: darkolivegreen;
+  --entry-type-null: gray;
+  --entry-type-undefined: gray;
+  --entry-details: gray;
+  --entry-value: gold;
+  --entry-max: goldenrod;
+  --entry-nondefault-data: #ffa5a5;
+  --header-background: #68655f;
+  --header-font: #f3eeee;
+  --muted-text: #dfdfd5;
+  --muted-header-text: #dfdfd5;
+  --search-good-match: hsla(46, 100%, 50%, 0.25);
+  --search-decent-match: hsla(197, 71%, 73%, 0.1);
+  --selected: #edcb8e;
+  --details-separator: hsla(34, 17%, 36%, 0.25);
+  --border-hover: hsla(13, 12%, 29%, 0.58);
+  --entry-not-in-source: #255e74;
+  --entry-not-in-rolldata: #64486a;
+  --entry-not-in-source: #c30808;
+  --entry-hover-shadow: hsla(16, 100%, 50%, 0.37);
+  --entry-hover-background: hsla(98, 100%, 59%, 0.18);
+  --entry-hover-boxshadow: hsla(27, 21%, 29%, 0.39);
+}
+
+.theme-light #tooltip.data-inspector {
+  --text-path: seagreen;
+  --text-type: indianred;
+  --text-children: indianred;
+  --text-length: indianred;
+  --color-bg: #e7e1d9;
+  --text-primary-color: #444241;
+  --box-border: #8b8383;
+  --box-shadow: darkred;
+  --header-bg: rgba(0, 0, 0, 0.1);
+}
+.theme-light .application.data-inspector {
+  --muted-text: var(--color-text-primary);
+  --muted-header-text: silver;
+  --entry-not-in-source: slategray;
+  --entry-value: steelblue;
+  --entry-max: mediumslateblue;
+  --entry-name: darkolivegreen;
+}
+
+.theme-dark #tooltip.data-inspector {
+  --text-path: darkseagreen;
+  --text-type: indianred;
+  --text-children: indianred;
+  --text-length: indianred;
+  --color-bg: rgba(0, 0, 0, 0.95);
+  --text-primary-color: var(--color-text-light-highlight);
+  --box-border: #8b8383;
+  --box-shadow: darkred;
+  --header-bg: rgba(0, 0, 0, 0.1);
+}
+.theme-dark .application.data-inspector {
+  --entry-nondefault-data: blue;
+  --entry-not-in-rolldata: var(--color-text-dark-inactive);
+  --entry-not-in-source: silver;
+  --entry-type-number: mediumpurple;
+  --entry-type-string: darkseagreen;
+  --entry-type-empty: crimson;
+  --entry-type-boolean: cornflowerblue;
+  --entry-details: gray;
+  --entry-value: goldenrod;
+  --entry-max: darkgoldenrod;
+  --entry-name: lightskyblue;
+  --header-background: var(--color-border-dark-tertiary);
+}
+.theme-dark .application.data-inspector .hint {
+  color: var(--color-text-primary);
+}
+
+.application.koboldworks.data-inspector > .window-content input::placeholder {
+  opacity: 0.6;
+}
+.application.koboldworks.data-inspector > .window-content .warning {
+  align-self: center;
+  font-size: var(--font-size-16, 12pt);
+  text-shadow: 0 0 7px rgba(255, 0, 0, 0.4901960784);
+}
+
+form.application.koboldworks.data-inspector.editor {
+  min-width: 480px;
+  min-height: 220px;
+  gap: 0;
+}
+form.application.koboldworks.data-inspector.editor > .window-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0.5rem;
+}
+form.application.koboldworks.data-inspector.editor > .window-content .editor-view {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.5rem;
+}
+form.application.koboldworks.data-inspector.editor > .window-content .editor-view .path input {
+  height: unset;
+  line-height: unset;
+  pointer-events: initial;
+}
+form.application.koboldworks.data-inspector.editor > .window-content .editor-view > * {
+  align-items: center;
+}
+form.application.koboldworks.data-inspector.editor > .window-content label {
+  flex: 0;
+}
+form.application.koboldworks.data-inspector.editor > .window-content > .path input {
+  flex: 0;
+}
+form.application.koboldworks.data-inspector.editor > .window-content :is(.path, .type) {
+  display: flex;
+  flex-direction: row;
+  flex: 0;
+}
+form.application.koboldworks.data-inspector.editor > .window-content :is(.path, .type) > label {
+  flex: 0 4em;
+}
+form.application.koboldworks.data-inspector.editor > .window-content :is(.path, .type) > input {
+  flex: 1 16em;
+}
+form.application.koboldworks.data-inspector.editor > .window-content :is(.path, .type) > * {
+  flex: 1 50%;
+}
+form.application.koboldworks.data-inspector.editor > .window-content :is(.path, .type) button {
+  width: unset;
+}
+form.application.koboldworks.data-inspector.editor > .window-content .value {
+  flex: 1 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+}
+form.application.koboldworks.data-inspector.editor > .window-content .value textarea {
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 1rem;
+  height: 100%;
+}
+form.application.koboldworks.data-inspector.editor > .window-content .value .editor {
+  height: 100%;
+  width: 100%;
+  flex: 1 100%;
+  display: flex;
+}
+form.application.koboldworks.data-inspector.editor > .window-content .warning.token {
+  text-align: center;
+}
+form.application.koboldworks.data-inspector.editor > .window-content > footer {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0.5rem;
+}
+
+form.application.koboldworks.data-inspector {
+  min-width: 520px;
+  min-height: 380px;
+}
+form.application.koboldworks.data-inspector > .window-content {
+  overflow: hidden;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  gap: 0.3rem;
+  flex-direction: column;
+}
+
+#tooltip.data-inspector {
+  box-shadow: 0 0 2px var(--box-shadow);
+  background-color: var(--color-bg);
+  color: var(--text-primary-color);
+  text-shadow: none;
+  max-width: unset;
+  border: 0.3px solid var(--box-border);
+  border-radius: 0.5em;
+  border-bottom-left-radius: 0;
+  padding: 0.3em 0.5em;
+}
+#tooltip.data-inspector p:first-child {
+  margin-top: 0;
+}
+#tooltip.data-inspector .path {
+  color: var(--text-path);
+  white-space: nowrap;
+}
+#tooltip.data-inspector .type {
+  color: var(--text-type);
+}
+#tooltip.data-inspector .children {
+  color: var(--text-children);
+}
+#tooltip.data-inspector .length {
+  color: var(--text-length);
+}
+#tooltip.data-inspector .in-data {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  place-content: center;
+}
+#tooltip.data-inspector .in-data .data-source {
+  display: flex;
+  flex-direction: column;
+  flex: 0;
+  gap: 3px;
+  align-items: center;
+}
+#tooltip.data-inspector .in-data .data-source .header,
+#tooltip.data-inspector .in-data .data-source .value {
+  justify-content: center;
+  flex: 0;
+  margin: 0;
+  padding: 0.1em 0.3em;
+  white-space: nowrap;
+  font-weight: var(--font-size-11, 8pt);
+}
+#tooltip.data-inspector .in-data .data-source .header {
+  background-color: var(--header-bg);
+  font-weight: bold;
+}
+#tooltip.data-inspector .in-data .data-source .value {
+  overflow: unset;
+}
+
+form.application.koboldworks.data-inspector > .window-content > header {
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: 3fr minmax(200px, 1fr);
+  grid-template-rows: min-content;
+  gap: 0.7rem;
+}
+form.application.koboldworks.data-inspector > .window-content > header fieldset.main {
+  display: grid;
+  grid-template-columns: min-content auto;
+  gap: 3px;
+  align-items: center;
+  height: min-content;
+  flex: 1;
+}
+form.application.koboldworks.data-inspector > .window-content > header fieldset.main label {
+  display: contents;
+}
+form.application.koboldworks.data-inspector > .window-content > header .path-box,
+form.application.koboldworks.data-inspector > .window-content > header .search-box {
+  display: flex;
+  gap: 3px;
+  flex: 0;
+  align-items: center;
+}
+form.application.koboldworks.data-inspector > .window-content > header fieldset.settings {
+  display: flex;
+  flex-direction: column;
+  flex: 0;
+  gap: 3px;
+  align-items: center;
+}
+form.application.koboldworks.data-inspector > .window-content > header fieldset.settings label {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+form.application.koboldworks.data-inspector > .window-content > header fieldset.settings > h4 {
+  grid-column: span 2;
+  font-variant: small-caps;
+  margin: 0;
+  text-align: center;
+}
+form.application.koboldworks.data-inspector > .window-content > header fieldset.settings input[type=checkbox] {
+  margin: 0 5px;
+  height: 16px;
+  width: 16px;
+}
+form.application.koboldworks.data-inspector > .window-content > header fieldset.settings select {
+  line-height: 1;
+  height: unset;
+  width: min-content;
+}
+form.application.koboldworks.data-inspector > .window-content > header .main,
+form.application.koboldworks.data-inspector > .window-content > header .settings {
+  border: 1px solid rgba(106, 89, 78, 0.3607843137);
+  border-radius: 5px;
+  padding: 0.3rem;
+  margin: 0;
+  background-color: rgba(137, 122, 112, 0.1098039216);
+  height: 100%;
+}
+form.application.koboldworks.data-inspector > .window-content > header .main > label,
+form.application.koboldworks.data-inspector > .window-content > header .settings > label {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0.3rem;
+  align-items: anchor-center;
+}
+form.application.koboldworks.data-inspector > .window-content > header .main > label > input[type=checkbox],
+form.application.koboldworks.data-inspector > .window-content > header .settings > label > input[type=checkbox] {
+  margin: 0;
+}
+form.application.koboldworks.data-inspector > .window-content > header .main > label:has(input, select),
+form.application.koboldworks.data-inspector > .window-content > header .settings > label:has(input, select) {
+  cursor: pointer;
+}
+form.application.koboldworks.data-inspector > .window-content > header .type {
+  display: flex;
+  white-space: nowrap;
+  gap: 0.25em;
+}
+form.application.koboldworks.data-inspector > .window-content > header .type label {
+  flex: 1;
+  color: var(--muted-text);
+}
+form.application.koboldworks.data-inspector > .window-content > header .type .value {
+  flex: 3;
+  font-weight: bold;
+}
+form.application.koboldworks.data-inspector > .window-content > header > .details {
+  grid-column: span 2;
+}
+
+form.application.koboldworks.data-inspector > .window-content > .datatree {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column nowrap;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .hint {
+  padding: 0 0.5rem;
+  text-align: center;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview {
+  height: 100%;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview .warning {
+  text-align: center;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview.derived [data-path]:not(.in-source) .key, form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview.rolldata [data-path]:not(.in-source) .key {
+  color: var(--entry-not-in-source);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview.source [data-path]:not(.in-rolldata) .key {
+  color: var(--entry-not-in-rolldata);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview .data-pools .absent.temporary, form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview .data-pools .absent.source {
+  color: var(--entry-not-in-source);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .headers {
+  display: flex;
+  overflow-y: scroll;
+  line-height: 1.5em;
+  align-items: center;
+  height: 2em;
+  background-color: var(--header-background);
+  color: var(--header-font);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .headers .key {
+  padding-left: 1.7em;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview .key,
+form.application.koboldworks.data-inspector > .window-content > .datatree > .headers .key {
+  flex: 1 6em;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview .value,
+form.application.koboldworks.data-inspector > .window-content > .datatree > .headers .value {
+  flex: 0 20em;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview .data-pools,
+form.application.koboldworks.data-inspector > .window-content > .datatree > .headers .data-pools {
+  display: inline-flex;
+  flex: 0 4em;
+  gap: 1px;
+  justify-content: center;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > .dataview .data-pools .pool,
+form.application.koboldworks.data-inspector > .window-content > .datatree > .headers .data-pools .pool {
+  flex: 0 1em;
+  text-align: center;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul {
+  border: 1px solid rgba(88, 74, 63, 0.1607843137);
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 0.7em;
+  flex: 1 100%;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree > ul {
+  border: none;
+  border-right: 1px solid rgba(88, 74, 63, 0.1490196078);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul > li:nth-child(2n+1) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul > li:nth-child(2n+0) {
+  background-color: transparent;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul > li.data-element.not-in-temporary .key {
+  text-shadow: 0 0 3px var(--entry-nondefault-data);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul > li {
+  padding-left: 0.7em;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .note {
+  padding-left: 2em;
+  font-size: 9pt;
+  flex: 0;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .extended-value {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value-details {
+  color: var(--entry-details);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value-details :is(.value, .total) {
+  color: var(--entry-value);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value-details .max {
+  color: var(--entry-max);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value-name {
+  color: var(--entry-name);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value,
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .extended-value {
+  flex: 0 20em;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value {
+  flex: 0 20em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 20em;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.container {
+  font-style: italic;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.function {
+  font-style: italic;
+  color: var(--entry-type-function);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.string {
+  color: var(--entry-type-string);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.string::after, form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.string::before {
+  content: '"';
+  opacity: 0.6;
+  color: unset;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.boolean {
+  color: var(--entry-type-boolean);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.boolean.true:before {
+  content: "🗹 ";
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.boolean.false:before {
+  content: "☐ ";
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.null {
+  color: var(--entry-type-null);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.undefined {
+  color: var(--entry-type-undefined);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.number {
+  font-style: italic;
+  color: var(--entry-type-number);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.empty {
+  color: var(--entry-type-empty);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details .value.recursion {
+  font-style: italic;
+  color: var(--entry-type-empty);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details h4 {
+  flex: 0;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul .details:hover {
+  text-shadow: 0 0 5px var(--entry-hover-shadow);
+  background-color: var(--entry-hover-background);
+  box-shadow: 0 0 3px var(--entry-hover-boxshadow);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  line-height: 1;
+  position: relative;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li:hover > ul.data-list {
+  border-left: 1px solid var(--border-hover);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li .details {
+  flex: 1;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li:before {
+  content: " = ";
+  white-space: pre;
+  flex: 0 1em;
+  opacity: 0.4;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.container:not(.collapsed):before {
+  content: " - ";
+  opacity: unset;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.container:not(.collapsed):not(.empty) > .details {
+  border-bottom: 1px solid var(--details-separator);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.empty.string > .details > .value:before, form.application.koboldworks.data-inspector > .window-content > .datatree ul li.empty.string > .details > .value:after {
+  opacity: unset;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.empty:is(.array, .object, .set) > .details > .value {
+  opacity: 0.6;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.collapsed:before {
+  content: " + ";
+  opacity: unset;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.collapsed ul {
+  display: none;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.document:before, form.application.koboldworks.data-inspector > .window-content > .datatree ul li.function:before, form.application.koboldworks.data-inspector > .window-content > .datatree ul li.getter:before {
+  content: "~ ";
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.getter .value:hover {
+  color: black;
+  text-shadow: 0 0 15px red;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li[data-path]:hover {
+  opacity: unset;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li[data-match-quality=good] {
+  background-color: var(--search-good-match);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li[data-match-quality=bad].value {
+  display: none;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li[data-match-quality=decent] {
+  background-color: var(--search-decent-match);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.hide {
+  display: none;
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li.data-element.selected {
+  background-color: var(--selected);
+}
+form.application.koboldworks.data-inspector > .window-content > .datatree ul li .value[data-id]:hover {
+  color: black;
+  opacity: unset;
+}
+
+form.application.koboldworks.data-inspector.browser > .window-content footer {
+  padding: 0.5rem;
+  background: var(--header-background);
+  color: var(--header-font);
+  display: flex;
+  flex-flow: row;
+  gap: 0.5rem;
+}
+form.application.koboldworks.data-inspector.browser > .window-content footer > .footnote {
+  display: flex;
+  flex-flow: row nowrap;
+}
+form.application.koboldworks.data-inspector.browser > .window-content footer > .footnote > label {
+  color: var(--muted-header-text);
+}
+form.application.koboldworks.data-inspector.browser > .window-content footer > .footnote > :is(label, span) {
+  padding: 1px 3px;
+}
+
+.application.koboldworks.data-inspector > .window-content .dataview.scroll {
+  overflow-y: scroll;
+}
+.application.koboldworks.data-inspector > .window-content h3 {
+  color: var(--color-text-dark-primary);
+  text-shadow: none;
+  border: none;
+}
+.application.koboldworks.data-inspector > .window-content .hint {
+  flex: 0;
+}
+
+.data-inspector {
+  --color-icon: lightskyblue;
+}
+
+.application > .window-header button.header-control.data-inspector {
+  color: var(--color-icon);
+}
+
+.app.window-app > header.window-header .header-button.control.data-inspector > i {
+  color: var(--color-icon);
+}
+
+form.application.koboldworks.data-inspector > header > .window-icon {
+  color: var(--color-icon);
+}
+
+/*# sourceMappingURL=data-inspector.css.map */

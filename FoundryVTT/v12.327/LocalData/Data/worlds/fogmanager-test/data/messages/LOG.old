@@ -1,3 +1,8 @@
-2025/06/23-00:19:54.733 7564 Recovering log #32
-2025/06/23-00:19:54.740 7564 Delete type=0 #32
-2025/06/23-00:19:54.740 7564 Delete type=3 #30
+2025/06/23-21:11:47.605 39d4 Recovering log #52
+2025/06/23-21:11:47.613 39d4 Delete type=0 #52
+2025/06/23-21:11:47.613 39d4 Delete type=3 #50
+2025/06/23-21:15:44.703 f28 Level-0 table #57: started
+2025/06/23-21:15:44.703 f28 Level-0 table #57: 0 bytes OK
+2025/06/23-21:15:44.705 f28 Delete type=0 #55
+2025/06/23-21:15:44.705 f28 Manual compaction at level-0 from '!messages!4eIoAtr5rBKzrEWP' @ 72057594037927935 : 1 .. '!messages!WT4H1ldYuiLTEtVA' @ 0 : 0; will stop at (end)
+2025/06/23-21:15:44.705 f28 Manual compaction at level-1 from '!messages!4eIoAtr5rBKzrEWP' @ 72057594037927935 : 1 .. '!messages!WT4H1ldYuiLTEtVA' @ 0 : 0; will stop at (end)

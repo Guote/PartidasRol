@@ -1,0 +1,63 @@
+{
+    "id": "complete-card-management",
+    "title": "Complete Card Management",
+    "description": "Complete Card Management (CCM) is produced by Metamorphic Digital Studios and allows full interaction with cards on the canvas in Foundry VTT. By creating a unique card layer on the canvas users can drop cards, flip them, rotate them, shuffle decks, and even use regions to assign cards to different piles. The versatility is endless.",
+    "authors": [
+        {
+            "name": "Joseph M.",
+            "discord": "chaosos"
+        },
+        {
+            "name": "Zhell",
+            "discord": "zhell9201"
+        }
+    ],
+    "url": "https://github.com/MetaMorphic-Digital/complete-card-management",
+    "license": "LICENSE.txt",
+    "readme": "README.md",
+    "bugs": "https://github.com/MetaMorphic-Digital/complete-card-management/issues",
+    "changelog": "CHANGELOG.md",
+    "media": [
+        {
+            "type": "setup",
+            "url": "",
+            "thumbnail": ""
+        }
+    ],
+    "version": "2.0.6",
+    "compatibility": {
+        "minimum": "13",
+        "verified": "13"
+    },
+    "esmodules": [
+        "./ccm.mjs"
+    ],
+    "styles": [
+        "./ccm.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "de",
+            "name": "Deutsch (German)",
+            "path": "lang/de.json"
+        }
+    ],
+    "flags": {
+        "hotReload": false
+    },
+    "socket": true,
+    "packs": [],
+    "packFolders": [],
+    "documentTypes": {
+        "RegionBehavior": {
+            "moveCard": {}
+        }
+    },
+    "manifest": "https://github.com/MetaMorphic-Digital/complete-card-management/releases/latest/download/module.json",
+    "download": "https://github.com/MetaMorphic-Digital/complete-card-management/releases/download/v2.0.6/module.zip"
+}

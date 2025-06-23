@@ -1,0 +1,12 @@
+{
+  "title": "SavageTest",
+  "id": "savagetest",
+  "system": "swade",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "5.0.3",
+  "lastPlayed": "Mon Jun 23 2025 13:21:33 GMT+0200 (hora de verano de Europa central)"
+}

@@ -1,0 +1,16 @@
+<p class="notification stable">{{localize 'RTUCards.migration.fromV1.message.success'}}</p>
+<p>{{localize 'RTUCards.migration.fromV1.message.hint'}}&nbsp;<a href="https://foundryvtt.com/packages/ready-to-use-cards">README</a></p>
+
+{{#if customDeckIds.length}}
+<p class="notification warning">{{localize 'RTUCards.migration.fromV1.message.customDecks.warnings'}}</p>
+<p>{{localize 'RTUCards.migration.fromV1.message.customDecks.explain'}}</p>
+<p>{{localize 'RTUCards.migration.fromV1.message.customDecks.list'}}</p>
+<ul>
+    {{#each customDeckIds as |deck|}}
+        <li>{{deck}}</li>
+    {{/each}}
+</ul>
+{{/if}}
+
+<p class="notification info">{{localize 'RTUCards.migration.fromV1.message.noWorry'}}</p>
+<p>{{localize 'RTUCards.migration.fromV1.message.fallback'}}</p>

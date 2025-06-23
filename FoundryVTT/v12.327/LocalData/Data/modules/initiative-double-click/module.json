@@ -1,0 +1,35 @@
+{
+    "id": "initiative-double-click",
+    "title": "Initiative Double Click",
+    "description": "Double click the initiative value in the combat tracker to quickly modify it.",
+    "authors": [
+        {
+            "name": "Matheus Clemente",
+            "discord": "mclemente",
+            "ko-fi": "mclemente"
+        }
+    ],
+    "compatibility": {
+        "minimum": "11",
+        "verified": "12",
+        "maximum": "12"
+    },
+    "esmodules": [
+        "Combat.js"
+    ],
+    "styles": [
+        "initiative.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "langs/en.json"
+        }
+    ],
+    "socket": true,
+    "url": "https://github.com/mclemente/fvtt-initiative-double-click",
+    "version": "1.8.1",
+    "manifest": "https://github.com/mclemente/fvtt-initiative-double-click/releases/latest/download/module.json",
+    "download": "https://github.com/mclemente/fvtt-initiative-double-click/releases/download/1.8.1/module.zip"
+}

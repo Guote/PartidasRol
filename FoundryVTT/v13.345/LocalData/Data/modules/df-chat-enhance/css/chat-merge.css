@@ -1,0 +1,119 @@
+/**** Corrects conflict with Chat Portraits ****/
+/***********************************************/
+:root {
+  --dfce-cm-separation: ;
+  --dfce-cm-header: ;
+  --dfce-cm-header-delete: ;
+  --dfce-cm-header-delete-pad: ;
+}
+
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-top,
+#df-chat-log .message.dfce-cm-top {
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  margin-bottom: 0;
+  padding-bottom: 2.5px;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-top:hover,
+#df-chat-log .message.dfce-cm-top:hover {
+  box-shadow: inset 0 0 var(--dfce-cm-hover-shadow, 5px) var(--dfce-mc-border-color, #6f6c66);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle,
+#df-chat-log .message.dfce-cm-middle {
+  border-top: var(--dfce-cm-separation) solid;
+  border-bottom: none;
+  border-radius: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 2.5px;
+  padding-bottom: 2.5px;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle > header > h4,
+#df-chat-log .message.dfce-cm-middle > header > h4 {
+  display: none;
+  display: var(--dfce-cm-header, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle > header > span.flavor-text,
+#df-chat-log .message.dfce-cm-middle > header > span.flavor-text {
+  padding-right: var(--dfce-cm-header-delete-pad, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle .message-timestamp,
+#df-chat-log .message.dfce-cm-middle .message-timestamp {
+  display: var(--dfce-cm-header, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle .message-header,
+#df-chat-log .message.dfce-cm-middle .message-header {
+  height: var(--dfce-cm-header-delete, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle .message-header .message-metadata,
+#df-chat-log .message.dfce-cm-middle .message-header .message-metadata {
+  flex: 2 !important;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle .message-metadata,
+#df-chat-log .message.dfce-cm-middle .message-metadata {
+  height: var(--dfce-cm-header-delete, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle .message-delete,
+#df-chat-log .message.dfce-cm-middle .message-delete {
+  position: relative;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle > .message-content,
+#df-chat-log .message.dfce-cm-middle > .message-content {
+  padding-right: var(--dfce-cm-header-delete-pad, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle:hover,
+#df-chat-log .message.dfce-cm-middle:hover {
+  box-shadow: inset 0 0 var(--dfce-cm-hover-shadow, 5px) var(--dfce-mc-border-color, #6f6c66);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-middle .message-portrait,
+#df-chat-log .message.dfce-cm-middle .message-portrait {
+  display: none;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom,
+#df-chat-log .message.dfce-cm-bottom {
+  border-top: var(--dfce-cm-separation) solid;
+  border-radius: 0 0 5px 5px;
+  margin-top: 0;
+  padding-top: 2.5px;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom > header > h4,
+#df-chat-log .message.dfce-cm-bottom > header > h4 {
+  display: none;
+  display: var(--dfce-cm-header, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom > header > span.flavor-text,
+#df-chat-log .message.dfce-cm-bottom > header > span.flavor-text {
+  padding-right: var(--dfce-cm-header-delete-pad, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom .message-timestamp,
+#df-chat-log .message.dfce-cm-bottom .message-timestamp {
+  display: var(--dfce-cm-header, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom .message-header,
+#df-chat-log .message.dfce-cm-bottom .message-header {
+  height: var(--dfce-cm-header-delete, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom .message-header .message-metadata,
+#df-chat-log .message.dfce-cm-bottom .message-header .message-metadata {
+  flex: 2 !important;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom .message-metadata,
+#df-chat-log .message.dfce-cm-bottom .message-metadata {
+  height: var(--dfce-cm-header-delete, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom .message-delete,
+#df-chat-log .message.dfce-cm-bottom .message-delete {
+  position: relative;
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom > .message-content,
+#df-chat-log .message.dfce-cm-bottom > .message-content {
+  padding-right: var(--dfce-cm-header-delete-pad, inherit);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom:hover,
+#df-chat-log .message.dfce-cm-bottom:hover {
+  box-shadow: inset 0 0 var(--dfce-cm-hover-shadow, 5px) var(--dfce-mc-border-color, #6f6c66);
+}
+:is(.chat-popout, #chat-log, .chat-log) .message.dfce-cm-bottom .message-portrait,
+#df-chat-log .message.dfce-cm-bottom .message-portrait {
+  display: none;
+}

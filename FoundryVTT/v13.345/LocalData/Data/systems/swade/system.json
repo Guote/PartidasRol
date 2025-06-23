@@ -1,0 +1,299 @@
+{
+  "id": "swade",
+  "title": "Savage Worlds Adventure Edition",
+  "description": "<p>Published by <a href=\"https://peginc.com\">Pinnacle Entertainment Group, Inc.</a></p><p>A comprehensive game system for running <em>Savage Worlds Adventure Edition<em>.<br><p>Any time. Any place. <em>Savage Worlds</em>.</p>",
+  "version": "5.0.3",
+  "compatibility": {
+    "minimum": 13.339,
+    "verified": 13,
+    "maximum": 13
+  },
+  "relationships": {
+    "recommends": [
+      {
+        "id": "complete-card-management",
+        "manifest": "https://github.com/MetaMorphic-Digital/complete-card-management/releases/download/v1.0.2/module.json",
+        "reason": "For laying out chases.",
+        "type": "module"
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "FloRad",
+      "url": "https://gitlab.com/florad92",
+      "discord": "floradical"
+    },
+    {
+      "name": "Joseph/ChaosOS",
+      "url": "https://joseph-meehan.carrd.co/",
+      "discord": "chaosos"
+    }
+  ],
+  "esmodules": [
+    "swade.js"
+  ],
+  "styles": [
+    "swade.css"
+  ],
+  "packs": [
+    {
+      "name": "skills",
+      "label": "Basic Skills",
+      "system": "swade",
+      "path": "packs/skills",
+      "type": "Item"
+    },
+    {
+      "name": "edges",
+      "label": "Basic Edges",
+      "system": "swade",
+      "path": "packs/edges",
+      "type": "Item"
+    },
+    {
+      "name": "hindrances",
+      "label": "Basic Hindrances",
+      "system": "swade",
+      "path": "packs/hindrances",
+      "type": "Item"
+    },
+    {
+      "name": "powers",
+      "label": "Basic Powers",
+      "system": "swade",
+      "path": "packs/powers",
+      "type": "Item"
+    },
+    {
+      "name": "system-docs",
+      "label": "System Documentation",
+      "system": "swade",
+      "path": "packs/system-docs",
+      "type": "JournalEntry"
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Savage Worlds System",
+      "sorting": "a",
+      "packs": [
+        "skills",
+        "edges",
+        "hindrances",
+        "powers",
+        "system-docs"
+      ],
+      "color": "#483D8B"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
+    },
+    {
+      "lang": "ca",
+      "name": "Català",
+      "path": "lang/ca.json"
+    },
+    {
+      "lang": "gl",
+      "name": "Galego",
+      "path": "lang/gl.json"
+    },
+    {
+      "lang": "eu",
+      "name": "Euskera",
+      "path": "lang/eu.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt_BR.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Française",
+      "path": "lang/fr.json"
+    },
+    {
+      "lang": "zh-Hans",
+      "name": "Chinese (Simplified)",
+      "path": "lang/zh_Hans.json"
+    },
+    {
+      "lang": "pl",
+      "name": "Polski",
+      "path": "lang/pl.json"
+    }
+  ],
+  "media": [
+    {
+      "type": "setup",
+      "url": "systems/swade/assets/ui/sign_in_background.webp",
+      "thumbnail": "systems/swade/assets/ui/sign_in_background.webp"
+    }
+  ],
+  "flags": {
+    "hotReload": {
+      "extensions": [
+        "js",
+        "css",
+        "html",
+        "hbs",
+        "json"
+      ],
+      "paths": [
+        "system/templates",
+        "lang/en.json",
+        "swade.js",
+        "swade.css"
+      ]
+    }
+  },
+  "socket": true,
+  "background": "systems/swade/assets/ui/sign_in_background.webp",
+  "grid": {
+    "units": "in",
+    "type": 0
+  },
+  "manifest": "https://gitlab.com/api/v4/projects/16269883/packages/generic/swade/latest/system.json",
+  "download": "https://gitlab.com/peginc/swade/-/releases/v5.0.3/downloads/swade-v5.0.3.zip",
+  "url": "https://gitlab.com/peginc/swade",
+  "readme": "https://gitlab.com/peginc/swade/-/wikis/home",
+  "bugs": "https://gitlab.com/peginc/swade/-/issues",
+  "changelog": "https://gitlab.com/peginc/swade/-/releases",
+  "license": "https://gitlab.com/peginc/swade/-/blob/master/LICENSE.md",
+  "documentTypes": {
+    "ActiveEffect": {
+      "modifier": {}
+    },
+    "Actor": {
+      "character": {
+        "htmlFields": [
+          "details.appearance",
+          "details.notes",
+          "details.goals",
+          "details.biography.value",
+          "advances.details"
+        ]
+      },
+      "npc": {
+        "htmlFields": [
+          "details.appearance",
+          "details.notes",
+          "details.goals",
+          "details.biography.value",
+          "advances.details"
+        ]
+      },
+      "vehicle": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "group": {
+        "htmlFields": [
+          "description"
+        ]
+      }
+    },
+    "Item": {
+      "weapon": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "armor": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "ancestry": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "shield": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "gear": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "edge": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "hindrance": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "skill": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "power": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "ability": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "consumable": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "action": {
+        "htmlFields": [
+          "description"
+        ]
+      }
+    },
+    "Card": {
+      "poker": {},
+      "adventure": {}
+    },
+    "ChatMessage": {
+      "itemCard": {}
+    },
+    "Combat": {
+      "chase": {},
+      "dramaticTask": {}
+    },
+    "JournalEntryPage": {
+      "headquarters": {
+        "htmlFields": [
+          "advantage",
+          "complication",
+          "form.description",
+          "form.acquisition",
+          "form.maintenance",
+          "upgrades"
+        ]
+      }
+    }
+  }
+}

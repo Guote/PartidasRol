@@ -1,0 +1,504 @@
+{
+  "name": "Belote (pixel fantasy)",
+  "type": "deck",
+  "description": "A classic 32 cards deck",
+  "img": "modules/ready-to-use-cards/resources/pixelFantasy/icons/back.webp",
+  "data": {},
+  "cards": [
+    {
+      "name": "cards.hearts01.label",
+      "description": "cards.hearts01.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts01.label",
+          "text": "cards.hearts01.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-1.png"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.hearts07.label",
+      "description": "cards.hearts07.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts07.label",
+          "text": "cards.hearts07.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-7.png"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.hearts08.label",
+      "description": "cards.hearts08.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts08.label",
+          "text": "cards.hearts08.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-8.png"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.hearts09.label",
+      "description": "cards.hearts09.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts09.label",
+          "text": "cards.hearts09.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-9.png"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.hearts10.label",
+      "description": "cards.hearts10.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.hearts10.label",
+          "text": "cards.hearts10.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-10.png"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.heartsJack.label",
+      "description": "cards.heartsJack.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.heartsJack.label",
+          "text": "cards.heartsJack.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-11.png"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.heartsQueen.label",
+      "description": "cards.heartsQueen.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.heartsQueen.label",
+          "text": "cards.heartsQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-12.png"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.heartsKing.label",
+      "description": "cards.heartsKing.desc",
+      "suit": "hearts",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.heartsKing.label",
+          "text": "cards.heartsKing.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-hearts-13.png"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+
+    {
+      "name": "cards.spades01.label",
+      "description": "cards.spades01.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades01.label",
+          "text": "cards.spades01.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-1.png"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.spades07.label",
+      "description": "cards.spades07.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades07.label",
+          "text": "cards.spades07.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-7.png"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.spades08.label",
+      "description": "cards.spades08.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades08.label",
+          "text": "cards.spades08.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-8.png"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.spades09.label",
+      "description": "cards.spades09.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades09.label",
+          "text": "cards.spades09.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-9.png"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.spades10.label",
+      "description": "cards.spades10.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spades10.label",
+          "text": "cards.spades10.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-10.png"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.spadesJack.label",
+      "description": "cards.spadesJack.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spadesJack.label",
+          "text": "cards.spadesJack.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-11.png"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.spadesQueen.label",
+      "description": "cards.spadesQueen.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spadesQueen.label",
+          "text": "cards.spadesQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-12.png"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.spadesKing.label",
+      "description": "cards.spadesKing.desc",
+      "suit": "spades",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.spadesKing.label",
+          "text": "cards.spadesKing.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-spades-13.png"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+
+    {
+      "name": "cards.diamonds01.label",
+      "description": "cards.diamonds01.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds01.label",
+          "text": "cards.diamonds01.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-1.png"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.diamonds07.label",
+      "description": "cards.diamonds07.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds07.label",
+          "text": "cards.diamonds07.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-7.png"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.diamonds08.label",
+      "description": "cards.diamonds08.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds08.label",
+          "text": "cards.diamonds08.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-8.png"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.diamonds09.label",
+      "description": "cards.diamonds09.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds09.label",
+          "text": "cards.diamonds09.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-9.png"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.diamonds10.label",
+      "description": "cards.diamonds10.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamonds10.label",
+          "text": "cards.diamonds10.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-10.png"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.diamondsJack.label",
+      "description": "cards.diamondsJack.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamondsJack.label",
+          "text": "cards.diamondsJack.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-11.png"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.diamondsQueen.label",
+      "description": "cards.diamondsQueen.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamondsQueen.label",
+          "text": "cards.diamondsQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-12.png"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.diamondsKing.label",
+      "description": "cards.diamondsKing.desc",
+      "suit": "diamonds",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.diamondsKing.label",
+          "text": "cards.diamondsKing.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-diamonds-13.png"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    },
+
+    {
+      "name": "cards.clubs01.label",
+      "description": "cards.clubs01.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs01.label",
+          "text": "cards.clubs01.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-1.png"
+        }
+      ],
+      "type": "base",
+      "value": 1
+    },
+    {
+      "name": "cards.clubs07.label",
+      "description": "cards.clubs07.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs07.label",
+          "text": "cards.clubs07.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-7.png"
+        }
+      ],
+      "type": "base",
+      "value": 7
+    },
+    {
+      "name": "cards.clubs08.label",
+      "description": "cards.clubs08.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs08.label",
+          "text": "cards.clubs08.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-8.png"
+        }
+      ],
+      "type": "base",
+      "value": 8
+    },
+    {
+      "name": "cards.clubs09.label",
+      "description": "cards.clubs09.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs09.label",
+          "text": "cards.clubs09.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-9.png"
+        }
+      ],
+      "type": "base",
+      "value": 9
+    },
+    {
+      "name": "cards.clubs10.label",
+      "description": "cards.clubs10.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubs10.label",
+          "text": "cards.clubs10.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-10.png"
+        }
+      ],
+      "type": "base",
+      "value": 10
+    },
+    {
+      "name": "cards.clubsJack.label",
+      "description": "cards.clubsJack.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubsJack.label",
+          "text": "cards.clubsJack.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-11.png"
+        }
+      ],
+      "type": "base",
+      "value": 11
+    },
+    {
+      "name": "cards.clubsQueen.label",
+      "description": "cards.clubsQueen.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubsQueen.label",
+          "text": "cards.clubsQueen.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-12.png"
+        }
+      ],
+      "type": "base",
+      "value": 12
+    },
+    {
+      "name": "cards.clubsKing.label",
+      "description": "cards.clubsKing.desc",
+      "suit": "clubs",
+      "face": 0,
+      "faces": [
+        {
+          "name": "cards.clubsKing.label",
+          "text": "cards.clubsKing.desc",
+          "img": "modules/ready-to-use-cards/resources/pixelFantasy/cards/card-clubs-13.png"
+        }
+      ],
+      "type": "base",
+      "value": 13
+    }
+  ],
+  "width": 2,
+  "height": 3,
+  "rotation": 0,
+  "displayCount": true,
+  "flags": {
+    "ready-to-use-cards": {
+      "default-parameters": {
+        "labelBaseKey" : "RTUCards.pixelFantasy32.",
+        "resourceBaseDir" : "modules/ready-to-use-cards/resources/pixelFantasy"
+      }
+    }
+  }
+}

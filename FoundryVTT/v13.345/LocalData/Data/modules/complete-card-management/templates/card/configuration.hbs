@@ -1,0 +1,13 @@
+<div class="{{tabs.configuration.tabCssClass}}" data-group="primary" data-tab="configuration">
+  {{formGroup img.field localize=true value=img.value placeholder=img.placeholder}}
+  <div class="form-group">
+    <label>{{localize "CARD.Dimensions"}}</label>
+    <div class="form-fields">
+      {{formInput width.field localize=true value=width.value placeholder=width.placeholder}}
+      {{formInput height.field localize=true value=height.value placeholder=height.placeholder}}
+      {{formInput rotation.field localize=true value=rotation.value placeholder=rotation.placeholder}}
+    </div>
+  </div>
+  {{formGroup primaryOwner.field localize=true value=primaryOwner.value placeholder=primaryOwner.placeholder}}
+  {{formGroup description.field localize=true value=description.value enriched=description.enriched button=true toggled=false height=300}}
+</div>

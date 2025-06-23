@@ -1,0 +1,1427 @@
+{
+  "SWADE": {
+    "DiceConf": "Configuração de Dados",
+    "DiceConfDesc": "Configure a integração do SWADE/Dice So Nice",
+    "DiceConfLabel": "Abrir Configuração de Dados",
+    "WildDiePresetDesc": "Selecione uma Predefinição do DSN para seu Dado Selvagem.",
+    "SettingConf": "Configurações Gerais",
+    "SettingConfLabel": "Abrir Configurações Gerais",
+    "Formula": "Fórmula",
+    "SitMod": "Mod Situacional",
+    "RollMode": "Modo de Rolagem",
+    "RollExample": "ex. +1d6x ou -2",
+    "Roll": "Rolar",
+    "RollRaise": "Ampliação",
+    "GroupRoll": "Rolagem de Grupo",
+    "Ok": "Ok",
+    "Cancel": "Cancelar",
+    "ConvictionEnd": "{name} oscila em sua convicção",
+    "NoBennies": "Você não tem Benes suficientes!",
+    "GM": "Mestre",
+    "Redraw": "Re-Sacar",
+    "Add": "Adc",
+    "ConfigInit": "Configurar Iniciativa",
+    "IgnWounds": "Ignorar Ferimentos",
+    "Size": "Tamanho",
+    "Scale": "Escala",
+    "PickACard": "Escolha uma carta para {name}",
+    "NoCardsLeft": "Não há cartas restantes no baralho! Apenas {current} cartas de {needed} necessárias estão disponíveis",
+    "OldCard": "Carta Anterior",
+    "ActionCard": "Carta de Ação",
+    "ConvictionActive": "Convicção Ativa",
+    "ConvictionActivate": "{name} apela à sua convicção!",
+    "ConvictionExtend": "Você quer estender sua convicção?",
+    "Vehicles": "Veículos",
+    "AddStats": "Carac. Adicionais",
+    "Curr": "Atual",
+    "DSNNone": "- Nenhum -",
+    "Reload": "Recarregar",
+    "Trapping": "Manifestações",
+    "Refresh": "Atualizar essa Carta",
+    "Ammo": "Munição",
+    "ReloadUnneeded": "A arma já está carregada",
+    "ReloadSuccess": "A arma foi recarregada",
+    "NotEnoughAmmo": "Você não tem munição suficiente para essa ação!",
+    "NotEnoughAmmoToReload": "Não há munição suficiente para recarregar no máximo",
+    "NoAmmoSet": "Não há munição configurada",
+    "AddBenny": "Adicionar um Bene",
+    "CurrentBennies": "Benes Atuais",
+    "RerollWithBenny": "Rerrolar com Bene",
+    "AutoCalcParry": "Calcula Aparar automaticamente, incluindo Escudos",
+    "Subtype": "Subtipo",
+    "SpecialAbility": "Habilidade Especial",
+    "SpecialAbilities": "Habilidades Especiais",
+    "AncestralAbilities": "Habilidades Raciais",
+    "ArchetypeAbilities": "Habilidades de Arquétipo",
+    "About": "Sobre",
+    "EdgesHindrances": "Vant & Comp",
+    "Crew": "Tripulação",
+    "Passengers": "Passageiros",
+    "String": "Texto",
+    "Number": "Número",
+    "Checkbox": "Caixa de seleção",
+    "WealthDie": {
+      "Broke": {
+        "Label": "Falido",
+        "Hint": "Você está Falido!"
+      },
+      "Label": "Dado de Riqueza",
+      "Sides": "Faces do Dado de Riqueza",
+      "WildSides": "Lados de Dado Selvagem de Fortuna",
+      "Modifier": "Dado Modificador de Fortuna"
+    },
+    "TraitRolls": "Rolagens de Característica",
+    "Trait": "Característica",
+    "AltTrait": "Característica Alternativa",
+    "SubtractPPDesc": "Subtraia o custo de PP do PP disponível",
+    "AddPPDesc": "Adicionar o custo de PP ao PP disponível",
+    "RightClickZoom": "[Clique-direito] para ampliar",
+    "CardFace": "Face da Carta",
+    "CardValue": "Valor",
+    "ClickSuggestions": "[Clique] para obter sugestões",
+    "Quick": "Rápido",
+    "BonusDamage": "Bônus de Dano",
+    "Joker": "Curinga",
+    "CustomWildDie": "- Dado Selvagem Personalizado -",
+    "Subtract": "Subtrair",
+    "DmgRolls": "Rolagens de Dano",
+    "CardSuit": "Naipe",
+    "IsJoker": "É Curinga",
+    "OpenACEditor": "Abrir no Editor de Carta de Ação",
+    "Yes": "Sim",
+    "No": "Não",
+    "ShowCharacterSummary": "Mostrar Resumo do Personagem",
+    "CharacterSummary": "Resumo do Personagem",
+    "CopyHtml": "Copiar HTML",
+    "CopyMarkdown": "Copiar Markdown",
+    "Imperial": "Imperial",
+    "NoActionDeckFound": "Nenhum Baralho de Ação encontrado, criando um",
+    "Metric": "Métrico",
+    "3DBennies": "Benes 3D",
+    "WealthSelectionNoneOther": "Nenhum/Outro",
+    "Modifiers": "Modificadores",
+    "ActionTraitMod": "Mod. Característica da Ação",
+    "ActionDmgMod": "Mod. de Dano da Ação",
+    "ItemTraitMod": "Modificador de Característica",
+    "ItemDmgMod": "Modificador de Dano",
+    "Duplicates": "Duplicatas Encontradas",
+    "DuplicateItemsBodyText": "Ao adicionar o {type} <strong>{name}</strong> ao Ator {target} as seguintes duplicatas foram encontradas (por nome e tipo). Os novos items foram renomeados para refletir sua origem.",
+    "NoActionDeckDiscardPileFound": "Nenhuma pilha de descarte do Baralho de Ação encontrada, criando uma",
+    "Characters": "Personagens",
+    "SettingRules": "Regras de Ambientação",
+    "WorldBasics": "Base do Mundo",
+    "MAPenalty": {
+      "Label": "Penalidade de Ação Múltipla",
+      "None": "Nenhuma"
+    },
+    "Mod": {
+      "Custom": {
+        "Add": "Adicionar Modificador Personalizado"
+      },
+      "Support": "Suporte",
+      "Preset": {
+        "Choose": "Escolha um modificador…",
+        "Add": "Adicionar Predefinição",
+        "Settings": "Modificadores Predefinidos"
+      },
+      "Value": "Valor",
+      "Ignore": "Ignorar?",
+      "None": "Nenhum modificador no momento",
+      "Active": "Ativo"
+    },
+    "Illumination": {
+      "_name": "Iluminação",
+      "Dim": "Penumbra",
+      "Dark": "Escuridão",
+      "Pitch": "Escuro como Breu"
+    },
+    "Cover": {
+      "_name": "Cobertura",
+      "Shield": "Cobertura - Escudo",
+      "Light": "Cobertura Leve",
+      "Medium": "Cobertura Média",
+      "Heavy": "Cobertura Pesada",
+      "Total": "Cobertura Total"
+    },
+    "Range": {
+      "_name": "Distância",
+      "Medium": "Distância Média",
+      "Long": "Distância Longa",
+      "Extreme": "Distância Extrema"
+    },
+    "Snapfire": "Tiro Rápido",
+    "UnstablePlatform": "Plataforma Instável",
+    "CannotAddAncestryToAncestry": "Você não pode adicionar uma raça/arquétipo a uma raça/arquétipo!",
+    "LayOutChaseWithDeck": "Usar Baralho para montar Perseguição",
+    "SetUpChase": "Configurar Perseguição",
+    "NotADeckCompendium": "O compêndio que você selecionou não parece ser um Baralho",
+    "ConvertToDeck": "Converter para Baralho",
+    "Expiration": {
+      "TabLabel": "Comportamento do Turno",
+      "Description": "<p>Efeitos expiram no <em>próximo turno do alvo ou depois</em>.</p>",
+      "Behavior": "Expiração",
+      "BeginAuto": "Início do Turno, Automático",
+      "BeginPrompt": "Início do Turno, Perguntar",
+      "EndAuto": "Fim do Turno, Automático",
+      "EndPrompt": "Fim do Turno, Perguntar",
+      "None": "Nenhum",
+      "LooseTurnOnHold": "Perder Turno ao Aguardar",
+      "Remaining": "Restante"
+    },
+    "RemoveEffectTitle": "Remover {label} ?",
+    "RemoveEffectBody": "<p style=\"text-align: center;\">Remover<strong>{label}</strong> de <strong>{parent}</strong>?</p>",
+    "PPAbbreviation": "PP",
+    "ShowInChat": "Mostrar no chat",
+    "ExpandDescription": "Expandir para mostrar a descrição",
+    "Favorite": "Favorito",
+    "Equip": "Equipar",
+    "RollDamage": "Rolar Dano",
+    "SystemLinks": {
+      "Changelog": "Log de Mudanças",
+      "Wiki": "Wiki",
+      "ReportAnIssue": "Relatar um problema"
+    },
+    "OpenOrigin": "Abrir origem",
+    "EffectsTemporary": "Efeitos Temporários",
+    "EffectsPermanent": "Efeitos Permanentes",
+    "Ranks": {
+      "Novice": "Novato",
+      "Seasoned": "Experiente",
+      "Veteran": "Veterano",
+      "Heroic": "Heroico",
+      "Legendary": "Lendário"
+    },
+    "Advances": {
+      "EditorTitle": "Editor de Progresso",
+      "Toggle": "Ativar estado de Progresso Planejado",
+      "Delete": "Deletar Progresso",
+      "Planned": "Planejado",
+      "Modes": {
+        "Legacy": "Legado",
+        "Expanded": "Expandido",
+        "Label": "Modo"
+      },
+      "Types": {
+        "Hindrance": "Redução de Complicação",
+        "Edge": "Nova Vantagem",
+        "SingleSkill": "Aumento de Uma Perícia",
+        "TwoSkills": "Aumento de Duas Perícias",
+        "Attribute": "Aumento de Atributo"
+      },
+      "Number": "Número do Progresso"
+    },
+    "AddAdvance": "Adc Progresso",
+    "Appearance": "Aparência",
+    "CharacterGoals": "Objetivos",
+    "Background": "Antecedentes",
+    "ActiveEffects": {
+      "Add": "Adc Efeito Ativo",
+      "Source": "Origem",
+      "ResetDuration": "Redefinir Duração",
+      "AddGuided": "Abrir Assistente",
+      "AddUnguided": "Adc Efeito Vazio",
+      "AddModifier": "Adicionar Modificador",
+      "Conditional": "Efeito Condicional",
+      "ModifierCost": {
+        "Label": "Custo do Modificador"
+      },
+      "ConditionalTooltip": "Ignorar modificadores de rolagem por padrão"
+    },
+    "Keybindings": {
+      "OpenFavoriteCards": {
+        "Name": "Abrir Mão de Cartas favorita",
+        "UserConfigLabel": "Mão de Cartas favorita",
+        "Hint": "Você pode definir sua mão favorita na configuração de usuário",
+        "NoCardsWarning": "Você não tem uma Mão de Cartas favorita!",
+        "HandNone": "Nenhuma"
+      },
+      "Bennies": {
+        "Name": "Gastar/Receber um Bene",
+        "Hint": "Pressione para gastar um Bene, segure Alt enquanto pressiona a tecla para receber um Bene"
+      }
+    },
+    "Settings": {
+      "FantasyCompanionEntangle": {
+        "Name": "Enredado do Fantasy Companion",
+        "Hint": "Usa o estado Enredado do Fantasy Companion em vez da versão do Livro Básico. Requer recarregamento para surtir efeito"
+      },
+      "InitDiscardPile": {
+        "Name": "Pilha de Descarte de Iniciativa"
+      },
+      "InitCardDeck": {
+        "Name": "Baralho a ser usado para Iniciativa"
+      },
+      "ParryBase": {
+        "Name": "SWID da Perícia Lutar",
+        "Hint": "O ID Savage Worlds da perícia que será usada para calcular o Aparar de atores. Leia mais sobre o ID Savage Worlds na documentação!"
+      },
+      "UseAttributeShorts": {
+        "Hint": "Ative esta opção se você quiser ver os nomes de atributos abreviados nas fichas de pc e npc, ou seja, Agi em vez de Agildade, Ast em vez de Astúcia, etc. Você precisará fechar e reabrir todas as fichas abertas para que esta opção entre em vigor.",
+        "Name": "Usar nomes de atributos abreviados"
+      },
+      "WeightUnit": {
+        "Name": "Unidade de peso",
+        "Hint": "Define se os pesos são medidos em libras ou quilogramas. Alterando isto NÃO mudará os pesos dos itens, apenas como a sobrecarga é calculada"
+      },
+      "EnableBennyNotify": {
+        "Name": "Notificações de Bene",
+        "Hint": "Mostra mensagens no chat quando os benes são usados, dados ou resetados."
+      },
+      "HideWC": {
+        "Name": "Esconder NPCs Cartas Selvagens",
+        "Hint": "Não mostrar aos jogadores quais NPCs são Cartas Selvagens"
+      },
+      "CreateInitChat": {
+        "Name": "Criar Mensagem no Chat para Iniciativa",
+        "Hint": "Quando as cartas de ação forem compradas, o Foundry enviará as cartas de ação compradas para o Chat, se ativado."
+      },
+      "AutoInit": {
+        "Name": "Iniciativa Automática",
+        "Hint": "Saca Cartas de Ação automaticamente a cada rodada"
+      },
+      "Benny3DFront": {
+        "Name": "Textura frontal",
+        "Hint": "Textura frontal do Bene 3D"
+      },
+      "Benny3DBack": {
+        "Name": "Textura de Trás",
+        "Hint": "Textura de trás do Bene 3D"
+      },
+      "Benny3DBackBump": {
+        "Name": "Mapa de Colisão Traseiro",
+        "Hint": "Mapa de Colisão Traseiro do Bene"
+      },
+      "Benny3DFrontBump": {
+        "Hint": "Mapa de Colisão Dianteiro do bene",
+        "Name": "Mapa de Colisão Dianteiro"
+      },
+      "CoreSkillsList": {
+        "Name": "Lista de Perícias Básicas",
+        "Hint": "Insira uma lista de perícias separadas por vírgula para serem definidas como Perícias Básicas para todos os atores"
+      },
+      "CoreSkillsPack": {
+        "Name": "Compêndio das Perícias Básicas",
+        "Hint": "Escolha de qual compêndio as perícias básicas serão selecionadas"
+      },
+      "WealthType": {
+        "Name": "Tipo de Riqueza",
+        "Hint": "Escolha como controlar a riqueza e moeda dos personagens"
+      },
+      "CurrencyName": {
+        "Name": "Nome da Moeda",
+        "Hint": "Nomeie sua moeda"
+      },
+      "JokersWild": {
+        "Name": "Coringa Selvagem",
+        "Hint": "Entrega um Bene a cada jogador quando um deles sacou um Curinga"
+      },
+      "AmmoManagement": {
+        "Name": "Gerenciamento de Munição",
+        "Hint": "Quando ligado e aplicável, ações removem munição da arma. Cartas de Item também ganham um botão de Recarregar e você não será capaz de rolar um ataque se não tiver munição suficiente."
+      },
+      "PCAmmoFromInventory": {
+        "Name": "PJs usam munição do Inventário",
+        "Hint": "Quando ativado, um Equipamento ou Consumível que está definido como munição será usado ao recarregar uma arma"
+      },
+      "NPCAmmoFromInventory": {
+        "Name": "NPCs usam munição de seu Inventário"
+      },
+      "VehicleAmmoFromInventory": {
+        "Name": "Veículos usam munição de seu Inventário"
+      },
+      "EnableWoundPace": {
+        "Name": "Diminuir Movimento por Ferimentos",
+        "Hint": "Quando habilitado, Movimento é automaticamente afetado pelos Ferimentos sofridos"
+      },
+      "EnableConv": {
+        "Name": "Convicção",
+        "Hint": "Habilita a Regra de Ambientação Convicção"
+      },
+      "VehicleMods": {
+        "Hint": "Veículos e Armaduras usam Espaços de Modificações",
+        "Name": "Modificações de Veículo"
+      },
+      "VehicleEdges": {
+        "Name": "Vantagens de Veículo",
+        "Hint": "Veículos usam Vantagens e Complicações"
+      },
+      "BennyImageSheet": {
+        "Hint": "Selecione a imagem a ser usada para os Benes na Ficha de Personagem",
+        "Name": "Bene"
+      },
+      "HardChoices": {
+        "Name": "Escolhas Difíceis",
+        "Hint": "Marcar isto irá habilitar a Regra de Ambientação Escolhas Difíceis"
+      },
+      "CardSound": {
+        "Name": "Som de Carta",
+        "Hint": "Toque um som de carta curto ao sacar Iniciativa"
+      },
+      "StartingCurrency": {
+        "PC": {
+          "Name": "Riqueza inicial dos Personagens de Jogador",
+          "Hint": "Define a quantidade de riqueza que os Atores de Personagens de Jogador recebem ao serem criados"
+        },
+        "NPC": {
+          "Hint": "Define a quantidade de riqueza que os Atores de Personagens do Mestre recebem ao serem criados",
+          "Name": "Riqueza inicial dos NPC"
+        }
+      },
+      "HideNpcItemChatCards": {
+        "Hint": "Quando habilitado, as mensagens de chat de Itens de NPCs serão enviadas como sussurros a todos os Mestre em vez de postadas para todos verem",
+        "Name": "Esconder Cartas de NPC do Chat"
+      },
+      "HighlightTemplate": {
+        "Name": "Sempre destacar modelos",
+        "Hint": "Quando ativado, os modelos medidos sempre destacam-se ao invés da grade."
+      },
+      "NoPowerPoints": {
+        "Name": "Sem Pontos de Poder",
+        "Hint": "Quando habilitado, esconde todas as interações de Pontos de Poder"
+      },
+      "AlwaysGeneralPP": {
+        "Name": "Sempre Mostrar Pontos de Poder Gerais",
+        "Hint": "Quando habilidade, a seção de Poderes Gerais sempre aparecerá, mesmo se todos os poderes tiverem um Antecedente Arcano associado"
+      },
+      "ApplyEncumbrance": {
+        "Name": "Aplicar penalidades de Sobrecarga",
+        "Hint": "Aplica penalidades de sobrecarga. Por favor, tenha em mente que atualmente NÃO SUPORTA rolagens de {vigor} para resistir a {fatigue}!"
+      },
+      "NPCCurrency": {
+        "Name": "NPCs usam dinheiro",
+        "Hint": "Quando ativado, todos os NPCs têm as mesmas opções de dinheiro que os Personagens de Jogador"
+      },
+      "DumbLuck": {
+        "Name": "Pura Sorte",
+        "Hint": "Ativar isso irá habilitar a Regra de Ambientação Pura Sorte"
+      },
+      "WoundCap": {
+        "Name": "Limite de Ferimentos",
+        "Hint": "Ativar isso irá habilitar a Regra de Ambientação Limite de Ferimentos quando calcular Ferimentos."
+      },
+      "GrittyDamage": {
+        "Name": "Dano Severo",
+        "Hint": "Ativar isso irá habilitar a Regra de Ambientação Dano Severo e permitirá selecionar a Tabela de Lesões para rolar."
+      },
+      "InjuryTable": {
+        "Name": "Tabela de Lesões",
+        "Hint": "Selecione a Tabela de Rolagem apropriada para rolar automaticamente para Dano Severo."
+      },
+      "UnarmoredHero": {
+        "Hint": "Marcar isto irá habilitar a Regra de Ambientação Heróis Sem Armadura quando rolar para absorver",
+        "Name": "Heróis Sem Armadura"
+      },
+      "ArbitFields": "Campos de Configuração Arbitrária",
+      "HeroesNeverDie": {
+        "Name": "Heróis Nunca Morrem",
+        "Hint": "Marcar essa opção ativará a regra de configuração Heróis Nunca Morrem ao determinar a incapacitação"
+      },
+      "VehicleSkills": {
+        "Name": "Perícias de Operação",
+        "Hint": "Insira uma lista de perícias separadas por vírgula para serem definidas como perícias de Operação para todos os veículos"
+      },
+      "CharSheetDefaultWidth": {
+        "Name": "Largura padrão para fichas de personagem",
+        "Hint": "Largura das fichas de personagem quando abertas pela primeira vez, em pixels. Padrão: 650."
+      },
+      "StaticGmBennies": {
+        "Name": "Benes de GM Estáticos",
+        "Hint": "Define um valor estático para o número de Benes que o GM recebe ao recarregar, em vez de se basear no número de jogadores ativos."
+      },
+      "GmBennies": {
+        "Hint": "Define quantos Benes o GM recebe ao recarregar",
+        "Name": "Benes de GM"
+      },
+      "ArmorStacking": {
+        "Choices": {
+          "Core": "Regras Básicas de Savage Worlds Edição Aventura",
+          "SWPF": "Pathfinder®️ para Savage Worlds"
+        },
+        "Name": "Acúmulo de Armadura",
+        "Hint": "Selecione qual regra usar para o acúmulo de armadura"
+      }
+    },
+    "EffectCallbacks": {
+      "Shaken": {
+        "RollSpirit": "Rolar Espírito",
+        "Title": "Remover Abalado de {name}",
+        "Flavor": "Teste de Espírito para remover Abalado",
+        "UnshakeModifier": "Resistência a Abalado",
+        "Question": "O que você quer fazer?",
+        "Success": "Você não está mais Abalado"
+      },
+      "Stunned": {
+        "Title": "Teste de Vigor para remover Atordoado",
+        "Fail": "Você continua Atordoado",
+        "Success": "Você não está mais Atordoado, mas continua Vulnerável",
+        "Raise": "Você está mais Abalado e nem Vulnerável",
+        "UnStunModifier": "Resistência a Atordoado"
+      },
+      "BleedingOut": {
+        "Title": "Teste de Vigor para resistir Sangramento",
+        "Fail": "Você morre",
+        "Success": "Você aguenta, por enquanto.",
+        "Raise": "Você é estabilizado com sucesso",
+        "BleedOutModifier": "Modificador de Sangramento",
+        "IgnoreWounds": "Sangramento Ignora Ferimentos"
+      }
+    },
+    "DocumentTweaks": "Ajustes",
+    "TargetVulnerable": "Alvo está Vulnerável",
+    "WildAttack": "Ataque Selvagem",
+    "ItemType": "Tipo de Item",
+    "NoTokenSelectedForResistRoll": "Para fazer rolagens de resistência, seleciona um token primeiro",
+    "Templates": {
+      "Cone": {
+        "Short": "Cone",
+        "Long": "Modelo de Cone"
+      },
+      "Stream": {
+        "Short": "Fluxo",
+        "Long": "Modelo de Fluxo"
+      },
+      "Small": {
+        "Short": "MEP",
+        "Long": "Modelo de Explosão Pequeno"
+      },
+      "Medium": {
+        "Short": "MEM",
+        "Long": "Modelo de Explosão Médio"
+      },
+      "Large": {
+        "Short": "MEG",
+        "Long": "Modelo de Explosão Grande"
+      },
+      "Available": "Modelos Disponíveis",
+      "Possible": "Modelos Possíveis"
+    },
+    "Source": "Fonte",
+    "Properties": "Propriedades",
+    "AddAction": "Adc Ação",
+    "DeleteEmbeddedActionPrompt": "Você tem certeza de que quer deletar a ação {action}?",
+    "DeleteEmbeddedPowerPrompt": "Você tem certeza de que quer deletar o poder {power}?",
+    "TrademarkWeapon": {
+      "Label": "Arma Predileta",
+      "Improved": "Aprimorada",
+      "Regular": "Normal",
+      "None": "Nenhuma"
+    },
+    "OffHandPenalty": "Penalidade de Mão Inábil",
+    "ItemEquipStatus": {
+      "Label": "Local",
+      "Stored": "Guardado",
+      "Equipped": "Equipado",
+      "OffHand": "Mão Inábil",
+      "MainHand": "Mão Principal",
+      "TwoHands": "Duas Mãos",
+      "Carried": "Carregado",
+      "Readied": "Preparado",
+      "Added": "Adicionado",
+      "Installed": "Instalado"
+    },
+    "DestroyOnEmpty": "Destruir quando Vazio",
+    "Charges": "Cargas",
+    "Consumable": {
+      "Use": "Usar",
+      "Consumables": "Consumíveis",
+      "NotEnoughCharges": "Não há cargas suficientes!",
+      "ChargesUsed": "<p>{charges} carga(s) usada em <em>{name}</em></p>"
+    },
+    "EmptyAncestralAbilitiesHint": "<strong>Aviso: </strong> Este recurso está sendo deprecado em favor da Concessão de Itens. Se estiver criando um(a) novo(a) {ancestry} ou {archetype}, arraste e solte os Itens na aba Propriedades. O(a) {ancestry} ou {archetype} adicionará esses itens ao Ator quando aplicado.",
+    "CompendiumTOC": {
+      "Toggle": "Altenar uso do Índice de Compêndio",
+      "Dialog": {
+        "Title": "Confirmar",
+        "Content": "Para essa mudança surtir efeito, Foundry VTT e todos os clientes conectados devem ser recarregados. Por favor, confirme."
+      },
+      "Header": "Conteúdo"
+    },
+    "Category": "Categoria de Item",
+    "ItemIsAmmo": "É Munição",
+    "Vision": {
+      "SeeHeat": "Enxerga Calor",
+      "SenseHeat": "Sente Calor",
+      "Infravision": "Infravisão"
+    },
+    "Attribute": "Atributo",
+    "BaseDie": "Dado Base",
+    "AttributeManager": {
+      "Title": "Gerenciar Atributos para {name}",
+      "Open": "Gerenciar Atributos"
+    },
+    "HeavyArmor": "Armadura Pesada",
+    "HeavyWeapon": "Arma Pesada",
+    "UsesTOC": "Usar Índice de Compêndio",
+    "TOCSettings": {
+      "Label": "Abrir Config. Índice de Compêndio",
+      "Name": "Config. Índice de Compêndio",
+      "Hint": "Configure a aplicação de Índice de Compêndio"
+    },
+    "DieSides": "Faces do Dado",
+    "WildDieSides": "Faces do Dado Selvagem",
+    "EncumbranceSteps": "Passos de Sobrecarga",
+    "EffectWizard": {
+      "Preview": "Previsão",
+      "Change": "Mudança",
+      "Mode": "Modo",
+      "Value": "Valor",
+      "Changes": "Mudanças",
+      "SelectAttribute": "Selecionar Atributo",
+      "EnterSkill": {
+        "Label": "Adicionar perícia",
+        "Hint": "Você pode adicionar qualquer nome de perícia que você quiser ou selecionar uma da lista de sugestões"
+      }
+    },
+    "OtherStats": "Outros Atributos",
+    "HotbarDropOwnedItemWarning": "Você só pode criar botões de macro de Itens possuídos por alguém",
+    "MessageOnUse": {
+      "Label": "Mensagem ao Usar",
+      "Hint": "Mostra uma mensagem de chat quando este item for usado"
+    },
+    "ItemGrants": {
+      "EmptyHint": "Este item atualmente não concede nenhum item",
+      "Header": "Concessão de Itens",
+      "When": "Concede Itens Quando",
+      "Mutation": "Mutação"
+    },
+    "RefreshPP": "Restaurar Pontos de Poder",
+    "DamageApplicator": {
+      "ApplyDamage": {
+        "Label": "Resolver Danos",
+        "Hint": "[Clique] para resolver o dano com o Token selecionado"
+      },
+      "WoundsAboutToBeTaken": "<p><strong>{name}</strong> está prestes a sofrer <strong>{wounds}</strong>!</p>",
+      "SoakDialog": {
+        "WoundedTitle": "Rolar para Absorver Ferimentos para {name}?",
+        "UnwoundedTitle": "Ajustar o Dano para Determinar Estado para {name]?",
+        "GMBenny": "Gastar um Bene de MJ para Absorver",
+        "TakeWounds": "Sofrer {wounds}",
+        "WoundedPrompt": "<p>{name} está prestes a sofrer {wounds}. Você quer tentar Absorver?</p>",
+        "ShakenPrompt": "<p>{name} está prestes a ficar Abalado.</p>",
+        "UnharmedPrompt": "<p>{name} pode estar ileso.</p>",
+        "Benny": "Gastar um Bene para Absorver",
+        "Free": "Absorver de Graça",
+        "AdjustDamage": "Ajustar Dano",
+        "ApplyShaken": "Aplicar Estado Abalado",
+        "Accept": "Aceitar",
+        "SoakRoll": "Teste de Vigor para Absorver",
+        "NoVehicleSoak": "Absorver para Veículos ainda não é suportado"
+      },
+      "RerollSoakDialog": {
+        "Title": "Rerrolar para Absorver Ferimentos para [name}?",
+        "Prompt": "<p>{name} está prestes a sofrer {wounds}. Você quer rerrolar a Absorção?</p>",
+        "GMBenny": "Gastar um Bene de MJ para Rerrolar",
+        "Benny": "Gastar um Bene para Rerrolar",
+        "Free": "Rerollar de Graça",
+        "TakeWounds": "Sofrer {wounds}",
+        "PromptCritFail": "<p>{name} está prestes a sofrer {wounds}. Uma falha crítica está impedindo a nova rolagem.</p>"
+      },
+      "AdjustDamagePrompt": "<p>Ajustar o dano para quaisquer habilidades e efeitos que o {name} possa ter.</p>",
+      "Result": {
+        "SoakedAll": "<p><strong>{name}</strong> Absorveu todos os Ferimentos e não está Abalado!</p>",
+        "IsShaken": "<p><strong>{name}</strong> está <strong>Abalado</strong>!</p>",
+        "IsShakenWithWounds": "<p><strong>{name}</strong> está <strong>Abalado</strong> com <strong>{wounds}</strong>!</p>",
+        "IsIncapacitated": "<p><strong>{name}</strong> está <strong>Incapacitado!</strong></p>",
+        "NoSignificantDamage": "<p><strong>{name}</strong> não sofre danos significativos.</p>"
+      },
+      "NoInjuryTable": "Nenhuma Tabela de Lesões foi selecionado. Veja as Configurações Gerais do SWADE",
+      "NoTargetsSelected": "Por favor, seleciona um alvo para aplicar o dano.",
+      "SoakModifier": "Modificador de Absorção",
+      "Incapacitation": {
+        "InjuryRoll": "Rolagem de Vigor para resistir a lesão em caso de incapacitação",
+        "Dies": "<p><strong>{name}</strong> morre com o dano!</p>",
+        "PermanentInjury": "<p><strong>{name}</strong> sofre uma lesão permanente e está <strong>Sangrando!</strong></p>",
+        "PermanentInjuryHND": "<p><strong>{name}</strong> sofre uma lesão permanente!</p>",
+        "TemporaryInjury": "<p><strong>{name}</strong> sofre uma lesão que desaparecerá quando todos os ferimentos forem curados.</p>",
+        "ShortInjury": "<p><strong>{name}</strong> sofre uma lesão que desaparecerá em 24 horas ou quando todos os ferimentos forem curados (o que ocorrer primeiro).</p>",
+        "TakeFail": "Sofrer uma lesão permanente",
+        "TakeSuccess": "Sofrer uma lesão que desaparece quando todas as feridas forem curadas",
+        "Title": "Rerrolar a gravidade da lesão de {name}?",
+        "Prompt": "<p>{name} está prestes a ser ferido. Deseja rerrolar a rolagem de Vigor?</p>"
+      }
+    },
+    "FreeReroll": "Rerrolagem Grátis",
+    "BenniesSpendGM": "Gastar um Bene de MJ",
+    "SettingConfDesc": "Ajuste o sistema para se adequar ao cenário que está jogando.",
+    "MaxMods": "Máximo de Modificações",
+    "ButtonReset": "Redefinir",
+    "ButtonSubmit": "Enviar",
+    "CommunityCharSheet": "Ficha de Personagem da Comunidade",
+    "CommunityNPCSheet": "Ficha de NPC da Comunidade",
+    "CommunityVicSheet": "Ficha de Veículo da Comunidade",
+    "CommunityItemSheet": "Ficha de Item da Comunidade",
+    "ItemSheet": "Ficha de Item Savage Worlds",
+    "Expand": "Expandir",
+    "OfficialSheet": "Savage Worlds Ficha Oficial por Pinnacle",
+    "ModHint": "Modificadores devem incluir + ou -",
+    "ActionDeckPresetLight": "Baralho de Ação (Claro)",
+    "ActionDeckPresetDark": "Baralho de Ação (Escuro)",
+    "Name": "Nome",
+    "Tough": "Resistência",
+    "Ancestry": "Raça",
+    "Archetype": "Arquétipo",
+    "Pace": "Mov.",
+    "Running": "Corrida",
+    "RunningDie": "Dado de Corrida",
+    "RollRun": "[Clique] para rolar o dado de corrida",
+    "Adv": "Progressos",
+    "Rank": "Estágio",
+    "Inv": "Equip.",
+    "Summary": "Carac.",
+    "Pow": "Poderes",
+    "WildCard": "Carta Selvagem",
+    "Extra": "Extra",
+    "Bennies": "Benes",
+    "TraitMod": "Mod. Característica",
+    "AttrAgi": "Agilidade",
+    "AttrSma": "Astúcia",
+    "AnimalSmarts": "Inteligência Animal",
+    "AnimalSmartsMarker": "A",
+    "AttrSpr": "Espírito",
+    "AttrStr": "Força",
+    "AttrVig": "Vigor",
+    "Tweaks": "Ajustes",
+    "AttrSmaShort": "Ast",
+    "AttrSprShort": "Esp",
+    "AttrStrShort": "For",
+    "AttrVigShort": "Vig",
+    "Skills": "Perícias",
+    "Unskilled": "Sem Perícia",
+    "CoreSkill": "Perícia Básica",
+    "CoreSkills": "Perícias Básicas",
+    "LinkAttr": "Atributo Associado",
+    "ArcaneSkill": "Perícia Arcana",
+    "ActivateArcaneDevice": "Ativar Dispositivo",
+    "Die": "Dado",
+    "WildDie": "Dado Selvagem",
+    "Modifier": "Modificador",
+    "BenniesSpend": "Gastar um Bene",
+    "BenniesGive": "Dar um Bene",
+    "BenniesRefresh": "Resetar Benes",
+    "AllBenniesRefresh": "Resetar todos os Benes",
+    "BenniesRefreshMessage": "Benes foram resetados!",
+    "BenniesRefreshAllMessage": "Todos os Benes foram resetados!",
+    "BenniesGMRefreshMessage": "Os Benes do Mestre foram resetados!",
+    "BenniesAddMessage": "ganhou um Bene!",
+    "BenniesGMAddMessage": "ganhou um Bene adicional!",
+    "BenniesSpendMessage": "gastou um Bene!",
+    "BenniesMax": "Benes ao Resetar",
+    "EditSkill": "Editar Perícia",
+    "EdEdge": "Editar Vantagem",
+    "EdHind": "Editar Complicação",
+    "Ed": "Editar",
+    "Arcane": "Arcano",
+    "All": "Todos",
+    "HasPowers": "Tem Poderes",
+    "Weapons": "Armas",
+    "MeleeWeapons": "Armas Corpo-a-Corpo",
+    "RangedWeapons": "Armas à Distância",
+    "Armors": "Armaduras",
+    "WeaponsAndArmor": "Armas e Armadura",
+    "Shields": "Escudos",
+    "Biography": "Biografia",
+    "Shaken": "Abalado",
+    "Distr": "Distraído",
+    "Vuln": "Vulnerável",
+    "Stunned": "Atordoado",
+    "Entangled": "Enredado",
+    "Bound": "Preso",
+    "Aiming": "Mirando",
+    "Berserk": "Em Fúria",
+    "Defending": "Defendendo",
+    "Flying": "Voando",
+    "Follow": "Seguir {name}",
+    "Unfollow": "Deixar de seguir {name}",
+    "MakeGroupLeader": "Tornar Líder de Grupo",
+    "RemoveGroupLeader": "Remover Líder de Grupo",
+    "AddTokenFollowers": "Adicionar os Tokens selecionados como Seguidores",
+    "GroupByName": "Agrupar por Nome",
+    "SetGroupColor": "Definir Cor do Grupo",
+    "SelectColor": "Selecionar uma cor",
+    "Holding": "Aguardando",
+    "Hold": "Aguardar",
+    "ActAfterCurrentCombatant": "Agir depois do Combatente Atual",
+    "ActBeforeCurrentCombatant": "Agir agora",
+    "LoseTurn": "Alternar Perder Turno",
+    "Frightened": "Amedrontado",
+    "Encumbered": "Sobrecarregado",
+    "Prone": "Prostrado",
+    "BleedingOut": "Sangrando",
+    "Diseased": "Doente",
+    "HeartAttack": "Ataque Cardíaco",
+    "OnFire": "Pegando Fogo",
+    "Poisoned": "Envenenado",
+    "Reach": "Alcance",
+    "Torch": "Tocha",
+    "Invisible": "Invisível",
+    "ColdBodied": "Corpo Frio",
+    "Smite": "Ferir",
+    "Armor": "Armadura",
+    "Protection": "Proteção",
+    "Dmg": "Dano",
+    "DmgOver": "Substituição de Dano",
+    "Resist": "Resistir",
+    "ResistRolls": "Rolagem de Resistência",
+    "Ap": "PA",
+    "APLong": "Perfurante de Armadura",
+    "RoF": "CdT",
+    "Mag": "Tiros",
+    "ActionsEffects": "Ações e Efeitos",
+    "Actions": {
+      "Activities": {
+        "Label": "Atividades",
+        "Hint": "SWIDs de ações que estão vinculadas a este item"
+      },
+      "Hidden": {
+        "Label": "Oculta",
+        "Hint": "Ações ocultas não são exibidas na ficha do ator"
+      },
+      "DisplayHidden": {
+        "Label": "Exibir ações ocultas"
+      },
+      "Name": "Ações"
+    },
+    "DmgModUni": "Modificador de Dano",
+    "SkillModUni": "Modificador de Perícia",
+    "ShotsUsed": "Tiros Usados",
+    "NaturalArmor": "Armadura Natural",
+    "HitLocations": "Locais de Acerto",
+    "Head": "Cabeça",
+    "Torso": "Tronco",
+    "Arms": "Braços",
+    "Legs": "Pernas",
+    "MinStrLong": "Força Mínima",
+    "MinStr": "Força Mín.",
+    "MinStrShort": "For.Mín",
+    "Desc": "Descrição",
+    "Special": "Habilidades Especiais",
+    "Details": "Detalhes",
+    "Equippable": "Equipável",
+    "ArcaneDevice": "Dispositivo Arcano",
+    "Misc": "Equipamento",
+    "QuickAccess": "Acesso Rápido",
+    "Effects": "Efeitos",
+    "Hindrances": "Complicações",
+    "MajHind": "Complicação Maior",
+    "Major": "(Maior)",
+    "Minor": "(Menor)",
+    "Edges": "Vantagens",
+    "ArcBack": "Antecedente Arcano",
+    "Req": "Requisitos",
+    "Conv": "Convicção",
+    "UseConv": "Usa sua Convicção!",
+    "Hesitant": "Hesitante",
+    "LevelHeaded": "Focado",
+    "ImprovedLevelHeaded": "Extremamente Focado",
+    "AutoCalc": "Cálculos Automáticos",
+    "InclArmor": "Calcula Resistência automaticamente, incluindo Armadura",
+    "Label": "Nome",
+    "HasMaxValue": "Tem valor Máximo",
+    "Enabled": "Habilitado",
+    "Currency": "Moeda",
+    "CarryWeight": "Sobrecarga",
+    "Eqd": "Eqdo",
+    "Equipped": "Equipado",
+    "Unequipped": "Desequipado",
+    "Quantity": "Quantidade",
+    "Weight": "Peso",
+    "Price": "Custo",
+    "PP": "Pontos de Poder",
+    "PPShort": "P. de Poder",
+    "PPCost": "Custo PP",
+    "CurPP": "Pontos de Poder Atuais",
+    "MaxPP": "Pontos de Poder Máximo",
+    "Dur": "Duração",
+    "Trap": "Manifestação",
+    "Wound": "Ferimento",
+    "Wounds": "Ferimentos",
+    "WoundsMax": "Máx de Ferimentos",
+    "Fatigue": "Fadiga",
+    "FatigueMax": "Máx de Fadiga",
+    "Incap": "Incapacitado",
+    "Init": "Iniciativa",
+    "DrawInit": "Sacar Iniciativa",
+    "ActionDeckReset": "Resetar a Tabela de Cartas de Ação",
+    "ActionDeckResetNotification": "Cartas de Ação embaralhadas",
+    "Topspeed": "Velocidade Máxima",
+    "OutOfControl": "Fora de Controle",
+    "Wrecked": "Avariado",
+    "Item": "Item",
+    "Cargo": "Carga",
+    "MaxCargo": "Carga Máxima",
+    "CargoWeight": "Peso da Carga",
+    "Operator": "Operador",
+    "ManCheck": "Rolagem de Manobra",
+    "AltSkill": "Perícia Alternativa",
+    "Class": "Classificação",
+    "Vehicular": "Arma Veicular",
+    "VehicleMod": "Mod. Veículo",
+    "OpSkill": "Perícia de Manobra",
+    "InitDraw": "saca a…",
+    "Mods": "Modificações",
+    "ModSlots": "Espaços de Modificação",
+    "ShowBennyAnimation": "Mostrar Animação de Bene",
+    "ShowBennyAnimationDesc": "Mostra uma animação quando gastar um Bene. Só disponível se Dice So Nice! estiver instalado",
+    "WildDiePreset": "Predefinição do Dado Selvagem",
+    "RunningMod": "Modificador de Corrida",
+    "SkillTest": "Teste de Perícia",
+    "AttributeTest": "Teste de Atributo",
+    "Attributes": "Atributos",
+    "Derived": "Características Derivadas",
+    "AttrAgiShort": "Agi",
+    "Del": "Deletar",
+    "Parry": "Aparar",
+    "Notes": "Notas",
+    "General": "Geral",
+    "Addi": "Adicional",
+    "Status": "Estado",
+    "Handling": "Manobrabilidade",
+    "WildDieTheme": "Tema do Dado Selvagem",
+    "Actors": "Atores",
+    "Items": "Itens",
+    "Max": "Máx",
+    "Duplicate": "Duplicar",
+    "ppReload": "Pontos de Poder para Recarregar",
+    "ReloadNotPossible": "Este tipo de ator não recarrega",
+    "ReloadType": {
+      "Label": "Procedimento de Recarga",
+      "None": "Nenhum",
+      "Magazine": "Carregador",
+      "Battery": "Bateria",
+      "PP": "Pontos de Poder",
+      "Full": "Completa",
+      "Single": "Uma por vez",
+      "Self": "Próprio"
+    },
+    "NoAmmoPP": "Não foi possível encontrar pontos de poder correspondetes à munição definida",
+    "NoMags": "Você não tem nenhum consumível marcado como carregador em seu inventário",
+    "RemoveAmmo": "Remover Munição",
+    "ConsumableType": {
+      "Label": "Subtipo",
+      "Regular": "Normal"
+    },
+    "GrantsPowers": "Concede Poderes",
+    "Selection": "Seleção",
+    "SysMigrationWarning": "Os dados do seu sistema SWADE é de uma versão muito antiga do Foundry e não pode ser migrada de forma confiável para a última versão. A conversão será tentada, mas erros podem ocorrer.",
+    "DeckShuffled": "Baralho de Cartas automaticamente embaralhado",
+    "BasePace": "Movimentação Base",
+    "WarningPackLocked": "Você não pode editar um compêndio bloqueado. Por favor, desbloqueie primeiro",
+    "ActionCardEditor": "Editor de Carta de Ação",
+    "ChangeBennyWarning": "Alterar estas configurações requer que você atualize a página!",
+    "Wealth": "Riqueza",
+    "ModOther": "Outros Modificadores",
+    "ClearChaseCards": "Limpar cartas de Perseguição da cena",
+    "NoSceneAvailable": "Não há cena disponível ou você desativou a tela de jogo",
+    "ChaseCardsCleared": "Todas as cartas de perseguição foram removidas da cena.",
+    "Validation": {
+      "OnlyOneAncestry": "Você só pode ter uma raça de cada vez.",
+      "OnlyOneArchetype": "Você só pode ter um arquétipo de cada vez."
+    },
+    "MigrateCompendium": "Forçar a migração do compêndio",
+    "AdditionalStats": {
+      "SelectHint": "Insita uma lista de opções, separadas por ponto-e-vírgula",
+      "Key": "Chave de Característica",
+      "Max": "{stat} Máximo",
+      "Label": "Nome",
+      "Type": "Tipo",
+      "HasMaxValue": "Tem Valor Máximo",
+      "Current": "{stat} Atual",
+      "KeyErr": "A chave de Atributo adicional {invalid} é inválida e foi alterada para {key}",
+      "Value": "Valor",
+      "MaxLabel": "Máximo",
+      "OptionLabel": "Opção"
+    },
+    "IgnFatigue": "Ignorar Fadiga",
+    "BaseDamage": "Dano Base",
+    "Targets": "Alvos",
+    "Rolls": {
+      "RollResult": "Resultado da Rolagem",
+      "SwadeRoll": "Rolagem",
+      "DamageRoll": "Rolagem de Dano",
+      "TraitRoll": "Rolagem de Característica",
+      "Critfail": {
+        "Critfail": "FALHA CRÍTICA",
+        "ConfirmDie": "Dado de Confirmação",
+        "Confirmed": "Confirmação de Falha Crítica",
+        "Unconfirmed": "Falha Crítica não confirmada",
+        "Possible": "POSSÍVEL FALHA CRÍTICA",
+        "Confirm": "Confirmar"
+      },
+      "Free": "Gratuita",
+      "Benny": "Bene",
+      "GMBenny": "Bene de GM"
+    },
+    "LoadedAmmo": "Munição Carregada",
+    "WildDieThemeDesc": "Selecione um Tema do DSN para seu Dado Selvagem. Selecione 'Personalizado' se quiser criar o seu próprio ou 'Nenhum' se não quiser que seu Dado Selvagem seja diferente. Tenha em mente que Dados Selvagens auto-criados só podem ser vistas por você. Outros jogadores os verão de forma diferente.",
+    "TOCBlockList": "Lista de Bloqueio de Sumário de Compêndios",
+    "CalledShot": {
+      "Hand": "Ataque Localizado: Mão",
+      "Limbs": "Ataque Localizado: Membros",
+      "HeadOrVitals": "Ataque Localizado: Cabeça ou Órgãos Vitais"
+    },
+    "GlobalMod": {
+      "Label": "Modificadores Globais",
+      "Agility": "Agilidade e Perícias associadas",
+      "Trait": "Todas as Características",
+      "Smarts": "Astúcia e Perícias associadas",
+      "Spirit": "Espírito e Perícias associadas",
+      "Strength": "Força e Perícias associadas",
+      "Vigor": "Vigor e Perícias associadas",
+      "Attack": "Todos os Ataques",
+      "Damage": "Todo Dano",
+      "AP": "Toda Perfuração de Armadura"
+    },
+    "ModTrait": "Modificadores de Característica",
+    "ModAttack": "Modificadores de Ataque",
+    "ModDamage": "Modificadores de Dano",
+    "Weakness": "Fraqueza",
+    "Resistance": "Resistência",
+    "RollNoun": "Rolagem",
+    "DesperateAttack": {
+      "2": "Ataque Desesperado (2)",
+      "4": "Ataque Desesperado (4)"
+    },
+    "NumberOfDice": {
+      "Label": "Dados",
+      "Hint": "Determina quantos dados de Característica serão rolados para esta ação"
+    },
+    "AddOrReplaceActions": {
+      "Title": "Adicionar ou substituir ações",
+      "Add": "Adicionar como nova",
+      "Replace": "Substituir a existente",
+      "Content": "<p>Você deseja adicionar as ações do <strong>{source}</strong> {type} como novas ações ou substituir as ações existentes?</p>"
+    },
+    "ResourcesUsed": {
+      "Label": "Recursos utilizados",
+      "Hint": "Quanto de um recurso arbitrário é usado para essa ação"
+    },
+    "CouldNotFindMacro": "Não foi possível encontrar a macro com a UUID {uuid}",
+    "DmgMod": "Modificador de Dano",
+    "ShieldBonus": "Bônus de Escudo",
+    "BaseParry": "Aparar Base",
+    "Magazine": {
+      "NoneLoaded": "Nenhum carregador carregado",
+      "Select": "Selecione um carregador"
+    },
+    "MacroActor": {
+      "Default": "Padrão",
+      "Self": "Próprio",
+      "Target": "Alvo"
+    },
+    "Auras": {
+      "TabHeader": "Auramante",
+      "Enabled": "Habilitado",
+      "Range": "Raio da Aura",
+      "WallConstraints": {
+        "Label": "Restrito por Paredes",
+        "Hint": "Essa opção determina se a aura é limitada por paredes que bloqueiam a luz ou se pode passar por elas"
+      },
+      "Color": "Cor",
+      "Alpha": "Transparência da Aura",
+      "UserAura1": "Aura 1",
+      "UserAura2": "Aura 2"
+    },
+    "Aura": {
+      "Visibility": {
+        "Hint": "Selecione quais tokens (por Disposição) podem ver essa aura. Você sempre pode ver todas as auras de uma ficha da qual você tenha pelo menos a permissão de Observador",
+        "Label": "Visível para"
+      }
+    },
+    "TOURS": {
+      "AMMUNITION": {
+        "SwadeSettings": {
+          "Content": "As configurações de munição podem ser encontradas nas regras de ambientação nas configurações gerais do <em>Savage Worlds</em>",
+          "Title": "Configurações do SWADE"
+        },
+        "AmmoSettings": {
+          "Content": "Estes controlam se a munição é consumida automaticamente por armas de longo alcance.",
+          "Title": "Configurações de Munição"
+        },
+        "AmmoManagement": {
+          "Content": "Essa configuração controla se o disparo de uma arma de alcance consome alguma munição, seja do contador de tiros interno da arma ou do inventário.",
+          "Title": "Gerenciamento de Munição"
+        },
+        "PCInventory": {
+          "Content": "As próximas três configurações controlam se os itens externos são consumidos quando uma arma é recarregada, com base no tipo de ator. Se essas configurações não estiverem habilitadas, mas o gerenciamento de munição estiver, os atores de um determinado tipo consumirão os tiros em um item, mas poderão recarregar livremente. Isso permite o gerenciamento de munição no estilo \"arcade\", em que é importante rastrear a ação de recarga, mas não o uso de munição a longo prazo.",
+          "Title": "Munição do inventário"
+        },
+        "ReloadNone": {
+          "Content": "Essas armas ignoram totalmente o contador de tiros, puxando diretamente do item de munição vinculado. Essa configuração é melhor para armas que usam apenas munição externa, como uma aljava de flechas ou um canhão de guerra alimentado por tambor.",
+          "Title": "Procedimento de recarga — Nenhum"
+        },
+        "AmmoNone": {
+          "Content": "Este deve ser definido como um Equipamento (por exemplo, flechas) ou item consumível (por exemplo, barril de balas) no inventário do personagem. A quantidade de um item de equipamento é consumida diretamente. Em vez disso, os itens consumíveis usam suas cargas, sendo que cada quantidade representa um conjunto completo de cargas. Esse campo deve corresponder exatamente ao nome do item a ser consumido <em></em> .",
+          "Title": "O campo de munição"
+        },
+        "ReloadSingle": {
+          "Content": "Essas armas recarregam um único tiro a cada vez que o botão Recarregar é pressionado. Essa configuração é ideal para revólveres ou outras armas com munições volumosas que demoram a ser recarregadas.",
+          "Title": "Procedimento de recarga — individual"
+        },
+        "AmmoSingle": {
+          "Content": "Esse campo funciona de forma semelhante a Recarregar — Nenhum, mas a quantidade ou as cargas são consumidas pelo recarregamento em vez de pelo disparo da arma, já que o disparo da arma consome do contador de tiros.",
+          "Title": "O campo de munição"
+        },
+        "AmmoFull": {
+          "Content": "Esse campo funciona de forma semelhante a Recarregar — Nenhum, mas a quantidade ou as cargas são consumidas pelo recarregamento em vez de pelo disparo da arma, já que o disparo da arma consome do contador de tiros.",
+          "Title": "O campo de munição"
+        },
+        "ReloadBattery": {
+          "Title": "Procedimento de recarga — Bateria",
+          "Content": "Essas armas funcionam de forma semelhante aos carregadores, mas com baterias intercambiáveis que se esgotam proporcionalmente aos disparos efetuados."
+        },
+        "ReloadPP": {
+          "Title": "Procedimento de recarga — Pontos de Poder",
+          "Content": "Essas armas não são recarregadas com munição física, mas esgotando os pontos de poder do usuário, conforme apresentado em <em>Rifts® for Savage Worlds</em>"
+        },
+        "AmmoMagazine": {
+          "Content": "O item nomeado aqui DEVE ser um consumível com o subtipo Carregador para funcionar corretamente. Além disso, as cargas do consumível devem corresponder ao contador de tiros da arma.",
+          "Title": "O campo de munição"
+        },
+        "AmmoBattery": {
+          "Content": "O item nomeado aqui DEVE ser um consumível com o subtipo Bateria para funcionar corretamente. Além disso, as cargas máximas do consumível devem estar fora de 100.",
+          "Title": "O campo de munição"
+        },
+        "AmmoPP": {
+          "Content": "Em vez de nomear um item, nomeie um tipo arcano válido no personagem, como geral, magia, milagres ou psiônica",
+          "Title": "O campo de munição"
+        },
+        "Title": "Munição",
+        "Description": "Este Tour irá mostrar como usar o gerenciamento automático de munição",
+        "Actor": "Personagem de Demonstração do Tour de Munição",
+        "Items": {
+          "NONE": "Arco longo",
+          "SELF": "Faca de arremesso",
+          "SINGLE": "Revólver",
+          "FULL": "Pistola d'água",
+          "MAGAZINE": "Steyr AUG",
+          "BATTERY": "Arma laser",
+          "PP": "Arma de mago"
+        },
+        "GameSettings": {
+          "Title": "Configurações do Jogo",
+          "Content": "Primeiro, o Gerenciamento de Munição deve ser ativado nas configurações do sistema do jogo."
+        },
+        "CharacterWeapons": {
+          "Title": "Armas de personagens",
+          "Content": "As armas de um personagem são listadas na aba de Equipamento."
+        },
+        "ReloadSelf": {
+          "Title": "Procedimento de recarga — Self",
+          "Content": "Essas armas usam sua própria quantidade para reiniciar o contador de tiros. Essa configuração é a melhor para armas de arremesso ou qualquer outra coisa que seja autônoma e se utilize sozinha."
+        },
+        "AmmoSelf": {
+          "Title": "O campo de munição",
+          "Content": "Este campo é ignorado quando o tipo de recarga é definido como próprio"
+        },
+        "ReloadFull": {
+          "Title": "Procedimento de recarga — completo",
+          "Content": "Essas armas recarregam todo o contador de tiros a cada vez que o botão Recarregar é pressionado. Isso pode ser usado como uma versão simplificada do método do carregador ou para armas que não têm carregadores destacáveis, como uma arma com reservatórios de líquido."
+        },
+        "ReloadMagazine": {
+          "Title": "Procedimento de recarga — Carregador",
+          "Content": "Essas armas usam carregadores totalmente removíveis que podem ser trocados conforme necessário, monitorando a quantidade de tiros restantes por carregador."
+        }
+      },
+      "TWEAKS": {
+        "Title": "Ajustes"
+      }
+    },
+    "Unfamiliar": {
+      "2": "Pouco familiar (-2)",
+      "4": "Pouco familiar (-4)"
+    },
+    "Requirements": {
+      "Editor": {
+        "Value": "Valor",
+        "SWID": "SWID",
+        "Header": "Editar requerimentos para {name}",
+        "AddHint": "Adicionar um novo requerimento",
+        "DeleteHint": "Deletar este requerimento",
+        "Label": "Nome"
+      },
+      "Combinator": "Combinador",
+      "And": "e",
+      "Or": "ou",
+      "Other": "Outro"
+    },
+    "SWID": {
+      "Short": "SWID",
+      "Regenerate": "Regenerar ID do Savage Worlds",
+      "ChangeWarning1": "Prossiga com cuidado!",
+      "Long": "ID Savage Worlds",
+      "ChangeWarning2": "Alterar a ID do Savage Worlds de um item pode quebrar as referências ao item! Proceda com cautela e somente se tiver certeza.",
+      "ChangeWarning3": "Você quer continuar?"
+    },
+    "RequiredCrew": "Tripulação Requerida",
+    "Weapon": {
+      "RangeType": {
+        "Melee": "Corpo a corpo",
+        "Ranged": "À Distância",
+        "Mixed": "Misto",
+        "Label": "Tipo de Alcance"
+      }
+    },
+    "RedrawBenny": "Recomprar Carta com Bene",
+    "NpcWildCardsOnScene": "Cartas Selvagens NPC em cena",
+    "SelectNewGroupLeader": "Selecionar um novo Líder de Grupo",
+    "ToggleIncap": "Alternar Incapacitação",
+    "CardDrawMsgSize": {
+      "None": "Nenhum",
+      "Compact": "Compacto",
+      "Large": "Grande"
+    },
+    "Benny": "Bene",
+    "AmbushAssistant": {
+      "NormalDraw": "Compra Normal",
+      "NoTurn": "Sem Turno",
+      "Title": "Assistente de Emboscada",
+      "Hint": "Arraste e solte os combatentes para preparar a rodada surpresa",
+      "Unassigned": "Não atribuído",
+      "OnHold": "Em espera"
+    },
+    "Combat": {
+      "StartSurpriseRound": "Iniciar rodada surpresa",
+      "AdvanceRoundTitle": "Avançar para a próxima rodada?",
+      "AdvanceRoundContent": "Você quer avançar à próxima rodada?",
+      "RevertRoundTitle": "Reverter à rodada anterior?",
+      "RevertRoundContent": "Deseja voltar à rodada anterior?",
+      "DiscardedCards": "Cartas descartadas",
+      "Redraw": "Recompra de Carta",
+      "RedrawDialog": {
+        "Content": "Comprar uma nova carta com um Bene ou de graça?"
+      },
+      "DealAll": "Dar a Todos",
+      "DealNPC": "Dar para NPCs"
+    },
+    "FollowerCount": "{count} Seguidores",
+    "Free": "Gratuita",
+    "HindranceSeverity": {
+      "Major": "Somente Maior",
+      "Minor": "Somente Menor",
+      "Label": "Opções de Gravidade",
+      "Either": "Ambas"
+    },
+    "HeadquartersSheet": "Folha da Sede do Savage Worlds",
+    "Elan": "Impulso",
+    "NotOwnedError": "Você deve possuir esse item/ator para isso",
+    "NoUpdatedItemFound": "Nenhum item adequado para uma atualização foi encontrado",
+    "DiscardMagazine": "Descartar carregador vazio",
+    "Headquarters": {
+      "Form": "Formulário",
+      "Advantage": "Vantagem",
+      "Description": "Descrição",
+      "Acquisition": "Aquisição",
+      "Maintenance": "Manutenção",
+      "Complication": "Complicação",
+      "Upgrades": "Upgrades"
+    },
+    "SetActionDeck": "Definir deck como Deck de Ação",
+    "InnatePower": "Poder Inato",
+    "RefreshOnly": "Atualizar",
+    "GrantsItemsError": "Atualizar não funciona para itens que concedem outros",
+    "PlayerCardDrawHelper": {
+      "Title": "Assistente de Compra de Cartas de Jogador do SWADE"
+    },
+    "NoDescription": "Nenhuma descrição disponível",
+    "BenniesCount": "{count} Benes",
+    "Cards": {
+      "Jokers": "Curingas",
+      "Two": "Dois",
+      "Spades": "Espadas",
+      "Hearts": "Copas",
+      "Diamonds": "Ouros",
+      "Clubs": "Paus",
+      "Nine": "Nove",
+      "Ten": "Dez",
+      "Jack": "Valete",
+      "Queen": "Rainha",
+      "King": "Rei",
+      "Three": "Três",
+      "Four": "Quatro",
+      "Five": "Cinco",
+      "Six": "Seis",
+      "Seven": "Sete",
+      "Eight": "Oito",
+      "Ace": "Ás",
+      "RedJoker": "Curinga Vermelho / Curinga de Espadas",
+      "BlackJoker": "Coringa Preto / Coringa de Copas",
+      "BlueJoker": "Curinga Azul / Coringa de Ouros",
+      "GreenJoker": "Curinga Verde / Curinga de Paus"
+    },
+    "Draw": "Sacar",
+    "Reset": "Redefinir",
+    "ConvictionExtendPrompt": "Você quer gastar um Bene para estender sua convicção?",
+    "CharacterSummaryTypeErr": "Não é possível usar o resumidor de personagem para o ator do tipo {type}",
+    "ChaseReset": "O deck \"{deck}\" foi redefinido.",
+    "ChaseLayout": "Layout",
+    "ChaseRows": "Linhas",
+    "ChaseColumns": "Colunas",
+    "ChaseNoDeck": "Forneça um deck!",
+    "DialogConfirmPrompt": "Tem certeza?",
+    "Group": {
+      "Sheet": {
+        "Stash": {
+          "Header": "Estoque",
+          "Empty": "Sem itens presentes"
+        },
+        "Lock": {
+          "Label": "Alternar Trava de Ficha",
+          "Hint": "Quando travada, nenhum Ator pode ser adicionado ou removido do grupo"
+        },
+        "Members": {
+          "Header": "Membros",
+          "Hint": "Para adicionar membros, arraste e solte-os sobre a ficha ou copie e cole seus UUIDs. Isso também funciona para tokens de atores em uma cena.",
+          "Empty": "Sem membros ainda"
+        }
+      }
+    },
+    "Supplies": {
+      "Label": "Suprimentos",
+      "Level": {
+        "Low": "Baixo",
+        "High": "Alto",
+        "VeryHigh": "Muito Alto",
+        "Out": "Sem"
+      },
+      "Ammo": {
+        "Label": "Munição"
+      },
+      "Fuel": {
+        "Label": "Combustível"
+      },
+      "Food": {
+        "Label": "Comida"
+      },
+      "Supply": {
+        "Label": "Suprimento"
+      }
+    },
+    "GroupSheet": "Ficha de Grupo do Savage Worlds",
+    "BenniesAdjustGM": "Ajustar Benes do GM",
+    "BenniesAdjustGMText": "Coloque o número de Benes que o GM deveria ter atualmente.",
+    "BenniesMaxNum": "Máximo de Benes",
+    "EdF": "Editar {item}",
+    "EdRightClick": "[Botão Direito] para Editar",
+    "SpeedUnit": "Unidade",
+    "ActionsOverride": "Substituir",
+    "ID": "ID",
+    "SortNum": "Número de Ordenação",
+    "ChargesMax": "Máximo de Cargas",
+    "IgnFatigueWounds": "Ignorar Ferimentos/Fadiga",
+    "FatigueWounds": "Ferimentos/Fadiga",
+    "SettingConfigurator": {
+      "WorldCompendiums": "Compêndios do Mundo",
+      "WorldTables": "Tabelas do Mundo"
+    },
+    "Advance": "Avançar",
+    "ShotsCurrent": "Tiros Atuais",
+    "Value": "Valor",
+    "MaxLabel": "Máximo",
+    "Stats": "Atributos",
+    "BuildCost": "Custo de Construção",
+    "ActionDeckPresetPEG": "Baralho de Ações (PEG)",
+    "disabledAE": "Desabilitado devido a Efeito Ativo",
+    "RunningHint": {
+      "Header": "<strong>Distância total de corrida.</strong>",
+      "Reminder": "<p>Correr durante o seu turno causa -2 de penalidade em todas as suas ações.</p>"
+    },
+    "DeleteFromParentWarning": "{name} será permanentemente excluído de {parent}.",
+    "DeleteFromParentWarningPermanent": "{name} será permanentemente excluído de {parent} e não poderá ser recuperado.",
+    "RemoveEffectLabel": "Remover efeito",
+    "Scales": {
+      "Description": "Escala: {scale} ({name})",
+      "LargerThan": "Maior que {scale}",
+      "SmallerThan": "Menor que {scale}"
+    },
+    "Vehicle": {
+      "Crew": {
+        "Role": "Função",
+        "Roles": {
+          "Operator": "Operador",
+          "Gunner": "Artilheiro",
+          "Other": "Outro"
+        }
+      }
+    },
+    "VehicleAttributes": {
+      "Label": "Atributos do veículo",
+      "Agility": "Veículo tem Agilidade",
+      "Spirit": "Veículo tem Espírito",
+      "Smarts": "Veículo tem Astúcia"
+    },
+    "Energy": {
+      "Enable": "Habilitar Energia",
+      "Value": "Energia Atual",
+      "Max": "Energia Máxima",
+      "Label": "Energia"
+    },
+    "Complication": "",
+    "ChaseDiscard": "Pilha de Descarte",
+    "EffectsInactive": "Efeitos inativos",
+    "DramaticTask": {
+      "MaxRounds": {
+        "Label": "Máximo de Rodadas"
+      },
+      "MaxTokens": {
+        "Label": "Sucessos"
+      },
+      "Successes": "Sucessos"
+    },
+    "HindMajor": "Maior",
+    "HindMinor": "Menor"
+  },
+  "ITEM": {
+    "TypeWeapon": "Arma",
+    "TypeArmor": "Armadura",
+    "TypeShield": "Escudo",
+    "TypeGear": "Equipamento",
+    "TypeEdge": "Vantagem",
+    "TypeHindrance": "Complicação",
+    "TypeSkill": "Perícia",
+    "TypePower": "Poder",
+    "TypeAbility": "Habilidade",
+    "TypeConsumable": "Consumível",
+    "TypeAction": "Ação"
+  },
+  "ACTOR": {
+    "TypeCharacter": "Personagem Jogador",
+    "TypeNpc": "NPC",
+    "TypeVehicle": "Veículo"
+  },
+  "CARD": {
+    "TypeAdventure": "Carta de Aventura",
+    "TypePoker": "Carta de Poker"
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Personagem de Jogador",
+      "npc": "NPC",
+      "vehicle": "Veículo",
+      "group": "Grupo"
+    },
+    "Item": {
+      "weapon": "Arma",
+      "armor": "Armadura",
+      "shield": "Escudo",
+      "gear": "Equipamento",
+      "edge": "Vantagem",
+      "hindrance": "Complicação",
+      "skill": "Perícia",
+      "power": "Poder",
+      "ability": "Habilidade",
+      "consumable": "Consumível",
+      "action": "Ação",
+      "ancestry": "Ancestralidade"
+    },
+    "Card": {
+      "adventure": "Carta de Aventura",
+      "poker": "Carta de Poker"
+    },
+    "JournalEntryPage": {
+      "headquarters": "Sede"
+    },
+    "ActiveEffect": {
+      "modifier": "Modificador"
+    }
+  }
+}

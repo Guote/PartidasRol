@@ -1,0 +1,6 @@
+.droppables-dialog-form {
+  margin-bottom: 1em;
+}
+.droppables-dialog-form form-group .droppables-dialog-label {
+  flex: 0 0 80px;
+}
