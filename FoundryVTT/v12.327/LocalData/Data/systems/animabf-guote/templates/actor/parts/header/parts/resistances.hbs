@@ -1,0 +1,57 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+class="resistances"
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/group-header.hbs"
+title=(localize "anima.ui.resistances.title")
+}}
+{{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+class="resistances"
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize 'anima.ui.resistances.physical')
+inputName="system.characteristics.secondaries.resistances.physical.base.value"
+inputValue=system.characteristics.secondaries.resistances.physical.base.value
+hasSecondaryInput=false
+addTooltips=true
+rollable=true
+rollableDice='1d100'
+rollValue=system.characteristics.secondaries.resistances.physical.base.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize 'anima.ui.resistances.magic')
+inputName="system.characteristics.secondaries.resistances.magic.base.value"
+inputValue=system.characteristics.secondaries.resistances.magic.base.value
+hasSecondaryInput=false
+addTooltips=true
+rollable=true
+rollableDice='1d100'
+rollValue=system.characteristics.secondaries.resistances.magic.base.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize 'anima.ui.resistances.psychic')
+inputName="system.characteristics.secondaries.resistances.psychic.base.value"
+inputValue=system.characteristics.secondaries.resistances.psychic.base.value
+hasSecondaryInput=false
+addTooltips=true
+rollable=true
+rollableDice='1d100'
+rollValue=system.characteristics.secondaries.resistances.psychic.base.value
+}}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+class="resistance"
+title="CRÍTICO"
+rollable=true
+rollableDice='1d100-1d100'
+rollValue=system.characteristics.secondaries.resistances.physical.base.value
+rollableMessage='Crítico'
+disabled=true
+inputValue=system.characteristics.secondaries.resistances.physical.base.value
+}}
+
+{{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

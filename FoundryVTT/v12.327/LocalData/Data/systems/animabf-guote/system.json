@@ -1,0 +1,91 @@
+{
+  "id": "animabf-guote",
+  "title": "Anima Beyond Fantasy - v10",
+  "description": "Unofficial Anima Beyond Fantasy system for Foundry VTT",
+  "version": "1.16.0",
+  "compatibility": { "minimum": "10", "verified": "10.303", "maximum": "10" },
+  "url": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry",
+  "manifest": "https://raw.githubusercontent.com/AnimaBeyondDevelop/AnimaBeyondFoundry/main/src/system.json",
+  "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v1.16.0",
+  "download": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/download/v1.16.0/animabf-guote.zip",
+  "bugs": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/issues",
+  "authors": [
+    { "name": "Linkaynn", "url": "https://www.jeseromero.com" },
+    { "name": "Guote" }
+  ],
+  "scripts": [],
+  "esmodules": ["animabf-guote.mjs"],
+  "styles": ["animabf-guote.css"],
+  "socket": true,
+  "packs": [
+    {
+      "name": "weapons",
+      "label": "(ES) Armas",
+      "system": "animabf-guote",
+      "path": "./packs/weapons_es.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "armors",
+      "label": "(ES) Armaduras",
+      "system": "animabf-guote",
+      "path": "./packs/armors_es.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "magic",
+      "label": "(ES) Magia",
+      "system": "animabf-guote",
+      "path": "./packs/magic_es.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "psychic",
+      "label": "(ES) Mentalismo",
+      "system": "animabf-guote",
+      "path": "./packs/psychic_powers_es.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "npcs",
+      "label": "(ES) NPCs Core Exxet",
+      "system": "animabf-guote",
+      "path": "./packs/npcs_es.db",
+      "type": "Actor",
+      "private": false,
+      "flags": {}
+    }
+  ],
+  "languages": [
+    { "lang": "es", "name": "Español", "path": "lang/es.json" },
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "fr", "name": "Français", "path": "lang/fr.json" }
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "libWrapper",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/ruipin/fvtt-lib-wrapper/master/module.json",
+        "compatibility": { "verified": "1.12.12.1" }
+      },
+      {
+        "id": "Compendium Folders",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/earlSt1/vtt-compendium-folders/11x-update/module.json",
+        "compatibility": { "verified": "2.6.1" }
+      }
+    ]
+  },
+  "primaryTokenAttribute": "characteristics.secondaries.lifePoints",
+  "gridDistance": 1.5,
+  "gridUnits": "m"
+}

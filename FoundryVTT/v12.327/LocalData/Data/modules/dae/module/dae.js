@@ -2236,7 +2236,7 @@ export function daeInitActions() {
         return;
     }
     // Augment actor get rollData with actorUuid, actorId, tokenId, tokenUuid
-    libWrapper.register("dae", "CONFIG.Actor.documentClass.prototype.getRollData", daeSystemClass.getRollDataFunc(), "WRAPPER");
+    libWrapper.register("dae", "CONFIG.Actor.documentClass.prototype.getRollData", daeSystemClass.getRollDataFunc(), "MIXED");
     // libWrapper.register("dae", "CONFIG.Token.objectClass.prototype.drawEffects", drawEffects, "WRAPPER")
     // libWrapper.register("dae", "CONFIG.Actor.documentClass.prototype.applyActiveEffects", applyBaseActiveEffects, "OVERRIDE");
     // If updating item effects recreate actor effects for updated item.

@@ -1,0 +1,106 @@
+<form class="{{cssClass}} actor-sheet" autocomplete="off">
+  <header class='header-fields'>
+    {{> "systems/animabf-guote/templates/actor/parts/header/header.hbs"}}
+  </header>
+
+  {{!-- Character Sheet Navigation --}}
+  <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="main">{{localize "anima.ui.tabs.main"}}</a>
+    <a class="item" data-tab="secondaries">{{localize "anima.ui.tabs.secondaries"}}</a>
+    <a class="item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
+    {{#if system.ui.tabVisibility.mystic.value}}
+    <a class="item" data-tab="mystic">{{localize "anima.ui.tabs.mystic"}}</a>{{/if}}
+    {{#if system.ui.tabVisibility.domine.value}}
+    <a class="item" data-tab="domine">{{localize "anima.ui.tabs.domine"}}</a>{{/if}}
+    {{#if system.ui.tabVisibility.psychic.value}}
+    <a class="item" data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>{{/if}}
+    <a class="item" data-tab="settings"><img
+        src='/systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/cog.svg'></a>
+  </nav>
+
+  <section class="sheet-body">
+    <div class="tab main" data-group="primary" data-tab="main">
+      {{> "systems/animabf-guote/templates/actor/parts/general/general.hbs"}}
+    </div>
+
+    <div class="tab secondaries" data-group="primary" data-tab="secondaries">
+      {{> "systems/animabf-guote/templates/actor/parts/secondaries/secondaries.hbs"}}
+    </div>
+
+    <div class="tab combat" data-group="primary" data-tab="combat">
+      {{> "systems/animabf-guote/templates/actor/parts/combat/combat.hbs"}}
+    </div>
+
+    <div class="tab mystic" data-group="primary" data-tab="mystic">
+      {{> "systems/animabf-guote/templates/actor/parts/mystic/mystic.hbs"}}
+    </div>
+
+    <div class="tab domine" data-group="primary" data-tab="domine">
+      {{> "systems/animabf-guote/templates/actor/parts/domine/domine.hbs"}}
+    </div>
+
+    <div class="tab psychics" data-group="primary" data-tab="psychic">
+      {{> "systems/animabf-guote/templates/actor/parts/psychic/psychic.hbs"}}
+    </div>
+
+    <div class="tab settings" data-group="primary" data-tab="settings">
+      {{> "systems/animabf-guote/templates/actor/parts/settings/settings.hbs"}}
+      
+      <div style="margin-top: 1rem">
+        <h2>Active Effects</h2>
+        <ol class="items-list effects-list">
+          {{#each effects as |section sid|}}
+          {{#unless section.hidden}}
+          <li class="items-header flexrow" data-effect-type="{{section.type}}">
+            <h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
+           {{!--  <div class="effect-source">{{localize "DND5E.Source"}}</div>
+            <div class="effect-source">{{localize "DND5E.Duration"}}</div>
+            <div class="item-controls effect-controls flexrow">
+              {{#if @root.editable}}
+              <a class="effect-control" data-action="create" data-tooltip="DND5E.EffectCreate">
+                <i class="fas fa-plus"></i> {{localize "DND5E.Add"}}
+              </a>
+              {{/if}}
+            </div> --}}
+          </li>
+
+          {{#if section.info}}
+          <ol class="info">
+            {{#each section.info}}
+            <li class="notification info">{{this}}</li>
+            {{/each}}
+          </ol>
+          {{/if}}
+          <ol class="item-list">
+            {{#each section.effects as |effect|}}
+            <li class="item effect flexrow" data-effect-id="{{effect.id}}">
+              <div class="item-name effect-name flexrow">
+                <img class="item-image" src="{{effect.icon}}" />
+                <h4>{{effect.label}}</h4>
+              </div>
+              <div class="effect-source">{{effect.sourceName}}</div>
+              <div class="effect-duration">{{effect.duration.label}}</div>
+              <div class="item-controls effect-controls flexrow">
+                {{#if @root.editable}}
+                <a class="effect-control" data-action="toggle"
+                  data-tooltip="{{#if effect.disabled}}DND5E.EffectEnable{{else}}DND5E.EffectDisable{{/if}}">
+                  <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+                </a>
+                <a class="effect-control" data-action="edit" data-tooltip="DND5E.EffectEdit">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a class="effect-control" data-action="delete" data-tooltip="DND5E.EffectDelete">
+                  <i class="fas fa-trash"></i>
+                </a>
+                {{/if}}
+              </div>
+            </li>
+            {{/each}}
+          </ol>
+          {{/unless}}
+          {{/each}}
+        </ol>
+      </div>
+    </div>
+  </section>
+</form>

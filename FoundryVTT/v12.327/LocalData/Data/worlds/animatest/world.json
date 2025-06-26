@@ -1,0 +1,13 @@
+{
+  "title": "animatest",
+  "id": "animatest",
+  "system": "animabf",
+  "joinTheme": "default",
+  "coreVersion": "12.327",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "systemVersion": "1.19.5",
+  "lastPlayed": "Thu Jun 26 2025 15:22:32 GMT+0200 (hora de verano de Europa central)"
+}

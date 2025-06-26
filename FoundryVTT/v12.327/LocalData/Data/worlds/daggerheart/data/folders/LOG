@@ -1,3 +1,8 @@
-2025/06/23-23:23:56.579 a494 Recovering log #29
-2025/06/23-23:23:56.586 a494 Delete type=0 #29
-2025/06/23-23:23:56.586 a494 Delete type=3 #27
+2025/06/26-13:10:28.077 6afc Recovering log #32
+2025/06/26-13:10:28.085 6afc Delete type=0 #32
+2025/06/26-13:10:28.085 6afc Delete type=3 #31
+2025/06/26-15:07:19.787 c9c Level-0 table #36: started
+2025/06/26-15:07:19.787 c9c Level-0 table #36: 0 bytes OK
+2025/06/26-15:07:19.790 c9c Delete type=0 #34
+2025/06/26-15:07:19.796 c9c Manual compaction at level-0 from '!folders!qygHgPAOthHvzFAG' @ 72057594037927935 : 1 .. '!folders!qygHgPAOthHvzFAG' @ 0 : 0; will stop at (end)
+2025/06/26-15:07:19.797 c9c Manual compaction at level-1 from '!folders!qygHgPAOthHvzFAG' @ 72057594037927935 : 1 .. '!folders!qygHgPAOthHvzFAG' @ 0 : 0; will stop at (end)

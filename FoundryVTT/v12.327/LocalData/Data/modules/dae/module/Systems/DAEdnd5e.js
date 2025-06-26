@@ -1268,7 +1268,7 @@ function doItemApplyEffects(includeKeys, excludeKeys, overrides) {
                 : this.schema.getField(change.key);
             const targetType = getTargetType(field);
             const c = foundry.utils.deepClone(change);
-            if (typeof c.value === "string") {
+            if (typeof c.value === "string" && this.actor?.items.has(this.id)) {
                 const rollData = this.getRollData();
                 rollData.mod = rollData.abilities?.[this.abilityMod]?.mod ?? 0;
                 if (targetType !== "formula" && targetType !== "string")

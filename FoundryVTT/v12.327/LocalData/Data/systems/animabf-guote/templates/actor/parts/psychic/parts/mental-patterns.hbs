@@ -1,0 +1,45 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="mental-patterns"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.psychic.mentalPattern.title")
+    addRowButtonData="add-mental-pattern"
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="mental-patterns"
+  }}
+    {{#each system.psychic.mentalPatterns as |pattern index|}}
+      <div data-item-id='{{pattern._id}}' class='mental-pattern-row'>
+        {{>
+        "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+          class="name"
+          title=(localize "anima.ui.psychic.mentalPattern.name.title")
+          hideTitle=(is "gt" index 0)
+          inputType="text"
+          inputName=(concat "system.dynamic.mentalPatterns." pattern._id ".name")
+          inputValue=pattern.name
+        }}
+
+        {{>
+        "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+          class="bonus"
+          title=(localize "anima.ui.psychic.mentalPattern.bonus.title")
+          hideTitle=(is "gt" index 0)
+          inputName=(concat "system.dynamic.mentalPatterns." pattern._id ".system.bonus.value")
+          inputValue=pattern.system.bonus.value
+        }}
+
+        {{>
+        "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+          class="penalty"
+          title=(localize "anima.ui.psychic.mentalPattern.penalty.title")
+          hideTitle=(is "gt" index 0)
+          inputName=(concat "system.dynamic.mentalPatterns." pattern._id ".system.penalty.value")
+          inputValue=pattern.system.penalty.value
+        }}
+
+      </div>
+    {{/each}}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

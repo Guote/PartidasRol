@@ -1,7 +1,3 @@
-2025/06/23-23:22:00.868 98fc Recovering log #27
-2025/06/23-23:22:00.876 98fc Delete type=0 #27
-2025/06/23-23:22:00.876 98fc Delete type=3 #25
-2025/06/23-23:23:42.070 8bfc Level-0 table #32: started
-2025/06/23-23:23:42.070 8bfc Level-0 table #32: 0 bytes OK
-2025/06/23-23:23:42.072 8bfc Delete type=0 #30
-2025/06/23-23:23:42.078 8bfc Manual compaction at level-0 from '!actors!FJElmrW8Pg0ve0T6' @ 72057594037927935 : 1 .. '!actors!FJElmrW8Pg0ve0T6' @ 0 : 0; will stop at (end)
+2025/06/23-23:23:56.506 a778 Recovering log #31
+2025/06/23-23:23:56.514 a778 Delete type=0 #31
+2025/06/23-23:23:56.514 a778 Delete type=3 #29

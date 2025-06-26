@@ -1,0 +1,39 @@
+<div class='mystic'>
+  <nav class="abf-tabs mystic-tabs tabs secondary-tab" data-group="secondary">
+    <a class="item active" data-tab="mystic-main">{{localize "anima.ui.mystic.tabs.main"}}</a>
+    <a class="item" data-tab="mystic-spells">{{localize "anima.ui.mystic.tabs.secondaries"}}</a>
+  </nav>
+  <section class='mystic-body'>
+    <div class='tab' data-group="secondary" data-tab="mystic-main">
+      <div class='mystic-main-tab'>
+        <div class='first-column'>
+          <div class='sub-columns'>
+            <div>
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/act.hbs"}}
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/magic-projection.hbs"}}
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/zeon-regeneration.hbs"}}
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/innate-magic.hbs"}}
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/zeon.hbs"}}
+            </div>
+            <div>
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/summoning.hbs"}}
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/spheres.hbs"}}
+            </div>
+          </div>
+        </div>
+        <div class='second-column'>
+          {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/spell-maintenances.hbs"}}
+          {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/selected-spells.hbs"}}
+          {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/summons.hbs"}}
+          {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/metamagics.hbs"}}
+        </div>
+      </div>
+    </div>
+
+    <div class='tab' data-group="secondary" data-tab="mystic-spells">
+      <div class='mystic-spells-tab'>
+          {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/spells/spells.hbs"}}
+      </div>
+    </div>
+  </section>
+</div>

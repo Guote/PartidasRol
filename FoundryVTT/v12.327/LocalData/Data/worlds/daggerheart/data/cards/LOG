@@ -1,3 +1,7 @@
-2025/06/23-23:23:56.522 a774 Recovering log #29
-2025/06/23-23:23:56.529 a774 Delete type=0 #29
-2025/06/23-23:23:56.530 a774 Delete type=3 #27
+2025/06/26-13:10:27.955 6afc Recovering log #32
+2025/06/26-13:10:27.963 6afc Delete type=0 #32
+2025/06/26-13:10:27.964 6afc Delete type=3 #31
+2025/06/26-15:07:19.766 c9c Level-0 table #36: started
+2025/06/26-15:07:19.778 c9c Level-0 table #36: 582 bytes OK
+2025/06/26-15:07:19.780 c9c Delete type=0 #34
+2025/06/26-15:07:19.781 c9c Manual compaction at level-0 from '!cards!jN9qsjU7PRnsIzGp' @ 72057594037927935 : 1 .. '!cards!jN9qsjU7PRnsIzGp' @ 0 : 0; will stop at (end)
