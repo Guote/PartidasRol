@@ -5,63 +5,75 @@
     {
       "label": "mentalismo",
       "name": "mentalismo",
-      "path": "packs/mentalismo.db",
+      "path": "packs/mentalismo",
       "system": "animabf-guote",
-      "private": false,
       "type": "Item",
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "label": "Bestiario",
       "name": "bestiario",
-      "path": "packs/bestiario.db",
+      "path": "packs/bestiario",
       "system": "animabf-guote",
-      "private": false,
       "type": "Actor",
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "label": "Escenas",
       "type": "Scene",
       "name": "escenas",
-      "path": "packs/escenas.db",
+      "path": "packs/escenas",
       "system": "animabf-guote",
-      "private": false,
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "label": "Artefactos mágicos",
       "type": "Item",
       "name": "artefactos-magicos",
-      "path": "packs/artefactos-magicos.db",
+      "path": "packs/artefactos-magicos",
       "system": "animabf-guote",
-      "private": false,
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "label": "Invocaciones (animabf-guote)",
       "type": "Item",
       "name": "invocaciones-animabf-guote",
-      "path": "packs/invocaciones-animabf-guote.db",
+      "path": "packs/invocaciones-animabf-guote",
       "system": "animabf-guote",
-      "private": false,
       "flags": {},
-      "package": "world",
-      "id": "world.invocaciones-animabf-guote",
-      "packageType": "world",
-      "packageName": "Gaia-APS-v10",
-      "index": []
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ],
   "system": "animabf-guote",
-  "coreVersion": "10.303",
+  "coreVersion": "12.327",
   "resetKeys": false,
   "safeMode": false,
   "systemVersion": "1.16.0",
   "id": "Gaia-APS-v10",
   "compatibility": {
-    "verified": "10.303",
+    "verified": "12.327",
     "minimum": "10"
   },
-  "background": "_APS%20images/wallpaperflare.com_wallpaper.jpg"
+  "background": "_APS%20images/wallpaperflare.com_wallpaper.jpg",
+  "lastPlayed": "Thu Jun 26 2025 21:39:22 GMT+0200 (hora de verano de Europa central)",
+  "playtime": 16
 }

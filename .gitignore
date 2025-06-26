@@ -1,2 +1,17 @@
-# Ignore Logs folders in all FoundryVTT versions
-FoundryVTT/*/LocalData/Logs/
+# Ignore Logs folders anywhere in FoundryVTT structure
+**/Logs/
+
+# LokiJS database temp & lock files (recursive)
+**/*.log
+**/*.ldb
+**/*.db.lock
+
+# LevelDB / LokiJS internal database files (recursive)
+**/LOG
+**/LOG.old
+**/LOCK
+**/CURRENT
+**/MANIFEST-*
+
+# Optional: Foundry backups of compendiums (recursive)
+**/*.db.bak
