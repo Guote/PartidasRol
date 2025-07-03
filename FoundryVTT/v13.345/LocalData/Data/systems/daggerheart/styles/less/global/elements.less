@@ -1,0 +1,452 @@
+@import '../utils/colors.less';
+@import '../utils/fonts.less';
+
+.application.sheet.dh-style {
+    border: 1px solid light-dark(@dark-blue, @golden);
+
+    input[type='text'],
+    input[type='number'] {
+        background: light-dark(transparent, transparent);
+        border-radius: 6px;
+        box-shadow: 0 4px 30px @soft-shadow;
+        backdrop-filter: blur(9.5px);
+        -webkit-backdrop-filter: blur(9.5px);
+        outline: none;
+        color: light-dark(@dark-blue, @golden);
+        border: 1px solid light-dark(@dark, @beige);
+
+        &:hover[type='text'],
+        &:hover[type='number'],
+        &:focus[type='text'],
+        &:focus[type='number'] {
+            background: light-dark(@soft-shadow, @semi-transparent-dark-blue);
+            box-shadow: none;
+            outline: 2px solid light-dark(@dark, @beige);
+        }
+    }
+
+    input[type='checkbox'] {
+        &:checked::after {
+            color: light-dark(@dark, @golden);
+        }
+        &:checked::before {
+            color: light-dark(transparent, @dark-blue);
+        }
+        &::before {
+            color: light-dark(@dark, @beige);
+        }
+    }
+
+    button {
+        background: light-dark(transparent, @golden);
+        border: 1px solid light-dark(@dark-blue, @dark-blue);
+        color: light-dark(@dark-blue, @dark-blue);
+        outline: none;
+        box-shadow: none;
+
+        &:hover {
+            background: light-dark(@light-black, @dark-blue);
+            color: light-dark(@dark-blue, @golden);
+        }
+
+        &.glow {
+            animation: glow 0.75s infinite alternate;
+        }
+    }
+
+    select {
+        background: light-dark(transparent, transparent);
+        color: light-dark(@dark, @beige);
+        font-family: @font-body;
+        outline: 2px solid transparent;
+        border: 1px solid light-dark(@dark, @beige);
+
+        &:focus,
+        &:hover {
+            outline: 2px solid light-dark(@dark, @beige);
+            box-shadow: none;
+        }
+
+        & option {
+            color: @beige;
+            background-color: @dark-blue;
+            border-radius: 6px;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        margin: 0;
+    }
+
+    a:hover,
+    a.active {
+        text-shadow: 0 0 8px light-dark(@dark-blue, @golden);
+    }
+
+    fieldset {
+        align-items: center;
+        margin-top: 5px;
+        border-radius: 6px;
+        border-color: light-dark(@dark-blue, @golden);
+
+        &.glassy {
+            background-color: light-dark(@dark-blue-10, @golden-10);
+            border-color: transparent;
+
+            legend {
+                padding: 2px 12px;
+                border-radius: 3px;
+                background-color: light-dark(@dark-blue, @golden);
+                color: light-dark(@beige, @dark-blue);
+            }
+        }
+
+        &.flex {
+            display: flex;
+            gap: 20px;
+        }
+
+        &.one-column {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 10px;
+            min-height: 64px;
+        }
+
+        &.two-columns {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+
+            &.even {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .full-width {
+                grid-column: span 2;
+            }
+        }
+
+        legend {
+            font-family: @font-body;
+            font-weight: bold;
+            color: light-dark(@dark-blue, @golden);
+        }
+
+        input[type='text'],
+        input[type='number'] {
+            color: light-dark(@dark, @beige);
+            font-family: @font-body;
+            transition: all 0.3s ease;
+            outline: 2px solid transparent;
+
+            &:focus,
+            &:hover {
+                outline: 2px solid light-dark(@dark, @beige);
+            }
+        }
+
+        .nest-inputs {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .form-group {
+            label {
+                font-family: @font-body;
+                font-weight: bold;
+                font-size: smaller;
+            }
+        }
+    }
+
+    .two-columns {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 10px;
+
+        &.even {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    line-div {
+        display: block;
+        height: 1px;
+        width: 100%;
+        border-bottom: 1px solid light-dark(@dark-blue, @golden);
+        mask-image: linear-gradient(270deg, transparent 0%, black 50%, transparent 100%);
+    }
+
+    side-line-div {
+        display: block;
+        height: 1px;
+        width: 100%;
+        border-bottom: 1px solid light-dark(@dark-blue, @golden);
+        mask-image: linear-gradient(270deg, transparent 0%, black 100%);
+
+        &.invert {
+            mask-image: linear-gradient(270deg, black 0%, transparent 100%);
+        }
+    }
+
+    .item-description {
+        opacity: 1;
+        transform: translateY(0);
+
+        transition:
+            opacity 0.3s ease-out,
+            transform 0.3s ease-out;
+    }
+
+    .item-description.invisible {
+        height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transform: translateY(-20px);
+        transform-origin: top;
+    }
+}
+
+.application.setting.dh-style {
+    fieldset {
+        h2,
+        h3,
+        h4 {
+            margin: 8px 0 4px;
+            text-align: center;
+        }
+        .title-hint {
+            font-size: 12px;
+            font-variant: small-caps;
+            text-align: center;
+        }
+
+        .field-section {
+            .split-section {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+        }
+
+        .label-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+
+            label {
+                align-self: center;
+                text-align: center;
+            }
+        }
+    }
+
+    footer {
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+
+        button {
+            flex: 1;
+        }
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        label {
+            font-size: 16px;
+        }
+
+        .form-fields {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+    }
+}
+
+.system-daggerheart {
+    .tagify {
+        background: light-dark(transparent, transparent);
+        border: 1px solid light-dark(@dark, @beige);
+        height: 34px;
+
+        border-radius: 3px;
+        margin-right: 1px;
+
+        tag {
+            div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 22px;
+
+                span {
+                    font-weight: 400;
+                }
+
+                img {
+                    margin-left: 8px;
+                    height: 20px;
+                    width: 20px;
+                }
+            }
+        }
+    }
+
+    .tagify__dropdown {
+        border: 1px solid light-dark(@dark, @beige) !important;
+
+        .tagify__dropdown__wrapper {
+            background-image: url(../assets/parchments/dh-parchment-dark.png);
+            background-color: transparent;
+            border: 0;
+
+            .tagify__dropdown__item--active {
+                background-color: light-dark(@dark, @beige);
+                color: var(--color-dark-3);
+            }
+        }
+    }
+
+    &.theme-light {
+        .tagify__dropdown {
+            color: black;
+
+            .tagify__dropdown__wrapper {
+                background-image: url(../assets/parchments/dh-parchment-light.png);
+            }
+
+            .tagify__dropdown__item--active {
+                color: @beige;
+            }
+        }
+    }
+}
+
+.theme-light .application {
+    &.sheet.dh-style {
+        button.glow {
+            animation: glow-dark 0.75s infinite alternate;
+        }
+    }
+
+    .component.dh-style.card-preview-container {
+        background-image: url('../assets/parchments/dh-parchment-light.png');
+
+        .preview-text-container {
+            background-image: url(../assets/parchments/dh-parchment-dark.png);
+        }
+
+        .preview-selected-icon-container {
+            background-image: url(../assets/parchments/dh-parchment-dark.png);
+            color: var(--color-light-5);
+        }
+    }
+}
+
+.application .component.dh-style.card-preview-container {
+    position: relative;
+    border-radius: 6px;
+    border: 2px solid var(--color-tabs-border);
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 0.75;
+    background-image: url('../assets/parchments/dh-parchment-dark.png');
+
+    &.selectable {
+        cursor: pointer;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+
+    .preview-image-outer-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .preview-image-container {
+        flex: 1;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .preview-text-container {
+        flex: 1;
+        border-radius: 0 0 4px 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        text-align: center;
+        color: var(--color-text-selection-bg);
+        background-image: url(../assets/parchments/dh-parchment-light.png);
+    }
+
+    .preview-empty-container {
+        pointer-events: none;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+
+        .preview-empty-inner-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            .preview-add-icon {
+                font-size: 48px;
+            }
+
+            .preview-empty-subtext {
+                position: absolute;
+                top: 10%;
+                font-size: 18px;
+                font-variant: small-caps;
+                text-align: center;
+            }
+        }
+    }
+
+    .preview-selected-icon-container {
+        position: absolute;
+        height: 54px;
+        width: 54px;
+        border-radius: 50%;
+        border: 2px solid;
+        font-size: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(../assets/parchments/dh-parchment-light.png);
+        color: var(--color-dark-5);
+
+        i {
+            position: relative;
+            right: 2px;
+        }
+    }
+}

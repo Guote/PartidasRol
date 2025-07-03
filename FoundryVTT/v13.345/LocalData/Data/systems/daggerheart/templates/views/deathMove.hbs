@@ -1,0 +1,19 @@
+<div>
+    <div class="downtime-container">
+        {{#each this.options as |option key|}}
+            <div class="activity-container">
+                <div class="activity-title">
+                    <img class="activity-image {{#if (eq ../selectedMove.id key)}}selected{{/if}}" src="{{option.img}}" data-action="selectMove" data-move="{{key}}" />
+                    <span class="activity-title-text">{{localize this.name}}</span>
+                </div>
+                <div class="activity-body">
+                    {{localize this.description}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+    <footer class="flexrow">
+        <button data-action="takeMove" {{#if (not this.selectedMove)}}disabled{{/if}}>{{localize "DAGGERHEART.Application.DeathMove.TakeMove"}}</button>
+        <button data-action="close">{{localize "DAGGERHEART.Application.Cancel"}}</button>
+    </footer>
+</div>

@@ -10,14 +10,14 @@ inputValue=this.defender.combat.modifier
 {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
 title=(localize 'macros.combat.dialog.fatigue.title')
 disabled=this.defenseSent
-inputName="defender.combat.fatigue"
-inputValue=this.defender.combat.fatigue
+inputName="defender.combat.fatigueUsed"
+inputValue=this.defender.combat.fatigueUsed
 }}
-<option {{#if (is "eq" 0 this.defender.combat.fatigue)}}selected{{/if}} value='0'>0</option>
+<option {{#if (is "eq" 0 this.defender.combat.fatigueUsed)}}selected{{/if}} value='0'>0</option>
 
 {{#iterateNumber this.defender.actor.system.characteristics.secondaries.fatigue.value}}
-<option {{#if (is "eq" (math this "+" 1) ../this.defender.combat.fatigue)}}selected{{/if}} value='{{math this "+" 1}}'>
-  {{math this "+" 1}}</option>
+<option {{#if (is "eq" (math this "+" 1) ../this.defender.combat.fatigueUsed)}}selected{{/if}}
+  value='{{math this "+" 1}}'>{{math this "+" 1}}</option>
 {{/iterateNumber}}
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{else}}
@@ -43,23 +43,13 @@ inputName='defender.combat.weaponUsed'
 {{/each}}
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{/if}}
-
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title="No aumentar el contador de defensas"
-disabled=this.defenseSent
-inputType="checkbox"
-inputName="defender.combat.ignoreDefenseCount"
-inputValue=(is 'eq' this.defender.combat.ignoreDefenseCount true)
-}}
-
 {{!-- {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
 class="defense-count"
 title=(localize 'macros.combat.dialog.defenseCount.title')
 disabled=this.defenseSent
 inputName='defender.combat.multipleDefensesPenalty'
 inputValue=this.defender.combat.multipleDefensesPenalty
-}}
+}} --}}
 <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -0)}}selected{{/if}} value="-0">1ª {{localize
   'macros.combat.dialog.defending.defend.title'}}</option>
 <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -30)}}selected{{/if}} value="-30">2ª {{localize
@@ -70,7 +60,20 @@ inputValue=this.defender.combat.multipleDefensesPenalty
   'macros.combat.dialog.defending.defend.title'}}</option>
 <option {{#if (is "eq" this.defender.combat.multipleDefensesPenalty -90)}}selected{{/if}} value="-90">5ª {{localize
   'macros.combat.dialog.defending.defend.title'}}</option>
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}} --}}
+{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+
+<div class='columns'>
+  <div>
+    {{>
+    "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+    title=(localize 'macros.combat.dialog.combat.accumulateDefenses.title')
+    disabled=this.defenseSent
+    inputType="checkbox"
+    inputName="defender.combat.accumulateDefenses"
+    inputValue=(is 'eq' this.defender.combat.accumulateDefenses true)
+    }}
+  </div>
+</div>
 
 {{#if this.defenseSent}}
 <div class='defense-sent'>

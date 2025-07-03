@@ -1,0 +1,1108 @@
+{
+  "system": "animabf-guote",
+  "map": [
+    {
+      "id": "G0m2c1tNTSGWZdfP",
+      "name": "A la Defensiva",
+      "img": "icons/svg/shield.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Mov. a la defensiva",
+        "img": "icons/svg/shield.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modManiobras.ha",
+            "mode": 2,
+            "value": "-20"
+          },
+          {
+            "key": "system.general.modifiers.modManiobras.hd",
+            "mode": 2,
+            "value": "20"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "G0m2c1tNTSGWZdfP"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "u5uRD1zDDxL4naCM",
+      "name": "A la Ofensiva",
+      "img": "icons/svg/sword.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Mov. a la ofensiva",
+        "img": "icons/svg/sword.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modManiobras.ha",
+            "mode": 2,
+            "value": "20"
+          },
+          {
+            "key": "system.general.modifiers.modManiobras.hd",
+            "mode": 2,
+            "value": "-20"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "u5uRD1zDDxL4naCM"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "KBwuo1hQhTJl20iN",
+      "name": "Acorralado",
+      "img": "icons/svg/combat.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Acorralado (sin a. activas)",
+        "img": "icons/svg/combat.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": 3,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "KBwuo1hQhTJl20iN"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "jbveMZucX7bBDovK",
+      "name": "Apresado",
+      "img": "icons/svg/net.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Apresado",
+        "img": "icons/svg/d20-black.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.presa",
+            "mode": 2,
+            "value": "-10"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "jbveMZucX7bBDovK"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "qQNUMnKeqCbH14jJ",
+      "name": "Ataque total",
+      "img": "_Recursos/Iconos/ataqueTotal.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Mov. ataque total",
+        "img": "_Recursos/Iconos/ataqueTotal.png",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modManiobras.ha",
+            "mode": 2,
+            "value": "40"
+          },
+          {
+            "key": "system.general.modifiers.modManiobras.hd",
+            "mode": 3,
+            "value": "-999"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "qQNUMnKeqCbH14jJ"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "64HgtRGhglitcFxY",
+      "name": "Cansancio",
+      "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/semi-closed-eye.svg",
+      "referenceId": "",
+      "applyTrigger": "TcIujj7qhekAVPz9",
+      "removeTrigger": "3b0HWRDUduwir1UM",
+      "activeEffect": {
+        "label": "Cansancio",
+        "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/semi-closed-eye.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "64HgtRGhglitcFxY"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "macros": [],
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "VOUKmKTLc760UIaF",
+      "name": "Ceguera",
+      "img": "icons/svg/blind.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Ceguera",
+        "img": "icons/svg/d20-black.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.ceguera",
+            "mode": 2,
+            "value": "-10"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "VOUKmKTLc760UIaF"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "BmQjLXF8mFE3Nfvh",
+      "name": "Debilitación",
+      "img": "icons/svg/downgrade.svg",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "macros": [],
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "qYLkvOZzwt8gVdmx",
+      "name": "Defensa Total",
+      "img": "_Recursos/Iconos/DefensaTotal.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Mov. defensa total",
+        "img": "_Recursos/Iconos/DefensaTotal.png",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modManiobras.ha",
+            "mode": 2,
+            "value": "-999"
+          },
+          {
+            "key": "system.general.modifiers.modManiobras.hd",
+            "mode": 2,
+            "value": "40"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "qYLkvOZzwt8gVdmx"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "SVBGlgtNtLiTFCvA",
+      "name": "Defensas: 1",
+      "img": "_Recursos/Iconos/defense1.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Contador Defensas: 1",
+        "img": "_Recursos/Iconos/defense1.png",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": 3,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.defense.conditionPen",
+            "mode": 3,
+            "value": "-20",
+            "priority": null
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "SVBGlgtNtLiTFCvA"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "rY5cmtzdjGDewEsD",
+      "name": "Defensas: 2",
+      "img": "_Recursos/Iconos/defense2.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Contador Defensas: 2",
+        "img": "icons/svg/d20-black.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": 3,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.defense.conditionPen",
+            "mode": 3,
+            "value": "-40"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "rY5cmtzdjGDewEsD"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "ddp7ZV4IQNPdnvAU",
+      "name": "Defensas: 3+",
+      "img": "_Recursos/Iconos/defense3.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Contador Defensas: 3+",
+        "img": "icons/svg/d20-black.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": 3,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.defense.conditionPen",
+            "mode": 3,
+            "value": "-80"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "ddp7ZV4IQNPdnvAU"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "QWPrS3NAufvw7dgC",
+      "name": "Desangrado",
+      "img": "icons/svg/blood.svg",
+      "referenceId": "",
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "SwRFVnWyI16YeBSD",
+      "name": "Dolor",
+      "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/back-pain.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Dolor",
+        "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/back-pain.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.dolor",
+            "mode": 2,
+            "value": "-10",
+            "priority": null
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "SwRFVnWyI16YeBSD"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "OVQiddkIzUebt6m9",
+      "name": "En Llamas",
+      "img": "icons/magic/fire/flame-burning-creature-skeleton.webp",
+      "referenceId": "",
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "GAkNP7Rhd1UJfL7f",
+      "name": "Fortalecimiento",
+      "img": "icons/svg/upgrade.svg",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "macros": [],
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "mvvhko9ej6zekW2H",
+      "name": "Herida crítica",
+      "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/scar-wound.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Herida crítica",
+        "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/scar-wound.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.critico",
+            "mode": 2,
+            "value": "-10",
+            "priority": null
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "mvvhko9ej6zekW2H"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "SCoBFjBh3ATaodtx",
+      "name": "Herida crítica (grave)",
+      "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/ragged-wound.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Herida crítica (grave)",
+        "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/scar-wound.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.critico",
+            "mode": 2,
+            "value": "-20"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "SCoBFjBh3ATaodtx"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "rYcsupazIsmiXnHU",
+      "name": "Miedo",
+      "img": "icons/svg/terror.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Miedo",
+        "img": "icons/svg/terror.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": 15,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modSobrenatural.attack.conditionPen",
+            "mode": 3,
+            "value": "-40"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "rYcsupazIsmiXnHU"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "Rt577gqgBKMb07xC",
+      "name": "Muerto",
+      "img": "icons/svg/skull.svg",
+      "referenceId": "",
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "NOgbN8cS7gVpIru2",
+      "name": "Preveer Sorpresa",
+      "img": "_Recursos/Iconos/preveersorpr.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Preveer Sorpresa",
+        "img": "_Recursos/Iconos/preveersorpr.png",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.conditionPen",
+            "mode": 3,
+            "value": "-40"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "NOgbN8cS7gVpIru2"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "3J49434fvR19RCBT",
+      "name": "Sangre Sidhe",
+      "img": "_Recursos/Iconos/SangreSidhe.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Sangre Sidhe",
+        "img": "_Recursos/Iconos/SangreSidhe.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "system.general.settings.openRolls.value",
+            "mode": 5,
+            "value": "85"
+          }
+        ]
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "bqnWBtq7s4rpk7GV",
+      "name": "Sangre Sidhe Mal",
+      "img": "_Recursos/Iconos/SangreSidhe_resaca.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Sangre Sidhe Mal",
+        "img": "_Recursos/Iconos/SangreSidhe_resaca.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "system.general.settings.fumbles.value",
+            "mode": 5,
+            "value": "11"
+          }
+        ]
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "fRYtXe5O4p1zUIdY",
+      "name": "Sin Reacción",
+      "img": "icons/svg/circle.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Sin Reacción",
+        "img": "icons/svg/circle.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": 3,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "fRYtXe5O4p1zUIdY"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "nhhSiUvK80PjB2sF",
+      "name": "Sin reservas (ki)",
+      "img": "_Recursos/Iconos/sinReservasKi.png",
+      "referenceId": "",
+      "applyTrigger": "ueJSRcVUAe72cg6d",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Sin reservas",
+        "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/semi-closed-eye.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.characteristics.secondaries.fatigue.value",
+            "mode": 2,
+            "value": "-2"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "nhhSiUvK80PjB2sF"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "macros": [],
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "N2zbD2vrFxKamfTO",
+      "name": "Sin Reservas (Zeon)",
+      "img": "_Recursos/Iconos/sinReservasZeon.png",
+      "referenceId": "",
+      "applyTrigger": "zYtejhmr5JkySOB0",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Sin Reservas (Zeon)",
+        "img": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/bleeding-eye.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "system.characteristics.secondaries.fatigue.value",
+            "mode": 2,
+            "value": "-2"
+          }
+        ]
+      },
+      "macros": [],
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "BS7F59taaBV8rDKK",
+      "name": "Sorpresa",
+      "img": "_Recursos/Iconos/sorpresa.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Sorpresa",
+        "img": "_Recursos/Iconos/sorpresa.png",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": 3,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.conditionPen",
+            "mode": 3,
+            "value": "-80"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "BS7F59taaBV8rDKK"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false,
+        "blindToken": false,
+        "markInvisible": false
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "hxj26Vbbxck2wmze",
+      "name": "Usando Ki",
+      "img": "_Recursos/Iconos/auraKi.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Usando Ki",
+        "img": "_Recursos/Iconos/auraKi.png",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "hxj26Vbbxck2wmze"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "macros": [],
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "xkm7AfJdRxNOIoNR",
+      "name": "Usando Zeon",
+      "img": "_Recursos/Iconos/auraZeon.png",
+      "referenceId": "",
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
+      "id": "hDSvH7VXNGFoX3OO",
+      "name": "Vuelo",
+      "img": "icons/svg/wing.svg",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Vuelo",
+        "img": "icons/svg/wing.svg",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.vuelo",
+            "mode": 2,
+            "value": "10"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "hDSvH7VXNGFoX3OO"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    }
+  ]
+}

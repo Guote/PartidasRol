@@ -19,8 +19,19 @@ class="common-resources"
   }}
   {{>
   "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
+  class="fatigue"
+  title=(localize 'anima.ui.general.fatigue.title')
+  inputName="system.characteristics.secondaries.fatigue.value"
+  inputValue=system.characteristics.secondaries.fatigue.value
+  hasSecondaryInput=true
+  secondaryInputName="system.characteristics.secondaries.fatigue.max"
+  secondaryInputValue=system.characteristics.secondaries.fatigue.max
+  }}
+  {{>
+  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
   class="initiative-base"
   rollable=true
+  rollableDice='1d100Initiative'
   title=(localize 'anima.ui.general.initiative.base.title')
   inputName="system.characteristics.secondaries.initiative.base.value"
   inputValue=system.characteristics.secondaries.initiative.base.value
@@ -30,16 +41,6 @@ class="common-resources"
   addTooltips=true
   secondaryInputName="system.characteristics.secondaries.initiative.final.value"
   secondaryInputValue=system.characteristics.secondaries.initiative.final.value
-  }}
-  {{>
-  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-  class="fatigue"
-  title=(localize 'anima.ui.general.fatigue.title')
-  inputName="system.characteristics.secondaries.fatigue.value"
-  inputValue=system.characteristics.secondaries.fatigue.value
-  hasSecondaryInput=true
-  secondaryInputName="system.characteristics.secondaries.fatigue.max"
-  secondaryInputValue=system.characteristics.secondaries.fatigue.max
   }}
   {{>
   "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
@@ -53,30 +54,6 @@ class="common-resources"
   secondaryInputValue=system.characteristics.secondaries.movementType.final.value
   }}
 </div>
-
-{{!-- {{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="movement"
-title=(localize 'anima.ui.general.movement.maximum.title')
-disabled=true
-inputName="system.characteristics.secondaries.movement.maximum.value"
-inputValue=system.characteristics.secondaries.movement.maximum.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="running"
-title=(localize 'anima.ui.general.movement.running.title')
-disabled=true
-inputName="system.characteristics.secondaries.movement.running.value"
-inputValue=system.characteristics.secondaries.movement.running.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="movement"
-title=(localize 'anima.ui.general.movement.quarter.title')
-disabled=true
-inputValue=(math system.characteristics.secondaries.movement.maximum.value "/" 4)
-}} --}}
 
 {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
 {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

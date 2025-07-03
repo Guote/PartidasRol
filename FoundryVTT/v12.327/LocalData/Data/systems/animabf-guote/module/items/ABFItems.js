@@ -1,35 +1,44 @@
-export var ABFItems;
-(function (ABFItems) {
-    ABFItems["SECONDARY_SPECIAL_SKILL"] = "skill";
-    ABFItems["SPELL"] = "spell";
-    ABFItems["SPELL_MAINTENANCE"] = "spellMaintenance";
-    ABFItems["SELECTED_SPELL"] = "selectedSpell";
-    ABFItems["METAMAGIC"] = "metamagic";
-    ABFItems["SUMMON"] = "summon";
-    ABFItems["LEVEL"] = "level";
-    ABFItems["LANGUAGE"] = "language";
-    ABFItems["ELAN"] = "elan";
-    ABFItems["ELAN_POWER"] = "elan_power";
-    ABFItems["TITLE"] = "title";
-    ABFItems["ADVANTAGE"] = "advantage";
-    ABFItems["DISADVANTAGE"] = "disadvantage";
-    ABFItems["CONTACT"] = "contact";
-    ABFItems["NOTE"] = "note";
-    ABFItems["PSYCHIC_DISCIPLINE"] = "psychicDiscipline";
-    ABFItems["MENTAL_PATTERN"] = "mentalPattern";
-    ABFItems["INNATE_PSYCHIC_POWER"] = "innatePsychicPower";
-    ABFItems["PSYCHIC_POWER"] = "psychicPower";
-    ABFItems["KI_SKILL"] = "kiSkill";
-    ABFItems["NEMESIS_SKILL"] = "nemesisSkill";
-    ABFItems["ARS_MAGNUS"] = "arsMagnus";
-    ABFItems["MARTIAL_ART"] = "martialArt";
-    ABFItems["CREATURE"] = "creature";
-    ABFItems["SPECIAL_SKILL"] = "specialSkill";
-    ABFItems["TECHNIQUE"] = "technique";
-    ABFItems["COMBAT_SPECIAL_SKILL"] = "combatSpecialSkill";
-    ABFItems["COMBAT_TABLE"] = "combatTable";
-    ABFItems["AMMO"] = "ammo";
-    ABFItems["WEAPON"] = "weapon";
-    ABFItems["ARMOR"] = "armor";
-    ABFItems["INVENTORY_ITEM"] = "inventoryItem";
-})(ABFItems || (ABFItems = {}));
+const ABFItems = (
+  /** @type {const} */
+  {
+    SECONDARY_SPECIAL_SKILL: "skill",
+    SPELL: "spell",
+    SPELL_MAINTENANCE: "spellMaintenance",
+    SELECTED_SPELL: "selectedSpell",
+    ACT_VIA: "actVia",
+    INNATE_MAGIC_VIA: "innateMagicVia",
+    PREPARED_SPELL: "preparedSpell",
+    METAMAGIC: "metamagic",
+    SUMMON: "summon",
+    LEVEL: "level",
+    LANGUAGE: "language",
+    ELAN: "elan",
+    ELAN_POWER: "elan_power",
+    TITLE: "title",
+    ADVANTAGE: "advantage",
+    DISADVANTAGE: "disadvantage",
+    CONTACT: "contact",
+    NOTE: "note",
+    PSYCHIC_DISCIPLINE: "psychicDiscipline",
+    MENTAL_PATTERN: "mentalPattern",
+    INNATE_PSYCHIC_POWER: "innatePsychicPower",
+    PSYCHIC_POWER: "psychicPower",
+    KI_SKILL: "kiSkill",
+    NEMESIS_SKILL: "nemesisSkill",
+    ARS_MAGNUS: "arsMagnus",
+    MARTIAL_ART: "martialArt",
+    CREATURE: "creature",
+    SPECIAL_SKILL: "specialSkill",
+    TECHNIQUE: "technique",
+    COMBAT_SPECIAL_SKILL: "combatSpecialSkill",
+    COMBAT_TABLE: "combatTable",
+    AMMO: "ammo",
+    WEAPON: "weapon",
+    ARMOR: "armor",
+    SUPERNATURAL_SHIELD: "supernaturalShield",
+    INVENTORY_ITEM: "inventoryItem"
+  }
+);
+export {
+  ABFItems
+};

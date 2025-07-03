@@ -1,0 +1,43 @@
+<div>
+    {{#if @root.hasRoll}}
+    <div class="roll-dialog-container">
+        <div class="flexcol">
+            <div class="roll-dialog-experience-container">
+                {{#each experiences}}
+                    {{#if description}}
+                        <div class="roll-dialog-chip {{#if (includes ../selectedExperiences id)}}selected{{/if}}" data-action="selectExperience" data-key="{{id}}">
+                            <span>{{description}}</span>
+                            <span>+{{value}}</span>
+                        </div>
+                    {{/if}}
+                {{/each}}
+            </div>
+            <div class="flexrow">
+                <button class="disadvantage flex1 {{#if (eq advantage 1)}}selected{{/if}}" data-action="updateIsAdvantage" data-advantage="1">{{localize "DAGGERHEART.General.Advantage.Full"}}</button>
+                <button class="disadvantage flex1 {{#if (eq advantage -1)}}selected{{/if}}" data-action="updateIsAdvantage" data-advantage="-1">{{localize "DAGGERHEART.General.Disadvantage.Full"}}</button>
+            </div>
+            {{!-- {{#if (not isNpc)}} --}}
+                {{!-- <div class="form-group">
+                    <label>Hope</label>
+                    <div class="form-fields">
+                        <select name="hope">
+                            {{selectOptions diceOptions selected=hope valueAttr="value" labelAttr="name" localize=true}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Fear</label>
+                    <div class="form-fields">
+                        <select name="fear">
+                            {{selectOptions diceOptions selected=fear valueAttr="value" labelAttr="name" localize=true}}
+                        </select>
+                    </div>
+                </div> --}}
+            {{!-- {{/if}} --}}
+        </div>
+    </div>
+    {{/if}}
+    <footer>
+        <button data-action="submitRoll"{{#unless canRoll}} disabled{{/unless}}>Roll</button>
+    </footer>
+</div>

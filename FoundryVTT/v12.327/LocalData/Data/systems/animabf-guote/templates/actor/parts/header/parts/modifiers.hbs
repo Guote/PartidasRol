@@ -9,103 +9,7 @@ title=(localize "anima.ui.general.modifiers.title")
 class="modifiers"
 }}
 <div class='first-row'>
-  {{!-- {{>
-  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-  class="physical"
-  title=(localize "anima.ui.general.modifiers.physicalActions.title")
-  inputName="system.general.modifiers.physicalActions.value"
-  inputValue=system.general.modifiers.physicalActions.value
-  }}
-  {{>
-  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-  class="all-actions"
-  title=(localize "anima.ui.general.modifiers.allActions.title")
-  inputName="system.general.modifiers.allActions.base.value"
-  inputValue=system.general.modifiers.allActions.base.value
-  }}
-  {{>
-  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-  class="natural-penalty"
-  disabled=true
-  title=(localize 'anima.ui.general.naturalPenalty.title')
-  inputValue=system.general.modifiers.naturalPenalty.byWearArmorRequirement.value
-  }} --}}
-  {{!-- {{>
-  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-  title="Físicos"
-  inputName="system.general.modifiers.modFisico.bonus.value"
-  inputValue=system.general.modifiers.modFisico.bonus.value
-  hasSecondaryInput=true
-  disableSecondaryInput=true
-  hasTertiaryInput=true
-  addTooltips=true
-  secondaryInputName="system.general.modifiers.modFisico.final.value"
-  secondaryInputValue=system.general.modifiers.modFisico.final.value
-  tertiaryInputName="system.general.modifiers.modFisico.malus.value"
-  tertiaryInputValue=system.general.modifiers.modFisico.malus.value
-  }}
-  {{>
-  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-  title="Sobrenaturales"
-  inputName="system.general.modifiers.modSobrenatural.bonus.value"
-  inputValue=system.general.modifiers.modSobrenatural.bonus.value
-  hasSecondaryInput=true
-  disableSecondaryInput=true
-  hasTertiaryInput=true
-  addTooltips=true
-  secondaryInputName="system.general.modifiers.modSobrenatural.final.value"
-  secondaryInputValue=system.general.modifiers.modSobrenatural.final.value
-  tertiaryInputName="system.general.modifiers.modSobrenatural.malus.value"
-  tertiaryInputValue=system.general.modifiers.modSobrenatural.malus.value
-  }} --}}
   <div class="modGrida">
-    {{!-- <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Físicos</th>
-          <th>Sobrenaturales</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>Bonus</th>
-          <td>
-            {{>
-            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title="bonusFisico"
-            hideTitle=true
-            inputName="system.general.modifiers.modFisico.bonus.value"
-            inputValue=system.general.modifiers.modFisico.bonus.value
-            }}
-          </td>
-          <td>{{>
-            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title="malusSobren"
-            hideTitle=true
-            inputName="system.general.modifiers.modSobrenatural.bonus.value"
-            inputValue=system.general.modifiers.modSobrenatural.bonus.value
-            }}</td>
-        </tr>
-        <tr>
-          <th>Malus</th>
-          <td>{{>
-            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title="bonusFisico"
-            hideTitle=true
-            inputName="system.general.modifiers.modFisico.malus.value"
-            inputValue=system.general.modifiers.modFisico.malus.value
-            }}</td>
-          <td>{{>
-            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title="malusSobren"
-            hideTitle=true
-            inputName="system.general.modifiers.modSobrenatural.malus.value"
-            inputValue=system.general.modifiers.modSobrenatural.malus.value
-            }}</td>
-        </tr>
-      </tbody>
-    </table> --}}
     <div></div>
     <div class="ma">Físicos</div>
     <div class="mb">Sobrenaturales</div>
@@ -172,43 +76,7 @@ class="modifiers"
         }}
       </div>
     </div>
-
-
-
   </div>
-  {{!-- <div class="modGrida">
-    {{>
-    "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-    title="Físicos"
-    inputName="system.general.modifiers.modFisico.bonus.value"
-    inputValue=system.general.modifiers.modFisico.bonus.value
-    hasSecondaryInput=true
-    disableSecondaryInput=true
-    hasTertiaryInput=true
-    addTooltips=true
-    secondaryInputName="system.general.modifiers.modFisico.final.value"
-    secondaryInputValue=system.general.modifiers.modFisico.final.value
-    tertiaryInputName="system.general.modifiers.modFisico.malus.value"
-    tertiaryInputValue=system.general.modifiers.modFisico.malus.value
-    }}
-  </div>
-  <div class="modGridc">
-    {{>
-    "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-    title="Sobrenaturales"
-    inputName="system.general.modifiers.modSobrenatural.bonus.value"
-    inputValue=system.general.modifiers.modSobrenatural.bonus.value
-    hasSecondaryInput=true
-    disableSecondaryInput=true
-    hasTertiaryInput=true
-    addTooltips=true
-    secondaryInputName="system.general.modifiers.modSobrenatural.final.value"
-    secondaryInputValue=system.general.modifiers.modSobrenatural.final.value
-    tertiaryInputName="system.general.modifiers.modSobrenatural.malus.value"
-    tertiaryInputValue=system.general.modifiers.modSobrenatural.malus.value
-    }}
-  </div>--}}
-
   <div class="modGridb">
     <div>
       {{>
@@ -244,79 +112,7 @@ class="modifiers"
       secondaryInputName="system.general.modifiers.modFinal.defense.final.value"
       secondaryInputValue=system.general.modifiers.modFinal.defense.final.value
       }}</div>
-
-
-
   </div>
-
-
-  {{!-- <table>
-    <tr>
-      <th>Ataque</th>
-      <th>Defensa</th>
-      <th>General</th>
-    </tr>
-    <tr>
-      <td>Alfreds Futterkiste</td>
-      <td>Maria Anders</td>
-      <td>Germany</td>
-    </tr>
-    <tr>
-      <td>Centro comercial Moctezuma</td>
-      <td>Francisco Chang</td>
-      <td>Mexico</td>
-    </tr>
-  </table> --}}
-
-  {{!-- <div class="modFisico">{{>
-    "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-    title="Físicos"
-    inputName="system.general.modifiers.modFisico.bonus.value"
-    inputValue=system.general.modifiers.modFisico.bonus.value
-    hasSecondaryInput=true
-    disableSecondaryInput=true
-    hasTertiaryInput=true
-    addTooltips=true
-    secondaryInputName="system.general.modifiers.modFisico.final.value"
-    secondaryInputValue=system.general.modifiers.modFisico.final.value
-    tertiaryInputName="system.general.modifiers.modFisico.malus.value"
-    tertiaryInputValue=system.general.modifiers.modFisico.malus.value
-    }}</div>
-  <div class="modSobrenatural">{{>
-    "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-    title="Sobrenaturales"
-    inputName="system.general.modifiers.modSobrenatural.bonus.value"
-    inputValue=system.general.modifiers.modSobrenatural.bonus.value
-    hasSecondaryInput=true
-    disableSecondaryInput=true
-    hasTertiaryInput=true
-    addTooltips=true
-    secondaryInputName="system.general.modifiers.modSobrenatural.final.value"
-    secondaryInputValue=system.general.modifiers.modSobrenatural.final.value
-    tertiaryInputName="system.general.modifiers.modSobrenatural.malus.value"
-    tertiaryInputValue=system.general.modifiers.modSobrenatural.malus.value
-    }}</div> --}}
-
 </div>
-{{!-- <div>
-  {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-  class=this.class
-  isVertical=this.isVertical
-  title="Postura de combate"
-  hideTitle=this.hideTitle
-  inputName="system.general.modifiers.combatPosture"
-  inputValue=system.general.modifiers.combatPosture
-  }}
-  <option {{#if (is "eq" this.inputValue "normal" )}}selected{{/if}} value="normal">Normal</option>
-  <option {{#if (is "eq" this.inputValue "offensive" )}}selected{{/if}} value="offensive">A la ofensiva: +20 HA/ -20 HD
-  </option>
-  <option {{#if (is "eq" this.inputValue "defensive" )}}selected{{/if}} value="defensive">A la defensiva: -20 HA/ +20 HD
-  </option>
-  <option {{#if (is "eq" this.inputValue "fullOffense" )}}selected{{/if}} value="fullOffense">Ataque total: +40 HA, sin
-    defensa</option>
-  <option {{#if (is "eq" this.inputValue "fullDefense" )}}selected{{/if}} value="fullDefense">Defensa total: +40 HD, sin
-    acciones activas</option>
-  {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
-</div> --}}
 {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
 {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

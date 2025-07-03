@@ -1,0 +1,7 @@
+.vscode
+node_modules
+/packs
+Build
+/build
+foundry
+styles/daggerheart.css

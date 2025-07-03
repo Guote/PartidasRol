@@ -1,28 +1,30 @@
-import { ABFItems } from '../../items/ABFItems.js';
-import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
-import { ABFItemConfigFactory } from '../ABFItemConfig.js';
-/** @type {import("../Items").MentalPatternItemConfig} */
-export const MentalPatternItemConfig = ABFItemConfigFactory({
-    type: ABFItems.MENTAL_PATTERN,
-    isInternal: false,
-    fieldPath: ['psychic', 'mentalPatterns'],
-    selectors: {
-        addItemButtonSelector: 'add-mental-pattern',
-        containerSelector: '#mental-patterns-context-menu-container',
-        rowSelector: '.mental-pattern-row'
-    },
-    onCreate: async (actor) => {
-        const { i18n } = game;
-        const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.mentalPattern.content')
-        });
-        await actor.createItem({
-            name,
-            type: ABFItems.MENTAL_PATTERN,
-            system: {
-                bonus: { value: 0 },
-                penalty: { value: 0 }
-            }
-        });
-    }
+import { ABFItems } from "../../items/ABFItems.js";
+import { openComplexInputDialog } from "../../utils/dialogs/openComplexInputDialog.js";
+import { ABFItemConfigFactory } from "../ABFItemConfig.js";
+const INITIAL_MENTAL_PATTERN_DATA = {
+  bonus: { value: "" },
+  penalty: { value: "" }
+};
+const MentalPatternItemConfig = ABFItemConfigFactory({
+  type: ABFItems.MENTAL_PATTERN,
+  isInternal: false,
+  fieldPath: ["psychic", "mentalPatterns"],
+  selectors: {
+    addItemButtonSelector: "add-mental-pattern",
+    containerSelector: "#mental-patterns-context-menu-container",
+    rowSelector: ".mental-pattern-row"
+  },
+  onCreate: async (actor) => {
+    const results = await openComplexInputDialog(actor, "newMentalPattern");
+    const name = results["new.mentalPattern.name"];
+    await actor.createItem({
+      name,
+      type: ABFItems.MENTAL_PATTERN,
+      system: INITIAL_MENTAL_PATTERN_DATA
+    });
+  }
 });
+export {
+  INITIAL_MENTAL_PATTERN_DATA,
+  MentalPatternItemConfig
+};

@@ -1,3 +1,6 @@
-export const mutateWeaponStrength = (data) => {
-    data.weaponStrength.final.value = data.weaponStrength.base.value + data.quality.value / 5;
+const mutateWeaponStrength = (system) => {
+  system.weaponStrength.final.value = system.weaponStrength.base.value + system.quality.value / 5;
+};
+export {
+  mutateWeaponStrength
 };

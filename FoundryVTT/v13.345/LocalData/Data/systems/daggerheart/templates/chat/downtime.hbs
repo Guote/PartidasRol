@@ -1,0 +1,11 @@
+<div class="daggerheart chat downtime">
+    <h2 class="downtime-title-container">
+        <div>{{title}}</div>
+    </h2>
+    {{#each moves}}
+        <strong>{{this.name}}</strong>
+        <img class="downtime-image" src="{{this.img}}" />
+        <div>{{{this.description}}}</div>
+        {{#if (gt this.actions.length 0)}}<button class="action-use-button">{{localize "Action"}}</button>{{/if}}
+    {{/each}}
+</div>

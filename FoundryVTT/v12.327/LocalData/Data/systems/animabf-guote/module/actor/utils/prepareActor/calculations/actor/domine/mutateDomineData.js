@@ -1,6 +1,4 @@
-import { mutateData } from "../../../utils/mutateData.js";
-
-export const mutateDomineData = async (data) => {
+const mutateDomineData = async (data) => {
   const allActionsPenalty = data.general.modifiers.allActions.final.value;
   const { domine } = data;
   const KI_ACCUMULATIONS = [
@@ -9,15 +7,15 @@ export const mutateDomineData = async (data) => {
     "dexterity",
     "constitution",
     "willPower",
-    "power",
+    "power"
   ];
-
   for (const accum of KI_ACCUMULATIONS) {
-    mutateData(
-      data,
-      `domine.kiAccumulation.${accum}`,
-      Math.floor(data.general.modifiers.modFinal.attack.final.value / 20),
-      1
+    domine.kiAccumulation[accum].final.value = Math.max(
+      domine.kiAccumulation[accum].base.value + Math.min(Math.ceil(allActionsPenalty / 20), 0),
+      0
     );
   }
+};
+export {
+  mutateDomineData
 };

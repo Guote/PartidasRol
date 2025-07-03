@@ -1,4 +1,6 @@
-export const getEquippedArmors = (data) => {
-    const combat = data.combat;
-    return combat.armors.filter(a => a.system.equipped.value);
+const getEquippedArmors = (data) => {
+  return data.combat.armors.filter((a) => a.system.equipped.value);
+};
+export {
+  getEquippedArmors
 };

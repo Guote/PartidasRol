@@ -1,1 +1,4 @@
-export const roundTo5Multiples = x => Math.floor(x / 5) * 5;
+const roundTo5Multiples = (x) => Math.floor(x / 5) * 5;
+export {
+  roundTo5Multiples
+};

@@ -1,28 +1,35 @@
-export const INITIAL_ACTOR_DATA = {
-  version: 0,
+const INITIAL_ACTOR_DATA = {
+  version: 1,
   ui: {
     contractibleItems: {},
     tabVisibility: {
-      mystic: { value: false },
-      domine: { value: false },
-      psychic: { value: false },
+      mystic: {
+        value: false,
+      },
+      domine: {
+        value: false,
+      },
+      psychic: {
+        value: false,
+      },
     },
+  },
+  automationOptions: {
+    calculateFatigueModifier: { value: true },
   },
   general: {
     settings: {
-      openRolls: { value: 0 },
-      fumbles: { value: 0 },
+      openRolls: { value: 90 },
+      fumbles: { value: 3 },
       openOnDoubles: { value: false },
+      perceiveMystic: { value: false },
+      inmaterial: { value: false },
+      inhuman: { value: false },
+      zen: { value: false },
+      perceivePsychic: { value: false },
       defenseType: { value: "" },
     },
     modifiers: {
-      physicalActions: { value: 0 },
-      allActions: { base: { value: 0 }, final: { value: 0 } },
-      naturalPenalty: {
-        byArmors: { value: 0 },
-        byWearArmorRequirement: { value: 0 },
-      },
-      extraDamage: { value: 0 },
       modFisico: {
         bonus: { value: 0 },
         malus: { value: 0 },
@@ -63,79 +70,267 @@ export const INITIAL_ACTOR_DATA = {
         defense: { base: { value: 0 }, final: { value: 0 } },
       },
       defenseCounter: { value: 0 },
-      combatPosture: "normal",
-      previousPosture: "normal",
+      physicalActions: {
+        base: {
+          value: 0,
+        },
+        special: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      allActions: {
+        base: {
+          value: 0,
+        },
+        special: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      naturalPenalty: {
+        base: {
+          value: 0,
+        },
+        unreduced: {
+          value: 0,
+        },
+        reduction: {
+          value: 0,
+        },
+        special: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      perceptionPenalty: {
+        base: {
+          value: 0,
+        },
+        special: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      extraDamage: {
+        value: 0,
+      },
     },
-    destinyPoints: { base: { value: 0 }, final: { value: 0 } },
-    presence: { value: 0 },
+    destinyPoints: {
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
+      },
+    },
+    presence: {
+      value: 0,
+    },
     aspect: {
-      hair: { value: "" },
-      eyes: { value: "" },
-      height: { value: "" },
-      weight: { value: "" },
-      age: { value: "" },
-      gender: { value: "" },
-      race: { value: "" },
-      ethnicity: { value: "" },
-      appearance: { value: "" },
-      size: { value: 0 },
+      hair: {
+        value: "",
+      },
+      eyes: {
+        value: "",
+      },
+      height: {
+        value: "",
+      },
+      weight: {
+        value: "",
+      },
+      age: {
+        value: "",
+      },
+      gender: {
+        value: "",
+      },
+      race: {
+        value: "",
+      },
+      ethnicity: {
+        value: "",
+      },
+      appearance: {
+        value: "",
+      },
+      size: {
+        value: 0,
+      },
     },
     advantages: [],
     contacts: [],
     inventory: [],
     money: {
-      cooper: { value: 0 },
-      silver: { value: 0 },
-      gold: { value: 0 },
+      cooper: {
+        value: 0,
+      },
+      silver: {
+        value: 0,
+      },
+      gold: {
+        value: 0,
+      },
     },
-    description: { value: "" },
+    description: {
+      value: "",
+    },
     disadvantages: [],
     elan: [],
-    experience: { current: { value: 0 }, next: { value: 0 } },
-    languages: { base: { value: "" }, others: [] },
+    experience: {
+      current: { value: 0 },
+      next: { value: 0 },
+    },
+    languages: {
+      base: {
+        value: "",
+      },
+      others: [],
+    },
     levels: [],
     notes: [],
     titles: [],
-    customResources: {
-      customResource_1: { value: 0, max: 0 },
-      customResource_2: { value: 0, max: 0 },
-      customResource_3: { value: 0, max: 0 },
-      customResource_4: { value: 0, max: 0 },
-      customResource_5: { value: 0, max: 0 },
-    },
   },
   characteristics: {
     primaries: {
-      agility: { value: 5, mod: 0 },
-      constitution: { value: 5, mod: 0 },
-      dexterity: { value: 5, mod: 0 },
-      strength: { value: 5, mod: 0 },
-      intelligence: { value: 5, mod: 0 },
-      perception: { value: 5, mod: 0 },
-      power: { value: 5, mod: 0 },
-      willPower: { value: 5, mod: 0 },
+      agility: {
+        value: 0,
+        mod: 0,
+      },
+      constitution: {
+        value: 0,
+        mod: 0,
+      },
+      dexterity: {
+        value: 0,
+        mod: 0,
+      },
+      strength: {
+        value: 0,
+        mod: 0,
+      },
+      intelligence: {
+        value: 0,
+        mod: 0,
+      },
+      perception: {
+        value: 0,
+        mod: 0,
+      },
+      power: {
+        value: 0,
+        mod: 0,
+      },
+      willPower: {
+        value: 0,
+        mod: 0,
+      },
     },
     secondaries: {
-      lifePoints: { value: 100, max: 100 },
-      initiative: { base: { value: 0 }, final: { value: 0 } },
-      fatigue: { value: 0, max: 0 },
+      lifePoints: {
+        value: 0,
+        max: 0,
+      },
+      initiative: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      fatigue: {
+        value: 0,
+        max: 0,
+      },
       regenerationType: {
-        mod: { value: 0 },
-        final: { value: 0 },
+        mod: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
       },
       regeneration: {
-        normal: { value: 0, period: "" },
-        resting: { value: 0, period: "" },
-        recovery: { value: 0, period: "" },
+        normal: {
+          value: 0,
+          period: "",
+        },
+        resting: {
+          value: 0,
+          period: "",
+        },
+        recovery: {
+          value: 0,
+          period: "",
+        },
       },
-      movementType: { mod: { value: 0 }, final: { value: 0 } },
-      movement: { maximum: { value: 0 }, running: { value: 0 } },
+      movementType: {
+        mod: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      movement: {
+        maximum: {
+          value: 0,
+        },
+        running: {
+          value: 0,
+        },
+      },
       resistances: {
-        physical: { base: { value: 0 }, final: { value: 0 } },
-        disease: { base: { value: 0 }, final: { value: 0 } },
-        poison: { base: { value: 0 }, final: { value: 0 } },
-        magic: { base: { value: 0 }, final: { value: 0 } },
-        psychic: { base: { value: 0 }, final: { value: 0 } },
+        physical: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
+        disease: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
+        poison: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
+        magic: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
+        psychic: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
       },
     },
   },
@@ -160,92 +355,633 @@ export const INITIAL_ACTOR_DATA = {
       sigilo: { base: { value: 0 }, final: { value: 0 } },
     },
     athletics: {
-      acrobatics: { base: { value: 0 }, final: { value: 0 } },
-      athleticism: { base: { value: 0 }, final: { value: 0 } },
-      ride: { base: { value: 0 }, final: { value: 0 } },
-      swim: { base: { value: 0 }, final: { value: 0 } },
-      climb: { base: { value: 0 }, final: { value: 0 } },
-      jump: { base: { value: 0 }, final: { value: 0 } },
-      piloting: { base: { value: 0 }, final: { value: 0 } },
+      acrobatics: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agility",
+        },
+      },
+      athleticism: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agility",
+        },
+      },
+      ride: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agility",
+        },
+      },
+      swim: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agility",
+        },
+      },
+      climb: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agility",
+        },
+      },
+      jump: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "strength",
+        },
+      },
+      piloting: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
     },
     vigor: {
-      composure: { base: { value: 0 }, final: { value: 0 } },
-      featsOfStrength: {
-        base: { value: 0 },
-        final: { value: 0 },
+      composure: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "willPower",
+        },
       },
-      withstandPain: { base: { value: 0 }, final: { value: 0 } },
+      featsOfStrength: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "strength",
+        },
+      },
+      withstandPain: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "willPower",
+        },
+      },
     },
     perception: {
-      notice: { base: { value: 0 }, final: { value: 0 } },
-      search: { base: { value: 0 }, final: { value: 0 } },
-      track: { base: { value: 0 }, final: { value: 0 } },
+      notice: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "perception",
+        },
+      },
+      search: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "perception",
+        },
+      },
+      track: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "perception",
+        },
+      },
     },
     intellectual: {
-      animals: { base: { value: 0 }, final: { value: 0 } },
-      science: { base: { value: 0 }, final: { value: 0 } },
-      law: { base: { value: 0 }, final: { value: 0 } },
-      herbalLore: { base: { value: 0 }, final: { value: 0 } },
-      history: { base: { value: 0 }, final: { value: 0 } },
-      tactics: { base: { value: 0 }, final: { value: 0 } },
-      medicine: { base: { value: 0 }, final: { value: 0 } },
-      memorize: { base: { value: 0 }, final: { value: 0 } },
-      navigation: { base: { value: 0 }, final: { value: 0 } },
-      occult: { base: { value: 0 }, final: { value: 0 } },
-      appraisal: { base: { value: 0 }, final: { value: 0 } },
-      magicAppraisal: { base: { value: 0 }, final: { value: 0 } },
+      animals: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      science: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      law: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      herbalLore: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      history: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      tactics: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agiliintelligencety",
+        },
+      },
+      medicine: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      memorize: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      navigation: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      occult: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      appraisal: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      magicAppraisal: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "power",
+        },
+      },
     },
     social: {
-      style: { base: { value: 0 }, final: { value: 0 } },
-      intimidate: { base: { value: 0 }, final: { value: 0 } },
-      leadership: { base: { value: 0 }, final: { value: 0 } },
-      persuasion: { base: { value: 0 }, final: { value: 0 } },
-      trading: { base: { value: 0 }, final: { value: 0 } },
-      streetwise: { base: { value: 0 }, final: { value: 0 } },
-      etiquette: { base: { value: 0 }, final: { value: 0 } },
+      style: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "power",
+        },
+      },
+      intimidate: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "willPower",
+        },
+      },
+      leadership: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "power",
+        },
+      },
+      persuasion: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      trading: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      streetwise: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      etiquette: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
     },
     subterfuge: {
-      lockPicking: { base: { value: 0 }, final: { value: 0 } },
-      disguise: { base: { value: 0 }, final: { value: 0 } },
-      hide: { base: { value: 0 }, final: { value: 0 } },
-      theft: { base: { value: 0 }, final: { value: 0 } },
-      stealth: { base: { value: 0 }, final: { value: 0 } },
-      trapLore: { base: { value: 0 }, final: { value: 0 } },
-      poisons: { base: { value: 0 }, final: { value: 0 } },
+      lockPicking: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      disguise: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      hide: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "perception",
+        },
+      },
+      theft: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      stealth: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agility",
+        },
+      },
+      trapLore: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      poisons: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
     },
     creative: {
-      art: { base: { value: 0 }, final: { value: 0 } },
-      dance: { base: { value: 0 }, final: { value: 0 } },
-      forging: { base: { value: 0 }, final: { value: 0 } },
-      runes: { base: { value: 0 }, final: { value: 0 } },
-      alchemy: { base: { value: 0 }, final: { value: 0 } },
-      animism: { base: { value: 0 }, final: { value: 0 } },
-      music: { base: { value: 0 }, final: { value: 0 } },
-      sleightOfHand: { base: { value: 0 }, final: { value: 0 } },
-      ritualCalligraphy: {
-        base: { value: 0 },
-        final: { value: 0 },
+      art: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "power",
+        },
       },
-      jewelry: { base: { value: 0 }, final: { value: 0 } },
-      tailoring: { base: { value: 0 }, final: { value: 0 } },
-      puppetMaking: { base: { value: 0 }, final: { value: 0 } },
+      dance: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "agility",
+        },
+      },
+      forging: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      runes: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      alchemy: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "intelligence",
+        },
+      },
+      animism: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "power",
+        },
+      },
+      music: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "power",
+        },
+      },
+      sleightOfHand: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      ritualCalligraphy: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      jewelry: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      tailoring: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "dexterity",
+        },
+      },
+      puppetMaking: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+        attribute: {
+          value: "power",
+        },
+      },
     },
     secondarySpecialSkills: [],
   },
   combat: {
-    attack: { base: { value: 0 }, final: { value: 0 } },
-    block: { base: { value: 0 }, final: { value: 0 } },
-    dodge: { base: { value: 0 }, final: { value: 0 } },
-    wearArmor: { value: 0 },
+    attack: {
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
+      },
+    },
+    block: {
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
+      },
+    },
+    dodge: {
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
+      },
+    },
+    wearArmor: {
+      value: 0,
+    },
     totalArmor: {
       at: {
-        cut: { value: 0 },
-        impact: { value: 0 },
-        thrust: { value: 0 },
-        heat: { value: 0 },
-        electricity: { value: 0 },
-        cold: { value: 0 },
-        energy: { value: 0 },
+        cut: {
+          value: 0,
+        },
+        impact: {
+          value: 0,
+        },
+        thrust: {
+          value: 0,
+        },
+        heat: {
+          value: 0,
+        },
+        electricity: {
+          value: 0,
+        },
+        cold: {
+          value: 0,
+        },
+        energy: {
+          value: 0,
+        },
       },
     },
     combatSpecialSkills: [],
@@ -253,54 +989,157 @@ export const INITIAL_ACTOR_DATA = {
     ammo: [],
     weapons: [],
     armors: [],
+    supernaturalShields: [],
   },
   mystic: {
     act: {
-      main: { base: { value: 0 }, final: { value: 0 } },
-      alternative: { base: { value: 0 }, final: { value: 0 } },
+      main: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      via: [],
     },
-    zeon: { accumulated: 0, value: 0, max: 0 },
-    zeonRegeneration: { base: { value: 0 }, final: { value: 0 } },
+    zeon: {
+      accumulated: 0,
+      value: 0,
+      max: 0,
+    },
+    zeonMaintained: {
+      value: 0,
+    },
+    zeonRegeneration: {
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
+      },
+    },
     innateMagic: {
-      main: { value: 0 },
-      alternative: { value: 0 },
+      main: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      via: [],
     },
     magicProjection: {
-      base: { value: 0 },
-      final: { value: 0 },
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
+      },
       imbalance: {
-        offensive: { base: { value: 0 }, final: { value: 0 } },
-        defensive: { base: { value: 0 }, final: { value: 0 } },
+        offensive: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
+        defensive: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
       },
     },
     magicLevel: {
       spheres: {
-        essence: { value: 0 },
-        water: { value: 0 },
-        earth: { value: 0 },
-        creation: { value: 0 },
-        darkness: { value: 0 },
-        necromancy: { value: 0 },
-        light: { value: 0 },
-        destruction: { value: 0 },
-        air: { value: 0 },
-        fire: { value: 0 },
-        illusion: { value: 0 },
+        essence: {
+          value: 0,
+        },
+        water: {
+          value: 0,
+        },
+        earth: {
+          value: 0,
+        },
+        creation: {
+          value: 0,
+        },
+        darkness: {
+          value: 0,
+        },
+        necromancy: {
+          value: 0,
+        },
+        light: {
+          value: 0,
+        },
+        destruction: {
+          value: 0,
+        },
+        air: {
+          value: 0,
+        },
+        fire: {
+          value: 0,
+        },
+        illusion: {
+          value: 0,
+        },
       },
-      total: { value: 0 },
-      used: { value: 0 },
+      total: {
+        value: 0,
+      },
+      used: {
+        value: 0,
+      },
     },
     summoning: {
-      summon: { base: { value: 0 }, final: { value: 0 } },
-      banish: { base: { value: 0 }, final: { value: 0 } },
-      bind: { base: { value: 0 }, final: { value: 0 } },
-      control: { base: { value: 0 }, final: { value: 0 } },
+      summon: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      banish: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      bind: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
+      control: {
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
+      },
     },
+    mysticSettings: { aptitudeForMagicDevelopment: false },
     spells: [],
     spellMaintenances: [],
     selectedSpells: [],
     summons: [],
     metamagics: [],
+    preparedSpells: [],
   },
   domine: {
     kiSkills: [],
@@ -312,70 +1151,172 @@ export const INITIAL_ACTOR_DATA = {
     techniques: [],
     seals: {
       minor: {
-        earth: { isActive: false },
-        metal: { isActive: false },
-        wind: { isActive: false },
-        water: { isActive: false },
-        wood: { isActive: false },
+        fire: {
+          isActive: false,
+        },
+        metal: {
+          isActive: false,
+        },
+        wind: {
+          isActive: false,
+        },
+        water: {
+          isActive: false,
+        },
+        wood: {
+          isActive: false,
+        },
       },
       major: {
-        earth: { isActive: false },
-        metal: { isActive: false },
-        wind: { isActive: false },
-        water: { isActive: false },
-        wood: { isActive: false },
+        fire: {
+          isActive: false,
+        },
+        metal: {
+          isActive: false,
+        },
+        wind: {
+          isActive: false,
+        },
+        water: {
+          isActive: false,
+        },
+        wood: {
+          isActive: false,
+        },
       },
     },
-    martialKnowledge: { used: { value: 0 }, max: { value: 0 } },
+    martialKnowledge: {
+      used: {
+        value: 0,
+      },
+      max: {
+        value: 0,
+      },
+    },
     kiAccumulation: {
       strength: {
-        accumulated: { value: 0 },
-        base: { value: 0 },
-        final: { value: 0 },
+        accumulated: {
+          value: 0,
+        },
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
       },
       agility: {
-        accumulated: { value: 0 },
-        base: { value: 0 },
-        final: { value: 0 },
+        accumulated: {
+          value: 0,
+        },
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
       },
       dexterity: {
-        accumulated: { value: 0 },
-        base: { value: 0 },
-        final: { value: 0 },
+        accumulated: {
+          value: 0,
+        },
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
       },
       constitution: {
-        accumulated: { value: 0 },
-        base: { value: 0 },
-        final: { value: 0 },
+        accumulated: {
+          value: 0,
+        },
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
       },
       willPower: {
-        accumulated: { value: 0 },
-        base: { value: 0 },
-        final: { value: 0 },
+        accumulated: {
+          value: 0,
+        },
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
       },
       power: {
-        accumulated: { value: 0 },
-        base: { value: 0 },
-        final: { value: 0 },
+        accumulated: {
+          value: 0,
+        },
+        base: {
+          value: 0,
+        },
+        final: {
+          value: 0,
+        },
       },
-      generic: { value: 0, max: 0 },
+      generic: {
+        value: 0,
+        max: 0,
+      },
     },
   },
   psychic: {
-    psychicPotential: { base: { value: 0 }, final: { value: 0 } },
-    psychicProjection: {
-      base: { value: 0 },
-      final: { value: 0 },
-      imbalance: {
-        offensive: { base: { value: 0 }, final: { value: 0 } },
-        defensive: { base: { value: 0 }, final: { value: 0 } },
+    psychicPotential: {
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
       },
     },
-    psychicPoints: { value: 0, max: 0 },
+    psychicProjection: {
+      base: {
+        value: 0,
+      },
+      final: {
+        value: 0,
+      },
+      imbalance: {
+        offensive: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
+        defensive: {
+          base: {
+            value: 0,
+          },
+          final: {
+            value: 0,
+          },
+        },
+      },
+    },
+    psychicPoints: {
+      value: 0,
+      max: 0,
+    },
+    psychicSettings: {
+      fatigueResistance: false,
+    },
     psychicPowers: [],
     psychicDisciplines: [],
     mentalPatterns: [],
-    innatePsychicPower: { amount: { value: 0 } },
+    innatePsychicPower: {
+      amount: {
+        value: 0,
+      },
+    },
     innatePsychicPowers: [],
   },
 };
+export { INITIAL_ACTOR_DATA };

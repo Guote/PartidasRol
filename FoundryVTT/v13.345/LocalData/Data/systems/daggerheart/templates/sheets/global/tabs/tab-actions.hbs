@@ -1,0 +1,23 @@
+<section
+    class='tab {{tabs.actions.cssClass}} {{tabs.actions.id}}'
+    data-tab='{{tabs.actions.id}}'
+    data-group='{{tabs.actions.group}}'
+>
+    <fieldset class="one-column">
+        <legend>{{localize "DAGGERHEART.Sheets.Global.Actions"}} <a><i class="fa-solid fa-plus icon-button" data-action="addAction"></i></a></legend>
+        <div class="actions-list">
+            {{#each document.system.actions as |action index|}}
+                <div class="action-item"
+                    data-action="editAction"
+                    data-index="{{index}}"
+                >
+                    <img class="image" src="{{action.img}}" />
+                    <span>{{action.name}}</span>
+                    <div class="controls">
+                        <a data-action="removeAction"><i class="fa-solid fa-trash"></i></a>
+                    </div>
+                </div> 
+            {{/each}}
+        </div>
+    </fieldset>
+</section>

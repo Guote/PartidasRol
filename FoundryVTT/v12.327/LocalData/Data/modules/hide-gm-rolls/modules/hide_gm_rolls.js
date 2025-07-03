@@ -167,7 +167,7 @@ class HideGMRolls {
 		}
 
 
-		if (isNewerVersion(game.version, "10")) {
+		if (foundry.utils.isNewerVersion(game.version, "10")) {
 			if (app.sound) {
 				app.sound = null;
 			}

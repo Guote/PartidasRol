@@ -1,13 +1,16 @@
-import { WeaponSizeProportion } from '../../../../../types/combat/WeaponItemConfig.js';
-export const mutateStrRequired = (data) => {
-    data.strRequired.oneHand.final.value = data.strRequired.oneHand.base.value;
-    data.strRequired.twoHands.final.value = data.strRequired.twoHands.base.value;
-    if (data.sizeProportion.value === WeaponSizeProportion.ENORMOUS) {
-        data.strRequired.oneHand.final.value += 2;
-        data.strRequired.twoHands.final.value += 2;
-    }
-    if (data.sizeProportion.value === WeaponSizeProportion.GIANT) {
-        data.strRequired.oneHand.final.value += 5;
-        data.strRequired.twoHands.final.value += 5;
-    }
+import { WeaponSizeProportion } from "../../../../../types/combat/WeaponItemConfig.js";
+const mutateStrRequired = (system) => {
+  system.strRequired.oneHand.final.value = system.strRequired.oneHand.base.value;
+  system.strRequired.twoHands.final.value = system.strRequired.twoHands.base.value;
+  if (system.sizeProportion.value === WeaponSizeProportion.ENORMOUS) {
+    system.strRequired.oneHand.final.value += 2;
+    system.strRequired.twoHands.final.value += 2;
+  }
+  if (system.sizeProportion.value === WeaponSizeProportion.GIANT) {
+    system.strRequired.oneHand.final.value += 5;
+    system.strRequired.twoHands.final.value += 5;
+  }
+};
+export {
+  mutateStrRequired
 };

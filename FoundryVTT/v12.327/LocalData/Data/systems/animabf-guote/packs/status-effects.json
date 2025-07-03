@@ -1,0 +1,622 @@
+[
+  {
+    "id": "G0m2c1tNTSGWZdfP",
+    "label": "Mov. a la defensiva",
+    "icon": "icons/svg/shield.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modManiobras.ha",
+        "mode": 2,
+        "value": "-20"
+      },
+      {
+        "key": "system.general.modifiers.modManiobras.hd",
+        "mode": 2,
+        "value": "20"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "G0m2c1tNTSGWZdfP"
+      }
+    }
+  },
+  {
+    "id": "u5uRD1zDDxL4naCM",
+    "label": "Mov. a la ofensiva",
+    "icon": "icons/svg/sword.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modManiobras.ha",
+        "mode": 2,
+        "value": "20"
+      },
+      {
+        "key": "system.general.modifiers.modManiobras.hd",
+        "mode": 2,
+        "value": "-20"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "u5uRD1zDDxL4naCM"
+      }
+    }
+  },
+  {
+    "id": "KBwuo1hQhTJl20iN",
+    "label": "Acorralado (sin a. activas)",
+    "icon": "icons/svg/combat.svg",
+    "changes": [],
+    "duration": {
+      "seconds": 3,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "KBwuo1hQhTJl20iN"
+      }
+    }
+  },
+  {
+    "id": "jbveMZucX7bBDovK",
+    "label": "Apresado",
+    "icon": "icons/svg/d20-black.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.presa",
+        "mode": 2,
+        "value": "-10"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "jbveMZucX7bBDovK"
+      }
+    }
+  },
+  {
+    "id": "qQNUMnKeqCbH14jJ",
+    "label": "Mov. ataque total",
+    "icon": "_Recursos/Iconos/ataqueTotal.png",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modManiobras.ha",
+        "mode": 2,
+        "value": "40"
+      },
+      {
+        "key": "system.general.modifiers.modManiobras.hd",
+        "mode": 3,
+        "value": "-999"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "qQNUMnKeqCbH14jJ"
+      }
+    }
+  },
+  {
+    "id": "64HgtRGhglitcFxY",
+    "label": "Cansancio",
+    "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/semi-closed-eye.svg",
+    "changes": [],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "64HgtRGhglitcFxY"
+      }
+    }
+  },
+  {
+    "id": "VOUKmKTLc760UIaF",
+    "label": "Ceguera",
+    "icon": "icons/svg/d20-black.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.ceguera",
+        "mode": 2,
+        "value": "-10"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "VOUKmKTLc760UIaF"
+      }
+    }
+  },
+  {
+    "id": "qYLkvOZzwt8gVdmx",
+    "label": "Mov. defensa total",
+    "icon": "_Recursos/Iconos/DefensaTotal.png",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modManiobras.ha",
+        "mode": 2,
+        "value": "-999"
+      },
+      {
+        "key": "system.general.modifiers.modManiobras.hd",
+        "mode": 2,
+        "value": "40"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "qYLkvOZzwt8gVdmx"
+      }
+    }
+  },
+  {
+    "id": "SVBGlgtNtLiTFCvA",
+    "label": "Contador Defensas: 1",
+    "icon": "_Recursos/Iconos/defense1.png",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.defense.conditionPen",
+        "mode": 3,
+        "value": "-20",
+        "priority": null
+      }
+    ],
+    "duration": {
+      "seconds": 3,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "SVBGlgtNtLiTFCvA"
+      }
+    }
+  },
+  {
+    "id": "rY5cmtzdjGDewEsD",
+    "label": "Contador Defensas: 2",
+    "icon": "icons/svg/d20-black.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.defense.conditionPen",
+        "mode": 3,
+        "value": "-40"
+      }
+    ],
+    "duration": {
+      "seconds": 3,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "rY5cmtzdjGDewEsD"
+      }
+    }
+  },
+  {
+    "id": "ddp7ZV4IQNPdnvAU",
+    "label": "Contador Defensas: 3+",
+    "icon": "icons/svg/d20-black.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.defense.conditionPen",
+        "mode": 3,
+        "value": "-80"
+      }
+    ],
+    "duration": {
+      "seconds": 3,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "ddp7ZV4IQNPdnvAU"
+      }
+    }
+  },
+  {
+    "id": "SwRFVnWyI16YeBSD",
+    "label": "Dolor",
+    "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/back-pain.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.dolor",
+        "mode": 2,
+        "value": "-10",
+        "priority": null
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "SwRFVnWyI16YeBSD"
+      }
+    }
+  },
+  {
+    "id": "mvvhko9ej6zekW2H",
+    "label": "Herida crítica",
+    "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/scar-wound.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.critico",
+        "mode": 2,
+        "value": "-10",
+        "priority": null
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "mvvhko9ej6zekW2H"
+      }
+    }
+  },
+  {
+    "id": "SCoBFjBh3ATaodtx",
+    "label": "Herida crítica (grave)",
+    "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/scar-wound.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.critico",
+        "mode": 2,
+        "value": "-20"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "SCoBFjBh3ATaodtx"
+      }
+    }
+  },
+  {
+    "id": "rYcsupazIsmiXnHU",
+    "label": "Miedo",
+    "icon": "icons/svg/terror.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modSobrenatural.attack.conditionPen",
+        "mode": 3,
+        "value": "-40"
+      }
+    ],
+    "duration": {
+      "seconds": 15,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "rYcsupazIsmiXnHU"
+      }
+    }
+  },
+  {
+    "id": "NOgbN8cS7gVpIru2",
+    "label": "Preveer Sorpresa",
+    "icon": "_Recursos/Iconos/preveersorpr.png",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.conditionPen",
+        "mode": 3,
+        "value": "-40"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "NOgbN8cS7gVpIru2"
+      }
+    }
+  },
+  {
+    "id": "3J49434fvR19RCBT",
+    "label": "Sangre Sidhe",
+    "icon": "_Recursos/Iconos/SangreSidhe.png",
+    "changes": [
+      {
+        "key": "system.general.settings.openRolls.value",
+        "mode": 5,
+        "value": "85"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "3J49434fvR19RCBT"
+      }
+    }
+  },
+  {
+    "id": "bqnWBtq7s4rpk7GV",
+    "label": "Sangre Sidhe Mal",
+    "icon": "_Recursos/Iconos/SangreSidhe_resaca.png",
+    "changes": [
+      {
+        "key": "system.general.settings.fumbles.value",
+        "mode": 5,
+        "value": "11"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "bqnWBtq7s4rpk7GV"
+      }
+    }
+  },
+  {
+    "id": "fRYtXe5O4p1zUIdY",
+    "label": "Sin Reacción",
+    "icon": "icons/svg/circle.svg",
+    "changes": [],
+    "duration": {
+      "seconds": 3,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "fRYtXe5O4p1zUIdY"
+      }
+    }
+  },
+  {
+    "id": "nhhSiUvK80PjB2sF",
+    "label": "Sin reservas",
+    "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/semi-closed-eye.svg",
+    "changes": [
+      {
+        "key": "system.characteristics.secondaries.fatigue.value",
+        "mode": 2,
+        "value": "-2"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "nhhSiUvK80PjB2sF"
+      }
+    }
+  },
+  {
+    "id": "N2zbD2vrFxKamfTO",
+    "label": "Sin Reservas (Zeon)",
+    "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/bleeding-eye.svg",
+    "changes": [
+      {
+        "key": "system.characteristics.secondaries.fatigue.value",
+        "mode": 2,
+        "value": "-2"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "N2zbD2vrFxKamfTO"
+      }
+    }
+  },
+  {
+    "id": "BS7F59taaBV8rDKK",
+    "label": "Sorpresa",
+    "icon": "_Recursos/Iconos/sorpresa.png",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.conditionPen",
+        "mode": 3,
+        "value": "-80"
+      }
+    ],
+    "duration": {
+      "seconds": 3,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "BS7F59taaBV8rDKK"
+      }
+    }
+  },
+  {
+    "id": "hxj26Vbbxck2wmze",
+    "label": "Usando Ki",
+    "icon": "_Recursos/Iconos/auraKi.png",
+    "changes": [],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "hxj26Vbbxck2wmze"
+      }
+    }
+  },
+  {
+    "id": "hDSvH7VXNGFoX3OO",
+    "label": "Vuelo",
+    "icon": "icons/svg/wing.svg",
+    "changes": [
+      {
+        "key": "system.general.modifiers.modFisico.vuelo",
+        "mode": 2,
+        "value": "10"
+      }
+    ],
+    "duration": {
+      "seconds": null,
+      "startTime": null,
+      "rounds": null,
+      "turns": null,
+      "startRound": null,
+      "startTurn": null,
+      "combat": null
+    },
+    "flags": {
+      "core": {
+        "statusId": "hDSvH7VXNGFoX3OO"
+      }
+    }
+  }
+]

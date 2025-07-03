@@ -45,7 +45,7 @@
 
     <div class="tab settings" data-group="primary" data-tab="settings">
       {{> "systems/animabf-guote/templates/actor/parts/settings/settings.hbs"}}
-      
+
       <div style="margin-top: 1rem">
         <h2>Active Effects</h2>
         <ol class="items-list effects-list">
@@ -53,7 +53,7 @@
           {{#unless section.hidden}}
           <li class="items-header flexrow" data-effect-type="{{section.type}}">
             <h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
-           {{!--  <div class="effect-source">{{localize "DND5E.Source"}}</div>
+            {{!-- <div class="effect-source">{{localize "DND5E.Source"}}</div>
             <div class="effect-source">{{localize "DND5E.Duration"}}</div>
             <div class="item-controls effect-controls flexrow">
               {{#if @root.editable}}

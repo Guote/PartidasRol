@@ -1,0 +1,28 @@
+{
+  "title": "DaggerHeartTest",
+  "id": "daggerhearttest",
+  "system": "daggerheart",
+  "background": "_Recursos/Cards/Daggerheart/Reference/Back.png",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "2.6.1",
+  "lastPlayed": "Fri Jun 27 2025 14:03:06 GMT+0200 (hora de verano de Europa central)",
+  "packs": [
+    {
+      "label": "Decks",
+      "type": "Item",
+      "name": "decks",
+      "path": "packs/decks",
+      "system": "daggerheart",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {},
+      "package": "world"
+    }
+  ]
+}

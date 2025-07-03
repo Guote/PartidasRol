@@ -13,7 +13,7 @@ const addSizeModifier = (weapon, damage) => {
   }
   return damage;
 };
-export const calculateWeaponDamage = (weapon, data) => {
+const calculateWeaponDamage = (weapon, data) => {
   const getDamage = () => {
     if (weapon.system.isSummon?.value || weapon.system.damage.isFixed?.value)
       return weapon.system.damage.base.value;
@@ -45,3 +45,4 @@ export const calculateWeaponDamage = (weapon, data) => {
   };
   return Math.max(getDamage(), 0);
 };
+export { calculateWeaponDamage };

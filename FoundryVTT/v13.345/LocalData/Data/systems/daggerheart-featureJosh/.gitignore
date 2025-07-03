@@ -1,0 +1,15 @@
+ATTRIBUTE_POPUP_SYSTEM.md
+module/roll-macro2.js
+*.md
+
+node_modules
+styles/simple - old.css
+styles/src/simple-temporary.scss
+styles/src/testing-layouts.scss
+module/rollHandler-old.js
+module/actor-sheet-old.js
+Quick-Trait-Roll-Macro.js
+Daggerheart-Trait-Roll-Macro.js
+/private
+test-modifier-system.html
+test-migration-validation.html

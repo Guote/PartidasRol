@@ -1,1 +1,4 @@
-export const canCounterAttack = (attack, defense) => defense > attack;
+const canCounterAttack = (attack, defense) => defense > attack;
+export {
+  canCounterAttack
+};

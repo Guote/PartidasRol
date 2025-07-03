@@ -1,9 +1,20 @@
-import { getFormula } from "../rolls/utils/getFormula.js";
 import { openModDialog } from "../utils/dialogs/openSimpleInputDialog.js";
-export default class ABFCombat extends Combat {
+import { getFormula } from "../rolls/utils/getFormula.js";
+class ABFCombat extends Combat {
+  /**
+   *  @param {import('../../types/foundry-vtt-types/src/foundry/common/data/data.mjs/combatData').CombatDataConstructorData} data
+   *  @param {Context<null>} [context]
+   */
   constructor(data, context) {
     super(data, context);
     this.setFlag("world", "newRound", true);
+  }
+  async startCombat() {
+    const combatants = this.combatants.map((c) => c.token);
+    for (let token of combatants) {
+      token?.actor?.resetDefensesCounter();
+    }
+    return super.startCombat();
   }
   async nextTurn() {
     if (this.getFlag("world", "newRound")) {
@@ -12,10 +23,24 @@ export default class ABFCombat extends Combat {
     return super.nextTurn();
   }
   async nextRound() {
-    // Reset initiative for everyone when going to the next round
     await this.resetAll();
     this.setFlag("world", "newRound", true);
+    const combatants = this.combatants.map((c) => c.token);
+    for (let token of combatants) {
+      token?.actor?.resetDefensesCounter();
+      token?.actor?.consumeMaintainedZeon();
+      token?.actor?.psychicShieldsMaintenance();
+    }
     return super.nextRound();
+  }
+  async previousRound() {
+    await this.resetAll();
+    const combatants = this.combatants.map((c) => c.token);
+    for (let token of combatants) {
+      token?.actor?.consumeMaintainedZeon(true);
+      token?.actor?.psychicShieldsMaintenance(true);
+    }
+    return super.previousRound();
   }
   prepareDerivedData() {
     super.prepareDerivedData();
@@ -23,7 +48,11 @@ export default class ABFCombat extends Combat {
       combatant.actor?.prepareDerivedData();
     });
   }
-  // Modify rollInitiative so that it asks for modifiers
+  /**
+   * Modify rollInitiative so that it asks for modifiers
+   * @param {string[] | string} ids
+   * @param {{updateTurn?: boolean, messageOptions?: any}} [options]
+   */
   async rollInitiative(ids, { updateTurn = false, messageOptions } = {}) {
     const mod = await openModDialog();
     if (typeof ids === "string") {
@@ -47,23 +76,31 @@ export default class ABFCombat extends Combat {
       });
     }
     if (this.getFlag("world", "newRound")) {
-      await this.update({ turn: 0 }); // Updates active turn such that it is the one with higher innitiative.
+      await this.update({ turn: 0 });
     }
     return this;
   }
-  _sortCombatants(a, b) {
-    let initiativeA = a.initiative || -9999;
-    let initiativeB = b.initiative || -9999;
+  /**
+   * @protected @override
+   * @param {Combatant} combatantA
+   * @param {Combatant} combatantB
+   */
+  _sortCombatants(combatantA, combatantB) {
+    let initiativeA = combatantA.initiative || -9999;
+    let initiativeB = combatantB.initiative || -9999;
     if (
       initiativeA <
-      (a?.actor?.system.characteristics.secondaries.initiative.final.value || 0)
+      (combatantA?.actor?.system.characteristics.secondaries.initiative.final
+        .value || 0)
     )
-      initiativeA -= 2000;
+      initiativeA -= 2e3;
     if (
       initiativeB <
-      (b?.actor?.system.characteristics.secondaries.initiative.final.value || 0)
+      (combatantB?.actor?.system.characteristics.secondaries.initiative.final
+        .value || 0)
     )
-      initiativeB -= 2000;
+      initiativeB -= 2e3;
     return initiativeB - initiativeA;
   }
 }
+export { ABFCombat as default };

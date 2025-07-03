@@ -1,0 +1,20 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="automationOptions"
+}}
+  {{>
+  "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.settings.automationOptions.title")
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+    class="automationOptions"
+  }}
+    {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        class="calculateFatigue"
+        title= (localize "anima.ui.settings.automationOptions.calculateFatigueModifier.title")
+        inputType="checkbox"
+        inputName="system.automationOptions.calculateFatigueModifier.value"
+        inputValue=system.automationOptions.calculateFatigueModifier.value
+    }}
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

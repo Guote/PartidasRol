@@ -10,10 +10,11 @@
           <div class='sub-columns'>
             <div>
               {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/act.hbs"}}
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/innate-magic.hbs"}}
               {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/magic-projection.hbs"}}
               {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/zeon-regeneration.hbs"}}
-              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/innate-magic.hbs"}}
               {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/zeon.hbs"}}
+              {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/mystic-settings.hbs"}}
             </div>
             <div>
               {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/summoning.hbs"}}
@@ -26,13 +27,14 @@
           {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/selected-spells.hbs"}}
           {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/summons.hbs"}}
           {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/metamagics.hbs"}}
+          {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/prepared-spells.hbs"}}
         </div>
       </div>
     </div>
 
     <div class='tab' data-group="secondary" data-tab="mystic-spells">
       <div class='mystic-spells-tab'>
-          {{> "systems/animabf-guote/templates/actor/parts/mystic/parts/spells/spells.hbs"}}
+        <div id='svelte-spell-board'></div>
       </div>
     </div>
   </section>

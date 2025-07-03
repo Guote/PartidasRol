@@ -1,3 +1,4 @@
+<div id="svelte-app"></div>
 {{#> "systems/animabf-guote/templates/common/ui/group.hbs"
   class="level"
 }}
@@ -12,7 +13,7 @@
     "systems/animabf-guote/templates/common/ui/group-header-title.hbs"
       title=(localize 'anima.ui.levelSection.title')
     }}
-    <input type='number' class='input' />
+    <input type='number' class='input' value='{{calculateLevels system.general.levels}}' disabled='true'/>
   {{/"systems/animabf-guote/templates/common/ui/group-header.hbs"}}
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
     class="level"

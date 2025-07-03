@@ -9,10 +9,8 @@ export const getFormula = ({
     let value = parseInt(values[i]);
     if (value === 0 || isNaN(value)) continue;
 
-    formula = `
-        ${formula} ${value > 0 ? "+" : ""}
-        ${value}${labels?.[i] ? `[ ${labels[i]} ]` : ""}`;
+    formula = `${formula} ${value > 0 ? "+" : ""}${value}${labels?.[i] ? `[ ${labels[i]} ]` : ""}`;
   }
-  console.log("formula", formula);
+  console.log({ formula });
   return formula;
 };

@@ -1,0 +1,29 @@
+<form class="flexcol {{cssClass}} item-sheet-card" autocomplete="off" style="position: relative; overflow: visible;">
+    <div class="image-title-container">
+        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+        <div class="card-header-text">
+            <h1 class="item-title">
+                <input name="name" type="text" value="{{data.name}}" placeholder="{{localize "DH.Name"}}" />
+            </h1>
+        </div>
+    </div>
+
+    {{!-- Card content area --}}
+    <div class="item-card-content">
+        {{!-- Category and rarity section --}}
+        <div class="card-subtitle">
+            <div class="category-rarity-inputs">
+                <input type="text" name="system.category" value="{{systemData.category}}" placeholder="{{localize "DH.Category"}}" class="category-input"/>
+                <span class="separator">-</span>
+                <input type="text" name="system.rarity" value="{{systemData.rarity}}" placeholder="{{localize "DH.Rarity"}}" class="rarity-input"/>
+            </div>
+        </div>
+
+        {{!-- Description section --}}
+        <div class="card-description">
+            <div class="description-editor">
+                {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
+            </div>
+        </div>
+    </div>
+</form>

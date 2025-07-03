@@ -8,20 +8,18 @@ import { calculateWeaponBreaking } from "./calculations/calculateWeaponBreaking.
 import { calculateWeaponPresence } from "./calculations/calculateWeaponPresence.js";
 import { calculateWeaponRange } from "./calculations/calculateWeaponRange.js";
 import { calculateWeaponInitiative } from "./calculations/calculateWeaponInitiative.js";
-export const mutateWeaponsData = (data) => {
+const mutateWeaponsData = (data) => {
   const combat = data.combat;
   combat.weapons = combat.weapons.map((weapon) => {
     weapon.system.attack = {
       base: weapon.system.attack.base,
       special: weapon.system.attack.special,
       final: { value: calculateWeaponAttack(weapon, data) },
-      isFixed: weapon.system.attack.isFixed,
     };
     weapon.system.block = {
       base: weapon.system.block.base,
       special: weapon.system.block.special,
       final: { value: calculateWeaponBlock(weapon, data) },
-      isFixed: weapon.system.block.isFixed,
     };
     weapon.system.initiative = {
       base: weapon.system.initiative.base,
@@ -30,7 +28,6 @@ export const mutateWeaponsData = (data) => {
     weapon.system.damage = {
       base: weapon.system.damage.base,
       final: { value: calculateWeaponDamage(weapon, data) },
-      isFixed: weapon.system.damage.isFixed,
     };
     weapon.system.integrity = {
       base: weapon.system.integrity.base,
@@ -68,3 +65,4 @@ export const mutateWeaponsData = (data) => {
     return weapon;
   });
 };
+export { mutateWeaponsData };

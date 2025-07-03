@@ -1,20 +1,20 @@
 {
   "id": "animabf-guote",
-  "title": "Anima Beyond Fantasy - v12",
+  "title": "Anima Beyond Fantasy - Guote changes",
   "description": "Unofficial Anima Beyond Fantasy system for Foundry VTT",
   "version": "1.16.0",
-  "compatibility": { "minimum": "10", "verified": "12.327" },
+  "compatibility": { "minimum": "10", "verified": "12.331" },
   "url": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry",
   "manifest": "https://raw.githubusercontent.com/AnimaBeyondDevelop/AnimaBeyondFoundry/main/src/system.json",
-  "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v1.16.0",
-  "download": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/download/v1.16.0/animabf-guote.zip",
+  "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v1.19.5",
+  "download": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/download/v1.19.5/animabf-guote.zip",
   "bugs": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/issues",
   "authors": [
     { "name": "Linkaynn", "url": "https://www.jeseromero.com" },
     { "name": "Guote" }
   ],
   "scripts": [],
-  "esmodules": ["animabf-guote.mjs"],
+  "esmodules": ["animabf-guote.js"],
   "styles": ["animabf-guote.css"],
   "socket": true,
   "packs": [
@@ -62,6 +62,13 @@
       "type": "Actor",
       "private": false,
       "flags": {}
+    },
+    {
+      "name": "status-effects",
+      "label": "Status Effects",
+      "path": "packs/status-effects.db",
+      "type": "ActiveEffect",
+      "system": "animabf-guote"
     }
   ],
   "languages": [
@@ -69,10 +76,7 @@
     { "lang": "en", "name": "English", "path": "lang/en.json" },
     { "lang": "fr", "name": "Français", "path": "lang/fr.json" }
   ],
-  "relationships": {
-    "requires": []
-  },
+  "relationships": { "requires": [] },
   "primaryTokenAttribute": "characteristics.secondaries.lifePoints",
-  "gridDistance": 1.5,
-  "gridUnits": "m"
+  "grid": { "distance": 1.5, "units": "m" }
 }
