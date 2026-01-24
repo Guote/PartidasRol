@@ -1,0 +1,158 @@
+import { Templates } from "../utils/constants.js";
+import { ABFConfig } from "../ABFConfig.js";
+import { ABFAttackData } from "../combat/ABFAttackData.js";
+class AttackConfigurationDialog extends FormApplication {
+  constructor(object = {}, options = {}) {
+    const base = AttackConfigurationDialog._buildInitialData(object);
+    super(base, options);
+    this.modalData = base;
+    this.render(true);
+  }
+  static _buildInitialData({ attacker, weaponId, weapon, options = {}, targets }) {
+    if (!attacker || !attacker.actor) {
+      ui.notifications?.error("AttackConfigurationDialog: attacker is required");
+      return { allowed: false };
+    }
+    const attackerActor = attacker.actor;
+    const resolvedWeapon = weapon ?? (weaponId ? attackerActor.items.get(weaponId) : void 0);
+    if (!resolvedWeapon) {
+      ui.notifications?.warn("Arma no encontrada.");
+    }
+    const fallbackSnapshot = Array.from(game.user?.targets ?? []).map((t) => {
+      const token = t?.document ?? t;
+      const actorUuid = token?.actor?.id ?? token?.actorId ?? "";
+      const tokenUuid = token?.uuid ?? token?.document?.uuid ?? token?.id ?? "";
+      const label = token?.name ?? token?.actor?.name ?? "";
+      return actorUuid && tokenUuid ? { actorUuid, tokenUuid, state: "pending", label, updatedAt: Date.now() } : null;
+    }).filter(Boolean);
+    const isOwner = attackerActor.testUserPermission?.(
+      game.user,
+      CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
+    );
+    return {
+      ui: {
+        isGM: !!game.user?.isGM,
+        hasFatiguePoints: (attackerActor.system?.characteristics?.secondaries?.fatigue?.value ?? 0) > 0,
+        weaponHasSecondaryCritic: void 0,
+        lockedWeapon: !!resolvedWeapon
+      },
+      attacker: {
+        token: attacker,
+        actor: attackerActor,
+        combat: {
+          fatigueUsed: 0,
+          modifier: 0,
+          unarmed: !resolvedWeapon && (attackerActor.system?.combat?.weapons?.length ?? 0) === 0,
+          weaponUsed: resolvedWeapon?._id,
+          criticSelected: void 0,
+          weapon: resolvedWeapon,
+          projectile: { value: false, type: "" },
+          damage: { special: 0, final: 0 }
+        },
+        distance: { value: 0, enable: false, check: false }
+      },
+      targets: Array.isArray(targets) && targets.length ? targets : fallbackSnapshot,
+      allowed: options?.allowed ?? isOwner ?? false,
+      config: ABFConfig,
+      attackSent: false
+    };
+  }
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["animabfguote13-dialog", "attack-config-dialog"],
+      submitOnChange: true,
+      closeOnSubmit: false,
+      resizable: true,
+      width: null,
+      height: null,
+      template: Templates.Dialog.Combat.AttackConfigDialog,
+      title: game.i18n.localize("macros.combat.dialog.modal.attack.title")
+    });
+  }
+  get attackerActor() {
+    return this.modalData?.attacker?.token?.actor;
+  }
+  getData() {
+    const { attacker, ui: ui2 } = this.modalData;
+    if (!attacker?.token) return this.modalData;
+    ui2.hasFatiguePoints = this.attackerActor.system.characteristics.secondaries.fatigue.value > 0;
+    const { weapons } = this.attackerActor.system.combat;
+    const combat = attacker.combat;
+    const weapon = ui2.lockedWeapon ? combat.weapon : weapons.find((w) => w._id === combat.weaponUsed);
+    combat.unarmed = !weapon;
+    if (!weapon) {
+      combat.weapon = void 0;
+      combat.projectile = { value: false, type: "" };
+      combat.damage.final = (combat.damage.special ?? 0) + 10 + this.attackerActor.system.characteristics.primaries.strength.mod;
+    } else {
+      combat.weapon = weapon;
+      combat.weaponUsed = weapon._id;
+      combat.projectile = weapon?.system?.isRanged?.value ? { value: true, type: weapon.system.shotType.value } : { value: false, type: "" };
+      if (!combat.criticSelected) {
+        combat.criticSelected = weapon.system.critic.primary.value;
+      }
+      ui2.weaponHasSecondaryCritic = weapon?.system?.critic?.secondary?.value !== game.animabfguote13.weapon.NoneWeaponCritic.NONE;
+      combat.damage.final = (combat.damage.special ?? 0) + (weapon?.system?.damage?.final?.value ?? 0);
+    }
+    this.modalData.config = ABFConfig;
+    return this.modalData;
+  }
+  activateListeners(html) {
+    super.activateListeners(html);
+    html.find(".send-attack").on("click", async (ev) => {
+      ev.preventDefault();
+      await this._sendAttack();
+    });
+  }
+  async _sendAttack() {
+    const actor = this.attackerActor;
+    if (!actor) return ui.notifications?.warn("Actor no encontrado.");
+    const combat = this.modalData.attacker?.combat;
+    const weapon = combat?.weapon;
+    if (!weapon) return ui.notifications?.warn("Arma no encontrada.");
+    try {
+      this.modalData.attackSent = true;
+      this.render();
+      const baseAttack = Number(weapon.system.attack?.final?.value ?? 0);
+      const mod = Number(combat.modifier ?? 0);
+      const die = actor.system.combat.attack.base.value >= 200 ? actor.system.general.diceSettings.abilityMasteryDie.value : actor.system.general.diceSettings.abilityDie.value;
+      const formula = `${die} + ${baseAttack} + ${mod}`;
+      const roll = new ABFFoundryRoll(formula, actor.system);
+      await roll.evaluate({ async: true });
+      const tokenDocOrToken = this.modalData?.attacker?.token ?? null;
+      const tokenForSpeaker = tokenDocOrToken?.object ?? tokenDocOrToken ?? null;
+      const tokenName = tokenForSpeaker?.name ?? tokenForSpeaker?.document?.name ?? actor.name;
+      const speaker = tokenForSpeaker ? { ...ChatMessage.getSpeaker({ token: tokenForSpeaker }), alias: tokenName } : ChatMessage.getSpeaker({ actor });
+      await roll.toMessage({
+        speaker,
+        flavor: "Rolling attack"
+      });
+      const attackData = ABFAttackData.builder().attackAbility(roll.total).damage(Number(combat.damage?.final ?? weapon.system.damage?.final?.value ?? 0)).ignoreArmor(!!weapon.system.ignoreArmor?.value).reducedArmor(Number(weapon.system.reducedArmor?.final?.value ?? 0)).armorType(combat.criticSelected ?? weapon.system.critic?.primary?.value).damageType(game.animabfguote13.combat.DamageType.NONE).presence(Number(weapon.system.presence?.final?.value ?? 0)).isProjectile(!!combat.projectile?.value).automaticCrit(false).critBonus(0).attackerId(actor.id).weaponId(weapon.id).targets(this.modalData.targets ?? []).build();
+      await attackData.toChatMessage({ actor, weapon });
+      await this.close();
+    } catch (err) {
+      console.error(err);
+      ui.notifications?.error("No se pudo enviar el ataque al chat.");
+    } finally {
+      this.modalData.attackSent = false;
+      if (this.rendered) this.render();
+    }
+  }
+  async _updateObject(event, formData) {
+    const wasWeapon = this.modalData.attacker?.combat?.weaponUsed;
+    if (this.modalData.ui.lockedWeapon) {
+      delete formData["attacker.combat.weaponUsed"];
+    }
+    this.modalData = foundry.utils.mergeObject(this.modalData, formData);
+    if (!this.modalData.ui.lockedWeapon) {
+      const curWeapon = this.modalData.attacker?.combat?.weaponUsed;
+      if (wasWeapon !== curWeapon) {
+        this.modalData.attacker.combat.criticSelected = void 0;
+      }
+    }
+    this.render();
+  }
+}
+export {
+  AttackConfigurationDialog
+};

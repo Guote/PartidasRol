@@ -1,0 +1,14 @@
+<nav class="custom-action-bar">
+  <ol class="macros">
+    {{#each macros as |macro|}}
+      <div
+        id="{{macro.id}}"
+        class="custom-macro"
+        title="{{macro.title}}"
+      >
+        <img src="{{macro.icon}}" />
+        <p class="shortcut">{{macro.shortcut}}</p>
+      </div>
+    {{/each}}
+  </ol>
+</nav>

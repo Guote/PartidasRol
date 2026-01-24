@@ -1,0 +1,23 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="advantages"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize 'anima.ui.advantageSection.title')
+    addRowButtonData="add-advantage"
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="advantages"
+  }}
+    {{#each system.general.advantages as |advantage|}}
+      <div data-item-id='{{advantage._id}}' class='advantage-row'>
+        <input
+          name='system.dynamic.advantages.{{advantage._id}}.name'
+          type='text'
+          class='input'
+          value='{{advantage.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

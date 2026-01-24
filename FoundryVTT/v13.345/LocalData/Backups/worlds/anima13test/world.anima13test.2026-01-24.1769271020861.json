@@ -1,0 +1,25 @@
+{
+  "title": "anima13Test",
+  "id": "world.anima13test.2026-01-24.1769271020861",
+  "system": "animabf",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "description": "",
+  "version": "0",
+  "relationships": {
+    "systems": [],
+    "requires": [],
+    "recommends": [],
+    "conflicts": [],
+    "flags": {}
+  },
+  "size": 31868,
+  "note": "",
+  "snapshotId": null,
+  "originalSize": 37873,
+  "createdAt": 1769271020867,
+  "packageId": "anima13test",
+  "type": "world"
+}

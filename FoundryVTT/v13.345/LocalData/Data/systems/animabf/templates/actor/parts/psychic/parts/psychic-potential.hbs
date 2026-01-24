@@ -1,0 +1,26 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="psychic-potential"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.psychic.psychicPotential.title")
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="psychic-potential"
+  }}
+    {{>
+    "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+      class="potential"
+      title=(localize "anima.ui.psychic.psychicPotential.potential.title")
+      rollable=true
+      inputName="system.psychic.psychicPotential.base.value"
+      inputValue=system.psychic.psychicPotential.base.value
+      hasSecondaryInput=true
+      addTooltips=true
+      disableSecondaryInput=true
+      rollSecondaryInput=true
+      secondaryInputName="system.psychic.psychicPotential.final.value"
+      secondaryInputValue=system.psychic.psychicPotential.final.value
+    }}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

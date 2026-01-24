@@ -1,0 +1,79 @@
+{
+  "title": "Amigos para siempre",
+  "version": "1.0.0",
+  "packs": [
+    {
+      "label": "mentalismo",
+      "name": "mentalismo",
+      "path": "packs/mentalismo",
+      "system": "animabf-guote",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "label": "Bestiario",
+      "name": "bestiario",
+      "path": "packs/bestiario",
+      "system": "animabf-guote",
+      "type": "Actor",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "label": "Escenas",
+      "type": "Scene",
+      "name": "escenas",
+      "path": "packs/escenas",
+      "system": "animabf-guote",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "label": "Artefactos mágicos",
+      "type": "Item",
+      "name": "artefactos-magicos",
+      "path": "packs/artefactos-magicos",
+      "system": "animabf-guote",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "label": "Invocaciones (animabf-guote)",
+      "type": "Item",
+      "name": "invocaciones-animabf-guote",
+      "path": "packs/invocaciones-animabf-guote",
+      "system": "animabf-guote",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "system": "animabf-guote",
+  "coreVersion": "13.345",
+  "resetKeys": false,
+  "safeMode": false,
+  "systemVersion": "1.16.0",
+  "id": "Gaia-APS-v10",
+  "compatibility": {
+    "verified": "13.345",
+    "minimum": "13"
+  },
+  "background": "_APS%20images/wallpaperflare.com_wallpaper.jpg",
+  "lastPlayed": "Sat Jan 24 2026 17:03:32 GMT+0100 (hora estándar de Europa central)",
+  "playtime": 59
+}

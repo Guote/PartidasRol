@@ -1,0 +1,70 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="armor"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.combat.finalArmor.title")
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="armor"
+  }}
+    <div class='at'>
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="cut"
+        disabled=true
+        title=(localize "anima.ui.combat.armors.at.cut.title")
+        inputName="system.combat.armor.at.cut.value"
+        inputValue=system.combat.totalArmor.at.cut.value
+      }}
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="impact"
+        disabled=true
+        title=(localize "anima.ui.combat.armors.at.impact.title")
+        inputName="system.combat.armor.at.impact.value"
+        inputValue=system.combat.totalArmor.at.impact.value
+      }}
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="thrust"
+        disabled=true
+        title=(localize "anima.ui.combat.armors.at.thrust.title")
+        inputName="system.combat.armor.at.thrust.value"
+        inputValue=system.combat.totalArmor.at.thrust.value
+      }}
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="heat"
+        disabled=true
+        title=(localize "anima.ui.combat.armors.at.heat.title")
+        inputName="system.combat.armor.at.heat.value"
+        inputValue=system.combat.totalArmor.at.heat.value
+      }}
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="electric"
+        disabled=true
+        title=(localize "anima.ui.combat.armors.at.electricity.title")
+        inputName="system.combat.armor.at.electricity.value"
+        inputValue=system.combat.totalArmor.at.electricity.value
+      }}
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="cold"
+        disabled=true
+        title=(localize "anima.ui.combat.armors.at.cold.title")
+        inputName="system.combat.armor.at.cold.value"
+        inputValue=system.combat.totalArmor.at.cold.value
+      }}
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="energy"
+        disabled=true
+        title=(localize "anima.ui.combat.armors.at.energy.title")
+        inputName="system.combat.armor.at.energy.value"
+        inputValue=system.combat.totalArmor.at.energy.value
+      }}
+    </div>
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

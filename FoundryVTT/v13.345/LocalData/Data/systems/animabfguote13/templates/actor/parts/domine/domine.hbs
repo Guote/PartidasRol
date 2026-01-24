@@ -1,0 +1,24 @@
+<div class='domine-tab'>
+  <div class='first-column'>
+    {{{injectFromHook "animabfguote13.actor.domine.first-column.start" @root}}}
+    {{> "systems/animabfguote13/templates/actor/parts/domine/parts/ki-skills.hbs"}}
+    {{> "systems/animabfguote13/templates/actor/parts/domine/parts/nemesis-skills.hbs"}}
+    {{> "systems/animabfguote13/templates/actor/parts/domine/parts/ars-magnus.hbs"}}
+    {{> "systems/animabfguote13/templates/actor/parts/domine/parts/martial-arts.hbs"}}
+    {{> "systems/animabfguote13/templates/actor/parts/domine/parts/creatures.hbs"}}
+    {{> "systems/animabfguote13/templates/actor/parts/domine/parts/special-skills-tables.hbs"}}
+    {{{injectFromHook "animabfguote13.actor.domine.first-column.end" @root}}}
+  </div>
+  <div class='second-column'>
+    <div class='sub-columns'>
+      {{> "systems/animabfguote13/templates/actor/parts/domine/parts/ki-accumulation.hbs"}}
+      <div class='sub-sub-columns'>
+        {{> "systems/animabfguote13/templates/actor/parts/domine/parts/martial-knowledge.hbs"}}
+        {{> "systems/animabfguote13/templates/actor/parts/domine/parts/seals.hbs"}}
+      </div>
+    </div>
+    {{{injectFromHook "animabfguote13.actor.domine.second-column.before-techniques" @root}}}
+    {{> "systems/animabfguote13/templates/actor/parts/domine/parts/techniques.hbs"}}
+    {{{injectFromHook "animabfguote13.actor.domine.second-column.after-techniques" @root}}}
+  </div>
+</div>

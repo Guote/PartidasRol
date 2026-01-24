@@ -1,0 +1,45 @@
+{{#> "systems/animabfguote13/templates/common/ui/group.hbs"
+  class="supernatural-shields"
+}}
+  {{>
+  "systems/animabfguote13/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.combat.supernaturalShields.title")
+    addRowButtonData="add-supernatural-shield"
+  }}
+  {{#> "systems/animabfguote13/templates/common/ui/group-body.hbs"
+    class="supernatural-shields"
+  }}
+    {{#each system.combat.supernaturalShields as |supernaturalShields|}}
+      <div data-item-id='{{this._id}}' class='supernatural-shield-row'>
+        {{>
+        "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+          class="name"
+          title=(localize "anima.ui.combat.supernaturalShields.name.title")
+          hideTitle=(is "gt" @index 0)
+          disabled=true
+          inputType="text"
+          inputName=(concat "system.dynamic.supernaturalShields." this._id ".name")
+          inputValue=this.name
+        }}
+        {{>
+        "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+          class="shieldPoints"
+          title=(localize "anima.ui.combat.supernaturalShields.shieldPoints.title")
+          hideTitle=(is "gt" @index 0)
+          inputName=(concat "system.dynamic.supernaturalShields." this._id ".system.shieldPoints")
+          inputValue=this.system.shieldPoints
+        }}
+        {{>
+        "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+          class="ability"
+          title=(localize "anima.ui.combat.supernaturalShields.ability.title")
+          hideTitle=(is "gt" @index 0)
+          disabled=true
+          inputType="text"
+          inputName=(concat "system.dynamic.supernaturalShields." this._id ".system.abilityFormula")
+          inputValue=(formulaValue this.system.abilityFormula @root.actor)
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabfguote13/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabfguote13/templates/common/ui/group.hbs"}}

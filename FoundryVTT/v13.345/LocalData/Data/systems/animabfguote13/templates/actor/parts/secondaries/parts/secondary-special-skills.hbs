@@ -1,0 +1,25 @@
+{{#> "systems/animabfguote13/templates/common/ui/group.hbs"
+  class="secondary-special-skills"
+}}
+  {{>
+  "systems/animabfguote13/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.secondaries.secondarySpecialSkills.title")
+    addRowButtonData="add-secondary-special-skill"
+  }}
+  {{#> "systems/animabfguote13/templates/common/ui/group-body.hbs"
+    class="secondary-special-skills"
+  }}
+    {{#each system.secondaries.secondarySpecialSkills}}
+      <div data-item-id='{{this._id}}' class='secondary-special-skill-row'>
+        {{>
+        "systems/animabfguote13/templates/common/ui/horizontal-titled-input.hbs"
+          class="level"
+          rollable=true
+          title=this.name
+          inputName=(concat "system.dynamic.secondarySpecialSkills." this._id ".system.level.value")
+          inputValue=this.system.level.value
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabfguote13/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabfguote13/templates/common/ui/group.hbs"}}

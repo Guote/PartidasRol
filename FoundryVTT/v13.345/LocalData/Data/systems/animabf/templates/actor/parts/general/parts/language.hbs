@@ -1,0 +1,43 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="languages"
+}}
+  {{#>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+  }}
+    {{>
+    "systems/animabf/templates/common/ui/add-item-button.hbs"
+      data="add-language"
+    }}
+    {{>
+    "systems/animabf/templates/common/ui/group-header-title.hbs"
+      title=(localize 'anima.ui.languageSection.title')
+    }}
+    <input type='number' class='input' value='{{calculateLanguages system.characteristics.primaries.intelligence.value}}' disabled='true'/>
+  {{/"systems/animabf/templates/common/ui/group-header.hbs"}}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="languages"
+  }}
+    <div class='base-language'>
+      {{>
+      "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+        class="name"
+        title=(localize 'anima.ui.languageSection.base')
+        inputType="text"
+        inputName="system.general.languages.base.value"
+        inputValue=system.general.languages.base.value
+      }}
+    </div>
+    {{#each system.general.languages.others as |language|}}
+      <div data-item-id='{{language._id}}' class='language-row'>
+        {{>
+        "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+          class="name"
+          hideTitle=true
+          inputType="text"
+          inputName=(concat "system.dynamic.languages." language._id ".name")
+          inputValue=language.name
+        }}
+      </div>
+    {{/each}}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

@@ -1,0 +1,87 @@
+{
+  "id": "animabfguote13",
+  "title": "Anima Beyond Fantasy Guote v13",
+  "description": "Unofficial Anima Beyond Fantasy system for Foundry VTT",
+  "version": "2.1.0",
+  "compatibility": { "minimum": "13", "verified": "13.348" },
+  "url": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry",
+  "manifest": "https://raw.githubusercontent.com/AnimaBeyondDevelop/AnimaBeyondFoundry/main/src/system.json",
+  "changelog": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/tag/v2.1.0",
+  "download": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/releases/download/v2.1.0/animabfguote13.zip",
+  "bugs": "https://github.com/AnimaBeyondDevelop/AnimaBeyondFoundry/issues",
+  "authors": [
+    { "name": "Linkaynn", "url": "https://www.jeseromero.com" },
+    { "name": "Julen Bordonaba" },
+    { "name": "Alfonso Paiva" },
+    { "name": "Aitor Balmaseda" },
+    { "name": "Luisin" }
+  ],
+  "scripts": [],
+  "esmodules": ["animabfguote13.js"],
+  "styles": ["animabfguote13.css"],
+  "socket": true,
+  "packs": [
+    {
+      "name": "weapons",
+      "label": "(ES) Armas",
+      "system": "animabfguote13",
+      "path": "./packs/weapons",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "armors",
+      "label": "(ES) Armaduras",
+      "system": "animabfguote13",
+      "path": "./packs/armors",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "magic",
+      "label": "(ES) Magia",
+      "system": "animabfguote13",
+      "path": "./packs/magic",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "psychic",
+      "label": "(ES) Mentalismo",
+      "system": "animabfguote13",
+      "path": "./packs/psychic_powers",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "npcs",
+      "label": "(ES) NPCs Core Exxet",
+      "system": "animabfguote13",
+      "path": "./packs/npcs",
+      "type": "Actor",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "effects",
+      "label": "(ES) Efectos",
+      "system": "animabfguote13",
+      "path": "./packs/effects",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    }
+  ],
+  "languages": [
+    { "lang": "es", "name": "Español", "path": "lang/es.json" },
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "fr", "name": "Français", "path": "lang/fr.json" }
+  ],
+  "relationships": { "requires": [] },
+  "primaryTokenAttribute": "characteristics.secondaries.lifePoints",
+  "grid": { "distance": 1, "units": "m" }
+}

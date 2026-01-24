@@ -1,0 +1,12 @@
+{
+  "title": "anima13Test",
+  "id": "anima13test",
+  "system": "animabf",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "2.1.0",
+  "lastPlayed": "Sat Jan 24 2026 17:10:21 GMT+0100 (hora estándar de Europa central)"
+}

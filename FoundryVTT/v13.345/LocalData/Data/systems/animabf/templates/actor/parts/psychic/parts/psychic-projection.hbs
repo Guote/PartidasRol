@@ -1,0 +1,44 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="psychic-projection"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.psychic.psychicProjection.title")
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="psychic-projection"
+  }}
+    <div class='imbalance'>
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="offensive"
+        title=(localize "anima.ui.psychic.psychicProjection.offensive.title")
+        rollable=true
+        rollableMessage=(localize "anima.ui.psychic.psychicProjection.offensive.rollMessage")
+        inputName="system.psychic.psychicProjection.imbalance.offensive.base.value"
+        inputValue=system.psychic.psychicProjection.imbalance.offensive.base.value
+        hasSecondaryInput=true
+        rollSecondaryInput=true
+        disableSecondaryInput=true
+        addTooltips=true
+        secondaryInputName="system.psychic.psychicProjection.imbalance.offensive.final.value"
+        secondaryInputValue=system.psychic.psychicProjection.imbalance.offensive.final.value
+      }}
+      {{>
+      "systems/animabf/templates/common/ui/vertical-titled-input.hbs"
+        class="defensive"
+        title=(localize "anima.ui.psychic.psychicProjection.defensive.title")
+        rollable=true
+        rollableMessage=(localize "anima.ui.psychic.psychicProjection.defensive.rollMessage")
+        inputName="system.psychic.psychicProjection.imbalance.defensive.base.value"
+        inputValue=system.psychic.psychicProjection.imbalance.defensive.base.value
+        hasSecondaryInput=true
+        rollSecondaryInput=true
+        disableSecondaryInput=true
+        addTooltips=true
+        secondaryInputName="system.psychic.psychicProjection.imbalance.defensive.final.value"
+        secondaryInputValue=system.psychic.psychicProjection.imbalance.defensive.final.value
+      }}
+    </div>
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

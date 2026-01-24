@@ -1,0 +1,23 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="titles"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize 'anima.ui.titleSection.title')
+    addRowButtonData="add-title"
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="titles"
+  }}
+    {{#each system.general.titles as |title|}}
+      <div data-item-id='{{title._id}}' class='title-row'>
+        <input
+          name='system.dynamic.titles.{{title._id}}.name'
+          type='text'
+          class='input'
+          value='{{title.name}}'
+        />
+      </div>
+    {{/each}}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}

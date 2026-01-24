@@ -1,0 +1,66 @@
+{{#> "systems/animabfguote13/templates/items/base/base-sheet.hbs"}}
+  {{#> "systems/animabfguote13/templates/common/ui/group.hbs"
+    class="ammo-item-dialog"
+  }}
+    {{#> "systems/animabfguote13/templates/common/ui/group-header.hbs"}}
+      <div class='ammo-header'>
+        {{>
+        "systems/animabfguote13/templates/common/ui/horizontal-titled-input.hbs"
+          class="name"
+          hideTitle=true
+          inputType="text"
+          inputName=(concat "name")
+          inputValue=item.name
+        }}
+      </div>
+    {{/"systems/animabfguote13/templates/common/ui/group-header.hbs"}}
+    {{#> "systems/animabfguote13/templates/common/ui/group-body.hbs"
+      class="ammo-item-dialog"
+    }}
+      {{> 'systems/animabfguote13/templates/common/ui/custom-select-choices.hbs'
+        class="critic"
+        isVertical=true
+        choices=config.iterables.combat.weapon.criticTypes
+        title=(localize "anima.ui.combat.ammo.critic.title")
+        inputName="system.critic.value"
+        inputValue=system.critic.value
+      }}
+      {{>
+      "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+        class="presence"
+        title=(localize "anima.ui.combat.ammo.presence.base.title")
+        inputName="system.presence.base.value"
+        inputValue=system.presence.base.value
+      }}
+      {{>
+      "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+        class="integrity"
+        title=(localize "anima.ui.combat.ammo.integrity.base.title")
+        inputName="system.integrity.base.value"
+        inputValue=system.integrity.base.value
+      }}
+      {{>
+      "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+        class="breaking"
+        title=(localize "anima.ui.combat.ammo.breaking.base.title")
+        inputName="system.breaking.base.value"
+        inputValue=system.breaking.base.value
+      }}
+      {{>
+      "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+        class="damage"
+        title=(localize "anima.ui.combat.ammo.damage.base.title")
+        inputName="system.damage.base.value"
+        inputValue=system.damage.base.value
+      }}
+      {{>
+      "systems/animabfguote13/templates/common/ui/vertical-titled-input.hbs"
+        class="special"
+        title=(localize "anima.ui.combat.ammo.special.title")
+        inputType="text"
+        inputName="system.special.value"
+        inputValue=system.special.value
+      }}
+    {{/"systems/animabfguote13/templates/common/ui/group-body.hbs"}}
+  {{/"systems/animabfguote13/templates/common/ui/group.hbs"}}
+{{/"systems/animabfguote13/templates/items/base/base-sheet.hbs"}}

@@ -1,0 +1,23 @@
+{{#> "systems/animabf/templates/common/ui/group.hbs"
+  class="psychic-points"
+}}
+  {{>
+  "systems/animabf/templates/common/ui/group-header.hbs"
+    title=(localize "anima.ui.psychic.psychicPoints.title")
+  }}
+  {{#> "systems/animabf/templates/common/ui/group-body.hbs"
+    class="psychic-points"
+  }}
+    {{>
+    "systems/animabf/templates/common/ui/horizontal-titled-input.hbs"
+      class="power"
+      title=(localize "anima.ui.psychic.psychicPoints.power.title")
+      inputName="system.psychic.psychicPoints.value"
+      inputValue=system.psychic.psychicPoints.value
+      hasSecondaryInput=true
+      addTooltips=true
+      secondaryInputName="system.psychic.psychicPoints.max"
+      secondaryInputValue=system.psychic.psychicPoints.max
+    }}
+  {{/"systems/animabf/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf/templates/common/ui/group.hbs"}}
