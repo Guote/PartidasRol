@@ -12,12 +12,14 @@ import { Logger } from "../../utils/log.js";
 import "../utils/constants.js";
 import { ABFSettingsKeys } from "../../utils/registerSettings.js";
 import { createClickHandlers } from "./utils/createClickHandlers.js";
+import { SharedSheetHelpers } from "./utils/sharedSheetHelpers.js";
+
 class ABFActorSheet extends ActorSheet {
   i18n;
   constructor(actor, options) {
     super(actor, options);
     this.i18n = game.i18n;
-    this.position.width = this.getWidthDependingFromContent();
+    this.position.width = SharedSheetHelpers.getWidthDependingFromContent(this.actor);
   }
   static get defaultOptions() {
     return {
@@ -57,29 +59,20 @@ class ABFActorSheet extends ActorSheet {
   get template() {
     return "systems/animabfguote13/templates/actor/actor-sheet.hbs";
   }
+
+  get id() {
+    return "animabfguote13.ABFActorSheet";
+  }
   async close(options) {
     super.close(options);
-    this.position.width = this.getWidthDependingFromContent();
-  }
-  getWidthDependingFromContent() {
-    if (this.actor.items.filter((i) => i.type === ABFItems.SPELL).length > 0) {
-      return 1300;
-    }
-    return 1e3;
+    this.position.width = SharedSheetHelpers.getWidthDependingFromContent(this.actor);
   }
   async _render(force, options = {}) {
     if (force && this.actor.testUserPermission(game.user, "LIMITED", { exact: true })) {
-      this.displayActorImagePopout();
+      SharedSheetHelpers.displayActorImagePopout(this.actor);
       return;
     }
     return super._render(force, options);
-  }
-  displayActorImagePopout() {
-    const imagePopout = new ImagePopout(this.actor.img, {
-      title: this.actor.name,
-      uuid: this.actor.uuid
-    });
-    imagePopout.render(true);
   }
   async getData(options) {
     const sheet = await super.getData(options);
@@ -118,7 +111,7 @@ class ABFActorSheet extends ActorSheet {
       }
     });
     for (const item of Object.values(ALL_ITEM_CONFIGURATIONS)) {
-      this.buildCommonContextualMenu(item);
+      SharedSheetHelpers.buildCommonContextualMenu(this, item);
       html.find(item.selectors.rowSelector).each((_, row) => {
         row.setAttribute("draggable", "true");
         row.addEventListener("dragstart", handler, false);
@@ -134,60 +127,7 @@ class ABFActorSheet extends ActorSheet {
       if (handler2) handler2(e);
       else console.warn(`No handler for data-on-click="${key}"`);
     });
-    html.find(".effect-control").click(this._onEffectControl.bind(this));
-  }
-  async _onEffectControl(event) {
-    event.preventDefault();
-    const a = event.currentTarget;
-    const action = a.dataset.action;
-    const li = a.closest(".effect");
-    const itemId = li?.dataset.itemId;
-    const item = itemId ? this.actor.items.get(itemId) : null;
-    switch (action) {
-      case "create": {
-        const name = game.i18n.localize("anima.effects.newEffect") ?? "New Effect";
-        const [created] = await this.actor.createEmbeddedDocuments("Item", [
-          {
-            type: ABFItems.EFFECT,
-            name,
-            system: INITIAL_EFFECT_DATA
-          }
-        ]);
-        if (created?.sheet) created.sheet.render(true);
-        return;
-      }
-      case "edit": {
-        if (!item) return;
-        const effect = await this._ensureEffectForItem(item);
-        if (!effect) return;
-        this._setupEffectSync(item, effect);
-        return effect.sheet?.render(true);
-      }
-      case "delete": {
-        if (!itemId) return;
-        const item2 = this.actor.items.get(itemId);
-        if (!item2) return;
-        const effect = this._getLinkedEffect(item2);
-        const deletions = [];
-        deletions.push(this.actor.deleteEmbeddedDocuments("Item", [itemId]));
-        if (effect) {
-          deletions.push(this.actor.deleteEmbeddedDocuments("ActiveEffect", [effect.id]));
-        }
-        return Promise.all(deletions);
-      }
-      case "toggle": {
-        if (!item) return;
-        const newActive = !item.system.active;
-        await item.update({ "system.active": newActive });
-        const effect = this._getLinkedEffect(item);
-        if (effect) {
-          await effect.update({ disabled: !newActive });
-        }
-        return;
-      }
-      default:
-        return;
-    }
+    html.find(".effect-control").click((e) => SharedSheetHelpers.handleEffectControl(this, e));
   }
   async _onRoll(event) {
     event.preventDefault();
@@ -231,109 +171,6 @@ class ABFActorSheet extends ActorSheet {
       }
     }
   }
-  buildCommonContextualMenu = (itemConfig) => {
-    const {
-      selectors: { containerSelector, rowSelector },
-      fieldPath,
-      hideDeleteRow
-    } = itemConfig;
-    const deleteRowMessage = itemConfig.contextMenuConfig?.customDeleteRowMessage ?? this.i18n.localize("contextualMenu.common.options.delete");
-    const customCallbackFn = itemConfig.onDelete;
-    const otherItems = itemConfig.contextMenuConfig?.buildExtraOptionsInContextMenu?.(this.actor) ?? [];
-    if (!itemConfig.isInternal && itemConfig.hasSheet) {
-      otherItems.push({
-        name: this.i18n.localize("contextualMenu.common.options.edit"),
-        icon: '<i class="fas fa-edit fa-fw"></i>',
-        callback: (target) => {
-          const { itemId } = target[0].dataset;
-          if (itemId) {
-            const item = this.actor.items.get(itemId);
-            if (item?.sheet) {
-              item.sheet.render(true);
-            } else {
-              Logger.warn("Item sheet was not found for item:", item);
-            }
-          } else {
-            Logger.warn("Item ID was not found for target:", target);
-          }
-        }
-      });
-    }
-    if (!hideDeleteRow) {
-      otherItems.push({
-        name: deleteRowMessage,
-        icon: '<i class="fas fa-trash fa-fw"></i>',
-        callback: (target) => {
-          if (!customCallbackFn && !fieldPath) {
-            Logger.warn(
-              `buildCommonContextualMenu: no custom callback and configuration set, could not delete the item: ${itemConfig.type}`
-            );
-          }
-          if (customCallbackFn) {
-            customCallbackFn(this.actor, target);
-          } else {
-            const id = target[0].dataset.itemId;
-            if (!id) {
-              throw new Error(
-                "Data id missing. Are you sure to set data-item-id to rows?"
-              );
-            }
-            ABFDialogs.confirm(
-              this.i18n.localize("dialogs.items.delete.title"),
-              this.i18n.localize("dialogs.items.delete.body"),
-              {
-                onConfirm: () => {
-                  if (fieldPath) {
-                    if (this.actor.getEmbeddedDocument("Item", id)) {
-                      this.actor.deleteEmbeddedDocuments("Item", [id]);
-                    } else {
-                      let items = getFieldValueFromPath(this.actor.system, fieldPath);
-                      items = items.filter((item) => item._id !== id);
-                      const dataToUpdate = {
-                        system: getUpdateObjectFromPath(items, fieldPath)
-                      };
-                      this.actor.update(dataToUpdate);
-                    }
-                  }
-                }
-              }
-            );
-          }
-        }
-      });
-    }
-    return new ContextMenu(this.element.find(containerSelector), rowSelector, [
-      ...otherItems
-    ]);
-  };
-  _getLinkedEffect(item) {
-    if (!item) return null;
-    return this.actor.effects.find((e) => e.origin === item.uuid) ?? null;
-  }
-  async _linkItemToEffect(item, effect) {
-    if (!item || !effect) return;
-    await item.setFlag("animabfguote13", "linkedEffectId", effect.id);
-  }
-  async _ensureEffectForItem(item) {
-    if (!item) return null;
-    let effect = this._getLinkedEffect(item);
-    if (effect) return effect;
-    const rawBaseData = item.system?.effectData ?? {};
-    const { origin, ...baseData } = rawBaseData;
-    const data = foundry.utils.mergeObject(
-      {
-        name: item.name,
-        icon: item.img || "icons/svg/aura.svg",
-        disabled: !item.system?.active,
-        origin: item.uuid
-        // always the current item
-      },
-      baseData,
-      { inplace: false }
-    );
-    const [created] = await this.actor.createEmbeddedDocuments("ActiveEffect", [data]);
-    return created ?? null;
-  }
   async _onDropItem(event, data) {
     const created = await super._onDropItem(event, data);
     const items = Array.isArray(created) ? created : created ? [created] : [];
@@ -343,25 +180,9 @@ class ABFActorSheet extends ActorSheet {
         "system.active": false,
         "system.effectData.disabled": true
       });
-      await this._ensureEffectForItem(item);
+      await SharedSheetHelpers.ensureEffectForItem(this.actor, item);
     }
     return created;
-  }
-  _setupEffectSync(item, effect) {
-    const handler = async (doc, diff, options, userId) => {
-      if (doc.id !== effect.id) return;
-      if (userId !== game.user.id) return;
-      if (doc.transfer === true) {
-        await doc.update({ transfer: false });
-        return;
-      }
-      const obj = doc.toObject();
-      const { _id, _key, parent, ...clean } = obj;
-      await item.update({ "system.effectData": clean });
-      await item.update({ "system.active": !doc.disabled });
-      Hooks.off("updateActiveEffect", handler);
-    };
-    Hooks.on("updateActiveEffect", handler);
   }
 }
 export {

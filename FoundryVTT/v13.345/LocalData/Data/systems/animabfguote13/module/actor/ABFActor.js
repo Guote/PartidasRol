@@ -675,9 +675,8 @@ class ABFActor extends Actor {
   getAllItems() {
     return Object.values(ABFItems).flatMap((itemType) => this.getItemsOf(itemType));
   }
-  _getSheetClass() {
-    return ABFActorSheet;
-  }
+  // REMOVED: _getSheetClass() was forcing ABFActorSheet regardless of user selection
+  // Foundry VTT v13 now handles sheet selection through the registration system
   /**
    * @param {import('../items/ABFItems').ABFItemsEnum} type
    * @returns {ABFItem[]}

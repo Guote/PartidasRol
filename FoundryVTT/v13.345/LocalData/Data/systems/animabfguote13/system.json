@@ -18,7 +18,7 @@
   ],
   "scripts": [],
   "esmodules": ["animabfguote13.js"],
-  "styles": ["animabfguote13.css"],
+  "styles": ["animabfguote13.css", "animabfguote13-clean.css"],
   "socket": true,
   "packs": [
     {

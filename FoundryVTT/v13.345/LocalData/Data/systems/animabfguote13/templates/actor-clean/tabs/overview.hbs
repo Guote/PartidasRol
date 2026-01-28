@@ -1,0 +1,198 @@
+<div class="overview-tab">
+  <!-- Character Information Accordion -->
+  <div class="accordion-section">
+    <button type="button" class="accordion-toggle">
+      <span><i class="fas fa-id-card"></i> Character Information</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="accordion-content">
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Level</label>
+          <input type="number" name="system.general.level.value" value="{{system.general.level.value}}" />
+        </div>
+        <div class="info-item">
+          <label>Experience</label>
+          <input type="number" name="system.general.experience.value" value="{{system.general.experience.value}}" />
+        </div>
+        <div class="info-item">
+          <label>Presence</label>
+          <input type="number" name="system.characteristics.secondaries.presence.final.value" value="{{system.characteristics.secondaries.presence.final.value}}" disabled />
+        </div>
+        <div class="info-item">
+          <label>Destiny Points</label>
+          <div class="destiny-points">
+            <input type="number" name="system.general.destinyPoints.current.value" value="{{system.general.destinyPoints.current.value}}" />
+            <span class="separator">/</span>
+            <input type="number" name="system.general.destinyPoints.max.value" value="{{system.general.destinyPoints.max.value}}" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Combat Stats Accordion -->
+  <div class="accordion-section">
+    <button type="button" class="accordion-toggle">
+      <span><i class="fas fa-shield-halved"></i> Combat Statistics</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="accordion-content">
+      <div class="combat-stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">Attack</div>
+          <div class="stat-values">
+            <div class="stat-value-item">
+              <label>Base</label>
+              <input type="number" name="system.combat.attack.base.value" value="{{system.combat.attack.base.value}}" />
+            </div>
+            <div class="stat-value-item">
+              <label>Special</label>
+              <input type="number" name="system.combat.attack.special.value" value="{{system.combat.attack.special.value}}" />
+            </div>
+            <div class="stat-value-item final-value">
+              <label>Final</label>
+              <span class="value-display">{{system.combat.attack.final.value}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Block</div>
+          <div class="stat-values">
+            <div class="stat-value-item">
+              <label>Base</label>
+              <input type="number" name="system.combat.block.base.value" value="{{system.combat.block.base.value}}" />
+            </div>
+            <div class="stat-value-item">
+              <label>Special</label>
+              <input type="number" name="system.combat.block.special.value" value="{{system.combat.block.special.value}}" />
+            </div>
+            <div class="stat-value-item final-value">
+              <label>Final</label>
+              <span class="value-display">{{system.combat.block.final.value}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Dodge</div>
+          <div class="stat-values">
+            <div class="stat-value-item">
+              <label>Base</label>
+              <input type="number" name="system.combat.dodge.base.value" value="{{system.combat.dodge.base.value}}" />
+            </div>
+            <div class="stat-value-item">
+              <label>Special</label>
+              <input type="number" name="system.combat.dodge.special.value" value="{{system.combat.dodge.special.value}}" />
+            </div>
+            <div class="stat-value-item final-value">
+              <label>Final</label>
+              <span class="value-display">{{system.combat.dodge.final.value}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">Armor</div>
+          <div class="stat-values">
+            <div class="stat-value-item">
+              <label>AT</label>
+              <span class="value-display">{{system.combat.totalArmor.at.final.value}}</span>
+            </div>
+            <div class="stat-value-item">
+              <label>Movement</label>
+              <span class="value-display">{{numberFormat system.characteristics.secondaries.movement.final.value decimals=0}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Equipped Weapons Accordion -->
+  <div class="accordion-section">
+    <button type="button" class="accordion-toggle">
+      <span><i class="fas fa-crossed-swords"></i> Equipped Weapons</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="accordion-content">
+      {{#if system.combat.weapons}}
+        <div class="weapons-list">
+          {{#each system.combat.weapons as |weapon|}}
+            {{#if weapon.data.equipped.value}}
+              {{> "systems/animabfguote13/templates/actor-clean/components/weapon-card.hbs" weapon=weapon}}
+            {{/if}}
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="empty-message">No weapons equipped</p>
+      {{/if}}
+      <button type="button" class="add-item-button" data-on-click="add-weapon">
+        <i class="fas fa-plus"></i> Add Weapon
+      </button>
+    </div>
+  </div>
+
+  <!-- Equipped Armor Accordion -->
+  <div class="accordion-section">
+    <button type="button" class="accordion-toggle">
+      <span><i class="fas fa-vest"></i> Equipped Armor</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="accordion-content">
+      {{#if system.combat.armors}}
+        <div class="armors-list">
+          {{#each system.combat.armors as |armor|}}
+            {{#if armor.data.equipped.value}}
+              {{> "systems/animabfguote13/templates/actor-clean/components/armor-card.hbs" armor=armor}}
+            {{/if}}
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="empty-message">No armor equipped</p>
+      {{/if}}
+      <button type="button" class="add-item-button" data-on-click="add-armor">
+        <i class="fas fa-plus"></i> Add Armor
+      </button>
+    </div>
+  </div>
+
+  <!-- General Information Accordion -->
+  <div class="accordion-section collapsed">
+    <button type="button" class="accordion-toggle">
+      <span><i class="fas fa-info-circle"></i> Additional Information</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="accordion-content">
+      <div class="additional-info">
+        <div class="info-section">
+          <h4>Aspect</h4>
+          <textarea
+            name="system.general.aspect.value"
+            rows="3"
+            placeholder="Character aspect description..."
+          >{{system.general.aspect.value}}</textarea>
+        </div>
+
+        <div class="info-section">
+          <h4>Description</h4>
+          <textarea
+            name="system.general.description.value"
+            rows="5"
+            placeholder="Character description..."
+          >{{system.general.description.value}}</textarea>
+        </div>
+
+        <div class="info-section">
+          <h4>Background</h4>
+          <textarea
+            name="system.general.background.value"
+            rows="5"
+            placeholder="Character background..."
+          >{{system.general.background.value}}</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

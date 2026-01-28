@@ -155,7 +155,20 @@ async function preloadTemplates() {
     `${BASE}/actor/parts/settings/parts/tabVisibility.hbs`,
     `${BASE}/actor/parts/settings/parts/automationOptions.hbs`,
     `${BASE}/actor/parts/settings/parts/advancedSettings.hbs`,
-    `${BASE}/actor/parts/settings/parts/advancedCharacteristics.hbs`
+    `${BASE}/actor/parts/settings/parts/advancedCharacteristics.hbs`,
+    // --- Clean Actor Sheet ---
+    `${BASE}/actor-clean/actor-sheet-clean.hbs`,
+    `${BASE}/actor-clean/header/header-clean.hbs`,
+    `${BASE}/actor-clean/tabs/overview.hbs`,
+    `${BASE}/actor-clean/tabs/abilities.hbs`,
+    `${BASE}/actor-clean/tabs/characteristics-abilities.hbs`,
+    `${BASE}/actor-clean/tabs/inventory.hbs`,
+    `${BASE}/actor-clean/tabs/combat.hbs`,
+    `${BASE}/actor-clean/tabs/magic.hbs`,
+    `${BASE}/actor-clean/tabs/psychic.hbs`,
+    `${BASE}/actor-clean/tabs/domine.hbs`,
+    `${BASE}/actor-clean/components/weapon-card.hbs`,
+    `${BASE}/actor-clean/components/armor-card.hbs`
   ];
   await loadTemplates(templatePaths);
   const PARTIAL_ALIASES = {

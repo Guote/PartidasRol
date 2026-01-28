@@ -1,0 +1,145 @@
+<div class="combat-tab">
+  <!-- Combat Stats Section -->
+  <div class="section-card">
+    <h3 class="section-card-title">
+      <i class="fas fa-shield-halved"></i> Combat Statistics
+    </h3>
+    <div class="combat-stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">Attack</div>
+        <div class="stat-values">
+          <div class="stat-value-item">
+            <label>Base</label>
+            <input type="number" name="system.combat.attack.base.value" value="{{system.combat.attack.base.value}}" />
+          </div>
+          <div class="stat-value-item">
+            <label>Special</label>
+            <input type="number" name="system.combat.attack.special.value" value="{{system.combat.attack.special.value}}" />
+          </div>
+          <div class="stat-value-item final-value">
+            <label>Final</label>
+            <span class="value-display">{{system.combat.attack.final.value}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">Block</div>
+        <div class="stat-values">
+          <div class="stat-value-item">
+            <label>Base</label>
+            <input type="number" name="system.combat.block.base.value" value="{{system.combat.block.base.value}}" />
+          </div>
+          <div class="stat-value-item">
+            <label>Special</label>
+            <input type="number" name="system.combat.block.special.value" value="{{system.combat.block.special.value}}" />
+          </div>
+          <div class="stat-value-item final-value">
+            <label>Final</label>
+            <span class="value-display">{{system.combat.block.final.value}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">Dodge</div>
+        <div class="stat-values">
+          <div class="stat-value-item">
+            <label>Base</label>
+            <input type="number" name="system.combat.dodge.base.value" value="{{system.combat.dodge.base.value}}" />
+          </div>
+          <div class="stat-value-item">
+            <label>Special</label>
+            <input type="number" name="system.combat.dodge.special.value" value="{{system.combat.dodge.special.value}}" />
+          </div>
+          <div class="stat-value-item final-value">
+            <label>Final</label>
+            <span class="value-display">{{system.combat.dodge.final.value}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">Armor</div>
+        <div class="stat-values">
+          <div class="stat-value-item">
+            <label>AT</label>
+            <span class="value-display">{{system.combat.totalArmor.at.final.value}}</span>
+          </div>
+          <div class="stat-value-item">
+            <label>Movement</label>
+            <span class="value-display">{{numberFormat system.characteristics.secondaries.movement.final.value decimals=0}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Equipped Weapons Section -->
+  <div class="section-card">
+    <h3 class="section-card-title">
+      <i class="fas fa-crossed-swords"></i> Equipped Weapons
+    </h3>
+    <div class="weapons-combat-list">
+      {{#if system.combat.weapons}}
+        {{#each system.combat.weapons as |weapon|}}
+          {{#if weapon.data.equipped.value}}
+            <div class="weapon-combat-card" data-item-id="{{weapon._id}}">
+              <div class="weapon-combat-header">
+                <div class="weapon-info">
+                  <h4 class="weapon-name">{{weapon.name}}</h4>
+                  <span class="weapon-type">{{weapon.data.weaponType.value}}</span>
+                </div>
+                <button type="button"
+                        class="attack-button"
+                        data-on-click="createWeaponAttack"
+                        data-weapon-id="{{weapon._id}}"
+                        title="Attack">
+                  <i class="fas fa-dice-d20"></i> Attack
+                </button>
+              </div>
+
+              <div class="weapon-combat-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Attack</span>
+                  <span class="stat-value">{{numberFormat weapon.data.attack.final.value decimals=0 sign=true}}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Damage</span>
+                  <span class="stat-value">{{weapon.data.damage.final.value}}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Speed</span>
+                  <span class="stat-value">{{numberFormat weapon.data.initiative.final.value decimals=0 sign=true}}</span>
+                </div>
+                {{#if weapon.data.hasOwnRange.value}}
+                <div class="stat-item">
+                  <span class="stat-label">Range</span>
+                  <span class="stat-value">{{weapon.data.range.value}}</span>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+          {{/if}}
+        {{/each}}
+      {{else}}
+        <p class="empty-message">No weapons equipped</p>
+      {{/if}}
+    </div>
+  </div>
+
+  <!-- Combat Notes Section -->
+  <div class="section-card">
+    <h3 class="section-card-title">
+      <i class="fas fa-note-sticky"></i> Combat Notes
+    </h3>
+    <div class="combat-notes-container">
+      <textarea
+        name="system.combat.combatNotes.value"
+        class="combat-notes-textarea"
+        rows="8"
+        placeholder="Enter combat notes, tactics, special abilities, or reminders here..."
+      >{{system.combat.combatNotes.value}}</textarea>
+    </div>
+  </div>
+</div>

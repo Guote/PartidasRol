@@ -1,0 +1,36 @@
+<div class="item-card armor-card {{#if armor.data.equipped.value}}equipped{{/if}}"
+     data-item-id="{{armor._id}}"
+     draggable="true">
+  <div class="item-card-header">
+    <div class="item-card-title-section">
+      <h4 class="item-card-title">{{armor.name}}</h4>
+      <span class="item-type-badge">{{armor.data.localization.value}}</span>
+    </div>
+    <div class="item-card-actions">
+      <label class="equipped-checkbox" title="Equipped">
+        <input type="checkbox"
+               name="system.dynamic.armors.{{armor._id}}.data.equipped.value"
+               {{#if armor.data.equipped.value}}checked{{/if}}
+        />
+        <i class="fas fa-vest"></i>
+      </label>
+    </div>
+  </div>
+
+  <div class="item-card-stats">
+    <div class="stat-item">
+      <span class="stat-label">AT</span>
+      <span class="stat-value">{{armor.data.armorType.at.final.value}}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Quality</span>
+      <span class="stat-value">{{armor.data.quality.value}}</span>
+    </div>
+    {{#if armor.data.hasOwnRequirements.value}}
+    <div class="stat-item">
+      <span class="stat-label">Req. Str</span>
+      <span class="stat-value">{{armor.data.wearArmorRequirement.value}}</span>
+    </div>
+    {{/if}}
+  </div>
+</div>

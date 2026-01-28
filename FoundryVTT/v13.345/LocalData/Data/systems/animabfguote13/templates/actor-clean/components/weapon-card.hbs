@@ -1,0 +1,46 @@
+<div class="item-card weapon-card {{#if weapon.data.equipped.value}}equipped{{/if}}"
+     data-item-id="{{weapon._id}}"
+     draggable="true">
+  <div class="item-card-header">
+    <div class="item-card-title-section">
+      <h4 class="item-card-title">{{weapon.name}}</h4>
+      <span class="item-type-badge">{{weapon.data.weaponType.value}}</span>
+    </div>
+    <div class="item-card-actions">
+      <button type="button" class="item-action-btn attack-btn"
+              data-on-click="createWeaponAttack"
+              data-weapon-id="{{weapon._id}}"
+              title="Attack">
+        <i class="fas fa-dice-d20"></i>
+      </button>
+      <label class="equipped-checkbox" title="Equipped">
+        <input type="checkbox"
+               name="system.dynamic.weapons.{{weapon._id}}.data.equipped.value"
+               {{#if weapon.data.equipped.value}}checked{{/if}}
+        />
+        <i class="fas fa-hand-fist"></i>
+      </label>
+    </div>
+  </div>
+
+  <div class="item-card-stats">
+    <div class="stat-item">
+      <span class="stat-label">Attack</span>
+      <span class="stat-value">{{numberFormat weapon.data.attack.final.value decimals=0 sign=true}}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Damage</span>
+      <span class="stat-value">{{weapon.data.damage.final.value}}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Speed</span>
+      <span class="stat-value">{{numberFormat weapon.data.initiative.final.value decimals=0 sign=true}}</span>
+    </div>
+    {{#if weapon.data.hasOwnRange.value}}
+    <div class="stat-item">
+      <span class="stat-label">Range</span>
+      <span class="stat-value">{{weapon.data.range.value}}</span>
+    </div>
+    {{/if}}
+  </div>
+</div>

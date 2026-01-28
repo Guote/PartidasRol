@@ -1,0 +1,13 @@
+{
+  "title": "animaguote13 test",
+  "id": "animaguote13-test",
+  "system": "animabfguote13",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "2.1.0",
+  "lastPlayed": "Sat Jan 24 2026 20:56:27 GMT+0100 (hora estándar de Europa central)",
+  "playtime": 79
+}

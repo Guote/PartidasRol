@@ -1,0 +1,78 @@
+<form class="{{cssClass}} actor-sheet clean" autocomplete="off">
+  <header class="header-fields">
+    {{> "systems/animabfguote13/templates/actor-clean/header/header-clean.hbs"}}
+  </header>
+
+  <nav class="animabfguote13-tabs sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="characteristics">
+      <i class="fas fa-user-gear"></i> <span class="tab-label">Characteristics</span>
+    </a>
+    <a class="item" data-tab="inventory">
+      <i class="fas fa-box"></i> <span class="tab-label">Inventory</span>
+    </a>
+    <a class="item" data-tab="combat">
+      <i class="fas fa-sword"></i> <span class="tab-label">Combat</span>
+    </a>
+    {{#if system.ui.tabVisibility.mystic.value}}
+    <a class="item" data-tab="magic">
+      <i class="fas fa-wand-magic-sparkles"></i> <span class="tab-label">Magic</span>
+    </a>
+    {{/if}}
+    {{#if system.ui.tabVisibility.psychic.value}}
+    <a class="item" data-tab="psychic">
+      <i class="fas fa-brain"></i> <span class="tab-label">Psychic</span>
+    </a>
+    {{/if}}
+    {{#if system.ui.tabVisibility.domine.value}}
+    <a class="item" data-tab="domine">
+      <i class="fas fa-hand-fist"></i> <span class="tab-label">Domine</span>
+    </a>
+    {{/if}}
+    <a class="item" data-tab="conditions">
+      <i class="fas fa-heart-pulse"></i> <span class="tab-label">Conditions</span>
+    </a>
+    <a class="item" data-tab="settings">
+      <i class="fas fa-cog"></i> <span class="tab-label">Settings</span>
+    </a>
+  </nav>
+
+  <section class="sheet-body">
+    <div class="tab" data-group="primary" data-tab="characteristics">
+      {{> "systems/animabfguote13/templates/actor-clean/tabs/characteristics-abilities.hbs"}}
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="inventory">
+      {{> "systems/animabfguote13/templates/actor-clean/tabs/inventory.hbs"}}
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="combat">
+      {{> "systems/animabfguote13/templates/actor-clean/tabs/combat.hbs"}}
+    </div>
+
+    {{#if system.ui.tabVisibility.mystic.value}}
+    <div class="tab" data-group="primary" data-tab="magic">
+      {{> "systems/animabfguote13/templates/actor-clean/tabs/magic.hbs"}}
+    </div>
+    {{/if}}
+
+    {{#if system.ui.tabVisibility.psychic.value}}
+    <div class="tab" data-group="primary" data-tab="psychic">
+      {{> "systems/animabfguote13/templates/actor-clean/tabs/psychic.hbs"}}
+    </div>
+    {{/if}}
+
+    {{#if system.ui.tabVisibility.domine.value}}
+    <div class="tab" data-group="primary" data-tab="domine">
+      {{> "systems/animabfguote13/templates/actor-clean/tabs/domine.hbs"}}
+    </div>
+    {{/if}}
+
+    <div class="tab" data-group="primary" data-tab="conditions">
+      {{> "systems/animabfguote13/templates/actor/parts/effects/effects.hbs"}}
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="settings">
+      {{> "systems/animabfguote13/templates/actor/parts/settings/settings.hbs"}}
+    </div>
+  </section>
+</form>

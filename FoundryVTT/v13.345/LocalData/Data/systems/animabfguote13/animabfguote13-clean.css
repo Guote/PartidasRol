@@ -1,0 +1,1075 @@
+/* ===========================================
+   CLEAN ACTOR SHEET STYLES
+   Minimal styling using Foundry defaults
+   =========================================== */
+
+/* Layout variables - spacing only */
+.actor-sheet.clean {
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 0.75rem;
+  --spacing-lg: 1rem;
+  --spacing-xl: 1.5rem;
+}
+
+/* ===========================================
+   SHEET CONTAINER
+   =========================================== */
+.actor-sheet.clean form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================================
+   HEADER
+   =========================================== */
+.actor-sheet.clean .actor-header-clean {
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--color-border-dark);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.actor-sheet.clean .header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.actor-sheet.clean .header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.actor-sheet.clean .profile-img-small {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-border-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .profile-img-small:hover {
+  border-color: var(--color-border-highlight);
+  transform: scale(1.05);
+}
+
+.actor-sheet.clean .actor-name-input {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  padding: var(--spacing-sm);
+}
+
+.actor-sheet.clean .actor-name-input:hover {
+  border-bottom-color: var(--color-border-dark);
+}
+
+.actor-sheet.clean .actor-name-input:focus {
+  border-bottom-color: var(--color-border-highlight);
+  outline: none;
+}
+
+.actor-sheet.clean .header-main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+/* Responsive: Stack on small screens */
+@media (max-width: 768px) {
+  .actor-sheet.clean .header-main {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}
+
+.actor-sheet.clean .header-section {
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.actor-sheet.clean .section-title {
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 var(--spacing-md) 0;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.actor-sheet.clean .resources-grid,
+.actor-sheet.clean .resistances-grid,
+.actor-sheet.clean .modifiers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .characteristics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.actor-sheet.clean .characteristic-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.actor-sheet.clean .characteristic-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.actor-sheet.clean .characteristic-values {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+}
+
+.actor-sheet.clean .characteristic-input {
+  flex: 1;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 3px;
+  text-align: center;
+  min-width: 0;
+}
+
+.actor-sheet.clean .characteristic-modifier {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 3px;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .characteristic-modifier:hover {
+  opacity: 0.8;
+}
+
+.actor-sheet.clean .resource-item,
+.actor-sheet.clean .resistance-item,
+.actor-sheet.clean .modifier-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.actor-sheet.clean .resource-item label,
+.actor-sheet.clean .resistance-item label,
+.actor-sheet.clean .modifier-item label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.actor-sheet.clean .resource-values,
+.actor-sheet.clean .resistance-values,
+.actor-sheet.clean .modifier-values {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.actor-sheet.clean .resource-values input,
+.actor-sheet.clean .resistance-values input,
+.actor-sheet.clean .modifier-values input {
+  flex: 1;
+  min-width: 50px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 3px;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.actor-sheet.clean .separator {
+  opacity: 0.5;
+  font-weight: bold;
+}
+
+.actor-sheet.clean .max-value,
+.actor-sheet.clean .resistance-final,
+.actor-sheet.clean .modifier-final {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 3px;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.actor-sheet.clean .resistance-final.rollable,
+.actor-sheet.clean .resource-value-single.rollable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .resistance-final.rollable:hover,
+.actor-sheet.clean .resource-value-single.rollable:hover {
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.actor-sheet.clean .resource-value-single {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 3px;
+  text-align: center;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* ===========================================
+   TABS
+   =========================================== */
+.actor-sheet.clean .sheet-tabs {
+  border: none;
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  padding: 0 var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.actor-sheet.clean .sheet-tabs .item {
+  border: 1px solid var(--color-border-dark);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+}
+
+.actor-sheet.clean .sheet-tabs .item:hover {
+  transform: translateY(-2px);
+}
+
+.actor-sheet.clean .sheet-tabs .item.active {
+  border-color: var(--color-border-highlight);
+  transform: translateY(0);
+}
+
+.actor-sheet.clean .sheet-tabs .item i {
+  font-size: 1rem;
+}
+
+/* Responsive: Hide tab labels on very small screens */
+@media (max-width: 480px) {
+  .actor-sheet.clean .sheet-tabs .tab-label {
+    display: none;
+  }
+  .actor-sheet.clean .sheet-tabs .item {
+    padding: var(--spacing-sm);
+  }
+}
+
+/* ===========================================
+   SHEET BODY
+   =========================================== */
+.actor-sheet.clean .sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 var(--spacing-md) var(--spacing-md);
+}
+
+.actor-sheet.clean .sheet-body .tab {
+  display: none;
+}
+
+.actor-sheet.clean .sheet-body .tab.active {
+  display: block;
+}
+
+/* ===========================================
+   ACCORDION
+   =========================================== */
+.actor-sheet.clean .accordion-section {
+  border-radius: 4px;
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border-dark);
+}
+
+.actor-sheet.clean .accordion-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--spacing-md);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .accordion-toggle:hover {
+  opacity: 0.8;
+}
+
+.actor-sheet.clean .accordion-toggle i {
+  transition: transform 0.3s ease;
+}
+
+.actor-sheet.clean .accordion-section.collapsed .accordion-toggle i {
+  transform: rotate(-90deg);
+}
+
+.actor-sheet.clean .accordion-toggle span {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .accordion-content {
+  padding: var(--spacing-md);
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.actor-sheet.clean .accordion-section.collapsed .accordion-content {
+  max-height: 0;
+  padding: 0 var(--spacing-md);
+  border-top: none;
+}
+
+/* ===========================================
+   INFO GRID (Character Information)
+   =========================================== */
+.actor-sheet.clean .info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* Responsive: Single column on small screens */
+@media (max-width: 480px) {
+  .actor-sheet.clean .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actor-sheet.clean .info-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.actor-sheet.clean .info-item label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.actor-sheet.clean .info-item input {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 3px;
+}
+
+.actor-sheet.clean .destiny-points {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.actor-sheet.clean .destiny-points input {
+  width: 60px;
+  text-align: center;
+}
+
+/* ===========================================
+   COMBAT STATS GRID
+   =========================================== */
+.actor-sheet.clean .combat-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* Responsive: Single column on small screens */
+@media (max-width: 480px) {
+  .actor-sheet.clean .combat-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actor-sheet.clean .stat-card {
+  border: 1px solid var(--color-border-light);
+  border-radius: 4px;
+  padding: var(--spacing-md);
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .stat-card:hover {
+  border-color: var(--color-border-dark);
+}
+
+.actor-sheet.clean .stat-header {
+  font-weight: bold;
+  font-size: 0.875rem;
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.actor-sheet.clean .stat-values {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .stat-value-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .stat-value-item label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.actor-sheet.clean .stat-value-item input {
+  width: 70px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 3px;
+  text-align: center;
+}
+
+.actor-sheet.clean .stat-value-item.final-value .value-display {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 3px;
+  font-weight: bold;
+  min-width: 70px;
+  text-align: center;
+}
+
+/* ===========================================
+   LISTS & CARDS
+   =========================================== */
+.actor-sheet.clean .weapons-list,
+.actor-sheet.clean .armors-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.actor-sheet.clean .empty-message {
+  text-align: center;
+  font-style: italic;
+  padding: var(--spacing-lg);
+  opacity: 0.6;
+}
+
+.actor-sheet.clean .add-item-button {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .add-item-button:hover {
+  border-color: var(--color-border-highlight);
+  transform: translateY(-1px);
+}
+
+/* ===========================================
+   ADDITIONAL INFORMATION
+   =========================================== */
+.actor-sheet.clean .additional-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.actor-sheet.clean .info-section h4 {
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin: 0 0 var(--spacing-sm) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.actor-sheet.clean .info-section textarea {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.actor-sheet.clean .info-section textarea:focus {
+  border-color: var(--color-border-highlight);
+  outline: none;
+}
+
+/* ===========================================
+   INPUTS & FORM ELEMENTS
+   =========================================== */
+.actor-sheet.clean input:not([type="checkbox"]):not([type="radio"]),
+.actor-sheet.clean select {
+  border: 1px solid var(--color-border-dark);
+  border-radius: 3px;
+  padding: var(--spacing-sm);
+  font-size: 0.875rem;
+}
+
+.actor-sheet.clean input:focus,
+.actor-sheet.clean select:focus,
+.actor-sheet.clean textarea:focus {
+  border-color: var(--color-border-highlight);
+  outline: none;
+}
+
+.actor-sheet.clean input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===========================================
+   ROLLABLE ELEMENTS
+   =========================================== */
+.actor-sheet.clean .rollable {
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .rollable:hover {
+  opacity: 0.8;
+}
+
+/* ===========================================
+   ITEM CARDS
+   =========================================== */
+.actor-sheet.clean .item-card {
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  padding: var(--spacing-md);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.actor-sheet.clean .item-card:hover {
+  border-color: var(--color-border-highlight);
+}
+
+.actor-sheet.clean .item-card.equipped {
+  border-left-width: 4px;
+}
+
+.actor-sheet.clean .item-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border-light);
+  gap: var(--spacing-sm);
+}
+
+/* Responsive: Stack header on small screens */
+@media (max-width: 480px) {
+  .actor-sheet.clean .item-card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.actor-sheet.clean .item-card-title-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.actor-sheet.clean .item-card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.actor-sheet.clean .item-type-badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.actor-sheet.clean .item-card-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.actor-sheet.clean .item-action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border-dark);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.actor-sheet.clean .item-action-btn:hover {
+  border-color: var(--color-border-highlight);
+  transform: scale(1.05);
+}
+
+.actor-sheet.clean .equipped-checkbox {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+  border: 1px solid var(--color-border-dark);
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .equipped-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.actor-sheet.clean .equipped-checkbox i {
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .equipped-checkbox input[type="checkbox"]:checked + i {
+  opacity: 1;
+}
+
+.actor-sheet.clean .equipped-checkbox:hover {
+  border-color: var(--color-border-highlight);
+}
+
+.actor-sheet.clean .item-card-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* Responsive: Fewer columns on small screens */
+@media (max-width: 480px) {
+  .actor-sheet.clean .item-card-stats {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: var(--spacing-sm);
+  }
+}
+
+.actor-sheet.clean .item-card-stats .stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  align-items: center;
+}
+
+.actor-sheet.clean .item-card-stats .stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.actor-sheet.clean .item-card-stats .stat-value {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* ===========================================
+   TAB INTRO SECTIONS
+   =========================================== */
+.actor-sheet.clean .tab-intro {
+  padding: var(--spacing-md);
+  border-radius: 4px;
+  margin-bottom: var(--spacing-md);
+  border-left: 3px solid var(--color-border-dark);
+}
+
+.actor-sheet.clean .tab-intro .text-muted {
+  font-style: italic;
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* ===========================================
+   UTILITIES
+   =========================================== */
+.actor-sheet.clean .text-center {
+  text-align: center;
+}
+
+.actor-sheet.clean .text-muted {
+  opacity: 0.6;
+}
+
+/* ===========================================
+   SCROLLBAR
+   =========================================== */
+.actor-sheet.clean .sheet-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.actor-sheet.clean .sheet-body::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+/* ===========================================
+   QUICK ROLLS
+   =========================================== */
+.actor-sheet.clean .quick-rolls {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .quick-rolls .dice {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.25rem;
+}
+
+.actor-sheet.clean .quick-rolls .dice:hover {
+  border-color: var(--color-border-highlight);
+  transform: scale(1.1);
+}
+
+/* ===========================================
+   SECTION CARDS (for tabs)
+   =========================================== */
+.actor-sheet.clean .section-card {
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  margin-bottom: var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+}
+
+.actor-sheet.clean .section-card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-light);
+  background: rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .section-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-light);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.actor-sheet.clean .section-card-header .section-card-title {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.actor-sheet.clean .section-card > .characteristics-grid,
+.actor-sheet.clean .section-card > .combat-stats-grid,
+.actor-sheet.clean .section-card > .secondaries-container,
+.actor-sheet.clean .section-card .inventory-list,
+.actor-sheet.clean .section-card .weapons-combat-list,
+.actor-sheet.clean .section-card .combat-notes-container {
+  padding: var(--spacing-md);
+}
+
+/* ===========================================
+   INVENTORY ITEMS
+   =========================================== */
+.actor-sheet.clean .inventory-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.actor-sheet.clean .inventory-item-card {
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  padding: var(--spacing-md);
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.actor-sheet.clean .inventory-item-card:hover {
+  border-color: var(--color-border-highlight);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.actor-sheet.clean .inventory-item-card.equipped {
+  border-left: 4px solid var(--color-border-highlight);
+  background: rgba(0, 255, 0, 0.05);
+}
+
+.actor-sheet.clean .inventory-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border-light);
+  gap: var(--spacing-sm);
+}
+
+.actor-sheet.clean .item-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 0;
+}
+
+.actor-sheet.clean .item-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.actor-sheet.clean .item-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.actor-sheet.clean .item-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.actor-sheet.clean .equip-button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-weight: 600;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.8);
+  user-select: none;
+}
+
+.actor-sheet.clean .equip-button:hover {
+  border-color: var(--color-border-highlight);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.actor-sheet.clean .equip-button.equipped {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4caf50;
+}
+
+.actor-sheet.clean .equip-button.equipped:hover {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.actor-sheet.clean .inventory-item-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.actor-sheet.clean .add-item-button-small {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-weight: 600;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.actor-sheet.clean .add-item-button-small:hover {
+  border-color: var(--color-border-highlight);
+  transform: translateY(-1px);
+}
+
+.actor-sheet.clean .delete-btn {
+  color: #d32f2f;
+}
+
+.actor-sheet.clean .delete-btn:hover {
+  color: #b71c1c;
+}
+
+/* ===========================================
+   COMBAT TAB
+   =========================================== */
+.actor-sheet.clean .weapons-combat-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.actor-sheet.clean .weapon-combat-card {
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+}
+
+.actor-sheet.clean .weapon-combat-card:hover {
+  border-color: var(--color-border-highlight);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.actor-sheet.clean .weapon-combat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.actor-sheet.clean .weapon-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.actor-sheet.clean .weapon-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.actor-sheet.clean .weapon-type {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.actor-sheet.clean .attack-button {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 600;
+  background: rgba(255, 100, 100, 0.1);
+  color: #d32f2f;
+}
+
+.actor-sheet.clean .attack-button:hover {
+  border-color: #d32f2f;
+  background: rgba(255, 100, 100, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.actor-sheet.clean .weapon-combat-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.actor-sheet.clean .combat-notes-textarea {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 150px;
+}
+
+.actor-sheet.clean .combat-notes-textarea:focus {
+  border-color: var(--color-border-highlight);
+  outline: none;
+}

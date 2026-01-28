@@ -1,0 +1,68 @@
+{
+  "id": "pf1-improved-conditions",
+  "title": "PF1 Improved Conditions",
+  "version": "2.4b",
+  "url": "https://github.com/Nevela-0/PF1-Improved-Conditions",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf1",
+        "type": "system",
+        "compatibility": {}
+      }
+    ],
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "socketlib",
+        "type": "module",
+        "compatibility": {}
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "Nevela",
+      "discord": "nevela.",
+      "flags": {}
+    }
+  ],
+  "languages": [
+    {
+       "lang": "en",
+       "name": "English",
+       "path": "lang/en.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch (German)",
+      "path": "lang/de.json"
+    }
+  ],
+  "esmodules": ["scripts/main.js", "scripts/sockets.js"],
+  "socket": true,
+  "packs": [
+    {
+      "name": "Improved-Conditions",
+      "label": "Improved Conditions",
+      "system": "pf1",
+      "path": "packs/Improved-Conditions.db",
+      "entity": "JournalEntry",
+      "type": "JournalEntry",
+      "journal": {
+        "name": "Conditions",
+        "folder": "Improved Conditions"
+      }
+    }
+  ],
+  "manifest": "https://github.com/Nevela-0/PF1-Improved-Conditions/releases/latest/download/module.json",
+  "download": "https://github.com/Nevela-0/PF1-Improved-Conditions/releases/latest/download/PF1-Improved-Conditions.zip"
+}

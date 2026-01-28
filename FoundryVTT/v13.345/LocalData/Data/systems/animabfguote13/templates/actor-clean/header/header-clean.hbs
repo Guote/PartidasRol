@@ -1,0 +1,192 @@
+<div class="actor-header-clean">
+  <div class="header-top">
+    <div class="header-left">
+      <img class="profile-img-small" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="{{actor.name}}"/>
+      <input class="actor-name-input" type="text" name="name" value="{{actor.name}}" placeholder="Character Name"/>
+    </div>
+
+    <div class="quick-rolls">
+      <div class="dice rollable" data-roll="1d10" title="Roll 1d10">
+        <i class="fas fa-dice-d10"></i>
+      </div>
+      <div class="dice rollable" data-roll="1d100xa" title="Roll 1d100 (open)">
+        <i class="fas fa-dice-d20"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-main">
+    <!-- Resources Column -->
+    <div class="header-section resources-section">
+      <h3 class="section-title">Resources</h3>
+      <div class="resources-grid">
+        <div class="resource-item">
+          <label>Life Points</label>
+          <div class="resource-values">
+            <input
+              type="number"
+              name="system.characteristics.secondaries.lifePoints.value"
+              value="{{system.characteristics.secondaries.lifePoints.value}}"
+            />
+            <span class="separator">/</span>
+            <input
+              type="number"
+              name="system.characteristics.secondaries.lifePoints.max"
+              value="{{system.characteristics.secondaries.lifePoints.max}}"
+            />
+          </div>
+        </div>
+
+        <div class="resource-item">
+          <label>Fatigue</label>
+          <div class="resource-values">
+            <input
+              type="number"
+              name="system.characteristics.secondaries.fatigue.value"
+              value="{{system.characteristics.secondaries.fatigue.value}}"
+            />
+            <span class="separator">/</span>
+            <span class="max-value">{{system.characteristics.secondaries.fatigue.max}}</span>
+          </div>
+        </div>
+
+        <div class="resource-item">
+          <label>Initiative</label>
+          <div class="resource-value-single rollable"
+               data-roll="1d10+{{system.characteristics.secondaries.initiative.final.value}}"
+               data-label="Initiative"
+               title="Click to roll initiative">
+            <span class="value-display">{{numberFormat system.characteristics.secondaries.initiative.final.value decimals=0 sign=true}}</span>
+          </div>
+        </div>
+
+        {{#if system.ui.tabVisibility.mystic.value}}
+        <div class="resource-item">
+          <label>Zeon</label>
+          <div class="resource-values">
+            <input
+              type="number"
+              name="system.mystic.zeon.value"
+              value="{{system.mystic.zeon.value}}"
+            />
+            <span class="separator">/</span>
+            <span class="max-value">{{system.mystic.zeonRegeneration.final.value}}</span>
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if system.ui.tabVisibility.psychic.value}}
+        <div class="resource-item">
+          <label>Psychic Points</label>
+          <div class="resource-values">
+            <input
+              type="number"
+              name="system.psychic.psychicPoints.value"
+              value="{{system.psychic.psychicPoints.value}}"
+            />
+            <span class="separator">/</span>
+            <span class="max-value">{{system.psychic.psychicPoints.max}}</span>
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if system.ui.tabVisibility.domine.value}}
+        <div class="resource-item">
+          <label>Ki</label>
+          <div class="resource-values">
+            <input
+              type="number"
+              name="system.domine.ki.value"
+              value="{{system.domine.ki.value}}"
+            />
+            <span class="separator">/</span>
+            <span class="max-value">{{system.domine.kiAccumulation.strength.final.value}}</span>
+          </div>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+
+    <!-- Resistances Column -->
+    <div class="header-section resistances-section">
+      <h3 class="section-title">Resistances</h3>
+      <div class="resistances-grid">
+        {{#each system.characteristics.secondaries.resistances as |resist key|}}
+          <div class="resistance-item">
+            <label>{{localize (concat 'anima.ui.resistances.' key)}}</label>
+            <div class="resistance-values">
+              <input
+                type="number"
+                name="system.characteristics.secondaries.resistances.{{key}}.special.value"
+                value="{{resist.special.value}}"
+                title="Special"
+              />
+              <div
+                class="resistance-final rollable"
+                data-roll="{{@root.system.general.diceSettings.resistanceDie.value}}+{{resist.final.value}}"
+                data-label="{{localize (concat 'anima.ui.resistances.' key)}}"
+                title="Click to roll"
+              >
+                {{numberFormat resist.final.value decimals=0 sign=true}}
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Modifiers Column -->
+    <div class="header-section modifiers-section">
+      <h3 class="section-title">Modifiers</h3>
+      <div class="modifiers-grid">
+        <div class="modifier-item">
+          <label>Physical Actions</label>
+          <div class="modifier-values">
+            <input
+              type="number"
+              name="system.general.modifiers.physicalActions.base.value"
+              value="{{system.general.modifiers.physicalActions.base.value}}"
+            />
+            <span class="modifier-final">{{numberFormat system.general.modifiers.physicalActions.final.value decimals=0 sign=true}}</span>
+          </div>
+        </div>
+
+        <div class="modifier-item">
+          <label>All Actions</label>
+          <div class="modifier-values">
+            <input
+              type="number"
+              name="system.general.modifiers.allActions.base.value"
+              value="{{system.general.modifiers.allActions.base.value}}"
+            />
+            <span class="modifier-final">{{numberFormat system.general.modifiers.allActions.final.value decimals=0 sign=true}}</span>
+          </div>
+        </div>
+
+        <div class="modifier-item">
+          <label>Natural Penalty</label>
+          <div class="modifier-values">
+            <input
+              type="number"
+              name="system.general.modifiers.naturalPenalty.base.value"
+              value="{{system.general.modifiers.naturalPenalty.base.value}}"
+            />
+            <span class="modifier-final">{{numberFormat system.general.modifiers.naturalPenalty.final.value decimals=0 sign=true}}</span>
+          </div>
+        </div>
+
+        <div class="modifier-item">
+          <label>Perception Penalty</label>
+          <div class="modifier-values">
+            <input
+              type="number"
+              name="system.general.modifiers.perceptionPenalty.base.value"
+              value="{{system.general.modifiers.perceptionPenalty.base.value}}"
+            />
+            <span class="modifier-final">{{numberFormat system.general.modifiers.perceptionPenalty.final.value decimals=0 sign=true}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { registerSettings, ABFSettingsKeys } from "./utils/registerSettings.js";
 import { Logger } from "./utils/log.js";
 import { preloadTemplates } from "./utils/preloadTemplates.js";
 import ABFActorSheet from "./module/actor/ABFActorSheet.js";
+import ABFActorSheetClean from "./module/actor/ABFActorSheetClean.js";
 import ABFFoundryRoll from "./module/rolls/ABFFoundryRoll.js";
 import ABFCombat from "./module/combat/ABFCombat.js";
 import { ABFActor } from "./module/actor/ABFActor.js";
@@ -39,7 +40,33 @@ Hooks.once("init", async () => {
   CONFIG.Item.documentClass = ABFItem;
   CONFIG.ui.actors = ABFActorDirectory;
   Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet(System.id, ABFActorSheet, { makeDefault: true });
+
+  // Register original sheet
+  console.log("🔧 Registering ABFActorSheet class:", ABFActorSheet);
+  Actors.registerSheet(System.id, ABFActorSheet, {
+    types: ["character"],
+    makeDefault: false,
+    label: "Standard View"
+  });
+
+  // Register clean sheet (default)
+  console.log("🔧 Registering ABFActorSheetClean class:", ABFActorSheetClean);
+  Actors.registerSheet(System.id, ABFActorSheetClean, {
+    types: ["character"],
+    makeDefault: true,
+    label: "Clean View"
+  });
+
+  // Check registration after a delay to ensure it's complete
+  setTimeout(() => {
+    console.log("✅ CONFIG.Actor.sheetClasses:", CONFIG.Actor.sheetClasses);
+    const charSheets = CONFIG.Actor.sheetClasses?.character || {};
+    console.log("✅ Character sheets registered:", Object.keys(charSheets));
+    Object.entries(charSheets).forEach(([key, sheet]) => {
+      console.log(`  📋 ${key}: label="${sheet.label}", default=${sheet.default}, class=${sheet.cls?.name}`);
+    });
+  }, 500);
+
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet(System.id, ABFItemSheet, {
     makeDefault: true

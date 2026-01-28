@@ -1,0 +1,44 @@
+<div class="characteristics-abilities-tab">
+  <!-- Primary Characteristics Section -->
+  <div class="section-card">
+    <h3 class="section-card-title">
+      <i class="fas fa-user-gear"></i> Primary Characteristics
+    </h3>
+    <div class="characteristics-grid">
+      {{#each system.characteristics.primaries as |char key|}}
+        <div class="characteristic-item">
+          <label class="characteristic-label">
+            {{localize (concat 'anima.ui.characteristics.' key)}}
+          </label>
+          <div class="characteristic-values">
+            <input
+              class="characteristic-input"
+              type="number"
+              name="system.characteristics.primaries.{{key}}.value"
+              value="{{char.value}}"
+            />
+            <div
+              class="characteristic-modifier rollable"
+              data-roll="{{@root.system.general.diceSettings.characteristicDie.value}}+{{char.mod}}"
+              data-label="{{localize (concat 'anima.ui.characteristics.' key)}}"
+              data-extra="{{char.value}}"
+              title="Click to roll"
+            >
+              {{numberFormat char.mod decimals=0 sign=true}}
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Secondary Abilities Section -->
+  <div class="section-card">
+    <h3 class="section-card-title">
+      <i class="fas fa-list-check"></i> Secondary Abilities
+    </h3>
+    <div class="secondaries-container">
+      {{> "systems/animabfguote13/templates/actor/parts/secondaries/secondaries.hbs"}}
+    </div>
+  </div>
+</div>

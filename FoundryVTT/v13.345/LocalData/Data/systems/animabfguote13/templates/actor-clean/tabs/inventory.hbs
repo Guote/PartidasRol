@@ -1,0 +1,125 @@
+<div class="inventory-tab">
+  <!-- Weapons Section -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <h3 class="section-card-title">
+        <i class="fas fa-crossed-swords"></i> Weapons
+      </h3>
+      <button type="button" class="add-item-button-small" data-on-click="add-weapon">
+        <i class="fas fa-plus"></i> Add Weapon
+      </button>
+    </div>
+
+    <div class="inventory-list">
+      {{#if system.combat.weapons}}
+        {{#each system.combat.weapons as |weapon|}}
+          <div class="inventory-item-card {{#if weapon.data.equipped.value}}equipped{{/if}}"
+               data-item-id="{{weapon._id}}"
+               draggable="true">
+            <div class="inventory-item-header">
+              <div class="item-info">
+                <h4 class="item-name">{{weapon.name}}</h4>
+                <span class="item-badge">{{weapon.data.weaponType.value}}</span>
+              </div>
+              <div class="item-actions">
+                <label class="equip-button {{#if weapon.data.equipped.value}}equipped{{/if}}"
+                       title="{{#if weapon.data.equipped.value}}Unequip{{else}}Equip{{/if}}">
+                  <input type="checkbox"
+                         name="system.dynamic.weapons.{{weapon._id}}.data.equipped.value"
+                         {{#if weapon.data.equipped.value}}checked{{/if}}
+                         style="display: none;"
+                  />
+                  <i class="fas {{#if weapon.data.equipped.value}}fa-hand-fist{{else}}fa-hand{{/if}}"></i>
+                  {{#if weapon.data.equipped.value}}Equipped{{else}}Equip{{/if}}
+                </label>
+              </div>
+            </div>
+
+            <div class="inventory-item-stats">
+              <div class="stat-item">
+                <span class="stat-label">Attack</span>
+                <span class="stat-value">{{numberFormat weapon.data.attack.final.value decimals=0 sign=true}}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Damage</span>
+                <span class="stat-value">{{weapon.data.damage.final.value}}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Speed</span>
+                <span class="stat-value">{{numberFormat weapon.data.initiative.final.value decimals=0 sign=true}}</span>
+              </div>
+              {{#if weapon.data.hasOwnRange.value}}
+              <div class="stat-item">
+                <span class="stat-label">Range</span>
+                <span class="stat-value">{{weapon.data.range.value}}</span>
+              </div>
+              {{/if}}
+            </div>
+          </div>
+        {{/each}}
+      {{else}}
+        <p class="empty-message">No weapons in inventory</p>
+      {{/if}}
+    </div>
+  </div>
+
+  <!-- Armors Section -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <h3 class="section-card-title">
+        <i class="fas fa-vest"></i> Armors
+      </h3>
+      <button type="button" class="add-item-button-small" data-on-click="add-armor">
+        <i class="fas fa-plus"></i> Add Armor
+      </button>
+    </div>
+
+    <div class="inventory-list">
+      {{#if system.combat.armors}}
+        {{#each system.combat.armors as |armor|}}
+          <div class="inventory-item-card {{#if armor.data.equipped.value}}equipped{{/if}}"
+               data-item-id="{{armor._id}}"
+               draggable="true">
+            <div class="inventory-item-header">
+              <div class="item-info">
+                <h4 class="item-name">{{armor.name}}</h4>
+                <span class="item-badge">{{armor.data.localization.value}}</span>
+              </div>
+              <div class="item-actions">
+                <label class="equip-button {{#if armor.data.equipped.value}}equipped{{/if}}"
+                       title="{{#if armor.data.equipped.value}}Unequip{{else}}Equip{{/if}}">
+                  <input type="checkbox"
+                         name="system.dynamic.armors.{{armor._id}}.data.equipped.value"
+                         {{#if armor.data.equipped.value}}checked{{/if}}
+                         style="display: none;"
+                  />
+                  <i class="fas fa-vest"></i>
+                  {{#if armor.data.equipped.value}}Equipped{{else}}Equip{{/if}}
+                </label>
+              </div>
+            </div>
+
+            <div class="inventory-item-stats">
+              <div class="stat-item">
+                <span class="stat-label">AT</span>
+                <span class="stat-value">{{armor.data.armorType.at.final.value}}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Quality</span>
+                <span class="stat-value">{{armor.data.quality.value}}</span>
+              </div>
+              {{#if armor.data.hasOwnRequirements.value}}
+              <div class="stat-item">
+                <span class="stat-label">Req. Str</span>
+                <span class="stat-value">{{armor.data.wearArmorRequirement.value}}</span>
+              </div>
+              {{/if}}
+            </div>
+          </div>
+        {{/each}}
+      {{else}}
+        <p class="empty-message">No armors in inventory</p>
+      {{/if}}
+    </div>
+  </div>
+</div>
