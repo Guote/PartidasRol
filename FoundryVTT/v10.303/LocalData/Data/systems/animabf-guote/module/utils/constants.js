@@ -32,6 +32,11 @@ export const Templates = {
     },
     CustomHotBar: `systems/${ABFSystemName}/templates/custom-hotbar/custom-hotbar.hbs`,
     Chat: {
-        CombatResult: `systems/${ABFSystemName}/templates/chat/combat-result.hbs`
+        CombatResult: `systems/${ABFSystemName}/templates/chat/combat-result.hbs`,
+        ChatCombat: {
+            AttackCard: `systems/${ABFSystemName}/templates/chat/chat-combat/attack-card.hbs`,
+            DefenseCard: `systems/${ABFSystemName}/templates/chat/chat-combat/defense-card.hbs`,
+            ResultCard: `systems/${ABFSystemName}/templates/chat/chat-combat/result-card.hbs`
+        }
     }
 };

@@ -9,6 +9,7 @@ import { ABFConfig } from "../../ABFConfig.js";
 import { getMassAttackBonus } from "../../combat/utils/getMassAttackBonus.js";
 import { getFormula } from "../../rolls/utils/getFormula.js";
 import { getPsychichPowerEffect } from "../../combat/utils/getPsychichPowerEffect.js";
+import { ChatAttackCard } from "../../combat/chat-combat/ChatAttackCard.js";
 
 const getInitialData = (attacker, defender, options = {}) => {
   const showRollByDefault = !!game.settings.get(
@@ -206,7 +207,7 @@ export class CombatAttackDialog extends FormApplication {
         }
         const critic = criticSelected ?? WeaponCritic.IMPACT;
         const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
-        this.hooks.onAttack({
+        const attackResult = {
           type: "combat",
           values: {
             unarmed,
@@ -224,7 +225,12 @@ export class CombatAttackDialog extends FormApplication {
             total: roll.total,
             fumble: roll.fumbled,
           },
-        });
+        };
+        this.hooks.onAttack(attackResult);
+
+        // Post attack card to chat for chat-based combat system
+        ChatAttackCard.create(this.modalData.attacker.token, attackResult, { weapon });
+
         this.modalData.attackSent = true;
         this.render();
 
@@ -312,7 +318,7 @@ export class CombatAttackDialog extends FormApplication {
           });
         }
         const rolled = roll.total - rollModifiers;
-        this.hooks.onAttack({
+        const mysticAttackResult = {
           type: "mystic",
           values: {
             modifier,
@@ -326,7 +332,12 @@ export class CombatAttackDialog extends FormApplication {
             total: roll.total,
             fumble: roll.fumbled,
           },
-        });
+        };
+        this.hooks.onAttack(mysticAttackResult);
+
+        // Post attack card to chat for chat-based combat system
+        ChatAttackCard.create(this.modalData.attacker.token, mysticAttackResult);
+
         this.modalData.attackSent = true;
         this.render();
         // Save preferences for next time
@@ -416,7 +427,7 @@ export class CombatAttackDialog extends FormApplication {
         }
         const rolled =
           psychicProjectionRoll.total - psychicProjection - (modifier ?? 0);
-        this.hooks.onAttack({
+        const psychicAttackResult = {
           type: "psychic",
           values: {
             modifier,
@@ -430,7 +441,12 @@ export class CombatAttackDialog extends FormApplication {
             total: psychicProjectionRoll.total,
             fumble: psychicProjectionRoll.fumbled,
           },
-        });
+        };
+        this.hooks.onAttack(psychicAttackResult);
+
+        // Post attack card to chat for chat-based combat system
+        ChatAttackCard.create(this.modalData.attacker.token, psychicAttackResult);
+
         this.modalData.attackSent = true;
         this.render();
         ChatMessage.create({

@@ -12,6 +12,7 @@ import { registerCombatWebsocketRoutes } from './module/combat/websocket/registe
 import { attachCustomMacroBar } from './utils/attachCustomMacroBar.js';
 import NpcActorSheet from './module/actor/NpcAbfActorSheet.js';
 import ABFSimpleActorSheet from './module/actor/ABFSimpleActorSheet.js';
+import { ChatCombatManager } from './module/combat/chat-combat/ChatCombatManager.js';
 /* ------------------------------------ */
 /* Initialize system */
 /* ------------------------------------ */
@@ -56,6 +57,9 @@ Hooks.once('setup', () => {
 Hooks.once('ready', () => {
     registerCombatWebsocketRoutes();
     attachCustomMacroBar();
+
+    // Initialize chat-based combat system
+    window.ChatCombat = new ChatCombatManager();
 });
 // Add any additional hooks if necessary
 // This function allow us to use xRoot in templates to extract the root object in Handlebars template

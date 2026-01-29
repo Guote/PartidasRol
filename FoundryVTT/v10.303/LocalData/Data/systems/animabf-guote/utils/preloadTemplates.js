@@ -19,6 +19,13 @@ export const preloadTemplates = () => {
         Templates.Dialog.Icons.Cancel,
         Templates.CustomHotBar,
         Templates.Chat.CombatResult,
+        Templates.Chat.ChatCombat.AttackCard,
+        Templates.Chat.ChatCombat.DefenseCard,
+        Templates.Chat.ChatCombat.ResultCard,
+        `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/chat-combat-defense-dialog.hbs`,
+        `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/combat.hbs`,
+        `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/mystic.hbs`,
+        `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/psychic.hbs`,
         // TODO Add paths to "systems/AnimaBeyondFoundry/templates"
         // Common parts
         `systems/${ABFSystemName}/templates/common/ui/horizontal-titled-input.hbs`,

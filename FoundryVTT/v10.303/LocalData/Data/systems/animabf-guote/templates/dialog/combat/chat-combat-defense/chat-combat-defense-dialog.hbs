@@ -1,0 +1,96 @@
+<form class='{{cssClass}}' autocomplete='off'>
+  {{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+    class="chat-combat-defense-values"
+  }}
+    {{>
+    "systems/animabf-guote/templates/common/ui/group-header.hbs"
+      title=(localize 'chat.combat.defense.dialogTitle')
+    }}
+    {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
+      class="chat-combat-defense-values"
+    }}
+      {{!-- Defender info --}}
+      <div class="chat-combat-defender-summary">
+        <img src="{{this.defender.token.texture.src}}" class="chat-combat-portrait-dialog" alt="{{this.defender.token.name}}" />
+        <span class="chat-combat-defender-name-dialog">{{this.defender.token.name}}</span>
+      </div>
+
+      {{!-- Attacker info --}}
+      <div class="chat-combat-attacker-summary">
+        <img src="{{this.attacker.img}}" class="chat-combat-portrait-mini" alt="{{this.attacker.name}}" />
+        <span class="chat-combat-vs-label">{{localize 'chat.combat.defense.vsLabel'}}</span>
+        <span class="chat-combat-attacker-name">{{this.attacker.name}}</span>
+        <span class="chat-combat-attack-value">({{this.attacker.attackTotal}})</span>
+      </div>
+
+      <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
+        {{#if (is 'gt' this.defender.actor.system.mystic.spells.length 0)}}
+          <a class="item" data-tab="mystic">{{localize "anima.ui.tabs.mystic"}}</a>
+        {{/if}}
+        {{#if (is 'gt' this.defender.actor.system.psychic.psychicPowers.length 0)}}
+          <a class="item" data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>
+        {{/if}}
+      </nav>
+
+      <div class='columns'>
+        <div>
+          {{>
+              "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+              title=(localize 'macros.combat.dialog.noRoll.title')
+              disabled=this.defenseSent
+              inputType="checkbox"
+              inputName="defender.withoutRoll"
+              inputValue=(is 'eq' this.defender.withoutRoll true)
+          }}
+        </div>
+        <div>
+          {{#if this.ui.isGM}}
+            {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+              title=(localize 'macros.combat.dialog.showRoll.title')
+              disabled=this.defenseSent
+              inputType="checkbox"
+              inputName="defender.showRoll"
+              inputValue=(is 'eq' this.defender.showRoll true)
+            }}
+          {{/if}}
+        </div>
+      </div>
+
+      {{#if (and (is "neq" this.attacker.critic "-") this.attacker.critic)}}
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          title=(localize 'macros.combat.dialog.at.title')
+          disabled=this.defenseSent
+          inputName="defender.combat.at.special"
+          inputValue=this.defender.combat.at.special
+          hasSecondaryInput=true
+          disableSecondaryInput=true
+          secondaryInputName="defender.combat.at.final"
+          secondaryInputValue=this.defender.combat.at.final
+        }}
+      {{/if}}
+
+      <section class="sheet-body">
+        <div class="tab combat" data-group="primary" data-tab="combat">
+          {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/combat.hbs' this=this}}
+        </div>
+
+        <div class="tab mystic" data-group="primary" data-tab="mystic">
+          {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/mystic.hbs' this=this}}
+        </div>
+
+        <div class="tab psychic" data-group="primary" data-tab="psychic">
+          {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/psychic.hbs' this=this}}
+        </div>
+      </section>
+
+      <div class="chat-combat-cancel-row">
+        <button type="button" class="abf-button cancel-button">
+          {{localize 'chat.combat.defense.cancel'}}
+        </button>
+      </div>
+    {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+  {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}
+</form>

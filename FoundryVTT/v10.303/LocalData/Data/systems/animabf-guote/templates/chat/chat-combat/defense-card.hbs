@@ -1,0 +1,61 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="abf-chat-message chat-combat-defense-card"
+}}
+  {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "chat.combat.defense.title")
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+    <div class="chat-combat-defense-body">
+      <div class="chat-combat-defender-info">
+        <img src="{{defender.img}}" class="chat-combat-portrait" alt="{{defender.name}}" />
+        <div class="chat-combat-defender-details">
+          <span class="chat-combat-name">{{defender.name}}</span>
+          <span class="chat-combat-defense-type">{{defenseTypeLabel}}</span>
+        </div>
+      </div>
+
+      <div class="chat-combat-values">
+        <div class="chat-combat-value-row">
+          <span class="chat-combat-label">{{localize "chat.combat.defenseTotal"}}</span>
+          <span class="chat-combat-value">{{defenseTotal}}</span>
+        </div>
+      </div>
+
+      {{#if hasArmorValues}}
+      <div class="chat-combat-armor-section">
+        <span class="chat-combat-section-label">{{localize "chat.combat.armorValues"}}</span>
+        <div class="chat-combat-armor-grid">
+          <div class="chat-combat-armor-value">
+            <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.cut.abbr"}}</span>
+            <span class="chat-combat-armor-amount">{{armorValues.cut}}</span>
+          </div>
+          <div class="chat-combat-armor-value">
+            <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.impact.abbr"}}</span>
+            <span class="chat-combat-armor-amount">{{armorValues.impact}}</span>
+          </div>
+          <div class="chat-combat-armor-value">
+            <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.thrust.abbr"}}</span>
+            <span class="chat-combat-armor-amount">{{armorValues.thrust}}</span>
+          </div>
+          <div class="chat-combat-armor-value">
+            <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.heat.abbr"}}</span>
+            <span class="chat-combat-armor-amount">{{armorValues.heat}}</span>
+          </div>
+          <div class="chat-combat-armor-value">
+            <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.electricity.abbr"}}</span>
+            <span class="chat-combat-armor-amount">{{armorValues.electricity}}</span>
+          </div>
+          <div class="chat-combat-armor-value">
+            <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.cold.abbr"}}</span>
+            <span class="chat-combat-armor-amount">{{armorValues.cold}}</span>
+          </div>
+          <div class="chat-combat-armor-value">
+            <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.energy.abbr"}}</span>
+            <span class="chat-combat-armor-amount">{{armorValues.energy}}</span>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

@@ -1,0 +1,95 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="abf-chat-message chat-combat-card"
+}}
+  {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=(localize "chat.combat.attack.title")
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+    <div class="chat-combat-body">
+      {{!-- Attacker info row --}}
+      <div class="chat-combat-attacker-row">
+        <img src="{{attacker.img}}" class="chat-combat-portrait" alt="{{attacker.name}}" />
+        <span class="chat-combat-name">{{attacker.name}}</span>
+        <span class="chat-combat-ha">HA: {{attackTotal}}</span>
+      </div>
+
+      {{!-- Collapsible attack details --}}
+      <details class="chat-combat-details">
+        <summary>{{localize "chat.combat.details"}}</summary>
+        <div class="chat-combat-values">
+          <div class="chat-combat-value-row">
+            <span class="chat-combat-label">{{localize "chat.combat.baseDamage"}}</span>
+            <span class="chat-combat-value">{{baseDamage}}</span>
+          </div>
+          <div class="chat-combat-value-row">
+            <span class="chat-combat-label">{{localize "chat.combat.damageType"}}</span>
+            <span class="chat-combat-value">{{damageTypeLabel}}</span>
+          </div>
+          {{#if taReduction}}
+          <div class="chat-combat-value-row">
+            <span class="chat-combat-label">{{localize "chat.combat.taReduction"}}</span>
+            <span class="chat-combat-value">-{{taReduction}}</span>
+          </div>
+          {{/if}}
+        </div>
+      </details>
+
+      {{!-- Results table (shown when there are defenders) --}}
+      {{#if results.length}}
+      <div class="chat-combat-results">
+        <table class="chat-combat-results-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>HD</th>
+              <th>TA</th>
+              <th>{{localize "chat.combat.result.outcome"}}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each results}}
+            <tr data-defender-id="{{defenderTokenId}}">
+              <td class="chat-combat-defender-cell">
+                <img src="{{defenderImg}}" class="chat-combat-portrait-tiny" title="{{defenderName}}" />
+              </td>
+              <td class="chat-combat-hd-cell">{{defenseTotal}}</td>
+              <td class="chat-combat-ta-cell">{{effectiveTA}}</td>
+              <td class="chat-combat-outcome-cell">
+                {{#if canCounter}}
+                <span class="chat-combat-counter-result">⚔️ +{{counterBonus}}</span>
+                {{else if (is "gt" damage 0)}}
+                <span class="chat-combat-damage-result">💔 {{damage}}</span>
+                {{else}}
+                <span class="chat-combat-miss-result">—</span>
+                {{/if}}
+              </td>
+              <td class="chat-combat-action-cell">
+                {{#if canCounter}}
+                {{else if (is "gt" damage 0)}}
+                  {{#if damageApplied}}
+                  <button type="button" class="chat-combat-undo-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'chat.combat.result.undoDamage'}}">
+                    <i class="fas fa-undo"></i>
+                  </button>
+                  {{else}}
+                  <button type="button" class="chat-combat-apply-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'chat.combat.result.applyDamage'}}">
+                    <i class="fas fa-check"></i>
+                  </button>
+                  {{/if}}
+                {{/if}}
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+      {{/if}}
+
+      {{!-- Defend button --}}
+      <button type="button" class="chat-combat-defend-button">
+        <i class="fas fa-shield-alt"></i>
+        {{localize "chat.combat.defend"}}
+      </button>
+    </div>
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

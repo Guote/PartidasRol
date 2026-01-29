@@ -2939,4 +2939,361 @@ img {
   text-align: center;
 }
 
+/* ===========================================
+   Chat Combat Cards Styles
+   =========================================== */
+
+/* Chat Combat Card */
+.chat-combat-card {
+  font-size: 1em;
+}
+
+.chat-combat-body {
+  padding: 8px;
+}
+
+/* Attacker row - horizontal layout */
+.chat-combat-attacker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background: rgba(110, 41, 23, 0.1);
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+/* Portrait styles */
+.chat-combat-portrait {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  border: 2px solid #6e2917;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.chat-combat-portrait-tiny {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  border: 1px solid #6e2917;
+  object-fit: cover;
+}
+
+.chat-combat-name {
+  font-weight: bold;
+  font-size: 1em;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-combat-ha {
+  font-weight: bold;
+  color: #6e2917;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+/* Collapsible details accordion */
+.chat-combat-details {
+  margin: 8px 0;
+}
+
+.chat-combat-details summary {
+  cursor: pointer;
+  color: #555;
+  font-size: 0.9em;
+  padding: 4px 0;
+}
+
+.chat-combat-details summary:hover {
+  color: #6e2917;
+}
+
+.chat-combat-values {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0;
+}
+
+.chat-combat-value-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background: rgba(110, 41, 23, 0.08);
+  border-radius: 3px;
+}
+
+.chat-combat-label {
+  color: #444;
+}
+
+.chat-combat-value {
+  font-weight: 600;
+  color: #6e2917;
+}
+
+/* Defend button */
+.chat-combat-defend-button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.chat-combat-defend-button i {
+  font-size: 1em;
+}
+
+/* Defense card armor grid */
+.chat-combat-armor-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chat-combat-section-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #6e2917;
+}
+
+.chat-combat-armor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.chat-combat-armor-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px;
+  background: rgba(110, 41, 23, 0.1);
+  border-radius: 4px;
+}
+
+.chat-combat-armor-type {
+  font-size: 0.75em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #555;
+}
+
+.chat-combat-armor-amount {
+  font-weight: bold;
+  color: #6e2917;
+}
+
+/* Result card styles */
+.chat-combat-attacker-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(110, 41, 23, 0.1);
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.chat-combat-attacker-name {
+  font-weight: bold;
+}
+
+.chat-combat-attack-summary,
+.chat-combat-attack-value {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Results table */
+.chat-combat-results {
+  margin-top: 8px;
+  border-top: 1px solid #ddd;
+  padding-top: 8px;
+}
+
+.chat-combat-results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.chat-combat-results-table th,
+.chat-combat-results-table td {
+  padding: 4px 6px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-combat-results-table th {
+  background: rgba(110, 41, 23, 0.15);
+  font-weight: 600;
+  color: #6e2917;
+  font-size: 0.9em;
+}
+
+.chat-combat-results-table tr:hover {
+  background: rgba(110, 41, 23, 0.05);
+}
+
+.chat-combat-defender-cell {
+  width: 30px;
+  text-align: center;
+}
+
+/* HD and TA cells */
+.chat-combat-hd-cell,
+.chat-combat-ta-cell {
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap;
+}
+
+/* Outcome styles */
+.chat-combat-outcome-cell {
+  text-align: center;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.chat-combat-counter-result {
+  color: #1565c0;
+  font-weight: bold;
+}
+
+.chat-combat-damage-result {
+  color: #c62828;
+  font-weight: bold;
+}
+
+.chat-combat-miss-result {
+  color: #888;
+}
+
+/* Action cell */
+.chat-combat-action-cell {
+  width: 36px;
+  text-align: center;
+}
+
+.chat-combat-apply-damage,
+.chat-combat-undo-damage {
+  padding: 4px 8px;
+  font-size: 0.85em;
+  min-width: auto;
+  border: 1px solid;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chat-combat-apply-damage {
+  background: rgba(110, 41, 23, 0.1);
+  border-color: #6e2917;
+  color: #6e2917;
+}
+
+.chat-combat-apply-damage:hover {
+  background: #6e2917;
+  color: white;
+}
+
+.chat-combat-undo-damage {
+  background: rgba(110, 41, 23, 0.05);
+  border-color: #999;
+  color: #666;
+}
+
+.chat-combat-undo-damage:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: #666;
+  color: #333;
+}
+
+.chat-combat-apply-damage i,
+.chat-combat-undo-damage i {
+  font-size: 0.9em;
+}
+
+/* Defense dialog styles */
+.chat-combat-defense-dialog .chat-combat-defender-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(110, 41, 23, 0.1);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  border-left: 4px solid #6e2917;
+}
+
+.chat-combat-defense-dialog .chat-combat-portrait-dialog {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: 2px solid #6e2917;
+  object-fit: cover;
+}
+
+.chat-combat-defense-dialog .chat-combat-defender-name-dialog {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #6e2917;
+}
+
+.chat-combat-defense-dialog .chat-combat-attacker-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+}
+
+.chat-combat-defense-dialog .chat-combat-portrait-mini {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  border: 1px solid #999;
+  object-fit: cover;
+}
+
+.chat-combat-defense-dialog .chat-combat-vs-label {
+  font-weight: bold;
+  color: #666;
+}
+
+.chat-combat-defense-dialog .chat-combat-attacker-name {
+  color: #333;
+}
+
+.chat-combat-defense-dialog .chat-combat-attack-value {
+  color: #666;
+}
+
+.chat-combat-defense-dialog .chat-combat-cancel-row {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.chat-combat-defense-dialog .cancel-button {
+  background-color: #757575;
+}
+
+.abf-button.small {
+  padding: 4px 10px;
+  font-size: 0.9em;
+}
+
 /*# sourceMappingURL=animabf-guote.css.map */
