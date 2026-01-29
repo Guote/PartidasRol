@@ -371,11 +371,17 @@ export class ChatCombatManager {
             - attackFlags.taReduction
         );
 
+        // For resistance defense, "surprised" means halved absorption
+        const halvedAbsorption = defenseResult.type === 'resistance'
+            ? defenseResult.surprised
+            : false;
+
         return calculateCombatResult(
             attack,
             defense,
             at,
-            attackFlags.baseDamage
+            attackFlags.baseDamage,
+            halvedAbsorption
         );
     }
 

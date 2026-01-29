@@ -106,7 +106,7 @@ export class CombatAttackDialog extends FormApplication {
   static get defaultOptions() {
     console.log("initialtab");
     return mergeObject(super.defaultOptions, {
-      classes: ["abf-dialog combat-attack-dialog no-close"],
+      classes: ["abf-dialog", "combat-attack-dialog"],
       submitOnChange: true,
       closeOnSubmit: false,
       width: null,
@@ -131,11 +131,7 @@ export class CombatAttackDialog extends FormApplication {
     this.render();
   }
   async close(options) {
-    if (options?.force) {
-      return super.close(options);
-    }
-    // eslint-disable-next-line no-useless-return,consistent-return
-    return;
+    return super.close(options);
   }
   activateListeners(html) {
     super.activateListeners(html);

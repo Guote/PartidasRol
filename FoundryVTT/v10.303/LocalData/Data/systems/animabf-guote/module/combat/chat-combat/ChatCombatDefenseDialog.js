@@ -68,6 +68,9 @@ const getInitialData = (attackMessage, defenderToken) => {
                 },
                 psychicProjection: defenderActor.system.psychic.psychicProjection.imbalance.defensive.final.value,
                 powerUsed: undefined
+            },
+            resistance: {
+                surprised: false
             }
         },
         defenseSent: false
@@ -164,10 +167,10 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this._sendPsychicDefense();
         });
 
-        // Cancel button
-        html.find('.cancel-button').click((e) => {
+        // Damage resistance defense
+        html.find('.send-defense-damage-resistance').click((e) => {
             e.preventDefault();
-            this.close({ force: true });
+            this._sendDamageResistanceDefense();
         });
     }
 
@@ -284,6 +287,27 @@ export class ChatCombatDefenseDialog extends FormApplication {
             magicProjection,
             spellUsed,
             spellGrade,
+            at: at.final,
+            armorValues: this.getArmorValues()
+        });
+
+        this.modalData.defenseSent = true;
+        this.render();
+
+        setTimeout(() => this.close({ force: true }), 500);
+    }
+
+    /**
+     * Send damage resistance defense (no active defense, just take damage)
+     */
+    async _sendDamageResistanceDefense() {
+        const { at } = this.modalData.defender.combat;
+        const { surprised } = this.modalData.defender.resistance;
+
+        this.hooks.onDefense({
+            type: 'resistance',
+            total: 0,
+            surprised,
             at: at.final,
             armorValues: this.getArmorValues()
         });
