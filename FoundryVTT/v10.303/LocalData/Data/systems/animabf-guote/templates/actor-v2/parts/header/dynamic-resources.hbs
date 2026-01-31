@@ -4,7 +4,7 @@
   {{!-- Zeon (Mystic) --}}
   {{#if system.ui.tabVisibility.mystic.value}}
   <div class="v2-dynamic-resource v2-dynamic-resource--zeon">
-    <span class="v2-dynamic-resource__label">Zeon</span>
+    <span class="v2-dynamic-resource__label">{{localize "anima.ui.mystic.zeon.title"}}</span>
     <div class="v2-dynamic-resource__values">
       <input type="number" class="v2-resource__input v2-resource__input--small"
              name="system.mystic.zeon.value"
@@ -15,7 +15,7 @@
              value="{{system.mystic.zeon.max}}">
     </div>
     <span style="margin-left: var(--space-1); opacity: 0.7; font-size: var(--font-size-xs);">
-      Acc: {{system.mystic.zeonAccumulated.value}}
+      {{localize "anima.ui.mystic.zeon.accumulated.title"}}: {{system.mystic.zeon.accumulated}}
     </span>
   </div>
   {{/if}}
@@ -23,7 +23,7 @@
   {{!-- Ki (Domine) --}}
   {{#if system.ui.tabVisibility.domine.value}}
   <div class="v2-dynamic-resource v2-dynamic-resource--ki">
-    <span class="v2-dynamic-resource__label">Ki</span>
+    <span class="v2-dynamic-resource__label">{{localize "anima.ui.domine.kiAccumulation.reserve.title"}}</span>
     <div class="v2-dynamic-resource__values">
       <input type="number" class="v2-resource__input v2-resource__input--small"
              name="system.domine.kiAccumulation.generic.value"
@@ -39,7 +39,7 @@
   {{!-- Psychic Points --}}
   {{#if system.ui.tabVisibility.psychic.value}}
   <div class="v2-dynamic-resource v2-dynamic-resource--psychic">
-    <span class="v2-dynamic-resource__label">PP</span>
+    <span class="v2-dynamic-resource__label">{{localize "anima.ui.psychic.psychicPoints.title"}}</span>
     <div class="v2-dynamic-resource__values">
       <input type="number" class="v2-resource__input v2-resource__input--small"
              name="system.psychic.psychicPoints.value"

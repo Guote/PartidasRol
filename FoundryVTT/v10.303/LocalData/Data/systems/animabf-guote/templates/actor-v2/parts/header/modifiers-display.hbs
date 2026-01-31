@@ -1,13 +1,13 @@
 {{!-- Physical and Supernatural Modifiers Display --}}
 <div class="v2-modifiers">
   <div class="v2-modifier">
-    <span class="v2-modifier__label">{{localize "anima.ui.general.modFisico.title"}}</span>
+    <span class="v2-modifier__label">{{localize "anima.ui.general.modifiers.physicalActions.title"}}</span>
     <span class="v2-modifier__value {{#if (lt system.general.modifiers.modFisico.final.value 0)}}v2-modifier__value--negative{{else if (gt system.general.modifiers.modFisico.final.value 0)}}v2-modifier__value--positive{{/if}}">
       {{#if (gte system.general.modifiers.modFisico.final.value 0)}}+{{/if}}{{system.general.modifiers.modFisico.final.value}}
     </span>
   </div>
   <div class="v2-modifier">
-    <span class="v2-modifier__label">{{localize "anima.ui.general.modSobrenatural.title"}}</span>
+    <span class="v2-modifier__label">{{localize "anima.ui.general.modifiers.supernaturalActions.title"}}</span>
     <span class="v2-modifier__value {{#if (lt system.general.modifiers.modSobrenatural.final.value 0)}}v2-modifier__value--negative{{else if (gt system.general.modifiers.modSobrenatural.final.value 0)}}v2-modifier__value--positive{{/if}}">
       {{#if (gte system.general.modifiers.modSobrenatural.final.value 0)}}+{{/if}}{{system.general.modifiers.modSobrenatural.final.value}}
     </span>

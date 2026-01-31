@@ -75,7 +75,7 @@
         <span>{{localize "anima.ui.combat.weapons.title"}}</span>
       </div>
       <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-weapon" title="{{localize 'anima.ui.add'}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-weapon" title="{{localize 'anima.dialogs.items.weapons.content'}}">
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -84,12 +84,12 @@
       <table class="v2-table">
         <thead>
           <tr>
-            <th>{{localize "anima.ui.combat.weapons.name.title"}}</th>
+            <th>{{localize "anima.ui.combat.ammo.name.title"}}</th>
             <th style="width: 60px;">{{localize "anima.ui.combat.baseValues.attack.title"}}</th>
             <th style="width: 60px;">{{localize "anima.ui.combat.baseValues.block.title"}}</th>
-            <th style="width: 60px;">{{localize "anima.ui.combat.weapons.damage.title"}}</th>
+            <th style="width: 60px;">{{localize "anima.ui.combat.weapons.damage.final.title"}}</th>
             <th style="width: 50px;">{{localize "anima.ui.general.initiative.base.title"}}</th>
-            <th style="width: 80px;">{{localize "anima.ui.combat.weapons.critic.title"}}</th>
+            <th style="width: 80px;">{{localize "anima.ui.combat.weapons.critic.primary.title"}}</th>
           </tr>
         </thead>
         <tbody>
@@ -111,7 +111,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="6" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+            <td colspan="6" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>
@@ -126,7 +126,7 @@
         <span>{{localize "anima.ui.combat.armors.title"}}</span>
       </div>
       <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-armor" title="{{localize 'anima.ui.add'}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-armor" title="{{localize 'anima.dialogs.items.armors.content'}}"
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -159,7 +159,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="8" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+            <td colspan="8" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>
@@ -214,7 +214,7 @@
           <span>{{localize "anima.ui.combat.combatSpecialSkill.title"}}</span>
         </div>
         <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-combat-special-skill" title="{{localize 'anima.ui.add'}}">
+          <button type="button" class="v2-card__header-btn" data-on-click="add-combat-special-skill" title="{{localize 'anima.dialogs.items.combatSpecialSkills.content'}}"
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -228,7 +228,7 @@
             </tr>
             {{else}}
             <tr>
-              <td class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+              <td class="v2-text-center v2-text-muted">-</td>
             </tr>
             {{/each}}
           </tbody>
@@ -243,7 +243,7 @@
           <span>{{localize "anima.ui.combat.combatTables.title"}}</span>
         </div>
         <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-combat-table" title="{{localize 'anima.ui.add'}}">
+          <button type="button" class="v2-card__header-btn" data-on-click="add-combat-table" title="{{localize 'anima.dialogs.items.combatTable.content'}}"
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -257,7 +257,7 @@
             </tr>
             {{else}}
             <tr>
-              <td class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+              <td class="v2-text-center v2-text-muted">-</td>
             </tr>
             {{/each}}
           </tbody>
@@ -269,12 +269,12 @@
   {{!-- Combat Notes --}}
   <div class="v2-card">
     <div class="v2-card__header">
-      <span>{{localize "anima.ui.combat.notes.title"}}</span>
+      <span>{{localize "anima.ui.notesSection.title"}}</span>
     </div>
     <div class="v2-card__body">
       <textarea class="v2-textarea"
                 name="system.combat.notes.value"
-                placeholder="{{localize 'anima.ui.combat.notes.placeholder'}}">{{system.combat.notes.value}}</textarea>
+                placeholder="">{{system.combat.notes.value}}</textarea>
     </div>
   </div>
 </div>

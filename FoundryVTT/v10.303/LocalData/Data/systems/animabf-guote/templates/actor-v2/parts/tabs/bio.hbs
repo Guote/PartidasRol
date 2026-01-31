@@ -4,12 +4,12 @@
     {{!-- Description --}}
     <div class="v2-card">
       <div class="v2-card__header">
-        <span>{{localize "anima.ui.general.description.title"}}</span>
+        <span>{{localize "anima.ui.descriptionSection.title"}}</span>
       </div>
       <div class="v2-card__body">
         <textarea class="v2-textarea" style="min-height: 150px;"
                   name="system.general.description.value"
-                  placeholder="{{localize 'anima.ui.general.description.placeholder'}}">{{system.general.description.value}}</textarea>
+                  placeholder="">{{system.general.description.value}}</textarea>
       </div>
     </div>
 
@@ -70,7 +70,7 @@
           <span>{{localize "anima.ui.advantageSection.title"}}</span>
         </div>
         <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-advantage" title="{{localize 'anima.ui.add'}}">
+          <button type="button" class="v2-card__header-btn" data-on-click="add-advantage" title="{{localize 'anima.dialogs.items.advantage.content'}}">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -84,7 +84,7 @@
             </tr>
             {{else}}
             <tr>
-              <td class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+              <td class="v2-text-center v2-text-muted">-</td>
             </tr>
             {{/each}}
           </tbody>
@@ -99,7 +99,7 @@
           <span>{{localize "anima.ui.disadvantageSection.title"}}</span>
         </div>
         <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-disadvantage" title="{{localize 'anima.ui.add'}}">
+          <button type="button" class="v2-card__header-btn" data-on-click="add-disadvantage" title="{{localize 'anima.dialogs.items.disadvantage.content'}}">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -113,7 +113,7 @@
             </tr>
             {{else}}
             <tr>
-              <td class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+              <td class="v2-text-center v2-text-muted">-</td>
             </tr>
             {{/each}}
           </tbody>
@@ -127,10 +127,10 @@
     <div class="v2-card">
       <div class="v2-card__header">
         <div class="v2-card__header-title">
-          <span>{{localize "anima.ui.general.elan.title"}}</span>
+          <span>{{localize "anima.ui.elanSection.title"}}</span>
         </div>
         <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-elan" title="{{localize 'anima.ui.add'}}">
+          <button type="button" class="v2-card__header-btn" data-on-click="add-elan" title="{{localize 'anima.dialogs.items.elan.content'}}">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -139,8 +139,8 @@
         <table class="v2-table">
           <thead>
             <tr>
-              <th>{{localize "anima.ui.name"}}</th>
-              <th style="width: 60px;">{{localize "anima.ui.value"}}</th>
+              <th>{{localize "anima.ui.elanSection.elanRow.name"}}</th>
+              <th style="width: 60px;">{{localize "anima.ui.elanSection.elanRow.level"}}</th>
             </tr>
           </thead>
           <tbody>
@@ -159,7 +159,7 @@
             </tr>
             {{else}}
             <tr>
-              <td colspan="2" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+              <td colspan="2" class="v2-text-center v2-text-muted">-</td>
             </tr>
             {{/each}}
           </tbody>
@@ -171,10 +171,10 @@
     <div class="v2-card">
       <div class="v2-card__header">
         <div class="v2-card__header-title">
-          <span>{{localize "anima.ui.general.level.title"}}</span>
+          <span>{{localize "anima.ui.levelSection.title"}}</span>
         </div>
         <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-level" title="{{localize 'anima.ui.add'}}">
+          <button type="button" class="v2-card__header-btn" data-on-click="add-level" title="{{localize 'anima.dialogs.items.level.content'}}">
             <i class="fas fa-plus"></i>
           </button>
         </div>
@@ -183,8 +183,8 @@
         <table class="v2-table">
           <thead>
             <tr>
-              <th>{{localize "anima.ui.class"}}</th>
-              <th style="width: 60px;">{{localize "anima.ui.general.level.title"}}</th>
+              <th>{{localize "anima.ui.levelSection.class.title"}}</th>
+              <th style="width: 60px;">{{localize "anima.ui.levelSection.level.title"}}</th>
             </tr>
           </thead>
           <tbody>
@@ -203,7 +203,7 @@
             </tr>
             {{else}}
             <tr>
-              <td colspan="2" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+              <td colspan="2" class="v2-text-center v2-text-muted">-</td>
             </tr>
             {{/each}}
           </tbody>
@@ -216,18 +216,18 @@
     {{!-- Experience --}}
     <div class="v2-card">
       <div class="v2-card__header">
-        <span>{{localize "anima.ui.general.experience.title"}}</span>
+        <span>{{localize "anima.ui.experienceSection.title"}}</span>
       </div>
       <div class="v2-card__body">
         <div class="v2-grid v2-grid--2">
           <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.general.experience.current.title"}}</label>
+            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.experienceSection.current.title"}}</label>
             <input type="number" class="v2-input"
                    name="system.general.experience.current.value"
                    value="{{system.general.experience.current.value}}">
           </div>
           <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.general.experience.next.title"}}</label>
+            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.experienceSection.next.title"}}</label>
             <input type="number" class="v2-input"
                    name="system.general.experience.next.value"
                    value="{{system.general.experience.next.value}}">
@@ -253,10 +253,10 @@
   <div class="v2-card">
     <div class="v2-card__header">
       <div class="v2-card__header-title">
-        <span>{{localize "anima.ui.general.contacts.title"}}</span>
+        <span>{{localize "anima.ui.contactSection.title"}}</span>
       </div>
       <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-contact" title="{{localize 'anima.ui.add'}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-contact" title="{{localize 'anima.dialogs.items.contact.content'}}">
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -265,8 +265,8 @@
       <table class="v2-table">
         <thead>
           <tr>
-            <th>{{localize "anima.ui.name"}}</th>
-            <th>{{localize "anima.ui.description"}}</th>
+            <th>{{localize "anima.ui.contactSection.contactRow.name"}}</th>
+            <th>{{localize "anima.ui.contactSection.contactRow.description"}}</th>
           </tr>
         </thead>
         <tbody>
@@ -285,7 +285,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="2" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+            <td colspan="2" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>
@@ -297,10 +297,10 @@
   <div class="v2-card">
     <div class="v2-card__header">
       <div class="v2-card__header-title">
-        <span>{{localize "anima.ui.general.notes.title"}}</span>
+        <span>{{localize "anima.ui.notesSection.title"}}</span>
       </div>
       <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-note" title="{{localize 'anima.ui.add'}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-note" title="{{localize 'anima.dialogs.items.note.content'}}">
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -314,7 +314,7 @@
           </tr>
           {{else}}
           <tr>
-            <td class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+            <td class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>

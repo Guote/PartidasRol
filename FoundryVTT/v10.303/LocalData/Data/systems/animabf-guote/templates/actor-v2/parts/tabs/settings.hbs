@@ -37,17 +37,17 @@
     <div class="v2-card__body">
       <div class="v2-grid v2-grid--2" style="gap: var(--space-3);">
         <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.openRolls.title"}}</label>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.advancedSettings.openRolls.title"}}</label>
           <select class="v2-select" name="system.general.settings.openRolls.value">
-            <option value="0" {{#if (is 'eq' system.general.settings.openRolls.value 0)}}selected{{/if}}>{{localize "anima.ui.settings.openRolls.never"}}</option>
+            <option value="0" {{#if (is 'eq' system.general.settings.openRolls.value 0)}}selected{{/if}}>-</option>
             <option value="90" {{#if (is 'eq' system.general.settings.openRolls.value 90)}}selected{{/if}}>90+</option>
             <option value="91" {{#if (is 'eq' system.general.settings.openRolls.value 91)}}selected{{/if}}>91+</option>
           </select>
         </div>
         <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.fumbles.title"}}</label>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.advancedSettings.fumbles.title"}}</label>
           <select class="v2-select" name="system.general.settings.fumbles.value">
-            <option value="0" {{#if (is 'eq' system.general.settings.fumbles.value 0)}}selected{{/if}}>{{localize "anima.ui.settings.fumbles.never"}}</option>
+            <option value="0" {{#if (is 'eq' system.general.settings.fumbles.value 0)}}selected{{/if}}>-</option>
             <option value="1" {{#if (is 'eq' system.general.settings.fumbles.value 1)}}selected{{/if}}>1-3</option>
             <option value="2" {{#if (is 'eq' system.general.settings.fumbles.value 2)}}selected{{/if}}>1-5</option>
           </select>
@@ -57,13 +57,13 @@
             <input type="checkbox"
                    name="system.general.settings.openOnDoubles.value"
                    {{#if system.general.settings.openOnDoubles.value}}checked{{/if}}>
-            {{localize "anima.ui.settings.openOnDoubles.title"}}
+            {{localize "anima.ui.settings.advancedSettings.doubles"}}
           </label>
         </div>
         <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.defenseType.title"}}</label>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.advancedSettings.defenseType.title"}}</label>
           <select class="v2-select" name="system.general.settings.defenseType.value">
-            <option value="" {{#unless system.general.settings.defenseType.value}}selected{{/unless}}>{{localize "anima.ui.settings.defenseType.default"}}</option>
+            <option value="" {{#unless system.general.settings.defenseType.value}}selected{{/unless}}>{{localize "anima.ui.settings.advancedSettings.defenseType.normal.title"}}</option>
             <option value="dodge" {{#if (is 'eq' system.general.settings.defenseType.value 'dodge')}}selected{{/if}}>{{localize "anima.ui.combat.baseValues.dodge.title"}}</option>
             <option value="block" {{#if (is 'eq' system.general.settings.defenseType.value 'block')}}selected{{/if}}>{{localize "anima.ui.combat.baseValues.block.title"}}</option>
           </select>

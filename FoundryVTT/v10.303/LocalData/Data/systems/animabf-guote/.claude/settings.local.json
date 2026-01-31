@@ -3,7 +3,8 @@
     "allow": [
       "Bash(wc:*)",
       "Bash(ls -la \"C:\\\\z - Git\\\\PartidasRol\\\\FoundryVTT\\\\v10.303\\\\LocalData\\\\Data\\\\systems\"\" 2>/dev/null | head -20 || find \"C:z - GitPartidasRol\" -maxdepth 3 -name \"package.json\" -o -name \"src \" -type d)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(python:*)"
     ]
   }
 }

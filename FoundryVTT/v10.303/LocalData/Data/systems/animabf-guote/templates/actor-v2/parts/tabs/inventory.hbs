@@ -3,24 +3,24 @@
   {{!-- Money --}}
   <div class="v2-card">
     <div class="v2-card__header">
-      <span>{{localize "anima.ui.general.money.title"}}</span>
+      <span>{{localize "anima.ui.moneySection.title"}}</span>
     </div>
     <div class="v2-card__body">
       <div class="v2-grid v2-grid--3">
         <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.general.money.gold.title"}}</label>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.moneySection.gold.title"}}</label>
           <input type="number" class="v2-input"
                  name="system.general.money.gold.value"
                  value="{{system.general.money.gold.value}}">
         </div>
         <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.general.money.silver.title"}}</label>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.moneySection.silver.title"}}</label>
           <input type="number" class="v2-input"
                  name="system.general.money.silver.value"
                  value="{{system.general.money.silver.value}}">
         </div>
         <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.general.money.cooper.title"}}</label>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.moneySection.cooper.title"}}</label>
           <input type="number" class="v2-input"
                  name="system.general.money.cooper.value"
                  value="{{system.general.money.cooper.value}}">
@@ -33,10 +33,10 @@
   <div class="v2-card">
     <div class="v2-card__header">
       <div class="v2-card__header-title">
-        <span>{{localize "anima.ui.general.inventory.title"}}</span>
+        <span>{{localize "anima.ui.inventoryItemsSection.title"}}</span>
       </div>
       <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-inventory-item" title="{{localize 'anima.ui.add'}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-inventory-item" title="{{localize 'anima.dialogs.items.inventoryItem.content'}}">
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -45,10 +45,10 @@
       <table class="v2-table">
         <thead>
           <tr>
-            <th>{{localize "anima.ui.name"}}</th>
-            <th style="width: 80px;">{{localize "anima.ui.general.inventory.amount.title"}}</th>
-            <th style="width: 80px;">{{localize "anima.ui.general.inventory.weight.title"}}</th>
-            <th>{{localize "anima.ui.description"}}</th>
+            <th>{{localize "anima.ui.inventoryItemsSection.name.title"}}</th>
+            <th style="width: 80px;">{{localize "anima.ui.inventoryItemsSection.amount.title"}}</th>
+            <th style="width: 80px;">{{localize "anima.ui.inventoryItemsSection.weight.title"}}</th>
+            <th>{{localize "anima.ui.inventoryItemsSection.description.title"}}</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +71,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="4" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+            <td colspan="4" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>
@@ -86,7 +86,7 @@
         <span>{{localize "anima.ui.combat.ammo.title"}}</span>
       </div>
       <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-ammo" title="{{localize 'anima.ui.add'}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-ammo" title="{{localize 'anima.dialogs.items.ammo.content'}}">
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -115,7 +115,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="4" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+            <td colspan="4" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>
