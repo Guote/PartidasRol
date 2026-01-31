@@ -6,7 +6,6 @@ import { getUpdateObjectFromPath } from './utils/prepareItems/util/getUpdateObje
 import { getFieldValueFromPath } from './utils/prepareItems/util/getFieldValueFromPath.js';
 import { prepareActor } from './utils/prepareActor/prepareActor.js';
 import { INITIAL_ACTOR_DATA } from './constants.js';
-import ABFActorSheet from './ABFActorSheet.js';
 import { Log } from '../../utils/Log.js';
 import { migrateItem } from '../items/migrations/migrateItem.js';
 export class ABFActor extends Actor {
@@ -208,9 +207,7 @@ export class ABFActor extends Actor {
     getAllItems() {
         return Object.values(ABFItems).flatMap(itemType => this.getItemsOf(itemType));
     }
-    _getSheetClass() {
-        return ABFActorSheet;
-    }
+
     getItemsOf(type) {
         const configuration = ALL_ITEM_CONFIGURATIONS[type];
         if (!configuration) {

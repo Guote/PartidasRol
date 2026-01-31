@@ -1,6 +1,7 @@
 import { registerSettings } from './utils/registerSettings.js';
 import { preloadTemplates } from './utils/preloadTemplates.js';
 import ABFActorSheet from './module/actor/ABFActorSheet.js';
+import ABFActorSheetV2 from './module/actor/ABFActorSheetV2.js';
 import ABFFoundryRoll from './module/rolls/ABFFoundryRoll.js';
 import ABFCombat from './module/combat/ABFCombat.js';
 import { ABFActor } from './module/actor/ABFActor.js';
@@ -10,8 +11,6 @@ import { ABFConfig } from './module/ABFConfig.js';
 import ABFItem from './module/items/ABFItem.js';
 import { registerCombatWebsocketRoutes } from './module/combat/websocket/registerCombatWebsocketRoutes.js';
 import { attachCustomMacroBar } from './utils/attachCustomMacroBar.js';
-import NpcActorSheet from './module/actor/NpcAbfActorSheet.js';
-import ABFSimpleActorSheet from './module/actor/ABFSimpleActorSheet.js';
 import { ChatCombatManager } from './module/combat/chat-combat/ChatCombatManager.js';
 /* ------------------------------------ */
 /* Initialize system */
@@ -32,8 +31,7 @@ Hooks.once('init', async () => {
     // Register custom sheets (if any)
     // Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('abf', ABFActorSheet, { makeDefault: true });
-    Actors.registerSheet('abf', ABFSimpleActorSheet);
-    Actors.registerSheet('abf', NpcActorSheet);
+    Actors.registerSheet('abf', ABFActorSheetV2);
     Items.unregisterSheet('core', ItemSheet);
     Items.registerSheet('abf', ABFItemSheet, {
         makeDefault: true

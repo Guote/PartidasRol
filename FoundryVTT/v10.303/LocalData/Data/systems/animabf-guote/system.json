@@ -15,7 +15,7 @@
   ],
   "scripts": [],
   "esmodules": ["animabf-guote.mjs"],
-  "styles": ["animabf-guote.css"],
+  "styles": ["animabf-guote.css", "styles/actor-sheet-v2.css"],
   "socket": true,
   "packs": [
     {
