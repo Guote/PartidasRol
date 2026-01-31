@@ -14,14 +14,14 @@ export class WSCombatManager {
             ?.tokens
             .find(u => u?.id === tokenId);
         if (!token) {
-            const message = this.game.i18n.format('macros.combat.dialog.error.noExistTokenAnymore.title', {
+            const message = this.game.i18n.format('anima.macros.combat.dialog.error.noExistTokenAnymore.title', {
                 token: tokenId
             });
             ABFDialogs.prompt(message);
             throw new Error(message);
         }
         if (!token.actor) {
-            const message = this.game.i18n.format('macros.combat.dialog.error.noActorAssociatedToToken.title', {
+            const message = this.game.i18n.format('anima.macros.combat.dialog.error.noActorAssociatedToToken.title', {
                 token: tokenId
             });
             ABFDialogs.prompt(message);

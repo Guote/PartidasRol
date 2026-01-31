@@ -38,7 +38,7 @@ export class ChatAttackCard {
                 img: attackerToken.texture?.src || attackerToken.actor?.img
             },
             attackType: attackResult.type,
-            attackTypeLabel: game.i18n.localize(`chat.combat.attackType.${attackResult.type}`),
+            attackTypeLabel: game.i18n.localize(`anima.chat.combat.attackType.${attackResult.type}`),
             attackTotal: attackResult.values.total,
             baseDamage: attackResult.values.damage,
             damageType: attackResult.values.critic,
@@ -207,7 +207,7 @@ export class ChatAttackCard {
         if (token?.actor) {
             await token.actor.applyDamage(entry.damage);
             ui.notifications.info(
-                game.i18n.format('chat.combat.result.damageAppliedNotification', {
+                game.i18n.format('anima.chat.combat.result.damageAppliedNotification', {
                     name: entry.defenderName,
                     damage: entry.damage
                 })
@@ -255,7 +255,7 @@ export class ChatAttackCard {
         if (token?.actor) {
             await token.actor.applyDamage(-entry.damage);
             ui.notifications.info(
-                game.i18n.format('chat.combat.result.damageUndoneNotification', {
+                game.i18n.format('anima.chat.combat.result.damageUndoneNotification', {
                     name: entry.defenderName,
                     damage: entry.damage
                 })

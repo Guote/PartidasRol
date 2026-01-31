@@ -329,7 +329,7 @@ export const AttackItemConfig = ABFItemConfigFactory({
   onCreate: async (actor) => {
     const { i18n } = game;
     const name = await openSimpleInputDialog({
-      content: i18n.localize("dialogs.items.attacks.content"),
+      content: i18n.localize("anima.dialogs.items.attacks.content"),
     });
     const itemData = {
       name,
@@ -399,7 +399,7 @@ export const DefenseItemConfig = ABFItemConfigFactory({
   onCreate: async (actor) => {
     const { i18n } = game;
     const name = await openSimpleInputDialog({
-      content: i18n.localize("dialogs.items.defenses.content"),
+      content: i18n.localize("anima.dialogs.items.defenses.content"),
     });
     const itemData = {
       name,

@@ -2,7 +2,7 @@
   class="abf-chat-message chat-combat-card"
 }}
   {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
-    title=(localize "chat.combat.attack.title")
+    title=(localize "anima.chat.combat.attack.title")
   }}
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
     <div class="chat-combat-body">
@@ -15,19 +15,19 @@
 
       {{!-- Collapsible attack details --}}
       <details class="chat-combat-details">
-        <summary>{{localize "chat.combat.details"}}</summary>
+        <summary>{{localize "anima.chat.combat.details"}}</summary>
         <div class="chat-combat-values">
           <div class="chat-combat-value-row">
-            <span class="chat-combat-label">{{localize "chat.combat.baseDamage"}}</span>
+            <span class="chat-combat-label">{{localize "anima.chat.combat.baseDamage"}}</span>
             <span class="chat-combat-value">{{baseDamage}}</span>
           </div>
           <div class="chat-combat-value-row">
-            <span class="chat-combat-label">{{localize "chat.combat.damageType"}}</span>
+            <span class="chat-combat-label">{{localize "anima.chat.combat.damageType"}}</span>
             <span class="chat-combat-value">{{damageTypeLabel}}</span>
           </div>
           {{#if taReduction}}
           <div class="chat-combat-value-row">
-            <span class="chat-combat-label">{{localize "chat.combat.taReduction"}}</span>
+            <span class="chat-combat-label">{{localize "anima.chat.combat.taReduction"}}</span>
             <span class="chat-combat-value">-{{taReduction}}</span>
           </div>
           {{/if}}
@@ -43,7 +43,7 @@
               <th></th>
               <th>HD</th>
               <th>TA</th>
-              <th>{{localize "chat.combat.result.outcome"}}</th>
+              <th>{{localize "anima.chat.combat.result.outcome"}}</th>
               <th></th>
             </tr>
           </thead>
@@ -68,11 +68,11 @@
                 {{#if canCounter}}
                 {{else if (is "gt" damage 0)}}
                   {{#if damageApplied}}
-                  <button type="button" class="chat-combat-undo-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'chat.combat.result.undoDamage'}}">
+                  <button type="button" class="chat-combat-undo-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.undoDamage'}}">
                     <i class="fas fa-undo"></i>
                   </button>
                   {{else}}
-                  <button type="button" class="chat-combat-apply-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'chat.combat.result.applyDamage'}}">
+                  <button type="button" class="chat-combat-apply-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.applyDamage'}}">
                     <i class="fas fa-check"></i>
                   </button>
                   {{/if}}
@@ -88,7 +88,7 @@
       {{!-- Defend button --}}
       <button type="button" class="chat-combat-defend-button">
         <i class="fas fa-shield-alt"></i>
-        {{localize "chat.combat.defend"}}
+        {{localize "anima.chat.combat.defend"}}
       </button>
     </div>
   {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}

@@ -14,7 +14,7 @@ export const MentalPatternItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.mentalPattern.content')
+            content: i18n.localize('anima.dialogs.items.mentalPattern.content')
         });
         await actor.createItem({
             name,

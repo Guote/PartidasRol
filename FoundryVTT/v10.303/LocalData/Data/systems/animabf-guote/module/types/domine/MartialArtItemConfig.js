@@ -14,7 +14,7 @@ export const MartialArtItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.martialArt.content')
+            content: i18n.localize('anima.dialogs.items.martialArt.content')
         });
         await actor.createInnerItem({
             name,

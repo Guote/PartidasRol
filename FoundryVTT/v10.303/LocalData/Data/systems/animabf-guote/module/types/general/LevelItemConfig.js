@@ -14,7 +14,7 @@ export const LevelItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.level.content')
+            content: i18n.localize('anima.dialogs.items.level.content')
         });
         actor.createInnerItem({ type: ABFItems.LEVEL, name, system: { level: 0 } });
     }

@@ -20,7 +20,7 @@ export const ElanPowerItemConfig = ABFItemConfigFactory({
             throw new Error('elanId missing');
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.elanPower.content')
+            content: i18n.localize('anima.dialogs.items.elanPower.content')
         });
         const InitialData = { level: { value: 0 } };
         /** @type {import("../Items").ElanPowerDataSource} */

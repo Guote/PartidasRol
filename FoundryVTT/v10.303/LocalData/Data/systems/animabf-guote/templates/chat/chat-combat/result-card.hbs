@@ -2,7 +2,7 @@
   class="abf-chat-message chat-combat-result-card"
 }}
   {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
-    title=(localize "chat.combat.result.title")
+    title=(localize "anima.chat.combat.result.title")
   }}
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
     <div class="chat-combat-result-body">
@@ -10,16 +10,16 @@
         <img src="{{attacker.img}}" class="chat-combat-portrait-small" alt="{{attacker.name}}" />
         <span class="chat-combat-attacker-name">{{attacker.name}}</span>
         <span class="chat-combat-attack-summary">
-          (HA: {{attackTotal}}, {{localize "chat.combat.baseDamage"}}: {{baseDamage}})
+          (HA: {{attackTotal}}, {{localize "anima.chat.combat.baseDamage"}}: {{baseDamage}})
         </span>
       </div>
 
       <table class="chat-combat-results-table">
         <thead>
           <tr>
-            <th>{{localize "chat.combat.result.defender"}}</th>
-            <th>{{localize "chat.combat.result.outcome"}}</th>
-            <th>{{localize "chat.combat.result.action"}}</th>
+            <th>{{localize "anima.chat.combat.result.defender"}}</th>
+            <th>{{localize "anima.chat.combat.result.outcome"}}</th>
+            <th>{{localize "anima.chat.combat.result.action"}}</th>
           </tr>
         </thead>
         <tbody>
@@ -35,35 +35,35 @@
                 {{#if canCounter}}
                   <span class="chat-combat-counter-result">
                     <i class="fas fa-shield-alt"></i>
-                    {{localize "chat.combat.result.counter"}}
+                    {{localize "anima.chat.combat.result.counter"}}
                     <span class="chat-combat-counter-bonus">+{{counterBonus}}</span>
                   </span>
                 {{else if (is "gt" damage 0)}}
                   <span class="chat-combat-damage-result">
                     <i class="fas fa-heart-broken"></i>
-                    {{damage}} {{localize "chat.combat.result.damage"}}
+                    {{damage}} {{localize "anima.chat.combat.result.damage"}}
                   </span>
                 {{else}}
                   <span class="chat-combat-miss-result">
                     <i class="fas fa-times"></i>
-                    {{localize "chat.combat.result.miss"}}
+                    {{localize "anima.chat.combat.result.miss"}}
                   </span>
                 {{/if}}
               </td>
               <td class="chat-combat-action-cell">
                 {{#if canCounter}}
                   <span class="chat-combat-counter-info">
-                    {{localize "chat.combat.result.counterBonus"}}: +{{counterBonus}}
+                    {{localize "anima.chat.combat.result.counterBonus"}}: +{{counterBonus}}
                   </span>
                 {{else if (and (is "gt" damage 0) (not damageApplied))}}
                   <button class="chat-combat-apply-damage abf-button small" data-defender-id="{{defenderTokenId}}">
                     <i class="fas fa-check"></i>
-                    {{localize "chat.combat.result.applyDamage"}}
+                    {{localize "anima.chat.combat.result.applyDamage"}}
                   </button>
                 {{else if damageApplied}}
                   <span class="chat-combat-damage-applied">
                     <i class="fas fa-check-circle"></i>
-                    {{localize "chat.combat.result.applied"}}
+                    {{localize "anima.chat.combat.result.applied"}}
                   </span>
                 {{/if}}
               </td>

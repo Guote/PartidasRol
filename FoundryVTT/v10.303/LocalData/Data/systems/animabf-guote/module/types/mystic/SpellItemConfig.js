@@ -25,7 +25,7 @@ export const SpellItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.spell.content')
+            content: i18n.localize('anima.dialogs.items.spell.content')
         });
         const InitialData = {
             description: { value: '' },

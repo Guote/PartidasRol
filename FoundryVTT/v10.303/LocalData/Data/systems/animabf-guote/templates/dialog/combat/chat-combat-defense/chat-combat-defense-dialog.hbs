@@ -4,7 +4,7 @@
   }}
     {{>
     "systems/animabf-guote/templates/common/ui/group-header.hbs"
-      title=(localize 'chat.combat.defense.dialogTitle')
+      title=(localize 'anima.chat.combat.defense.dialogTitle')
     }}
     {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
       class="chat-combat-defense-values"
@@ -18,7 +18,7 @@
       {{!-- Attacker info --}}
       <div class="chat-combat-attacker-summary">
         <img src="{{this.attacker.img}}" class="chat-combat-portrait-mini" alt="{{this.attacker.name}}" />
-        <span class="chat-combat-vs-label">{{localize 'chat.combat.defense.vsLabel'}}</span>
+        <span class="chat-combat-vs-label">{{localize 'anima.chat.combat.defense.vsLabel'}}</span>
         <span class="chat-combat-attacker-name">{{this.attacker.name}}</span>
         <span class="chat-combat-attack-value">({{this.attacker.attackTotal}})</span>
       </div>
@@ -42,7 +42,7 @@
           <div>
             {{>
                 "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-                title=(localize 'macros.combat.dialog.noRoll.title')
+                title=(localize 'anima.macros.combat.dialog.noRoll.title')
                 disabled=this.defenseSent
                 inputType="checkbox"
                 inputName="defender.withoutRoll"
@@ -53,7 +53,7 @@
             {{#if this.ui.isGM}}
               {{>
               "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-                title=(localize 'macros.combat.dialog.showRoll.title')
+                title=(localize 'anima.macros.combat.dialog.showRoll.title')
                 disabled=this.defenseSent
                 inputType="checkbox"
                 inputName="defender.showRoll"
@@ -67,7 +67,7 @@
       {{#if (and (is "neq" this.attacker.critic "-") this.attacker.critic)}}
         {{>
         "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-          title=(localize 'macros.combat.dialog.at.title')
+          title=(localize 'anima.macros.combat.dialog.at.title')
           disabled=this.defenseSent
           inputName="defender.combat.at.special"
           inputValue=this.defender.combat.at.special

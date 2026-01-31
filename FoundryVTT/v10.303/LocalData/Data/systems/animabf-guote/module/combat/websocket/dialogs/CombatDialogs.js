@@ -11,8 +11,8 @@ const openCombatRequestDialog = async ({ attacker, defender }) => {
             content: dialogHTML,
             onClose: () => reject(),
             buttons: [
-                { id: 'on-confirm-button', fn: () => resolve(), content: game.i18n.localize('dialogs.accept') },
-                { id: 'on-cancel-button', fn: () => reject(), content: game.i18n.localize('dialogs.cancel') }
+                { id: 'on-confirm-button', fn: () => resolve(), content: game.i18n.localize('anima.dialogs.accept') },
+                { id: 'on-cancel-button', fn: () => reject(), content: game.i18n.localize('anima.dialogs.cancel') }
             ]
         });
     });

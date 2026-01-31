@@ -14,7 +14,7 @@ export const SecondarySpecialSkillItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.secondarySkill.content')
+            content: i18n.localize('anima.dialogs.items.secondarySkill.content')
         });
         actor.createInnerItem({ type: ABFItems.SECONDARY_SPECIAL_SKILL, name, system: { level: { value: 0 } } });
     }

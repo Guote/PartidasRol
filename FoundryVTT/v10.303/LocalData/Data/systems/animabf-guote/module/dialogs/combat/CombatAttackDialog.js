@@ -113,7 +113,7 @@ export class CombatAttackDialog extends FormApplication {
       height: null,
       resizable: true,
       template: Templates.Dialog.Combat.CombatAttackDialog.main,
-      title: game.i18n.localize("macros.combat.dialog.modal.attack.title"),
+      title: game.i18n.localize("anima.macros.combat.dialog.modal.attack.title"),
       tabs: [
         {
           navSelector: ".sheet-tabs",
@@ -187,11 +187,11 @@ export class CombatAttackDialog extends FormApplication {
         if (this.modalData.attacker.showRoll) {
           const { i18n } = game;
           const flavor = weapon
-            ? i18n.format("macros.combat.dialog.physicalAttack.title", {
+            ? i18n.format("anima.macros.combat.dialog.physicalAttack.title", {
                 weapon: weapon?.name,
                 target: this.modalData.defender.token.name,
               })
-            : i18n.format("macros.combat.dialog.physicalAttack.unarmed.title", {
+            : i18n.format("anima.macros.combat.dialog.physicalAttack.unarmed.title", {
                 target: this.modalData.defender.token.name,
               });
           roll.toMessage({
@@ -302,7 +302,7 @@ export class CombatAttackDialog extends FormApplication {
           const { i18n } = game;
           const { spells } = this.attackerActor.system.mystic;
           const spell = spells.find((w) => w._id === spellUsed);
-          const flavor = i18n.format("macros.combat.dialog.magicAttack.title", {
+          const flavor = i18n.format("anima.macros.combat.dialog.magicAttack.title", {
             spell: spell.name,
             target: this.modalData.defender.token.name,
           });
@@ -404,10 +404,10 @@ export class CombatAttackDialog extends FormApplication {
             speaker: ChatMessage.getSpeaker({
               token: this.modalData.attacker.token,
             }),
-            flavor: i18n.format("macros.combat.dialog.psychicPotential.title"),
+            flavor: i18n.format("anima.macros.combat.dialog.psychicPotential.title"),
           });
           const projectionFlavor = i18n.format(
-            "macros.combat.dialog.psychicAttack.title",
+            "anima.macros.combat.dialog.psychicAttack.title",
             {
               power: power.name,
               target: this.modalData.defender.token.name,

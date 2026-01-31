@@ -14,7 +14,7 @@ export const MetamagicItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.metamagic.content')
+            content: i18n.localize('anima.dialogs.items.metamagic.content')
         });
         await actor.createInnerItem({
             name,

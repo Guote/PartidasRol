@@ -14,7 +14,7 @@ export const ContactItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.contact.content')
+            content: i18n.localize('anima.dialogs.items.contact.content')
         });
         await actor.createInnerItem({
             name,

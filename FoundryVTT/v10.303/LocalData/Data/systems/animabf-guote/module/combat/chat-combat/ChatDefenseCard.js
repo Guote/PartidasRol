@@ -19,7 +19,7 @@ export class ChatDefenseCard {
         let defenseTypeLabel;
         if (defenseResult.type === 'combat') {
             defenseTypeLabel = game.i18n.localize(
-                `macros.combat.dialog.defenseType.${defenseResult.defenseType}.title`
+                `anima.macros.combat.dialog.defenseType.${defenseResult.defenseType}.title`
             );
         } else if (defenseResult.type === 'mystic') {
             defenseTypeLabel = game.i18n.localize('anima.ui.tabs.mystic');

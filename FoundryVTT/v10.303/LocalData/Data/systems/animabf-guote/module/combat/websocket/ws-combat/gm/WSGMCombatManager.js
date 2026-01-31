@@ -94,12 +94,12 @@ export class WSGMCombatManager extends WSCombatManager {
         const { targets } = user;
         const selectedToken = this.game.scenes?.current?.tokens.find(t => t.object?.controlled);
         if (!selectedToken) {
-            ABFDialogs.prompt(this.game.i18n.localize('macros.combat.dialog.error.noSelectedToken.title'));
+            ABFDialogs.prompt(this.game.i18n.localize('anima.macros.combat.dialog.error.noSelectedToken.title'));
             return;
         }
         const targetToken = getTargetToken(selectedToken, targets);
         if (selectedToken?.id) {
-            await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', {
+            await ABFDialogs.confirm(this.game.i18n.format('anima.macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('anima.macros.combat.dialog.attackConfirm.body.title', {
                 target: targetToken.name
             }), {
                 onConfirm: () => {
@@ -111,7 +111,7 @@ export class WSGMCombatManager extends WSCombatManager {
             });
         }
         else {
-            ABFDialogs.prompt(this.game.i18n.localize('macros.combat.dialog.error.noSelectedActor.title'));
+            ABFDialogs.prompt(this.game.i18n.localize('anima.macros.combat.dialog.error.noSelectedActor.title'));
         }
     }
     async manageUserAttackRequest(msg) {

@@ -116,7 +116,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             height: 'auto',
             resizable: true,
             template: TEMPLATE_PATH,
-            title: game.i18n.localize('chat.combat.defense.dialogTitle'),
+            title: game.i18n.localize('anima.chat.combat.defense.dialogTitle'),
             tabs: [{
                 navSelector: '.sheet-tabs',
                 contentSelector: '.sheet-body',
@@ -208,7 +208,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         await roll.roll();
 
         if (this.modalData.defender.showRoll) {
-            const flavor = game.i18n.format(`macros.combat.dialog.physicalDefense.${type}.title`, {
+            const flavor = game.i18n.format(`anima.macros.combat.dialog.physicalDefense.${type}.title`, {
                 target: this.attackFlags.attackerInfo.name
             });
             roll.toMessage({
@@ -245,7 +245,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         const { at } = this.modalData.defender.combat;
 
         if (!spellUsed) {
-            ui.notifications.warn(game.i18n.localize('chat.combat.defense.selectSpell'));
+            ui.notifications.warn(game.i18n.localize('anima.chat.combat.defense.selectSpell'));
             return;
         }
 
@@ -267,7 +267,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         if (this.modalData.defender.showRoll) {
             const { spells } = this.defenderActor.system.mystic;
             const spell = spells.find(w => w._id === spellUsed);
-            const flavor = game.i18n.format('macros.combat.dialog.magicDefense.title', {
+            const flavor = game.i18n.format('anima.macros.combat.dialog.magicDefense.title', {
                 spell: spell?.name || 'Unknown',
                 target: this.attackFlags.attackerInfo.name
             });
@@ -326,7 +326,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         const { at } = this.modalData.defender.combat;
 
         if (!powerUsed) {
-            ui.notifications.warn(game.i18n.localize('chat.combat.defense.selectPower'));
+            ui.notifications.warn(game.i18n.localize('anima.chat.combat.defense.selectPower'));
             return;
         }
 
@@ -346,7 +346,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         const power = powers.find(w => w._id === powerUsed);
 
         if (this.modalData.defender.showRoll) {
-            const flavor = game.i18n.format('macros.combat.dialog.psychicDefense.title', {
+            const flavor = game.i18n.format('anima.macros.combat.dialog.psychicDefense.title', {
                 power: power?.name || 'Unknown',
                 target: this.attackFlags.attackerInfo.name
             });

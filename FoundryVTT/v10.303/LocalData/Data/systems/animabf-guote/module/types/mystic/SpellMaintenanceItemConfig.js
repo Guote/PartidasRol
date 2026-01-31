@@ -14,7 +14,7 @@ export const SpellMaintenanceItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.spellMaintenance.content')
+            content: i18n.localize('anima.dialogs.items.spellMaintenance.content')
         });
         actor.createInnerItem({
             type: ABFItems.SPELL_MAINTENANCE,

@@ -3,7 +3,7 @@
 }}
   {{>
   "systems/animabf-guote/templates/common/ui/group-header.hbs"
-    title=(localize "chat.combatResult.title")
+    title=(localize "anima.chat.combatResult.title")
   }}
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
     <div class='abf-chat-message-body'>
@@ -32,9 +32,9 @@
         <p class='result'>{{this.result}}</p>
 
         {{#if this.canCounter}}
-          <p class='counter'>{{{localize "chat.combatResult.counter.title" defender=this.defender.name bonus=this.bonus}}}</p>
+          <p class='counter'>{{{localize "anima.chat.combatResult.counter.title" defender=this.defender.name bonus=this.bonus}}}</p>
         {{else}}
-          <p class='counter'>{{{localize "chat.combatResult.damage.title" defender=this.defender.name damage=this.damage}}}</p>
+          <p class='counter'>{{{localize "anima.chat.combatResult.damage.title" defender=this.defender.name damage=this.damage}}}</p>
         {{/if}}
       </div>
     </div>

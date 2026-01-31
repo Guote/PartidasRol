@@ -4,7 +4,7 @@
   }}
     {{>
     "systems/animabf-guote/templates/common/ui/group-header.hbs"
-      title=(concat (localize 'macros.combat.dialog.defending.title') this.attacker.token.name)
+      title=(concat (localize 'anima.macros.combat.dialog.defending.title') this.attacker.token.name)
     }}
     {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
       class="defense-values"
@@ -20,7 +20,7 @@
           <div>
             {{>
                 "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-                title=(localize 'macros.combat.dialog.noRoll.title')
+                title=(localize 'anima.macros.combat.dialog.noRoll.title')
                 disabled=this.defenseSent
                 inputType="checkbox"
                 inputName="defender.withoutRoll"
@@ -31,7 +31,7 @@
             {{#if this.ui.isGM}}
               {{>
               "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-                title=(localize 'macros.combat.dialog.showRoll.title')
+                title=(localize 'anima.macros.combat.dialog.showRoll.title')
                 disabled=this.defenseSent
                 inputType="checkbox"
                 inputName="defender.showRoll"
@@ -45,7 +45,7 @@
       {{#if (and (is "neq" this.attacker.critic "-") this.attacker.critic)}}
         {{>
         "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-          title=(localize 'macros.combat.dialog.at.title')
+          title=(localize 'anima.macros.combat.dialog.at.title')
           disabled=this.defenseSent
           inputName="defender.combat.at.special"
           inputValue=this.defender.combat.at.special

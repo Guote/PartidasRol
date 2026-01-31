@@ -5,7 +5,7 @@
     }}
       {{>
       "systems/animabf-guote/templates/common/ui/group-header.hbs"
-        title=(localize 'macros.combat.dialog.attacker.title')
+        title=(localize 'anima.macros.combat.dialog.attacker.title')
       }}
       {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
         class="attack-values"
@@ -23,7 +23,7 @@
           <div class='values'>{{>
           "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
             class="custom-modifier"
-            title=(localize 'macros.combat.dialog.attackerCustomModifier.title')
+            title=(localize 'anima.macros.combat.dialog.attackerCustomModifier.title')
             inputName="attacker.customModifier"
             inputValue=this.attacker.customModifier
           }}
@@ -37,7 +37,7 @@
           </div>
 
           <p class='attack-type label'>
-            {{localize (concat 'macros.combat.dialog.attackType.' this.attacker.result.type '.title')}}
+            {{localize (concat 'anima.macros.combat.dialog.attackType.' this.attacker.result.type '.title')}}
           </p>
 
           <div class='values'>
@@ -45,7 +45,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="modifier"
-                title=(localize 'macros.combat.dialog.modifier.title')
+                title=(localize 'anima.macros.combat.dialog.modifier.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.modifier
@@ -53,7 +53,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="fatigue"
-                title=(localize 'macros.combat.dialog.fatigueUsed.title')
+                title=(localize 'anima.macros.combat.dialog.fatigueUsed.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.fatigueUsed
@@ -62,7 +62,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="weapon-used"
-                  title=(localize 'macros.combat.dialog.weaponUsed.title')
+                  title=(localize 'anima.macros.combat.dialog.weaponUsed.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.attacker.result.weapon.name
@@ -70,7 +70,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="weapon-attack"
-                  title=(localize 'macros.combat.dialog.weaponAttack.title')
+                  title=(localize 'anima.macros.combat.dialog.weaponAttack.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.attacker.result.values.attack
@@ -78,7 +78,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="weapon-quality"
-                  title=(localize 'macros.combat.dialog.weaponQuality.title')
+                  title=(localize 'anima.macros.combat.dialog.weaponQuality.title')
                   disabled=true
                   inputValue=this.attacker.result.weapon.system.quality.value
                 }}
@@ -86,7 +86,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="weapon-used"
-                  title=(localize 'macros.combat.dialog.weaponUsed.title')
+                  title=(localize 'anima.macros.combat.dialog.weaponUsed.title')
                   inputType="text"
                   disabled=true
                   inputValue="Unarmed"
@@ -94,7 +94,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="weapon-attack"
-                  title=(localize 'macros.combat.dialog.attack.title')
+                  title=(localize 'anima.macros.combat.dialog.attack.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.attacker.result.values.attack
@@ -103,7 +103,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="critic"
-                title=(localize 'macros.combat.dialog.critic.title')
+                title=(localize 'anima.macros.combat.dialog.critic.title')
                 inputType="text"
                 disabled=true
                 inputValue=(localize (concat 'anima.ui.combat.armors.at.' this.attacker.result.values.critic '.title'))
@@ -111,7 +111,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="damage"
-                title=(localize 'macros.combat.dialog.damage.title')
+                title=(localize 'anima.macros.combat.dialog.damage.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.damage
@@ -126,7 +126,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="roll"
-                title=(localize 'macros.combat.dialog.rolled.title')
+                title=(localize 'anima.macros.combat.dialog.rolled.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.roll
@@ -134,7 +134,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="total"
-                title=(localize 'macros.combat.dialog.total.title')
+                title=(localize 'anima.macros.combat.dialog.total.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.total
@@ -145,7 +145,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="modifier"
-                title=(localize 'macros.combat.dialog.modifier.title')
+                title=(localize 'anima.macros.combat.dialog.modifier.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.modifier
@@ -153,7 +153,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="magic-projection"
-                title=(localize 'macros.combat.dialog.magicProjection.title')
+                title=(localize 'anima.macros.combat.dialog.magicProjection.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.magicProjection
@@ -161,7 +161,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="spell-used"
-                title=(localize 'macros.combat.dialog.spell.title')
+                title=(localize 'anima.macros.combat.dialog.spell.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.spell.name
@@ -169,7 +169,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="spell-grade"
-                title=(localize 'macros.combat.dialog.spellGrade.title')
+                title=(localize 'anima.macros.combat.dialog.spellGrade.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.spellGrade
@@ -178,7 +178,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="critic"
-                  title=(localize 'macros.combat.dialog.critic.title')
+                  title=(localize 'anima.macros.combat.dialog.critic.title')
                   inputType="text"
                   disabled=true
                   inputValue=(localize (concat 'anima.ui.combat.armors.at.' this.attacker.result.values.critic '.title'))
@@ -186,7 +186,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="damage"
-                  title=(localize 'macros.combat.dialog.damage.title')
+                  title=(localize 'anima.macros.combat.dialog.damage.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.attacker.result.values.damage
@@ -202,7 +202,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="roll"
-                title=(localize 'macros.combat.dialog.rolled.title')
+                title=(localize 'anima.macros.combat.dialog.rolled.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.roll
@@ -210,7 +210,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="total"
-                title=(localize 'macros.combat.dialog.total.title')
+                title=(localize 'anima.macros.combat.dialog.total.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.total
@@ -221,7 +221,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="modifier"
-                title=(localize 'macros.combat.dialog.modifier.title')
+                title=(localize 'anima.macros.combat.dialog.modifier.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.modifier
@@ -229,7 +229,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="psychic-projection"
-                title=(localize 'macros.combat.dialog.psychicProjection.title')
+                title=(localize 'anima.macros.combat.dialog.psychicProjection.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.psychicProjection
@@ -237,7 +237,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="psychic-potential"
-                title=(localize 'macros.combat.dialog.psychicPotential.title')
+                title=(localize 'anima.macros.combat.dialog.psychicPotential.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.psychicPotential
@@ -245,7 +245,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="power-used"
-                title=(localize 'macros.combat.dialog.psychicPower.title')
+                title=(localize 'anima.macros.combat.dialog.psychicPower.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.power.name
@@ -254,7 +254,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="critic"
-                  title=(localize 'macros.combat.dialog.critic.title')
+                  title=(localize 'anima.macros.combat.dialog.critic.title')
                   inputType="text"
                   disabled=true
                   inputValue=(localize (concat 'anima.ui.combat.armors.at.' this.attacker.result.values.critic '.title'))
@@ -262,7 +262,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="damage"
-                  title=(localize 'macros.combat.dialog.damage.title')
+                  title=(localize 'anima.macros.combat.dialog.damage.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.attacker.result.values.damage
@@ -278,7 +278,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="roll"
-                title=(localize 'macros.combat.dialog.rolled.title')
+                title=(localize 'anima.macros.combat.dialog.rolled.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.roll
@@ -286,7 +286,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="total"
-                title=(localize 'macros.combat.dialog.total.title')
+                title=(localize 'anima.macros.combat.dialog.total.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.attacker.result.values.total
@@ -297,7 +297,7 @@
         {{else}}
           <div class='waiting-row'>
             {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
-            <p class='label'>{{localize 'macros.combat.dialog.waitingAttack.title'}}</p>
+            <p class='label'>{{localize 'anima.macros.combat.dialog.waitingAttack.title'}}</p>
           </div>
         {{/if}}
       {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
@@ -312,7 +312,7 @@
     }}
       {{>
       "systems/animabf-guote/templates/common/ui/group-header.hbs"
-        title=(localize 'macros.combat.dialog.defender.title')
+        title=(localize 'anima.macros.combat.dialog.defender.title')
       }}
       {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
         class="defender-values"
@@ -333,7 +333,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="custom-modifier"
-                  title=(localize 'macros.combat.dialog.defenderCustomModifier.title')
+                  title=(localize 'anima.macros.combat.dialog.defenderCustomModifier.title')
                   inputName="defender.customModifier"
                   inputValue=this.defender.customModifier
                 }}
@@ -348,7 +348,7 @@
             {{/unless}}
 
             <p class='defense-type label'>
-              {{localize (concat 'macros.combat.dialog.attackType.' this.defender.result.type '.title')}}
+              {{localize (concat 'anima.macros.combat.dialog.attackType.' this.defender.result.type '.title')}}
             </p>
 
             <div class='values'>
@@ -356,7 +356,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="modifier"
-                  title=(localize 'macros.combat.dialog.modifier.title')
+                  title=(localize 'anima.macros.combat.dialog.modifier.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.modifier
@@ -365,16 +365,16 @@
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="combat-defense-type"
                   inputType="text"
-                  title=(localize 'macros.combat.dialog.defenseType.title')
+                  title=(localize 'anima.macros.combat.dialog.defenseType.title')
                   disabled=true
-                  inputValue=(localize (concat 'macros.combat.dialog.defenseType.' this.defender.result.values.type '.title'))
+                  inputValue=(localize (concat 'anima.macros.combat.dialog.defenseType.' this.defender.result.values.type '.title'))
                 }}
                 {{#if (is 'eq' this.defender.result.values.type 'dodge')}}
                   {{>
                   "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                     class="dodge-value"
                     inputType="text"
-                    title=(localize 'macros.combat.dialog.dodgeValue.title')
+                    title=(localize 'anima.macros.combat.dialog.dodgeValue.title')
                     disabled=true
                     inputValue=this.defender.result.values.defense
                   }}
@@ -383,7 +383,7 @@
                   "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                     class="block-value"
                     inputType="text"
-                    title=(localize 'macros.combat.dialog.blockValue.title')
+                    title=(localize 'anima.macros.combat.dialog.blockValue.title')
                     disabled=true
                     inputValue=this.defender.result.values.defense
                   }}
@@ -391,7 +391,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="fatigue"
-                  title=(localize 'macros.combat.dialog.fatigueUsed.title')
+                  title=(localize 'anima.macros.combat.dialog.fatigueUsed.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.fatigue
@@ -399,7 +399,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="defense-count"
-                  title=(localize 'macros.combat.dialog.defenseCount.title')
+                  title=(localize 'anima.macros.combat.dialog.defenseCount.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.multipleDefensesPenalty
@@ -408,7 +408,7 @@
                   {{>
                   "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                     class="at-value"
-                    title=(localize 'macros.combat.dialog.at.title')
+                    title=(localize 'anima.macros.combat.dialog.at.title')
                     inputType="text"
                     disabled=true
                     inputValue=this.defender.result.values.at
@@ -417,7 +417,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="roll"
-                  title=(localize 'macros.combat.dialog.rolled.title')
+                  title=(localize 'anima.macros.combat.dialog.rolled.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.roll
@@ -425,7 +425,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="total"
-                  title=(localize 'macros.combat.dialog.total.title')
+                  title=(localize 'anima.macros.combat.dialog.total.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.total
@@ -437,7 +437,7 @@
                   {{>
                   "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                     class="at-value"
-                    title=(localize 'macros.combat.dialog.at.title')
+                    title=(localize 'anima.macros.combat.dialog.at.title')
                     inputType="text"
                     disabled=true
                     inputValue=this.defender.result.values.at
@@ -445,7 +445,7 @@
                 {{/if}}
                 {{>
                 "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-                  title=(localize 'macros.combat.dialog.surprised.title')
+                  title=(localize 'anima.macros.combat.dialog.surprised.title')
                   inputType="checkbox"
                   inputName="defender.result.values.surprised"
                   inputValue=(is 'eq' this.defender.result.values.surprised true)
@@ -456,7 +456,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="modifier"
-                  title=(localize 'macros.combat.dialog.modifier.title')
+                  title=(localize 'anima.macros.combat.dialog.modifier.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.modifier
@@ -464,7 +464,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="magic-projection"
-                  title=(localize 'macros.combat.dialog.magicProjection.title')
+                  title=(localize 'anima.macros.combat.dialog.magicProjection.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.magicProjection
@@ -472,7 +472,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="spell-used"
-                  title=(localize 'macros.combat.dialog.spell.title')
+                  title=(localize 'anima.macros.combat.dialog.spell.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.spell.name
@@ -480,7 +480,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="spell-grade"
-                  title=(localize 'macros.combat.dialog.spellGrade.title')
+                  title=(localize 'anima.macros.combat.dialog.spellGrade.title')
                   inputType="text"
                   disabled=true
                   inputValue=(localize (concat 'anima.ui.mystic.spell.grade.' this.defender.result.values.spellGrade '.title'))
@@ -488,7 +488,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="roll"
-                  title=(localize 'macros.combat.dialog.rolled.title')
+                  title=(localize 'anima.macros.combat.dialog.rolled.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.roll
@@ -496,7 +496,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="total"
-                  title=(localize 'macros.combat.dialog.total.title')
+                  title=(localize 'anima.macros.combat.dialog.total.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.total
@@ -507,7 +507,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="modifier"
-                  title=(localize 'macros.combat.dialog.modifier.title')
+                  title=(localize 'anima.macros.combat.dialog.modifier.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.modifier
@@ -515,7 +515,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="psychic-projection"
-                  title=(localize 'macros.combat.dialog.psychicProjection.title')
+                  title=(localize 'anima.macros.combat.dialog.psychicProjection.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.psychicProjection
@@ -523,7 +523,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="psychic-potential"
-                  title=(localize 'macros.combat.dialog.psychicPotential.title')
+                  title=(localize 'anima.macros.combat.dialog.psychicPotential.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.psychicPotential
@@ -531,7 +531,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="power-used"
-                  title=(localize 'macros.combat.dialog.psychicPower.title')
+                  title=(localize 'anima.macros.combat.dialog.psychicPower.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.power.name
@@ -539,7 +539,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="roll"
-                  title=(localize 'macros.combat.dialog.rolled.title')
+                  title=(localize 'anima.macros.combat.dialog.rolled.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.roll
@@ -547,7 +547,7 @@
                 {{>
                 "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                   class="total"
-                  title=(localize 'macros.combat.dialog.total.title')
+                  title=(localize 'anima.macros.combat.dialog.total.title')
                   inputType="text"
                   disabled=true
                   inputValue=this.defender.result.values.total
@@ -557,13 +557,13 @@
           {{else}}
             <div class='waiting-row'>
               {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
-              <p class='label'>{{localize 'macros.combat.dialog.waitingDefense.title'}}</p>
+              <p class='label'>{{localize 'anima.macros.combat.dialog.waitingDefense.title'}}</p>
             </div>
           {{/if}}
         {{else}}
           <div class='waiting-row'>
             {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
-            <p class='label'>{{localize 'macros.combat.dialog.waitingDefenseForAttack.title'}}</p>
+            <p class='label'>{{localize 'anima.macros.combat.dialog.waitingDefenseForAttack.title'}}</p>
           </div>
         {{/if}}
       {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
@@ -582,12 +582,12 @@
         class="combat-result"
       }}
         <p class='label title'>{{concat this.calculations.winner.name
-                                        (localize 'macros.combat.dialog.winner.title')}}</p>
+                                        (localize 'anima.macros.combat.dialog.winner.title')}}</p>
         <div class='assault-values'>
           {{>
           "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
             class="difference"
-            title=(localize 'macros.combat.dialog.difference.title')
+            title=(localize 'anima.macros.combat.dialog.difference.title')
             inputType="text"
             disabled=true
             inputValue=this.calculations.difference
@@ -596,7 +596,7 @@
             {{>
             "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
               class="damage-deal"
-              title=(localize 'macros.combat.dialog.damageDeal.title')
+              title=(localize 'anima.macros.combat.dialog.damageDeal.title')
               disabled=true
               inputValue=this.calculations.damage
             }}
@@ -606,7 +606,7 @@
               {{>
               "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
                 class="counterattack-bonus"
-                title=(localize 'macros.combat.dialog.counterAttackBonus.title')
+                title=(localize 'anima.macros.combat.dialog.counterAttackBonus.title')
                 inputType="text"
                 disabled=true
                 inputValue=this.calculations.counterAttackBonus
@@ -617,26 +617,26 @@
         <div class='ready-buttons'>
           {{#if (or this.calculations.canCounter (is 'gt' this.calculations.damage 0))}}
             <button class='abf-button show-results'>
-              {{localize 'macros.combat.dialog.showResultsButton.title'}}
+              {{localize 'anima.macros.combat.dialog.showResultsButton.title'}}
             </button>
           {{/if}}
           {{#if this.calculations.canCounter}}
             {{#unless this.ui.isCounter}}
-              <button title='{{localize 'macros.combat.dialog.counterAttackButtonTooltip.title'}}'
+              <button title='{{localize 'anima.macros.combat.dialog.counterAttackButtonTooltip.title'}}'
                       class='abf-button make-counter'>
-                {{localize 'macros.combat.dialog.counterAttackButton.title'}}
+                {{localize 'anima.macros.combat.dialog.counterAttackButton.title'}}
               </button>
             {{/unless}}
           {{/if}}
           {{#if
             (or (is 'gt' this.calculations.damage 0) (is 'gt' this.defender.result.values.fatigue 0) (is 'gt' this.attacker.result.values.fatigueUsed 0))}}
-            <button title='{{localize 'macros.combat.dialog.applyAndCloseButtonTooltip.title'}}'
+            <button title='{{localize 'anima.macros.combat.dialog.applyAndCloseButtonTooltip.title'}}'
                     class='abf-button apply-values'>
-              {{localize 'macros.combat.dialog.applyAndCloseButton.title'}}
+              {{localize 'anima.macros.combat.dialog.applyAndCloseButton.title'}}
             </button>
           {{/if}}
           <button class='abf-button cancel-button'>
-            {{localize 'macros.combat.dialog.cancelButton.title'}}
+            {{localize 'anima.macros.combat.dialog.cancelButton.title'}}
           </button>
         </div>
       {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}

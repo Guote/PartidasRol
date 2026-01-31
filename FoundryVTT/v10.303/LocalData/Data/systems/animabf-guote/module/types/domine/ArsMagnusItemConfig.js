@@ -14,7 +14,7 @@ export const ArsMagnusItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.arsMagnus.content')
+            content: i18n.localize('anima.dialogs.items.arsMagnus.content')
         });
         await actor.createInnerItem({
             name,

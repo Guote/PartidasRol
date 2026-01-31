@@ -2,7 +2,7 @@
   class="abf-chat-message chat-combat-defense-card"
 }}
   {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
-    title=(localize "chat.combat.defense.title")
+    title=(localize "anima.chat.combat.defense.title")
   }}
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
     <div class="chat-combat-defense-body">
@@ -16,14 +16,14 @@
 
       <div class="chat-combat-values">
         <div class="chat-combat-value-row">
-          <span class="chat-combat-label">{{localize "chat.combat.defenseTotal"}}</span>
+          <span class="chat-combat-label">{{localize "anima.chat.combat.defenseTotal"}}</span>
           <span class="chat-combat-value">{{defenseTotal}}</span>
         </div>
       </div>
 
       {{#if hasArmorValues}}
       <div class="chat-combat-armor-section">
-        <span class="chat-combat-section-label">{{localize "chat.combat.armorValues"}}</span>
+        <span class="chat-combat-section-label">{{localize "anima.chat.combat.armorValues"}}</span>
         <div class="chat-combat-armor-grid">
           <div class="chat-combat-armor-value">
             <span class="chat-combat-armor-type">{{localize "anima.ui.combat.armors.at.cut.abbr"}}</span>

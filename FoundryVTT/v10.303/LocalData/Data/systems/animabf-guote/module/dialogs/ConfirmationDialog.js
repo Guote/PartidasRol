@@ -15,8 +15,8 @@ export class ConfirmationDialog extends GenericDialog {
     <p class='body'>${body}</p>
 `,
             buttons: [
-                { id: 'on-cancel-button', fn: onCancel, content: game.i18n.localize('dialogs.cancel') },
-                { id: 'on-confirm-button', fn: onConfirm, content: game.i18n.localize('dialogs.accept') }
+                { id: 'on-cancel-button', fn: onCancel, content: game.i18n.localize('anima.dialogs.cancel') },
+                { id: 'on-confirm-button', fn: onConfirm, content: game.i18n.localize('anima.dialogs.accept') }
             ]
         });
     }

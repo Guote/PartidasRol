@@ -39,7 +39,7 @@ export class ChatResultCard {
         return ChatMessage.create({
             content,
             flags,
-            speaker: ChatMessage.getSpeaker({ alias: game.i18n.localize('chat.combat.result.title') })
+            speaker: ChatMessage.getSpeaker({ alias: game.i18n.localize('anima.chat.combat.result.title') })
         });
     }
 
@@ -132,7 +132,7 @@ export class ChatResultCard {
         if (token?.actor) {
             await token.actor.applyDamage(entry.damage);
             ui.notifications.info(
-                game.i18n.format('chat.combat.result.damageAppliedNotification', {
+                game.i18n.format('anima.chat.combat.result.damageAppliedNotification', {
                     name: entry.defenderName,
                     damage: entry.damage
                 })

@@ -160,13 +160,13 @@ token.actor.applyDamage(damage);
 ## Localization Keys to Add
 
 ```
-chat.combat.attack.title, chat.combat.attackTotal, chat.combat.baseDamage,
-chat.combat.damageType, chat.combat.taReduction, chat.combat.defend,
-chat.combat.defense.title, chat.combat.defenseTotal, chat.combat.defenseType,
-chat.combat.armorValues, chat.combat.result.title, chat.combat.result.defender,
-chat.combat.result.difference, chat.combat.result.outcome, chat.combat.result.action,
-chat.combat.result.counter, chat.combat.result.counterBonus, chat.combat.result.damage,
-chat.combat.result.miss, chat.combat.result.applyDamage, chat.combat.selectDefender
+anima.chat.combat.attack.title, anima.chat.combat.attackTotal, anima.chat.combat.baseDamage,
+anima.chat.combat.damageType, anima.chat.combat.taReduction, anima.chat.combat.defend,
+anima.chat.combat.defense.title, anima.chat.combat.defenseTotal, anima.chat.combat.defenseType,
+anima.chat.combat.armorValues, anima.chat.combat.result.title, anima.chat.combat.result.defender,
+anima.chat.combat.result.difference, anima.chat.combat.result.outcome, anima.chat.combat.result.action,
+anima.chat.combat.result.counter, anima.chat.combat.result.counterBonus, anima.chat.combat.result.damage,
+anima.chat.combat.result.miss, anima.chat.combat.result.applyDamage, anima.chat.combat.selectDefender
 ```
 
 ## Implementation Sequence
@@ -223,7 +223,7 @@ The defense and result cards were **merged into the attack card** for a cleaner 
 - `utils/attachCustomMacroBar.js` - Added "Send Attack (Chat)" button (ctrl+3 GM, ctrl+2 player)
 - `templates/custom-hotbar/custom-hotbar.hbs` - Added chat attack button for GM and players
 - `animabf-guote.css` - Chat combat card styles with theme-integrated buttons
-- `lang/en.json`, `lang/es.json`, `lang/fr.json` - Added localization keys (chat.combat.*, customHotbar.*)
+- `lang/en.json`, `lang/es.json`, `lang/fr.json` - Added localization keys (anima.chat.combat.*, customHotbar.*)
 
 ### Unused Files (can be removed)
 - `templates/chat/chat-combat/defense-card.hbs`

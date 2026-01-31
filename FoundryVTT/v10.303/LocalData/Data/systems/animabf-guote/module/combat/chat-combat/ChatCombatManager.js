@@ -89,7 +89,7 @@ export class ChatCombatManager {
         // Get selected token as attacker
         const selectedTokens = canvas.tokens.controlled;
         if (selectedTokens.length === 0) {
-            ui.notifications.warn(game.i18n.localize('macros.combat.dialog.error.noSelectedToken.title'));
+            ui.notifications.warn(game.i18n.localize('anima.macros.combat.dialog.error.noSelectedToken.title'));
             return;
         }
 
@@ -272,7 +272,7 @@ export class ChatCombatManager {
         const defenders = this._getDefenders();
 
         if (defenders.length === 0) {
-            ui.notifications.warn(game.i18n.localize('chat.combat.selectDefender'));
+            ui.notifications.warn(game.i18n.localize('anima.chat.combat.selectDefender'));
             return;
         }
 

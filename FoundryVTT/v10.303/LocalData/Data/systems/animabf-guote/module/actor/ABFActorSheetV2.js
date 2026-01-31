@@ -19,7 +19,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       } = itemConfig;
       const deleteRowMessage =
         itemConfig.contextMenuConfig?.customDeleteRowMessage ??
-        this.i18n.localize("contextualMenu.common.options.delete");
+        this.i18n.localize("anima.contextualMenu.common.options.delete");
       const customCallbackFn = itemConfig.onDelete;
       const otherItems =
         itemConfig.contextMenuConfig?.buildExtraOptionsInContextMenu?.(
@@ -27,7 +27,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
         ) ?? [];
       if (!itemConfig.isInternal && itemConfig.hasSheet) {
         otherItems.push({
-          name: this.i18n.localize("contextualMenu.common.options.edit"),
+          name: this.i18n.localize("anima.contextualMenu.common.options.edit"),
           icon: '<i class="fas fa-edit fa-fw"></i>',
           callback: (target) => {
             const { itemId } = target[0].dataset;
@@ -65,8 +65,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
                 );
               }
               ABFDialogs.confirm(
-                this.i18n.localize("dialogs.items.delete.title"),
-                this.i18n.localize("dialogs.items.delete.body"),
+                this.i18n.localize("anima.dialogs.items.delete.title"),
+                this.i18n.localize("anima.dialogs.items.delete.body"),
                 {
                   onConfirm: () => {
                     if (fieldPath) {

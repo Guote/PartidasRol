@@ -142,9 +142,9 @@ Language files in `lang/` (~680 keys each). Update all three when adding strings
 
 **Key Prefixes:**
 - `anima.ui.*` - UI labels and titles
-- `macros.combat.*` - Combat dialog messages
-- `chat.combat.*` - Chat-based combat system
-- `customHotbar.*` - Hotbar button tooltips
+- `anima.macros.combat.*` - Combat dialog messages
+- `anima.chat.combat.*` - Chat-based combat system
+- `anima.customHotbar.*` - Hotbar button tooltips
 
 ## Game Mechanics Implemented
 

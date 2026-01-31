@@ -47,7 +47,7 @@ export const PsychicPowerItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.psychicPower.content')
+            content: i18n.localize('anima.dialogs.items.psychicPower.content')
         });
         await actor.createItem({
             name,

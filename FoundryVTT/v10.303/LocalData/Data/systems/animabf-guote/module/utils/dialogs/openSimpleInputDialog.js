@@ -13,12 +13,12 @@ export const openSimpleInputDialog = async ({ title = '', content, placeholder =
     });
     return new Promise(resolve => {
         new Dialog({
-            title: title ? title : referencedGame.i18n.localize('dialogs.title'),
+            title: title ? title : referencedGame.i18n.localize('anima.dialogs.title'),
             content: dialogHTML,
             buttons: {
                 submit: {
                     icon: iconHTML,
-                    label: referencedGame.i18n.localize('dialogs.continue'),
+                    label: referencedGame.i18n.localize('anima.dialogs.continue'),
                     callback: html => {
                         const results = new FormDataExtended(html.find('form')[0], {}).object;
                         resolve(results['dialog-input']);
@@ -34,7 +34,7 @@ export const openSimpleInputDialog = async ({ title = '', content, placeholder =
 export const openModDialog = async () => {
     const referencedGame = game;
     return openSimpleInputDialog({
-        content: referencedGame.i18n.localize('dialogs.mod.content'),
+        content: referencedGame.i18n.localize('anima.dialogs.mod.content'),
         placeholder: '0'
     });
 };

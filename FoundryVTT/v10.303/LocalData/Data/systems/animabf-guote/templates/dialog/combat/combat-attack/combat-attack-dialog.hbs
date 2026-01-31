@@ -4,7 +4,7 @@
   }}
   {{>
   "systems/animabf-guote/templates/common/ui/group-header.hbs"
-  title=(concat (localize 'macros.combat.dialog.attacking.title') this.defender.token.name)
+  title=(concat (localize 'anima.macros.combat.dialog.attacking.title') this.defender.token.name)
   }}
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
   class="attack-values"
@@ -22,7 +22,7 @@
     <div>
       {{>
       "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-      title=(localize 'macros.combat.dialog.noRoll.title')
+      title=(localize 'anima.macros.combat.dialog.noRoll.title')
       inputType="checkbox"
       inputName="attacker.withoutRoll"
       inputValue=(is 'eq' this.attacker.withoutRoll true)
@@ -51,7 +51,7 @@
       {{#if this.ui.isGM}}
       {{>
       "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-      title=(localize 'macros.combat.dialog.showRoll.title')
+      title=(localize 'anima.macros.combat.dialog.showRoll.title')
       disabled=this.attackSent
       inputType="checkbox"
       inputName="attacker.showRoll"
@@ -64,7 +64,7 @@
   {{#if this.attacker.counterAttackBonus}}
   {{>
   "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-  title=(localize 'macros.combat.dialog.counterAttackBonus.title')
+  title=(localize 'anima.macros.combat.dialog.counterAttackBonus.title')
   disabled=true
   inputValue=this.attacker.counterAttackBonus
   }}
@@ -86,7 +86,7 @@
   {{else}}
   <div class='waiting-row'>
     {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
-    <p class='label'>{{localize 'macros.combat.dialog.waitRequest.title'}}</p>
+    <p class='label'>{{localize 'anima.macros.combat.dialog.waitRequest.title'}}</p>
   </div>
   {{/if}}
   {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}

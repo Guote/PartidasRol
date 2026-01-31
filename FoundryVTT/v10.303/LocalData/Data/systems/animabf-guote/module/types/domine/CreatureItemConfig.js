@@ -14,7 +14,7 @@ export const CreatureItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.creature.content')
+            content: i18n.localize('anima.dialogs.items.creature.content')
         });
         await actor.createInnerItem({
             name,

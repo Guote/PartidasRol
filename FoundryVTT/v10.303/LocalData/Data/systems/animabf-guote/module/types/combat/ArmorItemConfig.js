@@ -60,7 +60,7 @@ export const ArmorItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.armors.content')
+            content: i18n.localize('anima.dialogs.items.armors.content')
         });
         const itemData = {
             name,

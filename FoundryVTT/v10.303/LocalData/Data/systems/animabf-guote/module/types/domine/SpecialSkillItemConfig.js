@@ -14,7 +14,7 @@ export const SpecialSkillItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.specialSkill.content')
+            content: i18n.localize('anima.dialogs.items.specialSkill.content')
         });
         await actor.createInnerItem({
             name,

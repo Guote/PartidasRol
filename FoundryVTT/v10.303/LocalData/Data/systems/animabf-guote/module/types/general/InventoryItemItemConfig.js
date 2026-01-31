@@ -14,7 +14,7 @@ export const InventoryItemItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.inventoryItem.content')
+            content: i18n.localize('anima.dialogs.items.inventoryItem.content')
         });
         actor.createInnerItem({
             type: ABFItems.INVENTORY_ITEM,

@@ -56,7 +56,7 @@ export class WSUserCombatManager extends WSCombatManager {
         const attackerToken = getSelectedToken(this.game);
         const { targets } = this.user;
         const targetToken = getTargetToken(attackerToken, targets);
-        await ABFDialogs.confirm(this.game.i18n.format('macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('macros.combat.dialog.attackConfirm.body.title', {
+        await ABFDialogs.confirm(this.game.i18n.format('anima.macros.combat.dialog.attackConfirm.title'), this.game.i18n.format('anima.macros.combat.dialog.attackConfirm.body.title', {
             target: targetToken.name
         }), {
             onConfirm: () => {
@@ -114,10 +114,10 @@ export class WSUserCombatManager extends WSCombatManager {
         else {
             this.endCombat();
             if (msg.payload.alreadyInACombat) {
-                new PromptDialog(this.game.i18n.localize('macros.combat.dialog.error.alreadyInCombat.title'));
+                new PromptDialog(this.game.i18n.localize('anima.macros.combat.dialog.error.alreadyInCombat.title'));
             }
             else {
-                new PromptDialog(this.game.i18n.localize('macros.combat.dialog.error.requestRejected.title'));
+                new PromptDialog(this.game.i18n.localize('anima.macros.combat.dialog.error.requestRejected.title'));
             }
         }
     }

@@ -1,6 +1,6 @@
 {{>
 "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'macros.combat.dialog.modifier.title')
+title=(localize 'anima.macros.combat.dialog.modifier.title')
 disabled=this.defenseSent
 inputName="defender.combat.modifier"
 inputValue=this.defender.combat.modifier
@@ -8,7 +8,7 @@ inputValue=this.defender.combat.modifier
 
 {{#if this.ui.hasFatiguePoints}}
 {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'macros.combat.dialog.fatigue.title')
+title=(localize 'anima.macros.combat.dialog.fatigue.title')
 disabled=this.defenseSent
 inputName="defender.combat.fatigue"
 inputValue=this.defender.combat.fatigue
@@ -21,25 +21,25 @@ inputValue=this.defender.combat.fatigue
 {{/iterateNumber}}
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{else}}
-<p class='label no-fatigue'>{{localize 'macros.combat.dialog.notEnoughFatigue.title'}}</p>
+<p class='label no-fatigue'>{{localize 'anima.macros.combat.dialog.notEnoughFatigue.title'}}</p>
 {{/if}}
 
 {{#if this.defender.combat.unarmed}}
 {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'macros.combat.dialog.weapon.title')
+title=(localize 'anima.macros.combat.dialog.weapon.title')
 disabled=true
 }}
-<option>{{localize 'macros.combat.dialog.unarmed.title'}}</option>
+<option>{{localize 'anima.macros.combat.dialog.unarmed.title'}}</option>
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{else}}
 {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'macros.combat.dialog.weapon.title')
+title=(localize 'anima.macros.combat.dialog.weapon.title')
 disabled=this.defenseSent
 inputName='defender.combat.weaponUsed'
 }}
 {{#each this.defender.actor.system.combat.weapons}}
 <option {{#if (is 'eq' this._id ../this.defender.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>{{localize
-  'macros.combat.dialog.weaponRow.defense.title' name=this.name value=this.system.block.final.value}}</option>
+  'anima.macros.combat.dialog.weaponRow.defense.title' name=this.name value=this.system.block.final.value}}</option>
 {{/each}}
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 {{/if}}
@@ -48,16 +48,16 @@ inputName='defender.combat.weaponUsed'
 <div class='defense-sent'>
   {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
   <p class='label'>
-    {{localize 'macros.combat.dialog.defenseSent.title'}}
+    {{localize 'anima.macros.combat.dialog.defenseSent.title'}}
   </p>
 </div>
 {{else}}
 <div class='defense-buttons'>
   <button type="button" class='abf-button send-defense' data-type='dodge'>
-    {{localize 'macros.combat.dialog.dodgeButton.title'}}
+    {{localize 'anima.macros.combat.dialog.dodgeButton.title'}}
   </button>
   <button type="button" class='abf-button send-defense' data-type='block'>
-    {{localize 'macros.combat.dialog.blockButton.title'}}
+    {{localize 'anima.macros.combat.dialog.blockButton.title'}}
   </button>
 </div>
 {{/if}}

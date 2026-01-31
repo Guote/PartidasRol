@@ -17,7 +17,7 @@ export const LanguageItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.language.content')
+            content: i18n.localize('anima.dialogs.items.language.content')
         });
         actor.createInnerItem({
             type: ABFItems.LANGUAGE,

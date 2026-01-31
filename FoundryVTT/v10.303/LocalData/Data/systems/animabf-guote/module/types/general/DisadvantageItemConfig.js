@@ -14,7 +14,7 @@ export const DisadvantageItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.disadvantage.content')
+            content: i18n.localize('anima.dialogs.items.disadvantage.content')
         });
         await actor.createItem({
             name,

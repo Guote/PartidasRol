@@ -100,7 +100,7 @@ export class CombatDefenseDialog extends FormApplication {
       height: 240,
       resizable: true,
       template: Templates.Dialog.Combat.CombatDefenseDialog.main,
-      title: game.i18n.localize("macros.combat.dialog.defending.defend.title"),
+      title: game.i18n.localize("anima.macros.combat.dialog.defending.defend.title"),
       tabs: [
         {
           navSelector: ".sheet-tabs",
@@ -194,7 +194,7 @@ export class CombatDefenseDialog extends FormApplication {
       if (this.modalData.defender.showRoll) {
         const { i18n } = game;
         const flavor = i18n.format(
-          `macros.combat.dialog.physicalDefense.${type}.title`,
+          `anima.macros.combat.dialog.physicalDefense.${type}.title`,
           {
             target: this.modalData.attacker.token.name,
           }
@@ -264,7 +264,7 @@ export class CombatDefenseDialog extends FormApplication {
           const { spells } = this.defenderActor.system.mystic;
           const spell = spells.find((w) => w._id === spellUsed);
           const flavor = i18n.format(
-            "macros.combat.dialog.magicDefense.title",
+            "anima.macros.combat.dialog.magicDefense.title",
             {
               spell: spell.name,
               target: this.modalData.attacker.token.name,
@@ -319,7 +319,7 @@ export class CombatDefenseDialog extends FormApplication {
         if (this.modalData.defender.showRoll) {
           const { i18n } = game;
           const flavor = i18n.format(
-            "macros.combat.dialog.psychicDefense.title",
+            "anima.macros.combat.dialog.psychicDefense.title",
             {
               power: power.name,
               target: this.modalData.attacker.token.name,

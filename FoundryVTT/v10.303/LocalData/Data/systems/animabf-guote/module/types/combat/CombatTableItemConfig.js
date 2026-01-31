@@ -14,7 +14,7 @@ export const CombatTableItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.combatTable.content')
+            content: i18n.localize('anima.dialogs.items.combatTable.content')
         });
         await actor.createInnerItem({
             name,

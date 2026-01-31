@@ -14,7 +14,7 @@ export const NemesisSkillItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.nemesisSkill.content')
+            content: i18n.localize('anima.dialogs.items.nemesisSkill.content')
         });
         await actor.createInnerItem({
             name,

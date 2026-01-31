@@ -8,7 +8,7 @@ export class PromptDialog extends GenericDialog {
                 {
                     id: 'on-confirm-button',
                     fn: onAccept,
-                    content: game.i18n.localize('dialogs.accept')
+                    content: game.i18n.localize('anima.dialogs.accept')
                 }
             ]
         });

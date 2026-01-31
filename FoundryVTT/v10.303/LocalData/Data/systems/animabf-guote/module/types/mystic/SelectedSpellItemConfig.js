@@ -14,7 +14,7 @@ export const SelectedSpellItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.selectedSpell.content')
+            content: i18n.localize('anima.dialogs.items.selectedSpell.content')
         });
         actor.createInnerItem({
             type: ABFItems.SELECTED_SPELL,

@@ -12,12 +12,12 @@ const openDialog = async () => {
     return new Promise(resolve => {
         const typedGame = game;
         new Dialog({
-            title: typedGame.i18n.localize('macros.damageCalculator.dialog.title'),
+            title: typedGame.i18n.localize('anima.macros.damageCalculator.dialog.title'),
             content: dialogHTML,
             buttons: {
                 submit: {
                     icon: iconHTML,
-                    label: typedGame.i18n.localize('dialogs.continue'),
+                    label: typedGame.i18n.localize('anima.dialogs.continue'),
                     callback: (html) => {
                         const results = new FormDataExtended(html.find('form')[0], {}).toObject();
                         resolve(results);

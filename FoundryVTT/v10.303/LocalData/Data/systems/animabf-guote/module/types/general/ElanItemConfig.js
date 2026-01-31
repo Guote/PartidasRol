@@ -15,7 +15,7 @@ export const ElanItemConfig = ABFItemConfigFactory({
     contextMenuConfig: {
         buildExtraOptionsInContextMenu: actor => [
             {
-                name: game.i18n.localize('contextualMenu.elan.options.addPower'),
+                name: game.i18n.localize('anima.contextualMenu.elan.options.addPower'),
                 icon: '<i class="fa fa-plus" aria-hidden="true"></i>',
                 callback: target => {
                     const { itemId } = target[0].dataset;
@@ -29,7 +29,7 @@ export const ElanItemConfig = ABFItemConfigFactory({
     onCreate: async (actor) => {
         const { i18n } = game;
         const name = await openSimpleInputDialog({
-            content: i18n.localize('dialogs.items.elan.content')
+            content: i18n.localize('anima.dialogs.items.elan.content')
         });
         await actor.createInnerItem({
             name,
