@@ -1,26 +1,109 @@
-{{!-- V2 Header Template --}}
+{{!-- V2 Compact Header Template --}}
 <header class="v2-header">
-  {{!-- Main Header Row: Portrait, Resources, Sidebar --}}
-  <div class="v2-header__main">
-    {{!-- Left: Actor Portrait --}}
-    {{> "systems/animabf-guote/templates/actor-v2/parts/header/actor-portrait.hbs"}}
+  <div class="v2-header__row">
+    {{!-- Portrait + Name --}}
+    <div class="v2-header__identity">
+      <img class="v2-header__portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}">
+      <div class="v2-header__info">
+        <input type="text" class="v2-header__name" name="name" value="{{actor.name}}" placeholder="Name">
+        <span class="v2-header__level">Nv. {{system.general.levels.length}}</span>
+      </div>
+    </div>
 
-    {{!-- Center: Core Resources --}}
-    {{> "systems/animabf-guote/templates/actor-v2/parts/header/core-resources.hbs"}}
+    {{!-- Core Resources: HP, Fatigue, Destiny, Initiative --}}
+    <div class="v2-header__resources">
+      {{!-- HP --}}
+      <div class="v2-res v2-res--hp">
+        <span class="v2-res__icon"><i class="fas fa-heart"></i></span>
+        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.lifePoints.value" value="{{system.characteristics.secondaries.lifePoints.value}}">
+        <span class="v2-res__sep">/</span>
+        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.lifePoints.max" value="{{system.characteristics.secondaries.lifePoints.max}}">
+        {{#if system.characteristics.secondaries.lifePoints.sacrificed}}
+        <span class="v2-res__sac">(-{{system.characteristics.secondaries.lifePoints.sacrificed}})</span>
+        {{/if}}
+      </div>
 
-    {{!-- Right: Sidebar (Resistances & Modifiers) --}}
-    <div class="v2-header__sidebar">
-      {{> "systems/animabf-guote/templates/actor-v2/parts/header/resistances-compact.hbs"}}
-      {{> "systems/animabf-guote/templates/actor-v2/parts/header/modifiers-display.hbs"}}
+      {{!-- Fatigue --}}
+      <div class="v2-res v2-res--fatigue">
+        <span class="v2-res__icon"><i class="fas fa-bolt"></i></span>
+        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.fatigue.value" value="{{system.characteristics.secondaries.fatigue.value}}">
+        <span class="v2-res__sep">/</span>
+        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.fatigue.max" value="{{system.characteristics.secondaries.fatigue.max}}">
+      </div>
+
+      {{!-- Destiny --}}
+      <div class="v2-res v2-res--destiny">
+        <span class="v2-res__icon"><i class="fas fa-star"></i></span>
+        <input type="number" class="v2-res__input" name="system.general.destinyPoints.value" value="{{system.general.destinyPoints.value}}">
+        <span class="v2-res__sep">/</span>
+        <input type="number" class="v2-res__input" name="system.general.destinyPoints.max" value="{{system.general.destinyPoints.max}}">
+      </div>
+
+      {{!-- Initiative --}}
+      <div class="v2-res v2-res--init">
+        <span class="v2-res__icon rollable" data-roll="1d100Initiative" data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}" data-label="{{localize 'anima.ui.general.initiative.base.title'}}"><i class="fas fa-dice-d20"></i></span>
+        <span class="v2-res__value rollable" data-roll="1d100Initiative" data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}" data-label="{{localize 'anima.ui.general.initiative.base.title'}}">{{system.characteristics.secondaries.initiative.final.value}}</span>
+      </div>
+    </div>
+
+    {{!-- Resistances (compact) --}}
+    <div class="v2-header__resistances">
+      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.physicalResistance.title'}}">
+        <b>RF</b>{{system.characteristics.secondaries.resistances.physical.final.value}}
+      </span>
+      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.diseaseResistance.title'}}">
+        <b>RE</b>{{system.characteristics.secondaries.resistances.disease.final.value}}
+      </span>
+      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.venomResistance.title'}}">
+        <b>RV</b>{{system.characteristics.secondaries.resistances.poison.final.value}}
+      </span>
+      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.magicResistance.title'}}">
+        <b>RM</b>{{system.characteristics.secondaries.resistances.magic.final.value}}
+      </span>
+      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.psychicResistance.title'}}">
+        <b>RP</b>{{system.characteristics.secondaries.resistances.psychic.final.value}}
+      </span>
+    </div>
+
+    {{!-- Modifiers --}}
+    <div class="v2-header__modifiers">
+      <span class="v2-header__mod {{#if (lt system.general.modifiers.physicalActions.value 0)}}v2-header__mod--negative{{/if}} {{#if (gt system.general.modifiers.physicalActions.value 0)}}v2-header__mod--positive{{/if}}" title="{{localize 'anima.ui.general.modifiers.physicalActions.title'}}">
+        <i class="fas fa-running"></i>{{system.general.modifiers.physicalActions.value}}
+      </span>
+      <span class="v2-header__mod {{#if (lt system.general.modifiers.supernaturalActions.value 0)}}v2-header__mod--negative{{/if}} {{#if (gt system.general.modifiers.supernaturalActions.value 0)}}v2-header__mod--positive{{/if}}" title="{{localize 'anima.ui.general.modifiers.supernaturalActions.title'}}">
+        <i class="fas fa-magic"></i>{{system.general.modifiers.supernaturalActions.value}}
+      </span>
     </div>
   </div>
 
-  {{!-- Initiative Row --}}
-  {{> "systems/animabf-guote/templates/actor-v2/parts/header/initiative-display.hbs"}}
-
-  {{!-- Dynamic Resources (Ki/Zeon/PP) - Conditional --}}
-  {{> "systems/animabf-guote/templates/actor-v2/parts/header/dynamic-resources.hbs"}}
-
-  {{!-- Quick Actions --}}
-  {{> "systems/animabf-guote/templates/actor-v2/parts/header/quick-actions.hbs"}}
+  {{!-- Dynamic Resources Row (Ki/Zeon/PP) - Only shown if enabled --}}
+  {{#if (or system.ui.tabVisibility.mystic.value system.ui.tabVisibility.domine.value system.ui.tabVisibility.psychic.value)}}
+  <div class="v2-header__dynamic">
+    {{#if system.ui.tabVisibility.mystic.value}}
+    <div class="v2-dres v2-dres--zeon">
+      <span class="v2-dres__label">Zeon</span>
+      <input type="number" class="v2-dres__input" name="system.mystic.zeon.value" value="{{system.mystic.zeon.value}}">
+      <span class="v2-dres__sep">/</span>
+      <input type="number" class="v2-dres__input" name="system.mystic.zeon.max" value="{{system.mystic.zeon.max}}">
+      <span class="v2-dres__extra">(+{{system.mystic.zeon.accumulated}})</span>
+    </div>
+    {{/if}}
+    {{#if system.ui.tabVisibility.domine.value}}
+    <div class="v2-dres v2-dres--ki">
+      <span class="v2-dres__label">Ki</span>
+      <input type="number" class="v2-dres__input" name="system.domine.kiAccumulation.generic.value" value="{{system.domine.kiAccumulation.generic.value}}">
+      <span class="v2-dres__sep">/</span>
+      <input type="number" class="v2-dres__input" name="system.domine.kiAccumulation.generic.max" value="{{system.domine.kiAccumulation.generic.max}}">
+    </div>
+    {{/if}}
+    {{#if system.ui.tabVisibility.psychic.value}}
+    <div class="v2-dres v2-dres--psy">
+      <span class="v2-dres__label">PP</span>
+      <input type="number" class="v2-dres__input" name="system.psychic.psychicPoints.value" value="{{system.psychic.psychicPoints.value}}">
+      <span class="v2-dres__sep">/</span>
+      <input type="number" class="v2-dres__input" name="system.psychic.psychicPoints.max" value="{{system.psychic.psychicPoints.max}}">
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
 </header>

@@ -10,19 +10,19 @@
         <label style="display: flex; align-items: center; gap: var(--space-2);">
           <input type="checkbox"
                  name="system.ui.tabVisibility.mystic.value"
-                 {{#if system.ui.tabVisibility.mystic.value}}checked{{/if}}>
+                 {{checked system.ui.tabVisibility.mystic.value}}>
           {{localize "anima.ui.tabs.mystic"}}
         </label>
         <label style="display: flex; align-items: center; gap: var(--space-2);">
           <input type="checkbox"
                  name="system.ui.tabVisibility.domine.value"
-                 {{#if system.ui.tabVisibility.domine.value}}checked{{/if}}>
+                 {{checked system.ui.tabVisibility.domine.value}}>
           {{localize "anima.ui.tabs.domine"}}
         </label>
         <label style="display: flex; align-items: center; gap: var(--space-2);">
           <input type="checkbox"
                  name="system.ui.tabVisibility.psychic.value"
-                 {{#if system.ui.tabVisibility.psychic.value}}checked{{/if}}>
+                 {{checked system.ui.tabVisibility.psychic.value}}>
           {{localize "anima.ui.tabs.psychic"}}
         </label>
       </div>
@@ -56,7 +56,7 @@
           <label style="display: flex; align-items: center; gap: var(--space-2);">
             <input type="checkbox"
                    name="system.general.settings.openOnDoubles.value"
-                   {{#if system.general.settings.openOnDoubles.value}}checked{{/if}}>
+                   {{checked system.general.settings.openOnDoubles.value}}>
             {{localize "anima.ui.settings.advancedSettings.doubles"}}
           </label>
         </div>

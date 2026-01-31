@@ -101,8 +101,9 @@ export default class ABFActorSheetV2 extends ActorSheet {
       ...{
         classes: ["abf", "sheet", "actor", "actor-sheet-v2"],
         template: `systems/${ABFSystemName}/templates/actor/actor-sheet-v2.hbs`,
-        width: 1000,
-        height: 850,
+        width: 900,
+        height: 890,
+        resizable: true,
         submitOnChange: true,
         tabs: [
           {
@@ -153,10 +154,12 @@ export default class ABFActorSheetV2 extends ActorSheet {
   }
   async getData(options) {
     const sheet = await super.getData(options);
+
+    // Ensure system data is available for all actor types
     if (this.actor.type === "character") {
       await sheet.actor.prepareDerivedData();
-      sheet.system = sheet.actor.system;
     }
+    sheet.system = sheet.actor.system;
     sheet.config = CONFIG.config;
 
     // V2 Enhancements: Calculate equipped weapons for initiative dropdown
@@ -397,6 +400,11 @@ export default class ABFActorSheetV2 extends ActorSheet {
     }
   }
   async _updateObject(event, formData) {
+    // Ensure name is never blank (use current name if form submits empty)
+    if (!formData.name || formData.name.trim() === "") {
+      formData.name = this.actor.name;
+    }
+
     // We have to parse all qualities in order to convert from it selectable to integers to make calculations
     Object.keys(formData).forEach((key) => {
       if (key.includes("quality")) {
