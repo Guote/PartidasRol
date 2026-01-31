@@ -1,0 +1,38 @@
+{{!--
+  Card Component - A styled container with header and body
+
+  Parameters:
+  - title: Card header title (string)
+  - collapsible: Whether the card can be collapsed (boolean)
+  - collapsed: Initial collapsed state (boolean)
+  - contractibleItemId: ID for tracking collapse state in actor.system.ui.contractibleItems
+  - addButtonData: Data attribute for add button (string, e.g., "add-weapon")
+  - addButtonLabel: Label for add button (string)
+  - headerClass: Additional classes for header
+  - bodyClass: Additional classes for body
+  - icon: Font Awesome icon class (e.g., "fa-sword")
+--}}
+<div class="v2-card {{#if collapsible}}v2-card--collapsible{{/if}} {{#if collapsed}}v2-card--collapsed{{/if}}"
+     {{#if contractibleItemId}}data-contractible-item-id="{{contractibleItemId}}"{{/if}}>
+  <div class="v2-card__header {{headerClass}}">
+    <div class="v2-card__header-title">
+      {{#if icon}}<i class="fas {{icon}}"></i>{{/if}}
+      <span>{{title}}</span>
+    </div>
+    <div class="v2-card__header-actions">
+      {{#if addButtonData}}
+      <button type="button" class="v2-card__header-btn" data-on-click="{{addButtonData}}" title="{{addButtonLabel}}">
+        <i class="fas fa-plus"></i>
+      </button>
+      {{/if}}
+      {{#if collapsible}}
+      <button type="button" class="v2-card__header-btn contractible-button" data-contractible-item-id="{{contractibleItemId}}">
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      {{/if}}
+    </div>
+  </div>
+  <div class="v2-card__body {{bodyClass}}">
+    {{> @partial-block}}
+  </div>
+</div>

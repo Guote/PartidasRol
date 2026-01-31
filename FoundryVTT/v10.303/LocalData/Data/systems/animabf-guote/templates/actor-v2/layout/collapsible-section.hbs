@@ -1,0 +1,21 @@
+{{!--
+  Collapsible Section Component - A lightweight collapsible container
+
+  Parameters:
+  - title: Section title (string)
+  - collapsed: Initial collapsed state (boolean)
+  - contractibleItemId: ID for tracking collapse state in actor.system.ui.contractibleItems
+  - headerClass: Additional classes for header
+  - bodyClass: Additional classes for body
+--}}
+<div class="v2-collapsible {{#if collapsed}}v2-collapsible--collapsed{{/if}}"
+     {{#if contractibleItemId}}data-contractible-item-id="{{contractibleItemId}}"{{/if}}>
+  <div class="v2-collapsible__header {{headerClass}} contractible-button"
+       {{#if contractibleItemId}}data-contractible-item-id="{{contractibleItemId}}"{{/if}}>
+    <span class="v2-collapsible__title">{{title}}</span>
+    <i class="fas fa-chevron-down v2-collapsible__toggle"></i>
+  </div>
+  <div class="v2-collapsible__body {{bodyClass}}">
+    {{> @partial-block}}
+  </div>
+</div>

@@ -1,0 +1,51 @@
+{{!-- Core Resources: HP, Fatigue, Destiny Points --}}
+<div class="v2-header__resources">
+  {{!-- Life Points --}}
+  <div class="v2-resource v2-resource--hp">
+    <span class="v2-resource__label">{{localize "anima.ui.general.life.current.title"}}</span>
+    <div class="v2-resource__values">
+      <input type="number" class="v2-resource__input"
+             name="system.characteristics.secondaries.lifePoints.value"
+             value="{{system.characteristics.secondaries.lifePoints.value}}">
+      <span class="v2-resource__separator">/</span>
+      <input type="number" class="v2-resource__input"
+             name="system.characteristics.secondaries.lifePoints.max"
+             value="{{system.characteristics.secondaries.lifePoints.max}}">
+      {{!-- Sacrificed HP --}}
+      <div class="v2-resource__sacrificed">
+        <span class="v2-resource__sacrificed-label">{{localize "anima.ui.general.life.sacrificed"}}</span>
+        <input type="number" class="v2-resource__sacrificed-input"
+               name="system.characteristics.secondaries.lifePoints.sacrificed"
+               value="{{system.characteristics.secondaries.lifePoints.sacrificed}}">
+      </div>
+    </div>
+  </div>
+
+  {{!-- Fatigue --}}
+  <div class="v2-resource v2-resource--fatigue">
+    <span class="v2-resource__label">{{localize "anima.ui.general.fatigue.title"}}</span>
+    <div class="v2-resource__values">
+      <input type="number" class="v2-resource__input v2-resource__input--small"
+             name="system.characteristics.secondaries.fatigue.value"
+             value="{{system.characteristics.secondaries.fatigue.value}}">
+      <span class="v2-resource__separator">/</span>
+      <input type="number" class="v2-resource__input v2-resource__input--small"
+             name="system.characteristics.secondaries.fatigue.max"
+             value="{{system.characteristics.secondaries.fatigue.max}}">
+    </div>
+  </div>
+
+  {{!-- Destiny Points --}}
+  <div class="v2-resource v2-resource--destiny">
+    <span class="v2-resource__label">{{localize "anima.ui.general.destinyPoints.title"}}</span>
+    <div class="v2-resource__values">
+      <input type="number" class="v2-resource__input v2-resource__input--small"
+             name="system.general.destinyPoints.base.value"
+             value="{{system.general.destinyPoints.base.value}}">
+      <span class="v2-resource__separator">/</span>
+      <span class="v2-resource__input v2-resource__input--small" style="background: transparent; border: none;">
+        {{system.general.destinyPoints.final.value}}
+      </span>
+    </div>
+  </div>
+</div>

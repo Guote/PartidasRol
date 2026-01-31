@@ -1,0 +1,35 @@
+{{!--
+  Stat Block Component
+
+  Parameters:
+  - label: Display label
+  - value: The value to display
+  - inputName: Name attribute for input (optional, for editable stats)
+  - inputValue: Value for the input
+  - rollable: Whether the stat is rollable
+  - rollData: Roll formula (e.g., "1d100xa")
+  - rollValue: Value to add to the roll
+  - rollLabel: Label for the roll
+  - disabled: Whether input is disabled
+  - showMod: Show modifier value
+  - modValue: Modifier value to display
+--}}
+<div class="v2-stat-block {{#if rollable}}v2-stat-block--rollable rollable{{/if}}"
+     {{#if rollable}}
+     data-roll="{{rollData}}"
+     data-rollvalue="{{rollValue}}"
+     data-label="{{rollLabel}}"
+     {{/if}}>
+  <span class="v2-stat-block__label">{{label}}</span>
+  {{#if inputName}}
+  <input type="number" class="v2-stat-block__input"
+         name="{{inputName}}"
+         value="{{inputValue}}"
+         {{#if disabled}}disabled{{/if}}>
+  {{else}}
+  <span class="v2-stat-block__value">{{value}}</span>
+  {{/if}}
+  {{#if showMod}}
+  <span class="v2-stat-block__mod">({{#if (gte modValue 0)}}+{{/if}}{{modValue}})</span>
+  {{/if}}
+</div>

@@ -1,0 +1,420 @@
+import { openModDialog } from "../utils/dialogs/openSimpleInputDialog.js";
+import ABFFoundryRoll from "../rolls/ABFFoundryRoll.js";
+import { splitAsActorAndItemChanges } from "./utils/splitAsActorAndItemChanges.js";
+import { unflat } from "./utils/unflat.js";
+import { ALL_ITEM_CONFIGURATIONS } from "./utils/prepareItems/constants.js";
+import { getFieldValueFromPath } from "./utils/prepareItems/util/getFieldValueFromPath.js";
+import { getUpdateObjectFromPath } from "./utils/prepareItems/util/getUpdateObjectFromPath.js";
+import { ABFItems } from "../items/ABFItems.js";
+import { ABFDialogs } from "../dialogs/ABFDialogs.js";
+import { ABFSystemName } from "../../animabf-guote.name.js";
+import { getFormula } from "../rolls/utils/getFormula.js";
+export default class ABFActorSheetV2 extends ActorSheet {
+  constructor(actor, options) {
+    super(actor, options);
+    this.buildCommonContextualMenu = (itemConfig) => {
+      const {
+        selectors: { containerSelector, rowSelector },
+        fieldPath,
+      } = itemConfig;
+      const deleteRowMessage =
+        itemConfig.contextMenuConfig?.customDeleteRowMessage ??
+        this.i18n.localize("contextualMenu.common.options.delete");
+      const customCallbackFn = itemConfig.onDelete;
+      const otherItems =
+        itemConfig.contextMenuConfig?.buildExtraOptionsInContextMenu?.(
+          this.actor
+        ) ?? [];
+      if (!itemConfig.isInternal && itemConfig.hasSheet) {
+        otherItems.push({
+          name: this.i18n.localize("contextualMenu.common.options.edit"),
+          icon: '<i class="fas fa-edit fa-fw"></i>',
+          callback: (target) => {
+            const { itemId } = target[0].dataset;
+            if (itemId) {
+              const item = this.actor.items.get(itemId);
+              if (item?.sheet) {
+                item.sheet.render(true);
+              } else {
+                console.warn("Item sheet was not found for item:", item);
+              }
+            } else {
+              console.warn("Item ID was not found for target:", target);
+            }
+          },
+        });
+      }
+      return new ContextMenu($(containerSelector), rowSelector, [
+        ...otherItems,
+        {
+          name: deleteRowMessage,
+          icon: '<i class="fas fa-trash fa-fw"></i>',
+          callback: (target) => {
+            if (!customCallbackFn && !fieldPath) {
+              console.warn(
+                `buildCommonContextualMenu: no custom callback and configuration set, could not delete the item: ${itemConfig.type}`
+              );
+            }
+            if (customCallbackFn) {
+              customCallbackFn(this.actor, target);
+            } else {
+              const id = target[0].dataset.itemId;
+              if (!id) {
+                throw new Error(
+                  "Data id missing. Are you sure to set data-item-id to rows?"
+                );
+              }
+              ABFDialogs.confirm(
+                this.i18n.localize("dialogs.items.delete.title"),
+                this.i18n.localize("dialogs.items.delete.body"),
+                {
+                  onConfirm: () => {
+                    if (fieldPath) {
+                      if (this.actor.getEmbeddedDocument("Item", id)) {
+                        this.actor.deleteEmbeddedDocuments("Item", [id]);
+                      } else {
+                        let items = getFieldValueFromPath(
+                          this.actor.system,
+                          fieldPath
+                        );
+                        items = items.filter((item) => item._id !== id);
+                        const dataToUpdate = {
+                          system: getUpdateObjectFromPath(items, fieldPath),
+                        };
+                        this.actor.update(dataToUpdate);
+                      }
+                    }
+                  },
+                }
+              );
+            }
+          },
+        },
+      ]);
+    };
+    this.i18n = game.i18n;
+    this.position.width = this.getWidthDependingFromContent();
+  }
+  static get defaultOptions() {
+    return {
+      ...super.defaultOptions,
+      ...{
+        classes: ["abf", "sheet", "actor", "actor-sheet-v2"],
+        template: `systems/${ABFSystemName}/templates/actor/actor-sheet-v2.hbs`,
+        width: 1000,
+        height: 850,
+        submitOnChange: true,
+        tabs: [
+          {
+            navSelector: ".sheet-tabs",
+            contentSelector: ".sheet-body",
+            initial: "combat",
+          },
+          {
+            navSelector: ".mystic-tabs",
+            contentSelector: ".mystic-body",
+            initial: "mystic-main",
+          },
+          {
+            navSelector: ".psychic-tabs",
+            contentSelector: ".psychic-body",
+            initial: "psychic-main",
+          },
+        ],
+        // Enable dragging item rows to the macro hotbar
+        // Note: .rollable elements are handled manually in activateListeners
+        dragDrop: [
+          { dragSelector: ".item-list .item", dropSelector: null },
+          { dragSelector: ".weapon-row", dropSelector: null },
+          { dragSelector: ".armor-row", dropSelector: null },
+          { dragSelector: ".spell-row", dropSelector: null },
+          { dragSelector: ".ammo-row", dropSelector: null },
+        ],
+      },
+    };
+  }
+  get template() {
+    return `systems/${ABFSystemName}/templates/actor/actor-sheet-v2.hbs`;
+  }
+  bringToTop() {
+    if (this.rendered && this.element && this.element[0]) {
+      super.bringToTop();
+    }
+  }
+  async close(options) {
+    super.close(options);
+    this.position.width = this.getWidthDependingFromContent();
+  }
+  getWidthDependingFromContent() {
+    if (this.actor.items.filter((i) => i.type === ABFItems.SPELL).length > 0) {
+      return 1300;
+    }
+    return 1000;
+  }
+  async getData(options) {
+    const sheet = await super.getData(options);
+    if (this.actor.type === "character") {
+      await sheet.actor.prepareDerivedData();
+      sheet.system = sheet.actor.system;
+    }
+    sheet.config = CONFIG.config;
+
+    // V2 Enhancements: Calculate equipped weapons for initiative dropdown
+    sheet.equippedWeapons = sheet.system?.combat?.weapons || [];
+    sheet.selectedWeaponId = sheet.system?.combat?.selectedWeaponId?.value || "";
+
+    // Calculate initiative with selected weapon bonus
+    const baseInitiative = sheet.system?.characteristics?.secondaries?.initiative?.final?.value || 0;
+    const selectedWeapon = sheet.equippedWeapons.find(w => w._id === sheet.selectedWeaponId);
+    const weaponInitBonus = selectedWeapon?.system?.initiative?.final?.value || 0;
+    sheet.initiativeWithWeapon = baseInitiative + weaponInitBonus;
+
+    // Calculate effective max HP (max - sacrificed)
+    const hp = sheet.system?.characteristics?.secondaries?.lifePoints;
+    if (hp) {
+      sheet.effectiveMaxHp = hp.max - (hp.sacrificed || 0);
+    }
+
+    // Total level across all classes
+    sheet.totalLevel = (sheet.system?.general?.levels || []).reduce(
+      (sum, level) => sum + (level.system?.level || 0),
+      0
+    );
+
+    return sheet;
+  }
+  activateListeners(html) {
+    super.activateListeners(html);
+    // Everything below here is only needed if the sheet is editable
+    if (!this.options.editable) return;
+
+    // Rollable abilities - click to roll
+    html.find(".rollable").click((e) => {
+      this._onRoll(e);
+    });
+
+    // Make rollable elements draggable to the macro hotbar
+    // We manually bind these since they're not standard Foundry items
+    html.find(".rollable").each((_, el) => {
+      el.setAttribute("draggable", "true");
+      el.addEventListener("dragstart", (ev) => this._onDragStartRollable(ev), false);
+    });
+
+    html.find(".contractible-button").click((e) => {
+      const { contractibleItemId } = e.currentTarget.dataset;
+      if (contractibleItemId) {
+        const ui = this.actor.system.ui;
+        ui.contractibleItems = {
+          ...ui.contractibleItems,
+          [contractibleItemId]: !ui.contractibleItems[contractibleItemId],
+        };
+        this.actor.update({ system: { ui } });
+      }
+    });
+    for (const item of Object.values(ALL_ITEM_CONFIGURATIONS)) {
+      this.buildCommonContextualMenu(item);
+      // Ensure item rows have draggable attribute (dragDrop config handles the event binding)
+      html.find(item.selectors.rowSelector).each((_, row) => {
+        row.setAttribute("draggable", "true");
+      });
+      html
+        .find(`[data-on-click="${item.selectors.addItemButtonSelector}"]`)
+        .click(() => {
+          item.onCreate(this.actor);
+        });
+    }
+
+    // V2 Quick Actions
+    html.find(".v2-quick-action").click((e) => {
+      const action = e.currentTarget.dataset.action;
+      this._onQuickAction(action);
+    });
+  }
+
+  /**
+   * Handle quick action button clicks
+   * @param {string} action - The action to perform
+   */
+  async _onQuickAction(action) {
+    switch (action) {
+      case "rest":
+        await this._handleRest();
+        break;
+      case "half-rest":
+        await this._handleHalfRest();
+        break;
+      default:
+        console.warn(`Unknown quick action: ${action}`);
+    }
+  }
+
+  /**
+   * Handle full rest action - restore fatigue and heal based on regeneration
+   */
+  async _handleRest() {
+    const hp = this.actor.system.characteristics.secondaries.lifePoints;
+    const fatigue = this.actor.system.characteristics.secondaries.fatigue;
+    const regen = this.actor.system.characteristics.secondaries.regeneration;
+
+    // Calculate effective max HP (max - sacrificed)
+    const effectiveMax = hp.max - (hp.sacrificed || 0);
+
+    // Calculate healing amount from resting regeneration
+    const healAmount = regen?.resting?.value || 10;
+    const newHp = Math.min(hp.value + healAmount, effectiveMax);
+
+    await this.actor.update({
+      "system.characteristics.secondaries.fatigue.value": fatigue.max,
+      "system.characteristics.secondaries.lifePoints.value": newHp
+    });
+
+    // Notify the user
+    ui.notifications.info(game.i18n.localize("anima.notifications.rested"));
+  }
+
+  /**
+   * Handle half rest action - restore half fatigue, no HP recovery
+   */
+  async _handleHalfRest() {
+    const fatigue = this.actor.system.characteristics.secondaries.fatigue;
+
+    // Restore half of max fatigue (rounded up)
+    const halfFatigue = Math.ceil(fatigue.max / 2);
+    const newFatigue = Math.min(fatigue.value + halfFatigue, fatigue.max);
+
+    await this.actor.update({
+      "system.characteristics.secondaries.fatigue.value": newFatigue
+    });
+
+    // Notify the user
+    ui.notifications.info(game.i18n.localize("anima.notifications.halfRested"));
+  }
+  /**
+   * Handle dragstart events for items and rollable abilities
+   * @param {DragEvent} event - The drag event
+   * @override
+   */
+  _onDragStart(event) {
+    const element = event.currentTarget;
+
+    // Check if this is a rollable element (not an item row)
+    if (element.classList.contains("rollable") && element.dataset.roll) {
+      const dragData = {
+        type: "Roll",
+        actorId: this.actor.id,
+        label: element.dataset.label || "Roll",
+        roll: element.dataset.roll,
+        rollValue: element.dataset.rollvalue,
+        rollLabel: element.dataset.label
+      };
+      event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+      return;
+    }
+
+    // Check if this is an item row with data-item-id
+    if (element.dataset.itemId) {
+      const item = this.actor.items.get(element.dataset.itemId);
+      if (item) {
+        const dragData = {
+          type: "Item",
+          actorId: this.actor.id,
+          data: item.toObject(),
+          uuid: item.uuid
+        };
+        event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+        return;
+      }
+    }
+
+    // Fall back to default behavior
+    super._onDragStart(event);
+  }
+
+  /**
+   * Handle dragstart specifically for rollable elements (skills, characteristics, etc.)
+   * @param {DragEvent} event - The drag event
+   */
+  _onDragStartRollable(event) {
+    const element = event.currentTarget;
+
+    if (!element.dataset.roll) {
+      console.log("ABF | _onDragStartRollable: No roll data on element");
+      return;
+    }
+
+    const dragData = {
+      type: "Roll",
+      actorId: this.actor.id,
+      label: (element.dataset.label || "Roll").trim(),
+      roll: element.dataset.roll,
+      rollValue: element.dataset.rollvalue,
+      rollLabel: (element.dataset.label || "Roll").trim()
+    };
+
+    console.log("ABF | _onDragStartRollable: Setting drag data", dragData);
+    event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+
+    // Set drag image (optional - creates a ghost image while dragging)
+    if (event.dataTransfer.setDragImage) {
+      const dragImage = document.createElement("div");
+      dragImage.textContent = dragData.label;
+      dragImage.style.cssText = "position: absolute; top: -1000px; background: #6e2917; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;";
+      document.body.appendChild(dragImage);
+      event.dataTransfer.setDragImage(dragImage, 0, 0);
+      setTimeout(() => dragImage.remove(), 0);
+    }
+  }
+
+  async _onRoll(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const { dataset } = element;
+    if (dataset.roll) {
+      const label = dataset.label ? `Rolling ${dataset.label}` : "";
+      const mod = await openModDialog();
+      console.log(dataset);
+      let formula = getFormula({
+        dice: dataset.roll,
+        values: [dataset.rollvalue, mod],
+        labels: [`${dataset.label}`, "Mod"],
+      });
+      if (formula.includes("10TO100")) {
+        let totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);
+        console.log("entramos", {totalLevel})
+        formula = getFormula({
+          dice: dataset.roll,
+          values: [dataset.rollvalue, totalLevel*10, mod],
+          labels: [`${dataset.label}`, "Nivel", "Mod"],
+        }).replace("10TO100","");
+      }
+      if (parseInt(dataset.extra) >= 200)
+        formula = formula.replace("xa", "xamastery");
+      const roll = new ABFFoundryRoll(formula, this.actor.system);
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label,
+      });
+    }
+  }
+  async _updateObject(event, formData) {
+    // We have to parse all qualities in order to convert from it selectable to integers to make calculations
+    Object.keys(formData).forEach((key) => {
+      if (key.includes("quality")) {
+        formData[key] = parseInt(formData[key], 10);
+      }
+    });
+    const [actorChanges, itemChanges] = splitAsActorAndItemChanges(formData);
+    await this.updateItems(itemChanges);
+    return super._updateObject(event, actorChanges);
+  }
+  async updateItems(_changes) {
+    if (!_changes || Object.keys(_changes).length === 0) return;
+    const changes = unflat(_changes);
+    for (const item of Object.values(ALL_ITEM_CONFIGURATIONS)) {
+      const fromDynamicChanges = item.getFromDynamicChanges(changes);
+      if (fromDynamicChanges) {
+        await item.onUpdate(this.actor, fromDynamicChanges);
+      }
+    }
+  }
+}

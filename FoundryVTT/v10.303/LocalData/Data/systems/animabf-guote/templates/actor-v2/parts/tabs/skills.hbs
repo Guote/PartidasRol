@@ -1,0 +1,357 @@
+{{!-- Skills Tab --}}
+<div class="v2-tab-skills">
+  {{!-- Primary Characteristics --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <span>{{localize "anima.ui.primaryCharacteristics.title"}}</span>
+    </div>
+    <div class="v2-card__body">
+      <div class="v2-characteristics">
+        {{!-- Agility --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.agility"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.agility.value"
+                   value="{{system.characteristics.primaries.agility.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.agility.mod 0)}}+{{/if}}{{system.characteristics.primaries.agility.mod}})</span>
+          </div>
+        </div>
+
+        {{!-- Constitution --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.constitution"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.constitution.value"
+                   value="{{system.characteristics.primaries.constitution.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.constitution.mod 0)}}+{{/if}}{{system.characteristics.primaries.constitution.mod}})</span>
+          </div>
+        </div>
+
+        {{!-- Dexterity --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.dexterity"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.dexterity.value"
+                   value="{{system.characteristics.primaries.dexterity.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.dexterity.mod 0)}}+{{/if}}{{system.characteristics.primaries.dexterity.mod}})</span>
+          </div>
+        </div>
+
+        {{!-- Strength --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.strength"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.strength.value"
+                   value="{{system.characteristics.primaries.strength.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.strength.mod 0)}}+{{/if}}{{system.characteristics.primaries.strength.mod}})</span>
+          </div>
+        </div>
+
+        {{!-- Intelligence --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.intelligence"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.intelligence.value"
+                   value="{{system.characteristics.primaries.intelligence.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.intelligence.mod 0)}}+{{/if}}{{system.characteristics.primaries.intelligence.mod}})</span>
+          </div>
+        </div>
+
+        {{!-- Perception --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.perception"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.perception.value"
+                   value="{{system.characteristics.primaries.perception.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.perception.mod 0)}}+{{/if}}{{system.characteristics.primaries.perception.mod}})</span>
+          </div>
+        </div>
+
+        {{!-- Power --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.power"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.power.value"
+                   value="{{system.characteristics.primaries.power.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.power.mod 0)}}+{{/if}}{{system.characteristics.primaries.power.mod}})</span>
+          </div>
+        </div>
+
+        {{!-- Will Power --}}
+        <div class="v2-characteristic">
+          <span class="v2-characteristic__name">{{localize "anima.ui.characteristics.willPower"}}</span>
+          <div class="v2-characteristic__values">
+            <input type="number" class="v2-characteristic__value-input"
+                   name="system.characteristics.primaries.willPower.value"
+                   value="{{system.characteristics.primaries.willPower.value}}">
+            <span class="v2-characteristic__mod">({{#if (gte system.characteristics.primaries.willPower.mod 0)}}+{{/if}}{{system.characteristics.primaries.willPower.mod}})</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Secondary Skills --}}
+  <div class="v2-skills-grid">
+    {{!-- Group 1: guotecundariasuno --}}
+    <div class="v2-skill-group">
+      <div class="v2-skill-group__title">{{localize "anima.ui.secondaries.guotecundariasuno.title"}}</div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.acrobacias.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.acrobacias'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.acrobacias"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.acrobacias.base.value"
+               value="{{system.secondaries.guotecundariasuno.acrobacias.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.acrobacias.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.actuacion.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.actuacion'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.actuacion"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.actuacion.base.value"
+               value="{{system.secondaries.guotecundariasuno.actuacion.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.actuacion.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.animas.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.animas'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.animas"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.animas.base.value"
+               value="{{system.secondaries.guotecundariasuno.animas.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.animas.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.arcana.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.arcana'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.arcana"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.arcana.base.value"
+               value="{{system.secondaries.guotecundariasuno.arcana.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.arcana.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.atletismo.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.atletismo'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.atletismo"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.atletismo.base.value"
+               value="{{system.secondaries.guotecundariasuno.atletismo.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.atletismo.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.engaño.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.engaño'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.engaño"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.engaño.base.value"
+               value="{{system.secondaries.guotecundariasuno.engaño.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.engaño.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.historia.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.historia'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.historia"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.historia.base.value"
+               value="{{system.secondaries.guotecundariasuno.historia.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.historia.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasuno.ingenieria.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasuno.ingenieria'}}">
+          {{localize "anima.ui.secondaries.guotecundariasuno.ingenieria"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasuno.ingenieria.base.value"
+               value="{{system.secondaries.guotecundariasuno.ingenieria.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasuno.ingenieria.final.value}}</span>
+      </div>
+    </div>
+
+    {{!-- Group 2: guotecundariasdos --}}
+    <div class="v2-skill-group">
+      <div class="v2-skill-group__title">{{localize "anima.ui.secondaries.guotecundariasdos.title"}}</div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasdos.investigacion.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasdos.investigacion'}}">
+          {{localize "anima.ui.secondaries.guotecundariasdos.investigacion"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasdos.investigacion.base.value"
+               value="{{system.secondaries.guotecundariasdos.investigacion.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasdos.investigacion.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasdos.medicina.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasdos.medicina'}}">
+          {{localize "anima.ui.secondaries.guotecundariasdos.medicina"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasdos.medicina.base.value"
+               value="{{system.secondaries.guotecundariasdos.medicina.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasdos.medicina.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasdos.naturaleza.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasdos.naturaleza'}}">
+          {{localize "anima.ui.secondaries.guotecundariasdos.naturaleza"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasdos.naturaleza.base.value"
+               value="{{system.secondaries.guotecundariasdos.naturaleza.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasdos.naturaleza.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasdos.percepcion.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasdos.percepcion'}}">
+          {{localize "anima.ui.secondaries.guotecundariasdos.percepcion"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasdos.percepcion.base.value"
+               value="{{system.secondaries.guotecundariasdos.percepcion.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasdos.percepcion.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasdos.perspicacia.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasdos.perspicacia'}}">
+          {{localize "anima.ui.secondaries.guotecundariasdos.perspicacia"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasdos.perspicacia.base.value"
+               value="{{system.secondaries.guotecundariasdos.perspicacia.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasdos.perspicacia.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasdos.persuasion.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasdos.persuasion'}}">
+          {{localize "anima.ui.secondaries.guotecundariasdos.persuasion"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasdos.persuasion.base.value"
+               value="{{system.secondaries.guotecundariasdos.persuasion.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasdos.persuasion.final.value}}</span>
+      </div>
+
+      <div class="v2-skill-row">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{system.secondaries.guotecundariasdos.sigilo.final.value}}"
+              data-label="{{localize 'anima.ui.secondaries.guotecundariasdos.sigilo'}}">
+          {{localize "anima.ui.secondaries.guotecundariasdos.sigilo"}}
+        </span>
+        <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+               name="system.secondaries.guotecundariasdos.sigilo.base.value"
+               value="{{system.secondaries.guotecundariasdos.sigilo.base.value}}">
+        <span class="v2-skill-row__final">{{system.secondaries.guotecundariasdos.sigilo.final.value}}</span>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Special Skills --}}
+  <div class="v2-card" style="margin-top: var(--space-3);">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.secondaries.secondarySpecialSkills.title"}}</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-secondary-special-skill" title="{{localize 'anima.ui.add'}}">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" style="padding: 0;">
+      <table class="v2-table">
+        <thead>
+          <tr>
+            <th>{{localize "anima.ui.name"}}</th>
+            <th style="width: 60px;">{{localize "anima.ui.base"}}</th>
+            <th style="width: 60px;">{{localize "anima.ui.final"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each system.secondaries.secondarySpecialSkills as |skill|}}
+          <tr data-item-id="{{skill._id}}">
+            <td>
+              <span class="rollable"
+                    data-roll="1d100xa"
+                    data-rollvalue="{{skill.system.final.value}}"
+                    data-label="{{skill.name}}">
+                {{skill.name}}
+              </span>
+            </td>
+            <td>
+              <input type="number" class="v2-table__input v2-text-center"
+                     name="system.dynamic.secondarySpecialSkills.{{skill._id}}.system.base.value"
+                     value="{{skill.system.base.value}}">
+            </td>
+            <td class="v2-text-center v2-font-bold">{{skill.system.final.value}}</td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="3" class="v2-text-center v2-text-muted">{{localize "anima.ui.noItems"}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

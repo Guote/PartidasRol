@@ -1,0 +1,35 @@
+{{!--
+  Resource Bar Component
+
+  Parameters:
+  - label: Display label
+  - color: Color variant (hp, fatigue, zeon, ki, psychic, destiny)
+  - current: Current value
+  - currentName: Input name for current value
+  - max: Maximum value
+  - maxName: Input name for max value
+  - showSacrificed: Whether to show sacrificed field
+  - sacrificed: Sacrificed value
+  - sacrificedName: Input name for sacrificed value
+  - sacrificedLabel: Label for sacrificed field
+--}}
+<div class="v2-resource v2-resource--{{color}}">
+  <span class="v2-resource__label">{{label}}</span>
+  <div class="v2-resource__values">
+    <input type="number" class="v2-resource__input"
+           name="{{currentName}}"
+           value="{{current}}">
+    <span class="v2-resource__separator">/</span>
+    <input type="number" class="v2-resource__input"
+           name="{{maxName}}"
+           value="{{max}}">
+    {{#if showSacrificed}}
+    <div class="v2-resource__sacrificed">
+      <span class="v2-resource__sacrificed-label">{{sacrificedLabel}}</span>
+      <input type="number" class="v2-resource__sacrificed-input"
+             name="{{sacrificedName}}"
+             value="{{sacrificed}}">
+    </div>
+    {{/if}}
+  </div>
+</div>

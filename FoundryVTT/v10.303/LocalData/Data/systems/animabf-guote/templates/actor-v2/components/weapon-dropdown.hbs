@@ -1,0 +1,9 @@
+{{!-- Weapon Dropdown for Initiative Selection --}}
+<select name="system.combat.selectedWeaponId.value" class="v2-initiative__weapon-select">
+  <option value="">-- {{localize "anima.ui.combat.weapon.manageabilityType.title"}} --</option>
+  {{#each system.combat.weapons as |weapon|}}
+  <option value="{{weapon._id}}" {{#if (is 'eq' weapon._id ../system.combat.selectedWeaponId.value)}}selected{{/if}}>
+    {{weapon.name}} ({{#if (gte weapon.system.initiative.final.value 0)}}+{{/if}}{{weapon.system.initiative.final.value}})
+  </option>
+  {{/each}}
+</select>

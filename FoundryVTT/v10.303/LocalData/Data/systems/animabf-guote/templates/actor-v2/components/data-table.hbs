@@ -1,0 +1,47 @@
+{{!--
+  Data Table Component - A table for displaying item lists
+
+  Parameters:
+  - tableId: Unique table ID
+  - headers: Array of header objects {label, width}
+  - addButtonData: Data attribute for add button
+  - addButtonLabel: Tooltip for add button
+  - emptyMessage: Message when no items
+
+  Usage: Use with @partial-block for row content
+--}}
+<div class="v2-card">
+  <div class="v2-card__header">
+    <div class="v2-card__header-title">
+      <span>{{title}}</span>
+    </div>
+    {{#if addButtonData}}
+    <div class="v2-card__header-actions">
+      <button type="button" class="v2-card__header-btn" data-on-click="{{addButtonData}}" title="{{addButtonLabel}}">
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+    {{/if}}
+  </div>
+  <div class="v2-card__body" style="padding: 0;">
+    <table class="v2-table" id="{{tableId}}">
+      {{#if headers}}
+      <thead>
+        <tr>
+          {{#each headers}}
+          <th {{#if this.width}}style="width: {{this.width}}"{{/if}}>{{this.label}}</th>
+          {{/each}}
+        </tr>
+      </thead>
+      {{/if}}
+      <tbody>
+        {{> @partial-block}}
+      </tbody>
+    </table>
+    {{#if showEmpty}}
+    <div style="padding: var(--space-3); text-align: center; color: var(--abf-text-muted);">
+      {{emptyMessage}}
+    </div>
+    {{/if}}
+  </div>
+</div>

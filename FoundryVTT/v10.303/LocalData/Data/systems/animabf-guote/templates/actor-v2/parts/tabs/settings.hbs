@@ -1,0 +1,125 @@
+{{!-- Settings Tab --}}
+<div class="v2-tab-settings">
+  {{!-- Tab Visibility --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <span>{{localize "anima.ui.settings.tabVisibility.title"}}</span>
+    </div>
+    <div class="v2-card__body">
+      <div class="v2-grid v2-grid--3">
+        <label style="display: flex; align-items: center; gap: var(--space-2);">
+          <input type="checkbox"
+                 name="system.ui.tabVisibility.mystic.value"
+                 {{#if system.ui.tabVisibility.mystic.value}}checked{{/if}}>
+          {{localize "anima.ui.tabs.mystic"}}
+        </label>
+        <label style="display: flex; align-items: center; gap: var(--space-2);">
+          <input type="checkbox"
+                 name="system.ui.tabVisibility.domine.value"
+                 {{#if system.ui.tabVisibility.domine.value}}checked{{/if}}>
+          {{localize "anima.ui.tabs.domine"}}
+        </label>
+        <label style="display: flex; align-items: center; gap: var(--space-2);">
+          <input type="checkbox"
+                 name="system.ui.tabVisibility.psychic.value"
+                 {{#if system.ui.tabVisibility.psychic.value}}checked{{/if}}>
+          {{localize "anima.ui.tabs.psychic"}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Advanced Settings --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <span>{{localize "anima.ui.settings.advancedSettings.title"}}</span>
+    </div>
+    <div class="v2-card__body">
+      <div class="v2-grid v2-grid--2" style="gap: var(--space-3);">
+        <div>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.openRolls.title"}}</label>
+          <select class="v2-select" name="system.general.settings.openRolls.value">
+            <option value="0" {{#if (is 'eq' system.general.settings.openRolls.value 0)}}selected{{/if}}>{{localize "anima.ui.settings.openRolls.never"}}</option>
+            <option value="90" {{#if (is 'eq' system.general.settings.openRolls.value 90)}}selected{{/if}}>90+</option>
+            <option value="91" {{#if (is 'eq' system.general.settings.openRolls.value 91)}}selected{{/if}}>91+</option>
+          </select>
+        </div>
+        <div>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.fumbles.title"}}</label>
+          <select class="v2-select" name="system.general.settings.fumbles.value">
+            <option value="0" {{#if (is 'eq' system.general.settings.fumbles.value 0)}}selected{{/if}}>{{localize "anima.ui.settings.fumbles.never"}}</option>
+            <option value="1" {{#if (is 'eq' system.general.settings.fumbles.value 1)}}selected{{/if}}>1-3</option>
+            <option value="2" {{#if (is 'eq' system.general.settings.fumbles.value 2)}}selected{{/if}}>1-5</option>
+          </select>
+        </div>
+        <div>
+          <label style="display: flex; align-items: center; gap: var(--space-2);">
+            <input type="checkbox"
+                   name="system.general.settings.openOnDoubles.value"
+                   {{#if system.general.settings.openOnDoubles.value}}checked{{/if}}>
+            {{localize "anima.ui.settings.openOnDoubles.title"}}
+          </label>
+        </div>
+        <div>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.defenseType.title"}}</label>
+          <select class="v2-select" name="system.general.settings.defenseType.value">
+            <option value="" {{#unless system.general.settings.defenseType.value}}selected{{/unless}}>{{localize "anima.ui.settings.defenseType.default"}}</option>
+            <option value="dodge" {{#if (is 'eq' system.general.settings.defenseType.value 'dodge')}}selected{{/if}}>{{localize "anima.ui.combat.baseValues.dodge.title"}}</option>
+            <option value="block" {{#if (is 'eq' system.general.settings.defenseType.value 'block')}}selected{{/if}}>{{localize "anima.ui.combat.baseValues.block.title"}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Active Effects --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <span>Active Effects</span>
+    </div>
+    <div class="v2-card__body">
+      <ol class="items-list effects-list">
+        {{#each effects as |section sid|}}
+        {{#unless section.hidden}}
+        <li class="items-header flexrow" data-effect-type="{{section.type}}">
+          <h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
+        </li>
+
+        {{#if section.info}}
+        <ol class="info">
+          {{#each section.info}}
+          <li class="notification info">{{this}}</li>
+          {{/each}}
+        </ol>
+        {{/if}}
+        <ol class="item-list">
+          {{#each section.effects as |effect|}}
+          <li class="item effect flexrow" data-effect-id="{{effect.id}}" style="display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2); border-bottom: 1px solid var(--abf-border-light);">
+            <div class="item-name effect-name flexrow" style="flex: 1; display: flex; align-items: center; gap: var(--space-2);">
+              <img class="item-image" src="{{effect.icon}}" style="width: 24px; height: 24px; border-radius: var(--radius-sm);" />
+              <h4 style="margin: 0;">{{effect.label}}</h4>
+            </div>
+            <div class="effect-source" style="color: var(--abf-text-muted); font-size: var(--font-size-xs);">{{effect.sourceName}}</div>
+            <div class="effect-duration" style="color: var(--abf-text-muted); font-size: var(--font-size-xs);">{{effect.duration.label}}</div>
+            <div class="item-controls effect-controls flexrow" style="display: flex; gap: var(--space-1);">
+              {{#if @root.editable}}
+              <a class="effect-control" data-action="toggle" title="{{#if effect.disabled}}Enable{{else}}Disable{{/if}}">
+                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+              </a>
+              <a class="effect-control" data-action="edit" title="Edit">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a class="effect-control" data-action="delete" title="Delete">
+                <i class="fas fa-trash"></i>
+              </a>
+              {{/if}}
+            </div>
+          </li>
+          {{/each}}
+        </ol>
+        {{/unless}}
+        {{/each}}
+      </ol>
+    </div>
+  </div>
+</div>

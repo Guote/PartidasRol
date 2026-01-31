@@ -1,0 +1,14 @@
+{{!-- Actor Portrait Component --}}
+<div class="v2-header__portrait">
+  <img src="{{img}}" alt="{{name}}" class="v2-header__portrait-img" data-edit="img" title="{{name}}">
+  <input type="text" name="name" value="{{name}}" class="v2-header__name" placeholder="{{localize 'anima.ui.general.name'}}">
+  <div class="v2-header__level">
+    {{#if system.general.levels.length}}
+      {{#each system.general.levels as |level|}}
+        {{level.name}} {{level.system.level}}{{#unless @last}}, {{/unless}}
+      {{/each}}
+    {{else}}
+      {{localize "anima.ui.general.level.title"}} 0
+    {{/if}}
+  </div>
+</div>

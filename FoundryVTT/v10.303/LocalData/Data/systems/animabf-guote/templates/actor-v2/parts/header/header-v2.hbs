@@ -1,0 +1,26 @@
+{{!-- V2 Header Template --}}
+<header class="v2-header">
+  {{!-- Main Header Row: Portrait, Resources, Sidebar --}}
+  <div class="v2-header__main">
+    {{!-- Left: Actor Portrait --}}
+    {{> "systems/animabf-guote/templates/actor-v2/parts/header/actor-portrait.hbs"}}
+
+    {{!-- Center: Core Resources --}}
+    {{> "systems/animabf-guote/templates/actor-v2/parts/header/core-resources.hbs"}}
+
+    {{!-- Right: Sidebar (Resistances & Modifiers) --}}
+    <div class="v2-header__sidebar">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/header/resistances-compact.hbs"}}
+      {{> "systems/animabf-guote/templates/actor-v2/parts/header/modifiers-display.hbs"}}
+    </div>
+  </div>
+
+  {{!-- Initiative Row --}}
+  {{> "systems/animabf-guote/templates/actor-v2/parts/header/initiative-display.hbs"}}
+
+  {{!-- Dynamic Resources (Ki/Zeon/PP) - Conditional --}}
+  {{> "systems/animabf-guote/templates/actor-v2/parts/header/dynamic-resources.hbs"}}
+
+  {{!-- Quick Actions --}}
+  {{> "systems/animabf-guote/templates/actor-v2/parts/header/quick-actions.hbs"}}
+</header>

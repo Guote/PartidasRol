@@ -1,0 +1,67 @@
+<form class="{{cssClass}} actor-sheet-v2" autocomplete="off">
+  {{!-- Header Section --}}
+  {{> "systems/animabf-guote/templates/actor-v2/parts/header/header-v2.hbs"}}
+
+  {{!-- Tab Navigation --}}
+  <nav class="v2-tabs sheet-tabs tabs" data-group="primary">
+    <a class="v2-tabs__tab item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
+    <a class="v2-tabs__tab item" data-tab="skills">{{localize "anima.ui.tabs.skills"}}</a>
+    <a class="v2-tabs__tab item" data-tab="bio">{{localize "anima.ui.tabs.bio"}}</a>
+    <a class="v2-tabs__tab item" data-tab="inventory">{{localize "anima.ui.tabs.inventory"}}</a>
+    {{#if system.ui.tabVisibility.mystic.value}}
+    <a class="v2-tabs__tab item" data-tab="mystic">{{localize "anima.ui.tabs.mystic"}}</a>
+    {{/if}}
+    {{#if system.ui.tabVisibility.domine.value}}
+    <a class="v2-tabs__tab item" data-tab="domine">{{localize "anima.ui.tabs.domine"}}</a>
+    {{/if}}
+    {{#if system.ui.tabVisibility.psychic.value}}
+    <a class="v2-tabs__tab item" data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>
+    {{/if}}
+    <a class="v2-tabs__tab v2-tabs__tab--icon item" data-tab="settings">
+      <img src="/systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/cog.svg" alt="Settings">
+    </a>
+  </nav>
+
+  {{!-- Tab Content --}}
+  <section class="v2-body sheet-body">
+    {{!-- Combat Tab --}}
+    <div class="v2-body__tab tab combat" data-group="primary" data-tab="combat">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/combat.hbs"}}
+    </div>
+
+    {{!-- Skills Tab --}}
+    <div class="v2-body__tab tab skills" data-group="primary" data-tab="skills">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/skills.hbs"}}
+    </div>
+
+    {{!-- Bio Tab --}}
+    <div class="v2-body__tab tab bio" data-group="primary" data-tab="bio">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/bio.hbs"}}
+    </div>
+
+    {{!-- Inventory Tab --}}
+    <div class="v2-body__tab tab inventory" data-group="primary" data-tab="inventory">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/inventory.hbs"}}
+    </div>
+
+    {{!-- Mystic Tab (Conditional) --}}
+    <div class="v2-body__tab tab mystic" data-group="primary" data-tab="mystic">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/mystic.hbs"}}
+    </div>
+
+    {{!-- Domine Tab (Conditional) --}}
+    <div class="v2-body__tab tab domine" data-group="primary" data-tab="domine">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/domine.hbs"}}
+    </div>
+
+    {{!-- Psychic Tab (Conditional) --}}
+    <div class="v2-body__tab tab psychic" data-group="primary" data-tab="psychic">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/psychic.hbs"}}
+    </div>
+
+    {{!-- Settings Tab --}}
+    <div class="v2-body__tab tab settings" data-group="primary" data-tab="settings">
+      {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/settings.hbs"}}
+    </div>
+  </section>
+</form>

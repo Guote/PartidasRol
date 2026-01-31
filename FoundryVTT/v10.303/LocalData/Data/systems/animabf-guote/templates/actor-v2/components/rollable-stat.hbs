@@ -1,0 +1,32 @@
+{{!--
+  Rollable Stat Component - A stat that can be clicked to roll
+
+  Parameters:
+  - label: Display label
+  - baseValue: Base value (editable)
+  - baseName: Input name for base value
+  - finalValue: Final calculated value
+  - rollData: Roll formula (e.g., "1d100xa")
+  - rollLabel: Label for the roll
+  - showBase: Whether to show base input
+  - inline: Display inline instead of column
+--}}
+<div class="v2-skill-row {{#if inline}}v2-skill-row--inline{{/if}}">
+  <span class="v2-skill-row__name rollable"
+        data-roll="{{rollData}}"
+        data-rollvalue="{{finalValue}}"
+        data-label="{{rollLabel}}">
+    {{label}}
+  </span>
+  {{#if showBase}}
+  <input type="number" class="v2-skill-row__base v2-input v2-input--number"
+         name="{{baseName}}"
+         value="{{baseValue}}">
+  {{/if}}
+  <span class="v2-skill-row__final rollable"
+        data-roll="{{rollData}}"
+        data-rollvalue="{{finalValue}}"
+        data-label="{{rollLabel}}">
+    {{finalValue}}
+  </span>
+</div>
