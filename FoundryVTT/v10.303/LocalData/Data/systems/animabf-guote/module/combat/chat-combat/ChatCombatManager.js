@@ -73,6 +73,10 @@ export class ChatCombatManager {
             if (msg.type === 'chatCombat.promptDefense') {
                 this._handlePromptDefense(msg.payload);
             }
+            // GM-only: Handle card update requests from players
+            if (msg.type === 'chatCombat.requestCardUpdate') {
+                this._handleCardUpdateRequest(msg.payload);
+            }
         });
     }
 
@@ -340,19 +344,40 @@ export class ChatCombatManager {
             effectiveTA: effectiveTA
         };
 
-        // Add defender result to the attack card (deletes old, creates new at bottom)
-        // Pass sessionId so it can find the current message even if ID changed
-        const newMessageId = await ChatAttackCard.addDefenderResult(attackMessageId, defenderToken, result, sessionId);
+        // Check if we can update the card directly (GM or message owner)
+        const attackMessage = game.messages.get(attackMessageId) ||
+            game.messages.get(ChatAttackCard._sessionMap.get(sessionId));
 
-        // Notify other clients
-        game.socket.emit('system.animabf-guote', {
-            type: 'chatCombat.defenseAdded',
-            payload: {
-                attackMessageId: newMessageId,
-                sessionId: sessionId,
-                defenderTokenId: defenderToken.id
-            }
-        });
+        const canUpdateDirectly = game.user.isGM ||
+            (attackMessage && attackMessage.isAuthor);
+
+        if (canUpdateDirectly) {
+            // We have permission - update directly
+            const newMessageId = await ChatAttackCard.addDefenderResult(attackMessageId, defenderToken, result, sessionId);
+
+            // Notify other clients
+            game.socket.emit('system.animabf-guote', {
+                type: 'chatCombat.defenseAdded',
+                payload: {
+                    attackMessageId: newMessageId,
+                    sessionId: sessionId,
+                    defenderTokenId: defenderToken.id
+                }
+            });
+        } else {
+            // Request GM to update the card for us
+            game.socket.emit('system.animabf-guote', {
+                type: 'chatCombat.requestCardUpdate',
+                payload: {
+                    attackMessageId,
+                    sessionId,
+                    defenderTokenId: defenderToken.id,
+                    defenderTokenName: defenderToken.name,
+                    defenderTokenImg: defenderToken.texture?.src || defenderToken.actor?.img,
+                    result
+                }
+            });
+        }
     }
 
     /**
@@ -446,5 +471,43 @@ export class ChatCombatManager {
     _handleDamageUndone(payload) {
         // Re-render chat to update button states
         ui.chat.render();
+    }
+
+    /**
+     * Handle card update request from a player (GM only)
+     * Players can't delete/recreate chat messages, so they request the GM to do it
+     * @param {Object} payload
+     */
+    async _handleCardUpdateRequest(payload) {
+        // Only GM should handle this
+        if (!game.user.isGM) return;
+
+        const { attackMessageId, sessionId, defenderTokenId, defenderTokenName, defenderTokenImg, result } = payload;
+
+        // Create a mock token document with the necessary info
+        const defenderTokenData = {
+            id: defenderTokenId,
+            name: defenderTokenName,
+            texture: { src: defenderTokenImg },
+            actor: { img: defenderTokenImg }
+        };
+
+        // Update the card
+        const newMessageId = await ChatAttackCard.addDefenderResult(
+            attackMessageId,
+            defenderTokenData,
+            result,
+            sessionId
+        );
+
+        // Notify all clients that defense was added
+        game.socket.emit('system.animabf-guote', {
+            type: 'chatCombat.defenseAdded',
+            payload: {
+                attackMessageId: newMessageId,
+                sessionId: sessionId,
+                defenderTokenId: defenderTokenId
+            }
+        });
     }
 }
