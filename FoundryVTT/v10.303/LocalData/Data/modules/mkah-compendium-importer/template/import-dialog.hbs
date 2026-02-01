@@ -1,0 +1,78 @@
+{{#*inline "tree"}}
+{{#if folders}}
+<ul class='folders'>
+	{{#each folders}}
+	<li class='folder' data-folder-id='{{id}}'>
+		<h3>
+			<i class="fas fa-solid fa-folder-open"></i>
+			<span class='name'>{{name}}</span>
+		</h3>
+		{{> "tree" this}}
+	</li>
+	{{/each}}
+</ul>
+{{/if}}
+
+{{#if items}}
+<ul class='items'>
+	{{#each items}}
+	<li class='document'
+		data-document-id='{{id}}' data-document-type="{{type}}" data-document-kind="{{documentName}}"
+		data-tooltip='{{localize "CompendiumImporter.DocumentType" type=type}}'>
+		<img src='{{img}}'>
+		<h4 class='name'>{{name}}</h4>
+	</li>
+	{{/each}}
+</ul>
+{{/if}}
+{{/inline}}
+
+<form autocomplete='off'>
+	<h2>{{localize 'CompendiumImporter.Metadata'}}</h2>
+	<h3>{{localize 'CompendiumImporter.Compendium'}}</h3>
+	<div class='metadata'>
+		<label>{{localize 'CompendiumImporter.Label'}}</label>
+		<input class='name {{#if nameConflict}}warning name-conflict{{/if}}' type='text' value='{{pack.label}}' name='label' data-dtype='String'>
+
+		<label>{{localize 'Type'}}</label>
+		<input class='type readonly' type='text' value='{{pack.type}}' readonly>
+	</div>
+	<h3>{{localize 'CompendiumImporter.Source'}}</h3>
+	<div class='metadata'>
+		<label>{{localize 'System'}}</label>
+		<input class='system {{#if wrongSystem}}warning{{/if}} readonly' type='text' value='{{data.source.system}}' readonly>
+		<label>{{localize 'CompendiumImporter.Version'}}</label>
+		<input class='sysVersion readonly' type='text' value='{{data.source.version.system}}' readonly>
+
+		<label>{{localize 'World'}}</label>
+		<input class='world readonly' value='{{data.source.world}}' type='text' placeholder='{{localize 'CompendiumImporter.UnknownWorld'}}' readonly>
+		<label>{{localize 'CompendiumImporter.Core'}}</label>
+		<input class='coreVersion readonly' type='text' value='{{data.source.version.core}}' readonly>
+	</div>
+
+	<h3>{{localize 'CompendiumImporter.Options'}}</h3>
+	<div class='options'>
+		<label>
+			<input type='checkbox' name='keepId' class='keepId' data-dtype='Boolean' {{checked keepId}}>
+			{{localize 'CompendiumImporter.KeepIDs'}}
+		</label>
+	
+		<label>
+			<input type='checkbox' name='ignoreSystem' class='ignoreSystem {{#unless wrongSystem}}readonly{{/unless}}' data-dtype='Boolean' {{checked ignoreSystem}} {{#unless wrongSystem}}disabled{{/unless}}>
+			{{localize 'CompendiumImporter.IgnoreSystem'}}
+			{{#if ignoreSystem}}
+			<i data-tooltip='CompendiumImporter.UnsafeImport' class="fas fa-solid fa-triangle-exclamation"></i>
+			{{/if}}
+		</label>
+	</div>
+
+	<h2>{{localize 'CompendiumImporter.Documents'}}</h2>
+	<section class='tree'>
+		{{> "tree" tree}}
+	</section>
+
+	<button type='button' class='submit' {{#if disableSubmit}}disabled data-tooltip="CompendiumImporter.Conflict"{{/if}}>
+		<i class="fas fa-solid fa-atlas"></i>
+		{{localize 'COMPENDIUM.Create'}}
+	</button>
+</form>

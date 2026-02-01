@@ -9,6 +9,7 @@ import { ABFItems } from "../items/ABFItems.js";
 import { ABFDialogs } from "../dialogs/ABFDialogs.js";
 import { ABFSystemName } from "../../animabf-guote.name.js";
 import { getFormula } from "../rolls/utils/getFormula.js";
+import ABFSpellbook from "./ABFSpellbook.js";
 export default class ABFActorSheetV2 extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
@@ -232,6 +233,12 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const action = e.currentTarget.dataset.action;
       this._onQuickAction(action);
     });
+
+    // Spellbook button (opens separate window)
+    html.find('[data-action="open-spellbook"]').click((e) => {
+      e.preventDefault();
+      ABFSpellbook.openForActor(this.actor);
+    });
   }
 
   /**
@@ -245,6 +252,9 @@ export default class ABFActorSheetV2 extends ActorSheet {
         break;
       case "half-rest":
         await this._handleHalfRest();
+        break;
+      case "import-spells":
+        await this._handleImportSpells();
         break;
       default:
         console.warn(`Unknown quick action: ${action}`);
@@ -291,6 +301,80 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
     // Notify the user
     ui.notifications.info(game.i18n.localize("anima.notifications.halfRested"));
+  }
+
+  /**
+   * Handle import spells action - imports spells from compendium based on sphere levels
+   */
+  async _handleImportSpells() {
+    // Define sphere-to-via mapping (only the 11 direct sphere matches)
+    const sphereVias = ['air', 'creation', 'darkness', 'destruction', 'earth',
+                        'essence', 'fire', 'illusion', 'light', 'necromancy', 'water'];
+
+    // Get character's sphere levels
+    const spheres = this.actor.system.mystic.magicLevel.spheres;
+
+    // Get existing spell names to avoid duplicates
+    const existingSpellNames = new Set(
+      this.actor.items.filter(i => i.type === 'spell').map(i => i.name)
+    );
+
+    // Get magic compendium
+    const pack = game.packs.get('animabf-guote.magic');
+    if (!pack) {
+      ui.notifications.error(game.i18n.localize("anima.ui.mystic.importSpells.error.noCompendium"));
+      return;
+    }
+
+    // Get all spells from compendium
+    const allSpells = await pack.getDocuments();
+
+    // Filter spells by via and level
+    const spellsToImport = allSpells.filter(spell => {
+      const via = spell.system.via?.value;
+      const level = spell.system.level?.value || 0;
+
+      // Check if via is one of the sphere vias
+      if (!sphereVias.includes(via)) return false;
+
+      // Check if character has sufficient level in that sphere
+      const sphereLevel = spheres[via]?.value || 0;
+      if (level > sphereLevel) return false;
+
+      // Check if spell already exists
+      if (existingSpellNames.has(spell.name)) return false;
+
+      return true;
+    });
+
+    if (spellsToImport.length === 0) {
+      ui.notifications.info(game.i18n.localize("anima.ui.mystic.importSpells.noSpells"));
+      return;
+    }
+
+    // Confirm import
+    const confirmed = await Dialog.confirm({
+      title: game.i18n.localize("anima.ui.mystic.importSpells.confirm.title"),
+      content: game.i18n.format("anima.ui.mystic.importSpells.confirm.content", {
+        count: spellsToImport.length
+      })
+    });
+
+    if (!confirmed) return;
+
+    // Create embedded items
+    const itemData = spellsToImport.map(spell => ({
+      type: 'spell',
+      name: spell.name,
+      img: spell.img,
+      system: spell.system
+    }));
+
+    await this.actor.createEmbeddedDocuments('Item', itemData);
+
+    ui.notifications.info(game.i18n.format("anima.ui.mystic.importSpells.success", {
+      count: spellsToImport.length
+    }));
   }
   /**
    * Handle dragstart events for items and rollable abilities

@@ -1,0 +1,35 @@
+{
+	"id": "mkah-compendium-importer",
+	"name": "mkah-compendium-importer",
+	"title": "Mana's Compendium Importer",
+	"description": "Import & export compendiums.",
+	"version": "2.3.0",
+	"authors": [
+		{
+			"name": "MKAh",
+			"url": "https://gitlab.com/mkahvi",
+			"discord": "manaflower",
+			"ko-fi": "mkahvi"
+		}
+	],
+	"esmodules": ["compendium-importer.mjs"],
+	"styles": ["compendium-importer.css"],
+	"languages": [
+		{
+			"lang": "en",
+			"path": "lang/en.json"
+		}
+	],
+	"minimumCoreVersion": 10,
+	"compatibility": {
+		"minimum": 10,
+		"verified": 12
+	},
+	"license": "https://gitlab.com/mkahvi/fvtt-compendium-importer/-/raw/main/LICENSE",
+	"readme": "https://gitlab.com/mkahvi/fvtt-compendium-importer/-/raw/main/README.md",
+	"changelog": "https://gitlab.com/mkahvi/fvtt-compendium-importer/-/raw/main/CHANGELOG.md",
+	"manifest": "https://gitlab.com/mkahvi/fvtt-compendium-importer/-/releases/permalink/latest/downloads/module.json",
+	"download": "https://gitlab.com/mkahvi/fvtt-compendium-importer/-/releases/2.3.0/downloads/compendium-importer.zip",
+	"url": "https://gitlab.com/mkahvi/fvtt-compendium-importer",
+	"bugs": "https://gitlab.com/mkahvi/fvtt-compendium-importer/-/issues"
+}
