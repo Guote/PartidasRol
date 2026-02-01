@@ -1,0 +1,59 @@
+<form>
+  <div class='form-group'>
+    <div>
+      <div class='common-titled-input'>
+        <p class='label'>{{localize 'anima.macros.createCharacter.dialog.name'}}</p>
+        <div class='input-container'>
+          <input name='character-name' type='text' class='input' value='Nuevo Personaje' />
+        </div>
+      </div>
+
+      <div class='common-titled-input'>
+        <p class='label'>{{localize 'anima.macros.createCharacter.dialog.level'}}</p>
+        <div class='input-container'>
+          <input name='character-level' type='number' class='input' value='1' min='0' />
+        </div>
+      </div>
+
+      <div class='common-titled-input'>
+        <p class='label'>{{localize 'anima.macros.createCharacter.dialog.lpMultiplier'}}</p>
+        <div class='input-container'>
+          <input name='lp-multiplier' type='number' class='input' value='1' min='1' step='1' />
+        </div>
+      </div>
+
+      <hr />
+      <p style="font-weight: bold; margin-bottom: 8px;">{{localize 'anima.macros.createCharacter.dialog.subsystems'}}</p>
+
+      <div class='common-titled-input' style="display: flex; align-items: center; gap: 8px;">
+        <input name='subsystem-mystic' type='checkbox' id='subsystem-mystic' />
+        <label for='subsystem-mystic'>{{localize 'anima.macros.createCharacter.dialog.mystic'}}</label>
+      </div>
+
+      <div class='common-titled-input' style="display: flex; align-items: center; gap: 8px;">
+        <input name='subsystem-psychic' type='checkbox' id='subsystem-psychic' />
+        <label for='subsystem-psychic'>{{localize 'anima.macros.createCharacter.dialog.psychic'}}</label>
+      </div>
+
+      <div class='common-titled-input' style="display: flex; align-items: center; gap: 8px;">
+        <input name='subsystem-domine' type='checkbox' id='subsystem-domine' />
+        <label for='subsystem-domine'>{{localize 'anima.macros.createCharacter.dialog.domine'}}</label>
+      </div>
+
+      <hr />
+      <p style="font-weight: bold; margin-bottom: 8px;">{{localize 'anima.macros.createCharacter.dialog.equipment'}}</p>
+
+      <div class='common-titled-input'>
+        <p class='label'>{{localize 'anima.macros.createCharacter.dialog.armor'}}</p>
+        <div class='input-container'>
+          <select name='selected-armor' class='input' style="width: 100%;">
+            <option value="">{{localize 'anima.macros.createCharacter.dialog.noArmor'}}</option>
+            {{#each armors}}
+              <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

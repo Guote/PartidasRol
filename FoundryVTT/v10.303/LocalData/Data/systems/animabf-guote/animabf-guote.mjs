@@ -12,6 +12,8 @@ import ABFItem from './module/items/ABFItem.js';
 import { registerCombatWebsocketRoutes } from './module/combat/websocket/registerCombatWebsocketRoutes.js';
 import { attachCustomMacroBar } from './utils/attachCustomMacroBar.js';
 import { ChatCombatManager } from './module/combat/chat-combat/ChatCombatManager.js';
+import { ABFMacros } from './module/macros/ABFMacros.js';
+import { registerMasaHooks } from './module/actor/hooks/registerMasaHooks.js';
 /* ------------------------------------ */
 /* Initialize system */
 /* ------------------------------------ */
@@ -55,9 +57,13 @@ Hooks.once('setup', () => {
 Hooks.once('ready', () => {
     registerCombatWebsocketRoutes();
     attachCustomMacroBar();
+    registerMasaHooks();
 
     // Initialize chat-based combat system
     window.ChatCombat = new ChatCombatManager();
+
+    // Expose macros globally for GM scripts
+    window.ABFMacros = ABFMacros;
 });
 // Add any additional hooks if necessary
 // This function allow us to use xRoot in templates to extract the root object in Handlebars template

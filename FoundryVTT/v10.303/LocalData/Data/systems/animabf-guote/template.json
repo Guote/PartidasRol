@@ -18,6 +18,12 @@
           "dolor": 0
         }
       },
+      "masa": {
+        "isMasa": false,
+        "totalMembers": 0,
+        "lpPerMember": 0,
+        "livingMembers": 0
+      },
       "general": {
         "settings": {
           "openRolls": { "value": 0 },
@@ -119,7 +125,7 @@
           "willPower": { "value": 5, "mod": 0 }
         },
         "secondaries": {
-          "lifePoints": { "value": 100, "max": 100 },
+          "lifePoints": { "value": 100, "max": 100, "lpMultiplier": 1 },
           "initiative": { "base": { "value": 0 }, "final": { "value": 0 } },
           "fatigue": { "value": 5, "max": 5 },
           "regenerationType": {

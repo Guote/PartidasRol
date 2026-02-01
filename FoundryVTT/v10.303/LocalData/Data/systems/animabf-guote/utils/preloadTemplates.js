@@ -4,6 +4,7 @@ export const preloadTemplates = () => {
   const templatePaths = [
     Templates.Dialog.ModDialog,
     Templates.Dialog.DamageCalculator,
+    Templates.Dialog.CreateCharacterTemplate,
     Templates.Dialog.Combat.CombatAttackDialog.main,
     Templates.Dialog.Combat.CombatAttackDialog.parts.combat,
     Templates.Dialog.Combat.CombatAttackDialog.parts.mystic,

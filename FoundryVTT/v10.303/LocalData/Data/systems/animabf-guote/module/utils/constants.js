@@ -3,6 +3,7 @@ export const Templates = {
     Dialog: {
         ModDialog: `systems/${ABFSystemName}/templates/dialog/mod-dialog.html`,
         DamageCalculator: `systems/${ABFSystemName}/templates/dialog/damage-calculator.hbs`,
+        CreateCharacterTemplate: `systems/${ABFSystemName}/templates/dialog/create-character-template.hbs`,
         Combat: {
             CombatAttackDialog: {
                 main: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/combat-attack-dialog.hbs`,
