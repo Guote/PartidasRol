@@ -45,12 +45,31 @@
       "path": "packs/invocaciones-animabf-guote.db",
       "system": "animabf-guote",
       "private": false,
+      "flags": {}
+    },
+    {
+      "label": "NPC",
+      "type": "Actor",
+      "name": "npc",
+      "path": "packs/npc.db",
+      "system": "animabf-guote",
+      "private": false,
       "flags": {},
       "package": "world",
-      "id": "world.invocaciones-animabf-guote",
+      "id": "world.npc",
       "packageType": "world",
       "packageName": "Gaia-APS-v10",
       "index": []
+    },
+    {
+      "label": "Playlists",
+      "type": "Playlist",
+      "name": "playlists",
+      "path": "packs/playlists.db",
+      "system": "animabf-guote",
+      "private": false,
+      "flags": {},
+      "package": "world"
     }
   ],
   "system": "animabf-guote",
