@@ -4,7 +4,7 @@
 {"name":"Exploration/ Tense","type":"Playlist","sorting":"a","sort":400000,"color":null,"flags":{"scene-packer":{"hash":"092d7d720cd011ae34c34b8aa532633228a85061"}},"_id":"2DaLVKRwXTwMsxoh","folder":"GGUmXEXIbC8JrvHW","description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1695643456651,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
 {"name":"Familia","sorting":"a","folder":"FJ0ABOrrRGewPpzn","type":"Actor","description":"","sort":600000,"color":"#5c0000","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1753866854931,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"2WbHJNtTAxDlKFV0"}
 {"name":"Acto III+ - La Torre de Noah","sorting":"a","folder":"yiQBFwrW8NLDeSFy","type":"Playlist","description":"","sort":100000,"color":"#7308ba","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710883732,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"2ml9eEy9FK70lB6t"}
-{"name":"Curated Location Playlists","sorting":"m","folder":null,"type":"Playlist","description":"","sort":100000,"color":"#60a960","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710842293,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"37AUvCnR1oFaBIoz"}
+{"name":"Curated Location Playlists","sorting":"m","folder":null,"type":"Playlist","description":"","sort":200000,"color":"#60a960","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"37AUvCnR1oFaBIoz"}
 {"_id":"3J5TVjCG41Zkg1RV","name":"Drake","type":"Actor","sorting":"a","sort":600000,"color":"#b5bf69","flags":{"scene-packer":{"hash":"bacf63bca7f9b9b6a33d5e92eb57aa44ec6b2509"}},"folder":"J5Bc8QzPCnvSGEKw","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"_id":"3oRhhhbsyLpvnwTR","name":"Octopath Traveller","type":"Playlist","sorting":"a","sort":600000,"color":"#0a20cd","flags":{},"folder":"eax0sEobDDB0UIW1","description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1696021671829,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
 {"name":"13","type":"Actor","sorting":"a","sort":0,"color":null,"flags":{},"_id":"4DPftsE9V5Q2nwpW","folder":"iuUavpvdc4tATE6l","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
@@ -32,7 +32,7 @@
 {"name":"7","type":"Actor","sorting":"a","sort":0,"color":null,"flags":{},"_id":"BkGhOyOzNpubnlT0","folder":"iuUavpvdc4tATE6l","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"_id":"BkjuE439ZndLunEJ","name":"Abel","type":"Actor","sorting":"a","sort":100000,"color":"#cfcfcf","flags":{},"folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1712927273142,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
 {"name":"Themes","sorting":"a","folder":"GGUmXEXIbC8JrvHW","type":"Playlist","description":"","sort":0,"color":null,"flags":{},"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null},"_id":"CRcrXhXwlRzqzoCf"}
-{"name":"Combat","sorting":"m","folder":null,"type":"Playlist","description":"","sort":200000,"color":"#f71735","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710770846,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"DH5omvaULyqw3Tes"}
+{"name":"Combat","sorting":"m","folder":null,"type":"Playlist","description":"","sort":300000,"color":"#f71735","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"DH5omvaULyqw3Tes"}
 {"_id":"EAWozD8EQq2qsZ7F","name":"Data","type":"JournalEntry","sorting":"a","sort":0,"color":null,"flags":{},"folder":"6hQGSEJvDCDi81RO","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"name":"Místicos","sorting":"m","type":"Actor","color":"#000000","folder":"6RcHvKwCYfdFSQwI","description":"","sort":300000,"flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1696031198399,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"FA97VGd5tOxS7c8q"}
 {"_id":"FJ0ABOrrRGewPpzn","name":"Jugadores","type":"Actor","sorting":"m","sort":0,"color":"#b12b2b","flags":{},"folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1717691510754,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
@@ -99,7 +99,7 @@
 {"name":"SteelRat RPGMapShare","type":"Scene","sorting":"a","sort":0,"flags":{"scene-packer":{"hash":"9695006bb06ef5bc5cbc7103c06cd9beb7e4b0c4"}},"_id":"cyWlwiNOeq6q9Bdo","folder":"U5YpfxOe50aETvIW","description":"","color":null,"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"_id":"dIAJJY3TOr1hXZZS","name":"Summons, útiles","type":"Actor","sorting":"a","sort":200000,"color":"#df4e4e","flags":{},"folder":"FJ0ABOrrRGewPpzn","description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1730573562200,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
 {"_id":"dR4iKyBkx21Ng0rx","name":"Corvinus","type":"Actor","sorting":"a","sort":100000,"color":"#b5593b","flags":{},"folder":"zpZ7V6jCJEjrJCc9","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
-{"name":"Moods (Puntual)","sorting":"a","folder":null,"type":"Playlist","description":"","sort":450000,"color":"#9ec1cf","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710846493,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"db0SfFIAYk94gZtY"}
+{"name":"Moods (Puntual)","sorting":"a","folder":null,"type":"Playlist","description":"","sort":500000,"color":"#9ec1cf","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"db0SfFIAYk94gZtY"}
 {"name":"Data","type":"JournalEntry","sorting":"a","sort":0,"color":null,"flags":{},"_id":"dcvmYNmoNtMYUbhH","folder":"6pbGz5M6yLTcD4dX","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"_id":"dmKl1QP4Heiod9Rr","name":"Ches","type":"Actor","sorting":"a","sort":400000,"color":"#929b55","flags":{"scene-packer":{"hash":"44f7c75fe2341264f87da0fa11b5ef7397c66ce3"}},"folder":"J5Bc8QzPCnvSGEKw","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"name":"Games","sorting":"a","folder":"il0YALlGrD6ZsYl6","type":"Playlist","description":"","sort":100000,"color":"#25bb43","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710743930,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"eax0sEobDDB0UIW1"}
@@ -115,13 +115,13 @@
 {"name":"La Torre de Noah","sorting":"a","folder":null,"type":"Scene","description":"","sort":100000,"color":"#6800ad","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1702307597216,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"iFbtEzwbUAxJPRb8"}
 {"name":"Main Antagonists","sorting":"m","folder":null,"type":"Actor","description":"","sort":0,"color":null,"flags":{},"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null},"_id":"iabojShItnGNL5FB"}
 {"name":"Data","type":"JournalEntry","sorting":"a","sort":0,"color":null,"flags":{},"_id":"ieJD2KSjvPLaGrDq","folder":"0itjyiNfEUrwM4UY","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
-{"name":"Library/ Building Blocks","type":"Playlist","sorting":"m","sort":625000,"color":"#787878","flags":{},"_id":"il0YALlGrD6ZsYl6","folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710896648,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
+{"name":"Library/ Building Blocks","type":"Playlist","sorting":"m","sort":700000,"color":"#787878","flags":{},"_id":"il0YALlGrD6ZsYl6","folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
 {"_id":"iuUavpvdc4tATE6l","name":"Criaturas","type":"Actor","sorting":"a","sort":575000,"color":"#06891c","flags":{},"folder":"UtEYrTNXFgYvuV1F","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"name":"6","type":"Actor","sorting":"a","sort":0,"color":null,"flags":{},"_id":"jE23ENvfDr28HVL1","folder":"iuUavpvdc4tATE6l","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"name":"Baileywiki","type":"Scene","sorting":"a","sort":0,"flags":{},"_id":"jiZeRx8LW1dmd1av","folder":"U5YpfxOe50aETvIW","description":"","color":null,"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"name":"Harvestella","sorting":"a","folder":"eax0sEobDDB0UIW1","type":"Playlist","description":"","sort":0,"color":"#497bdf","flags":{},"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null},"_id":"jpbnWLPzvJpzPzPd"}
 {"name":"9","type":"Actor","sorting":"a","sort":0,"color":null,"flags":{},"_id":"jrI2ZfWAXm9ql5Og","folder":"iuUavpvdc4tATE6l","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
-{"name":"Ambience/ Soundboard","sorting":"a","folder":null,"type":"Playlist","description":"","sort":0,"color":"#0a804d","flags":{},"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null},"_id":"kSbYyTu4fJB3DOmD"}
+{"name":"Ambience/ Soundboard","sorting":"a","folder":null,"type":"Playlist","description":"","sort":100000,"color":"#0a804d","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"kSbYyTu4fJB3DOmD"}
 {"_id":"kfeY14JYSsPDBDmN","name":"Wildcards por nivel","type":"Actor","sorting":"a","sort":775000,"color":"#808080","flags":{},"folder":"UtEYrTNXFgYvuV1F","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"_id":"kssIKPsQhBbiqimu","name":"Kore - Reina Bruja (Leviathan)","type":"Actor","sorting":"a","sort":700000,"color":"#929b55","flags":{"scene-packer":{"hash":"39c59f5f633cd2f48cef35ae6a2c9dcd3300e647"}},"folder":"J5Bc8QzPCnvSGEKw","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"name":"Común","sorting":"a","folder":null,"type":"Scene","description":"","sort":-100000,"color":"#ff0000","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1712526475731,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"l9poX75eJqJhHw0t"}
@@ -132,7 +132,6 @@
 {"_id":"m8bkYN7b6YZMDLwp","name":"Año X","type":"Actor","sorting":"a","sort":900000,"color":"#3e008a","flags":{"scene-packer":{"hash":"f4f6f2302d7002798df405538f5aa707316e9395"}},"folder":null,"description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
 {"_id":"n01TIF7SeTxuxmf6","name":"Alianza Azur","type":"Actor","sorting":"a","sort":600000,"color":"#4f94c9","flags":{},"folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732819324464,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
 {"name":"Dwänholf","type":"Playlist","sorting":"a","sort":0,"color":"#adc01b","flags":{},"_id":"nKafkINSVHOZd1QK","folder":"37AUvCnR1oFaBIoz","description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1696000790862,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
-{"name":"Pruebas fallidas","sorting":"a","folder":null,"type":"Scene","description":"","sort":100000,"color":null,"flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1696030965798,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"o1NgNFh3sSrqvmCe"}
 {"name":"Animales","sorting":"m","type":"Actor","color":"#000000","folder":"6RcHvKwCYfdFSQwI","description":"","sort":100000,"flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1696031171213,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"o5e3vtArsQ5CwvTp"}
 {"name":"Armadura Natural","sorting":"a","folder":null,"type":"Item","description":"","sort":0,"color":null,"flags":{},"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null},"_id":"oPAAV5llfBZRvmnJ"}
 {"_id":"q6aA4Bp1u7of5FXm","name":"Pure NPC","type":"Actor","sorting":"a","sort":100000,"color":null,"flags":{},"folder":"GrVanAvkfy2YT4s4","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
@@ -145,19 +144,59 @@
 {"name":"Tierras de Al-Enneth","sorting":"a","folder":null,"type":"Scene","description":"","sort":300000,"color":"#49ab07","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732712899727,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"ue31M4N4M9j1LvS6"}
 {"name":"The Witcher","sorting":"a","folder":"eax0sEobDDB0UIW1","type":"Playlist","description":"","sort":100000,"color":"#5e9905","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1696021664052,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"wTJFYfx6Lqr3isLu"}
 {"name":"Invocaciones","sorting":"a","folder":null,"type":"Item","description":"","sort":0,"color":null,"flags":{},"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null},"_id":"xcWOuwsS9BOKqDDD"}
-{"name":"Past Acts","sorting":"a","folder":null,"type":"Playlist","description":"","sort":650000,"color":null,"flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710881038,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"yiQBFwrW8NLDeSFy"}
-{"name":"Session Intro","sorting":"a","folder":null,"type":"Playlist","description":"","sort":493750,"color":"#cc99c9","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710860482,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"ytasmKeCc9eQGeVf"}
+{"name":"Past Acts","sorting":"a","folder":null,"type":"Playlist","description":"","sort":900000,"color":null,"flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"yiQBFwrW8NLDeSFy"}
+{"name":"Session Intro","sorting":"a","folder":null,"type":"Playlist","description":"","sort":600000,"color":"#cc99c9","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"ytasmKeCc9eQGeVf"}
 {"_id":"yw9P0RhDeGPGNpW7","name":"Ilmora","type":"Actor","sorting":"a","sort":200000,"color":"#cfcfcf","flags":{},"folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1712927273142,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
 {"name":"Cascarón Rojo","type":"Scene","sorting":"a","sort":0,"color":null,"flags":{},"_id":"zD0MQbkVdR6CRaEa","folder":"AuZdl8U0HumIQd1n","description":"","_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null}}
-{"name":"Acto IV - El Desierto","sorting":"a","folder":null,"type":"Playlist","description":"","sort":600000,"color":"#a66c07","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1732710770846,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"zcxZE3GsEYD2fsAs"}
-{"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","sorting":"a","sort":300000,"color":"#ef764e","flags":{},"folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1712927273142,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
-{"$$deleted":true,"_id":"o1NgNFh3sSrqvmCe"}
-{"name":"Ambience/ Soundboard","sorting":"a","folder":null,"type":"Playlist","description":"","sort":100000,"color":"#0a804d","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"kSbYyTu4fJB3DOmD"}
-{"name":"Curated Location Playlists","sorting":"m","folder":null,"type":"Playlist","description":"","sort":200000,"color":"#60a960","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"37AUvCnR1oFaBIoz"}
-{"name":"Combat","sorting":"m","folder":null,"type":"Playlist","description":"","sort":300000,"color":"#f71735","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"DH5omvaULyqw3Tes"}
-{"name":"Moods (Puntual)","sorting":"a","folder":null,"type":"Playlist","description":"","sort":500000,"color":"#9ec1cf","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"db0SfFIAYk94gZtY"}
-{"name":"Session Intro","sorting":"a","folder":null,"type":"Playlist","description":"","sort":600000,"color":"#cc99c9","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"ytasmKeCc9eQGeVf"}
-{"name":"Library/ Building Blocks","type":"Playlist","sorting":"m","sort":700000,"color":"#787878","flags":{},"_id":"il0YALlGrD6ZsYl6","folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
-{"name":"Acto IV - El Desierto","sorting":"a","folder":null,"type":"Playlist","description":"","sort":800000,"color":"#a66c07","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"zcxZE3GsEYD2fsAs"}
-{"name":"Past Acts","sorting":"a","folder":null,"type":"Playlist","description":"","sort":900000,"color":null,"flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903792298,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"yiQBFwrW8NLDeSFy"}
 {"name":"Acto IV - El Desierto","sorting":"a","folder":"yiQBFwrW8NLDeSFy","type":"Playlist","description":"","sort":200000,"color":"#a66c07","flags":{},"_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1769903795797,"lastModifiedBy":"efyrn4Js5CqfguvB"},"_id":"zcxZE3GsEYD2fsAs"}
+{"_id":"zpZ7V6jCJEjrJCc9","name":"Gabriel","type":"Actor","sorting":"a","sort":300000,"color":"#ef764e","flags":{},"folder":null,"description":"","_stats":{"systemId":"animabf-guote","systemVersion":"1.16.0","coreVersion":"10.303","createdTime":null,"modifiedTime":1712927273142,"lastModifiedBy":"efyrn4Js5CqfguvB"}}
+{"$$deleted":true,"_id":"XlP0iKoRA3Kf7o3A"}
+{"$$deleted":true,"_id":"zpZ7V6jCJEjrJCc9"}
+{"$$deleted":true,"_id":"GrVanAvkfy2YT4s4"}
+{"$$deleted":true,"_id":"dR4iKyBkx21Ng0rx"}
+{"$$deleted":true,"_id":"q6aA4Bp1u7of5FXm"}
+{"$$deleted":true,"_id":"89W7xQNvs0x5yDTu"}
+{"$$deleted":true,"_id":"SSm28JtHLJUQymwL"}
+{"$$deleted":true,"_id":"n01TIF7SeTxuxmf6"}
+{"name":"Alianza Azur","sorting":"a","type":"Actor","color":"#4f94c9","folder":null,"description":"","sort":0,"flags":{},"_stats":{"systemId":null,"systemVersion":null,"coreVersion":null,"createdTime":null,"modifiedTime":null,"lastModifiedBy":null},"_id":"Pn66vpwYfuejtblR"}
+{"$$deleted":true,"_id":"Pn66vpwYfuejtblR"}
+{"$$deleted":true,"_id":"yw9P0RhDeGPGNpW7"}
+{"$$deleted":true,"_id":"bVokICa0OhYguNFH"}
+{"$$deleted":true,"_id":"il0YALlGrD6ZsYl6"}
+{"$$deleted":true,"_id":"9YvxCIRJVCfGt6Sd"}
+{"$$deleted":true,"_id":"GGUmXEXIbC8JrvHW"}
+{"$$deleted":true,"_id":"eax0sEobDDB0UIW1"}
+{"$$deleted":true,"_id":"2DaLVKRwXTwMsxoh"}
+{"$$deleted":true,"_id":"9gKsucLLM2KrdIlE"}
+{"$$deleted":true,"_id":"CRcrXhXwlRzqzoCf"}
+{"$$deleted":true,"_id":"LJOs9IhfNmyIBYiG"}
+{"$$deleted":true,"_id":"Q4Yo3t8AHVqveNU1"}
+{"$$deleted":true,"_id":"XVSLUntt4TwmaUIx"}
+{"$$deleted":true,"_id":"03CXAptRswQwnrHg"}
+{"$$deleted":true,"_id":"3oRhhhbsyLpvnwTR"}
+{"$$deleted":true,"_id":"5kkkXBrfYMQESGx2"}
+{"$$deleted":true,"_id":"GKD33phPL6198ojS"}
+{"$$deleted":true,"_id":"HUha0wizPD3rDcn4"}
+{"$$deleted":true,"_id":"Um5k0gorjBF4SO9v"}
+{"$$deleted":true,"_id":"ftpjc5hKr2v7qQHd"}
+{"$$deleted":true,"_id":"jpbnWLPzvJpzPzPd"}
+{"$$deleted":true,"_id":"uONNJk51A7Xgea4m"}
+{"$$deleted":true,"_id":"wTJFYfx6Lqr3isLu"}
+{"$$deleted":true,"_id":"iFbtEzwbUAxJPRb8"}
+{"$$deleted":true,"_id":"7qBE8iZw1BxsS1oM"}
+{"$$deleted":true,"_id":"c3DhI4sm82EmiPop"}
+{"$$deleted":true,"_id":"AuZdl8U0HumIQd1n"}
+{"$$deleted":true,"_id":"zD0MQbkVdR6CRaEa"}
+{"$$deleted":true,"_id":"ue31M4N4M9j1LvS6"}
+{"$$deleted":true,"_id":"TWsglSfzRnFIBihJ"}
+{"$$deleted":true,"_id":"J5Bc8QzPCnvSGEKw"}
+{"$$deleted":true,"_id":"3J5TVjCG41Zkg1RV"}
+{"$$deleted":true,"_id":"IzfWK2wQMTOmeTsT"}
+{"$$deleted":true,"_id":"J0HPRt4RLvGt64Wg"}
+{"$$deleted":true,"_id":"M03lY3uVAKf9SUa9"}
+{"$$deleted":true,"_id":"QJ5cdNtlgTjMLzC4"}
+{"$$deleted":true,"_id":"dmKl1QP4Heiod9Rr"}
+{"$$deleted":true,"_id":"fmZ600IWfBEOZ4Ba"}
+{"$$deleted":true,"_id":"kssIKPsQhBbiqimu"}
+{"$$deleted":true,"_id":"qKEfHIPnGpfuFEHU"}
+{"$$deleted":true,"_id":"sSZ3gX76qH8l3z2H"}
