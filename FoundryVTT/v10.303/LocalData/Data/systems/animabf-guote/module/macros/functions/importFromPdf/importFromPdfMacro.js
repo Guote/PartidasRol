@@ -4,7 +4,7 @@
  */
 
 import { parsePdfText } from "./pdfTextParser.js";
-import { buildActorData, buildWeaponsData, buildArmorsData, buildSpecialAbilitiesNote } from "./actorMapper.js";
+import { buildActorData, buildWeaponsData, buildArmorsData, buildSpecialAbilitiesNotes } from "./actorMapper.js";
 import { ABFDialogs } from "../../../dialogs/ABFDialogs.js";
 
 /**
@@ -94,7 +94,7 @@ const buildArmorsHtml = (armors) => {
  */
 const showPreviewDialog = async (parsed) => {
   const typedGame = game;
-  const { general, primaries, resistances, combat, armors, mystic, domine, psychic, specialAbilities, isDamageResistance } = parsed;
+  const { general, primaries, resistances, combat, armors, mystic, domine, psychic, essentialAbilities, powers, isDamageResistance } = parsed;
 
   const content = `
     <style>
@@ -155,20 +155,33 @@ const showPreviewDialog = async (parsed) => {
       ${buildWeaponsHtml(combat.weapons)}
       ${buildArmorsHtml(armors)}
 
-      <div class="sec"><b>Místico / Dominio / Psíquico</b></div>
+      <div class="sec"><b>Místico</b></div>
       <div class="ip">
         <b>ACT:</b>${numInput('mystic_act', mystic.act)}
         <b>Zeon:</b>${numInput('mystic_zeon', mystic.zeon, 50)}
-        <b>PMág:</b>${numInput('mystic_magicProjection', mystic.magicProjection)}
-        <b>CM:</b>${numInput('domine_martialKnowledge', domine.martialKnowledge)}
-        <b>Ki:</b>${numInput('domine_genericKi', domine.genericKi)}
-        <b>PP:</b>${numInput('psychic_psychicPoints', psychic.psychicPoints)}
-        <b>Pot:</b>${numInput('psychic_psychicPotential', psychic.psychicPotential)}
-        <b>PPsi:</b>${numInput('psychic_psychicProjection', psychic.psychicProjection)}
+        <b>PM Of:</b>${numInput('mystic_magicProjectionOffensive', mystic.magicProjectionOffensive || mystic.magicProjection)}
+        <b>PM Def:</b>${numInput('mystic_magicProjectionDefensive', mystic.magicProjectionDefensive || mystic.magicProjection)}
       </div>
 
-      <div class="sec"><b>Habilidades Especiales</b></div>
-      <textarea name="specialAbilities" style="width:100%;height:50px;font-size:10px;">${specialAbilities || ''}</textarea>
+      <div class="sec"><b>Dominio</b></div>
+      <div class="ip">
+        <b>CM:</b>${numInput('domine_martialKnowledge', domine.martialKnowledge)}
+        <b>Ki:</b>${numInput('domine_genericKi', domine.genericKi)}
+      </div>
+
+      <div class="sec"><b>Psíquico</b></div>
+      <div class="ip">
+        <b>PP:</b>${numInput('psychic_psychicPoints', psychic.psychicPoints)}
+        <b>Pot:</b>${numInput('psychic_psychicPotential', psychic.psychicPotential)}
+        <b>PPsi Of:</b>${numInput('psychic_psychicProjectionOffensive', psychic.psychicProjectionOffensive || psychic.psychicProjection)}
+        <b>PPsi Def:</b>${numInput('psychic_psychicProjectionDefensive', psychic.psychicProjectionDefensive || psychic.psychicProjection)}
+      </div>
+
+      <div class="sec"><b>Habilidades Esenciales</b></div>
+      <textarea name="essentialAbilities" style="width:100%;height:40px;font-size:10px;">${essentialAbilities || ''}</textarea>
+
+      <div class="sec"><b>Poderes</b></div>
+      <textarea name="powers" style="width:100%;height:40px;font-size:10px;">${powers || ''}</textarea>
 
     </form>
   `;
@@ -241,7 +254,9 @@ const extractEditedValues = (html, original) => {
     mystic: {
       act: getNum('mystic_act'),
       zeon: getNum('mystic_zeon'),
-      magicProjection: getNum('mystic_magicProjection'),
+      magicProjection: getNum('mystic_magicProjectionOffensive'),
+      magicProjectionOffensive: getNum('mystic_magicProjectionOffensive'),
+      magicProjectionDefensive: getNum('mystic_magicProjectionDefensive'),
       magicLevels: original.mystic.magicLevels || {},
     },
     domine: {
@@ -252,10 +267,13 @@ const extractEditedValues = (html, original) => {
     psychic: {
       psychicPoints: getNum('psychic_psychicPoints'),
       psychicPotential: getNum('psychic_psychicPotential'),
-      psychicProjection: getNum('psychic_psychicProjection'),
+      psychicProjection: getNum('psychic_psychicProjectionOffensive'),
+      psychicProjectionOffensive: getNum('psychic_psychicProjectionOffensive'),
+      psychicProjectionDefensive: getNum('psychic_psychicProjectionDefensive'),
     },
     secondaries: original.secondaries || {},
-    specialAbilities: getVal('specialAbilities'),
+    essentialAbilities: getVal('essentialAbilities'),
+    powers: getVal('powers'),
     isDamageResistance: getChecked('isDamageResistance'),
     armors: [],
   };
@@ -335,6 +353,9 @@ export const importFromPdfMacro = async () => {
 
     if (!actor) throw new Error("Failed to create actor");
 
+    // Set SimpleActorSheet as the default sheet for this actor
+    await actor.setFlag("core", "sheetClass", "abf.SimpleActorSheet");
+
     const weaponsData = buildWeaponsData(edited);
     if (weaponsData.length > 0) {
       await actor.createEmbeddedDocuments("Item", weaponsData);
@@ -345,9 +366,9 @@ export const importFromPdfMacro = async () => {
       await actor.createEmbeddedDocuments("Item", armorsData);
     }
 
-    const specialAbilitiesNote = buildSpecialAbilitiesNote(edited);
-    if (specialAbilitiesNote) {
-      await actor.createEmbeddedDocuments("Item", [specialAbilitiesNote]);
+    const specialAbilitiesNotes = buildSpecialAbilitiesNotes(edited);
+    if (specialAbilitiesNotes.length > 0) {
+      await actor.createEmbeddedDocuments("Item", specialAbilitiesNotes);
     }
 
     ui.notifications.info(typedGame.i18n.format("anima.macros.importPdf.success", { name: edited.name }));

@@ -1,16 +1,360 @@
-<!-- my-second-anima-sheet.hbs -->
-<div class="sheet my-second-anima-sheet">
-  <header class="sheet-header">
-    <h1>{{name}}</h1>
-  </header>
+<form class="simple-actor-sheet {{#if editMode}}edit-mode{{else}}ready-mode{{/if}}">
+  <style>
+    .simple-actor-sheet{font-size:11px;padding:4px;}
+    .simple-actor-sheet .header{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+    .simple-actor-sheet .header img{width:40px;height:40px;border:1px solid #333;border-radius:4px;}
+    .simple-actor-sheet .header input.name{flex:1;font-size:14px;font-weight:bold;}
+    .simple-actor-sheet .header .name-display{flex:1;font-size:14px;font-weight:bold;}
+    .simple-actor-sheet .toggle-btn{padding:2px 6px;font-size:10px;cursor:pointer;}
+    .simple-actor-sheet .sec{margin:4px 0;padding:4px;border-bottom:1px solid #ccc;}
+    .simple-actor-sheet .sec-title{font-weight:bold;margin-bottom:2px;}
+    .simple-actor-sheet .row{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin:2px 0;}
+    .simple-actor-sheet .field{display:flex;align-items:center;gap:2px;}
+    .simple-actor-sheet .field b{min-width:20px;}
+    .simple-actor-sheet input[type="number"]{width:36px;text-align:center;}
+    .simple-actor-sheet input[type="text"]{width:80px;}
+    .simple-actor-sheet .rollable{cursor:pointer;padding:1px 4px;border-radius:2px;}
+    .simple-actor-sheet .rollable:hover{background:#ddd;}
+    .simple-actor-sheet .item-row{display:flex;gap:4px;align-items:center;padding:2px 0;border-bottom:1px dotted #ddd;}
+    .simple-actor-sheet .item-name{min-width:100px;}
+    .simple-actor-sheet .item-stats{display:flex;gap:4px;flex-wrap:wrap;}
+    .simple-actor-sheet .roll-btn{cursor:pointer;padding:0 4px;border-radius:2px;}
+    .simple-actor-sheet .roll-btn:hover{background:#ddd;}
+    .simple-actor-sheet textarea{width:100%;height:40px;font-size:10px;resize:vertical;}
+    .simple-actor-sheet .hp-bar{height:6px;background:#ccc;border-radius:2px;margin:2px 0;}
+    .simple-actor-sheet .hp-bar-inner{height:100%;background:#060;border-radius:2px;}
+    .simple-actor-sheet .collapsible-sec .sec-header{cursor:pointer;display:flex;align-items:center;gap:4px;}
+    .simple-actor-sheet .collapsible-sec .sec-header:hover{background:#f0f0f0;}
+    .simple-actor-sheet .collapsible-sec .sec-header i{font-size:10px;transition:transform 0.2s;}
+    .simple-actor-sheet .collapsible-sec.collapsed .sec-header i{transform:rotate(-90deg);}
+    .simple-actor-sheet .collapsible-sec.collapsed .sec-content{display:none;}
+    .simple-actor-sheet .grimoire-btn{font-size:10px;padding:2px 6px;cursor:pointer;margin-left:auto;}
+    .simple-actor-sheet .abilities-display{font-size:10px;white-space:pre-wrap;padding:2px;background:#f9f9f9;border:1px solid #ddd;min-height:30px;}
+  </style>
 
-  <section class="sheet-body">
-    <!-- Example stat block -->
-    <div class="stat-block">
-      <label>HP</label>
-      <span>{{system.stats.hp.value}} / {{system.stats.hp.max}}</span>
+  <!-- Header -->
+  <div class="header">
+    <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}">
+    {{#if editMode}}
+      <input type="text" name="name" value="{{actor.name}}" class="name">
+    {{else}}
+      <span class="name-display">{{actor.name}}</span>
+    {{/if}}
+    <button type="button" class="toggle-btn toggle-edit-mode" title="{{#if editMode}}Modo Listo{{else}}Modo Edición{{/if}}">
+      {{#if editMode}}<i class="fas fa-eye"></i>{{else}}<i class="fas fa-edit"></i>{{/if}}
+    </button>
+  </div>
+
+  <!-- HP Bar -->
+  {{#with system.characteristics.secondaries.lifePoints}}
+  <div class="row">
+    <b>PV:</b>
+    {{#if @root.editMode}}
+      <input type="number" name="system.characteristics.secondaries.lifePoints.value" value="{{value}}"> /
+      <input type="number" name="system.characteristics.secondaries.lifePoints.max" value="{{max}}">
+    {{else}}
+      <span>{{value}} / {{max}}</span>
+    {{/if}}
+  </div>
+  <div class="hp-bar"><div class="hp-bar-inner" style="width:{{math value "/" max "*" 100}}%;"></div></div>
+  {{/with}}
+
+  <div style="max-height:480px;overflow-y:auto;">
+
+  <!-- General -->
+  <div class="sec">
+    <div class="sec-title">General</div>
+    <div class="row">
+      {{#if editMode}}
+        <div class="field"><b>Tam:</b><input type="number" name="system.general.aspect.size.value" value="{{system.general.aspect.size.value}}"></div>
+        <div class="field"><b>Reg:</b><input type="number" name="system.characteristics.secondaries.regenerationType.mod.value" value="{{system.characteristics.secondaries.regenerationType.mod.value}}"></div>
+        <div class="field"><b>Mov:</b><input type="number" name="system.characteristics.secondaries.movementType.mod.value" value="{{system.characteristics.secondaries.movementType.mod.value}}"></div>
+        <div class="field"><b>Can:</b><input type="number" name="system.characteristics.secondaries.fatigue.max" value="{{system.characteristics.secondaries.fatigue.max}}"></div>
+      {{else}}
+        <span><b>Tam:</b> {{system.general.aspect.size.value}}</span>
+        <span><b>Reg:</b> {{system.characteristics.secondaries.regenerationType.final.value}}</span>
+        <span><b>Mov:</b> {{system.characteristics.secondaries.movementType.final.value}}</span>
+        <span><b>Can:</b> {{system.characteristics.secondaries.fatigue.value}}/{{system.characteristics.secondaries.fatigue.max}}</span>
+      {{/if}}
     </div>
+  </div>
 
-    <!-- Add other stats, skills, abilities, etc. as needed -->
-  </section>
-</div>
+  <!-- Primaries -->
+  <div class="sec">
+    <div class="sec-title">Primarias</div>
+    <div class="row">
+      {{#with system.characteristics.primaries}}
+        {{#if @root.editMode}}
+          <div class="field"><b>Fue:</b><input type="number" name="system.characteristics.primaries.strength.value" value="{{strength.value}}"></div>
+          <div class="field"><b>Des:</b><input type="number" name="system.characteristics.primaries.dexterity.value" value="{{dexterity.value}}"></div>
+          <div class="field"><b>Agi:</b><input type="number" name="system.characteristics.primaries.agility.value" value="{{agility.value}}"></div>
+          <div class="field"><b>Con:</b><input type="number" name="system.characteristics.primaries.constitution.value" value="{{constitution.value}}"></div>
+          <div class="field"><b>Pod:</b><input type="number" name="system.characteristics.primaries.power.value" value="{{power.value}}"></div>
+          <div class="field"><b>Int:</b><input type="number" name="system.characteristics.primaries.intelligence.value" value="{{intelligence.value}}"></div>
+          <div class="field"><b>Vol:</b><input type="number" name="system.characteristics.primaries.willPower.value" value="{{willPower.value}}"></div>
+          <div class="field"><b>Per:</b><input type="number" name="system.characteristics.primaries.perception.value" value="{{perception.value}}"></div>
+        {{else}}
+          <span class="rollable roll-primary" data-stat="strength" data-value="{{strength.value}}" data-label="Fuerza"><b>Fue:</b> {{strength.value}}</span>
+          <span class="rollable roll-primary" data-stat="dexterity" data-value="{{dexterity.value}}" data-label="Destreza"><b>Des:</b> {{dexterity.value}}</span>
+          <span class="rollable roll-primary" data-stat="agility" data-value="{{agility.value}}" data-label="Agilidad"><b>Agi:</b> {{agility.value}}</span>
+          <span class="rollable roll-primary" data-stat="constitution" data-value="{{constitution.value}}" data-label="Constitución"><b>Con:</b> {{constitution.value}}</span>
+          <span class="rollable roll-primary" data-stat="power" data-value="{{power.value}}" data-label="Poder"><b>Pod:</b> {{power.value}}</span>
+          <span class="rollable roll-primary" data-stat="intelligence" data-value="{{intelligence.value}}" data-label="Inteligencia"><b>Int:</b> {{intelligence.value}}</span>
+          <span class="rollable roll-primary" data-stat="willPower" data-value="{{willPower.value}}" data-label="Voluntad"><b>Vol:</b> {{willPower.value}}</span>
+          <span class="rollable roll-primary" data-stat="perception" data-value="{{perception.value}}" data-label="Percepción"><b>Per:</b> {{perception.value}}</span>
+        {{/if}}
+      {{/with}}
+    </div>
+  </div>
+
+  <!-- Resistances -->
+  <div class="sec">
+    <div class="sec-title">Resistencias</div>
+    <div class="row">
+      {{#with system.characteristics.secondaries.resistances}}
+        {{#if @root.editMode}}
+          <div class="field"><b>RF:</b><input type="number" name="system.characteristics.secondaries.resistances.physical.base.value" value="{{physical.base.value}}"></div>
+          <div class="field"><b>RM:</b><input type="number" name="system.characteristics.secondaries.resistances.magic.base.value" value="{{magic.base.value}}"></div>
+          <div class="field"><b>RP:</b><input type="number" name="system.characteristics.secondaries.resistances.psychic.base.value" value="{{psychic.base.value}}"></div>
+          <div class="field"><b>RV:</b><input type="number" name="system.characteristics.secondaries.resistances.poison.base.value" value="{{poison.base.value}}"></div>
+          <div class="field"><b>RE:</b><input type="number" name="system.characteristics.secondaries.resistances.disease.base.value" value="{{disease.base.value}}"></div>
+        {{else}}
+          <span class="rollable roll-resistance" data-value="{{physical.final.value}}" data-label="RF"><b>RF:</b> {{physical.final.value}}</span>
+          <span class="rollable roll-resistance" data-value="{{magic.final.value}}" data-label="RM"><b>RM:</b> {{magic.final.value}}</span>
+          <span class="rollable roll-resistance" data-value="{{psychic.final.value}}" data-label="RP"><b>RP:</b> {{psychic.final.value}}</span>
+          <span class="rollable roll-resistance" data-value="{{poison.final.value}}" data-label="RV"><b>RV:</b> {{poison.final.value}}</span>
+          <span class="rollable roll-resistance" data-value="{{disease.final.value}}" data-label="RE"><b>RE:</b> {{disease.final.value}}</span>
+        {{/if}}
+      {{/with}}
+    </div>
+  </div>
+
+  <!-- Combat -->
+  <div class="sec">
+    <div class="sec-title">Combate</div>
+    <div class="row">
+      {{#with system}}
+        {{#if @root.editMode}}
+          <div class="field"><b>Turno:</b><input type="number" name="system.characteristics.secondaries.initiative.base.value" value="{{characteristics.secondaries.initiative.base.value}}"></div>
+          <div class="field"><b>HA:</b><input type="number" name="system.combat.attack.base.value" value="{{combat.attack.base.value}}"></div>
+          <div class="field"><b>HD:</b><input type="number" name="system.combat.block.base.value" value="{{combat.block.base.value}}"></div>
+          <div class="field"><b>HE:</b><input type="number" name="system.combat.dodge.base.value" value="{{combat.dodge.base.value}}"></div>
+          <div class="field"><b>LA:</b><input type="number" name="system.combat.wearArmor.value" value="{{combat.wearArmor.value}}"></div>
+        {{else}}
+          <span><b>Turno:</b> {{characteristics.secondaries.initiative.final.value}}</span>
+          <span class="rollable roll-combat" data-type="attack" data-value="{{combat.attack.final.value}}" data-label="HA"><b>HA:</b> {{combat.attack.final.value}}</span>
+          <span class="rollable roll-combat" data-type="block" data-value="{{combat.block.final.value}}" data-label="HD"><b>HD:</b> {{combat.block.final.value}}</span>
+          <span class="rollable roll-combat" data-type="dodge" data-value="{{combat.dodge.final.value}}" data-label="HE"><b>HE:</b> {{combat.dodge.final.value}}</span>
+          <span><b>LA:</b> {{combat.wearArmor.value}}</span>
+        {{/if}}
+      {{/with}}
+    </div>
+  </div>
+
+  <!-- Weapons -->
+  {{#if weapons.length}}
+  <div class="sec">
+    <div class="sec-title">Armas</div>
+    {{#each weapons}}
+      <div class="item-row">
+        <span class="item-name">{{name}}</span>
+        {{#if @root.editMode}}
+          <div class="item-stats">
+            <span>T:{{system.initiative.final.value}}</span>
+            <span>HA:{{system.attack.final.value}}</span>
+            <span>HD:{{system.block.final.value}}</span>
+            <span>D:{{system.damage.final.value}}</span>
+          </div>
+        {{else}}
+          <div class="item-stats">
+            <span class="roll-btn roll-weapon" data-weapon-id="{{_id}}" data-type="attack" title="Atacar">HA:{{system.attack.final.value}}</span>
+            <span class="roll-btn roll-weapon" data-weapon-id="{{_id}}" data-type="block" title="Parar">HD:{{system.block.final.value}}</span>
+            <span class="roll-btn roll-weapon" data-weapon-id="{{_id}}" data-type="damage" title="Daño">D:{{system.damage.final.value}}</span>
+          </div>
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  <!-- Armors -->
+  {{#if armors.length}}
+  <div class="sec">
+    <div class="sec-title">Armaduras</div>
+    {{#each armors}}
+      <div class="item-row">
+        <span class="item-name">{{name}}</span>
+        <div class="item-stats">
+          <span>F:{{system.cut.final.value}}</span>
+          <span>C:{{system.impact.final.value}}</span>
+          <span>P:{{system.thrust.final.value}}</span>
+          <span>Ca:{{system.heat.final.value}}</span>
+          <span>E:{{system.electricity.final.value}}</span>
+          <span>Fr:{{system.cold.final.value}}</span>
+          <span>En:{{system.energy.final.value}}</span>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  <!-- Mystic Section (Collapsible) -->
+  {{#if (or hasMystic editMode)}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">Místico</span>
+      <button type="button" class="grimoire-btn open-grimoire" title="Abrir Grimorio">
+        <i class="fas fa-book"></i> Grimorio ({{spellCount}})
+      </button>
+    </div>
+    <div class="sec-content">
+      <div class="row">
+        {{#with system.mystic}}
+          {{#if @root.editMode}}
+            <div class="field"><b>ACT:</b><input type="number" name="system.mystic.act.main.base.value" value="{{act.main.base.value}}"></div>
+            <div class="field"><b>Zeon:</b><input type="number" name="system.mystic.zeon.value" value="{{zeon.value}}">/<input type="number" name="system.mystic.zeon.max" value="{{zeon.max}}"></div>
+            <div class="field"><b>PM Of:</b><input type="number" name="system.mystic.magicProjection.imbalance.offensive.base.value" value="{{magicProjection.imbalance.offensive.base.value}}"></div>
+            <div class="field"><b>PM Def:</b><input type="number" name="system.mystic.magicProjection.imbalance.defensive.base.value" value="{{magicProjection.imbalance.defensive.base.value}}"></div>
+          {{else}}
+            <span><b>ACT:</b> {{or act.main.final.value act.main.base.value}}</span>
+            <span><b>Zeon:</b> {{zeon.value}}/{{zeon.max}}</span>
+            <span><b>PM Of:</b> {{or magicProjection.imbalance.offensive.final.value magicProjection.imbalance.offensive.base.value magicProjection.base.value}}</span>
+            <span><b>PM Def:</b> {{or magicProjection.imbalance.defensive.final.value magicProjection.imbalance.defensive.base.value magicProjection.base.value}}</span>
+          {{/if}}
+        {{/with}}
+      </div>
+    </div>
+  </div>
+  {{/if}}
+
+  <!-- Domine Section (Collapsible) -->
+  {{#if (or hasDomine editMode)}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">Dominio</span>
+      <button type="button" class="grimoire-btn open-techniques" title="Abrir Técnicas">
+        <i class="fas fa-fist-raised"></i> Técnicas ({{techniqueCount}})
+      </button>
+    </div>
+    <div class="sec-content">
+      <div class="row">
+        {{#with system.domine}}
+          {{#if @root.editMode}}
+            <div class="field"><b>CM:</b><input type="number" name="system.domine.martialKnowledge.max.value" value="{{martialKnowledge.max.value}}"></div>
+            <div class="field"><b>Ki:</b><input type="number" name="system.domine.kiAccumulation.generic.value" value="{{kiAccumulation.generic.value}}">/<input type="number" name="system.domine.kiAccumulation.generic.max" value="{{kiAccumulation.generic.max}}"></div>
+          {{else}}
+            <span><b>CM:</b> {{martialKnowledge.max.value}}</span>
+            <span><b>Ki:</b> {{kiAccumulation.generic.value}}/{{kiAccumulation.generic.max}}</span>
+          {{/if}}
+        {{/with}}
+      </div>
+    </div>
+  </div>
+  {{/if}}
+
+  <!-- Psychic Section (Collapsible) -->
+  {{#if (or hasPsychic editMode)}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">Psíquico</span>
+      <button type="button" class="grimoire-btn open-psychic-powers" title="Abrir Poderes Psíquicos">
+        <i class="fas fa-brain"></i> Poderes ({{psychicPowerCount}})
+      </button>
+    </div>
+    <div class="sec-content">
+      <div class="row">
+        {{#with system.psychic}}
+          {{#if @root.editMode}}
+            <div class="field"><b>PP:</b><input type="number" name="system.psychic.psychicPoints.value" value="{{psychicPoints.value}}">/<input type="number" name="system.psychic.psychicPoints.max" value="{{psychicPoints.max}}"></div>
+            <div class="field"><b>Pot:</b><input type="number" name="system.psychic.psychicPotential.base.value" value="{{psychicPotential.base.value}}"></div>
+            <div class="field"><b>PPsi Of:</b><input type="number" name="system.psychic.psychicProjection.imbalance.offensive.base.value" value="{{psychicProjection.imbalance.offensive.base.value}}"></div>
+            <div class="field"><b>PPsi Def:</b><input type="number" name="system.psychic.psychicProjection.imbalance.defensive.base.value" value="{{psychicProjection.imbalance.defensive.base.value}}"></div>
+          {{else}}
+            <span><b>PP:</b> {{psychicPoints.value}}/{{psychicPoints.max}}</span>
+            <span><b>Pot:</b> {{or psychicPotential.final.value psychicPotential.base.value}}</span>
+            <span><b>PPsi Of:</b> {{or psychicProjection.imbalance.offensive.final.value psychicProjection.imbalance.offensive.base.value psychicProjection.base.value}}</span>
+            <span><b>PPsi Def:</b> {{or psychicProjection.imbalance.defensive.final.value psychicProjection.imbalance.defensive.base.value psychicProjection.base.value}}</span>
+          {{/if}}
+        {{/with}}
+      </div>
+    </div>
+  </div>
+  {{/if}}
+
+  <!-- Secondary Abilities -->
+  {{#if (or secondaries.length editMode)}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">Secundarias</span>
+    </div>
+    <div class="sec-content">
+      <div class="row">
+        {{#each secondaries}}
+          {{#if @root.editMode}}
+            <span><b>{{name}}:</b> {{value}}</span>
+          {{else}}
+            <span class="rollable roll-secondary" data-value="{{value}}" data-label="{{name}}"><b>{{name}}:</b> {{value}}</span>
+          {{/if}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  {{/if}}
+
+  <!-- Essential Abilities -->
+  {{#if (or essentialAbilitiesNote editMode)}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">Habilidades Esenciales</span>
+    </div>
+    <div class="sec-content">
+      {{#if editMode}}
+        <textarea name="essentialAbilitiesContent" placeholder="Habilidades naturales, esenciales...">{{#if essentialAbilitiesNote}}{{essentialAbilitiesNote.system.description.value}}{{/if}}</textarea>
+      {{else}}
+        {{#if essentialAbilitiesNote}}
+          <div class="abilities-display">{{essentialAbilitiesNote.system.description.value}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+  {{/if}}
+
+  <!-- Powers -->
+  {{#if (or powersNote editMode)}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">Poderes</span>
+    </div>
+    <div class="sec-content">
+      {{#if editMode}}
+        <textarea name="powersContent" placeholder="Poderes especiales...">{{#if powersNote}}{{powersNote.system.description.value}}{{/if}}</textarea>
+      {{else}}
+        {{#if powersNote}}
+          <div class="abilities-display">{{powersNote.system.description.value}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+  {{/if}}
+
+  <!-- Fallback: Old combined special abilities note -->
+  {{#if (and specialAbilitiesNote (not essentialAbilitiesNote) (not powersNote))}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">Habilidades Especiales</span>
+    </div>
+    <div class="sec-content">
+      <div class="abilities-display">{{specialAbilitiesNote.system.description.value}}</div>
+    </div>
+  </div>
+  {{/if}}
+
+  </div>
+</form>

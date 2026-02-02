@@ -3,10 +3,10 @@
  */
 
 /**
- * Map secondary ability names from Spanish to system keys
+ * Map secondary ability names from Spanish/English to system keys
  */
 const secondarySkillMap = {
-  // Athletics
+  // Athletics - Spanish
   "Atletismo": "athleticism",
   "Montar": "ride",
   "Nadar": "swim",
@@ -14,15 +14,31 @@ const secondarySkillMap = {
   "Saltar": "jump",
   "Acrobacias": "acrobatics",
   "Pilotar": "piloting",
-  // Vigor
+  // Athletics - English
+  "Athleticism": "athleticism",
+  "Ride": "ride",
+  "Swim": "swim",
+  "Climb": "climb",
+  "Jump": "jump",
+  "Acrobatics": "acrobatics",
+  "Piloting": "piloting",
+  // Vigor - Spanish
   "Frialdad": "composure",
   "Proezas de Fuerza": "featsOfStrength",
   "Resistir el dolor": "withstandPain",
-  // Perception
+  // Vigor - English
+  "Composure": "composure",
+  "Feats of Strength": "featsOfStrength",
+  "Withstand Pain": "withstandPain",
+  // Perception - Spanish
   "Advertir": "notice",
   "Buscar": "search",
   "Rastrear": "track",
-  // Intellectual
+  // Perception - English
+  "Notice": "notice",
+  "Search": "search",
+  "Track": "track",
+  // Intellectual - Spanish
   "Animales": "animals",
   "Ciencia": "science",
   "Leyes": "law",
@@ -36,7 +52,20 @@ const secondarySkillMap = {
   "Tasación": "appraisal",
   "Valoración mágica": "magicAppraisal",
   "V. Mágica": "magicAppraisal",
-  // Social
+  // Intellectual - English
+  "Animals": "animals",
+  "Science": "science",
+  "Law": "law",
+  "Herbal Lore": "herbalLore",
+  "History": "history",
+  "Tactics": "tactics",
+  "Medicine": "medicine",
+  "Memorize": "memorize",
+  "Navigation": "navigation",
+  "Occult": "occult",
+  "Appraisal": "appraisal",
+  "Magic Appraisal": "magicAppraisal",
+  // Social - Spanish
   "Estilo": "style",
   "Intimidar": "intimidate",
   "Liderazgo": "leadership",
@@ -44,7 +73,16 @@ const secondarySkillMap = {
   "Comercio": "trading",
   "Callejeo": "streetwise",
   "Etiqueta": "etiquette",
-  // Subterfuge
+  // Social - English
+  "Style": "style",
+  "Intimidate": "intimidate",
+  "Leadership": "leadership",
+  "Leader": "leadership",
+  "Persuasion": "persuasion",
+  "Trading": "trading",
+  "Streetwise": "streetwise",
+  "Etiquette": "etiquette",
+  // Subterfuge - Spanish
   "Cerrajería": "lockPicking",
   "Disfraz": "disguise",
   "Ocultarse": "hide",
@@ -52,7 +90,15 @@ const secondarySkillMap = {
   "Sigilo": "stealth",
   "Trampería": "trapLore",
   "Venenos": "poisons",
-  // Creative
+  // Subterfuge - English
+  "Lock Picking": "lockPicking",
+  "Disguise": "disguise",
+  "Hide": "hide",
+  "Theft": "theft",
+  "Stealth": "stealth",
+  "Trap Lore": "trapLore",
+  "Poisons": "poisons",
+  // Creative - Spanish
   "Arte": "art",
   "Baile": "dance",
   "Forja": "forging",
@@ -66,6 +112,19 @@ const secondarySkillMap = {
   "Joyería": "jewelry",
   "Sastrería": "tailoring",
   "Creación de marionetas": "puppetMaking",
+  // Creative - English
+  "Art": "art",
+  "Dance": "dance",
+  "Forging": "forging",
+  "Runes": "runes",
+  "Alchemy": "alchemy",
+  "Animism": "animism",
+  "Music": "music",
+  "Sleight of Hand": "sleightOfHand",
+  "Ritual Calligraphy": "ritualCalligraphy",
+  "Jewelry": "jewelry",
+  "Tailoring": "tailoring",
+  "Puppet Making": "puppetMaking",
 };
 
 /**
@@ -167,7 +226,11 @@ export const buildActorData = (parsed) => {
           max: mystic.zeon,
         },
         magicProjection: {
-          base: { value: mystic.magicProjection },
+          base: { value: mystic.magicProjectionOffensive || mystic.magicProjection || 0 },
+          imbalance: {
+            offensive: { base: { value: mystic.magicProjectionOffensive || mystic.magicProjection || 0 } },
+            defensive: { base: { value: mystic.magicProjectionDefensive || mystic.magicProjection || 0 } },
+          },
         },
         magicLevel: {
           spheres: {
@@ -211,7 +274,11 @@ export const buildActorData = (parsed) => {
           base: { value: psychic.psychicPotential },
         },
         psychicProjection: {
-          base: { value: psychic.psychicProjection },
+          base: { value: psychic.psychicProjectionOffensive || psychic.psychicProjection || 0 },
+          imbalance: {
+            offensive: { base: { value: psychic.psychicProjectionOffensive || psychic.psychicProjection || 0 } },
+            defensive: { base: { value: psychic.psychicProjectionDefensive || psychic.psychicProjection || 0 } },
+          },
         },
       },
       ui: {
@@ -308,7 +375,40 @@ export const buildArmorsData = (parsed) => {
 };
 
 /**
- * Build note item for special abilities
+ * Build note items for special abilities
+ * Returns an array of note items (essential abilities and powers separately)
+ */
+export const buildSpecialAbilitiesNotes = (parsed) => {
+  const notes = [];
+  const { essentialAbilities, powers } = parsed;
+
+  // Essential abilities note
+  if (essentialAbilities && essentialAbilities.trim().length > 0) {
+    notes.push({
+      name: "Habilidades Esenciales",
+      type: "note",
+      system: {
+        description: { value: essentialAbilities },
+      },
+    });
+  }
+
+  // Powers note
+  if (powers && powers.trim().length > 0) {
+    notes.push({
+      name: "Poderes",
+      type: "note",
+      system: {
+        description: { value: powers },
+      },
+    });
+  }
+
+  return notes;
+};
+
+/**
+ * Build note item for special abilities (backward compatibility)
  * Returns a note item or null if no special abilities
  */
 export const buildSpecialAbilitiesNote = (parsed) => {

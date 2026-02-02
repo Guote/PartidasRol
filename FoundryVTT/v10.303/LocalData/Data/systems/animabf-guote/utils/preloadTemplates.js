@@ -136,6 +136,8 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor/parts/settings/settings.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/settings/parts/tabVisibility.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/settings/parts/advancedSettings.hbs`,
+    // Simple Actor Sheet
+    `systems/${ABFSystemName}/templates/actor/simple-actor-sheet.hbs`,
     // V2 Actor Sheet
     `systems/${ABFSystemName}/templates/actor/actor-sheet-v2.hbs`,
     // V2 Layout Components

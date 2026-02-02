@@ -28,7 +28,7 @@ export class ChatAttackCard {
             calculateATReductionByQuality({ weapon: options.weapon });
 
         // Get localized damage type label
-        const damageTypeKey = `anima.ui.combat.criticalType.${attackResult.values.critic}`;
+        const damageTypeKey = `anima.ui.combat.criticalType.${attackResult.values.critic || 'impact'}`;
         const damageTypeLabel = game.i18n.localize(damageTypeKey);
 
         // Prepare display data

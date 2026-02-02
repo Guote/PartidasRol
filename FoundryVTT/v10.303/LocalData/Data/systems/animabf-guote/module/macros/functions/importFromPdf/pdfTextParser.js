@@ -28,29 +28,29 @@ const parseName = (text) => {
 };
 
 /**
- * Parse primary characteristics
+ * Parse primary characteristics (Spanish and English)
  */
 const parsePrimaries = (text) => {
   const primaries = {
-    strength: 5,      // Fue
-    dexterity: 5,     // Des
+    strength: 5,      // Fue / Str
+    dexterity: 5,     // Des / Dex
     agility: 5,       // Agi
     constitution: 5,  // Con
-    power: 5,         // Pod
+    power: 5,         // Pod / Pow
     intelligence: 5,  // Int
-    willPower: 5,     // Vol
+    willPower: 5,     // Vol / Wp
     perception: 5,    // Per
   };
 
-  // Pattern: Fue: 8 Des: 13 Agi: 11 Con: 8 Pod: 16 Int: 14 Vol: 10 Per: 8
+  // Pattern: Fue: 8 or Str: 8
   const patterns = [
-    { key: "strength", regex: /Fue:?\s*(\d+)/i },
-    { key: "dexterity", regex: /Des:?\s*(\d+)/i },
+    { key: "strength", regex: /(?:Fue|Str):?\s*(\d+)/i },
+    { key: "dexterity", regex: /(?:Des|Dex):?\s*(\d+)/i },
     { key: "agility", regex: /Agi:?\s*(\d+)/i },
     { key: "constitution", regex: /Con:?\s*(\d+)/i },
-    { key: "power", regex: /Pod:?\s*(\d+)/i },
+    { key: "power", regex: /(?:Pod|Pow):?\s*(\d+)/i },
     { key: "intelligence", regex: /Int:?\s*(\d+)/i },
-    { key: "willPower", regex: /Vol:?\s*(\d+)/i },
+    { key: "willPower", regex: /(?:Vol|Wp):?\s*(\d+)/i },
     { key: "perception", regex: /Per:?\s*(\d+)/i },
   ];
 
@@ -65,24 +65,24 @@ const parsePrimaries = (text) => {
 };
 
 /**
- * Parse resistances
+ * Parse resistances (Spanish and English)
  */
 const parseResistances = (text) => {
   const resistances = {
-    physical: 0,  // RF
-    magic: 0,     // RM
-    psychic: 0,   // RP
-    poison: 0,    // RV (Veneno)
-    disease: 0,   // RE (Enfermedad)
+    physical: 0,  // RF / PhR
+    magic: 0,     // RM / MR
+    psychic: 0,   // RP / PsR
+    poison: 0,    // RV / VR (Veneno/Venom)
+    disease: 0,   // RE / DR (Enfermedad/Disease)
   };
 
-  // Pattern: RF 105 RM 150 RP 135 RV 115 RE 125
+  // Pattern: RF 105 or PhR 105
   const patterns = [
-    { key: "physical", regex: /RF\s*(\d+)/i },
-    { key: "magic", regex: /RM\s*(\d+)/i },
-    { key: "psychic", regex: /RP\s*(\d+)/i },
-    { key: "poison", regex: /RV\s*(\d+)/i },
-    { key: "disease", regex: /RE\s*(\d+)/i },
+    { key: "physical", regex: /(?:RF|PhR)\s*(\d+)/i },
+    { key: "magic", regex: /(?:RM|MR)\s*(\d+)/i },
+    { key: "psychic", regex: /(?:RP|PsR)\s*(\d+)/i },
+    { key: "poison", regex: /(?:RV|VR)\s*(\d+)/i },
+    { key: "disease", regex: /(?:RE|DR)\s*(\d+)/i },
   ];
 
   for (const { key, regex } of patterns) {
@@ -156,6 +156,7 @@ const parseWeaponEntry = (turnText, attackText, defenseText, damageText, natural
 /**
  * Parse combat stats (turn, attack, defense, damage)
  * Returns base values and array of weapons
+ * Supports both Spanish and English formats
  */
 const parseCombat = (text) => {
   const combat = {
@@ -167,15 +168,15 @@ const parseCombat = (text) => {
     weapons: [],
   };
 
-  // Check for damage resistance creature: "Habilidad de defensa: Acumulación"
-  const damageResMatch = text.match(/Habilidad de defensa:?\s*Acumulaci[oó]n/i);
+  // Check for damage resistance creature: "Habilidad de defensa: Acumulación" or "Defense Ability: Damage Resistance"
+  const damageResMatch = text.match(/(?:Habilidad de defensa:?\s*Acumulaci[oó]n|Defense Ability:?\s*Damage\s*Resistance)/i);
   if (damageResMatch) {
     combat.isDamageResistance = true;
   }
 
-  // Parse Turn line: "Turno: 95 Natural, 55 Espada Infernal y Escudo"
+  // Parse Turn/Initiative line: "Turno: 95 Natural" or "Initiative: 155 Natural"
   // Note: "Turno Natural" in PDF = base turno + 20, so we subtract 20
-  const turnLineMatch = text.match(/Turno:?\s*([^\n]+)/i);
+  const turnLineMatch = text.match(/(?:Turno|Initiative):?\s*([^\n]+)/i);
   let turnEntries = [];
   let pdfNaturalTurn = 0;
   if (turnLineMatch) {
@@ -191,11 +192,21 @@ const parseCombat = (text) => {
     turnEntries = turnLine.split(/[,\/]/).map(e => e.trim()).filter(e => !e.match(/Natural/i) && e.length > 0);
   }
 
-  // Parse Attack line: "Habilidad de ataque: 325 (360) Katana +15, 330 (365) Arma de Alma"
-  const attackLineMatch = text.match(/Habilidad de ataque:?\s*([^\n]+)/i);
+  // Parse Attack line: "Habilidad de ataque: 325 Katana" or "Attack Ability: 330 Natural Weapon"
+  const attackLineMatch = text.match(/(?:Habilidad de ataque|Attack Ability):?\s*([^\n]+)/i);
   let attackEntries = [];
   if (attackLineMatch) {
     attackEntries = attackLineMatch[1].split(/[,\/]/).map(e => e.trim()).filter(e => e.length > 0);
+    // Check for natural weapon entry
+    for (let i = 0; i < attackEntries.length; i++) {
+      const entry = attackEntries[i];
+      const naturalWeaponMatch = entry.match(/(\d+)\s*Natural\s*(?:Weapon)?/i);
+      if (naturalWeaponMatch) {
+        combat.naturalAttack = parseInt(naturalWeaponMatch[1]) || 0;
+        attackEntries.splice(i, 1);
+        i--;
+      }
+    }
     // If first entry has no weapon name, it might be the natural value
     if (attackEntries.length > 0 && !attackEntries[0].match(/[a-zA-Z]/)) {
       combat.naturalAttack = parseInt(attackEntries[0]) || 0;
@@ -203,21 +214,35 @@ const parseCombat = (text) => {
     }
   }
 
-  // Parse Defense line: "Habilidad de defensa: 320 (355) Katana +15, 325 (360) Arma de Alma"
-  // Skip if it's "Acumulación" (damage resistance)
-  const defenseLineMatch = text.match(/Habilidad de defensa:?\s*([^\n]+)/i);
+  // Parse Defense line: "Habilidad de defensa: 320 Katana" or "Defense Ability: 330 Dodge"
+  // Skip if it's "Acumulación" or "Damage Resistance"
+  const defenseLineMatch = text.match(/(?:Habilidad de defensa|Defense Ability):?\s*([^\n]+)/i);
   let defenseEntries = [];
   if (defenseLineMatch && !combat.isDamageResistance) {
-    defenseEntries = defenseLineMatch[1].split(/[,\/]/).map(e => e.trim()).filter(e => e.length > 0);
-    // If first entry has no weapon name, it might be the natural value
-    if (defenseEntries.length > 0 && !defenseEntries[0].match(/[a-zA-Z]/)) {
-      combat.naturalBlock = parseInt(defenseEntries[0]) || 0;
-      defenseEntries.shift();
+    const defenseLine = defenseLineMatch[1];
+    // Skip if it contains damage resistance indicators
+    if (!defenseLine.match(/Acumulaci[oó]n|Damage\s*Resistance/i)) {
+      defenseEntries = defenseLine.split(/[,\/]/).map(e => e.trim()).filter(e => e.length > 0);
+      // Check for Dodge/Parry or natural defense
+      for (let i = 0; i < defenseEntries.length; i++) {
+        const entry = defenseEntries[i];
+        const dodgeMatch = entry.match(/(\d+)\s*(?:Dodge|Parry|Esquiva|Parada)/i);
+        if (dodgeMatch) {
+          combat.naturalBlock = parseInt(dodgeMatch[1]) || 0;
+          defenseEntries.splice(i, 1);
+          i--;
+        }
+      }
+      // If first entry has no weapon name, it might be the natural value
+      if (defenseEntries.length > 0 && !defenseEntries[0].match(/[a-zA-Z]/)) {
+        combat.naturalBlock = parseInt(defenseEntries[0]) || 0;
+        defenseEntries.shift();
+      }
     }
   }
 
-  // Parse Damage line: "Daño: 140 Katana +15, 150 Arma de Alma"
-  const damageLineMatch = text.match(/Da[ñn]o:?\s*([^\n]+)/i);
+  // Parse Damage line: "Daño: 140 Katana" or "Damage: 100 Natural Weapon"
+  const damageLineMatch = text.match(/(?:Da[ñn]o|Damage):?\s*([^\n]+)/i);
   let damageEntries = [];
   if (damageLineMatch) {
     damageEntries = damageLineMatch[1].split(/[,\/]/).map(e => e.trim()).filter(e => e.length > 0);
@@ -265,8 +290,8 @@ const parseCombat = (text) => {
     }
   }
 
-  // Wear Armor: "Llevar Armadura: 10"
-  const wearArmorMatch = text.match(/Llevar Armadura:?\s*(\d+)/i);
+  // Wear Armor: "Llevar Armadura: 10" or "Wear Armor: 10"
+  const wearArmorMatch = text.match(/(?:Llevar Armadura|Wear Armor):?\s*(\d+)/i);
   if (wearArmorMatch) {
     combat.wearArmor = parseInt(wearArmorMatch[1]) || 0;
   }
@@ -306,14 +331,14 @@ const parseArmorEntry = (armorText, isNatural = false, naturalValue = 0) => {
     return armor;
   }
 
-  // Extract AT values first
+  // Extract AT values first (Spanish and English)
   const atPatterns = [
-    { key: "cut", regex: /Fil\s*(\d+)/i },
-    { key: "impact", regex: /Con\s*(\d+)/i },
-    { key: "thrust", regex: /Pen\s*(\d+)/i },
-    { key: "heat", regex: /Cal\s*(\d+)/i },
+    { key: "cut", regex: /(?:Fil|Cut)\s*(\d+)/i },
+    { key: "impact", regex: /(?:Con|Imp)\s*(\d+)/i },
+    { key: "thrust", regex: /(?:Pen|Thr)\s*(\d+)/i },
+    { key: "heat", regex: /(?:Cal|Hea)\s*(\d+)/i },
     { key: "electricity", regex: /Ele\s*(\d+)/i },
-    { key: "cold", regex: /Fri\s*(\d+)/i },
+    { key: "cold", regex: /(?:Fri|Col)\s*(\d+)/i },
     { key: "energy", regex: /Ene\s*(\d+)/i },
   ];
 
@@ -344,12 +369,14 @@ const parseArmorEntry = (armorText, isNatural = false, naturalValue = 0) => {
  *   TA: Gabardina Armada +15 FIL 4 CON 3 PEN 5 CAL 4 ELE 5 FRI 5 ENE 3
  *   TA: Natural 5 (all physical = 5, energy = 0)
  *   TA: Escamas de Cristal + Natural Fil 12 Con 12 Pen 12 Cal 12 Ele 12 Fri 12 Ene 10
+ *   AT: No (English - no armor)
+ *   AT: Cut 5 Imp 5 Thr 5 Hea 5 Ele 5 Col 5 Ene 3
  */
 const parseArmors = (text) => {
   const armors = [];
 
-  // First, look for the TA: line specifically
-  const taLineMatch = text.match(/TA:?\s*([^\n]+(?:\n(?![A-Z][a-z]+:)[^\n]+)*)/i);
+  // First, look for the TA:/AT: line specifically
+  const taLineMatch = text.match(/(?:TA|AT):?\s*([^\n]+(?:\n(?![A-Z][a-z]+:)[^\n]+)*)/i);
 
   if (taLineMatch) {
     let taContent = taLineMatch[1].trim();
@@ -400,50 +427,77 @@ const parseArmors = (text) => {
 };
 
 /**
- * Parse mystic data
+ * Parse mystic data (Spanish and English)
  */
 const parseMystic = (text) => {
   const mystic = {
     act: 0,
     zeon: 0,
     magicProjection: 0,
+    magicProjectionOffensive: 0,
+    magicProjectionDefensive: 0,
     magicLevels: {},
   };
 
-  // ACT: 200 or Act: 200
-  const actMatch = text.match(/ACT:?\s*(\d+)/i);
+  // ACT: 200 or MA: 140 (Magic Accumulation)
+  const actMatch = text.match(/(?:ACT|MA):?\s*(\d+)/i);
   if (actMatch) {
     mystic.act = parseInt(actMatch[1]) || 0;
   }
 
-  // Zeon: 2.110 (Spanish thousands separator)
-  const zeonMatch = text.match(/Zeon:?\s*([\d.]+)/i);
+  // Zeon: 2.110 (Spanish thousands separator) or Zeon: 2,345 or 2345
+  const zeonMatch = text.match(/Zeon:?\s*([\d.,]+)/i);
   if (zeonMatch) {
     mystic.zeon = parseNumber(zeonMatch[1]);
   }
 
-  // Proyección mágica: 260
-  const projMatch = text.match(/Proyecci[oó]n\s*[Mm][aá]gica:?\s*(\d+)/i);
+  // Proyección mágica: 200 Ofensiva, 220 Defensiva
+  // OR: Magic Projection: 280 (300 with Artifacts)
+  // OR: Proyección mágica: 260
+  const projMatch = text.match(/(?:Proyecci[oó]n\s*[Mm][aá]gica|Magic Projection):?\s*([^\n]+)/i);
   if (projMatch) {
-    mystic.magicProjection = parseInt(projMatch[1]) || 0;
+    const projText = projMatch[1];
+    // Check for offensive/defensive split (Spanish)
+    const offMatchES = projText.match(/(\d+)\s*Ofensiva/i);
+    const defMatchES = projText.match(/(\d+)\s*Defensiva/i);
+    // Check for offensive/defensive split (English)
+    const offMatchEN = projText.match(/(\d+)\s*Offensive/i);
+    const defMatchEN = projText.match(/(\d+)\s*Defensive/i);
+
+    const offMatch = offMatchES || offMatchEN;
+    const defMatch = defMatchES || defMatchEN;
+
+    if (offMatch || defMatch) {
+      mystic.magicProjectionOffensive = offMatch ? parseInt(offMatch[1]) || 0 : 0;
+      mystic.magicProjectionDefensive = defMatch ? parseInt(defMatch[1]) || 0 : 0;
+      mystic.magicProjection = mystic.magicProjectionOffensive || mystic.magicProjectionDefensive;
+    } else {
+      // Single value - might have parenthetical note like "(300 with Artifacts)"
+      const singleMatch = projText.match(/^(\d+)/);
+      if (singleMatch) {
+        mystic.magicProjection = parseInt(singleMatch[1]) || 0;
+        mystic.magicProjectionOffensive = mystic.magicProjection;
+        mystic.magicProjectionDefensive = mystic.magicProjection;
+      }
+    }
   }
 
-  // Nivel de magia: 80 Luz, 50 Fuego
-  const levelMatch = text.match(/Nivel de magia:?\s*([^\n]+)/i);
+  // Nivel de magia: 80 Luz, 50 Fuego or Magic Level: 90 Darkness, 90 Destruction
+  const levelMatch = text.match(/(?:Nivel de magia|Magic Level):?\s*([^\n]+)/i);
   if (levelMatch) {
     const levelsText = levelMatch[1];
     const spherePatterns = [
-      { key: "light", regex: /(\d+)\s*Luz/i },
-      { key: "darkness", regex: /(\d+)\s*Oscuridad/i },
-      { key: "fire", regex: /(\d+)\s*Fuego/i },
-      { key: "water", regex: /(\d+)\s*Agua/i },
-      { key: "earth", regex: /(\d+)\s*Tierra/i },
-      { key: "air", regex: /(\d+)\s*Aire/i },
-      { key: "creation", regex: /(\d+)\s*Creaci[oó]n/i },
-      { key: "destruction", regex: /(\d+)\s*Destrucci[oó]n/i },
-      { key: "essence", regex: /(\d+)\s*Esencia/i },
-      { key: "illusion", regex: /(\d+)\s*Ilusi[oó]n/i },
-      { key: "necromancy", regex: /(\d+)\s*Necromancia/i },
+      { key: "light", regex: /(\d+)\s*(?:Luz|Light)/i },
+      { key: "darkness", regex: /(\d+)\s*(?:Oscuridad|Darkness|Umbra)/i },
+      { key: "fire", regex: /(\d+)\s*(?:Fuego|Fire)/i },
+      { key: "water", regex: /(\d+)\s*(?:Agua|Water)/i },
+      { key: "earth", regex: /(\d+)\s*(?:Tierra|Earth)/i },
+      { key: "air", regex: /(\d+)\s*(?:Aire|Air)/i },
+      { key: "creation", regex: /(\d+)\s*(?:Creaci[oó]n|Creation)/i },
+      { key: "destruction", regex: /(\d+)\s*(?:Destrucci[oó]n|Destruction)/i },
+      { key: "essence", regex: /(\d+)\s*(?:Esencia|Essence)/i },
+      { key: "illusion", regex: /(\d+)\s*(?:Ilusi[oó]n|Illusion)/i },
+      { key: "necromancy", regex: /(\d+)\s*(?:Necromancia|Necromancy)/i },
     ];
 
     for (const { key, regex } of spherePatterns) {
@@ -511,47 +565,66 @@ const parseDomine = (text) => {
 };
 
 /**
- * Parse psychic data
+ * Parse psychic data (Spanish and English)
  */
 const parsePsychic = (text) => {
   const psychic = {
     psychicPoints: 0,
     psychicPotential: 0,
     psychicProjection: 0,
+    psychicProjectionOffensive: 0,
+    psychicProjectionDefensive: 0,
   };
 
-  // Puntos Psíquicos or PP: X
-  const ppMatch = text.match(/(?:Puntos?\s*Ps[ií]quicos?|PP):?\s*(\d+)/i);
+  // Puntos Psíquicos or PP: X or Psychic Points: X
+  const ppMatch = text.match(/(?:Puntos?\s*Ps[ií]quicos?|Psychic Points?|PP):?\s*(\d+)/i);
   if (ppMatch) {
     psychic.psychicPoints = parseInt(ppMatch[1]) || 0;
   }
 
-  // Potencial Psíquico: X
-  const potMatch = text.match(/Potencial\s*Ps[ií]quico:?\s*(\d+)/i);
+  // Potencial Psíquico: X or Psychic Potential: X
+  const potMatch = text.match(/(?:Potencial\s*Ps[ií]quico|Psychic Potential):?\s*(\d+)/i);
   if (potMatch) {
     psychic.psychicPotential = parseInt(potMatch[1]) || 0;
   }
 
-  // Proyección Psíquica: X
-  const projMatch = text.match(/Proyecci[oó]n\s*Ps[ií]quica:?\s*(\d+)/i);
+  // Proyección Psíquica: 200 Ofensiva, 220 Defensiva
+  // OR: Psychic Projection: 260
+  const projMatch = text.match(/(?:Proyecci[oó]n\s*Ps[ií]quica|Psychic Projection):?\s*([^\n]+)/i);
   if (projMatch) {
-    psychic.psychicProjection = parseInt(projMatch[1]) || 0;
+    const projText = projMatch[1];
+    // Check for offensive/defensive split (Spanish or English)
+    const offMatch = projText.match(/(\d+)\s*(?:Ofensiva|Offensive)/i);
+    const defMatch = projText.match(/(\d+)\s*(?:Defensiva|Defensive)/i);
+    if (offMatch || defMatch) {
+      psychic.psychicProjectionOffensive = offMatch ? parseInt(offMatch[1]) || 0 : 0;
+      psychic.psychicProjectionDefensive = defMatch ? parseInt(defMatch[1]) || 0 : 0;
+      psychic.psychicProjection = psychic.psychicProjectionOffensive || psychic.psychicProjectionDefensive;
+    } else {
+      // Single value
+      const singleMatch = projText.match(/^(\d+)/);
+      if (singleMatch) {
+        psychic.psychicProjection = parseInt(singleMatch[1]) || 0;
+        psychic.psychicProjectionOffensive = psychic.psychicProjection;
+        psychic.psychicProjectionDefensive = psychic.psychicProjection;
+      }
+    }
   }
 
   return psychic;
 };
 
 /**
- * Parse secondary abilities
+ * Parse secondary abilities (Spanish and English)
  */
 const parseSecondaries = (text) => {
   const secondaries = {};
 
-  // Habilidades Secundarias: Atletismo 75, Montar 105, ...
-  const secMatch = text.match(/Habilidades?\s*Secundarias?:?\s*([^.]+\.)/i);
+  // Habilidades Secundarias: Atletismo 75, ... or Secondary Abilities: Ride 80, Swim 40, ...
+  const secMatch = text.match(/(?:Habilidades?\s*Secundarias?|Secondary\s*Abilities):?\s*([^\n]+(?:\n(?![A-Z][a-z]+:)[^\n]+)*)/i);
   if (secMatch) {
     const secText = secMatch[1];
-    // Match patterns like "Atletismo 75" or "V. Mágica 210"
+    // Match patterns like "Atletismo 75" or "Ride 80"
     const skillRegex = /([A-Za-zÁÉÍÓÚáéíóúñÑ.\s]+?)\s+(\d+)/g;
     let match;
     while ((match = skillRegex.exec(secText)) !== null) {
@@ -567,8 +640,8 @@ const parseSecondaries = (text) => {
 };
 
 /**
- * Parse general stats
- * Also returns isDamageResistanceFromLP if "Acumulación" appears in the LP line
+ * Parse general stats (Spanish and English)
+ * Also returns isDamageResistanceFromLP if "Acumulación" or "Damage Resistance" appears in the LP line
  */
 const parseGeneral = (text) => {
   const general = {
@@ -583,15 +656,15 @@ const parseGeneral = (text) => {
     isDamageResistanceFromLP: false,
   };
 
-  // Nivel: 14
-  const levelMatch = text.match(/Nivel:?\s*(\d+)/i);
+  // Nivel: 14 or Level: 16
+  const levelMatch = text.match(/(?:Nivel|Level):?\s*(\d+)/i);
   if (levelMatch) {
     general.level = parseInt(levelMatch[1]) || 1;
   }
 
-  // Puntos de Vida: 8.550 Acumulación or Puntos de Vida: 250
-  // Handle thousands separator (.) and detect "Acumulación"
-  const lpMatch = text.match(/Puntos\s*de\s*Vida:?\s*([\d.]+)(?:\s*(Acumulaci[oó]n))?/i);
+  // Puntos de Vida: 8.550 or Life Points: 350
+  // Handle thousands separator (. or ,) and detect "Acumulación" or "Damage Resistance"
+  const lpMatch = text.match(/(?:Puntos\s*de\s*Vida|Life Points?):?\s*([\d.,]+)(?:\s*(Acumulaci[oó]n|Damage\s*Resistance))?/i);
   if (lpMatch) {
     general.lifePoints = parseNumber(lpMatch[1]);
     if (lpMatch[2]) {
@@ -599,57 +672,60 @@ const parseGeneral = (text) => {
     }
   }
 
-  // Categoría: Warlock
-  const catMatch = text.match(/Categor[ií]a:?\s*([A-Za-zÁÉÍÓÚáéíóúñÑ\s]+?)(?:\s+Raza|\s*$|\n)/i);
+  // Categoría: Warlock or Category: Between Worlds
+  const catMatch = text.match(/(?:Categor[ií]a|Category):?\s*([A-Za-zÁÉÍÓÚáéíóúñÑ\s]+?)(?:\s+(?:Raza|Race)|\s*$|\n|\d)/i);
   if (catMatch) {
     general.category = catMatch[1].trim();
   }
 
-  // Raza: Sylvain
-  const raceMatch = text.match(/Raza:?\s*([A-Za-zÁÉÍÓÚáéíóúñÑ\s]+?)(?:\n|$)/i);
+  // Raza: Sylvain or Race: Human
+  const raceMatch = text.match(/(?:Raza|Race):?\s*([A-Za-zÁÉÍÓÚáéíóúñÑ\s]+?)(?:\n|$)/i);
   if (raceMatch) {
     general.race = raceMatch[1].trim();
   }
 
-  // Tamaño: 16
-  const sizeMatch = text.match(/Tama[ñn]o:?\s*(\d+)/i);
+  // Tamaño: 16 or Size: 19
+  const sizeMatch = text.match(/(?:Tama[ñn]o|Size):?\s*(\d+)/i);
   if (sizeMatch) {
     general.size = parseInt(sizeMatch[1]) || 0;
   }
 
-  // Regeneración: 5
-  const regenMatch = text.match(/Regeneraci[oó]n:?\s*(\d+)/i);
+  // Regeneración: 5 or Regeneration: 10
+  const regenMatch = text.match(/(?:Regeneraci[oó]n|Regeneration):?\s*(\d+)/i);
   if (regenMatch) {
     general.regeneration = parseInt(regenMatch[1]) || 0;
   }
 
-  // Tipo de movimiento: 11
-  const moveMatch = text.match(/Tipo\s*de\s*movimiento:?\s*(\d+)/i);
+  // Tipo de movimiento: 11 or Movement Value: 11
+  const moveMatch = text.match(/(?:Tipo\s*de\s*movimiento|Movement\s*(?:Value|Type)):?\s*(\d+)/i);
   if (moveMatch) {
     general.movementType = parseInt(moveMatch[1]) || 0;
   }
 
-  // Cansancio: 8
-  const fatigueMatch = text.match(/Cansancio:?\s*(\d+)/i);
+  // Cansancio: 8 or Fatigue: Tireless or Fatigue: 8
+  const fatigueMatch = text.match(/(?:Cansancio|Fatigue):?\s*(\d+|Tireless|Incansable)/i);
   if (fatigueMatch) {
-    general.fatigue = parseInt(fatigueMatch[1]) || 0;
+    const val = fatigueMatch[1];
+    if (val.match(/Tireless|Incansable/i)) {
+      general.fatigue = 99; // Tireless = effectively unlimited
+    } else {
+      general.fatigue = parseInt(val) || 0;
+    }
   }
 
   return general;
 };
 
 /**
- * Parse special abilities (Habilidades naturales, esenciales, Poderes)
- * Returns a formatted string for the character's special abilities field
+ * Parse special abilities (Spanish and English)
+ * Habilidades naturales/Natural Abilities, esenciales/Essential Abilities, Poderes/Powers
+ * Returns an object with separate fields for essential abilities and powers
  */
 const parseSpecialAbilities = (text) => {
-  const abilities = [];
-
   // Helper to extract multi-line content until next section or end
-  const extractSection = (sectionName, regex) => {
+  const extractSection = (regex) => {
     const match = text.match(regex);
     if (match) {
-      // Get content, handling multi-line (until next section header or double newline)
       let content = match[1].trim();
       // Clean up line breaks within the content
       content = content.replace(/\s*\n\s*/g, " ").trim();
@@ -657,34 +733,46 @@ const parseSpecialAbilities = (text) => {
       if (content.endsWith(".")) {
         content = content.slice(0, -1);
       }
-      return { name: sectionName, content };
+      return content;
     }
-    return null;
+    return "";
   };
 
-  // Habilidades naturales: Uso de Escudo, etc.
-  const naturalMatch = extractSection(
-    "Habilidades naturales",
-    /Habilidades?\s*naturales?:?\s*([^.]+(?:\.[^.]*)*?)(?=Habilidades?\s*esenciales?:|Poderes?:|Habilidades?\s*Secundarias?:|$)/is
+  // Habilidades naturales or Natural Abilities
+  const naturalAbilities = extractSection(
+    /(?:Habilidades?\s*naturales?|Natural\s*Abilities):?\s*([^.]+(?:\.[^.]*)*?)(?=(?:Habilidades?\s*esenciales?|Essential\s*Abilities)|(?:Poderes?|Powers):|(?:Habilidades?\s*Secundarias?|Secondary\s*Abilities):|Size:|Tama[ñn]o:|$)/is
   );
-  if (naturalMatch) abilities.push(naturalMatch);
 
-  // Habilidades esenciales: Características Físicas Sobrehumanas, etc.
-  const essentialMatch = extractSection(
-    "Habilidades esenciales",
-    /Habilidades?\s*esenciales?:?\s*([^.]+(?:\.[^.]*)*?)(?=Poderes?:|Habilidades?\s*Secundarias?:|$)/is
+  // Habilidades esenciales or Essential Abilities
+  const essentialAbilities = extractSection(
+    /(?:Habilidades?\s*esenciales?|Essential\s*Abilities):?\s*([^.]+(?:\.[^.]*)*?)(?=(?:Poderes?|Powers):|(?:Habilidades?\s*Secundarias?|Secondary\s*Abilities):|Size:|Tama[ñn]o:|$)/is
   );
-  if (essentialMatch) abilities.push(essentialMatch);
 
-  // Poderes: Espada Infernal, Armadura Infernal, etc.
-  const powersMatch = extractSection(
-    "Poderes",
-    /Poderes?:?\s*([^.]+(?:\.[^.]*)*?)(?=Habilidades?\s*Secundarias?:|$)/is
+  // Poderes or Powers
+  const powers = extractSection(
+    /(?:Poderes?|Powers):?\s*([^.]+(?:\.[^.]*)*?)(?=(?:Habilidades?\s*Secundarias?|Secondary\s*Abilities):|Size:|Tama[ñn]o:|$)/is
   );
-  if (powersMatch) abilities.push(powersMatch);
 
-  // Format as structured text
-  return abilities.map(a => `**${a.name}:** ${a.content}`).join("\n\n");
+  // Combine natural + essential for "Habilidades esenciales" field
+  let combinedEssential = "";
+  if (naturalAbilities) {
+    combinedEssential += naturalAbilities;
+  }
+  if (essentialAbilities) {
+    if (combinedEssential) combinedEssential += "\n";
+    combinedEssential += essentialAbilities;
+  }
+
+  return {
+    essentialAbilities: combinedEssential,
+    powers: powers,
+    // Keep combined for backward compatibility
+    combined: [
+      naturalAbilities ? `**Natural Abilities:** ${naturalAbilities}` : "",
+      essentialAbilities ? `**Essential Abilities:** ${essentialAbilities}` : "",
+      powers ? `**Powers:** ${powers}` : "",
+    ].filter(s => s).join("\n\n"),
+  };
 };
 
 /**
@@ -693,6 +781,7 @@ const parseSpecialAbilities = (text) => {
 export const parsePdfText = (text) => {
   const combat = parseCombat(text);
   const general = parseGeneral(text);
+  const specialAbilities = parseSpecialAbilities(text);
 
   // Damage resistance can be detected from defense line OR from LP line
   const isDamageResistance = combat.isDamageResistance || general.isDamageResistanceFromLP;
@@ -708,7 +797,9 @@ export const parsePdfText = (text) => {
     domine: parseDomine(text),
     psychic: parsePsychic(text),
     secondaries: parseSecondaries(text),
-    specialAbilities: parseSpecialAbilities(text),
+    essentialAbilities: specialAbilities.essentialAbilities,
+    powers: specialAbilities.powers,
+    specialAbilities: specialAbilities.combined, // backward compat
     isDamageResistance: isDamageResistance,
     rawText: text,
   };

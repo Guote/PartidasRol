@@ -9,6 +9,7 @@ import { iterateNumberHBSHelper } from './helpers/iterateNumberHBSHelper.js';
 import { notHBSHelper } from './helpers/notHBSHelper.js';
 import { minNumberHBSHelper } from './helpers/minNumberHBSHelper.js';
 import { logHBSHelper } from './helpers/logHBSHelper.js';
+import { orHBSHelper } from './helpers/orHBSHelper.js';
 export const registerHelpers = () => {
     const helpers = [
         calculateExperienceHBSHelper,
@@ -21,7 +22,8 @@ export const registerHelpers = () => {
         manipulateStringHBSHelper,
         mathHBSHelper,
         minNumberHBSHelper,
-        logHBSHelper
+        logHBSHelper,
+        orHBSHelper
     ];
     for (const helper of helpers) {
         Handlebars.registerHelper(helper.name, helper.fn);

@@ -2,6 +2,7 @@ import { registerSettings } from './utils/registerSettings.js';
 import { preloadTemplates } from './utils/preloadTemplates.js';
 import ABFActorSheet from './module/actor/ABFActorSheet.js';
 import ABFActorSheetV2 from './module/actor/ABFActorSheetV2.js';
+import SimpleActorSheet from './module/actor/SimpleActorSheet.js';
 import ABFFoundryRoll from './module/rolls/ABFFoundryRoll.js';
 import ABFCombat from './module/combat/ABFCombat.js';
 import { ABFActor } from './module/actor/ABFActor.js';
@@ -34,6 +35,7 @@ Hooks.once('init', async () => {
     // Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('abf', ABFActorSheet, { makeDefault: true });
     Actors.registerSheet('abf', ABFActorSheetV2);
+    Actors.registerSheet('abf', SimpleActorSheet, { label: 'Simple Sheet' });
     Items.unregisterSheet('core', ItemSheet);
     Items.registerSheet('abf', ABFItemSheet, {
         makeDefault: true
