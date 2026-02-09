@@ -1,0 +1,147 @@
+{{!-- Summoning/Convocatoria Tab - V2 styled summoning system --}}
+<div class="v2-tab-summoning">
+  {{!-- Summoning Stats Header --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <span>{{localize "anima.ui.mystic.summoning.title"}}</span>
+    </div>
+    <div class="v2-card__body">
+      <div class="v2-summoning-stats">
+        {{!-- Summon --}}
+        <div class="v2-summoning-stat">
+          <span class="v2-summoning-stat__label">{{localize "anima.ui.mystic.summoning.summon.title"}}</span>
+          <div class="v2-summoning-stat__values">
+            <input type="number" class="v2-summoning-stat__input"
+                   name="system.mystic.summoning.summon.base.value"
+                   value="{{system.mystic.summoning.summon.base.value}}">
+            <span class="v2-summoning-stat__final rollable"
+                  data-roll="1d100xa"
+                  data-rollvalue="{{system.mystic.summoning.summon.final.value}}"
+                  data-label="{{localize 'anima.ui.mystic.summoning.summon.title'}}">
+              {{system.mystic.summoning.summon.final.value}}
+            </span>
+          </div>
+        </div>
+
+        {{!-- Bind --}}
+        <div class="v2-summoning-stat">
+          <span class="v2-summoning-stat__label">{{localize "anima.ui.mystic.summoning.bind.title"}}</span>
+          <div class="v2-summoning-stat__values">
+            <input type="number" class="v2-summoning-stat__input"
+                   name="system.mystic.summoning.bind.base.value"
+                   value="{{system.mystic.summoning.bind.base.value}}">
+            <span class="v2-summoning-stat__final rollable"
+                  data-roll="1d100xa"
+                  data-rollvalue="{{system.mystic.summoning.bind.final.value}}"
+                  data-label="{{localize 'anima.ui.mystic.summoning.bind.title'}}">
+              {{system.mystic.summoning.bind.final.value}}
+            </span>
+          </div>
+        </div>
+
+        {{!-- Control --}}
+        <div class="v2-summoning-stat">
+          <span class="v2-summoning-stat__label">{{localize "anima.ui.mystic.summoning.control.title"}}</span>
+          <div class="v2-summoning-stat__values">
+            <input type="number" class="v2-summoning-stat__input"
+                   name="system.mystic.summoning.control.base.value"
+                   value="{{system.mystic.summoning.control.base.value}}">
+            <span class="v2-summoning-stat__final rollable"
+                  data-roll="1d100xa"
+                  data-rollvalue="{{system.mystic.summoning.control.final.value}}"
+                  data-label="{{localize 'anima.ui.mystic.summoning.control.title'}}">
+              {{system.mystic.summoning.control.final.value}}
+            </span>
+          </div>
+        </div>
+
+        {{!-- Banish --}}
+        <div class="v2-summoning-stat">
+          <span class="v2-summoning-stat__label">{{localize "anima.ui.mystic.summoning.banish.title"}}</span>
+          <div class="v2-summoning-stat__values">
+            <input type="number" class="v2-summoning-stat__input"
+                   name="system.mystic.summoning.banish.base.value"
+                   value="{{system.mystic.summoning.banish.base.value}}">
+            <span class="v2-summoning-stat__final rollable"
+                  data-roll="1d100xa"
+                  data-rollvalue="{{system.mystic.summoning.banish.final.value}}"
+                  data-label="{{localize 'anima.ui.mystic.summoning.banish.title'}}">
+              {{system.mystic.summoning.banish.final.value}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Resources Row: Zeon + Shield --}}
+  <div class="v2-grid v2-grid--2">
+    {{!-- Zeon Resource Pool --}}
+    <div class="v2-card">
+      <div class="v2-card__body">
+        {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
+            label=(localize "anima.ui.mystic.zeon.title")
+            valueName="system.mystic.zeon.value"
+            currentValue=system.mystic.zeon.value
+            maxName="system.mystic.zeon.max"
+            maxValue=system.mystic.zeon.max
+            colorClass="zeon"
+            showRegen=true
+            regenValue=system.mystic.zeonRegeneration.final.value
+        }}
+      </div>
+    </div>
+
+    {{!-- Supernatural Shield Resource Pool --}}
+    <div class="v2-card">
+      <div class="v2-card__body">
+        {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
+            label=(localize "anima.ui.mystic.shield.title")
+            valueName="system.mystic.shield.value"
+            currentValue=system.mystic.shield.value
+            maxName="system.mystic.shield.max"
+            maxValue=system.mystic.shield.max
+            colorClass="shield"
+        }}
+      </div>
+    </div>
+  </div>
+
+  {{!-- Summons/Invocaciones List --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.mystic.summon.title"}}</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-summon" title="{{localize 'anima.ui.mystic.summon.add'}}">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" style="padding: 0;">
+      <table class="v2-table">
+        <thead>
+          <tr>
+            <th>{{localize "anima.ui.mystic.summon.name.title"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each system.mystic.summons as |summon|}}
+          <tr class="summon-row v2-table__row--draggable" data-item-id="{{summon._id}}">
+            <td>
+              <input type="text" class="v2-table__input"
+                     name="system.dynamic.summons.{{summon._id}}.name"
+                     value="{{summon.name}}">
+            </td>
+          </tr>
+          {{else}}
+          <tr>
+            <td class="v2-text-center v2-text-muted">-</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

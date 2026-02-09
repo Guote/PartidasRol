@@ -1,7 +1,7 @@
 /* ================================
    AnimaBF Actor Sheet V2 Styles
    Compact Layout with Side Tabs
-   Target: 900px x 890px
+   Target: 650px width, max height
    ================================ */
 
 /* --------------------------------
@@ -78,7 +78,7 @@
 .actor-sheet-v2 .v2-header {
   background: linear-gradient(to bottom, var(--abf-primary), var(--abf-primary-dark));
   color: var(--abf-text-light);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   border-bottom: 2px solid var(--abf-primary-dark);
   flex-shrink: 0;
 }
@@ -86,16 +86,44 @@
 .actor-sheet-v2 .v2-header__row {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
+}
+
+/* Top row - main info */
+.actor-sheet-v2 .v2-header__row--top {
+  padding-bottom: var(--space-2);
+}
+
+/* Resources row - always visible */
+.actor-sheet-v2 .v2-header__row--resources {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: var(--space-2);
+}
+
+/* Defense block - contains stacked Resistances + TA (centered) */
+.actor-sheet-v2 .v2-header__defense-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Resources container */
+.actor-sheet-v2 .v2-header__resources {
+  display: flex;
   flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
 }
 
 /* Identity: Portrait + Name */
 .actor-sheet-v2 .v2-header__identity {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  min-width: 140px;
+  gap: var(--space-2);
+  flex-shrink: 0;
 }
 
 .actor-sheet-v2 .v2-header__portrait {
@@ -117,14 +145,14 @@
 }
 
 .actor-sheet-v2 .v2-header__name {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   font-weight: bold;
   background: transparent;
   border: none;
   border-bottom: 1px solid transparent;
   color: var(--abf-text-light);
   padding: 0;
-  width: 100px;
+  width: 65px;
 }
 
 .actor-sheet-v2 .v2-header__name:focus {
@@ -137,40 +165,135 @@
   color: var(--abf-secondary);
 }
 
-/* Core Resources */
-.actor-sheet-v2 .v2-header__resources {
+/* Right stats area (Initiative + Modifier) */
+.actor-sheet-v2 .v2-header__right-stats {
   display: flex;
-  gap: var(--space-4);
-  flex: 1;
+  gap: var(--space-2);
+  align-items: stretch;
+  flex-shrink: 0;
 }
 
 .actor-sheet-v2 .v2-res {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  font-size: var(--font-size-sm);
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  background: rgba(0, 0, 0, 0.25);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
 }
 
 .actor-sheet-v2 .v2-res__icon {
-  opacity: 0.9;
-  width: 16px;
+  font-size: var(--font-size-base);
+  width: 20px;
   text-align: center;
+  flex-shrink: 0;
 }
 
-.actor-sheet-v2 .v2-res--hp .v2-res__icon { color: var(--abf-hp); }
-.actor-sheet-v2 .v2-res--fatigue .v2-res__icon { color: var(--abf-fatigue); }
-.actor-sheet-v2 .v2-res--destiny .v2-res__icon { color: var(--abf-destiny); }
+.actor-sheet-v2 .v2-res__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.actor-sheet-v2 .v2-res__label {
+  font-weight: bold;
+  font-size: var(--font-size-2xs);
+  text-transform: uppercase;
+  color: var(--abf-secondary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.actor-sheet-v2 .v2-res__values {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Resource color variations */
+.actor-sheet-v2 .v2-res--hp .v2-res__label { color: var(--abf-hp); }
+.actor-sheet-v2 .v2-res--fatigue .v2-res__label { color: var(--abf-fatigue); }
+.actor-sheet-v2 .v2-res--destiny .v2-res__label { color: var(--abf-destiny); }
 .actor-sheet-v2 .v2-res--init .v2-res__icon { color: var(--abf-secondary); }
+.actor-sheet-v2 .v2-res--init .v2-res__label { color: var(--abf-secondary); }
+.actor-sheet-v2 .v2-res--zeon .v2-res__label { color: var(--abf-zeon); }
+.actor-sheet-v2 .v2-res--zeon-acc .v2-res__label { color: var(--abf-zeon); }
+.actor-sheet-v2 .v2-res--ki .v2-res__label { color: var(--abf-ki); }
+.actor-sheet-v2 .v2-res--ki-acc .v2-res__label { color: var(--abf-ki); }
+.actor-sheet-v2 .v2-res--psy .v2-res__label { color: var(--abf-psychic); }
+.actor-sheet-v2 .v2-res--shield .v2-res__label { color: #4fc3f7; }
+
+/* Compact resource variant - used in resources bar */
+.actor-sheet-v2 .v2-res--compact {
+  padding: var(--space-1) var(--space-2);
+  gap: var(--space-1);
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.actor-sheet-v2 .v2-res--compact .v2-res__label {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.6rem;
+}
+
+.actor-sheet-v2 .v2-res--compact .v2-res__label i {
+  font-size: 0.65rem;
+}
+
+.actor-sheet-v2 .v2-res--compact .v2-res__values {
+  gap: 1px;
+}
+
+.actor-sheet-v2 .v2-res__input--compact {
+  width: 28px;
+  padding: 1px 2px;
+  font-size: var(--font-size-xs);
+}
+
+/* Single value resource (no current/max) */
+.actor-sheet-v2 .v2-res--single .v2-res__input--compact {
+  width: 32px;
+}
+
+/* Resource inputs shrink to fit container */
+.actor-sheet-v2 .v2-res__input--compact,
+.actor-sheet-v2 .v2-res__readonly {
+  min-width: 0;
+  max-width: 40px;
+  flex-shrink: 1;
+}
+
+/* Make resource values fit container */
+.actor-sheet-v2 .v2-res__values {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+/* Resource container shrink behavior */
+.actor-sheet-v2 .v2-res--compact {
+  min-width: 0;
+  flex-shrink: 1;
+}
 
 .actor-sheet-v2 .v2-res__input {
-  width: 32px;
-  padding: 1px 2px;
+  width: 36px;
+  padding: 2px 4px;
   text-align: center;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
+  font-weight: bold;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-sm);
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3);
   color: var(--abf-text-light);
+}
+
+.actor-sheet-v2 .v2-res__input--small {
+  width: 30px;
 }
 
 .actor-sheet-v2 .v2-res__input:focus {
@@ -181,106 +304,239 @@
 .actor-sheet-v2 .v2-res__sep {
   color: var(--abf-secondary);
   font-size: var(--font-size-xs);
+  font-weight: bold;
 }
 
-.actor-sheet-v2 .v2-res__sac {
-  font-size: var(--font-size-2xs);
-  color: var(--abf-hp);
-  opacity: 0.8;
+/* Read-only resource value (for calculated/final values) */
+.actor-sheet-v2 .v2-res__readonly {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  color: var(--abf-text-light);
+  min-width: 28px;
+  text-align: center;
 }
 
 .actor-sheet-v2 .v2-res__value {
   font-weight: bold;
   min-width: 30px;
   text-align: center;
+  font-size: var(--font-size-sm);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
 }
 
-/* Resistances */
+/* Expandable HP Section */
+.actor-sheet-v2 .v2-res__expand-toggle {
+  cursor: pointer;
+  padding: 0 1px;
+  margin-left: 1px;
+  opacity: 0.7;
+  transition: all var(--transition-fast);
+  font-size: 0.6rem;
+}
+
+.actor-sheet-v2 .v2-res__expand-toggle:hover {
+  opacity: 1;
+}
+
+.actor-sheet-v2 .v2-res__expand-toggle.expanded i {
+  transform: rotate(180deg);
+}
+
+.actor-sheet-v2 .v2-res__expandable {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.6rem;
+  background: rgba(139, 0, 0, 0.3);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(198, 40, 40, 0.4);
+}
+
+.actor-sheet-v2 .v2-res__expandable.expanded {
+  display: flex;
+}
+
+.actor-sheet-v2 .v2-res__expand-label {
+  color: var(--abf-hp);
+  font-weight: bold;
+  font-size: 0.6rem;
+}
+
+.actor-sheet-v2 .v2-res__expand-info {
+  opacity: 0.7;
+  font-style: italic;
+  font-size: 0.6rem;
+}
+
+/* Block headers for Resistances and TA */
+.actor-sheet-v2 .v2-header__block-title {
+  display: inline-block;
+  font-size: var(--font-size-2xs);
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--abf-secondary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  min-width: 70px;
+  text-align: right;
+  margin-right: var(--space-2);
+}
+
+/* Resistances Block */
+.actor-sheet-v2 .v2-header__resistances-block {
+  display: flex;
+  align-items: center;
+}
+
 .actor-sheet-v2 .v2-header__resistances {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
-  font-size: var(--font-size-2xs);
+  font-size: var(--font-size-xs);
 }
 
 .actor-sheet-v2 .v2-header__res {
-  background: rgba(0, 0, 0, 0.2);
-  padding: 1px 3px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
+  white-space: nowrap;
 }
 
 .actor-sheet-v2 .v2-header__res b {
   color: var(--abf-secondary);
-  margin-right: 1px;
-}
-
-/* Modifiers */
-.actor-sheet-v2 .v2-header__modifiers {
-  display: flex;
-  gap: var(--space-2);
-  font-size: var(--font-size-xs);
-}
-
-.actor-sheet-v2 .v2-header__mod {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 1px 4px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--radius-sm);
-}
-
-.actor-sheet-v2 .v2-header__mod--positive { color: #81c784; }
-.actor-sheet-v2 .v2-header__mod--negative { color: #e57373; }
-
-/* Dynamic Resources Row */
-.actor-sheet-v2 .v2-header__dynamic {
-  display: flex;
-  gap: var(--space-4);
-  margin-top: var(--space-2);
-  padding-top: var(--space-2);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.actor-sheet-v2 .v2-dres {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: 2px var(--space-2);
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-xs);
-}
-
-.actor-sheet-v2 .v2-dres--zeon { border-left: 2px solid var(--abf-zeon); }
-.actor-sheet-v2 .v2-dres--shield { border-left: 2px solid #4fc3f7; }
-.actor-sheet-v2 .v2-dres--ki { border-left: 2px solid var(--abf-ki); }
-.actor-sheet-v2 .v2-dres--psy { border-left: 2px solid var(--abf-psychic); }
-
-.actor-sheet-v2 .v2-dres__label {
-  font-weight: bold;
-  text-transform: uppercase;
   font-size: var(--font-size-2xs);
 }
 
-.actor-sheet-v2 .v2-dres__input {
-  width: 28px;
-  padding: 1px 2px;
-  text-align: center;
-  font-size: var(--font-size-xs);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-sm);
-  background: rgba(0, 0, 0, 0.15);
-  color: var(--abf-text-light);
+.actor-sheet-v2 .v2-header__res-value {
+  min-width: 28px;
+  text-align: right;
+  font-weight: bold;
 }
 
-.actor-sheet-v2 .v2-dres__sep {
+
+/* Header separator */
+.actor-sheet-v2 .v2-header__sep {
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 2px;
+  font-size: var(--font-size-2xs);
+}
+
+/* TA (Total Armor) Block - clickable */
+.actor-sheet-v2 .v2-header__ta-block {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.actor-sheet-v2 .v2-header__ta-block:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.actor-sheet-v2 .v2-header__ta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+}
+
+.actor-sheet-v2 .v2-header__ta-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-header__ta-item b {
   color: var(--abf-secondary);
   font-size: var(--font-size-2xs);
 }
 
-.actor-sheet-v2 .v2-dres__extra {
+.actor-sheet-v2 .v2-header__ta-value {
+  min-width: 18px;
+  text-align: right;
+  font-weight: bold;
+}
+
+
+/* Critical resistance button styling */
+.actor-sheet-v2 .v2-header__res--crit {
+  background: rgba(139, 0, 0, 0.4);
+  border: 1px solid rgba(255, 100, 100, 0.3);
+}
+
+.actor-sheet-v2 .v2-header__res--crit:hover {
+  background: rgba(139, 0, 0, 0.6);
+  border-color: rgba(255, 100, 100, 0.5);
+}
+
+/* General Modifier Button (clickable to open effects tab) */
+.actor-sheet-v2 .v2-header__gen-mod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-3);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 45px;
+}
+
+.actor-sheet-v2 .v2-header__gen-mod:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--abf-secondary);
+  transform: scale(1.05);
+}
+
+.actor-sheet-v2 .v2-header__gen-mod-label {
   font-size: var(--font-size-2xs);
-  opacity: 0.7;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--abf-secondary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.actor-sheet-v2 .v2-header__gen-mod-value {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  min-width: 25px;
+  text-align: center;
+}
+
+.actor-sheet-v2 .v2-header__gen-mod--positive .v2-header__gen-mod-value {
+  color: var(--abf-success);
+}
+
+.actor-sheet-v2 .v2-header__gen-mod--negative .v2-header__gen-mod-value {
+  color: var(--abf-error);
+}
+
+/* Make resistances look clickable */
+.actor-sheet-v2 .v2-header__res.rollable {
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.actor-sheet-v2 .v2-header__res.rollable:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
 }
 
 /* --------------------------------
@@ -348,9 +604,14 @@
   opacity: 1;
 }
 
-.actor-sheet-v2 .v2-sidetabs__tab--settings {
+/* Bottom tabs (Effects and Settings) pushed to bottom */
+.actor-sheet-v2 .v2-sidetabs__tab--bottom {
   margin-top: auto;
   border-top: 1px solid var(--abf-border-light);
+}
+
+.actor-sheet-v2 .v2-sidetabs__tab--settings {
+  border-top: none;
 }
 
 .actor-sheet-v2 .v2-sidetabs__tab--settings span {
@@ -424,6 +685,37 @@
 
 .actor-sheet-v2 .v2-card__body {
   padding: var(--space-3);
+}
+
+/* Inline card variant - compact single row */
+.actor-sheet-v2 .v2-card--inline {
+  margin-bottom: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-card--inline .v2-card__header {
+  padding: var(--space-1) var(--space-2);
+}
+
+.actor-sheet-v2 .v2-card__body--inline {
+  padding: var(--space-1) var(--space-2);
+}
+
+/* Inline TA display */
+.actor-sheet-v2 .v2-ta-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.actor-sheet-v2 .v2-ta-inline__item {
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-ta-inline__item b {
+  color: var(--abf-primary);
+  margin-right: 2px;
 }
 
 /* --------------------------------
@@ -863,4 +1155,472 @@
 
 .actor-sheet-v2 .spheres .import-spells-btn:hover {
   background: var(--abf-primary-light);
+}
+
+/* ================================
+   Grimoire Tab Styles
+   ================================ */
+
+/* Grimoire Summary/Launcher */
+.actor-sheet-v2 .v2-grimoire-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.actor-sheet-v2 .v2-grimoire-quick-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.actor-sheet-v2 .v2-grimoire-quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  background: var(--abf-secondary-light);
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  min-width: 80px;
+}
+
+.actor-sheet-v2 .v2-grimoire-quick-stat__label {
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  text-transform: uppercase;
+}
+
+.actor-sheet-v2 .v2-grimoire-quick-stat__value {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-grimoire-spell-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--abf-secondary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--abf-text);
+}
+
+.actor-sheet-v2 .v2-grimoire-spell-count i {
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-grimoire-open-btn {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-sm);
+}
+
+/* Buttons */
+.actor-sheet-v2 .v2-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  background: var(--abf-secondary);
+  color: var(--abf-text);
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.actor-sheet-v2 .v2-btn:hover {
+  background: var(--abf-secondary-light);
+  border-color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-btn--primary {
+  background: var(--abf-primary);
+  color: var(--abf-text-light);
+  border-color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-btn--primary:hover {
+  background: var(--abf-primary-light);
+}
+
+.actor-sheet-v2 .v2-btn--small {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-2xs);
+}
+
+/* ================================
+   Summoning/Convocatoria Tab Styles
+   ================================ */
+
+.actor-sheet-v2 .v2-summoning-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.actor-sheet-v2 .v2-summoning-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  background: var(--abf-secondary-light);
+  border: 1px solid var(--abf-primary);
+  border-radius: var(--radius-md);
+  min-width: 100px;
+  flex: 1;
+}
+
+.actor-sheet-v2 .v2-summoning-stat__label {
+  font-size: var(--font-size-2xs);
+  text-transform: uppercase;
+  color: var(--abf-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.actor-sheet-v2 .v2-summoning-stat__values {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.actor-sheet-v2 .v2-summoning-stat__input {
+  width: 45px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  padding: 2px;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-summoning-stat__final {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  color: var(--abf-primary);
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Zeon Display */
+.actor-sheet-v2 .v2-zeon-display {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-zeon-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actor-sheet-v2 .v2-zeon-row__label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.actor-sheet-v2 .v2-zeon-row__values {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.actor-sheet-v2 .v2-zeon-row__input {
+  width: 50px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  padding: 2px;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-zeon-row__separator {
+  color: var(--abf-text-muted);
+}
+
+/* Zeon Regeneration */
+.actor-sheet-v2 .v2-zeon-regen__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actor-sheet-v2 .v2-zeon-regen__label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.actor-sheet-v2 .v2-zeon-regen__values {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.actor-sheet-v2 .v2-zeon-regen__input {
+  width: 50px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  padding: 2px;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-zeon-regen__final {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  color: var(--abf-primary);
+  min-width: 40px;
+  text-align: center;
+}
+
+/* ================================
+   Effects Tab Styles
+   ================================ */
+
+/* Modifiers Table */
+.actor-sheet-v2 .v2-modifiers-table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row {
+  display: table-row;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row--header {
+  background: var(--abf-secondary);
+  font-weight: bold;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row--header .v2-modifiers-table__cell {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 2px solid var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row--final {
+  background: var(--abf-secondary-light);
+  font-weight: bold;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell {
+  display: table-cell;
+  padding: var(--space-2) var(--space-3);
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--abf-border-light);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--label {
+  text-align: left;
+  font-weight: 600;
+  width: 80px;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--sep {
+  width: 20px;
+  border-left: 2px solid var(--abf-primary);
+  background: var(--abf-secondary-light);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--result {
+  font-weight: bold;
+  font-size: var(--font-size-base);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--final {
+  font-weight: bold;
+  font-size: var(--font-size-base);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__input {
+  width: 50px;
+  padding: var(--space-1) var(--space-2);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__input:focus {
+  border-color: var(--abf-primary);
+  outline: none;
+}
+
+/* Modifier colors */
+.actor-sheet-v2 .v2-mod--bonus { color: var(--abf-success); }
+.actor-sheet-v2 .v2-mod--malus { color: var(--abf-error); }
+.actor-sheet-v2 .v2-mod--positive { color: var(--abf-success); }
+.actor-sheet-v2 .v2-mod--negative { color: var(--abf-error); }
+
+/* Effects List */
+.actor-sheet-v2 .v2-effects-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.actor-sheet-v2 .v2-effects-section {
+  margin-bottom: var(--space-4);
+}
+
+.actor-sheet-v2 .v2-effects-section__title {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  color: var(--abf-primary);
+  padding: var(--space-2) var(--space-3);
+  background: var(--abf-secondary);
+  border-radius: var(--radius-sm);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.actor-sheet-v2 .v2-effects-info {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.actor-sheet-v2 .v2-effects-info__item {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--abf-text-muted);
+  font-style: italic;
+}
+
+.actor-sheet-v2 .v2-effects-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.actor-sheet-v2 .v2-effect-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--abf-border-light);
+  transition: background var(--transition-fast);
+}
+
+.actor-sheet-v2 .v2-effect-item:hover {
+  background: var(--abf-secondary-light);
+}
+
+.actor-sheet-v2 .v2-effect-item--disabled {
+  opacity: 0.5;
+}
+
+.actor-sheet-v2 .v2-effect-item__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--abf-border-light);
+  object-fit: cover;
+}
+
+.actor-sheet-v2 .v2-effect-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actor-sheet-v2 .v2-effect-item__name {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.actor-sheet-v2 .v2-effect-item__meta {
+  display: flex;
+  gap: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--abf-text-muted);
+}
+
+.actor-sheet-v2 .v2-effect-item__source::before {
+  content: "Source: ";
+  opacity: 0.7;
+}
+
+.actor-sheet-v2 .v2-effect-item__duration::before {
+  content: "Duration: ";
+  opacity: 0.7;
+}
+
+.actor-sheet-v2 .v2-effect-item__controls {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.actor-sheet-v2 .v2-effect-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  color: var(--abf-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.actor-sheet-v2 .v2-effect-btn:hover {
+  background: var(--abf-secondary);
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-effect-btn--danger:hover {
+  background: rgba(211, 47, 47, 0.1);
+  color: var(--abf-error);
+}
+
+.actor-sheet-v2 .v2-effects-empty {
+  padding: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--abf-text-muted);
+  font-style: italic;
+}
+
+/* --------------------------------
+   Checkbox Labels (Settings Tab)
+   -------------------------------- */
+.actor-sheet-v2 .v2-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  padding: var(--space-1) 0;
+}
+
+.actor-sheet-v2 .v2-checkbox-label input[type="checkbox"] {
+  margin: 0;
+}
+
+.actor-sheet-v2 .v2-checkbox-label:hover {
+  color: var(--abf-primary);
+}
+
+/* --------------------------------
+   Item Links (clickable to open sheet)
+   -------------------------------- */
+.actor-sheet-v2 .item-link {
+  cursor: pointer;
+  color: var(--abf-text);
+  transition: color var(--transition-fast);
+}
+
+.actor-sheet-v2 .item-link:hover {
+  color: var(--abf-primary);
+  text-decoration: underline;
 }

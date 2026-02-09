@@ -3,20 +3,29 @@ import { ABFSystemName } from "../../animabf-guote.name.js";
 /**
  * A dedicated spellbook window for viewing and managing spells.
  * Displays spells organized by via (sphere) with collapsible spell cards.
+ * Includes an overview tab with mystic stats, spheres, and import functionality.
  */
 export default class ABFSpellbook extends Application {
   constructor(actor, options = {}) {
     super(options);
     this.actor = actor;
     this.expandedSpells = new Set();
-    this.activeVia = null; // Will be set to first available via
+    this.activeVia = null; // Will be set to first available via, or 'overview'
+    this.actExpanded = false; // Track ACT alternative visibility
+  }
+
+  /**
+   * Special tab ID for the overview/stats tab
+   */
+  static get OVERVIEW_TAB() {
+    return '_overview';
   }
 
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "abf-spellbook",
       classes: ["abf", "spellbook"],
-      template: `systems/${ABFSystemName}/templates/actor/spellbook/spellbook.hbs`,
+      template: `systems/${ABFSystemName}/templates/actor-v2/parts/spellbook/spellbook.hbs`,
       width: 800,
       height: 700,
       resizable: true,
@@ -89,10 +98,15 @@ export default class ABFSpellbook extends Application {
     const spellsByVia = this.getSpellsByVia();
     const availableVias = this.getAvailableVias(spellsByVia);
 
-    // Set active via to first available if not set or invalid
-    if (!this.activeVia || !availableVias.includes(this.activeVia)) {
-      this.activeVia = availableVias[0] || null;
+    // Set active via to overview if not set, or first available spell via if invalid
+    if (!this.activeVia) {
+      this.activeVia = ABFSpellbook.OVERVIEW_TAB;
+    } else if (this.activeVia !== ABFSpellbook.OVERVIEW_TAB && !availableVias.includes(this.activeVia)) {
+      this.activeVia = availableVias[0] || ABFSpellbook.OVERVIEW_TAB;
     }
+
+    // Check if we're on the overview tab
+    const isOverviewTab = this.activeVia === ABFSpellbook.OVERVIEW_TAB;
 
     // Get localized via names
     const viaLabels = {};
@@ -139,14 +153,26 @@ export default class ABFSpellbook extends Application {
       }));
     }
 
+    // Get mystic system data for overview tab
+    const mystic = this.actor.system.mystic || {};
+
+    // Get spell maintenances
+    const spellMaintenances = this.actor.system.mystic?.spellMaintenances || [];
+
     return {
       ...data,
       actor: this.actor,
+      system: this.actor.system,
+      mystic,
       spellsByVia: preparedSpells,
+      spellMaintenances,
       availableVias,
       activeVia: this.activeVia,
+      isOverviewTab,
+      overviewTabId: ABFSpellbook.OVERVIEW_TAB,
       viaLabels,
       gradeLabels,
+      actExpanded: this.actExpanded,
       totalSpells: this.actor.items.filter(i => i.type === 'spell').length,
       expandedCount: this.expandedSpells.size,
       allExpanded: this.expandedSpells.size === this.actor.items.filter(i => i.type === 'spell').length
@@ -229,6 +255,147 @@ export default class ABFSpellbook extends Application {
         }
       }
     });
+
+    // Import spells button
+    html.find('[data-action="import-spells"]').click(async () => {
+      await this._handleImportSpells();
+    });
+
+    // Form input changes (save to actor)
+    html.find('.spellbook-overview input').on('change', async ev => {
+      const input = ev.currentTarget;
+      const name = input.name;
+      const value = input.type === 'number' ? Number(input.value) : input.value;
+
+      if (name) {
+        await this.actor.update({ [name]: value });
+      }
+    });
+
+    // ACT toggle
+    html.find('[data-action="toggle-act"]').click(ev => {
+      ev.stopPropagation();
+      this.actExpanded = !this.actExpanded;
+      const alternative = html.find('.spellbook-act__alternative');
+      alternative.attr('data-collapsed', !this.actExpanded);
+      const icon = ev.currentTarget.querySelector('i');
+      icon.classList.toggle('fa-chevron-down', !this.actExpanded);
+      icon.classList.toggle('fa-chevron-up', this.actExpanded);
+    });
+
+    // Add maintenance
+    html.find('[data-action="add-maintenance"]').click(async () => {
+      const maintenances = this.actor.system.mystic?.spellMaintenances || [];
+      const newMaintenance = {
+        _id: foundry.utils.randomID(),
+        name: '',
+        cost: 0
+      };
+      await this.actor.update({
+        'system.mystic.spellMaintenances': [...maintenances, newMaintenance]
+      });
+      this.render(false);
+    });
+
+    // Delete maintenance
+    html.find('[data-action="delete-maintenance"]').click(async ev => {
+      const itemId = ev.currentTarget.dataset.itemId;
+      const maintenances = this.actor.system.mystic?.spellMaintenances || [];
+      const filtered = maintenances.filter(m => m._id !== itemId);
+      await this.actor.update({
+        'system.mystic.spellMaintenances': filtered
+      });
+      this.render(false);
+    });
+
+    // Rollable clicks (for magic projections)
+    html.find('.v2-combat-value__final.rollable').click(async ev => {
+      const rollValue = Number(ev.currentTarget.dataset.rollvalue) || 0;
+      const label = ev.currentTarget.dataset.label || '';
+      const roll = new Roll('1d100xa + @mod', { mod: rollValue });
+      await roll.evaluate({ async: true });
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label
+      });
+    });
+  }
+
+  /**
+   * Handle import spells action - imports spells from compendium based on sphere levels
+   */
+  async _handleImportSpells() {
+    // Define sphere-to-via mapping (only the 11 direct sphere matches)
+    const sphereVias = ['air', 'creation', 'darkness', 'destruction', 'earth',
+                        'essence', 'fire', 'illusion', 'light', 'necromancy', 'water'];
+
+    // Get character's sphere levels
+    const spheres = this.actor.system.mystic.magicLevel.spheres;
+
+    // Get existing spell names to avoid duplicates
+    const existingSpellNames = new Set(
+      this.actor.items.filter(i => i.type === 'spell').map(i => i.name)
+    );
+
+    // Get magic compendium
+    const pack = game.packs.get('animabf-guote.magic');
+    if (!pack) {
+      ui.notifications.error(game.i18n.localize("anima.ui.mystic.importSpells.error.noCompendium"));
+      return;
+    }
+
+    // Get all spells from compendium
+    const allSpells = await pack.getDocuments();
+
+    // Filter spells by via and level
+    const spellsToImport = allSpells.filter(spell => {
+      const via = spell.system.via?.value;
+      const level = spell.system.level?.value || 0;
+
+      // Check if via is one of the sphere vias
+      if (!sphereVias.includes(via)) return false;
+
+      // Check if character has sufficient level in that sphere
+      const sphereLevel = spheres[via]?.value || 0;
+      if (level > sphereLevel) return false;
+
+      // Check if spell already exists
+      if (existingSpellNames.has(spell.name)) return false;
+
+      return true;
+    });
+
+    if (spellsToImport.length === 0) {
+      ui.notifications.info(game.i18n.localize("anima.ui.mystic.importSpells.noSpells"));
+      return;
+    }
+
+    // Confirm import
+    const confirmed = await Dialog.confirm({
+      title: game.i18n.localize("anima.ui.mystic.importSpells.confirm.title"),
+      content: game.i18n.format("anima.ui.mystic.importSpells.confirm.content", {
+        count: spellsToImport.length
+      })
+    });
+
+    if (!confirmed) return;
+
+    // Create embedded items
+    const itemData = spellsToImport.map(spell => ({
+      type: 'spell',
+      name: spell.name,
+      img: spell.img,
+      system: spell.system
+    }));
+
+    await this.actor.createEmbeddedDocuments('Item', itemData);
+
+    ui.notifications.info(game.i18n.format("anima.ui.mystic.importSpells.success", {
+      count: spellsToImport.length
+    }));
+
+    // Re-render to show new spells
+    this.render(false);
   }
 
   /**

@@ -7,23 +7,98 @@
     </div>
     <div class="v2-card__body">
       <div class="v2-grid v2-grid--3">
-        <label style="display: flex; align-items: center; gap: var(--space-2);">
+        <label class="v2-checkbox-label">
           <input type="checkbox"
                  name="system.ui.tabVisibility.mystic.value"
                  {{checked system.ui.tabVisibility.mystic.value}}>
           {{localize "anima.ui.tabs.mystic"}}
         </label>
-        <label style="display: flex; align-items: center; gap: var(--space-2);">
+        <label class="v2-checkbox-label">
           <input type="checkbox"
                  name="system.ui.tabVisibility.domine.value"
                  {{checked system.ui.tabVisibility.domine.value}}>
           {{localize "anima.ui.tabs.domine"}}
         </label>
-        <label style="display: flex; align-items: center; gap: var(--space-2);">
+        <label class="v2-checkbox-label">
           <input type="checkbox"
                  name="system.ui.tabVisibility.psychic.value"
                  {{checked system.ui.tabVisibility.psychic.value}}>
           {{localize "anima.ui.tabs.psychic"}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Resource Visibility --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <span>{{localize "anima.ui.settings.resourceVisibility.title"}}</span>
+    </div>
+    <div class="v2-card__body">
+      <p class="v2-text-muted" style="font-size: var(--font-size-xs); margin-bottom: var(--space-3);">
+        {{localize "anima.ui.settings.resourceVisibility.description"}}
+      </p>
+      <div class="v2-grid v2-grid--3" style="gap: var(--space-2);">
+        {{!-- Core Resources --}}
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.hp.value"
+                 {{checked system.ui.resourceVisibility.hp.value}}>
+          <i class="fas fa-heart" style="color: var(--abf-hp);"></i> PV
+        </label>
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.fatigue.value"
+                 {{checked system.ui.resourceVisibility.fatigue.value}}>
+          <i class="fas fa-bolt" style="color: var(--abf-fatigue);"></i> Cansancio
+        </label>
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.destiny.value"
+                 {{checked system.ui.resourceVisibility.destiny.value}}>
+          <i class="fas fa-star" style="color: var(--abf-destiny);"></i> Destino
+        </label>
+
+        {{!-- Mystic Resources --}}
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.zeon.value"
+                 {{checked system.ui.resourceVisibility.zeon.value}}>
+          <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon
+        </label>
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.zeonAccumulated.value"
+                 {{checked system.ui.resourceVisibility.zeonAccumulated.value}}>
+          <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon Acum.
+        </label>
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.shield.value"
+                 {{checked system.ui.resourceVisibility.shield.value}}>
+          <i class="fas fa-shield-alt" style="color: #4fc3f7;"></i> Escudo
+        </label>
+
+        {{!-- Domine Resources --}}
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.ki.value"
+                 {{checked system.ui.resourceVisibility.ki.value}}>
+          <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki
+        </label>
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.kiAccumulated.value"
+                 {{checked system.ui.resourceVisibility.kiAccumulated.value}}>
+          <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki Acum.
+        </label>
+
+        {{!-- Psychic Resources --}}
+        <label class="v2-checkbox-label">
+          <input type="checkbox"
+                 name="system.ui.resourceVisibility.psychicPoints.value"
+                 {{checked system.ui.resourceVisibility.psychicPoints.value}}>
+          <i class="fas fa-brain" style="color: var(--abf-psychic);"></i> CV Psiquicos
         </label>
       </div>
     </div>
@@ -53,7 +128,7 @@
           </select>
         </div>
         <div>
-          <label style="display: flex; align-items: center; gap: var(--space-2);">
+          <label class="v2-checkbox-label">
             <input type="checkbox"
                    name="system.general.settings.openOnDoubles.value"
                    {{checked system.general.settings.openOnDoubles.value}}>
@@ -69,57 +144,6 @@
           </select>
         </div>
       </div>
-    </div>
-  </div>
-
-  {{!-- Active Effects --}}
-  <div class="v2-card">
-    <div class="v2-card__header">
-      <span>Active Effects</span>
-    </div>
-    <div class="v2-card__body">
-      <ol class="items-list effects-list">
-        {{#each effects as |section sid|}}
-        {{#unless section.hidden}}
-        <li class="items-header flexrow" data-effect-type="{{section.type}}">
-          <h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
-        </li>
-
-        {{#if section.info}}
-        <ol class="info">
-          {{#each section.info}}
-          <li class="notification info">{{this}}</li>
-          {{/each}}
-        </ol>
-        {{/if}}
-        <ol class="item-list">
-          {{#each section.effects as |effect|}}
-          <li class="item effect flexrow" data-effect-id="{{effect.id}}" style="display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2); border-bottom: 1px solid var(--abf-border-light);">
-            <div class="item-name effect-name flexrow" style="flex: 1; display: flex; align-items: center; gap: var(--space-2);">
-              <img class="item-image" src="{{effect.icon}}" style="width: 24px; height: 24px; border-radius: var(--radius-sm);" />
-              <h4 style="margin: 0;">{{effect.label}}</h4>
-            </div>
-            <div class="effect-source" style="color: var(--abf-text-muted); font-size: var(--font-size-xs);">{{effect.sourceName}}</div>
-            <div class="effect-duration" style="color: var(--abf-text-muted); font-size: var(--font-size-xs);">{{effect.duration.label}}</div>
-            <div class="item-controls effect-controls flexrow" style="display: flex; gap: var(--space-1);">
-              {{#if @root.editable}}
-              <a class="effect-control" data-action="toggle" title="{{#if effect.disabled}}Enable{{else}}Disable{{/if}}">
-                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
-              </a>
-              <a class="effect-control" data-action="edit" title="Edit">
-                <i class="fas fa-edit"></i>
-              </a>
-              <a class="effect-control" data-action="delete" title="Delete">
-                <i class="fas fa-trash"></i>
-              </a>
-              {{/if}}
-            </div>
-          </li>
-          {{/each}}
-        </ol>
-        {{/unless}}
-        {{/each}}
-      </ol>
     </div>
   </div>
 </div>

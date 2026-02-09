@@ -149,6 +149,10 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor-v2/components/rollable-stat.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/data-table.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/weapon-dropdown.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/combat-value.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/resource-pool.hbs`,
+    // V2 Spellbook
+    `systems/${ABFSystemName}/templates/actor-v2/parts/spellbook/spellbook.hbs`,
     // V2 Header Parts
     `systems/${ABFSystemName}/templates/actor-v2/parts/header/header-v2.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/header/actor-portrait.hbs`,
@@ -156,7 +160,6 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor-v2/parts/header/resistances-compact.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/header/modifiers-display.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/header/initiative-display.hbs`,
-    `systems/${ABFSystemName}/templates/actor-v2/parts/header/dynamic-resources.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/header/quick-actions.hbs`,
     // V2 Tab Parts
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/combat.hbs`,
@@ -167,6 +170,8 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/domine.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/psychic.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/settings.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/summoning.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/effects.hbs`,
   ];
   return loadTemplates(templatePaths);
 };

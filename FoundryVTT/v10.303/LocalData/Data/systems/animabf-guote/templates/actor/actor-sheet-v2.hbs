@@ -23,13 +23,13 @@
         <span>{{localize "anima.ui.tabs.inventory"}}</span>
       </a>
       {{#if system.ui.tabVisibility.mystic.value}}
-      <a class="v2-sidetabs__tab item" data-tab="mystic" title="{{localize 'anima.ui.tabs.mystic'}}">
-        <i class="fas fa-hat-wizard"></i>
-        <span>{{localize "anima.ui.tabs.mystic"}}</span>
-      </a>
       <a class="v2-sidetabs__tab v2-sidetabs__tab--spellbook item" data-action="open-spellbook" title="{{localize 'anima.ui.spellbook.title'}}">
         <i class="fas fa-book-spells"></i>
         <span>{{localize "anima.ui.spellbook.tabName"}}</span>
+      </a>
+      <a class="v2-sidetabs__tab item" data-tab="summoning" title="{{localize 'anima.ui.tabs.summoning'}}">
+        <i class="fas fa-ghost"></i>
+        <span>{{localize "anima.ui.tabs.summoning"}}</span>
       </a>
       {{/if}}
       {{#if system.ui.tabVisibility.domine.value}}
@@ -44,6 +44,10 @@
         <span>{{localize "anima.ui.tabs.psychic"}}</span>
       </a>
       {{/if}}
+      <a class="v2-sidetabs__tab v2-sidetabs__tab--bottom item" data-tab="effects" title="{{localize 'anima.ui.tabs.effects'}}">
+        <i class="fas fa-magic"></i>
+        <span>{{localize "anima.ui.tabs.effects"}}</span>
+      </a>
       <a class="v2-sidetabs__tab v2-sidetabs__tab--settings item" data-tab="settings" title="Settings">
         <i class="fas fa-cog"></i>
       </a>
@@ -61,6 +65,11 @@
         {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/skills.hbs"}}
       </div>
 
+      {{!-- Effects Tab --}}
+      <div class="v2-body__tab tab effects" data-group="primary" data-tab="effects">
+        {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/effects.hbs"}}
+      </div>
+
       {{!-- Bio Tab --}}
       <div class="v2-body__tab tab bio" data-group="primary" data-tab="bio">
         {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/bio.hbs"}}
@@ -71,9 +80,9 @@
         {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/inventory.hbs"}}
       </div>
 
-      {{!-- Mystic Tab (Conditional) --}}
-      <div class="v2-body__tab tab mystic" data-group="primary" data-tab="mystic">
-        {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/mystic.hbs"}}
+      {{!-- Summoning/Convocatoria Tab (Conditional) --}}
+      <div class="v2-body__tab tab summoning" data-group="primary" data-tab="summoning">
+        {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/summoning.hbs"}}
       </div>
 
       {{!-- Domine Tab (Conditional) --}}

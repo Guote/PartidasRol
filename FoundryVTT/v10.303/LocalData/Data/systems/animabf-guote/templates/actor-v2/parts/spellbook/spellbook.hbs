@@ -1,0 +1,415 @@
+<div class="spellbook-container">
+  {{!-- Header --}}
+  <header class="spellbook-header">
+    <div class="spellbook-header__info">
+      <span class="spellbook-header__count">
+        {{localize "anima.ui.spellbook.spellCount" count=totalSpells}}
+      </span>
+    </div>
+    <div class="spellbook-header__actions">
+      <button type="button" class="spellbook-btn" data-action="expand-all">
+        <i class="fas fa-expand-alt"></i>
+        {{localize "anima.ui.spellbook.expandAll"}}
+      </button>
+      <button type="button" class="spellbook-btn" data-action="collapse-all">
+        <i class="fas fa-compress-alt"></i>
+        {{localize "anima.ui.spellbook.collapseAll"}}
+      </button>
+    </div>
+  </header>
+
+  {{!-- Main area with side tabs --}}
+  <div class="spellbook-main">
+    {{!-- Side Tabs --}}
+    <nav class="spellbook-sidetabs">
+      {{!-- Overview Tab (always first) --}}
+      <button type="button"
+              class="spellbook-sidetab spellbook-sidetab--overview {{#if isOverviewTab}}active{{/if}}"
+              data-via="{{overviewTabId}}">
+        <span class="spellbook-sidetab__label">{{localize "anima.ui.spellbook.overview"}}</span>
+        <i class="fas fa-chart-bar"></i>
+      </button>
+      {{!-- Via Tabs --}}
+      {{#each availableVias as |via|}}
+      <button type="button"
+              class="spellbook-sidetab {{#if (eq via ../activeVia)}}active{{/if}}"
+              data-via="{{via}}">
+        <span class="spellbook-sidetab__label">{{lookup ../viaLabels via}}</span>
+        <span class="spellbook-sidetab__count">{{lookup (lookup ../spellsByVia via) "length"}}</span>
+      </button>
+      {{/each}}
+    </nav>
+
+    {{!-- Content Area --}}
+    <main class="spellbook-content">
+    {{#if isOverviewTab}}
+      {{!-- Overview Tab Content --}}
+      <form class="spellbook-overview" autocomplete="off">
+        {{!-- Resources Row: Zeon + Shield --}}
+        <div class="spellbook-resources-row">
+          {{!-- Zeon Resource Pool --}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
+              label=(localize "anima.ui.mystic.zeon.title")
+              valueName="system.mystic.zeon.value"
+              currentValue=mystic.zeon.value
+              maxName="system.mystic.zeon.max"
+              maxValue=mystic.zeon.max
+              colorClass="zeon"
+              showRegen=true
+              regenValue=mystic.zeonRegeneration.final.value
+          }}
+
+          {{!-- Supernatural Shield Resource Pool --}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
+              label=(localize "anima.ui.mystic.shield.title")
+              valueName="system.mystic.shield.value"
+              currentValue=mystic.shield.value
+              maxName="system.mystic.shield.max"
+              maxValue=mystic.shield.max
+              colorClass="shield"
+          }}
+        </div>
+
+        {{!-- Combat Stats Row: ACT + Magic Projections + Innate Magic --}}
+        <div class="spellbook-combat-row">
+          {{!-- ACT (Collapsible) --}}
+          <div class="spellbook-act">
+            <div class="spellbook-act__primary">
+              <span class="spellbook-act__label">{{localize "anima.ui.mystic.act.title"}}</span>
+              <span class="spellbook-act__value">{{mystic.act.main.final.value}}</span>
+              {{#if mystic.act.alternative.final.value}}
+              <button type="button" class="spellbook-act__toggle" data-action="toggle-act">
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              {{/if}}
+            </div>
+            {{#if mystic.act.alternative.final.value}}
+            <div class="spellbook-act__alternative" data-collapsed="true">
+              <span class="spellbook-act__label">{{localize "anima.ui.mystic.act.alternative.title"}}</span>
+              <span class="spellbook-act__value">{{mystic.act.alternative.final.value}}</span>
+            </div>
+            {{/if}}
+          </div>
+
+          {{!-- Magic Projection Offensive --}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+              label=(localize "anima.ui.mystic.magicProjection.offensive.title")
+              baseName="system.mystic.magicProjection.imbalance.offensive.base.value"
+              baseValue=mystic.magicProjection.imbalance.offensive.base.value
+              finalValue=mystic.magicProjection.imbalance.offensive.final.value
+              rollable=true
+              rollLabel=(localize "anima.ui.mystic.magicProjection.offensive.title")
+          }}
+
+          {{!-- Magic Projection Defensive --}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+              label=(localize "anima.ui.mystic.magicProjection.defensive.title")
+              baseName="system.mystic.magicProjection.imbalance.defensive.base.value"
+              baseValue=mystic.magicProjection.imbalance.defensive.base.value
+              finalValue=mystic.magicProjection.imbalance.defensive.final.value
+              rollable=true
+              rollLabel=(localize "anima.ui.mystic.magicProjection.defensive.title")
+          }}
+
+          {{!-- Innate Magic --}}
+          <div class="spellbook-innate">
+            <span class="spellbook-innate__label">{{localize "anima.ui.mystic.innateMagic.title"}}</span>
+            <input type="number" class="spellbook-innate__input"
+                   name="system.mystic.innateMagic.main.value"
+                   value="{{mystic.innateMagic.main.value}}">
+          </div>
+        </div>
+
+        {{!-- Spheres (Nivel de Magia) --}}
+        <div class="spellbook-spheres spellbook-spheres--compact">
+          <div class="spellbook-spheres__header">
+            <h4 class="spellbook-spheres__title">{{localize "anima.ui.mystic.magicLevel.title"}}</h4>
+            <div class="spellbook-spheres__totals-inline">
+              <span class="spellbook-spheres__total">
+                <span class="spellbook-spheres__total-label">{{localize "anima.ui.mystic.magicLevel.total.title"}}</span>
+                <span class="spellbook-spheres__total-value">{{mystic.magicLevel.total.value}}</span>
+              </span>
+              <span class="spellbook-spheres__total">
+                <span class="spellbook-spheres__total-label">{{localize "anima.ui.mystic.magicLevel.used.title"}}</span>
+                <span class="spellbook-spheres__total-value">{{mystic.magicLevel.used.value}}</span>
+              </span>
+            </div>
+            <button type="button" class="spellbook-btn spellbook-btn--small" data-action="import-spells">
+              <i class="fas fa-download"></i>
+              {{localize "anima.ui.mystic.importSpells.button"}}
+            </button>
+          </div>
+          <div class="spellbook-spheres__grid spellbook-spheres__grid--compact">
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.light.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.light.value"
+                     value="{{mystic.magicLevel.spheres.light.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.darkness.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.darkness.value"
+                     value="{{mystic.magicLevel.spheres.darkness.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.fire.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.fire.value"
+                     value="{{mystic.magicLevel.spheres.fire.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.water.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.water.value"
+                     value="{{mystic.magicLevel.spheres.water.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.earth.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.earth.value"
+                     value="{{mystic.magicLevel.spheres.earth.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.air.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.air.value"
+                     value="{{mystic.magicLevel.spheres.air.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.creation.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.creation.value"
+                     value="{{mystic.magicLevel.spheres.creation.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.destruction.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.destruction.value"
+                     value="{{mystic.magicLevel.spheres.destruction.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.essence.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.essence.value"
+                     value="{{mystic.magicLevel.spheres.essence.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.illusion.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.illusion.value"
+                     value="{{mystic.magicLevel.spheres.illusion.value}}">
+            </div>
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.necromancy.title"}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.necromancy.value"
+                     value="{{mystic.magicLevel.spheres.necromancy.value}}">
+            </div>
+          </div>
+        </div>
+
+        {{!-- Active Spells / Daily Maintenances --}}
+        <div class="spellbook-maintenances">
+          <div class="spellbook-maintenances__header">
+            <h4 class="spellbook-maintenances__title">{{localize "anima.ui.mystic.spellMaintenances.title"}}</h4>
+            <button type="button" class="spellbook-btn spellbook-btn--small" data-action="add-maintenance">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <div class="spellbook-maintenances__list">
+            {{#each spellMaintenances as |maint|}}
+            <div class="spellbook-maintenance" data-item-id="{{maint._id}}">
+              <input type="text" class="spellbook-maintenance__name"
+                     name="system.dynamic.spellMaintenances.{{maint._id}}.name"
+                     value="{{maint.name}}"
+                     placeholder="{{localize 'anima.ui.mystic.spellMaintenances.name.title'}}">
+              <input type="number" class="spellbook-maintenance__cost"
+                     name="system.dynamic.spellMaintenances.{{maint._id}}.cost"
+                     value="{{maint.cost}}"
+                     placeholder="{{localize 'anima.ui.mystic.spellMaintenances.cost.title'}}">
+              <button type="button" class="spellbook-maintenance__delete" data-action="delete-maintenance" data-item-id="{{maint._id}}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            {{else}}
+            <div class="spellbook-maintenances__empty">
+              <span>{{localize "anima.ui.mystic.spellMaintenances.noMaintenances"}}</span>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </form>
+    {{else if activeVia}}
+      {{#with (lookup spellsByVia activeVia) as |spells|}}
+        {{#if spells.length}}
+        <div class="spellbook-grid">
+          {{#each spells as |spell|}}
+          <article class="spell-card {{#if spell.expanded}}spell-card--expanded{{/if}}" data-spell-id="{{spell.id}}">
+            {{!-- Spell Header (always visible) --}}
+            <header class="spell-card__header">
+              <span class="spell-card__level">{{spell.system.level.value}}</span>
+              <h3 class="spell-card__name">{{spell.name}}</h3>
+              <div class="spell-card__header-actions">
+                <button type="button" class="spell-card__header-btn" data-action="edit-spell" title="{{localize 'anima.contextualMenu.common.options.edit'}}">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <i class="spell-card__toggle fas {{#if spell.expanded}}fa-chevron-up{{else}}fa-chevron-down{{/if}}"></i>
+              </div>
+            </header>
+
+            {{#if spell.expanded}}
+            <div class="spell-card__body">
+              {{!-- Spell Meta (Type & Action) --}}
+              <div class="spell-card__meta">
+                <span class="spell-card__meta-item" title="{{localize 'anima.ui.mystic.spell.spellType.title'}}">
+                  <i class="fas fa-magic"></i> {{spell.spellTypeLabel}}
+                </span>
+                <span class="spell-card__meta-item" title="{{localize 'anima.ui.mystic.spell.actionType.title'}}">
+                  <i class="fas fa-bolt"></i> {{spell.actionTypeLabel}}
+                </span>
+                {{#if spell.system.hasDailyMaintenance.value}}
+                <span class="spell-card__meta-item spell-card__meta-item--maint" title="{{localize 'anima.ui.mystic.spell.hasDailyMaintenance.title'}}">
+                  <i class="fas fa-clock"></i> {{localize "anima.ui.spellbook.dailyMaint"}}
+                </span>
+                {{/if}}
+              </div>
+
+              {{!-- Grades List --}}
+              <div class="spell-card__grades-list">
+                {{!-- Base Grade --}}
+                {{#with spell.system.grades.base as |grade|}}
+                {{#if (or grade.zeon.value grade.description.value)}}
+                <div class="spell-grade" data-grade="base" data-spell-id="{{spell.id}}">
+                  <div class="spell-grade__header">
+                    <span class="spell-grade__name spell-grade__name--base">{{localize "anima.ui.mystic.spell.grade.base.title"}}</span>
+                    <div class="spell-grade__stats">
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.zeon.title'}}">
+                        <i class="fas fa-fire-alt"></i> {{grade.zeon.value}}
+                      </span>
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.intRequired.title'}}">
+                        <i class="fas fa-brain"></i> {{grade.intRequired.value}}
+                      </span>
+                      {{#if grade.maintenanceCost.value}}
+                      <span class="spell-grade__stat spell-grade__stat--maint" title="{{localize 'anima.ui.mystic.spell.grade.maintenanceCost.title'}}">
+                        <i class="fas fa-sync-alt"></i> {{grade.maintenanceCost.value}}
+                      </span>
+                      {{/if}}
+                    </div>
+                  </div>
+                  {{#if grade.description.value}}
+                  <p class="spell-grade__desc">{{grade.description.value}}</p>
+                  {{/if}}
+                </div>
+                {{/if}}
+                {{/with}}
+
+                {{!-- Intermediate Grade --}}
+                {{#with spell.system.grades.intermediate as |grade|}}
+                {{#if (or grade.zeon.value grade.description.value)}}
+                <div class="spell-grade" data-grade="intermediate" data-spell-id="{{spell.id}}">
+                  <div class="spell-grade__header">
+                    <span class="spell-grade__name spell-grade__name--intermediate">{{localize "anima.ui.mystic.spell.grade.intermediate.title"}}</span>
+                    <div class="spell-grade__stats">
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.zeon.title'}}">
+                        <i class="fas fa-fire-alt"></i> {{grade.zeon.value}}
+                      </span>
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.intRequired.title'}}">
+                        <i class="fas fa-brain"></i> {{grade.intRequired.value}}
+                      </span>
+                      {{#if grade.maintenanceCost.value}}
+                      <span class="spell-grade__stat spell-grade__stat--maint" title="{{localize 'anima.ui.mystic.spell.grade.maintenanceCost.title'}}">
+                        <i class="fas fa-sync-alt"></i> {{grade.maintenanceCost.value}}
+                      </span>
+                      {{/if}}
+                    </div>
+                  </div>
+                  {{#if grade.description.value}}
+                  <p class="spell-grade__desc">{{grade.description.value}}</p>
+                  {{/if}}
+                </div>
+                {{/if}}
+                {{/with}}
+
+                {{!-- Advanced Grade --}}
+                {{#with spell.system.grades.advanced as |grade|}}
+                {{#if (or grade.zeon.value grade.description.value)}}
+                <div class="spell-grade" data-grade="advanced" data-spell-id="{{spell.id}}">
+                  <div class="spell-grade__header">
+                    <span class="spell-grade__name spell-grade__name--advanced">{{localize "anima.ui.mystic.spell.grade.advanced.title"}}</span>
+                    <div class="spell-grade__stats">
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.zeon.title'}}">
+                        <i class="fas fa-fire-alt"></i> {{grade.zeon.value}}
+                      </span>
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.intRequired.title'}}">
+                        <i class="fas fa-brain"></i> {{grade.intRequired.value}}
+                      </span>
+                      {{#if grade.maintenanceCost.value}}
+                      <span class="spell-grade__stat spell-grade__stat--maint" title="{{localize 'anima.ui.mystic.spell.grade.maintenanceCost.title'}}">
+                        <i class="fas fa-sync-alt"></i> {{grade.maintenanceCost.value}}
+                      </span>
+                      {{/if}}
+                    </div>
+                  </div>
+                  {{#if grade.description.value}}
+                  <p class="spell-grade__desc">{{grade.description.value}}</p>
+                  {{/if}}
+                </div>
+                {{/if}}
+                {{/with}}
+
+                {{!-- Arcane Grade --}}
+                {{#with spell.system.grades.arcane as |grade|}}
+                {{#if (or grade.zeon.value grade.description.value)}}
+                <div class="spell-grade" data-grade="arcane" data-spell-id="{{spell.id}}">
+                  <div class="spell-grade__header">
+                    <span class="spell-grade__name spell-grade__name--arcane">{{localize "anima.ui.mystic.spell.grade.arcane.title"}}</span>
+                    <div class="spell-grade__stats">
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.zeon.title'}}">
+                        <i class="fas fa-fire-alt"></i> {{grade.zeon.value}}
+                      </span>
+                      <span class="spell-grade__stat" title="{{localize 'anima.ui.mystic.spell.grade.intRequired.title'}}">
+                        <i class="fas fa-brain"></i> {{grade.intRequired.value}}
+                      </span>
+                      {{#if grade.maintenanceCost.value}}
+                      <span class="spell-grade__stat spell-grade__stat--maint" title="{{localize 'anima.ui.mystic.spell.grade.maintenanceCost.title'}}">
+                        <i class="fas fa-sync-alt"></i> {{grade.maintenanceCost.value}}
+                      </span>
+                      {{/if}}
+                    </div>
+                  </div>
+                  {{#if grade.description.value}}
+                  <p class="spell-grade__desc">{{grade.description.value}}</p>
+                  {{/if}}
+                </div>
+                {{/if}}
+                {{/with}}
+              </div>
+
+              {{!-- Delete button at bottom --}}
+              <footer class="spell-card__footer">
+                <button type="button" class="spell-card__delete-btn" data-action="delete-spell" title="{{localize 'anima.contextualMenu.common.options.delete'}}">
+                  <i class="fas fa-trash"></i> {{localize "anima.contextualMenu.common.options.delete"}}
+                </button>
+              </footer>
+            </div>
+            {{/if}}
+          </article>
+          {{/each}}
+        </div>
+        {{else}}
+        <div class="spellbook-empty">
+          <i class="fas fa-book-open"></i>
+          <p>{{localize "anima.ui.spellbook.noSpellsInVia"}}</p>
+        </div>
+        {{/if}}
+      {{/with}}
+    {{else}}
+    <div class="spellbook-empty">
+      <i class="fas fa-book-open"></i>
+      <p>{{localize "anima.ui.spellbook.noSpells"}}</p>
+    </div>
+    {{/if}}
+  </main>
+  </div>
+</div>

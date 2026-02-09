@@ -10,6 +10,17 @@
           "mystic": { "value": false },
           "domine": { "value": false },
           "psychic": { "value": false }
+        },
+        "resourceVisibility": {
+          "hp": { "value": true },
+          "fatigue": { "value": true },
+          "destiny": { "value": true },
+          "zeon": { "value": false },
+          "zeonAccumulated": { "value": false },
+          "ki": { "value": false },
+          "kiAccumulated": { "value": false },
+          "psychicPoints": { "value": false },
+          "shield": { "value": false }
         }
       },
       "flags": {

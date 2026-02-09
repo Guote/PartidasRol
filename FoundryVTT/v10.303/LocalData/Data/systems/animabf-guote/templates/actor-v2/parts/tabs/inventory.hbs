@@ -1,5 +1,164 @@
 {{!-- Inventory Tab --}}
 <div class="v2-tab-inventory">
+  {{!-- Weapons --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.combat.weapons.title"}}</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-weapon" title="{{localize 'anima.dialogs.items.weapons.content'}}">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" style="padding: 0;">
+      <table class="v2-table">
+        <thead>
+          <tr>
+            <th style="width: 30px;" title="Usar para turno"><i class="fas fa-dice-d20"></i></th>
+            <th>{{localize "anima.ui.combat.ammo.name.title"}}</th>
+            <th style="width: 50px;">{{localize "anima.ui.combat.baseValues.attack.title"}}</th>
+            <th style="width: 50px;">{{localize "anima.ui.combat.baseValues.block.title"}}</th>
+            <th style="width: 50px;">{{localize "anima.ui.combat.weapons.damage.final.title"}}</th>
+            <th style="width: 40px;">{{localize "anima.ui.general.initiative.base.title"}}</th>
+            <th style="width: 60px;">{{localize "anima.ui.combat.weapons.critic.primary.title"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each system.combat.weapons as |weapon|}}
+          <tr class="weapon-row v2-table__row--draggable" data-item-id="{{weapon._id}}">
+            <td class="v2-text-center">
+              <input type="checkbox" class="weapon-initiative-checkbox"
+                     name="system.dynamic.weapons.{{weapon._id}}.system.isShown.value"
+                     {{checked weapon.system.isShown.value}}
+                     title="Usar para turno">
+            </td>
+            <td>
+              <span class="item-link rollable"
+                    data-roll="1d100xa"
+                    data-rollvalue="{{weapon.system.attack.final.value}}"
+                    data-label="{{weapon.name}}">
+                {{weapon.name}}
+              </span>
+            </td>
+            <td class="v2-text-center">{{weapon.system.attack.final.value}}</td>
+            <td class="v2-text-center">{{weapon.system.block.final.value}}</td>
+            <td class="v2-text-center">{{weapon.system.damage.final.value}}</td>
+            <td class="v2-text-center">{{weapon.system.initiative.final.value}}</td>
+            <td class="v2-text-center">{{weapon.system.critic.primary.value}}</td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="7" class="v2-text-center v2-text-muted">-</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {{!-- Armors --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.combat.armors.title"}}</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-armor" title="{{localize 'anima.dialogs.items.armors.content'}}">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" style="padding: 0;">
+      <table class="v2-table">
+        <thead>
+          <tr>
+            <th style="width: 30px;" title="Equipada"><i class="fas fa-shield-alt"></i></th>
+            <th>{{localize "anima.ui.combat.armors.name.title"}}</th>
+            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.cut.title"}}</th>
+            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.impact.title"}}</th>
+            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.thrust.title"}}</th>
+            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.heat.title"}}</th>
+            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.electricity.title"}}</th>
+            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.cold.title"}}</th>
+            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.energy.title"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each system.combat.armors as |armor|}}
+          <tr class="armor-row v2-table__row--draggable" data-item-id="{{armor._id}}">
+            <td class="v2-text-center">
+              <input type="checkbox" class="armor-equipped-checkbox"
+                     name="system.dynamic.armors.{{armor._id}}.system.equipped.value"
+                     {{checked armor.system.equipped.value}}
+                     title="Equipada">
+            </td>
+            <td>
+              <span class="item-link">{{armor.name}}</span>
+            </td>
+            <td class="v2-text-center">{{armor.system.cut.final.value}}</td>
+            <td class="v2-text-center">{{armor.system.impact.final.value}}</td>
+            <td class="v2-text-center">{{armor.system.thrust.final.value}}</td>
+            <td class="v2-text-center">{{armor.system.heat.final.value}}</td>
+            <td class="v2-text-center">{{armor.system.electricity.final.value}}</td>
+            <td class="v2-text-center">{{armor.system.cold.final.value}}</td>
+            <td class="v2-text-center">{{armor.system.energy.final.value}}</td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="9" class="v2-text-center v2-text-muted">-</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {{!-- Ammo --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.combat.ammo.title"}}</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-ammo" title="{{localize 'anima.dialogs.items.ammo.content'}}">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" style="padding: 0;">
+      <table class="v2-table">
+        <thead>
+          <tr>
+            <th>{{localize "anima.ui.combat.ammo.name.title"}}</th>
+            <th style="width: 70px;">{{localize "anima.ui.combat.ammo.amount.title"}}</th>
+            <th style="width: 70px;">{{localize "anima.ui.combat.ammo.damage.title"}}</th>
+            <th style="width: 80px;">{{localize "anima.ui.combat.ammo.critic.title"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each system.combat.ammo as |ammo|}}
+          <tr class="ammo-row v2-table__row--draggable" data-item-id="{{ammo._id}}">
+            <td><span class="item-link">{{ammo.name}}</span></td>
+            <td>
+              <input type="number" class="v2-table__input v2-text-center"
+                     name="system.dynamic.ammo.{{ammo._id}}.system.amount.value"
+                     value="{{ammo.system.amount.value}}">
+            </td>
+            <td class="v2-text-center">{{ammo.system.damage.final.value}}</td>
+            <td class="v2-text-center">{{ammo.system.critic.value}}</td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="4" class="v2-text-center v2-text-muted">-</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   {{!-- Money --}}
   <div class="v2-card">
     <div class="v2-card__header">
@@ -54,7 +213,7 @@
         <tbody>
           {{#each system.general.inventory as |item|}}
           <tr class="item v2-table__row--draggable" data-item-id="{{item._id}}">
-            <td>{{item.name}}</td>
+            <td><span class="item-link">{{item.name}}</span></td>
             <td>
               <input type="number" class="v2-table__input v2-text-center"
                      name="system.dynamic.inventory.{{item._id}}.system.amount.value"
@@ -68,50 +227,6 @@
             <td class="v2-text-muted" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
               {{item.system.description.value}}
             </td>
-          </tr>
-          {{else}}
-          <tr>
-            <td colspan="4" class="v2-text-center v2-text-muted">-</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  {{!-- Ammo --}}
-  <div class="v2-card">
-    <div class="v2-card__header">
-      <div class="v2-card__header-title">
-        <span>{{localize "anima.ui.combat.ammo.title"}}</span>
-      </div>
-      <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-ammo" title="{{localize 'anima.dialogs.items.ammo.content'}}">
-          <i class="fas fa-plus"></i>
-        </button>
-      </div>
-    </div>
-    <div class="v2-card__body" style="padding: 0;">
-      <table class="v2-table">
-        <thead>
-          <tr>
-            <th>{{localize "anima.ui.combat.ammo.name.title"}}</th>
-            <th style="width: 70px;">{{localize "anima.ui.combat.ammo.amount.title"}}</th>
-            <th style="width: 70px;">{{localize "anima.ui.combat.ammo.damage.title"}}</th>
-            <th style="width: 80px;">{{localize "anima.ui.combat.ammo.critic.title"}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each system.combat.ammo as |ammo|}}
-          <tr class="ammo-row v2-table__row--draggable" data-item-id="{{ammo._id}}">
-            <td>{{ammo.name}}</td>
-            <td>
-              <input type="number" class="v2-table__input v2-text-center"
-                     name="system.dynamic.ammo.{{ammo._id}}.system.amount.value"
-                     value="{{ammo.system.amount.value}}">
-            </td>
-            <td class="v2-text-center">{{ammo.system.damage.final.value}}</td>
-            <td class="v2-text-center">{{ammo.system.critic.value}}</td>
           </tr>
           {{else}}
           <tr>

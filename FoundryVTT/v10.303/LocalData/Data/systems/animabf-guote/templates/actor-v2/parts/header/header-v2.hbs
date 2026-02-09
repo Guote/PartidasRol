@@ -1,115 +1,225 @@
 {{!-- V2 Compact Header Template --}}
 <header class="v2-header">
-  <div class="v2-header__row">
-    {{!-- Portrait + Name --}}
+  {{!-- ROW 1: Portrait+Level | Resistances+TA | Initiative+Mod --}}
+  <div class="v2-header__row v2-header__row--top">
+    {{!-- Portrait + Level --}}
     <div class="v2-header__identity">
       <img class="v2-header__portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}">
       <div class="v2-header__info">
-        <input type="text" class="v2-header__name" name="name" value="{{actor.name}}" placeholder="Name">
         <span class="v2-header__level">Nv. {{system.general.levels.length}}</span>
       </div>
     </div>
 
-    {{!-- Core Resources: HP, Fatigue, Destiny, Initiative --}}
+    {{!-- Resistances + TA stacked (centered) --}}
+    <div class="v2-header__defense-block">
+      {{!-- Resistances --}}
+      <div class="v2-header__resistances-block">
+        <span class="v2-header__block-title">{{localize "anima.ui.resistances.title"}}</span>
+        <div class="v2-header__resistances">
+          <span class="v2-header__res rollable" title="{{localize 'anima.ui.resistances.physical'}}" data-roll="1d100"
+            data-rollvalue="{{system.characteristics.secondaries.resistances.physical.base.value}}"
+            data-label="{{localize 'anima.ui.resistances.physical'}}">
+            <b>RF</b><span
+              class="v2-header__res-value">{{system.characteristics.secondaries.resistances.physical.base.value}}</span>
+          </span>
+          <span class="v2-header__res rollable" title="{{localize 'anima.ui.resistances.magic'}}" data-roll="1d100"
+            data-rollvalue="{{system.characteristics.secondaries.resistances.magic.base.value}}"
+            data-label="{{localize 'anima.ui.resistances.magic'}}">
+            <b>RM</b><span
+              class="v2-header__res-value">{{system.characteristics.secondaries.resistances.magic.base.value}}</span>
+          </span>
+          <span class="v2-header__res rollable" title="{{localize 'anima.ui.resistances.psychic'}}" data-roll="1d100"
+            data-rollvalue="{{system.characteristics.secondaries.resistances.psychic.base.value}}"
+            data-label="{{localize 'anima.ui.resistances.psychic'}}">
+            <b>RP</b><span
+              class="v2-header__res-value">{{system.characteristics.secondaries.resistances.psychic.base.value}}</span>
+          </span>
+          <span class="v2-header__res v2-header__res--crit rollable"
+            title="{{localize 'anima.ui.resistances.resistCritical'}}" data-roll="1d100-1d100"
+            data-rollvalue="{{system.characteristics.secondaries.resistances.physical.base.value}}"
+            data-label="{{localize 'anima.ui.resistances.resistCritical'}}">
+            <b><i class="fas fa-skull-crossbones"></i></b>
+          </span>
+        </div>
+      </div>
+
+      {{!-- TA (Total Armor) - clickable to open inventory --}}
+      <div class="v2-header__ta-block" data-action="open-tab" data-tab="inventory" title="Click para ver inventario">
+        <span class="v2-header__block-title">TA</span>
+        <div class="v2-header__ta">
+          <span class="v2-header__ta-item" title="{{localize 'anima.ui.combat.armors.at.cut.title'}}">
+            <b>FIL</b><span class="v2-header__ta-value">{{system.combat.totalArmor.at.cut.value}}</span>
+          </span>
+          <span class="v2-header__ta-item" title="{{localize 'anima.ui.combat.armors.at.impact.title'}}">
+            <b>CON</b><span class="v2-header__ta-value">{{system.combat.totalArmor.at.impact.value}}</span>
+          </span>
+          <span class="v2-header__ta-item" title="{{localize 'anima.ui.combat.armors.at.thrust.title'}}">
+            <b>PEN</b><span class="v2-header__ta-value">{{system.combat.totalArmor.at.thrust.value}}</span>
+          </span>
+          <span class="v2-header__ta-item" title="{{localize 'anima.ui.combat.armors.at.heat.title'}}">
+            <b>CAL</b><span class="v2-header__ta-value">{{system.combat.totalArmor.at.heat.value}}</span>
+          </span>
+          <span class="v2-header__ta-item" title="{{localize 'anima.ui.combat.armors.at.electricity.title'}}">
+            <b>ELE</b><span class="v2-header__ta-value">{{system.combat.totalArmor.at.electricity.value}}</span>
+          </span>
+          <span class="v2-header__ta-item" title="{{localize 'anima.ui.combat.armors.at.cold.title'}}">
+            <b>FRI</b><span class="v2-header__ta-value">{{system.combat.totalArmor.at.cold.value}}</span>
+          </span>
+          <span class="v2-header__ta-item" title="{{localize 'anima.ui.combat.armors.at.energy.title'}}">
+            <b>ENE</b><span class="v2-header__ta-value">{{system.combat.totalArmor.at.energy.value}}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {{!-- Initiative + General Modifier --}}
+    <div class="v2-header__right-stats">
+      {{!-- Initiative --}}
+      <div class="v2-res v2-res--init" title="{{localize 'anima.ui.general.initiative.base.title'}}">
+        <span class="v2-res__icon rollable" data-roll="1d100Initiative"
+          data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}"
+          data-label="{{localize 'anima.ui.general.initiative.base.title'}}"><i class="fas fa-dice-d20"></i></span>
+        <div class="v2-res__content">
+          <span class="v2-res__label">Turno</span>
+          <span class="v2-res__value rollable" data-roll="1d100Initiative"
+            data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}"
+            data-label="{{localize 'anima.ui.general.initiative.base.title'}}">{{system.characteristics.secondaries.initiative.final.value}}</span>
+        </div>
+      </div>
+
+      {{!-- General Modifier (clickable to open effects tab) --}}
+      <div
+        class="v2-header__gen-mod {{#if (lt system.general.modifiers.modFinal.general.final.value 0)}}v2-header__gen-mod--negative{{/if}} {{#if (gt system.general.modifiers.modFinal.general.final.value 0)}}v2-header__gen-mod--positive{{/if}}"
+        data-tab="effects" title="{{localize 'anima.ui.general.modifiers.allActions.title'}} - Click para ver efectos">
+        <span class="v2-header__gen-mod-label">Mod</span>
+        <span class="v2-header__gen-mod-value">{{system.general.modifiers.modFinal.general.final.value}}</span>
+      </div>
+    </div>
+  </div>
+
+  {{!-- ROW 2: Resources Bar (always visible) --}}
+  <div class="v2-header__row v2-header__row--resources">
     <div class="v2-header__resources">
       {{!-- HP --}}
-      <div class="v2-res v2-res--hp">
-        <span class="v2-res__icon"><i class="fas fa-heart"></i></span>
-        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.lifePoints.value" value="{{system.characteristics.secondaries.lifePoints.value}}">
-        <span class="v2-res__sep">/</span>
-        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.lifePoints.max" value="{{system.characteristics.secondaries.lifePoints.max}}">
-        {{#if system.characteristics.secondaries.lifePoints.sacrificed}}
-        <span class="v2-res__sac">(-{{system.characteristics.secondaries.lifePoints.sacrificed}})</span>
-        {{/if}}
+      {{#if system.ui.resourceVisibility.hp.value}}
+      <div class="v2-res v2-res--hp v2-res--compact" title="{{localize 'anima.ui.general.life.current.title'}}">
+        <span class="v2-res__label"><i class="fas fa-heart"></i> PV</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="system.characteristics.secondaries.lifePoints.value"
+            value="{{system.characteristics.secondaries.lifePoints.value}}">
+          <span class="v2-res__sep">/</span>
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="system.characteristics.secondaries.lifePoints.max"
+            value="{{system.characteristics.secondaries.lifePoints.max}}">
+        </div>
       </div>
+      {{/if}}
 
       {{!-- Fatigue --}}
-      <div class="v2-res v2-res--fatigue">
-        <span class="v2-res__icon"><i class="fas fa-bolt"></i></span>
-        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.fatigue.value" value="{{system.characteristics.secondaries.fatigue.value}}">
-        <span class="v2-res__sep">/</span>
-        <input type="number" class="v2-res__input" name="system.characteristics.secondaries.fatigue.max" value="{{system.characteristics.secondaries.fatigue.max}}">
+      {{#if system.ui.resourceVisibility.fatigue.value}}
+      <div class="v2-res v2-res--fatigue v2-res--compact" title="{{localize 'anima.ui.general.fatigue.title'}}">
+        <span class="v2-res__label"><i class="fas fa-bolt"></i> Cans</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="system.characteristics.secondaries.fatigue.value"
+            value="{{system.characteristics.secondaries.fatigue.value}}">
+          <span class="v2-res__sep">/</span>
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="system.characteristics.secondaries.fatigue.max"
+            value="{{system.characteristics.secondaries.fatigue.max}}">
+        </div>
       </div>
+      {{/if}}
 
-      {{!-- Destiny --}}
-      <div class="v2-res v2-res--destiny">
-        <span class="v2-res__icon"><i class="fas fa-star"></i></span>
-        <input type="number" class="v2-res__input" name="system.general.destinyPoints.value" value="{{system.general.destinyPoints.value}}">
-        <span class="v2-res__sep">/</span>
-        <input type="number" class="v2-res__input" name="system.general.destinyPoints.max" value="{{system.general.destinyPoints.max}}">
+      {{!-- Destiny Points --}}
+      {{#if system.ui.resourceVisibility.destiny.value}}
+      <div class="v2-res v2-res--destiny v2-res--compact" title="{{localize 'anima.ui.general.destinyPoints.title'}}">
+        <span class="v2-res__label"><i class="fas fa-star"></i> PD</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="system.general.destinyPoints.base.value" value="{{system.general.destinyPoints.base.value}}"
+            data-header-resource>
+        </div>
       </div>
+      {{/if}}
 
-      {{!-- Initiative --}}
-      <div class="v2-res v2-res--init">
-        <span class="v2-res__icon rollable" data-roll="1d100Initiative" data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}" data-label="{{localize 'anima.ui.general.initiative.base.title'}}"><i class="fas fa-dice-d20"></i></span>
-        <span class="v2-res__value rollable" data-roll="1d100Initiative" data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}" data-label="{{localize 'anima.ui.general.initiative.base.title'}}">{{system.characteristics.secondaries.initiative.final.value}}</span>
+      {{!-- Zeon --}}
+      {{#if system.ui.resourceVisibility.zeon.value}}
+      <div class="v2-res v2-res--zeon v2-res--compact" title="{{localize 'anima.ui.mystic.zeon.title'}}">
+        <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Zeon</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.value"
+            value="{{system.mystic.zeon.value}}">
+          <span class="v2-res__sep">/</span>
+          <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.max"
+            value="{{system.mystic.zeon.max}}">
+        </div>
       </div>
-    </div>
+      {{/if}}
 
-    {{!-- Resistances (compact) --}}
-    <div class="v2-header__resistances">
-      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.physicalResistance.title'}}">
-        <b>RF</b>{{system.characteristics.secondaries.resistances.physical.final.value}}
-      </span>
-      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.diseaseResistance.title'}}">
-        <b>RE</b>{{system.characteristics.secondaries.resistances.disease.final.value}}
-      </span>
-      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.venomResistance.title'}}">
-        <b>RV</b>{{system.characteristics.secondaries.resistances.poison.final.value}}
-      </span>
-      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.magicResistance.title'}}">
-        <b>RM</b>{{system.characteristics.secondaries.resistances.magic.final.value}}
-      </span>
-      <span class="v2-header__res" title="{{localize 'anima.ui.resistanceSection.psychicResistance.title'}}">
-        <b>RP</b>{{system.characteristics.secondaries.resistances.psychic.final.value}}
-      </span>
-    </div>
+      {{!-- Zeon Accumulated --}}
+      {{#if system.ui.resourceVisibility.zeonAccumulated.value}}
+      <div class="v2-res v2-res--zeon-acc v2-res--compact v2-res--single" title="Zeon Acumulado">
+        <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Acum</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="_header.system.mystic.zeonAccumulated.value" value="{{system.mystic.zeonAccumulated.value}}">
+        </div>
+      </div>
+      {{/if}}
 
-    {{!-- Modifiers --}}
-    <div class="v2-header__modifiers">
-      <span class="v2-header__mod {{#if (lt system.general.modifiers.physicalActions.value 0)}}v2-header__mod--negative{{/if}} {{#if (gt system.general.modifiers.physicalActions.value 0)}}v2-header__mod--positive{{/if}}" title="{{localize 'anima.ui.general.modifiers.physicalActions.title'}}">
-        <i class="fas fa-running"></i>{{system.general.modifiers.physicalActions.value}}
-      </span>
-      <span class="v2-header__mod {{#if (lt system.general.modifiers.supernaturalActions.value 0)}}v2-header__mod--negative{{/if}} {{#if (gt system.general.modifiers.supernaturalActions.value 0)}}v2-header__mod--positive{{/if}}" title="{{localize 'anima.ui.general.modifiers.supernaturalActions.title'}}">
-        <i class="fas fa-magic"></i>{{system.general.modifiers.supernaturalActions.value}}
-      </span>
+      {{!-- Ki --}}
+      {{#if system.ui.resourceVisibility.ki.value}}
+      <div class="v2-res v2-res--ki v2-res--compact" title="Ki">
+        <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Ki</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="_header.system.domine.kiAccumulation.generic.value"
+            value="{{system.domine.kiAccumulation.generic.value}}">
+          <span class="v2-res__sep">/</span>
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="_header.system.domine.kiAccumulation.generic.max"
+            value="{{system.domine.kiAccumulation.generic.max}}">
+        </div>
+      </div>
+      {{/if}}
+
+      {{!-- Ki Accumulated (calculated total, read-only) --}}
+      {{#if system.ui.resourceVisibility.kiAccumulated.value}}
+      <div class="v2-res v2-res--ki-acc v2-res--compact v2-res--single"
+        title="Ki Acumulado (total de todas las características)">
+        <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Acum</span>
+        <div class="v2-res__values">
+          <span class="v2-res__readonly">{{totalKiAccumulated}}</span>
+        </div>
+      </div>
+      {{/if}}
+
+      {{!-- Psychic Points --}}
+      {{#if system.ui.resourceVisibility.psychicPoints.value}}
+      <div class="v2-res v2-res--psy v2-res--compact" title="{{localize 'anima.ui.psychic.psychicPoints.title'}}">
+        <span class="v2-res__label"><i class="fas fa-brain"></i> CV</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="_header.system.psychic.psychicPoints.value" value="{{system.psychic.psychicPoints.value}}">
+          <span class="v2-res__sep">/</span>
+          <input type="number" class="v2-res__input v2-res__input--compact"
+            name="_header.system.psychic.psychicPoints.max" value="{{system.psychic.psychicPoints.max}}">
+        </div>
+      </div>
+      {{/if}}
+
+      {{!-- Supernatural Shield --}}
+      {{#if system.ui.resourceVisibility.shield.value}}
+      <div class="v2-res v2-res--shield v2-res--compact" title="{{localize 'anima.ui.mystic.shield.title'}}">
+        <span class="v2-res__label"><i class="fas fa-shield-alt"></i> Escudo</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.shield.value"
+            value="{{system.mystic.shield.value}}">
+        </div>
+      </div>
+      {{/if}}
     </div>
   </div>
-
-  {{!-- Dynamic Resources Row (Ki/Zeon/PP) - Only shown if enabled --}}
-  {{#if (or system.ui.tabVisibility.mystic.value system.ui.tabVisibility.domine.value system.ui.tabVisibility.psychic.value)}}
-  <div class="v2-header__dynamic">
-    {{#if system.ui.tabVisibility.mystic.value}}
-    <div class="v2-dres v2-dres--zeon">
-      <span class="v2-dres__label">Zeon</span>
-      <input type="number" class="v2-dres__input" name="system.mystic.zeon.value" value="{{system.mystic.zeon.value}}">
-      <span class="v2-dres__sep">/</span>
-      <input type="number" class="v2-dres__input" name="system.mystic.zeon.max" value="{{system.mystic.zeon.max}}">
-      <span class="v2-dres__extra">(+{{system.mystic.zeon.accumulated}})</span>
-    </div>
-    <div class="v2-dres v2-dres--shield">
-      <span class="v2-dres__label">{{localize "anima.ui.mystic.shield.title"}}</span>
-      <input type="number" class="v2-dres__input" name="system.mystic.shield.value" value="{{system.mystic.shield.value}}">
-      <span class="v2-dres__sep">/</span>
-      <input type="number" class="v2-dres__input" name="system.mystic.shield.max" value="{{system.mystic.shield.max}}">
-    </div>
-    {{/if}}
-    {{#if system.ui.tabVisibility.domine.value}}
-    <div class="v2-dres v2-dres--ki">
-      <span class="v2-dres__label">Ki</span>
-      <input type="number" class="v2-dres__input" name="system.domine.kiAccumulation.generic.value" value="{{system.domine.kiAccumulation.generic.value}}">
-      <span class="v2-dres__sep">/</span>
-      <input type="number" class="v2-dres__input" name="system.domine.kiAccumulation.generic.max" value="{{system.domine.kiAccumulation.generic.max}}">
-    </div>
-    {{/if}}
-    {{#if system.ui.tabVisibility.psychic.value}}
-    <div class="v2-dres v2-dres--psy">
-      <span class="v2-dres__label">PP</span>
-      <input type="number" class="v2-dres__input" name="system.psychic.psychicPoints.value" value="{{system.psychic.psychicPoints.value}}">
-      <span class="v2-dres__sep">/</span>
-      <input type="number" class="v2-dres__input" name="system.psychic.psychicPoints.max" value="{{system.psychic.psychicPoints.max}}">
-    </div>
-    {{/if}}
-  </div>
-  {{/if}}
 </header>

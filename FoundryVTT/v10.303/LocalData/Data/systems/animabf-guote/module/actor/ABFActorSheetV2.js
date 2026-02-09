@@ -102,8 +102,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
       ...{
         classes: ["abf", "sheet", "actor", "actor-sheet-v2"],
         template: `systems/${ABFSystemName}/templates/actor/actor-sheet-v2.hbs`,
-        width: 900,
-        height: 890,
+        width: 650,
+        height: 900,
         resizable: true,
         submitOnChange: true,
         tabs: [
@@ -148,10 +148,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
     this.position.width = this.getWidthDependingFromContent();
   }
   getWidthDependingFromContent() {
-    if (this.actor.items.filter((i) => i.type === ABFItems.SPELL).length > 0) {
-      return 1300;
-    }
-    return 1000;
+    // V2 uses consistent 650px width - spells are now in a separate spellbook window
+    return 650;
   }
   async getData(options) {
     const sheet = await super.getData(options);
@@ -162,6 +160,21 @@ export default class ABFActorSheetV2 extends ActorSheet {
     }
     sheet.system = sheet.actor.system;
     sheet.config = CONFIG.config;
+
+    // Ensure resourceVisibility exists for older actors (migration support)
+    if (!sheet.system.ui.resourceVisibility) {
+      sheet.system.ui.resourceVisibility = {
+        hp: { value: true },
+        fatigue: { value: true },
+        destiny: { value: true },
+        zeon: { value: sheet.system.ui.tabVisibility?.mystic?.value || false },
+        zeonAccumulated: { value: sheet.system.ui.tabVisibility?.mystic?.value || false },
+        ki: { value: sheet.system.ui.tabVisibility?.domine?.value || false },
+        kiAccumulated: { value: sheet.system.ui.tabVisibility?.domine?.value || false },
+        psychicPoints: { value: sheet.system.ui.tabVisibility?.psychic?.value || false },
+        shield: { value: (sheet.system.ui.tabVisibility?.mystic?.value || sheet.system.ui.tabVisibility?.psychic?.value) || false }
+      };
+    }
 
     // V2 Enhancements: Calculate equipped weapons for initiative dropdown
     sheet.equippedWeapons = sheet.system?.combat?.weapons || [];
@@ -184,6 +197,17 @@ export default class ABFActorSheetV2 extends ActorSheet {
       (sum, level) => sum + (level.system?.level || 0),
       0
     );
+
+    // Calculate total Ki accumulated (sum of all characteristic accumulated values)
+    const kiAccumulation = sheet.system?.domine?.kiAccumulation;
+    if (kiAccumulation) {
+      const characteristics = ['strength', 'agility', 'dexterity', 'constitution', 'willPower', 'power'];
+      sheet.totalKiAccumulated = characteristics.reduce((sum, char) => {
+        return sum + (kiAccumulation[char]?.accumulated?.value || 0);
+      }, 0);
+    } else {
+      sheet.totalKiAccumulated = 0;
+    }
 
     return sheet;
   }
@@ -238,6 +262,46 @@ export default class ABFActorSheetV2 extends ActorSheet {
     html.find('[data-action="open-spellbook"]').click((e) => {
       e.preventDefault();
       ABFSpellbook.openForActor(this.actor);
+    });
+
+    // Expandable sections (e.g., sacrificed HP)
+    html.find(".v2-res__expand-toggle").click((e) => {
+      const toggle = e.currentTarget;
+      const targetId = toggle.dataset.expand;
+      const target = html.find(`[data-expand-target="${targetId}"]`);
+
+      toggle.classList.toggle("expanded");
+      target.toggleClass("expanded");
+    });
+
+    // General modifier click - switch to effects tab
+    html.find(".v2-header__gen-mod").click((e) => {
+      e.preventDefault();
+      const tabToActivate = e.currentTarget.dataset.tab;
+      if (tabToActivate) {
+        this._tabs[0].activate(tabToActivate);
+      }
+    });
+
+    // TA block and other elements with data-action="open-tab"
+    html.find('[data-action="open-tab"]').click((e) => {
+      e.preventDefault();
+      const tabToActivate = e.currentTarget.dataset.tab;
+      if (tabToActivate) {
+        this._tabs[0].activate(tabToActivate);
+      }
+    });
+
+    // Click on item name to open item sheet
+    html.find('.item-link').click((e) => {
+      e.preventDefault();
+      const itemId = e.currentTarget.closest('[data-item-id]')?.dataset.itemId;
+      if (itemId) {
+        const item = this.actor.items.get(itemId);
+        if (item?.sheet) {
+          item.sheet.render(true);
+        }
+      }
     });
   }
 
@@ -484,9 +548,45 @@ export default class ABFActorSheetV2 extends ActorSheet {
     }
   }
   async _updateObject(event, formData) {
+    // Handle header resource inputs (prefixed with _header.)
+    // Header inputs use _header.system.X.Y to avoid duplicate names with tab inputs
+    // Map them to the real paths, giving header priority over tab values
+    Object.keys(formData).forEach((key) => {
+      if (key.startsWith("_header.")) {
+        const realKey = key.substring(8); // Remove "_header." prefix
+        formData[realKey] = formData[key];
+        delete formData[key];
+      }
+    });
+
     // Ensure name is never blank (use current name if form submits empty)
     if (!formData.name || formData.name.trim() === "") {
       formData.name = this.actor.name;
+    }
+
+    // Auto-enable resource visibility when tab visibility is enabled
+    const currentUI = this.actor.system.ui;
+
+    // Mystic tab -> enable zeon, zeonAccumulated, shield
+    if (formData["system.ui.tabVisibility.mystic.value"] === true &&
+        !currentUI.tabVisibility.mystic.value) {
+      formData["system.ui.resourceVisibility.zeon.value"] = true;
+      formData["system.ui.resourceVisibility.zeonAccumulated.value"] = true;
+      formData["system.ui.resourceVisibility.shield.value"] = true;
+    }
+
+    // Domine tab -> enable ki, kiAccumulated
+    if (formData["system.ui.tabVisibility.domine.value"] === true &&
+        !currentUI.tabVisibility.domine.value) {
+      formData["system.ui.resourceVisibility.ki.value"] = true;
+      formData["system.ui.resourceVisibility.kiAccumulated.value"] = true;
+    }
+
+    // Psychic tab -> enable psychicPoints, shield
+    if (formData["system.ui.tabVisibility.psychic.value"] === true &&
+        !currentUI.tabVisibility.psychic.value) {
+      formData["system.ui.resourceVisibility.psychicPoints.value"] = true;
+      formData["system.ui.resourceVisibility.shield.value"] = true;
     }
 
     // We have to parse all qualities in order to convert from it selectable to integers to make calculations

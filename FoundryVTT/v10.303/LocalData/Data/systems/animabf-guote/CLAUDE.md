@@ -157,3 +157,30 @@ Language files in `lang/` (~680 keys each). Update all three when adding strings
 
 Spanish content in `packs/`:
 - `weapons_es.db`, `armors_es.db`, `magic_es.db`, `psychic_powers_es.db`, `npcs_es.db`
+
+## V2 Actor Sheet Patterns
+
+### Header Resource Inputs with `_header.` Prefix
+
+When the V2 actor sheet header has resource inputs (Zeon, Ki, Psychic Points, etc.) that also exist in V1 tab templates included via partials, use the `_header.` prefix pattern to avoid duplicate input names causing array submission issues.
+
+**Problem:** Foundry forms submit all inputs with the same `name` attribute as arrays. When header and tab both have `name="system.mystic.zeon.value"`, the form submits `["100", "100"]` instead of `100`.
+
+**Solution:** Header inputs use `_header.` prefix:
+```handlebars
+{{!-- In header-v2.hbs --}}
+<input type="number" name="_header.system.mystic.zeon.value" value="{{system.mystic.zeon.value}}">
+```
+
+Then in `ABFActorSheetV2._updateObject()`, strip the prefix and map to real paths:
+```javascript
+Object.keys(formData).forEach((key) => {
+  if (key.startsWith("_header.")) {
+    const realKey = key.substring(8); // Remove "_header." prefix
+    formData[realKey] = formData[key];
+    delete formData[key];
+  }
+});
+```
+
+This gives header edits priority over tab values when both exist.

@@ -1,0 +1,33 @@
+{{!--
+  Reusable Resource Pool Component
+  Used for resources with current/max values (Zeon, Shield, Ki, etc.)
+
+  Parameters:
+  - label: The localized label text
+  - valueName: The input name for current value
+  - currentValue: The current value
+  - maxName: The input name for max value
+  - maxValue: The max value
+  - colorClass: CSS class for color styling (e.g., "zeon", "shield", "ki")
+  - showRegen: Whether to show regeneration
+  - regenValue: The regeneration value
+  - compact: Use compact styling (default false)
+--}}
+<div class="v2-resource-pool {{#if colorClass}}v2-resource-pool--{{colorClass}}{{/if}} {{#if compact}}v2-resource-pool--compact{{/if}}">
+  <span class="v2-resource-pool__label">{{label}}</span>
+  <div class="v2-resource-pool__values">
+    <input type="number" class="v2-resource-pool__input"
+           name="{{valueName}}"
+           value="{{currentValue}}">
+    <span class="v2-resource-pool__separator">/</span>
+    <input type="number" class="v2-resource-pool__input"
+           name="{{maxName}}"
+           value="{{maxValue}}">
+  </div>
+  {{#if showRegen}}
+  <div class="v2-resource-pool__regen">
+    <span class="v2-resource-pool__regen-label">{{localize "anima.ui.mystic.zeonRegeneration.title"}}</span>
+    <span class="v2-resource-pool__regen-value">{{regenValue}}</span>
+  </div>
+  {{/if}}
+</div>

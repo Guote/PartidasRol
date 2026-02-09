@@ -1,0 +1,31 @@
+{{!--
+  Reusable Combat Value Component
+  Used for values with base input + final rollable value (Attack, Block, Magic Projection, etc.)
+
+  Parameters:
+  - label: The localized label text
+  - baseName: The input name for the base value
+  - baseValue: The base value
+  - finalValue: The final calculated value
+  - rollable: Whether the final value is rollable (default true)
+  - rollLabel: Label to show in roll message
+  - compact: Use compact styling (default false)
+--}}
+<div class="v2-combat-value {{#if compact}}v2-combat-value--compact{{/if}}">
+  <span class="v2-combat-value__label">{{label}}</span>
+  <div class="v2-combat-value__inputs">
+    <input type="number" class="v2-combat-value__input"
+           name="{{baseName}}"
+           value="{{baseValue}}">
+    {{#if rollable}}
+    <span class="v2-combat-value__final rollable"
+          data-roll="1d100xa"
+          data-rollvalue="{{finalValue}}"
+          data-label="{{rollLabel}}">
+      {{finalValue}}
+    </span>
+    {{else}}
+    <span class="v2-combat-value__final">{{finalValue}}</span>
+    {{/if}}
+  </div>
+</div>
