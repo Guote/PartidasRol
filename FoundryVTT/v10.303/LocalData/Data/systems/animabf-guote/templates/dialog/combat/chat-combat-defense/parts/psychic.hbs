@@ -37,6 +37,17 @@ inputName='defender.psychic.powerUsed'
 {{/each}}
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 
+{{#if this.defender.psychic.potentialResult}}
+<div class="potential-result-display">
+  {{>
+  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+  title=(localize 'anima.macros.combat.dialog.psychicPotentialResult.title')
+  disabled=true
+  inputValue=this.defender.psychic.potentialResult.total
+  }}
+</div>
+{{/if}}
+
 {{#if this.defenseSent}}
 <div class='defense-sent'>
   {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
@@ -45,7 +56,12 @@ inputName='defender.psychic.powerUsed'
   </p>
 </div>
 {{else}}
-<button type="button" class='abf-button send-psychic-defense'>
-  {{localize 'anima.macros.combat.dialog.defenseButton.title'}}
-</button>
+<div class='defense-buttons'>
+  <button type="button" class='abf-button roll-psychic-potential-defense'>
+    <i class="fas fa-dice-d20"></i> {{localize 'anima.macros.combat.dialog.rollOnlyPotential.title'}}
+  </button>
+  <button type="button" class='abf-button send-psychic-defense'>
+    {{localize 'anima.macros.combat.dialog.defenseButton.title'}} ({{this.defender.psychic.psychicProjection}})
+  </button>
+</div>
 {{/if}}

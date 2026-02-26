@@ -301,6 +301,8 @@ export const INITIAL_ACTOR_DATA = {
     selectedSpells: [],
     summons: [],
     metamagics: [],
+    creatureSummons: [],
+    incarnations: [],
   },
   domine: {
     kiSkills: [],

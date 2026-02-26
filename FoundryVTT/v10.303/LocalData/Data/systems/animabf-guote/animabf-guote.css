@@ -2920,6 +2920,122 @@ img {
   color: #e7e5da;
 }
 
+/* Preset manager in combat dialogs */
+.combat-attack-dialog .preset-manager,
+.chat-combat-defense-dialog .preset-manager {
+  background: rgba(110, 41, 23, 0.08);
+  border: 1px solid rgba(110, 41, 23, 0.2);
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+/* Load preset row */
+.combat-attack-dialog .preset-load-row,
+.chat-combat-defense-dialog .preset-load-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 10px;
+  margin-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.combat-attack-dialog .preset-load-row .preset-label,
+.chat-combat-defense-dialog .preset-load-row .preset-label {
+  flex: 0 0 auto;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #6e2917;
+  white-space: nowrap;
+}
+
+.combat-attack-dialog .preset-load-row .preset-selector,
+.chat-combat-defense-dialog .preset-load-row .preset-selector {
+  flex: 1 1 0 !important;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  height: 32px;
+  box-sizing: border-box;
+  background: white;
+}
+
+.combat-attack-dialog .preset-load-row .preset-selector:focus,
+.chat-combat-defense-dialog .preset-load-row .preset-selector:focus {
+  outline: none;
+  border-color: #6e2917;
+}
+
+/* Save preset row - 50/50 layout */
+.combat-attack-dialog .preset-save-row,
+.chat-combat-defense-dialog .preset-save-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.combat-attack-dialog .preset-save-row > *,
+.chat-combat-defense-dialog .preset-save-row > * {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.combat-attack-dialog .preset-save-row .preset-name-input,
+.chat-combat-defense-dialog .preset-save-row .preset-name-input {
+  display: block !important;
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.combat-attack-dialog .preset-save-row .preset-name-input:focus,
+.chat-combat-defense-dialog .preset-save-row .preset-name-input:focus {
+  outline: none;
+  border-color: #6e2917;
+}
+
+.combat-attack-dialog .preset-save-row .save-attack-preset,
+.chat-combat-defense-dialog .preset-save-row .save-defense-preset {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  font-size: 0.85rem;
+  box-sizing: border-box;
+}
+
+.combat-attack-dialog .preset-save-row .save-attack-preset:disabled,
+.chat-combat-defense-dialog .preset-save-row .save-defense-preset:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.combat-attack-dialog .preset-save-row .save-attack-preset i,
+.chat-combat-defense-dialog .preset-save-row .save-defense-preset i {
+  font-size: 0.8rem;
+}
+
+/* Override the general .group-body .abf-button margin for preset buttons */
+.combat-attack-dialog .group-body .preset-manager .abf-button,
+.chat-combat-defense-dialog .group-body .preset-manager .abf-button {
+  margin-top: 0 !important;
+}
+
 .confirmation-dialog, .prompt-dialog {
   height: 100%;
   width: 100%;
@@ -3291,9 +3407,36 @@ img {
   background-color: #757575;
 }
 
+/* Defense Dialog Button Row */
+.chat-combat-defense-dialog .defense-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-combat-defense-dialog .defense-buttons .send-defense,
+.chat-combat-defense-dialog .defense-buttons .send-mystic-defense,
+.chat-combat-defense-dialog .defense-buttons .send-psychic-defense {
+  flex: 1;
+}
+
 .abf-button.small {
   padding: 4px 10px;
   font-size: 0.9em;
 }
+
+/* Attack Dialog Button Row */
+.combat-attack-dialog .attack-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.combat-attack-dialog .attack-buttons .send-attack,
+.combat-attack-dialog .attack-buttons .send-mystic-attack,
+.combat-attack-dialog .attack-buttons .send-psychic-attack {
+  flex: 1;
+}
+
 
 /*# sourceMappingURL=animabf-guote.css.map */

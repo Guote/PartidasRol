@@ -131,6 +131,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
           { dragSelector: ".armor-row", dropSelector: null },
           { dragSelector: ".spell-row", dropSelector: null },
           { dragSelector: ".ammo-row", dropSelector: null },
+          { dragSelector: null, dropSelector: ".v2-tab-summoning" },
         ],
       },
     };
@@ -161,10 +162,19 @@ export default class ABFActorSheetV2 extends ActorSheet {
     sheet.system = sheet.actor.system;
     sheet.config = CONFIG.config;
 
+    // Ensure summoning/grimoire tabVisibility exists (migration for older actors)
+    if (!sheet.system.ui.tabVisibility.summoning) {
+      sheet.system.ui.tabVisibility.summoning = { value: sheet.system.ui.tabVisibility.mystic?.value || false };
+    }
+    if (!sheet.system.ui.tabVisibility.grimoire) {
+      sheet.system.ui.tabVisibility.grimoire = { value: sheet.system.ui.tabVisibility.mystic?.value || false };
+    }
+
     // Ensure resourceVisibility exists for older actors (migration support)
     if (!sheet.system.ui.resourceVisibility) {
       sheet.system.ui.resourceVisibility = {
         hp: { value: true },
+        sacrificedLife: { value: false },
         fatigue: { value: true },
         destiny: { value: true },
         zeon: { value: sheet.system.ui.tabVisibility?.mystic?.value || false },
@@ -174,6 +184,10 @@ export default class ABFActorSheetV2 extends ActorSheet {
         psychicPoints: { value: sheet.system.ui.tabVisibility?.psychic?.value || false },
         shield: { value: (sheet.system.ui.tabVisibility?.mystic?.value || sheet.system.ui.tabVisibility?.psychic?.value) || false }
       };
+    }
+    // Ensure sacrificedLife exists (may be missing on actors created before this field)
+    if (!sheet.system.ui.resourceVisibility.sacrificedLife) {
+      sheet.system.ui.resourceVisibility.sacrificedLife = { value: false };
     }
 
     // V2 Enhancements: Calculate equipped weapons for initiative dropdown
@@ -219,6 +233,11 @@ export default class ABFActorSheetV2 extends ActorSheet {
     // Rollable abilities - click to roll
     html.find(".rollable").click((e) => {
       this._onRoll(e);
+    });
+
+    // Combine roll buttons
+    html.find(".v2-combine-btn").click((e) => {
+      this._onCombineRoll(e);
     });
 
     // Make rollable elements draggable to the macro hotbar
@@ -293,7 +312,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
     });
 
     // Click on item name to open item sheet
-    html.find('.item-link').click((e) => {
+    html.find('.item-link:not(.preset-edit)').click((e) => {
       e.preventDefault();
       const itemId = e.currentTarget.closest('[data-item-id]')?.dataset.itemId;
       if (itemId) {
@@ -302,6 +321,115 @@ export default class ABFActorSheetV2 extends ActorSheet {
           item.sheet.render(true);
         }
       }
+    });
+
+    // Click on incarnation row to open incarnation item sheet (but not on checkbox/input)
+    html.find('.incarnation-row').click((e) => {
+      if (e.target.classList.contains('incarnation-toggle') || e.target.classList.contains('incarnation-summon-bonus')) return;
+      e.preventDefault();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (itemId) {
+        const item = this.actor.items.get(itemId);
+        if (item?.sheet) {
+          item.sheet.render(true);
+        }
+      }
+    });
+
+    // Incarnation active toggle — only one at a time
+    html.find('.incarnation-toggle').click(async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      const isChecked = e.currentTarget.checked;
+      const tokens = this.actor.getActiveTokens();
+
+      if (isChecked) {
+        // Deactivate all other incarnations first
+        const updates = this.actor.items
+          .filter(i => i.type === ABFItems.INCARNATION && i.id !== itemId && i.system.active?.value)
+          .map(i => ({ _id: i.id, 'system.active.value': false }));
+        updates.push({ _id: itemId, 'system.active.value': true });
+        await this.actor.updateEmbeddedDocuments('Item', updates);
+        if (tokens.length > 0) game?.cub?.addCondition('Encarnado', tokens);
+      } else {
+        await this.actor.updateEmbeddedDocuments('Item', [{ _id: itemId, 'system.active.value': false }]);
+        const stillActive = this.actor.items.some(
+          i => i.type === ABFItems.INCARNATION && i.id !== itemId && i.system.active?.value
+        );
+        if (!stillActive && tokens.length > 0) game?.cub?.removeCondition('Encarnado', tokens);
+      }
+    });
+
+    // Incarnation summonBonus inline edit
+    html.find('.incarnation-summon-bonus').change(async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      const value = parseInt(e.currentTarget.value) || 0;
+      await this.actor.updateEmbeddedDocuments('Item', [{ _id: itemId, 'system.summonBonus.value': value }]);
+    });
+    html.find('.incarnation-summon-bonus').click((e) => e.stopPropagation());
+
+    // Click on creature summon link to open linked actor sheet
+    html.find('.creature-summon-link').click(async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const uuid = e.currentTarget.dataset.uuid;
+      if (uuid) {
+        const actor = await fromUuid(uuid);
+        if (actor?.sheet) {
+          actor.sheet.render(true);
+        } else {
+          ui.notifications.warn(game.i18n.localize('anima.ui.mystic.creatureSummon.notFound'));
+        }
+      }
+    });
+
+    // Click on summon row to open summon item sheet
+    html.find('.summon-row').click((e) => {
+      e.preventDefault();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (itemId) {
+        const item = this.actor.items.get(itemId);
+        if (item?.sheet) {
+          item.sheet.render(true);
+        }
+      }
+    });
+
+    // Preset row click (opens dialog pre-filled)
+    html.find('.preset-row-clickable').click((e) => {
+      // Don't trigger if clicking the quick attack button
+      if (e.target.closest('.preset-quick-attack')) return;
+      e.preventDefault();
+      const presetId = e.currentTarget.dataset.presetId;
+      const presetType = e.currentTarget.dataset.presetType;
+      this._openPresetDialog(presetType, presetId);
+    });
+
+    // Quick attack (sends immediately to chat)
+    html.find('.preset-quick-attack').click((e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const presetId = e.currentTarget.dataset.presetId;
+      this._executeQuickAttack(presetId);
+    });
+
+    // Open attack dialog button
+    html.find('.open-attack-dialog').click((e) => {
+      e.preventDefault();
+      this._openAttackDialog();
+    });
+
+    // Make the attack button draggable to macro hotbar
+    html.find('.open-attack-dialog').on('dragstart', (e) => {
+      const actorId = this.actor.id;
+      const dragData = {
+        type: "ABFAttackDialog",
+        command: `{\nconst _actor = game.actors.get("${actorId}");\nconst _token = canvas.tokens.controlled[0] ?? _actor?.getActiveTokens()[0];\nconst _target = game.user.targets.first();\nif (!_token) return ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));\nconst { CombatAttackDialog } = await import("/systems/animabf-guote/module/dialogs/combat/CombatAttackDialog.js");\nnew CombatAttackDialog(_token, _target ?? _token, { onAttack: () => {} }, { allowed: true, closeOnSend: true });\n}`,
+        name: `${game.i18n.localize("anima.macros.combat.dialog.attack.title")} - ${this.actor.name}`,
+        img: "icons/skills/melee/strike-sword-slashing-red.webp"
+      };
+      e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(dragData));
     });
   }
 
@@ -440,6 +568,372 @@ export default class ABFActorSheetV2 extends ActorSheet {
       count: spellsToImport.length
     }));
   }
+
+  /**
+   * Open the attack or defense dialog pre-filled with preset data
+   * @param {string} type - The preset type ('attack' or 'defense')
+   * @param {string} presetId - The preset item ID
+   */
+  async _openPresetDialog(type, presetId) {
+    const preset = this.actor.items.get(presetId);
+    if (!preset) {
+      console.warn(`Preset with ID ${presetId} not found`);
+      return;
+    }
+
+    // Get selected token and target
+    const token = canvas.tokens.controlled[0] ?? this.actor.getActiveTokens()[0];
+    const target = game.user.targets.first();
+
+    if (!token) {
+      ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));
+      return;
+    }
+
+    if (type === 'attack') {
+      // Import and open CombatAttackDialog with preset data
+      const { CombatAttackDialog } = await import('../dialogs/combat/CombatAttackDialog.js');
+      new CombatAttackDialog(token, target ?? token, {
+        onAttack: () => {}
+      }, {
+        allowed: true,
+        presetData: preset.system,
+        presetId: preset._id,
+        closeOnSend: true  // Close dialog after sending attack (chat combat mode)
+      });
+    } else if (type === 'defense') {
+      // For defense presets, just show a notification - can only be used when defending
+      ui.notifications.info(game.i18n.localize("anima.notifications.defensePresetInfo"));
+    }
+  }
+
+  /**
+   * Open the attack dialog without preset data (new attack)
+   */
+  async _openAttackDialog() {
+    // Get selected token and target
+    const token = canvas.tokens.controlled[0] ?? this.actor.getActiveTokens()[0];
+    const target = game.user.targets.first();
+
+    if (!token) {
+      ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));
+      return;
+    }
+
+    const { CombatAttackDialog } = await import('../dialogs/combat/CombatAttackDialog.js');
+    new CombatAttackDialog(token, target ?? token, {
+      onAttack: () => {}
+    }, {
+      allowed: true,
+      closeOnSend: true  // Close dialog after sending attack (chat combat mode)
+    });
+  }
+
+  /**
+   * Execute a quick attack directly to chat using preset data
+   * @param {string} presetId - The preset item ID
+   */
+  async _executeQuickAttack(presetId) {
+    const preset = this.actor.items.get(presetId);
+    if (!preset) {
+      console.warn(`Preset with ID ${presetId} not found`);
+      return;
+    }
+
+    // Get selected token and target
+    const token = canvas.tokens.controlled[0] ?? this.actor.getActiveTokens()[0];
+    const target = game.user.targets.first();
+
+    if (!token) {
+      ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));
+      return;
+    }
+
+    const presetData = preset.system;
+    const attackType = presetData.attackType?.value || "combat";
+
+    // Import required modules
+    const { ChatAttackCard } = await import('../combat/chat-combat/ChatAttackCard.js');
+    const { default: ABFFoundryRoll } = await import('../rolls/ABFFoundryRoll.js');
+    const { getFormula } = await import('../rolls/utils/getFormula.js');
+    const { getMassAttackBonus } = await import('../combat/utils/getMassAttackBonus.js');
+
+    const actorSystem = this.actor.system;
+    const withoutRoll = presetData.withoutRoll?.value ?? false;
+    const showRoll = presetData.showRoll?.value ?? true;
+    const isAccumulation = presetData.isAccumulation?.value ?? false;
+    const accumulationCount = presetData.accumulationCount?.value ?? 0;
+
+    if (attackType === "combat") {
+      const combat = presetData.combat || {};
+      const weaponId = combat.weaponUsed?.value;
+      const weapons = actorSystem.combat.weapons;
+      const weapon = weaponId ? weapons.find(w => w._id === weaponId) : weapons[0];
+      const unarmed = !weapon;
+
+      const attack = weapon
+        ? weapon.system.attack.final.value
+        : actorSystem.combat.attack.final.value;
+
+      const fatigueUsed = combat.fatigueUsed?.value || 0;
+      const modifier = combat.modifier?.value || 0;
+      const damageBonus = combat.damageBonus?.value || 0;
+      const ignoredTA = combat.ignoredTA?.value || 0;
+      const criticSelected = combat.criticSelected?.value || (weapon?.system.critic.primary.value) || "impact";
+
+      const baseDamage = unarmed
+        ? 10 + actorSystem.characteristics.primaries.strength.mod
+        : weapon.system.damage.final.value;
+      const finalDamage = Math.floor(((isAccumulation ? (baseDamage + damageBonus) * 1.5 : baseDamage + damageBonus)) / 5) * 5;
+
+      let rollModifiers = [attack, getMassAttackBonus(accumulationCount), fatigueUsed * 15, modifier];
+      let formula = getFormula({
+        dice: "1d100xa",
+        values: rollModifiers,
+        labels: ["HA", `${accumulationCount} at. en masa`, "Cansancio", "Mod"],
+      });
+
+      if (withoutRoll) {
+        formula = formula.replace("1d100xa", "0");
+      }
+      if (actorSystem.combat.attack.base.value >= 200) {
+        formula = formula.replace("xa", "xamastery");
+      }
+
+      const roll = new ABFFoundryRoll(formula, actorSystem);
+      await roll.roll();
+
+      if (showRoll) {
+        const flavor = weapon
+          ? game.i18n.format("anima.macros.combat.dialog.physicalAttack.title", {
+              weapon: weapon.name,
+              target: target?.name || "?"
+            })
+          : game.i18n.format("anima.macros.combat.dialog.physicalAttack.unarmed.title", {
+              target: target?.name || "?"
+            });
+        roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ token }),
+          flavor,
+        });
+      }
+
+      const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
+      const attackResult = {
+        type: "combat",
+        values: {
+          unarmed,
+          damage: finalDamage,
+          ignoredTA,
+          attack,
+          weaponUsed: weaponId,
+          critic: criticSelected,
+          modifier,
+          fatigueUsed,
+          roll: rolled,
+          total: roll.total,
+          fumble: roll.fumbled,
+        },
+      };
+
+      ChatAttackCard.create(token, attackResult, { weapon });
+
+    } else if (attackType === "mystic") {
+      const mystic = presetData.mystic || {};
+      const projectionType = mystic.projectionType?.value || "normal";
+      const spellId = mystic.spellUsed?.value;
+      const spells = actorSystem.mystic.spells;
+      const spell = spellId ? spells.find(s => s._id === spellId) : null;
+
+      if (!spell) {
+        ui.notifications.warn(game.i18n.localize("anima.notifications.noSpellSelected"));
+        return;
+      }
+
+      const magicProjection = projectionType === "normal"
+        ? actorSystem.mystic.magicProjection.final.value
+        : actorSystem.mystic.magicProjection.imbalance.offensive.final.value;
+      const baseMagicProjection = projectionType === "normal"
+        ? actorSystem.mystic.magicProjection.base.value
+        : actorSystem.mystic.magicProjection.imbalance.offensive.base.value;
+
+      const modifier = mystic.modifier?.value || 0;
+      const critic = mystic.critic?.value || "-";
+      const damage = mystic.damage?.value || 0;
+      const ignoredTA = mystic.ignoredTA?.value || 0;
+
+      let rollModifiers = [magicProjection, getMassAttackBonus(accumulationCount), modifier];
+      let formula = getFormula({
+        dice: isAccumulation ? "2d100khxa" : "1d100xa",
+        values: rollModifiers,
+        labels: ["Proy. Mag.", `${accumulationCount} at. en masa`, "Mod."],
+      });
+
+      if (withoutRoll) {
+        formula = formula.replace("1d100xa", "0");
+      }
+      if (baseMagicProjection >= 200) {
+        formula = formula.replace("xa", "xamastery");
+      }
+
+      const roll = new ABFFoundryRoll(formula, actorSystem);
+      await roll.roll();
+
+      if (showRoll) {
+        const flavor = game.i18n.format("anima.macros.combat.dialog.magicAttack.title", {
+          spell: spell.name,
+          target: target?.name || "?"
+        });
+        roll.toMessage({
+          speaker: ChatMessage.getSpeaker({ token }),
+          flavor,
+        });
+      }
+
+      const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
+      const mysticAttackResult = {
+        type: "mystic",
+        values: {
+          modifier,
+          spellUsed: spellId,
+          spellGrade: mystic.spellGrade?.value || "base",
+          magicProjection,
+          critic,
+          damage,
+          ignoredTA,
+          roll: rolled,
+          total: roll.total,
+          fumble: roll.fumbled,
+        },
+      };
+
+      ChatAttackCard.create(token, mysticAttackResult);
+
+    } else if (attackType === "psychic") {
+      const psychic = presetData.psychic || {};
+      const powerId = psychic.powerUsed?.value;
+      const powers = actorSystem.psychic.psychicPowers;
+      const power = powerId ? powers.find(p => p._id === powerId) : null;
+
+      if (!power) {
+        ui.notifications.warn(game.i18n.localize("anima.notifications.noPowerSelected"));
+        return;
+      }
+
+      const psychicProjection = actorSystem.psychic.psychicProjection.imbalance.offensive.final.value;
+      const modifier = psychic.modifier?.value || 0;
+      const potentialBonus = psychic.potentialBonus?.value || 0;
+      const psychicPotentialBase = actorSystem.psychic.psychicPotential.final.value;
+      const critic = psychic.critic?.value || "-";
+      const damage = psychic.damage?.value || 0;
+      const ignoredTA = psychic.ignoredTA?.value || 0;
+
+      let rollModifiers = [psychicProjection, modifier];
+      let formula = getFormula({
+        values: rollModifiers,
+        labels: ["Proy. Psi.", "Mod."],
+      });
+
+      if (withoutRoll) {
+        formula = formula.replace("1d100xa", "0");
+      }
+      if (actorSystem.psychic.psychicProjection.base.value >= 200) {
+        formula = formula.replace("xa", "xamastery");
+      }
+
+      const projectionRoll = new ABFFoundryRoll(formula, actorSystem);
+      await projectionRoll.roll();
+
+      const potentialFormula = getFormula({
+        values: [psychicPotentialBase + potentialBonus, power.system.bonus.value],
+        labels: ["Potencial", "Bono Poder"],
+      });
+      const potentialRoll = new ABFFoundryRoll(potentialFormula, actorSystem);
+      await potentialRoll.roll();
+
+      if (showRoll) {
+        potentialRoll.toMessage({
+          speaker: ChatMessage.getSpeaker({ token }),
+          flavor: game.i18n.format("anima.macros.combat.dialog.psychicPotential.title"),
+        });
+        const flavor = game.i18n.format("anima.macros.combat.dialog.psychicAttack.title", {
+          power: power.name,
+          target: target?.name || "?",
+          potential: potentialRoll.total,
+        });
+        projectionRoll.toMessage({
+          speaker: ChatMessage.getSpeaker({ token }),
+          flavor,
+        });
+      }
+
+      const rolled = projectionRoll.total - psychicProjection - modifier;
+      const psychicAttackResult = {
+        type: "psychic",
+        values: {
+          modifier,
+          powerUsed: powerId,
+          psychicPotential: potentialRoll.total,
+          psychicProjection,
+          critic,
+          damage,
+          ignoredTA,
+          roll: rolled,
+          total: projectionRoll.total,
+          fumble: projectionRoll.fumbled,
+        },
+      };
+
+      ChatAttackCard.create(token, psychicAttackResult);
+    }
+  }
+  /**
+   * Handle drop events - supports dropping actors onto summoning tab as creature summons
+   * @param {DragEvent} event - The drop event
+   * @override
+   */
+  async _onDrop(event) {
+    let data;
+    try {
+      data = JSON.parse(event.dataTransfer.getData('text/plain'));
+    } catch (e) {
+      return super._onDrop(event);
+    }
+
+    // Check if dropping an Actor onto the summoning tab area
+    if (data.type === 'Actor') {
+      const target = event.target.closest('.v2-tab-summoning');
+      if (target) {
+        event.preventDefault();
+        const droppedActor = await fromUuid(data.uuid);
+        if (!droppedActor) {
+          ui.notifications.warn(game.i18n.localize('anima.ui.mystic.creatureSummon.notFound'));
+          return;
+        }
+
+        // Check for duplicates
+        const existing = (this.actor.system.mystic?.creatureSummons || []);
+        if (existing.some(cs => cs.system?.actorUuid?.value === data.uuid)) {
+          ui.notifications.warn(game.i18n.localize('anima.ui.mystic.creatureSummon.alreadyLinked'));
+          return;
+        }
+
+        await this.actor.createInnerItem({
+          name: droppedActor.name,
+          type: ABFItems.CREATURE_SUMMON,
+          system: {
+            actorId: { value: droppedActor.id },
+            actorUuid: { value: data.uuid },
+            notes: { value: '' }
+          }
+        });
+        return;
+      }
+    }
+
+    return super._onDrop(event);
+  }
+
   /**
    * Handle dragstart events for items and rollable abilities
    * @param {DragEvent} event - The drag event
@@ -547,6 +1041,27 @@ export default class ABFActorSheetV2 extends ActorSheet {
       });
     }
   }
+  async _onCombineRoll(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const element = event.currentTarget;
+    const { dataset } = element;
+    const skillValue = parseInt(dataset.rollvalue) || 0;
+    const label = dataset.label || "";
+    const mod = await openModDialog();
+    const modifier = parseInt(mod) || 0;
+    const combinedValue = Math.floor((skillValue + modifier) / 2);
+    const formula = getFormula({
+      dice: "1d100xa",
+      values: [combinedValue],
+      labels: [label],
+    });
+    const roll = new ABFFoundryRoll(formula, this.actor.system);
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: `${game.i18n.localize("anima.ui.skills.combine")}: ${label} (${combinedValue})`,
+    });
+  }
   async _updateObject(event, formData) {
     // Handle header resource inputs (prefixed with _header.)
     // Header inputs use _header.system.X.Y to avoid duplicate names with tab inputs
@@ -567,12 +1082,21 @@ export default class ABFActorSheetV2 extends ActorSheet {
     // Auto-enable resource visibility when tab visibility is enabled
     const currentUI = this.actor.system.ui;
 
-    // Mystic tab -> enable zeon, zeonAccumulated, shield
+    // Mystic tab -> enable zeon, zeonAccumulated, shield, grimoire, summoning
     if (formData["system.ui.tabVisibility.mystic.value"] === true &&
         !currentUI.tabVisibility.mystic.value) {
       formData["system.ui.resourceVisibility.zeon.value"] = true;
       formData["system.ui.resourceVisibility.zeonAccumulated.value"] = true;
       formData["system.ui.resourceVisibility.shield.value"] = true;
+      formData["system.ui.tabVisibility.grimoire.value"] = true;
+      formData["system.ui.tabVisibility.summoning.value"] = true;
+    }
+
+    // Mystic tab unchecked -> also uncheck grimoire and summoning
+    if (formData["system.ui.tabVisibility.mystic.value"] === false &&
+        currentUI.tabVisibility.mystic.value) {
+      formData["system.ui.tabVisibility.grimoire.value"] = false;
+      formData["system.ui.tabVisibility.summoning.value"] = false;
     }
 
     // Domine tab -> enable ki, kiAccumulated

@@ -118,6 +118,24 @@
   align-items: center;
 }
 
+/* Resource group: shared box for related resources (HP+Sacrificed, Zeon+Acum, Ki+Acum) */
+.actor-sheet-v2 .v2-res-group {
+  display: flex;
+  gap: 1px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.actor-sheet-v2 .v2-res-group > .v2-res {
+  background: none;
+  border-radius: 0;
+}
+.actor-sheet-v2 .v2-res-group > .v2-res-group__sep {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  align-self: stretch;
+}
+
 /* Identity: Portrait + Name */
 .actor-sheet-v2 .v2-header__identity {
   display: flex;
@@ -604,10 +622,14 @@
   opacity: 1;
 }
 
-/* Bottom tabs (Effects and Settings) pushed to bottom */
+/* Bottom tabs pushed to bottom — only the first one carries the auto margin */
 .actor-sheet-v2 .v2-sidetabs__tab--bottom {
   margin-top: auto;
   border-top: 1px solid var(--abf-border-light);
+}
+
+.actor-sheet-v2 .v2-sidetabs__tab--bottom + .v2-sidetabs__tab--bottom {
+  margin-top: 0;
 }
 
 .actor-sheet-v2 .v2-sidetabs__tab--settings {
@@ -730,11 +752,15 @@
 .actor-sheet-v2 .v2-table th {
   background: var(--abf-secondary);
   padding: var(--space-2);
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   border-bottom: 1px solid var(--abf-primary);
   font-size: var(--font-size-2xs);
   text-transform: uppercase;
+}
+
+.actor-sheet-v2 .v2-table th:first-child {
+  text-align: left;
 }
 
 .actor-sheet-v2 .v2-table td {
@@ -861,40 +887,63 @@
 /* --------------------------------
    Compact Skills Tab
    -------------------------------- */
+
+/* --- Primary Characteristics --- */
+.actor-sheet-v2 .v2-card--stats .v2-card__body {
+  padding: 0;
+}
+
 .actor-sheet-v2 .v2-characteristics {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .actor-sheet-v2 .v2-characteristic {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  padding: var(--space-2);
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--abf-border-light);
+  background: none;
+  border-radius: 0;
+  min-height: 22px;
+}
+
+.actor-sheet-v2 .v2-characteristic:nth-child(odd) {
+  border-right: 1px solid var(--abf-border-light);
+}
+
+.actor-sheet-v2 .v2-characteristic:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.actor-sheet-v2 .v2-characteristic:hover {
   background: var(--abf-secondary-light);
-  border: 1px solid var(--abf-primary);
-  border-radius: var(--radius-sm);
 }
 
 .actor-sheet-v2 .v2-characteristic__name {
+  flex: 1;
   font-size: var(--font-size-2xs);
   text-transform: uppercase;
   font-weight: bold;
   color: var(--abf-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .actor-sheet-v2 .v2-characteristic__values {
   display: flex;
   align-items: center;
   gap: var(--space-1);
+  flex-shrink: 0;
 }
 
 .actor-sheet-v2 .v2-characteristic__value-input {
-  width: 30px;
+  width: 26px;
   text-align: center;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: bold;
   padding: 1px;
   border: 1px solid var(--abf-border-light);
@@ -902,14 +951,16 @@
 }
 
 .actor-sheet-v2 .v2-characteristic__mod {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-2xs);
   color: var(--abf-text-muted);
+  min-width: 24px;
 }
 
+/* --- Secondary Skills --- */
 .actor-sheet-v2 .v2-skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .actor-sheet-v2 .v2-skill-group {
@@ -919,17 +970,10 @@
   overflow: hidden;
 }
 
-.actor-sheet-v2 .v2-skill-group__title {
-  background: var(--abf-primary);
-  color: var(--abf-text-light);
-  padding: var(--space-2) var(--space-3);
-  font-weight: bold;
-  font-size: var(--font-size-xs);
-}
-
 .actor-sheet-v2 .v2-skill-row {
   display: flex;
   align-items: center;
+  gap: var(--space-1);
   padding: var(--space-1) var(--space-2);
   border-bottom: 1px solid var(--abf-border-light);
   font-size: var(--font-size-xs);
@@ -945,17 +989,80 @@
 
 .actor-sheet-v2 .v2-skill-row__name {
   flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .actor-sheet-v2 .v2-skill-row__base {
-  width: 35px;
+  width: 26px;
+  flex-shrink: 0;
+  text-align: center;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  padding: 1px 2px;
+  font-size: var(--font-size-xs);
+}
+
+.actor-sheet-v2 .v2-skill-row__base:focus {
+  border-color: var(--abf-primary);
+  outline: none;
 }
 
 .actor-sheet-v2 .v2-skill-row__final {
-  width: 35px;
+  width: 28px;
   font-weight: bold;
   text-align: center;
   color: var(--abf-primary);
+  flex-shrink: 0;
+}
+
+/* --- Skills card: 3-column flat grid with dividers --- */
+.actor-sheet-v2 .v2-card--skills .v2-card__body {
+  padding: 0;
+}
+
+.actor-sheet-v2 .v2-card--skills .v2-skills-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+/* Right border on columns 1 and 2 */
+.actor-sheet-v2 .v2-card--skills .v2-skill-row:not(:nth-child(3n)) {
+  border-right: 1px solid var(--abf-border-light);
+}
+
+/* No bottom border on last row */
+.actor-sheet-v2 .v2-card--skills .v2-skill-row:nth-last-child(-n+3) {
+  border-bottom: none;
+}
+
+/* --- Combine Roll Button --- */
+.actor-sheet-v2 .v2-combine-btn {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--abf-border-light);
+  cursor: pointer;
+  font-size: 8px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-base);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-combine-btn:hover {
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-characteristic__combine {
+  margin-left: 0;
 }
 
 /* --------------------------------
@@ -1259,53 +1366,65 @@
    Summoning/Convocatoria Tab Styles
    ================================ */
 
-.actor-sheet-v2 .v2-summoning-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
-.actor-sheet-v2 .v2-summoning-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--space-2) var(--space-3);
-  background: var(--abf-secondary-light);
-  border: 1px solid var(--abf-primary);
-  border-radius: var(--radius-md);
+.actor-sheet-v2 .v2-summoning-stats .v2-combat-value {
   min-width: 100px;
   flex: 1;
 }
 
-.actor-sheet-v2 .v2-summoning-stat__label {
-  font-size: var(--font-size-2xs);
-  text-transform: uppercase;
-  color: var(--abf-text-muted);
+.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__label {
   margin-bottom: var(--space-1);
 }
 
-.actor-sheet-v2 .v2-summoning-stat__values {
-  display: flex;
-  align-items: center;
+.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__inputs {
   gap: 4px;
 }
 
-.actor-sheet-v2 .v2-summoning-stat__input {
+.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__input {
   width: 45px;
-  text-align: center;
-  font-size: var(--font-size-sm);
-  font-weight: bold;
   padding: 2px;
-  border: 1px solid var(--abf-border-light);
-  border-radius: var(--radius-sm);
 }
 
-.actor-sheet-v2 .v2-summoning-stat__final {
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  color: var(--abf-primary);
+.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__final {
   min-width: 40px;
   text-align: center;
+}
+
+.actor-sheet-v2 .summon-row {
+  cursor: pointer;
+}
+
+.actor-sheet-v2 .summon-row:hover td {
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .creature-summon-row {
+  cursor: pointer;
+}
+
+.actor-sheet-v2 .creature-summon-row:hover td {
+  background: var(--abf-secondary-light);
+}
+
+.actor-sheet-v2 .creature-summon-link {
+  cursor: pointer;
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .creature-summon-link:hover {
+  text-decoration: underline;
+}
+
+.actor-sheet-v2 .incarnation-row {
+  cursor: pointer;
+}
+
+.actor-sheet-v2 .incarnation-row:hover td {
+  background: var(--abf-secondary-light);
+}
+
+.actor-sheet-v2 .incarnation--active {
+  font-weight: bold;
+  color: #5a3a7e;
 }
 
 /* Zeon Display */
@@ -1611,6 +1730,18 @@
   color: var(--abf-primary);
 }
 
+.actor-sheet-v2 .v2-checkbox-label--sub {
+  padding-left: var(--space-4);
+  font-size: var(--font-size-xs);
+  opacity: 0.85;
+}
+
+.actor-sheet-v2 .v2-res-toggle-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 /* --------------------------------
    Item Links (clickable to open sheet)
    -------------------------------- */
@@ -1623,4 +1754,93 @@
 .actor-sheet-v2 .item-link:hover {
   color: var(--abf-primary);
   text-decoration: underline;
+}
+
+/* --------------------------------
+   Combat Presets
+   -------------------------------- */
+.actor-sheet-v2 .v2-table--compact tr td {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.actor-sheet-v2 .v2-btn-icon {
+  background: transparent;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  cursor: pointer;
+  color: var(--abf-primary);
+  transition: all var(--transition-fast);
+}
+
+.actor-sheet-v2 .v2-btn-icon:hover {
+  background: var(--abf-primary);
+  color: white;
+  border-color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-btn-icon-sm {
+  background: transparent;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+  cursor: pointer;
+  color: var(--abf-primary);
+  transition: all var(--transition-fast);
+  font-size: var(--font-size-xs);
+}
+
+.actor-sheet-v2 .v2-btn-icon-sm:hover {
+  background: var(--abf-primary);
+  color: white;
+  border-color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .preset-row-clickable {
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.actor-sheet-v2 .preset-row-clickable:hover {
+  background: var(--abf-secondary-light);
+}
+
+.actor-sheet-v2 .preset-name-cell {
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .preset-row-clickable:hover .preset-name-cell {
+  text-decoration: underline;
+}
+
+/* ---- Notes Tab ---- */
+.actor-sheet-v2 .v2-tab-notes {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.actor-sheet-v2 .v2-tab-notes .v2-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.actor-sheet-v2 .v2-notes-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.actor-sheet-v2 .v2-notes-editor .editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+.actor-sheet-v2 .v2-notes-editor .editor .tox-tinymce,
+.actor-sheet-v2 .v2-notes-editor .editor .editor-content {
+  flex: 1;
 }

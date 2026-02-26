@@ -44,7 +44,9 @@
     </p>
   </div>
 {{else}}
-  <button type="button" class='abf-button send-mystic-defense'>
-    {{localize 'anima.macros.combat.dialog.defenseButton.title'}}
-  </button>
+  <div class='defense-buttons'>
+    <button type="button" class='abf-button send-mystic-defense'>
+      {{localize 'anima.macros.combat.dialog.defenseButton.title'}} ({{#if (is "eq" this.defender.mystic.magicProjectionType 'defensive')}}{{this.defender.actor.system.mystic.magicProjection.imbalance.defensive.final.value}}{{else}}{{this.defender.actor.system.mystic.magicProjection.final.value}}{{/if}})
+    </button>
+  </div>
 {{/if}}

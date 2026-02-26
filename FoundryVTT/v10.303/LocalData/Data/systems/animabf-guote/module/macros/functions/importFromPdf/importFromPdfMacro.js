@@ -94,7 +94,7 @@ const buildArmorsHtml = (armors) => {
  */
 const showPreviewDialog = async (parsed) => {
   const typedGame = game;
-  const { general, primaries, resistances, combat, armors, mystic, domine, psychic, essentialAbilities, powers, isDamageResistance } = parsed;
+  const { general, primaries, resistances, combat, armors, mystic, summoning, domine, psychic, essentialAbilities, powers, isDamageResistance } = parsed;
 
   const content = `
     <style>
@@ -161,6 +161,25 @@ const showPreviewDialog = async (parsed) => {
         <b>Zeon:</b>${numInput('mystic_zeon', mystic.zeon, 50)}
         <b>PM Of:</b>${numInput('mystic_magicProjectionOffensive', mystic.magicProjectionOffensive || mystic.magicProjection)}
         <b>PM Def:</b>${numInput('mystic_magicProjectionDefensive', mystic.magicProjectionDefensive || mystic.magicProjection)}
+      </div>
+      <div class="ip" style="font-size:10px;">
+        <b>Luz:</b>${numInput('ml_light', mystic.magicLevels.light || 0, 32)}
+        <b>Osc:</b>${numInput('ml_darkness', mystic.magicLevels.darkness || 0, 32)}
+        <b>Fue:</b>${numInput('ml_fire', mystic.magicLevels.fire || 0, 32)}
+        <b>Agu:</b>${numInput('ml_water', mystic.magicLevels.water || 0, 32)}
+        <b>Tie:</b>${numInput('ml_earth', mystic.magicLevels.earth || 0, 32)}
+        <b>Air:</b>${numInput('ml_air', mystic.magicLevels.air || 0, 32)}
+        <b>Cre:</b>${numInput('ml_creation', mystic.magicLevels.creation || 0, 32)}
+        <b>Des:</b>${numInput('ml_destruction', mystic.magicLevels.destruction || 0, 32)}
+        <b>Ess:</b>${numInput('ml_essence', mystic.magicLevels.essence || 0, 32)}
+        <b>Ilu:</b>${numInput('ml_illusion', mystic.magicLevels.illusion || 0, 32)}
+        <b>Nec:</b>${numInput('ml_necromancy', mystic.magicLevels.necromancy || 0, 32)}
+      </div>
+      <div class="ip">
+        <b>Conv:</b>${numInput('summoning_summon', summoning?.summon || 0)}
+        <b>Ctrl:</b>${numInput('summoning_control', summoning?.control || 0)}
+        <b>Atar:</b>${numInput('summoning_bind', summoning?.bind || 0)}
+        <b>Dest:</b>${numInput('summoning_banish', summoning?.banish || 0)}
       </div>
 
       <div class="sec"><b>Dominio</b></div>
@@ -257,7 +276,25 @@ const extractEditedValues = (html, original) => {
       magicProjection: getNum('mystic_magicProjectionOffensive'),
       magicProjectionOffensive: getNum('mystic_magicProjectionOffensive'),
       magicProjectionDefensive: getNum('mystic_magicProjectionDefensive'),
-      magicLevels: original.mystic.magicLevels || {},
+      magicLevels: {
+        light: getNum('ml_light'),
+        darkness: getNum('ml_darkness'),
+        fire: getNum('ml_fire'),
+        water: getNum('ml_water'),
+        earth: getNum('ml_earth'),
+        air: getNum('ml_air'),
+        creation: getNum('ml_creation'),
+        destruction: getNum('ml_destruction'),
+        essence: getNum('ml_essence'),
+        illusion: getNum('ml_illusion'),
+        necromancy: getNum('ml_necromancy'),
+      },
+    },
+    summoning: {
+      summon: getNum('summoning_summon'),
+      control: getNum('summoning_control'),
+      bind: getNum('summoning_bind'),
+      banish: getNum('summoning_banish'),
     },
     domine: {
       martialKnowledge: getNum('domine_martialKnowledge'),

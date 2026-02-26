@@ -166,24 +166,9 @@
     </div>
     <div class="v2-card__body">
       <div class="v2-grid v2-grid--3">
-        <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.moneySection.gold.title"}}</label>
-          <input type="number" class="v2-input"
-                 name="system.general.money.gold.value"
-                 value="{{system.general.money.gold.value}}">
-        </div>
-        <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.moneySection.silver.title"}}</label>
-          <input type="number" class="v2-input"
-                 name="system.general.money.silver.value"
-                 value="{{system.general.money.silver.value}}">
-        </div>
-        <div>
-          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.moneySection.cooper.title"}}</label>
-          <input type="number" class="v2-input"
-                 name="system.general.money.cooper.value"
-                 value="{{system.general.money.cooper.value}}">
-        </div>
+        {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.moneySection.gold.title") name="system.general.money.gold.value" value=system.general.money.gold.value type="number"}}
+        {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.moneySection.silver.title") name="system.general.money.silver.value" value=system.general.money.silver.value type="number"}}
+        {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.moneySection.cooper.title") name="system.general.money.cooper.value" value=system.general.money.cooper.value type="number"}}
       </div>
     </div>
   </div>

@@ -32,4 +32,8 @@ export var ABFItems;
     ABFItems["WEAPON"] = "weapon";
     ABFItems["ARMOR"] = "armor";
     ABFItems["INVENTORY_ITEM"] = "inventoryItem";
+    ABFItems["ATTACK_PRESET"] = "attackPreset";
+    ABFItems["DEFENSE_PRESET"] = "defensePreset";
+    ABFItems["INCARNATION"] = "incarnation";
+    ABFItems["CREATURE_SUMMON"] = "creatureSummon";
 })(ABFItems || (ABFItems = {}));

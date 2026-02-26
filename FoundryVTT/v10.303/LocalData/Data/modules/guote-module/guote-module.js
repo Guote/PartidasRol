@@ -148,43 +148,38 @@ Hooks.on("updateCombatant", async function (combatant, data, options, userId) {
   }
 });
 
-// Apply conditions. To be run only from GM side
-/* Hooks.on("updateActor", (actor, updateData, options, userId) => {
-  if (game.user.isGM) {
-    let modSobFin = actor.system.general.modifiers.modSobrenatural.final.value;
-    let token = actor.getActiveTokens()[0];
-    let condPlus = "Fortalecimiento";
-    let condMinus = "Debilitación";
+const cubHas = (name, token) => { try { return game.cub.hasCondition(name, token); } catch { return false; } };
+const cubAdd = (name, token) => { try { game.cub.addCondition(name, token); } catch { } };
+const cubRemove = (name, token) => { try { game.cub.removeCondition(name, token); } catch { } };
 
-    console.log("updating actor ", { actor, updateData, modSobFin });
+// Apply conditions based on total modifier (physical + supernatural). GM only.
+// NOTE: modFinal.general.final.value is derived by the async prepareActor pipeline and is
+// not yet calculated when updateActor fires. Read raw bonus/malus directly instead.
+Hooks.on("updateActor", (actor, updateData, options, userId) => {
+  if (!game.user.isGM) return;
+  if (!updateData.system) return; // Skip updates caused by CUB adding/removing conditions
 
-    if (!token) return
+  const sob = actor.system.general.modifiers.modSobrenatural;
+  const fis = actor.system.general.modifiers.modFisico;
+  const modTotal = (sob.bonus?.value ?? 0) + (sob.malus?.value ?? 0)
+                 + (fis.bonus?.value ?? 0) + (fis.malus?.value ?? 0);
+  const token = actor.getActiveTokens()[0];
+  const condPlus = "Fortalecimiento";
+  const condMinus = "Debilitamiento";
 
-    if (modSobFin < 0) {
-      // Should have - and not +
-      if (game.cub.hasCondition(condPlus, token)) {
-        game.cub.removeCondition(condPlus, token);
-      }
-      if (!game.cub.hasCondition(condMinus, token)) {
-        game.cub.addCondition(condMinus, token);
-      }
-    } else if (modSobFin > 0) {
-      if (!game.cub.hasCondition(condPlus, token)) {
-        game.cub.addCondition(condPlus, token);
-      }
-      if (game.cub.hasCondition(condMinus, token)) {
-        game.cub.removeCondition(condMinus, token);
-      }
-    } else {
-      if (game.cub.hasCondition(condPlus, token)) {
-        game.cub.removeCondition(condPlus, token);
-      }
-      if (game.cub.hasCondition(condMinus, token)) {
-        game.cub.removeCondition(condMinus, token);
-      }
-    }
+  if (!token) return;
+
+  if (modTotal > 0) {
+    if (!cubHas(condPlus, token)) cubAdd(condPlus, token);
+    if (cubHas(condMinus, token)) cubRemove(condMinus, token);
+  } else if (modTotal < 0) {
+    if (cubHas(condPlus, token)) cubRemove(condPlus, token);
+    if (!cubHas(condMinus, token)) cubAdd(condMinus, token);
+  } else {
+    if (cubHas(condPlus, token)) cubRemove(condPlus, token);
+    if (cubHas(condMinus, token)) cubRemove(condMinus, token);
   }
-}); */
+});
 
 /*********************************************************************************** 
  * Merge Simple Calendar and SmallTime Styles
@@ -251,6 +246,6 @@ Hooks.on("updateWorldTime", (currentWorldTime) => {
   const headerEl = scCompactWindow.querySelector("header.window-header");
   if (!headerEl) return;
 
-  console.log({dayTime, timeColor})
+  /* console.log({dayTime, timeColor}) */
   headerEl.style.backgroundColor = timeColor;
 });

@@ -1,0 +1,141 @@
+<form class="incarnation-sheet flexcol" autocomplete="off">
+  <style>
+    .incarnation-sheet {
+      font-size: 12px;
+      padding: 6px;
+      background: #f4f1ea;
+      color: #333;
+    }
+    .incarnation-sheet .inc-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid #5a3a7e;
+    }
+    .incarnation-sheet .inc-header img {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #5a3a7e;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .incarnation-sheet .inc-header input[type="text"] {
+      flex: 1;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      background: transparent;
+      padding: 1px 4px;
+    }
+    .incarnation-sheet .inc-header input[type="text"]:focus {
+      border-bottom-color: #5a3a7e;
+      outline: none;
+    }
+    .incarnation-sheet .inc-section {
+      margin: 6px 0 2px;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: #fff;
+      background: #5a3a7e;
+    }
+    .incarnation-sheet .inc-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 3px 0;
+    }
+    .incarnation-sheet .inc-field {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .incarnation-sheet .inc-field b {
+      font-size: 10px;
+      color: #666;
+      min-width: 24px;
+    }
+    .incarnation-sheet input[type="number"] {
+      width: 48px;
+      text-align: center;
+      border: 1px solid #d4c9a8;
+      border-radius: 3px;
+      padding: 1px 2px;
+      font-size: 12px;
+    }
+    .incarnation-sheet textarea {
+      width: 100%;
+      min-height: 50px;
+      resize: vertical;
+      border: 1px solid #d4c9a8;
+      border-radius: 3px;
+      padding: 3px 4px;
+      font-size: 11px;
+      font-family: inherit;
+    }
+    .incarnation-sheet input:focus, .incarnation-sheet textarea:focus {
+      border-color: #5a3a7e;
+      outline: none;
+    }
+    .incarnation-sheet .inc-sep {
+      width: 100%;
+      height: 1px;
+      background: #d4c9a8;
+      margin: 4px 0;
+    }
+    .incarnation-sheet .inc-active-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      color: #5a3a7e;
+    }
+  </style>
+
+  <div class="inc-header">
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}">
+    <input type="text" name="name" value="{{item.name}}">
+    <label class="inc-active-label">
+      <input type="checkbox" name="system.active.value" {{#if system.active.value}}checked{{/if}}>
+      {{localize "anima.ui.mystic.incarnation.active"}}
+    </label>
+  </div>
+
+  {{!-- Core Stats --}}
+  <div class="inc-section">{{localize "anima.ui.tabs.combat"}}</div>
+  <div class="inc-row">
+    <div class="inc-field"><b>Niv</b><input type="number" name="system.level.value" value="{{system.level.value}}"></div>
+    <div class="inc-field"><b>Dif</b><input type="number" name="system.difficulty.value" value="{{system.difficulty.value}}"></div>
+    <div class="inc-field"><b>{{localize "anima.ui.mystic.incarnation.summonBonus.short"}}</b><input type="number" name="system.summonBonus.value" value="{{system.summonBonus.value}}"></div>
+  </div>
+  <div class="inc-row">
+    <div class="inc-field"><b>Turno</b><input type="number" name="system.turno.value" value="{{system.turno.value}}"></div>
+    <div class="inc-field"><b>HA</b><input type="number" name="system.ha.value" value="{{system.ha.value}}"></div>
+    <div class="inc-field"><b>HD</b><input type="number" name="system.hd.value" value="{{system.hd.value}}"></div>
+  </div>
+  <div class="inc-row">
+    <div class="inc-field"><b>{{localize "anima.ui.mystic.incarnation.magicProjection.short"}}</b><input type="number" name="system.magicProjection.value" value="{{system.magicProjection.value}}"></div>
+    <div class="inc-field"><b>{{localize "anima.ui.mystic.incarnation.psychicProjection.short"}}</b><input type="number" name="system.psychicProjection.value" value="{{system.psychicProjection.value}}"></div>
+  </div>
+
+  <div class="inc-sep"></div>
+
+  {{!-- Equipment --}}
+  <div class="inc-section">{{localize "anima.ui.mystic.incarnation.equipment"}}</div>
+  <textarea name="system.equipment.value" placeholder="{{localize 'anima.ui.mystic.incarnation.equipment'}}">{{system.equipment.value}}</textarea>
+
+  {{!-- Active Options --}}
+  <div class="inc-section">{{localize "anima.ui.mystic.incarnation.activeOptions"}}</div>
+  <textarea name="system.activeOptions.value" placeholder="{{localize 'anima.ui.mystic.incarnation.activeOptions'}}">{{system.activeOptions.value}}</textarea>
+
+  {{!-- Passive Skills --}}
+  <div class="inc-section">{{localize "anima.ui.mystic.incarnation.passiveSkills"}}</div>
+  <textarea name="system.passiveSkills.value" placeholder="{{localize 'anima.ui.mystic.incarnation.passiveSkills'}}">{{system.passiveSkills.value}}</textarea>
+</form>

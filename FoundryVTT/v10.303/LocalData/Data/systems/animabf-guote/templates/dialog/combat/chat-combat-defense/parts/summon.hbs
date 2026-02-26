@@ -1,0 +1,42 @@
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize 'anima.macros.combat.dialog.modifier.title')
+disabled=this.defenseSent
+inputName="defender.summon.modifier"
+inputValue=this.defender.summon.modifier
+}}
+
+{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+title=(localize 'anima.macros.combat.dialog.summonSelect.title')
+disabled=this.defenseSent
+inputName='defender.summon.summonUsed'
+}}
+{{#each this.defender.actor.system.mystic.summons}}
+<option {{#if (is "eq" this._id ../this.defender.summon.summonUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}
+  (HD:{{this.system.baseDef.value}}{{#if this.system.bonusDef.value}}+{{this.system.bonusDef.value}}{{/if}})</option>
+{{/each}}
+{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+
+{{#if this.defender.summon.summon}}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize 'anima.ui.mystic.summon.baseDef.title')
+disabled=true
+inputValue=this.defender.summon.effectiveHD
+}}
+{{/if}}
+
+{{#if this.defenseSent}}
+<div class='defense-sent'>
+  {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
+  <p class='label'>
+    {{localize 'anima.macros.combat.dialog.defenseSent.title'}}
+  </p>
+</div>
+{{else}}
+<div class='defense-buttons'>
+  <button type="button" class='abf-button send-summon-defense'>
+    {{localize 'anima.macros.combat.dialog.defenseButton.title'}}{{#if this.defender.summon.summon}} ({{this.defender.summon.effectiveHD}}){{/if}}
+  </button>
+</div>
+{{/if}}

@@ -375,11 +375,14 @@ const parseArmorEntry = (armorText, isNatural = false, naturalValue = 0) => {
 const parseArmors = (text) => {
   const armors = [];
 
-  // First, look for the TA:/AT: line specifically
-  const taLineMatch = text.match(/(?:TA|AT):?\s*([^\n]+(?:\n(?![A-Z][a-z]+:)[^\n]+)*)/i);
+  // Match the TA/AT line (first line only)
+  const taLineMatch = text.match(/(?:TA|AT):?\s*([^\n]+)/i);
 
   if (taLineMatch) {
     let taContent = taLineMatch[1].trim();
+
+    // Check for no armor
+    if (taContent.match(/^(?:None|Ninguna|No)\b/i)) return armors;
 
     // Check for "Natural X" format (just a number after Natural)
     const naturalOnlyMatch = taContent.match(/^Natural\s+(\d+)\s*$/i);
@@ -390,31 +393,43 @@ const parseArmors = (text) => {
       return armors;
     }
 
-    // Check for combined armor: "Name + Natural Fil X Con X..."
-    // The "+ Natural" is part of the armor name, not a separate armor
-    // Example: "Escamas de Cristal + Natural Fil 12 Con 12..."
-    const combinedMatch = taContent.match(/^(.+?)\s+(Fil\s*\d+.*)$/i);
-    if (combinedMatch) {
-      const armorName = combinedMatch[1].trim();
-      const atValues = combinedMatch[2];
-      const fullArmorText = armorName + " " + atValues;
-      const armor = parseArmorEntry(fullArmorText);
+    // Collect armor lines: first line + continuation lines with armor AT patterns
+    // Use unambiguous AT patterns (Fil/Cut/Pen/Thr/Cal/Hea/Fri/Col) for continuation detection
+    // to avoid matching Ki/stat lines that contain "Con" or "Ene"
+    const armorLines = [taContent];
+    const taEndIndex = taLineMatch.index + taLineMatch[0].length;
+    const remaining = text.substring(taEndIndex);
+
+    for (const rawLine of remaining.split('\n')) {
+      const line = rawLine.trim();
+      if (!line) break;
+      // Only continue if line has armor-specific AT patterns
+      if (line.match(/(?:Fil|Cut|Pen|Thr|Cal|Hea|Fri|Col)\s*\d+/i)) {
+        armorLines.push(line);
+      } else {
+        break;
+      }
+    }
+
+    // Parse each line as a potential armor entry
+    for (const line of armorLines) {
+      const armor = parseArmorEntry(line);
       if (armor && armor.name) {
         armors.push(armor);
       }
     }
   }
 
-  // If we didn't find armors from the TA line, look for lines with AT values
+  // Fallback: if no armors found from TA line, scan text for armor-like lines
+  // Use unambiguous AT patterns to avoid matching Ki/domine lines
   if (armors.length === 0) {
-    // Look for lines containing AT values (Fil, Con, Pen, etc.)
-    const armorPattern = /(?:TA:?\s*)?([^\n]*?(?:Fil|Con|Pen|Cal|Ele|Fri|Ene)\s*\d+[^\n]*)/gi;
+    const armorPattern = /([^\n]*?(?:Fil|Cut|Pen|Thr|Cal|Hea|Fri|Col)\s*\d+[^\n]*)/gi;
     let match;
 
     while ((match = armorPattern.exec(text)) !== null) {
       const armorText = match[1].trim();
-      // Skip if this looks like a combat line (contains "Habilidad" or "Turno")
-      if (armorText.match(/Habilidad|Turno|ataque|defensa/i)) continue;
+      // Skip combat and Ki/domine lines
+      if (armorText.match(/Habilidad|Turno|ataque|defensa|Acumulaciones|Ki:/i)) continue;
 
       const armor = parseArmorEntry(armorText);
       if (armor && armor.name) {
@@ -534,8 +549,10 @@ const parseDomine = (text) => {
     domine.martialKnowledge = parseInt(cmMatch[1]) || 0;
   }
 
-  // Acumulaciones: Fue 1 Des 3 Agi 2 Con 1 Pod 4 Vol 2
-  const accumMatch = text.match(/Acumulaciones:?\s*([^\n(]+)/i);
+  // Acumulaciones de Ki: Fue 3 Des 7 (9) Agi 7 (9) Con 3 Pod 5 (7) Vol 2
+  // Or: Acumulaciones: Fue 1 Des 3 Agi 2 Con 1 Pod 4 Vol 2
+  // Capture full line (parenthesized values are ignored by individual stat regex)
+  const accumMatch = text.match(/Acumulaciones(?:\s+de\s+Ki)?:?\s*([^\n]+)/i);
   if (accumMatch) {
     const accumText = accumMatch[1];
     const patterns = [
@@ -555,13 +572,49 @@ const parseDomine = (text) => {
     }
   }
 
-  // Ki Genérico: 76
+  // Ki Genérico: 76 (simple format)
+  // Or: Ki: Fue 16 Des 40 ... Genérico: 164 (within a Ki line)
   const kiMatch = text.match(/Ki\s*Gen[eé]rico:?\s*(\d+)/i);
   if (kiMatch) {
     domine.genericKi = parseInt(kiMatch[1]) || 0;
+  } else {
+    // Look for standalone "Genérico: X" (typically within a Ki: line)
+    const genericMatch = text.match(/Gen[eé]rico:?\s*(\d+)/i);
+    if (genericMatch) {
+      domine.genericKi = parseInt(genericMatch[1]) || 0;
+    }
   }
 
   return domine;
+};
+
+/**
+ * Parse summoning data (Spanish and English)
+ * Formats: "Convocar: 370" or "Summon: 370"
+ */
+const parseSummoning = (text) => {
+  const summoning = {
+    summon: 0,
+    control: 0,
+    bind: 0,
+    banish: 0,
+  };
+
+  const patterns = [
+    { key: "summon", regex: /(?:Convocar|Summon):?\s*(\d+)/i },
+    { key: "control", regex: /(?:Controlar|Control):?\s*(\d+)/i },
+    { key: "bind", regex: /(?:Atar|Bind):?\s*(\d+)/i },
+    { key: "banish", regex: /(?:Desterrar|Banish):?\s*(\d+)/i },
+  ];
+
+  for (const { key, regex } of patterns) {
+    const match = text.match(regex);
+    if (match) {
+      summoning[key] = parseInt(match[1]) || 0;
+    }
+  }
+
+  return summoning;
 };
 
 /**
@@ -794,6 +847,7 @@ export const parsePdfText = (text) => {
     combat: combat,
     armors: parseArmors(text),
     mystic: parseMystic(text),
+    summoning: parseSummoning(text),
     domine: parseDomine(text),
     psychic: parsePsychic(text),
     secondaries: parseSecondaries(text),

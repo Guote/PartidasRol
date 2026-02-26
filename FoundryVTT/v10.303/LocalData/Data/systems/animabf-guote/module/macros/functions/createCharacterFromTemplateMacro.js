@@ -282,6 +282,8 @@ const buildActorData = (stats, subsystems) => {
       ui: {
         tabVisibility: {
           mystic: { value: subsystems.mystic },
+          summoning: { value: subsystems.mystic },
+          grimoire: { value: subsystems.mystic },
           psychic: { value: subsystems.psychic },
           domine: { value: subsystems.domine },
         },

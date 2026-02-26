@@ -1,0 +1,26 @@
+{{!--
+  Skill Row Component
+  Renders a single secondary skill row with rollable name, base input, and final value.
+
+  Parameters:
+  - group: The skill group key (e.g., "guotecundariasuno")
+  - key: The skill key (e.g., "acrobacias")
+--}}
+<div class="v2-skill-row">
+  <span class="v2-skill-row__name rollable"
+        data-roll="1d100xa"
+        data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
+        data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}">
+    {{localize (concat 'anima.ui.secondaries.' key '.title')}}
+  </span>
+  <input type="number" class="v2-skill-row__base"
+         name="system.secondaries.{{group}}.{{key}}.base.value"
+         value="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'base') 'value'}}">
+  <span class="v2-skill-row__final">{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}</span>
+  <button type="button" class="v2-combine-btn"
+          title="{{localize 'anima.ui.skills.combine'}}"
+          data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
+          data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}">
+    <i class="fas fa-link"></i>
+  </button>
+</div>

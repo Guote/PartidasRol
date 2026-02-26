@@ -1,0 +1,26 @@
+{{!--
+  Characteristic Row Component
+  Used inside {{#each system.characteristics.primaries as |stat key|}} loop.
+
+  Parameters (via context):
+  - key: The characteristic key (e.g., "agility", "strength")
+  - stat: The characteristic object with .value and .mod
+--}}
+<div class="v2-characteristic">
+  <span class="v2-characteristic__name rollable"
+        data-roll="1d100xa10TO100"
+        data-rollvalue="{{math stat.value '*' 10}}"
+        data-label="{{localize (concat 'anima.ui.characteristics.' key)}}">{{localize (concat "anima.ui.characteristics." key)}}</span>
+  <div class="v2-characteristic__values">
+    <input type="number" class="v2-characteristic__value-input"
+           name="system.characteristics.primaries.{{key}}.value"
+           value="{{stat.value}}">
+    <span class="v2-characteristic__mod">({{#if (gte stat.mod 0)}}+{{/if}}{{stat.mod}})</span>
+  </div>
+  <button type="button" class="v2-combine-btn v2-characteristic__combine"
+          title="{{localize 'anima.ui.skills.combine'}}"
+          data-rollvalue="{{math stat.value '*' 10}}"
+          data-label="{{localize (concat 'anima.ui.characteristics.' key)}}">
+    <i class="fas fa-link"></i>
+  </button>
+</div>

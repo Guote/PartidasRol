@@ -29,6 +29,10 @@ export default class ABFItemSheet extends ItemSheet {
                 return 1000;
             case ABFItems.WEAPON:
                 return 815;
+            case ABFItems.SUMMON:
+                return 500;
+            case ABFItems.INCARNATION:
+                return 600;
             default:
                 return 900;
         }
@@ -45,6 +49,10 @@ export default class ABFItemSheet extends ItemSheet {
                 return 144;
             case ABFItems.PSYCHIC_POWER:
                 return 500;
+            case ABFItems.SUMMON:
+                return 420;
+            case ABFItems.INCARNATION:
+                return 700;
             default:
                 return 450;
         }

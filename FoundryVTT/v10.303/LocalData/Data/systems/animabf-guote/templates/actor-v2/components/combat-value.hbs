@@ -9,6 +9,7 @@
   - finalValue: The final calculated value
   - rollable: Whether the final value is rollable (default true)
   - rollLabel: Label to show in roll message
+  - rollFormula: Custom roll formula (default "1d100xa")
   - compact: Use compact styling (default false)
 --}}
 <div class="v2-combat-value {{#if compact}}v2-combat-value--compact{{/if}}">
@@ -19,7 +20,7 @@
            value="{{baseValue}}">
     {{#if rollable}}
     <span class="v2-combat-value__final rollable"
-          data-roll="1d100xa"
+          data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
           data-rollvalue="{{finalValue}}"
           data-label="{{rollLabel}}">
       {{finalValue}}

@@ -12,6 +12,7 @@ import { mutateMovementType } from "./calculations/actor/general/mutateMovementT
 import { mutateMysticData } from "./calculations/actor/mystic/mutateMysticData.js";
 import { mutatePsychicData } from "./calculations/actor/psychic/mutatePsychicData.js";
 import { mutateDomineData } from "./calculations/actor/domine/mutateDomineData.js";
+import { mutateIncarnationOverride } from "./calculations/actor/mystic/mutateIncarnationOverride.js";
 import { mutateInitiative } from "./calculations/actor/mutateInitiative.js";
 import { mutateRegenerationType } from "./calculations/actor/general/mutateRegenerationType.js";
 import { mutateMasaData } from "./calculations/actor/mutateMasaData.js";
@@ -33,11 +34,16 @@ const DERIVED_DATA_FUNCTIONS = [
   mutateMysticData,
   mutatePsychicData,
   mutateDomineData,
+  mutateIncarnationOverride,
 ];
 export const prepareActor = async (actor) => {
   await prepareItems(actor);
   actor.system.general.description.enriched = await TextEditor.enrichHTML(
     actor.system.general.description.value,
+    { async: true }
+  );
+  actor.system.general.notesText.enriched = await TextEditor.enrichHTML(
+    actor.system.general.notesText.value ?? "",
     { async: true }
   );
   // We need to parse to boolean because Foundry saves booleans as string

@@ -22,11 +22,13 @@
         <i class="fas fa-backpack"></i>
         <span>{{localize "anima.ui.tabs.inventory"}}</span>
       </a>
-      {{#if system.ui.tabVisibility.mystic.value}}
+      {{#if system.ui.tabVisibility.grimoire.value}}
       <a class="v2-sidetabs__tab v2-sidetabs__tab--spellbook item" data-action="open-spellbook" title="{{localize 'anima.ui.spellbook.title'}}">
         <i class="fas fa-book-spells"></i>
         <span>{{localize "anima.ui.spellbook.tabName"}}</span>
       </a>
+      {{/if}}
+      {{#if system.ui.tabVisibility.summoning.value}}
       <a class="v2-sidetabs__tab item" data-tab="summoning" title="{{localize 'anima.ui.tabs.summoning'}}">
         <i class="fas fa-ghost"></i>
         <span>{{localize "anima.ui.tabs.summoning"}}</span>
@@ -44,6 +46,10 @@
         <span>{{localize "anima.ui.tabs.psychic"}}</span>
       </a>
       {{/if}}
+      <a class="v2-sidetabs__tab v2-sidetabs__tab--bottom item" data-tab="notes" title="{{localize 'anima.ui.tabs.notes'}}">
+        <i class="fas fa-sticky-note"></i>
+        <span>{{localize "anima.ui.tabs.notes"}}</span>
+      </a>
       <a class="v2-sidetabs__tab v2-sidetabs__tab--bottom item" data-tab="effects" title="{{localize 'anima.ui.tabs.effects'}}">
         <i class="fas fa-magic"></i>
         <span>{{localize "anima.ui.tabs.effects"}}</span>
@@ -63,6 +69,11 @@
       {{!-- Skills Tab --}}
       <div class="v2-body__tab tab skills" data-group="primary" data-tab="skills">
         {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/skills.hbs"}}
+      </div>
+
+      {{!-- Notes Tab --}}
+      <div class="v2-body__tab tab notes" data-group="primary" data-tab="notes">
+        {{> "systems/animabf-guote/templates/actor-v2/parts/tabs/notes.hbs"}}
       </div>
 
       {{!-- Effects Tab --}}

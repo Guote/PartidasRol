@@ -60,6 +60,17 @@ inputValue=this.attacker.psychic.ignoredTA
 disabled=this.attackSent
 }}
 
+{{#if this.attacker.psychic.potentialResult}}
+<div class="potential-result-display">
+  {{>
+  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+  title=(localize 'anima.macros.combat.dialog.psychicPotentialResult.title')
+  disabled=true
+  inputValue=this.attacker.psychic.potentialResult.total
+  }}
+</div>
+{{/if}}
+
 {{#if this.attackSent}}
 <div class='psychic-attack-sent'>
   {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
@@ -68,7 +79,12 @@ disabled=this.attackSent
   </p>
 </div>
 {{else}}
-<button class='abf-button send-psychic-attack'>
-  {{localize 'anima.macros.combat.dialog.attackButton.title'}}
-</button>
+<div class='attack-buttons'>
+  <button type="button" class='abf-button roll-psychic-potential'>
+    <i class="fas fa-dice-d20"></i> {{localize 'anima.macros.combat.dialog.rollOnlyPotential.title'}}
+  </button>
+  <button type="button" class='abf-button send-psychic-attack'>
+    {{localize 'anima.macros.combat.dialog.attackButton.title'}}
+  </button>
+</div>
 {{/if}}

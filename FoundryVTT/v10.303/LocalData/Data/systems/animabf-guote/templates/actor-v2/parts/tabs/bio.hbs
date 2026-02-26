@@ -6,10 +6,8 @@
       <div class="v2-card__header">
         <span>{{localize "anima.ui.descriptionSection.title"}}</span>
       </div>
-      <div class="v2-card__body">
-        <textarea class="v2-textarea" style="min-height: 150px;"
-                  name="system.general.description.value"
-                  placeholder="">{{system.general.description.value}}</textarea>
+      <div class="v2-card__body v2-notes-editor">
+        {{editor system.general.description.enriched target="system.general.description.value" button=true owner=true editable=true}}
       </div>
     </div>
 
@@ -20,38 +18,14 @@
       </div>
       <div class="v2-card__body">
         <div class="v2-grid v2-grid--2" style="gap: var(--space-2);">
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.hair.title"}}</label>
-            <input type="text" class="v2-input" name="system.general.aspect.hair.value" value="{{system.general.aspect.hair.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.eyes.title"}}</label>
-            <input type="text" class="v2-input" name="system.general.aspect.eyes.value" value="{{system.general.aspect.eyes.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.height.title"}}</label>
-            <input type="text" class="v2-input" name="system.general.aspect.height.value" value="{{system.general.aspect.height.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.weight.title"}}</label>
-            <input type="text" class="v2-input" name="system.general.aspect.weight.value" value="{{system.general.aspect.weight.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.age.title"}}</label>
-            <input type="text" class="v2-input" name="system.general.aspect.age.value" value="{{system.general.aspect.age.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.gender.title"}}</label>
-            <input type="text" class="v2-input" name="system.general.aspect.gender.value" value="{{system.general.aspect.gender.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.race.title"}}</label>
-            <input type="text" class="v2-input" name="system.general.aspect.race.value" value="{{system.general.aspect.race.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.size.title"}}</label>
-            <input type="number" class="v2-input" name="system.general.aspect.size.value" value="{{system.general.aspect.size.value}}">
-          </div>
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.hair.title") name="system.general.aspect.hair.value" value=system.general.aspect.hair.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.eyes.title") name="system.general.aspect.eyes.value" value=system.general.aspect.eyes.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.height.title") name="system.general.aspect.height.value" value=system.general.aspect.height.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.weight.title") name="system.general.aspect.weight.value" value=system.general.aspect.weight.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.age.title") name="system.general.aspect.age.value" value=system.general.aspect.age.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.gender.title") name="system.general.aspect.gender.value" value=system.general.aspect.gender.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.race.title") name="system.general.aspect.race.value" value=system.general.aspect.race.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.aspectSection.size.title") name="system.general.aspect.size.value" value=system.general.aspect.size.value type="number"}}
         </div>
         <div style="margin-top: var(--space-2);">
           <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.aspectSection.appearance.title"}}</label>
@@ -64,62 +38,18 @@
 
   <div class="v2-grid v2-grid--2">
     {{!-- Advantages --}}
-    <div class="v2-card">
-      <div class="v2-card__header">
-        <div class="v2-card__header-title">
-          <span>{{localize "anima.ui.advantageSection.title"}}</span>
-        </div>
-        <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-advantage" title="{{localize 'anima.dialogs.items.advantage.content'}}">
-            <i class="fas fa-plus"></i>
-          </button>
-        </div>
-      </div>
-      <div class="v2-card__body" style="padding: 0;">
-        <table class="v2-table">
-          <tbody>
-            {{#each system.general.advantages as |adv|}}
-            <tr data-item-id="{{adv._id}}">
-              <td>{{adv.name}}</td>
-            </tr>
-            {{else}}
-            <tr>
-              <td class="v2-text-center v2-text-muted">-</td>
-            </tr>
-            {{/each}}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    {{> "systems/animabf-guote/templates/actor-v2/components/simple-item-list.hbs"
+        title=(localize "anima.ui.advantageSection.title")
+        addAction="add-advantage"
+        addLabel=(localize "anima.dialogs.items.advantage.content")
+        items=system.general.advantages}}
 
     {{!-- Disadvantages --}}
-    <div class="v2-card">
-      <div class="v2-card__header">
-        <div class="v2-card__header-title">
-          <span>{{localize "anima.ui.disadvantageSection.title"}}</span>
-        </div>
-        <div class="v2-card__header-actions">
-          <button type="button" class="v2-card__header-btn" data-on-click="add-disadvantage" title="{{localize 'anima.dialogs.items.disadvantage.content'}}">
-            <i class="fas fa-plus"></i>
-          </button>
-        </div>
-      </div>
-      <div class="v2-card__body" style="padding: 0;">
-        <table class="v2-table">
-          <tbody>
-            {{#each system.general.disadvantages as |dis|}}
-            <tr data-item-id="{{dis._id}}">
-              <td>{{dis.name}}</td>
-            </tr>
-            {{else}}
-            <tr>
-              <td class="v2-text-center v2-text-muted">-</td>
-            </tr>
-            {{/each}}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    {{> "systems/animabf-guote/templates/actor-v2/components/simple-item-list.hbs"
+        title=(localize "anima.ui.disadvantageSection.title")
+        addAction="add-disadvantage"
+        addLabel=(localize "anima.dialogs.items.disadvantage.content")
+        items=system.general.disadvantages}}
   </div>
 
   <div class="v2-grid v2-grid--2">
@@ -220,18 +150,8 @@
       </div>
       <div class="v2-card__body">
         <div class="v2-grid v2-grid--2">
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.experienceSection.current.title"}}</label>
-            <input type="number" class="v2-input"
-                   name="system.general.experience.current.value"
-                   value="{{system.general.experience.current.value}}">
-          </div>
-          <div>
-            <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.experienceSection.next.title"}}</label>
-            <input type="number" class="v2-input"
-                   name="system.general.experience.next.value"
-                   value="{{system.general.experience.next.value}}">
-          </div>
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.experienceSection.current.title") name="system.general.experience.current.value" value=system.general.experience.current.value type="number"}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/labeled-input.hbs" label=(localize "anima.ui.experienceSection.next.title") name="system.general.experience.next.value" value=system.general.experience.next.value type="number"}}
         </div>
       </div>
     </div>
@@ -296,29 +216,10 @@
   {{!-- Notes --}}
   <div class="v2-card">
     <div class="v2-card__header">
-      <div class="v2-card__header-title">
-        <span>{{localize "anima.ui.notesSection.title"}}</span>
-      </div>
-      <div class="v2-card__header-actions">
-        <button type="button" class="v2-card__header-btn" data-on-click="add-note" title="{{localize 'anima.dialogs.items.note.content'}}">
-          <i class="fas fa-plus"></i>
-        </button>
-      </div>
+      <span>{{localize "anima.ui.notesSection.title"}}</span>
     </div>
-    <div class="v2-card__body" style="padding: 0;">
-      <table class="v2-table">
-        <tbody>
-          {{#each system.general.notes as |note|}}
-          <tr data-item-id="{{note._id}}">
-            <td>{{note.name}}</td>
-          </tr>
-          {{else}}
-          <tr>
-            <td class="v2-text-center v2-text-muted">-</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
+    <div class="v2-card__body v2-notes-editor">
+      {{editor system.general.notesText.enriched target="system.general.notesText.value" button=true owner=true editable=true}}
     </div>
   </div>
 </div>

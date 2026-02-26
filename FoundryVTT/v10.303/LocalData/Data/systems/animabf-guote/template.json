@@ -8,11 +8,14 @@
         "contractibleItems": {},
         "tabVisibility": {
           "mystic": { "value": false },
+          "summoning": { "value": false },
+          "grimoire": { "value": false },
           "domine": { "value": false },
           "psychic": { "value": false }
         },
         "resourceVisibility": {
           "hp": { "value": true },
+          "sacrificedLife": { "value": false },
           "fatigue": { "value": true },
           "destiny": { "value": true },
           "zeon": { "value": false },
@@ -116,6 +119,7 @@
           "gold": { "value": 0 }
         },
         "description": { "value": "" },
+        "notesText": { "value": "" },
         "disadvantages": [],
         "elan": [],
         "experience": { "current": { "value": 0 }, "next": { "value": 0 } },
@@ -272,7 +276,9 @@
         "combatTables": [],
         "ammo": [],
         "weapons": [],
-        "armors": []
+        "armors": [],
+        "attackPresets": [],
+        "defensePresets": []
       },
       "mystic": {
         "act": {
@@ -322,7 +328,9 @@
         "spellMaintenances": [],
         "selectedSpells": [],
         "summons": [],
-        "metamagics": []
+        "metamagics": [],
+        "creatureSummons": [],
+        "incarnations": []
       },
       "domine": {
         "kiSkills": [],
@@ -407,6 +415,8 @@
       "advantage",
       "ammo",
       "armor",
+      "attackPreset",
+      "defensePreset",
       "disadvantage",
       "spell",
       "mentalPattern",
@@ -415,7 +425,9 @@
       "psychicPower",
       "technique",
       "weapon",
-      "inventoryItem"
+      "inventoryItem",
+      "summon",
+      "incarnation"
     ],
     "ammo": {
       "amount": { "value": 0 },
@@ -445,6 +457,59 @@
       "wearArmorRequirement": {
         "base": { "value": 0 },
         "final": { "value": 0 }
+      }
+    },
+    "attackPreset": {
+      "attackType": { "value": "combat" },
+      "withoutRoll": { "value": false },
+      "showRoll": { "value": true },
+      "isAccumulation": { "value": false },
+      "accumulationCount": { "value": 0 },
+      "combat": {
+        "modifier": { "value": 0 },
+        "fatigueUsed": { "value": 0 },
+        "weaponUsed": { "value": "" },
+        "criticSelected": { "value": "-" },
+        "damageBonus": { "value": 0 },
+        "ignoredTA": { "value": 0 }
+      },
+      "mystic": {
+        "modifier": { "value": 0 },
+        "projectionType": { "value": "normal" },
+        "spellUsed": { "value": "" },
+        "spellGrade": { "value": "base" },
+        "critic": { "value": "-" },
+        "damage": { "value": 0 },
+        "ignoredTA": { "value": 0 }
+      },
+      "psychic": {
+        "modifier": { "value": 0 },
+        "potentialBonus": { "value": 0 },
+        "powerUsed": { "value": "" },
+        "critic": { "value": "-" },
+        "damage": { "value": 0 },
+        "ignoredTA": { "value": 0 }
+      }
+    },
+    "defensePreset": {
+      "defenseType": { "value": "combat" },
+      "combat": {
+        "modifier": { "value": 0 },
+        "fatigue": { "value": 0 },
+        "weaponUsed": { "value": "" },
+        "method": { "value": "dodge" },
+        "atBonus": { "value": 0 }
+      },
+      "mystic": {
+        "modifier": { "value": 0 },
+        "projectionType": { "value": "defensive" },
+        "spellUsed": { "value": "" },
+        "spellGrade": { "value": "base" }
+      },
+      "psychic": {
+        "modifier": { "value": 0 },
+        "potentialBonus": { "value": 0 },
+        "powerUsed": { "value": "" }
       }
     },
     "spell": {
@@ -572,6 +637,34 @@
       "description": { "value": "" },
       "amount": { "value": 0 },
       "weight": { "value": 0 }
+    },
+    "summon": {
+      "summonDif": { "value": 0 },
+      "zeonCost": { "value": 0 },
+      "baseAtk": { "value": 0 },
+      "baseDef": { "value": 0 },
+      "damage": { "value": 0 },
+      "critic": { "value": "impact" },
+      "turno": { "value": 20 },
+      "special": { "value": "" },
+      "bonusAtk": { "value": 0 },
+      "bonusDef": { "value": 0 },
+      "bonusDamage": { "value": 0 },
+      "bonusOther": { "value": "" }
+    },
+    "incarnation": {
+      "level": { "value": 0 },
+      "difficulty": { "value": 0 },
+      "summonBonus": { "value": 0 },
+      "turno": { "value": 0 },
+      "ha": { "value": 0 },
+      "hd": { "value": 0 },
+      "magicProjection": { "value": 0 },
+      "psychicProjection": { "value": 0 },
+      "equipment": { "value": "" },
+      "activeOptions": { "value": "" },
+      "passiveSkills": { "value": "" },
+      "active": { "value": false }
     }
   }
 }

@@ -109,19 +109,16 @@ export class ChatCombatManager {
         this._pendingAttackerTokenId = attackerToken.id;
 
         // Open attack dialog - the card is auto-created in CombatAttackDialog
-        const attackDialog = new CombatAttackDialog(
+        new CombatAttackDialog(
             attackerToken,
             defenderForDialog,
             {
                 onAttack: async (attackResult) => {
-                    // Close the dialog immediately - no WebSocket waiting needed
-                    attackDialog.close({ force: true });
-
                     // Attack card is auto-created by CombatAttackDialog
                     // We'll handle targeting in the createChatMessage hook
                 }
             },
-            { allowed: true }
+            { allowed: true, closeOnSend: true }
         );
     }
 

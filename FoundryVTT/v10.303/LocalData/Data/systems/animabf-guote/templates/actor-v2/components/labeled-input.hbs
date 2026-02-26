@@ -1,0 +1,14 @@
+{{!--
+  Labeled Input Component
+  A label + input pair for form fields.
+
+  Parameters:
+  - label: The display label (localized string)
+  - name: The input name attribute
+  - value: The input value
+  - type: Input type (default "text")
+--}}
+<div>
+  <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{label}}</label>
+  <input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="v2-input" name="{{name}}" value="{{value}}">
+</div>

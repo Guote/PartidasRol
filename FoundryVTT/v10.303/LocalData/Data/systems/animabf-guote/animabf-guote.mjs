@@ -67,6 +67,26 @@ Hooks.once('ready', () => {
     // Expose macros globally for GM scripts
     window.ABFMacros = ABFMacros;
 });
+// Handle custom drag-to-hotbar for attack button
+Hooks.on('hotbarDrop', async (bar, data, slot) => {
+    if (data.type !== 'ABFAttackDialog') return true;
+    const command = data.command;
+    const name = data.name;
+    const img = data.img || 'icons/skills/melee/strike-sword-slashing-red.webp';
+    let macro = game.macros.find(m => m.name === name && m.command === command);
+    if (!macro) {
+        macro = await Macro.create({
+            name,
+            type: 'script',
+            img,
+            command,
+            flags: { 'animabf-guote': { attackMacro: true } }
+        });
+    }
+    game.user.assignHotbarMacro(macro, slot);
+    return false;
+});
+
 // Add any additional hooks if necessary
 // This function allow us to use xRoot in templates to extract the root object in Handlebars template
 // So, instead to do ../../../ etc... to obtain rootFolder, use xRoot instead

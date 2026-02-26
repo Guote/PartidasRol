@@ -59,11 +59,39 @@ export default class SimpleActorSheet extends ActorSheet {
     const psychic = this.actor.system.psychic || {};
     const domine = this.actor.system.domine || {};
 
+    // Prepare magic level spheres (non-zero only for display)
+    const spheres = mystic.magicLevel?.spheres || {};
+    const sphereLabels = {
+      light: "Luz", darkness: "Oscuridad", fire: "Fuego", water: "Agua",
+      earth: "Tierra", air: "Aire", creation: "Creación", destruction: "Destrucción",
+      essence: "Esencia", illusion: "Ilusión", necromancy: "Necromancia",
+    };
+    data.magicLevelSpheres = Object.entries(sphereLabels).map(([key, label]) => ({
+      key, label, value: spheres[key]?.value || 0,
+    }));
+    data.hasNonZeroSpheres = data.magicLevelSpheres.some(s => s.value > 0);
+    data.nonZeroSpheres = data.magicLevelSpheres.filter(s => s.value > 0);
+
+    // Prepare summoning data
+    const summoning = mystic.summoning || {};
+    data.hasSummoning = (summoning.summon?.base?.value > 0) ||
+                        (summoning.control?.base?.value > 0) ||
+                        (summoning.bind?.base?.value > 0) ||
+                        (summoning.banish?.base?.value > 0);
+    data.summoning = {
+      summon: summoning.summon?.base?.value || 0,
+      control: summoning.control?.base?.value || 0,
+      bind: summoning.bind?.base?.value || 0,
+      banish: summoning.banish?.base?.value || 0,
+    };
+
     data.hasMystic = (mystic.zeon?.max > 0) ||
                      (mystic.act?.main?.final?.value > 0) ||
                      (mystic.act?.main?.base?.value > 0) ||
                      (mystic.magicProjection?.base?.value > 0) ||
-                     (mystic.magicProjection?.imbalance?.offensive?.base?.value > 0);
+                     (mystic.magicProjection?.imbalance?.offensive?.base?.value > 0) ||
+                     data.hasNonZeroSpheres ||
+                     data.hasSummoning;
 
     data.hasPsychic = (psychic.psychicPoints?.max > 0) ||
                       (psychic.psychicProjection?.base?.value > 0) ||
@@ -78,6 +106,10 @@ export default class SimpleActorSheet extends ActorSheet {
     data.spellCount = this.actor.items.filter(i => i.type === "spell").length;
     data.psychicPowerCount = this.actor.items.filter(i => i.type === "psychicPower").length;
     data.techniqueCount = this.actor.items.filter(i => i.type === "technique").length;
+
+    // Custom notes (all note items except the reserved ones)
+    const reservedNotes = ["Habilidades Esenciales", "Poderes", "Habilidades Especiales"];
+    data.customNotes = this.actor.items.filter(i => i.type === "note" && !reservedNotes.includes(i.name));
 
     return data;
   }
@@ -134,6 +166,18 @@ export default class SimpleActorSheet extends ActorSheet {
     html.find('.open-grimoire').click(() => this._openMainSheet('mystic'));
     html.find('.open-psychic-powers').click(() => this._openMainSheet('psychic'));
     html.find('.open-techniques').click(() => this._openMainSheet('domine'));
+
+    // Custom notes: Add Section
+    html.find('.add-custom-section').click(() => this._onAddCustomSection());
+
+    // Custom notes: Delete Section
+    html.find('.delete-custom-section').click(ev => {
+      const noteId = $(ev.currentTarget).data('note-id');
+      if (noteId) {
+        const item = this.actor.items.get(noteId);
+        if (item) item.delete();
+      }
+    });
 
     // Rollable items (only in ready mode)
     if (!this._editMode) {
@@ -299,6 +343,39 @@ export default class SimpleActorSheet extends ActorSheet {
     });
   }
 
+  async _onAddCustomSection() {
+    const content = `<form><div class="form-group">
+      <label>Título de la sección:</label>
+      <input type="text" name="title" autofocus>
+    </div></form>`;
+
+    new Dialog({
+      title: "Añadir Sección",
+      content,
+      buttons: {
+        add: {
+          icon: '<i class="fas fa-plus"></i>',
+          label: "Añadir",
+          callback: async (html) => {
+            const title = html.find('[name="title"]').val()?.trim();
+            if (title) {
+              await this.actor.createEmbeddedDocuments("Item", [{
+                name: title,
+                type: "note",
+                system: { description: { value: "" } },
+              }]);
+            }
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancelar",
+        },
+      },
+      default: "add",
+    }).render(true);
+  }
+
   async _updateObject(event, formData) {
     // Handle special abilities notes updates
     if (formData.essentialAbilitiesContent !== undefined) {
@@ -308,6 +385,17 @@ export default class SimpleActorSheet extends ActorSheet {
     if (formData.powersContent !== undefined) {
       await this._updateOrCreateNote("Poderes", formData.powersContent);
       delete formData.powersContent;
+    }
+
+    // Handle custom note updates
+    const customNoteKeys = Object.keys(formData).filter(k => k.startsWith("customNote_"));
+    for (const key of customNoteKeys) {
+      const noteId = key.substring("customNote_".length);
+      const noteItem = this.actor.items.get(noteId);
+      if (noteItem) {
+        await noteItem.update({ "system.description.value": formData[key] });
+      }
+      delete formData[key];
     }
 
     return super._updateObject(event, formData);

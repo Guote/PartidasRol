@@ -9,6 +9,7 @@ export const preloadTemplates = () => {
     Templates.Dialog.Combat.CombatAttackDialog.parts.combat,
     Templates.Dialog.Combat.CombatAttackDialog.parts.mystic,
     Templates.Dialog.Combat.CombatAttackDialog.parts.psychic,
+    Templates.Dialog.Combat.CombatAttackDialog.parts.summon,
     Templates.Dialog.Combat.CombatDefenseDialog.main,
     Templates.Dialog.Combat.CombatDefenseDialog.parts.combat,
     Templates.Dialog.Combat.CombatDefenseDialog.parts.damageResistance,
@@ -28,6 +29,7 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/damage-resistance.hbs`,
     `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/mystic.hbs`,
     `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/psychic.hbs`,
+    `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/summon.hbs`,
     // TODO Add paths to "systems/AnimaBeyondFoundry/templates"
     // Common parts
     `systems/${ABFSystemName}/templates/common/ui/horizontal-titled-input.hbs`,
@@ -57,6 +59,8 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/items/spell/spell.hbs`,
     `systems/${ABFSystemName}/templates/items/psychicPower/psychicPower.hbs`,
     `systems/${ABFSystemName}/templates/items/inventoryItem/inventoryItem.hbs`,
+    `systems/${ABFSystemName}/templates/items/summon/summon.hbs`,
+    `systems/${ABFSystemName}/templates/items/incarnation/incarnation.hbs`,
     // Actor sheet parts
     `systems/${ABFSystemName}/templates/actor/parts/header/header.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/header/parts/top.hbs`,
@@ -151,6 +155,10 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor-v2/components/weapon-dropdown.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/combat-value.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/resource-pool.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/characteristic-row.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/skill-row.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/simple-item-list.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/labeled-input.hbs`,
     // V2 Spellbook
     `systems/${ABFSystemName}/templates/actor-v2/parts/spellbook/spellbook.hbs`,
     // V2 Header Parts
@@ -171,6 +179,7 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/psychic.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/settings.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/summoning.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/notes.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/parts/tabs/effects.hbs`,
   ];
   return loadTemplates(templatePaths);

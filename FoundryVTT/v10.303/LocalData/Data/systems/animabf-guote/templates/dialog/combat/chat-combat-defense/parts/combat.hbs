@@ -54,10 +54,10 @@ inputName='defender.combat.weaponUsed'
 {{else}}
 <div class='defense-buttons'>
   <button type="button" class='abf-button send-defense' data-type='dodge'>
-    {{localize 'anima.macros.combat.dialog.dodgeButton.title'}}
+    {{localize 'anima.macros.combat.dialog.dodgeButton.title'}} ({{this.defender.actor.system.combat.dodge.final.value}})
   </button>
   <button type="button" class='abf-button send-defense' data-type='block'>
-    {{localize 'anima.macros.combat.dialog.blockButton.title'}}
+    {{localize 'anima.macros.combat.dialog.blockButton.title'}} ({{#if this.defender.combat.weapon}}{{this.defender.combat.weapon.system.block.final.value}}{{else}}{{this.defender.actor.system.combat.block.final.value}}{{/if}})
   </button>
 </div>
 {{/if}}

@@ -1,10 +1,31 @@
 import { ABFItems } from '../../items/ABFItems.js';
-import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+
+/**
+ * Initial data for a new summon item.
+ * @readonly
+ */
+export const INITIAL_SUMMON_DATA = {
+    summonDif: { value: 0 },
+    zeonCost: { value: 0 },
+    baseAtk: { value: 0 },
+    baseDef: { value: 0 },
+    damage: { value: 0 },
+    critic: { value: 'impact' },
+    turno: { value: 20 },
+    special: { value: '' },
+    bonusAtk: { value: 0 },
+    bonusDef: { value: 0 },
+    bonusDamage: { value: 0 },
+    bonusOther: { value: '' }
+};
+
 /** @type {import("../Items").SummonItemConfig} */
 export const SummonItemConfig = ABFItemConfigFactory({
     type: ABFItems.SUMMON,
-    isInternal: true,
+    isInternal: false,
+    hasSheet: true,
+    defaultValue: INITIAL_SUMMON_DATA,
     fieldPath: ['mystic', 'summons'],
     selectors: {
         addItemButtonSelector: 'add-summon',
@@ -13,12 +34,11 @@ export const SummonItemConfig = ABFItemConfigFactory({
     },
     onCreate: async (actor) => {
         const { i18n } = game;
-        const name = await openSimpleInputDialog({
-            content: i18n.localize('anima.dialogs.items.summon.content')
-        });
-        await actor.createInnerItem({
-            name,
-            type: ABFItems.SUMMON
-        });
+        const itemData = {
+            name: i18n.localize('anima.ui.mystic.summon.new'),
+            type: ABFItems.SUMMON,
+            system: INITIAL_SUMMON_DATA
+        };
+        await actor.createItem(itemData);
     }
 });

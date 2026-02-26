@@ -100,19 +100,32 @@
   {{!-- ROW 2: Resources Bar (always visible) --}}
   <div class="v2-header__row v2-header__row--resources">
     <div class="v2-header__resources">
-      {{!-- HP --}}
+      {{!-- HP Group (HP + Sacrificed Life) --}}
       {{#if system.ui.resourceVisibility.hp.value}}
-      <div class="v2-res v2-res--hp v2-res--compact" title="{{localize 'anima.ui.general.life.current.title'}}">
-        <span class="v2-res__label"><i class="fas fa-heart"></i> PV</span>
-        <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact"
-            name="system.characteristics.secondaries.lifePoints.value"
-            value="{{system.characteristics.secondaries.lifePoints.value}}">
-          <span class="v2-res__sep">/</span>
-          <input type="number" class="v2-res__input v2-res__input--compact"
-            name="system.characteristics.secondaries.lifePoints.max"
-            value="{{system.characteristics.secondaries.lifePoints.max}}">
+      <div class="v2-res-group">
+        <div class="v2-res v2-res--hp v2-res--compact" title="{{localize 'anima.ui.general.life.current.title'}}">
+          <span class="v2-res__label"><i class="fas fa-heart"></i> PV</span>
+          <div class="v2-res__values">
+            <input type="number" class="v2-res__input v2-res__input--compact"
+              name="system.characteristics.secondaries.lifePoints.value"
+              value="{{system.characteristics.secondaries.lifePoints.value}}">
+            <span class="v2-res__sep">/</span>
+            <input type="number" class="v2-res__input v2-res__input--compact"
+              name="system.characteristics.secondaries.lifePoints.max"
+              value="{{system.characteristics.secondaries.lifePoints.max}}">
+          </div>
         </div>
+        {{#if system.ui.resourceVisibility.sacrificedLife.value}}
+        <div class="v2-res-group__sep"></div>
+        <div class="v2-res v2-res--hp v2-res--compact v2-res--single" title="Vida Sacrificada">
+          <span class="v2-res__label"><i class="fas fa-heart-broken"></i> Sacr</span>
+          <div class="v2-res__values">
+            <input type="number" class="v2-res__input v2-res__input--compact"
+              name="system.characteristics.secondaries.lifePoints.sacrificed"
+              value="{{system.characteristics.secondaries.lifePoints.sacrificed}}">
+          </div>
+        </div>
+        {{/if}}
       </div>
       {{/if}}
 
@@ -144,55 +157,57 @@
       </div>
       {{/if}}
 
-      {{!-- Zeon --}}
+      {{!-- Zeon Group (Zeon + Zeon Accumulated) --}}
       {{#if system.ui.resourceVisibility.zeon.value}}
-      <div class="v2-res v2-res--zeon v2-res--compact" title="{{localize 'anima.ui.mystic.zeon.title'}}">
-        <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Zeon</span>
-        <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.value"
-            value="{{system.mystic.zeon.value}}">
-          <span class="v2-res__sep">/</span>
-          <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.max"
-            value="{{system.mystic.zeon.max}}">
+      <div class="v2-res-group">
+        <div class="v2-res v2-res--zeon v2-res--compact" title="{{localize 'anima.ui.mystic.zeon.title'}}">
+          <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Zeon</span>
+          <div class="v2-res__values">
+            <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.value"
+              value="{{system.mystic.zeon.value}}">
+            <span class="v2-res__sep">/</span>
+            <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.max"
+              value="{{system.mystic.zeon.max}}">
+          </div>
         </div>
+        {{#if system.ui.resourceVisibility.zeonAccumulated.value}}
+        <div class="v2-res-group__sep"></div>
+        <div class="v2-res v2-res--zeon-acc v2-res--compact v2-res--single" title="Zeon Acumulado">
+          <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Acum</span>
+          <div class="v2-res__values">
+            <input type="number" class="v2-res__input v2-res__input--compact"
+              name="_header.system.mystic.zeonAccumulated.value" value="{{system.mystic.zeonAccumulated.value}}">
+          </div>
+        </div>
+        {{/if}}
       </div>
       {{/if}}
 
-      {{!-- Zeon Accumulated --}}
-      {{#if system.ui.resourceVisibility.zeonAccumulated.value}}
-      <div class="v2-res v2-res--zeon-acc v2-res--compact v2-res--single" title="Zeon Acumulado">
-        <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Acum</span>
-        <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact"
-            name="_header.system.mystic.zeonAccumulated.value" value="{{system.mystic.zeonAccumulated.value}}">
-        </div>
-      </div>
-      {{/if}}
-
-      {{!-- Ki --}}
+      {{!-- Ki Group (Ki + Ki Accumulated) --}}
       {{#if system.ui.resourceVisibility.ki.value}}
-      <div class="v2-res v2-res--ki v2-res--compact" title="Ki">
-        <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Ki</span>
-        <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact"
-            name="_header.system.domine.kiAccumulation.generic.value"
-            value="{{system.domine.kiAccumulation.generic.value}}">
-          <span class="v2-res__sep">/</span>
-          <input type="number" class="v2-res__input v2-res__input--compact"
-            name="_header.system.domine.kiAccumulation.generic.max"
-            value="{{system.domine.kiAccumulation.generic.max}}">
+      <div class="v2-res-group">
+        <div class="v2-res v2-res--ki v2-res--compact" title="Ki">
+          <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Ki</span>
+          <div class="v2-res__values">
+            <input type="number" class="v2-res__input v2-res__input--compact"
+              name="_header.system.domine.kiAccumulation.generic.value"
+              value="{{system.domine.kiAccumulation.generic.value}}">
+            <span class="v2-res__sep">/</span>
+            <input type="number" class="v2-res__input v2-res__input--compact"
+              name="_header.system.domine.kiAccumulation.generic.max"
+              value="{{system.domine.kiAccumulation.generic.max}}">
+          </div>
         </div>
-      </div>
-      {{/if}}
-
-      {{!-- Ki Accumulated (calculated total, read-only) --}}
-      {{#if system.ui.resourceVisibility.kiAccumulated.value}}
-      <div class="v2-res v2-res--ki-acc v2-res--compact v2-res--single"
-        title="Ki Acumulado (total de todas las características)">
-        <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Acum</span>
-        <div class="v2-res__values">
-          <span class="v2-res__readonly">{{totalKiAccumulated}}</span>
+        {{#if system.ui.resourceVisibility.kiAccumulated.value}}
+        <div class="v2-res-group__sep"></div>
+        <div class="v2-res v2-res--ki-acc v2-res--compact v2-res--single"
+          title="Ki Acumulado (total de todas las características)">
+          <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Acum</span>
+          <div class="v2-res__values">
+            <span class="v2-res__readonly">{{totalKiAccumulated}}</span>
+          </div>
         </div>
+        {{/if}}
       </div>
       {{/if}}
 

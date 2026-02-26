@@ -224,6 +224,38 @@
           {{/if}}
         {{/with}}
       </div>
+      {{!-- Magic Level Spheres --}}
+      {{#if editMode}}
+        <div class="row" style="font-size:10px;">
+          {{#each magicLevelSpheres}}
+            <div class="field"><b>{{label}}:</b><input type="number" name="system.mystic.magicLevel.spheres.{{key}}.value" value="{{value}}" style="width:32px;text-align:center;"></div>
+          {{/each}}
+        </div>
+      {{else}}
+        {{#if hasNonZeroSpheres}}
+          <div class="row" style="font-size:10px;">
+            {{#each nonZeroSpheres}}
+              <span><b>{{label}}:</b> {{value}}</span>
+            {{/each}}
+          </div>
+        {{/if}}
+      {{/if}}
+      {{!-- Summoning --}}
+      {{#if (or hasSummoning editMode)}}
+        <div class="row">
+          {{#if editMode}}
+            <div class="field"><b>Conv:</b><input type="number" name="system.mystic.summoning.summon.base.value" value="{{summoning.summon}}"></div>
+            <div class="field"><b>Ctrl:</b><input type="number" name="system.mystic.summoning.control.base.value" value="{{summoning.control}}"></div>
+            <div class="field"><b>Atar:</b><input type="number" name="system.mystic.summoning.bind.base.value" value="{{summoning.bind}}"></div>
+            <div class="field"><b>Dest:</b><input type="number" name="system.mystic.summoning.banish.base.value" value="{{summoning.banish}}"></div>
+          {{else}}
+            <span><b>Conv:</b> {{summoning.summon}}</span>
+            <span><b>Ctrl:</b> {{summoning.control}}</span>
+            <span><b>Atar:</b> {{summoning.bind}}</span>
+            <span><b>Dest:</b> {{summoning.banish}}</span>
+          {{/if}}
+        </div>
+      {{/if}}
     </div>
   </div>
   {{/if}}
@@ -355,6 +387,35 @@
     </div>
   </div>
   {{/if}}
+
+  <!-- Custom Notes -->
+  {{#each customNotes}}
+  <div class="sec collapsible-sec">
+    <div class="sec-header">
+      <i class="fas fa-chevron-down"></i>
+      <span class="sec-title">{{name}}</span>
+      {{#if @root.editMode}}
+        <button type="button" class="grimoire-btn delete-custom-section" data-note-id="{{_id}}" title="Eliminar sección">
+          <i class="fas fa-trash"></i>
+        </button>
+      {{/if}}
+    </div>
+    <div class="sec-content">
+      {{#if @root.editMode}}
+        <textarea name="customNote_{{_id}}" placeholder="Contenido...">{{system.description.value}}</textarea>
+      {{else}}
+        <div class="abilities-display">{{system.description.value}}</div>
+      {{/if}}
+    </div>
+  </div>
+  {{/each}}
+
+  <!-- Add Section Button -->
+  <div class="sec" style="text-align:center;">
+    <button type="button" class="toggle-btn add-custom-section" title="Añadir sección personalizada">
+      <i class="fas fa-plus"></i> Añadir Sección
+    </button>
+  </div>
 
   </div>
 </form>

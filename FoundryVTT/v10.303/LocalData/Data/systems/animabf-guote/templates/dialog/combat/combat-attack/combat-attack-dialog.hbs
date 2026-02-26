@@ -10,12 +10,34 @@
   class="attack-values"
   }}
   {{#if this.allowed}}
+  {{#unless this.attackSent}}
+  <div class="preset-manager">
+    <div class="preset-load-row">
+      <label class="preset-label">{{localize 'anima.ui.combat.loadPreset'}}</label>
+      <select class="preset-selector load-attack-preset">
+        <option value="">-- {{localize 'anima.ui.combat.newAttack'}} --</option>
+        {{#each this.attacker.actor.system.combat.attackPresets}}
+        <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="preset-save-row">
+      <input type="text" class="preset-name-input" placeholder="{{localize 'anima.ui.combat.presetName'}}" value="{{this.presetName}}">
+      <button type="button" class="abf-button save-attack-preset" disabled title="{{localize 'anima.macros.combat.dialog.savePreset'}}">
+        <i class="fas fa-save"></i> {{localize 'anima.macros.combat.dialog.savePreset'}}
+      </button>
+    </div>
+  </div>
+  {{/unless}}
+
   <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
     {{#if (is 'gt' this.attacker.actor.system.mystic.spells.length 0)}}<a class="item" data-tab="mystic">{{localize
       "anima.ui.tabs.mystic"}}</a>{{/if}}
     {{#if (is 'gt' this.attacker.actor.system.psychic.psychicPowers.length 0)}}<a class="item"
       data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>{{/if}}
+    {{#if (is 'gt' this.attacker.actor.system.mystic.summons.length 0)}}<a class="item"
+      data-tab="summon">{{localize "anima.ui.tabs.summon"}}</a>{{/if}}
   </nav>
 
   <div class='columns'>
@@ -82,7 +104,12 @@
     <div class="tab psychic" data-group="primary" data-tab="psychic">
       {{> 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/psychic.hbs' this=this}}
     </div>
+
+    <div class="tab summon" data-group="primary" data-tab="summon">
+      {{> 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/summon.hbs' this=this}}
+    </div>
   </section>
+
   {{else}}
   <div class='waiting-row'>
     {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}

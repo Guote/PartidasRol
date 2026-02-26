@@ -1,0 +1,98 @@
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize 'anima.macros.combat.dialog.modifier.title')
+disabled=this.attackSent
+inputName="attacker.summon.modifier"
+inputValue=this.attacker.summon.modifier
+}}
+
+{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+title=(localize 'anima.macros.combat.dialog.summonSelect.title')
+disabled=this.attackSent
+inputName='attacker.summon.summonUsed'
+}}
+{{#each this.attacker.actor.system.mystic.summons}}
+<option {{#if (is "eq" this._id ../this.attacker.summon.summonUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}
+  (HA:{{this.system.baseAtk.value}}{{#if this.system.bonusAtk.value}}+{{this.system.bonusAtk.value}}{{/if}})</option>
+{{/each}}
+{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+
+{{#if this.attacker.summon.summon}}
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize 'anima.ui.mystic.summon.summonDif.title')
+disabled=true
+inputValue=this.attacker.summon.summon.system.summonDif.value
+}}
+{{/if}}
+
+{{!-- Roll Summoning Only button --}}
+{{#unless this.attackSent}}
+<div class='attack-buttons' style="margin-bottom: 8px;">
+  <button type="button" class='abf-button roll-summoning' {{#if this.attacker.summon.summoningRolled}}disabled{{/if}}>
+    <i class="fas fa-dice-d20"></i> {{localize 'anima.macros.combat.dialog.rollOnlySummoning.title'}}
+  </button>
+</div>
+{{/unless}}
+
+{{!-- Summoning result display --}}
+{{#if this.attacker.summon.summoningResult}}
+<div class="summoning-result-display">
+  {{>
+  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+  title=(localize 'anima.macros.combat.dialog.summoningResult.title')
+  disabled=true
+  inputValue=this.attacker.summon.summoningResult.total
+  }}
+  {{>
+  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+  title=(localize 'anima.macros.combat.dialog.summoningExcess.title')
+  disabled=true
+  inputValue=this.attacker.summon.summoningResult.excess
+  }}
+  {{>
+  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+  title=(localize 'anima.macros.combat.dialog.summoningBonusPoints.title')
+  disabled=true
+  inputValue=this.attacker.summon.summoningResult.bonusPoints
+  }}
+</div>
+{{/if}}
+
+{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+disabled=this.attackSent
+choices=config.iterables.combat.weapon.criticTypes
+title=(localize "anima.macros.combat.dialog.weapon.critic.title")
+inputName='attacker.summon.critic'
+inputValue=this.attacker.summon.critic
+}}
+
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title=(localize "anima.macros.combat.dialog.damage.title")
+disabled=true
+inputValue=this.attacker.summon.effectiveDamage
+}}
+
+{{>
+"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+title='Reducción de TA'
+inputName="attacker.summon.ignoredTA"
+inputValue=this.attacker.summon.ignoredTA
+disabled=this.attackSent
+}}
+
+{{#if this.attackSent}}
+<div class='summon-attack-sent'>
+  {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
+  <p class='label'>
+    {{localize 'anima.macros.combat.dialog.attackSent.title'}}
+  </p>
+</div>
+{{else}}
+<div class='attack-buttons'>
+  <button type="button" class='abf-button send-summon-attack'>
+    {{localize 'anima.macros.combat.dialog.attackButton.title'}}
+  </button>
+</div>
+{{/if}}

@@ -7,12 +7,26 @@
     </div>
     <div class="v2-card__body">
       <div class="v2-grid v2-grid--3">
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.tabVisibility.mystic.value"
-                 {{checked system.ui.tabVisibility.mystic.value}}>
-          {{localize "anima.ui.tabs.mystic"}}
-        </label>
+        <div class="v2-res-toggle-group">
+          <label class="v2-checkbox-label">
+            <input type="checkbox"
+                   name="system.ui.tabVisibility.mystic.value"
+                   {{checked system.ui.tabVisibility.mystic.value}}>
+            {{localize "anima.ui.tabs.mystic"}}
+          </label>
+          <label class="v2-checkbox-label v2-checkbox-label--sub">
+            <input type="checkbox"
+                   name="system.ui.tabVisibility.grimoire.value"
+                   {{checked system.ui.tabVisibility.grimoire.value}}>
+            <i class="fas fa-book-spells"></i> Grimorio
+          </label>
+          <label class="v2-checkbox-label v2-checkbox-label--sub">
+            <input type="checkbox"
+                   name="system.ui.tabVisibility.summoning.value"
+                   {{checked system.ui.tabVisibility.summoning.value}}>
+            <i class="fas fa-ghost"></i> {{localize "anima.ui.tabs.summoning"}}
+          </label>
+        </div>
         <label class="v2-checkbox-label">
           <input type="checkbox"
                  name="system.ui.tabVisibility.domine.value"
@@ -39,13 +53,22 @@
         {{localize "anima.ui.settings.resourceVisibility.description"}}
       </p>
       <div class="v2-grid v2-grid--3" style="gap: var(--space-2);">
-        {{!-- Core Resources --}}
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.hp.value"
-                 {{checked system.ui.resourceVisibility.hp.value}}>
-          <i class="fas fa-heart" style="color: var(--abf-hp);"></i> PV
-        </label>
+        {{!-- HP + Sacrificed Life --}}
+        <div class="v2-res-toggle-group">
+          <label class="v2-checkbox-label">
+            <input type="checkbox"
+                   name="system.ui.resourceVisibility.hp.value"
+                   {{checked system.ui.resourceVisibility.hp.value}}>
+            <i class="fas fa-heart" style="color: var(--abf-hp);"></i> PV
+          </label>
+          <label class="v2-checkbox-label v2-checkbox-label--sub">
+            <input type="checkbox"
+                   name="system.ui.resourceVisibility.sacrificedLife.value"
+                   {{checked system.ui.resourceVisibility.sacrificedLife.value}}>
+            <i class="fas fa-heart-broken" style="color: var(--abf-hp);"></i> Vida Sacrificada
+          </label>
+        </div>
+
         <label class="v2-checkbox-label">
           <input type="checkbox"
                  name="system.ui.resourceVisibility.fatigue.value"
@@ -59,19 +82,22 @@
           <i class="fas fa-star" style="color: var(--abf-destiny);"></i> Destino
         </label>
 
-        {{!-- Mystic Resources --}}
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.zeon.value"
-                 {{checked system.ui.resourceVisibility.zeon.value}}>
-          <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon
-        </label>
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.zeonAccumulated.value"
-                 {{checked system.ui.resourceVisibility.zeonAccumulated.value}}>
-          <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon Acum.
-        </label>
+        {{!-- Zeon + Zeon Accumulated --}}
+        <div class="v2-res-toggle-group">
+          <label class="v2-checkbox-label">
+            <input type="checkbox"
+                   name="system.ui.resourceVisibility.zeon.value"
+                   {{checked system.ui.resourceVisibility.zeon.value}}>
+            <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon
+          </label>
+          <label class="v2-checkbox-label v2-checkbox-label--sub">
+            <input type="checkbox"
+                   name="system.ui.resourceVisibility.zeonAccumulated.value"
+                   {{checked system.ui.resourceVisibility.zeonAccumulated.value}}>
+            <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon Acum.
+          </label>
+        </div>
+
         <label class="v2-checkbox-label">
           <input type="checkbox"
                  name="system.ui.resourceVisibility.shield.value"
@@ -79,19 +105,21 @@
           <i class="fas fa-shield-alt" style="color: #4fc3f7;"></i> Escudo
         </label>
 
-        {{!-- Domine Resources --}}
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.ki.value"
-                 {{checked system.ui.resourceVisibility.ki.value}}>
-          <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki
-        </label>
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.kiAccumulated.value"
-                 {{checked system.ui.resourceVisibility.kiAccumulated.value}}>
-          <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki Acum.
-        </label>
+        {{!-- Ki + Ki Accumulated --}}
+        <div class="v2-res-toggle-group">
+          <label class="v2-checkbox-label">
+            <input type="checkbox"
+                   name="system.ui.resourceVisibility.ki.value"
+                   {{checked system.ui.resourceVisibility.ki.value}}>
+            <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki
+          </label>
+          <label class="v2-checkbox-label v2-checkbox-label--sub">
+            <input type="checkbox"
+                   name="system.ui.resourceVisibility.kiAccumulated.value"
+                   {{checked system.ui.resourceVisibility.kiAccumulated.value}}>
+            <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki Acum.
+          </label>
+        </div>
 
         {{!-- Psychic Resources --}}
         <label class="v2-checkbox-label">
@@ -113,19 +141,11 @@
       <div class="v2-grid v2-grid--2" style="gap: var(--space-3);">
         <div>
           <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.advancedSettings.openRolls.title"}}</label>
-          <select class="v2-select" name="system.general.settings.openRolls.value">
-            <option value="0" {{#if (is 'eq' system.general.settings.openRolls.value 0)}}selected{{/if}}>-</option>
-            <option value="90" {{#if (is 'eq' system.general.settings.openRolls.value 90)}}selected{{/if}}>90+</option>
-            <option value="91" {{#if (is 'eq' system.general.settings.openRolls.value 91)}}selected{{/if}}>91+</option>
-          </select>
+          <input type="number" class="v2-input" name="system.general.settings.openRolls.value" value="{{system.general.settings.openRolls.value}}" placeholder="0">
         </div>
         <div>
           <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.advancedSettings.fumbles.title"}}</label>
-          <select class="v2-select" name="system.general.settings.fumbles.value">
-            <option value="0" {{#if (is 'eq' system.general.settings.fumbles.value 0)}}selected{{/if}}>-</option>
-            <option value="1" {{#if (is 'eq' system.general.settings.fumbles.value 1)}}selected{{/if}}>1-3</option>
-            <option value="2" {{#if (is 'eq' system.general.settings.fumbles.value 2)}}selected{{/if}}>1-5</option>
-          </select>
+          <input type="number" class="v2-input" name="system.general.settings.fumbles.value" value="{{system.general.settings.fumbles.value}}" placeholder="0">
         </div>
         <div>
           <label class="v2-checkbox-label">
@@ -139,9 +159,14 @@
           <label class="v2-text-muted" style="font-size: var(--font-size-xs);">{{localize "anima.ui.settings.advancedSettings.defenseType.title"}}</label>
           <select class="v2-select" name="system.general.settings.defenseType.value">
             <option value="" {{#unless system.general.settings.defenseType.value}}selected{{/unless}}>{{localize "anima.ui.settings.advancedSettings.defenseType.normal.title"}}</option>
-            <option value="dodge" {{#if (is 'eq' system.general.settings.defenseType.value 'dodge')}}selected{{/if}}>{{localize "anima.ui.combat.baseValues.dodge.title"}}</option>
-            <option value="block" {{#if (is 'eq' system.general.settings.defenseType.value 'block')}}selected{{/if}}>{{localize "anima.ui.combat.baseValues.block.title"}}</option>
+            <option value="resistance" {{#if (is 'eq' system.general.settings.defenseType.value 'resistance')}}selected{{/if}}>{{localize "anima.ui.settings.advancedSettings.defenseType.damageResistance.title"}}</option>
+            <option value="mass" {{#if (is 'eq' system.general.settings.defenseType.value 'mass')}}selected{{/if}}>{{localize "anima.ui.settings.advancedSettings.defenseType.mass.title"}}</option>
           </select>
+        </div>
+        <div>
+          <label class="v2-text-muted" style="font-size: var(--font-size-xs);">Multiplicador de PV</label>
+          <input type="number" class="v2-input" name="system.characteristics.secondaries.lifePoints.lpMultiplier" value="{{system.characteristics.secondaries.lifePoints.lpMultiplier}}" placeholder="1" step="0.1" min="0">
+          <span class="v2-text-muted" style="font-size: var(--font-size-xs); font-style: italic;">Sin efecto actualmente</span>
         </div>
       </div>
     </div>

@@ -1,7 +1,9 @@
 import { AdvantageItemConfig } from '../../../types/general/AdvantageItemConfig.js';
 import { ArsMagnusItemConfig } from '../../../types/domine/ArsMagnusItemConfig.js';
+import { AttackPresetItemConfig } from '../../../types/combat/AttackPresetItemConfig.js';
 import { CombatSpecialSkillItemConfig } from '../../../types/combat/CombatSpecialSkillItemConfig.js';
 import { CombatTableItemConfig } from '../../../types/combat/CombatTableItemConfig.js';
+import { DefensePresetItemConfig } from '../../../types/combat/DefensePresetItemConfig.js';
 import { ContactItemConfig } from '../../../types/general/ContactItemConfig.js';
 import { CreatureItemConfig } from '../../../types/domine/CreatureItemConfig.js';
 import { DisadvantageItemConfig } from '../../../types/general/DisadvantageItemConfig.js';
@@ -23,6 +25,8 @@ import { SelectedSpellItemConfig } from '../../../types/mystic/SelectedSpellItem
 import { SpecialSkillItemConfig } from '../../../types/domine/SpecialSkillItemConfig.js';
 import { SpellMaintenanceItemConfig } from '../../../types/mystic/SpellMaintenanceItemConfig.js';
 import { SummonItemConfig } from '../../../types/mystic/SummonItemConfig.js';
+import { IncarnationItemConfig } from '../../../types/mystic/IncarnationItemConfig.js';
+import { CreatureSummonItemConfig } from '../../../types/mystic/CreatureSummonItemConfig.js';
 import { TechniqueItemConfig } from '../../../types/domine/TechniqueItemConfig.js';
 import { TitleItemConfig } from '../../../types/general/TitleItemConfig.js';
 import { WeaponItemConfig } from '../../../types/combat/WeaponItemConfig.js';
@@ -49,22 +53,26 @@ export const INTERNAL_ITEM_CONFIGURATIONS = {
     [SelectedSpellItemConfig.type]: SelectedSpellItemConfig,
     [SpecialSkillItemConfig.type]: SpecialSkillItemConfig,
     [SpellMaintenanceItemConfig.type]: SpellMaintenanceItemConfig,
-    [SummonItemConfig.type]: SummonItemConfig,
     [TitleItemConfig.type]: TitleItemConfig,
-    [InventoryItemItemConfig.type]: InventoryItemItemConfig
+    [InventoryItemItemConfig.type]: InventoryItemItemConfig,
+    [CreatureSummonItemConfig.type]: CreatureSummonItemConfig
 };
 export const ITEM_CONFIGURATIONS = {
     [AmmoItemConfig.type]: AmmoItemConfig,
     [AdvantageItemConfig.type]: AdvantageItemConfig,
     [ArmorItemConfig.type]: ArmorItemConfig,
+    [AttackPresetItemConfig.type]: AttackPresetItemConfig,
+    [DefensePresetItemConfig.type]: DefensePresetItemConfig,
     [DisadvantageItemConfig.type]: DisadvantageItemConfig,
     [SpellItemConfig.type]: SpellItemConfig,
     [MentalPatternItemConfig.type]: MentalPatternItemConfig,
     [NoteItemConfig.type]: NoteItemConfig,
     [PsychicDisciplineItemConfig.type]: PsychicDisciplineItemConfig,
     [PsychicPowerItemConfig.type]: PsychicPowerItemConfig,
+    [SummonItemConfig.type]: SummonItemConfig,
     [TechniqueItemConfig.type]: TechniqueItemConfig,
-    [WeaponItemConfig.type]: WeaponItemConfig
+    [WeaponItemConfig.type]: WeaponItemConfig,
+    [IncarnationItemConfig.type]: IncarnationItemConfig
 };
 export const ALL_ITEM_CONFIGURATIONS = {
     ...ITEM_CONFIGURATIONS,

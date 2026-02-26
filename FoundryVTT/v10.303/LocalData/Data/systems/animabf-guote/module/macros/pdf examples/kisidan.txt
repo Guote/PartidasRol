@@ -1,0 +1,514 @@
+Kisidan
+caballEro dE la ordEn dEl 7º cIElo
+Nivel: 14 Clase: Natural (Natura 20)
+Puntos de Vida: 285
+Categoría: Tecnicista / Guerrero (10 / 4)
+Fue: 13 Des: 16 Agi: 13 Con: 13 Pod: 16 Int: 10 Vol: 11 Per: 11 
+RF 120 RM 130 RP 115 RV 120 RE 120
+Turno: 170 Natural, 165 Katana +15, 170 Arma de Alma
+Habilidad de ataque: 325 (360) Katana +15, 330 (365) Arma de Alma 
+Habilidad de defensa:  320 (355) Katana +15, 325 (360) Arma de Alma 
+Daño: 140 Katana +15, 150 Arma de Alma
+TA: Gabardina Armada +15 FIL 4 CON 3 PEN 5 CAL 4 ELE 5 FRI 5 ENE 3 
+Jurgeneth Sigma Mk-III FIL 8 CON 8 PEN 8 CAL 8 ELE 8 FRI 8 ENE 5
+Acumulaciones de Ki: Fue 3 Des 7 (9) Agi 7 (9) Con 3 Pod 5 (7) Vol 2 
+Ki: Fue 16 Des 40 Agi 40 Con 16 Pod 40 Vol 12 Genérico: 164 
+Habilidades del Ki: Uso del Ki, Control del Ki, Detección del Ki, 
+Erudición, Eliminación de Peso, Extrusión de presencia, Extensión del 
+aura al arma, Uso de la energía necesaria, Ocultación del Ki, Eliminación 
+de penalizadores, Forzar Técnicas, Inhumanidad, Zen.
+Ventajas y desventajas: Ver lo sobrenatural, Acumulación plena. 
+Habilidades naturales: Semidiós, El Despertar.
+Poderes: Semidiós, Inmortalidad Limitada.
+Tamaño: 19 Regeneración: 6
+Tipo de movimiento: 13 Cansancio: 13
+Habilidades Secundarias: Acrobacias 90, Atletismo 85, Montar 90, 
+Nadar 75, Trepar 80, Saltar 85, Frialdad 120, P. Fuerza 95. Res. Dolor 
+120, Advertir 200, Buscar 160, Rastrear 105, Animales 40, Herbolaria 
+40, Historia 110, Ocultismo 125, Estilo 85, Intimidar 100, Liderazgo 120, 
+Persuasión 30, Ocultarse 125, Sigilo 125, Venenos 40, Forja 75, T. Manos 75, 
+Detección del Ki 400, Ocultación del Ki 360.
+Nota: Los valores en cursiva en las habilidades secundarias de Kisidan 
+representan aquellas en las que ha recibido un bono especial por longevidad y 
+su naturaleza trascendida.
+El enigmático hombre conocido como Kisidan es el sumo pretoriano 
+de la Emperatriz y, de lejos, el más importante y poderoso de los 
+caballeros del Séptimo Cielo.
+Sus orígenes están envueltos entre oscuras leyendas, y puede que 
+mucho de lo que se sabe de él no es verdad, pero sea como sea, se 
+sabe con seguridad que es muy, muy viejo. Aunque prácticamente nadie 
+conoce su verdadera historia, Kisidan nació hace varios miles de años en 
+lo que hoy se conoce como Estigia. Su madre, originaria de las tierras que 
+componen Illmora, fue secuestrada por esclavistas y obligada a trabajar 
+como dama de compañía para los gladiadores del coliseo. Cuando tuvo a 
+Kisidan, la mujer cuidó de él con todo el amor que se le puede dar a un 
+hijo, y se aseguró de que no sólo supiera leer y escribir, sino que también 
+le dio muchos conocimientos que difícilmente serian accesibles para un 
+niño esclavo. Por desgracia, murió cuando él sólo tenía siete años y 
+el pequeño se vio obligado primero a trabajar y después a luchar 
+como gladiador en el coliseo.
+Por fortuna para él, su talento para el combate le acabó 
+granjeando la libertad, pues en Estigia era común enviar por 
+delante ejércitos de esclavos en las guerras. Cada vez que sobrevivían 
+a una batalla, al esclavo se le ponía una marca en el brazo y, tras 
+conseguir siete, obtenían la libertad.
+
+0 3 9
+
+
+Tras dejar atrás sus cadenas, Kisidan viajó hasta Kushistán, donde se 
+convirtió en un mercenario de enorme fama y prestigio. Fue también en 
+esta época en la que entró con contacto con los restos de una deidad que 
+le otorgaron poderes casi divinos, pero lamentablemente, en el proceso 
+perdió a la mujer que amaba y su personalidad cambió por completo. 
+Más dios que humano, vagó durante décadas hasta que sus increíbles 
+poderes despertaron el interés de Imperium. La organización se acercó 
+a él y le ofreció un puesto en sus filas. Sin un motivo por el que vivir, 
+el mercenario aceptó su oferta, recibiendo el nombre de Kisidan y el 
+rango de Godkiller. Pronto Imperium se ocupó de pulir sus asombrosas 
+habilidades, convirtiéndolo en un agente de inigualable talento. Siglo 
+tras siglo, actuó como un ejecutor oscuro que acababa con la vida de 
+cualquier amenaza que incomodase los intereses de la organización. Era 
+un agente libre, alguien que se ocupaba de solucionar los problemas 
+peliagudos sin la necesidad de recurrir a Jürgand. Derramó tanta sangre 
+que no podría recordar a cuántas personas y seres asesinó con el paso 
+del tiempo.
+No obstante, hace apenas unos años, recibió la misión de introducirse 
+en la Orden del Cielo como guardián de
+la familia imperial. Naturalmente, con sus facultades no le costó 
+mucho acceder a semejante puesto. Sin embargo, en lugar de escoltar al 
+Emperador se le atribuyó la función de proteger a la pequeña Elisabetta, 
+que por aquel entonces sólo contaba con tres años. La chiquilla, que 
+estaba siempre sola, no tardó en encariñarse con él como nunca antes lo 
+había hecho con ningún otro. Jugaba a su alrededor, se le subía encima 
+y le hacía innumerables preguntas de todo tipo que incomodaban al 
+pretoriano. Iba a buscarle cada vez que tenía ganas de reír, o necesitaba 
+a alguien junto a quien llorar. Naturalmente, Kisidan jamás se conmovió. 
+A fin de cuentas, por ese motivo estaba allí. Otra misión más. Nada 
+importante para él.
+Y así pasó años a su lado, protegiéndola de cualquier peligro.
+Al desencadenarse la Ruptura de los Cielos, Imperium predijo con 
+exactitud que Elisabetta sucumbiría a manos de su padre y ordenó a 
+Kisidan dejarla morir. Por supuesto, el pretoriano no tuvo ningún 
+problema en aceptar la orden; al fin y al cabo, eso significaría que al fin 
+podría librarse de ese asqueroso trabajo que tanto odiaba. En silencio, 
+presenció cómo Elías golpeaba a la niña, cómo apaleaba su pequeño 
+cuerpo sin que Elisabetta pudiera hacer más que llorar. En el momento 
+en que el Emperador levantó su espada para descargar el golpe final, 
+Kisidan cerró inconscientemente los ojos. Cuando los abrió, el señor del 
+Sacro Santo Imperio yacía sin vida a sus pies. 
+El caballero no entendió qué había ocurrido; no hasta que vio la 
+espada ensangrentada en sus propias manos. Entonces, y sólo entonces, 
+supo lo que era verdaderamente importante para él. No se había dado 
+cuenta, pero durante todos aquellos años con Elisabetta, la pequeña se 
+había convertido en su mundo. El calor de la niña le había devuelto la 
+humanidad que durante tanto tiempo olvidó que tenía. La protegería 
+de quien fuera o lo que fuera, incluso si para ello debía enfrentarse al 
+propio destino.
+Sin perder un instante, Kisidan trató de ponerse en contacto con 
+Imperium para justificar lo ocurrido, pero no obtuvo respuesta por 
+ninguno de los canales de acceso. Por primera vez en siglos, un frío 
+terror hizo presa en él. Era consciente de que, si aún deseaban eliminarla, 
+no existiría fuerza alguna en la Creación que pudiera impedirlo. Por eso, 
+a pesar de que por fuera sigue manteniendo su aparente imperturbable 
+frialdad, en su interior está realmente nervioso, aunque trata de no 
+proyectar sus temores hacia Elisabetta.
+Paradójicamente, Imperium está bastante satisfecho con el resultado 
+de los acontecimientos. Aunque inesperado (algo poco común en la 
+organización), el propio Barnabas considera que observar a Elisabetta 
+en ese puesto va a ser realmente interesante. Sin embargo, puede qué 
+como castigo infantil por su insubordinación, prefiere no comunicar la 
+decisión a Kisidan hasta pasado un tiempo. Citando sus propias palabras: 
+“Se lo merece. Al menos, ahora seguro que está mucho más atento”.
+
+En estos momentos, Kisidan tiene la apariencia de un hombre entrado 
+en los treinta, de piel oscura y aspecto marcial. Es muy serio, y se toma 
+la protección de Elisabetta como su máxima prioridad. El Imperio en 
+sí le importa bien poco; mientras su protegida esté a salvo, por lo que 
+a él respecta, todo lo demás puede irse al infierno. Las continuadas 
+ausencias de la Emperatriz le ponen realmente nervioso, pero se ha 
+cubierto las espaldas usando los sistemas de seguridad de Imperium que 
+aún conserva; si sintiera que la pequeña corriese un grave peligro, podría 
+abrir un vórtice en la realidad y presentarse en cualquier parte del 
+mundo para protegerla. Recientemente ha empezado a abrigar ciertos 
+sentimientos afectivos hacia su compañera Lilith (como él, caballero del 
+Séptimo Cielo), aunque dado su carácter cerrado, no le ha dicho nada.
+MODUS OPERANDI
+Kisidan tiene un comportamiento frio y distante de todo que le hacen 
+poco propenso a iniciar por su cuenta un ataque, pero responde con 
+relativa facilidad a las provocaciones. Cuando lucha nunca es confiado, 
+pero a la vez es muy consciente de su enorme poder y su superioridad 
+absoluta hacia los demás; incluso si no lo pretende, tras siglos de victorias 
+tiende a no ser tan cauto como le gustaría. Aún así, posee cierto instinto 
+para saber si un enemigo puede o no ser un problema, así que sabe 
+cuando usar todo su poder.
+Generalmente, lucha sin usar habilidades del Ki, pero si tiene que 
+hacerlo, suele comenzar el combate lanzando su primera arte. Si su 
+enemigo es capaz de sobrevivir a ella, Kisidan lo considera una verdadera 
+amenaza y lucha dando todo de sí.
+Su mayor debilidad es su enorme preocupación por Elisabetta; tras 
+haber perdido antes a aquellos a quienes quería, Kisidan se centra por 
+encima de todo en la joven, pudiendo llegar a ser descuidado o actuar 
+indebidamente si cree que puede estar en peligro.
+Semidiós: Aunque su origen es terrenal, tras ciertos sucesos 
+durante la Era del Caos Kisidan obtuvo cualidades únicas que lo 
+aproximan a una especie de deidad de carne y hueso. Esta condición 
+superior le ofrece ciertos poderes y habilidades, entre las que se 
+incluyen unos atributos físicos y anímicos excepcionales, así como otros 
+poderes que trascienden la humanidad. No obstante, su esencia sigue 
+siendo mayoritariamente mortal, por lo que a efectos de juego no se le 
+considera un Ser Entre Mundos, si bien puede dañar criaturas como si 
+fuera un ente con Gnosis 35.
+Inmortalidad Limitada: Kisidan es un ser virtualmente 
+inmortal, por lo que no envejece y su cuerpo es capaz de resistir 
+daños extremadamente severos sin morir. En el caso de que recibiese 
+ataques que matarían a un ser humano convencional, ya sea a 
+causa de críticos o de reducir sus PV a valores negativos, Kisidan 
+simplemente perdería la consciencia y comenzaría a curarse al ritmo 
+natural que le permite su Nivel de Regeneración hasta recuperarse 
+y despertar. Esto le permite sobrevivir a traumas tan masivos como 
+perder el corazón o incluso ser decapitado, aunque si su cuerpo no 
+se restaurase pronto (reuniendo la mayoría de los pedazos) o fuera 
+destruido por completo (quemándolo u otros procesos similares), 
+acabaría muriendo con el tiempo. Esta habilidad no le protege del 
+daño que sufra a manos de entidades con Gnosis 35 o superior, o 
+seres cuyo Gnosis exceda enormemente su Natura.
+El Despertar: A voluntad, Kisidan puede hacer uso del Ars Magnus 
+El Despertar, tal y como se describe en el libro Dominus Exxet. Las 
+ventajas que le otorga esta habilidad están reflejadas entre paréntesis en 
+sus estadísticas.
+
+0 4 0
+
+
+HABILIDADES DEL KI
+
+El Arte
+Kisidan nunca les ha dado nombre a la mayoría de sus técnicas, a 
+las que se refiere simplemente como el Arte, pues las ve como una 
+extensión de su propia habilidad. No obstante, lo cierto es que, al 
+haberlas enumerado, es fácil hacer referencia a ellas por su número para 
+diferenciar las unas de las otras. El Arte se caracteriza principalmente 
+por la falta de homogeneidad visual entre ellas; aunque todas se basan 
+en los mismos principios, todas ellas son visualmente muy diferentes las 
+unas de las otras.
+El Arte tiene una atadura elemental doble a Luz y Aire.
+La Primera Arte
+Nivel: 1 CM: 20
+De una simpleza y efectivad aterradoras, la primera de las artes ni 
+siquiera parece una verdadera técnica de Ki; Kisidan simplemente 
+desencadena un tajo cargado de toda su energía a velocidad imposible. 
+Es necesario percibir Ki para sentir la verdadera naturaleza destructiva 
+del ataque. Por lo general, si alguien recibe este ataque y sobrevive, se 
+gana automáticamente la admiración del caballero del séptimo cielo.
+A efectos de juego, Kisidan realiza un único ataque añadiendo 90 a 
+su habilidad.
+DES 7 AGI 7
+Efectos: +90 al Ataque.
+Desventajas: Atadura Elemental a dos elementos (Luz, Aire). 
+Tipo: Acción (Ataque).
+La Segunda Arte
+Nivel: 1 CM: 25
+Al realizar esta técnica, Kisidan crea un muro de espadas entre él y 
+sus adversarios que detiene cualquier tipo de ataque. Cualquiera capaz 
+de percibir Ki o quienes tienen una gran maestría marcial percibe como 
+si decenas de brazos salieran de la espalda del caballero, formando una 
+especie de “ala” hecha de extremidades y cuchillas que le protegen 
+como un escudo intraspasable.
+
+A efectos de juego, Kisidan puede defenderse de hasta 5 ataques por 
+asalto aplicando un bono de +75 a su defensa.
+DES 6 AGI 6 POD 5
+Efectos: +75 a la Defensa, +4 Defensas adicionales. 
+Desventajas: Atadura Elemental a dos elementos (Luz, Aire). 
+Tipo: Acción (Defensa)
+La Tercera Arte
+Nivel: 2 CM: 50
+Con este ataque Kisidan realiza un simple tajo que corta en dos todo lo 
+que se encuentra a su alrededor en un radio de cien metros. La velocidad 
+del ataque es tal que ni siquiera se ve lo que ocurre; simplemente todo 
+cae a pedazos.
+A efectos de juego, Kisidan realiza un ataque en área sobre todos los 
+objetivos que estén hasta 100 metros a su alrededor.
+DES 14 AGI 7 POD 6
+Efectos: +100 al Ataque, Ataque en Área 100 Metros. 
+Desventajas: Atadura Elemental a dos elementos (Luz, Aire). 
+Tipo: Acción (Ataque).
+La Cuarta Arte
+Nivel: 2 CM: 65
+Cuando realiza este ataque, Kisidan proyecta una copia de energía de su 
+propio cuerpo que se mueve a toda velocidad hacia su adversario como un 
+borrón de luz. La forma crepitante taja a su adversario y, en ese instante, 
+Kisidan se manifiesta a su lado y comienza una imparable cadena de ataques 
+encadenados a toda velocidad que reducen a su enemigo a pedazos.
+A efectos de juego, Kisidan realiza un ataque a distancia aplicando un bono 
+de +50 a su habilidad y un Daño de 225 puntos. A continuación, puede 
+elegir aparecer en la posición de su blanco y realizar hasta cinco ataques 
+encadenados. Este ataque también permite a Kisidan tomar como objetivos 
+a enemigos aéreos, o moverse verticalmente hasta 100 metros.
+DES 15 AGI 16 POD 12
+Efectos: Ataque a Distancia 100 metros (Proyección), +50 al Ataque, 
++5 Ataques adicionales limitados.
+Desventajas: Atadura Elemental a dos elementos (Luz, Aire).
+Tipo: Acción (Ataque).
+0 4 1
+
+
+Niabat Ean Lucia
+Nivel: 3 CM: 100
+Niabat Ean Lucia es la técnica definitiva de Kisidan, el único de sus ataques 
+al que ha dado nombre. Por lo general sólo hace uso de él cuando se enfrenta 
+a adversarios a los que puede considerar “enemigos” y lo cierto es que a 
+lo largo de su vida inmortal pueden contarse con los dedos de una mano 
+cuantos han logrado sobrevivir a él.
+A nivel visual, cuando Kisidan realiza este ataque la realidad parece 
+quebrarse a su alrededor y tres marcas de vacío, como si alguien hubiera 
+sajado la propia existencia, aparecen en la posición de su objetivo, cortándolo 
+y haciendo desaparecer sus pedazos. Pasados unos instantes, todo regresa 
+a la normalidad, pero sin dejar rastro alguno del enemigo del Caballero del 
+Séptimo Cielo.
+A efecto de juego, Kisidan realiza tres ataques consecutivos aplicando un 
+bono de 150 a su habilidad ofensiva, que no pueden ser contraatacados hasta 
+que el tercero ha tenido lugar.
+DES 18 AGI 18 POD 14
+Efectos: +150 al Ataque, +2 Ataques adicionales (Ataques Continuos). 
+Ventajas: Reducción de Ki 1.
+Desventajas: Atadura Elemental a dos elementos (Luz, Aire).
+Tipo: Acción (Ataque).
+EQUIPAMIENTO
+Juuchi Yosamu
+La katana que usa Kisidan para luchar es una de las siete espadas legendarias 
+de oriente, un arma sin par de la que se dice que puede cortarlo todo.
+Calidad: Juuchi Yosamu es considerada una katana de Calidad +15, aunque 
+tiene la resistencia de una katana +20. 
+Área Extendida (Conocimiento de Uso 2): Cuando se corta con 
+ella lo suficientemente rápido, Juuchi Yosamu es capaz de crear durante su 
+trayectoria finas corrientes de aire afiladas de corto alcance. Este ataque 
+no es lo suficientemente amplio como para ser considerado un ataque a 
+distancia, pero lo cierto es que provoca la sensación de que el arma tiene un 
+alcance mucho mayor de lo que aparenta su filo. A efectos de juego, el arma 
+puede ser considerada un arma de tamaño grande a la hora de hacer con ella 
+maniobras de Ataque en Área, por lo que alcanzar hasta a 5 objetivos. Para 
+hacer uso de esta habilidad, su portador debe de haber alcanzado maestría 
+con el uso de una katana.
+Reserva de Ki (Conocimiento de Uso 2): Juuchi Yosamu tiene 
+la capacidad de absorber innatamente una minúscula parte del Ki de su 
+portador y atesorarlo en su filo para ser usado con posterioridad. La Katana 
+toma un punto de Ki de su dueño cada doce horas aproximadamente hasta 
+un máximo equivalente al doble del Atributo de POD de quien la esgrime. 
+Estos puntos pasan a formar parte de la reserva de Ki del arma y, cuando 
+su portador usa técnicas o habilidades que puedan requerir el gasto de Ki, 
+puede usar los puntos de la Katana como si fueran propios. Es importante 
+puntualizar que estos puntos no influyen en absoluto en la cantidad de Ki 
+que es necesario acumular para usar una técnica o una habilidad de Ki. 
+Simplemente, se pueden gastar en lugar de los propios como parte de la 
+reserva natural del personaje.
+Si su usuario está familiarizado con Juuchi Yosamu y cómo funciona, es capaz 
+de elegir cuando gastar estos puntos de Ki a voluntad. En caso contrario, el 
+arma siempre los consume primero, antes de gastar los del personaje.
+El Ki del arma está ligado al individuo que lo ha introducido, por lo que sólo 
+este (o personas con Ki o naturaleza muy similares) pueden hacer uso de él. 
+La absorción de Ki de Juuchi Yosamu es paulatina y natural, por lo que 
+no puede forzarse al arma a recibir más puntos de Ki de los que toma 
+diariamente de su portador como si fuera una pila. Si la espada se separa de 
+su usuario, pierde un punto de Ki por semana hasta quedar vacía. 
+Filo Sin Par: La hoja de Juuchi Yosamu reduce un punto adicional la 
+Armadura del defensor (es decir, -4 si tenemos en cuenta su calidad).
+
+e l o r I g e n d e “ K I s I d a n ”
+Cuando era un mercenario mortal que se hacía llamar Sid, Kisidan 
+logró granjearse una fama considerable como alguien capaz de hacer lo 
+que fuese por un precio apropiado. Pendenciero, serio y algo cruel, se 
+habría convertido en un verdadero monstruo sin escrúpulos si su camino 
+no se hubiera cruzado por casualidad con Lucia Yseria, la princesa estigia 
+que cambiaría su vida.
+Yseria, una joven idealista que había luchado contra las costumbres de 
+su país desde que nació, descubrió un acuerdo secreto que su familia 
+había hecho con Neb Et Tcher, el hermano menor del “emperador” de 
+Yehudah, para recrear el mundo convirtiéndose en dios.
+Con asesinos tras ella y desesperada por detener a Et Tcher, la 
+princesa contrató a Sid para acompañarla y protegerla, algo que el 
+mercenario aceptó un poco a regañadientes y sin saber muy bien en 
+que se metía. Pese a que su relación comenzó siendo algo meramente 
+“profesional” para Kisidan, durante el tiempo que pasaron juntos entre 
+ambos se desarrolló un fuerte vínculo que desembocó en un profundo 
+amor el uno por el otro. Sería inapropiado decir que el tiempo que 
+pasaron juntos le hizo mejor, pues pese a todo, Kisidan siempre había 
+sido una buena persona en su interior. Pero sin ella, su vida se hubiera 
+vuelto tan oscura y lúgubre que el mercenario hubiera cambiado hacia 
+algo mucho peor.
+El plan de Neb Et Tcher consistía en usar el alma muerta de un dios 
+Amerense como catalizador para forzar su ascenso a la divinidad. La 
+difunta deidad, que encarnaba el concepto de la guerra, dejó su esencia 
+en una estructura cristalina oculta en un templo en las profundidades 
+de la arena del desierto. No obstante, para que el plan de Et Tcher 
+funcionase, había una infinidad de cosas que preparar aún, desde 
+encontrar su ubicación exacta hasta crear el contenedor amerense 
+apropiado para realizar la transferencia. Si todo salía bien, Neb Et Tcher 
+borraría todo rastro de la identidad del dios, dejando tras de sí sólo puro 
+poder que controlar.
+Tras tres largos años de peripecias y conflictos, que culminaron con un 
+golpe de estado y el asesinato de varios Azathoths de Yehudah, Neb Et 
+Tcher tomó brevemente el control de la magnocracia e inició el ritual.
+Mientras Yseria y Sid trataban desesperados de detenerle enfrentándose 
+a los agentes personales de su némesis, el archimago logró absorber 
+una parte del poder de la deidad e hirió de muerte a ambos. Su 
+victoria y ascensión parecían inevitables, pero antes de que su cuerpo 
+lograse adaptarse y recibir el resto de la esencia divina, Yseria intervino 
+quebrando el contenedor del dios. Con su cuerpo herido de muerte 
+y sin la capacidad de contener tal fuerza, la princesa se usó a sí misma 
+como canalizador para redirigir el poder del dios hacia Sid. Teóricamente 
+eso no debería haber funcionado por mil razones diferentes, pero puede 
+que o bien la naturaleza guerrera de Kisidan resonase con la de la deidad 
+o bien su elevadísimo Gnosis hicieran viable la unión; fuese por lo que 
+fuese, lo cierto es que el mercenario logró estabilizar el poder del dios 
+en su cuerpo.
+Renacido como más de lo que nunca fue, los dos semidioses se 
+midieron en las ruinas del templo rodeados de espectros y desolación. 
+Esclavo y emperador, hombre y monstruo, se destrozaron en cuerpo y 
+alma hasta que sólo uno de los dos pudo mantenerse en pie.
+Viéndose derrotado, la última jugada de Neb Et Tcher fue tan genial en 
+su cabeza como estúpida en la realidad. Ató su consciencia a su mitad del 
+poder de la deidad, esperando que una parte de él sobreviviera dentro 
+del mercenario cuando este reclamase la totalidad del dios.
+Pues… ¿Qué estúpido rechazaría un poder divino así por una mera 
+venganza?
+En su momento final, mientras Kisidan destruía su esencia y lo 
+dispersaba para que no quedase nada de él que llegara al flujo de almas, 
+el archimago intuyó lo poco que sabía realmente de la condición humana.
+
+0 4 2
+
+
+EQUIPO DE JURGAND
+Como uno de los escasos Godkillers de Imperium, Kisidan tiene 
+acceso a equipamiento tecnomágico de Jurgand de primera calidad. 
+Estos artefactos se encuentran resguardados en una dimensión de 
+bolsillo creada en exclusiva para Kisidan, lo que permite a este invocarlo 
+y manifestarlo instantáneamente a su alrededor en cualquier lugar en 
+el que se encuentre. La espada aparece en su mano y su armadura 
+alrededor de su cuerpo, necesitando únicamente un asalto para ser 
+completamente funcional. No obstante, para ser capaz de usar tanto 
+el Jurgeneth como el Arma de Alma, Kisidan debe de haber solicitado 
+permiso previamente a Imperium y este haber desbloqueado su uso. 
+Puede darse el caso de que Kisidan trate de forzar su aparición, aunque 
+en tal caso, los artefactos tardarían varios asaltos en manifestarse.
+Jurgeneth Sigma Mk-III
+El Jurgeneth personalizado de Kisidan tiene un generador de Animus 
+que mantienen activos los siguientes sistemas:
+-Protección Física y Sobrenatural (Nv1 / 2R): Otorga a Kisidan un 
+Tipo de Armadura 8 contra todo tipo de ataque salvo contra Energía, 
+donde tiene TA 5.
+-Movimiento Libre (Nv1 / 1R): Permite a Kisidan moverse por el 
+aire con un Tipo de Vuelo equivalente a su Tipo de Movimiento.
+-Sistemas de Soporte de Uso (Nv3 / 2R): El Jurgeneth actúa 
+como un segundo cuerpo para Kisidan, permitiéndole ignorar los 
+requerimientos de Llevar Armadura con el Jurgeneth.
+-Recuperación Física (Nv2 / 2R): Kisidan recupera 25 PV de vida por 
+asalto hasta un máximo de 300 puntos. Una vez alcanzada la cantidad, para 
+que el sistema funcione nuevamente debe de ser recargado por Imperium.
+-Sistema Vital (Nv2 / 1R): Kisidan obtiene un bono de +50 a su RF 
+contra controles de Entre la Vida y la Muerte y lo estabiliza automáticamente. 
+-Generador de Ki (Nv2 / 2R): Kisidan recupera un punto de Ki por 
+asalto de su reserva hasta un máximo de 250 puntos de Ki. Una vez 
+alcanzada esta cantidad, para que el sistema funcione nuevamente debe 
+de ser recargado por Imperium.
+-Percepción Dimensional (Nv2 / 1R): Kisidan puede percibir diversos 
+planos de la existencia, incluyendo la Vigilia y el Mundo Espiritual.
+Arma de Alma: Kisidan
+-Arma de Alma: A efectos de juego, el Arma de Alma de Kisidan 
+tiene unas estadísticas equivalentes a una Katana de calidad +20 que 
+ataca en Energía.
+-Potenciador Dominus: Otorga a Kisidan un bono de +2 a todas sus 
+Acumulaciones de Ki.
+Liberación de Alma: Hayat Mukhasasat Lilqital
+La liberación de Alma de Kisidan le permite trascender su forma física 
+y adoptar, por tiempo limitado, la condición de uno de los Ascendidos. 
+Al usarla, el mundo a su alrededor cambia, convirtiéndose en un páramo 
+infinito repleto de espíritus oscuros que pululan al vaivén de fuertes vientos.
+Hayat Mukhasasat Lilqital tiene un radio de acción efectivo de 
+aproximadamente 250 metros alrededor de Kisidan, dentro del cual el 
+caballero posee un dominio absoluto del combate que lo vuelve virtualmente 
+invencible. Mientras estén en el área, cualquier entidad o individuo que 
+pretenda realizar un ataque o acción ofensiva contra Kisidan recibe de 
+manera automática un ataque antes de poder realizar el suyo. Estos ataques 
+no son realizados propiamente por Kisidan, y se activan automáticamente 
+incluso si el caballero no tiene acción, está alejado de su enemigo o ni siquiera 
+es consciente de que está ahí. Al ser de carácter previo, estos ataques 
+pueden poner a la defensiva al agresor impidiéndole iniciar el ataque contra 
+Kisidan, razón por la que Hayat Mukhasasat Lilqital es a la vez la habilidad 
+ofensiva y defensiva definitiva. Por ejemplo, si un enemigo va a realizar tres 
+ataques contra Kisidan, recibirá un ataque de Hayat Mukhasasat Lilqital antes 
+de realizar cada uno de ellos (hasta tres en total si no son interrumpidos).
+Los ataques realizados por la Liberación usan la habilidad ofensiva 
+plena de Kisidan, ignorando cualquier bonificador o penalizador que este 
+pudiera tener. La única excepción a esta regla es que si se beneficia de los 
+bonos que recibe el caballero por la habilidad El Despertar, aunque no así 
+de los de ninguna técnica de Ki u otra habilidad equivalente.
+
+Si un personaje obtiene sorpresa sobre Kisidan puede atacarle antes 
+de que Hayat Mukhasasat Lilqital se active, pero recibirá igualmente el 
+ataque de la Liberación nada más completar el suyo.
+Tras su activación, Hayat Mukhasasat Lilqital puede mantenerse activa 
+hasta 3 minutos sin que suponga un menoscabo para Kisidan, pero a 
+partir de ese periodo, forzar más la Liberación tiene un coste enorme 
+para su cuerpo. Si quiere mantenerlo, Kisidan pierde un punto de Ki y 
+dos Puntos de Vida como sacrificio por turno. Igualmente, si desactiva 
+la Liberación y quiere volver a activarla antes de haber descansado 
+propiamente varias horas, sufre directamente el mismo estrés físico 
+como si la hubiera mantenido más allá de sus límites.
+n o t a s c u r I o s a s
+-Es uno de los tres Godkillers más poderosos de Imperium. Su posición 
+exacta, dentro de tan ilustre grupo, es algo que nunca se ha medido.
+-Tiene una compleja relación con su compañero Godkiller Felix 
+Sanfelix. No lo soporta y cada vez que se cruzan quiere aplastarse los 
+tímpanos para no tener que escucharle soltar tonterías, pero en realidad 
+es el único amigo que ha tenido durante los últimos mil años. Se jugaría 
+la vida por él sin dudarlo.
+-Su verdadero nombre es Adrianus (es el que le dio su madre), aunque 
+recibió el nombre de Sidonak como gladiador. Como mercenario, 
+trabajaba bajo el seudónimo de Sid.
+-Es de raza mestiza. Su madre provenía de las tierras que actualmente 
+componen Ilmora, y su padre era un gladiador procedente de Nanwe.
+-Tuvo varios hermanastros, pero todos murieron antes de cumplir los 
+15 años. La mayoría, en el campo de batalla o en la arena.
+-Entró a combatir como gladiador a los 11 años, y a los 14 tomó parte 
+en su primera batalla a gran escala como soldado. Todo un récord para 
+los estándares de aquella era.
+-Su talento en combate como humano era verdaderamente desmedido, 
+pero ha habido muchos luchadores que, si hubiera permanecido 
+mortal, le superaban. Como pseudo deidad, no obstante, es mejor que 
+cualquiera de ellos.
+-Cuando viajaba con Yseria tuvo un par de aliados y compañeros más 
+que les acompañaron, aunque murieron a manos de los agentes de Et 
+Tcher antes del combate final contra este.
+-Una de las situaciones más embarazosas que ha vivido ha sido 
+encontrarse a Elisabetta y Lilith desnudas en el baño. Fue el momento 
+en el que se preguntó seriamente que había pasado con su vida para que 
+hubiera pasado de ser una obra dramática a una comedia familiar.
+-Imperium lo usó al principio en muchas misiones suicidas en las que lo 
+más normal es que hubiera muerto. Con el paso de los siglos, Barnabas 
+empezó a valorarlo mucho como agente (le divertía ver que sobreviva a 
+casi todo en contra de las previsiones más lógicas), y lleva mucho enviándolo 
+a misiones que sabe que va a superar. En muchos aspectos, es uno de sus 
+favoritos.
+-Su primera arma fue una katana. En el coliseo se sorteaban una 
+veintena de armas exóticas entre los niños que iban a luchar y a él le 
+tocó una de las mejores. Cosas de Gnosis. Se volvió famoso por ser el 
+“niño con la katana” y le enseñaron a usarla.
+-Como los otros caballeros del séptimo cielo, Kisidan toma su nombre 
+de un legendario monstruo; en este caso, un demonio inmortal conocido 
+por usar una espada oriental. Irónicamente, el nombre está inspirado en 
+su propia leyenda. Bárnabas fue el que se ocupó de eso personalmente, 
+ya que lo encontraba gracioso.
+-Kisidan siempre ha tenido pesadillas en las que Neb Et Tcher le habla. 
+Uno de sus mayores temores es que, aunque sea sólo una pequeña parte 
+de él, pueda seguir existiendo. Afortunadamente, desde que cuida de 
+Elisabetta, los sueños han cesado y ya ni se acuerda de él.
+-Kisidan lo ignora, pero hay al menos otro ser que cómo él que ha 
+absorbido a uno de los dioses Amerenses, el Árbitro Aizen. Aunque 
+sus poderes son completamente diferentes, dada la oposición de ambos 
+dioses si ambos se encontrarán sentirían una terrible aversión natural el 
+uno hacia el otro.
+-Durante la Guerra de Dios se le prohibió expresamente enfrentarse a 
+ningún miembro de la Cofradia.

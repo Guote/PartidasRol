@@ -10,7 +10,8 @@ export const Templates = {
                 parts: {
                     combat: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/combat.hbs`,
                     mystic: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/mystic.hbs`,
-                    psychic: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/psychic.hbs`
+                    psychic: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/psychic.hbs`,
+                    summon: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/summon.hbs`
                 }
             },
             CombatDefenseDialog: {

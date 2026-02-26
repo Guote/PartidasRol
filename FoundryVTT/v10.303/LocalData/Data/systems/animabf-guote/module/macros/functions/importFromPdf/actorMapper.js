@@ -153,10 +153,11 @@ const getSecondaryCategory = (skillKey) => {
  * Build actor system data from parsed PDF data
  */
 export const buildActorData = (parsed) => {
-  const { general, primaries, resistances, combat, mystic, domine, psychic, secondaries, isDamageResistance } = parsed;
+  const { general, primaries, resistances, combat, mystic, summoning, domine, psychic, secondaries, isDamageResistance } = parsed;
 
   // Determine which subsystem tabs should be visible
-  const hasMystic = mystic.zeon > 0 || mystic.act > 0 || mystic.magicProjection > 0;
+  const hasSummoning = summoning && (summoning.summon > 0 || summoning.control > 0 || summoning.bind > 0 || summoning.banish > 0);
+  const hasMystic = mystic.zeon > 0 || mystic.act > 0 || mystic.magicProjection > 0 || hasSummoning;
   const hasDomine = domine.martialKnowledge > 0 || domine.genericKi > 0;
   const hasPsychic = psychic.psychicPoints > 0 || psychic.psychicProjection > 0;
 
@@ -247,6 +248,12 @@ export const buildActorData = (parsed) => {
             necromancy: { value: mystic.magicLevels.necromancy || 0 },
           },
         },
+        summoning: {
+          summon: { base: { value: summoning?.summon || 0 } },
+          control: { base: { value: summoning?.control || 0 } },
+          bind: { base: { value: summoning?.bind || 0 } },
+          banish: { base: { value: summoning?.banish || 0 } },
+        },
       },
       domine: {
         martialKnowledge: {
@@ -284,6 +291,8 @@ export const buildActorData = (parsed) => {
       ui: {
         tabVisibility: {
           mystic: { value: hasMystic },
+          summoning: { value: hasMystic },
+          grimoire: { value: hasMystic },
           psychic: { value: hasPsychic },
           domine: { value: hasDomine },
         },
