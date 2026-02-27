@@ -228,7 +228,7 @@ export class CombatAttackDialog extends FormApplication {
         ignoredTA,
       } = this.modalData.attacker.combat;
 
-      const { isAttackAccumulation, attackAccumulation } =
+      const { isAttackAccumulation, withoutRoll, attackAccumulation } =
         this.modalData.attacker;
       if (typeof damage !== "undefined") {
         const attack = weapon
@@ -244,7 +244,7 @@ export class CombatAttackDialog extends FormApplication {
           modifier,
         ];
         let formula = getFormula({
-          dice: isAttackAccumulation ? "1d100xa" : "1d100xa",
+          dice: withoutRoll ? "0": "1d100xa",
           values: rollModifiers,
           labels: [
             "HA",
@@ -254,11 +254,6 @@ export class CombatAttackDialog extends FormApplication {
             "Mod",
           ],
         });
-        if (this.modalData.attacker.withoutRoll) {
-          // Remove the dice from the formula
-          formula = formula.replace("1d100xa", "0");
-          formula = formula.replace("2d100khxa", "0");
-        }
         if (this.attackerActor.system.combat.attack.base.value >= 200) {
           // Mastery reduces the fumble range
           formula = formula.replace("xa", "xamastery");
@@ -344,7 +339,7 @@ export class CombatAttackDialog extends FormApplication {
         ignoredTA,
       } = this.modalData.attacker.mystic;
 
-      const { isAttackAccumulation, attackAccumulation } =
+      const { isAttackAccumulation, withoutRoll, attackAccumulation } =
         this.modalData.attacker;
       if (spellUsed) {
         let baseMagicProjection;
@@ -369,15 +364,10 @@ export class CombatAttackDialog extends FormApplication {
           modifier,
         ];
         let formula = getFormula({
-          dice: isAttackAccumulation ? "2d100khxa" : "1d100xa",
+          dice: withoutRoll ? "0" : "1d100xa",
           values: rollModifiers,
           labels: ["Proy. Mag.", `${attackAccumulation} at. en masa`, "Mod."],
         });
-
-        if (this.modalData.attacker.withoutRoll) {
-          // Remove the dice from the formula
-          formula = formula.replace("1d100xa", "0");
-        }
         if (baseMagicProjection >= 200) {
           // Mastery reduces the fumble range
           formula = formula.replace("xa", "xamastery");

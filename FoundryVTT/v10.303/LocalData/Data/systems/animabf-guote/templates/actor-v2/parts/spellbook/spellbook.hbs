@@ -7,24 +7,44 @@
       </span>
     </div>
     <div class="spellbook-header__resources">
-      {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
-          label=(localize "anima.ui.mystic.zeon.title")
-          valueName="system.mystic.zeon.value"
-          currentValue=mystic.zeon.value
-          maxName="system.mystic.zeon.max"
-          maxValue=mystic.zeon.max
-          colorClass="zeon"
-          showRegen=true
-          regenValue=mystic.zeonRegeneration.final.value
-      }}
-      {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
-          label=(localize "anima.ui.mystic.shield.title")
-          valueName="system.mystic.shield.value"
-          currentValue=mystic.shield.value
-          maxName="system.mystic.shield.max"
-          maxValue=mystic.shield.max
-          colorClass="shield"
-      }}
+      {{!-- Zeon Group (Zeon + Accumulated) --}}
+      <div class="v2-res-group">
+        <div class="v2-res v2-res--zeon v2-res--compact" title="{{localize 'anima.ui.mystic.zeon.title'}}">
+          <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Zeon</span>
+          <div class="v2-res__values">
+            <input type="number" class="v2-res__input v2-res__input--compact"
+                   name="system.mystic.zeon.value"
+                   value="{{mystic.zeon.value}}">
+            <span class="v2-res__sep">/</span>
+            <input type="number" class="v2-res__input v2-res__input--compact"
+                   name="system.mystic.zeon.max"
+                   value="{{mystic.zeon.max}}">
+          </div>
+        </div>
+        <div class="v2-res-group__sep"></div>
+        <div class="v2-res v2-res--zeon-acc v2-res--compact v2-res--single" title="Zeon Acumulado">
+          <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Acum</span>
+          <div class="v2-res__values">
+            <input type="number" class="v2-res__input v2-res__input--compact"
+                   name="system.mystic.zeonAccumulated.value"
+                   value="{{mystic.zeonAccumulated.value}}">
+          </div>
+        </div>
+      </div>
+
+      {{!-- Shield --}}
+      <div class="v2-res v2-res--shield v2-res--compact" title="{{localize 'anima.ui.mystic.shield.title'}}">
+        <span class="v2-res__label"><i class="fas fa-shield-alt"></i> Escudo</span>
+        <div class="v2-res__values">
+          <input type="number" class="v2-res__input v2-res__input--compact"
+                 name="system.mystic.shield.value"
+                 value="{{mystic.shield.value}}">
+          <span class="v2-res__sep">/</span>
+          <input type="number" class="v2-res__input v2-res__input--compact"
+                 name="system.mystic.shield.max"
+                 value="{{mystic.shield.max}}">
+        </div>
+      </div>
     </div>
     <div class="spellbook-header__actions">
       <button type="button" class="spellbook-btn" data-action="expand-all">
