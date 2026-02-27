@@ -25,6 +25,7 @@ export const preloadTemplates = () => {
     Templates.Chat.ChatCombat.DefenseCard,
     Templates.Chat.ChatCombat.ResultCard,
     `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/chat-combat-defense-dialog.hbs`,
+    `systems/${ABFSystemName}/templates/dialog/combat/defense-preset-edit/defense-preset-edit-dialog.hbs`,
     `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/combat.hbs`,
     `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/damage-resistance.hbs`,
     `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/parts/mystic.hbs`,

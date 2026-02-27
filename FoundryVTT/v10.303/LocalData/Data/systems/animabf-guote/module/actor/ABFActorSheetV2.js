@@ -398,8 +398,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
     // Preset row click (opens dialog pre-filled)
     html.find('.preset-row-clickable').click((e) => {
-      // Don't trigger if clicking the quick attack button
       if (e.target.closest('.preset-quick-attack')) return;
+      if (e.target.closest('.preset-delete')) return;
       e.preventDefault();
       const presetId = e.currentTarget.dataset.presetId;
       const presetType = e.currentTarget.dataset.presetType;
@@ -413,6 +413,25 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const presetId = e.currentTarget.dataset.presetId;
       this._executeQuickAttack(presetId);
     });
+
+    // Inline delete for presets
+    html.find('.preset-delete').click((e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const presetId = e.currentTarget.closest('[data-preset-id]')?.dataset.presetId;
+      if (!presetId) return;
+      ABFDialogs.confirm(
+        this.i18n.localize("anima.dialogs.items.delete.title"),
+        this.i18n.localize("anima.dialogs.items.delete.body"),
+        { onConfirm: () => this.actor.deleteEmbeddedDocuments("Item", [presetId]) }
+      );
+    });
+
+    // Drag-to-reorder for preset grids
+    this._bindPresetDragSort(html, '#attack-presets-context-menu-container',
+      () => this.actor.system.combat.attackPresets);
+    this._bindPresetDragSort(html, '#defense-presets-context-menu-container',
+      () => this.actor.system.combat.defensePresets);
 
     // Open attack dialog button
     html.find('.open-attack-dialog').click((e) => {
@@ -570,6 +589,65 @@ export default class ABFActorSheetV2 extends ActorSheet {
   }
 
   /**
+   * Bind drag-to-reorder behaviour on a preset grid container.
+   * Dragging a preset item over another and dropping reorders them using Foundry's sort system.
+   * @param {jQuery} html
+   * @param {string} containerSelector - e.g. '#attack-presets-context-menu-container'
+   * @param {Function} getPresets - returns the current preset array from actor.system
+   */
+  _bindPresetDragSort(html, containerSelector, getPresets) {
+    const container = html.find(containerSelector)[0];
+    if (!container) return;
+
+    let draggedId = null;
+
+    container.addEventListener('dragstart', (e) => {
+      const item = e.target.closest('.v2-preset-item[draggable]');
+      if (!item) return;
+      draggedId = item.dataset.presetId;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'preset-reorder', presetId: draggedId }));
+      e.stopPropagation(); // prevent Foundry's hotbar drag handler from capturing this
+      item.classList.add('v2-preset-item--dragging');
+    });
+
+    container.addEventListener('dragend', () => {
+      container.querySelectorAll('.v2-preset-item').forEach(el =>
+        el.classList.remove('v2-preset-item--dragging', 'v2-preset-item--drag-over'));
+      draggedId = null;
+    });
+
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const item = e.target.closest('.v2-preset-item');
+      container.querySelectorAll('.v2-preset-item').forEach(el =>
+        el.classList.remove('v2-preset-item--drag-over'));
+      if (item && item.dataset.presetId !== draggedId) {
+        item.classList.add('v2-preset-item--drag-over');
+      }
+    });
+
+    container.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      const targetItem = e.target.closest('.v2-preset-item');
+      if (!targetItem || !draggedId || targetItem.dataset.presetId === draggedId) return;
+
+      const source = this.actor.items.get(draggedId);
+      const target = this.actor.items.get(targetItem.dataset.presetId);
+      if (!source || !target) return;
+
+      const siblings = getPresets()
+        .map(p => this.actor.items.get(p._id))
+        .filter(i => i && i._id !== draggedId);
+
+      const sortUpdates = SortingHelpers.performIntegerSort(source, { target, siblings });
+      await this.actor.updateEmbeddedDocuments('Item',
+        sortUpdates.map(u => ({ _id: u.target._id, sort: u.update.sort })));
+    });
+  }
+
+  /**
    * Open the attack or defense dialog pre-filled with preset data
    * @param {string} type - The preset type ('attack' or 'defense')
    * @param {string} presetId - The preset item ID
@@ -581,17 +659,16 @@ export default class ABFActorSheetV2 extends ActorSheet {
       return;
     }
 
-    // Get selected token and target
-    const token = canvas.tokens.controlled[0] ?? this.actor.getActiveTokens()[0];
-    const target = game.user.targets.first();
-
-    if (!token) {
-      ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));
-      return;
-    }
-
     if (type === 'attack') {
-      // Import and open CombatAttackDialog with preset data
+      // Get selected token and target
+      const token = canvas.tokens.controlled[0] ?? this.actor.getActiveTokens()[0];
+      const target = game.user.targets.first();
+
+      if (!token) {
+        ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));
+        return;
+      }
+
       const { CombatAttackDialog } = await import('../dialogs/combat/CombatAttackDialog.js');
       new CombatAttackDialog(token, target ?? token, {
         onAttack: () => {}
@@ -602,8 +679,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
         closeOnSend: true  // Close dialog after sending attack (chat combat mode)
       });
     } else if (type === 'defense') {
-      // For defense presets, just show a notification - can only be used when defending
-      ui.notifications.info(game.i18n.localize("anima.notifications.defensePresetInfo"));
+      const { DefensePresetEditDialog } = await import('../dialogs/combat/DefensePresetEditDialog.js');
+      new DefensePresetEditDialog(this.actor, preset);
     }
   }
 

@@ -46,6 +46,10 @@ export const prepareActor = async (actor) => {
     actor.system.general.notesText.value ?? "",
     { async: true }
   );
+  actor.system.combat.notes.enriched = await TextEditor.enrichHTML(
+    actor.system.combat.notes.value ?? "",
+    { async: true }
+  );
   // We need to parse to boolean because Foundry saves booleans as string
   for (const key of Object.keys(actor.system.ui.contractibleItems)) {
     if (typeof actor.system.ui.contractibleItems[key] === "string") {

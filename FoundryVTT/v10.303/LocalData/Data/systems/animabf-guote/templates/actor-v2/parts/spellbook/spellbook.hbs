@@ -6,6 +6,26 @@
         {{localize "anima.ui.spellbook.spellCount" count=totalSpells}}
       </span>
     </div>
+    <div class="spellbook-header__resources">
+      {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
+          label=(localize "anima.ui.mystic.zeon.title")
+          valueName="system.mystic.zeon.value"
+          currentValue=mystic.zeon.value
+          maxName="system.mystic.zeon.max"
+          maxValue=mystic.zeon.max
+          colorClass="zeon"
+          showRegen=true
+          regenValue=mystic.zeonRegeneration.final.value
+      }}
+      {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
+          label=(localize "anima.ui.mystic.shield.title")
+          valueName="system.mystic.shield.value"
+          currentValue=mystic.shield.value
+          maxName="system.mystic.shield.max"
+          maxValue=mystic.shield.max
+          colorClass="shield"
+      }}
+    </div>
     <div class="spellbook-header__actions">
       <button type="button" class="spellbook-btn" data-action="expand-all">
         <i class="fas fa-expand-alt"></i>
@@ -45,31 +65,6 @@
     {{#if isOverviewTab}}
       {{!-- Overview Tab Content --}}
       <form class="spellbook-overview" autocomplete="off">
-        {{!-- Resources Row: Zeon + Shield --}}
-        <div class="spellbook-resources-row">
-          {{!-- Zeon Resource Pool --}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
-              label=(localize "anima.ui.mystic.zeon.title")
-              valueName="system.mystic.zeon.value"
-              currentValue=mystic.zeon.value
-              maxName="system.mystic.zeon.max"
-              maxValue=mystic.zeon.max
-              colorClass="zeon"
-              showRegen=true
-              regenValue=mystic.zeonRegeneration.final.value
-          }}
-
-          {{!-- Supernatural Shield Resource Pool --}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/resource-pool.hbs"
-              label=(localize "anima.ui.mystic.shield.title")
-              valueName="system.mystic.shield.value"
-              currentValue=mystic.shield.value
-              maxName="system.mystic.shield.max"
-              maxValue=mystic.shield.max
-              colorClass="shield"
-          }}
-        </div>
-
         {{!-- Combat Stats Row: ACT + Magic Projections + Innate Magic --}}
         <div class="spellbook-combat-row">
           {{!-- ACT (Collapsible) --}}

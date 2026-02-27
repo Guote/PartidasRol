@@ -261,8 +261,8 @@ export default class ABFSpellbook extends Application {
       await this._handleImportSpells();
     });
 
-    // Form input changes (save to actor)
-    html.find('.spellbook-overview input').on('change', async ev => {
+    // Form input changes (save to actor) — overview form + header resources
+    html.find('.spellbook-overview input, .spellbook-header__resources input').on('change', async ev => {
       const input = ev.currentTarget;
       const name = input.name;
       const value = input.type === 'number' ? Number(input.value) : input.value;

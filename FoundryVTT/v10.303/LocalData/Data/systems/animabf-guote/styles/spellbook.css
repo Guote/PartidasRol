@@ -82,6 +82,59 @@
   gap: var(--space-3);
 }
 
+.spellbook .spellbook-header__resources {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+/* Resource pools inside the dark header — override light-bg defaults */
+.spellbook .spellbook-header .v2-resource-pool {
+  gap: var(--space-1);
+}
+
+.spellbook .spellbook-header .v2-resource-pool__label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--font-size-2xs);
+}
+
+.spellbook .spellbook-header .v2-resource-pool__values {
+  align-items: center;
+}
+
+.spellbook .spellbook-header .v2-resource-pool__input {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--abf-text-light);
+  width: 52px;
+}
+
+.spellbook .spellbook-header .v2-resource-pool__separator {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.spellbook .spellbook-header .v2-resource-pool__regen {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.spellbook .spellbook-header .v2-resource-pool__regen-label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.spellbook .spellbook-header .v2-resource-pool__regen-value {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.spellbook .spellbook-header .v2-resource-pool--zeon .v2-resource-pool__input {
+  color: #90caf9;
+}
+
+.spellbook .spellbook-header .v2-resource-pool--shield .v2-resource-pool__input {
+  color: #ce93d8;
+}
+
 .spellbook .spellbook-btn {
   display: flex;
   align-items: center;
@@ -885,6 +938,7 @@
 
 .spellbook .spellbook-maintenance__name {
   flex: 1;
+  min-width: 0;
   padding: var(--space-2);
   border: 1px solid var(--abf-border-light);
   border-radius: var(--radius-sm);
@@ -908,6 +962,8 @@
   padding: var(--space-2);
   border-radius: var(--radius-sm);
   transition: all 0.15s ease;
+  width: auto;
+  flex-shrink: 0;
 }
 
 .spellbook .spellbook-maintenance__delete:hover {

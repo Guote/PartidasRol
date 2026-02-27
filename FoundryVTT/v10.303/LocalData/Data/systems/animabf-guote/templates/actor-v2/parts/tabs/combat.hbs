@@ -13,7 +13,8 @@
             baseValue=system.combat.attack.base.value
             finalValue=system.combat.attack.final.value
             rollable=true
-            rollLabel=(localize "anima.ui.combat.baseValues.attack.title")}}
+            rollLabel=(localize "anima.ui.combat.baseValues.attack.title")
+            baseOnly=true}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.block.title")
@@ -21,7 +22,8 @@
             baseValue=system.combat.block.base.value
             finalValue=system.combat.block.final.value
             rollable=true
-            rollLabel=(localize "anima.ui.combat.baseValues.block.title")}}
+            rollLabel=(localize "anima.ui.combat.baseValues.block.title")
+            baseOnly=true}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.dodge.title")
@@ -29,13 +31,14 @@
             baseValue=system.combat.dodge.base.value
             finalValue=system.combat.dodge.final.value
             rollable=true
-            rollLabel=(localize "anima.ui.combat.baseValues.dodge.title")}}
+            rollLabel=(localize "anima.ui.combat.baseValues.dodge.title")
+            baseOnly=true}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.wearArmor.title")
             baseName="system.combat.wearArmor.value"
             baseValue=system.combat.wearArmor.value
-            rollable=false}}
+            baseOnly=true}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.weapons.initiative.final.title")
@@ -44,25 +47,8 @@
             finalValue=system.characteristics.secondaries.initiative.final.value
             rollable=true
             rollFormula="1d100xaturn"
-            rollLabel=(localize "anima.ui.combat.weapons.initiative.final.title")}}
-      </div>
-    </div>
-  </div>
-
-  {{!-- Total Armor Summary - Compact inline --}}
-  <div class="v2-card v2-card--inline">
-    <div class="v2-card__header">
-      <span>{{localize "anima.ui.combat.finalArmor.title"}}</span>
-    </div>
-    <div class="v2-card__body v2-card__body--inline">
-      <div class="v2-ta-inline">
-        <span class="v2-ta-inline__item"><b>FIL</b> {{system.combat.totalArmor.at.cut.value}}</span>
-        <span class="v2-ta-inline__item"><b>CON</b> {{system.combat.totalArmor.at.impact.value}}</span>
-        <span class="v2-ta-inline__item"><b>PEN</b> {{system.combat.totalArmor.at.thrust.value}}</span>
-        <span class="v2-ta-inline__item"><b>CAL</b> {{system.combat.totalArmor.at.heat.value}}</span>
-        <span class="v2-ta-inline__item"><b>ELE</b> {{system.combat.totalArmor.at.electricity.value}}</span>
-        <span class="v2-ta-inline__item"><b>FRI</b> {{system.combat.totalArmor.at.cold.value}}</span>
-        <span class="v2-ta-inline__item"><b>ENE</b> {{system.combat.totalArmor.at.energy.value}}</span>
+            rollLabel=(localize "anima.ui.combat.weapons.initiative.final.title")
+            baseOnly=true}}
       </div>
     </div>
   </div>
@@ -82,26 +68,26 @@
       </div>
     </div>
     <div class="v2-card__body" id="attack-presets-context-menu-container" style="padding: 0;">
-      <table class="v2-table v2-table--compact">
-        <tbody>
-          {{#each system.combat.attackPresets as |preset|}}
-          <tr class="attack-preset-row preset-row-clickable" data-item-id="{{preset._id}}" data-preset-id="{{preset._id}}" data-preset-type="attack">
-            <td class="preset-name-cell">{{preset.name}}</td>
-            <td style="width: 28px;" class="v2-text-center">
-              <button type="button" class="v2-btn-icon-sm preset-quick-attack"
-                      data-preset-id="{{preset._id}}"
-                      title="{{localize 'anima.ui.combat.quickAttack'}}">
-                <i class="fas fa-bolt"></i>
-              </button>
-            </td>
-          </tr>
-          {{else}}
-          <tr>
-            <td class="v2-text-center v2-text-muted">-</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
+      <div class="v2-preset-grid">
+        {{#each system.combat.attackPresets as |preset|}}
+        <div class="v2-preset-item preset-row-clickable" draggable="true"
+             data-item-id="{{preset._id}}" data-preset-id="{{preset._id}}" data-preset-type="attack">
+          <span class="preset-name-cell">{{preset.name}}</span>
+          <button type="button" class="v2-btn-icon-sm preset-quick-attack"
+                  data-preset-id="{{preset._id}}"
+                  title="{{localize 'anima.ui.combat.quickAttack'}}">
+            <i class="fas fa-bolt"></i>
+          </button>
+          <button type="button" class="v2-btn-icon-sm preset-delete"
+                  data-preset-id="{{preset._id}}"
+                  title="{{localize 'anima.contextualMenu.common.options.delete'}}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        {{else}}
+        <div class="v2-preset-empty">-</div>
+        {{/each}}
+      </div>
     </div>
   </div>
 
@@ -113,36 +99,22 @@
       </div>
     </div>
     <div class="v2-card__body" id="defense-presets-context-menu-container" style="padding: 0;">
-      <table class="v2-table v2-table--compact">
-        <tbody>
-          {{#each system.combat.defensePresets as |preset|}}
-          <tr class="defense-preset-row preset-row-clickable" data-item-id="{{preset._id}}" data-preset-id="{{preset._id}}" data-preset-type="defense">
-            <td class="preset-name-cell">{{preset.name}}</td>
-          </tr>
-          {{else}}
-          <tr>
-            <td class="v2-text-center v2-text-muted">-</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
+      <div class="v2-preset-grid">
+        {{#each system.combat.defensePresets as |preset|}}
+        <div class="v2-preset-item preset-row-clickable" draggable="true"
+             data-item-id="{{preset._id}}" data-preset-id="{{preset._id}}" data-preset-type="defense">
+          <span class="preset-name-cell">{{preset.name}}</span>
+          <button type="button" class="v2-btn-icon-sm preset-delete"
+                  data-preset-id="{{preset._id}}"
+                  title="{{localize 'anima.contextualMenu.common.options.delete'}}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        {{else}}
+        <div class="v2-preset-empty">-</div>
+        {{/each}}
+      </div>
     </div>
-  </div>
-
-  <div class="v2-grid v2-grid--2">
-    {{!-- Combat Special Skills --}}
-    {{> "systems/animabf-guote/templates/actor-v2/components/simple-item-list.hbs"
-        title=(localize "anima.ui.combat.combatSpecialSkill.title")
-        addAction="add-combat-special-skill"
-        addLabel=(localize "anima.dialogs.items.combatSpecialSkills.content")
-        items=system.combat.combatSpecialSkills}}
-
-    {{!-- Combat Tables --}}
-    {{> "systems/animabf-guote/templates/actor-v2/components/simple-item-list.hbs"
-        title=(localize "anima.ui.combat.combatTables.title")
-        addAction="add-combat-table"
-        addLabel=(localize "anima.dialogs.items.combatTable.content")
-        items=system.combat.combatTables}}
   </div>
 
   {{!-- Combat Notes --}}
@@ -150,10 +122,8 @@
     <div class="v2-card__header">
       <span>{{localize "anima.ui.notesSection.title"}}</span>
     </div>
-    <div class="v2-card__body">
-      <textarea class="v2-textarea"
-                name="system.combat.notes.value"
-                placeholder="">{{system.combat.notes.value}}</textarea>
+    <div class="v2-card__body v2-notes-editor">
+      {{editor system.combat.notes.enriched target="system.combat.notes.value" button=true owner=true editable=true}}
     </div>
   </div>
 </div>

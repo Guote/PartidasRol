@@ -278,7 +278,8 @@
         "weapons": [],
         "armors": [],
         "attackPresets": [],
-        "defensePresets": []
+        "defensePresets": [],
+        "notes": { "value": "" }
       },
       "mystic": {
         "act": {

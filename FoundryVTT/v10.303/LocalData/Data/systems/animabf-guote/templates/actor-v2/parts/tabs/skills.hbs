@@ -43,49 +43,27 @@
         </button>
       </div>
     </div>
-    <div class="v2-card__body" style="padding: 0;">
-      <table class="v2-table">
-        <thead>
-          <tr>
-            <th>{{localize "anima.ui.combat.ammo.name.title"}}</th>
-            <th style="width: 50px;">{{localize "anima.ui.general.life.max.title"}}</th>
-            <th style="width: 50px;">{{localize "anima.ui.mystic.zeon.final.title"}}</th>
-            <th style="width: 22px;"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each system.secondaries.secondarySpecialSkills as |skill|}}
-          <tr data-item-id="{{skill._id}}">
-            <td>
-              <span class="rollable"
-                    data-roll="1d100xa"
-                    data-rollvalue="{{skill.system.level.value}}"
-                    data-label="{{skill.name}}">
-                {{skill.name}}
-              </span>
-            </td>
-            <td>
-              <input type="number" class="v2-table__input v2-text-center"
-                     name="system.dynamic.secondarySpecialSkills.{{skill._id}}.system.level.value"
-                     value="{{skill.system.level.value}}">
-            </td>
-            <td class="v2-text-center v2-font-bold">{{skill.system.level.value}}</td>
-            <td class="v2-text-center">
-              <button type="button" class="v2-combine-btn"
-                      title="{{localize 'anima.ui.skills.combine'}}"
-                      data-rollvalue="{{skill.system.level.value}}"
-                      data-label="{{skill.name}}">
-                <i class="fas fa-link"></i>
-              </button>
-            </td>
-          </tr>
-          {{else}}
-          <tr>
-            <td colspan="4" class="v2-text-center v2-text-muted">-</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
+    <div class="v2-special-skills-grid" id="secondary-special-skills-context-menu-container">
+      {{#each system.secondaries.secondarySpecialSkills as |skill|}}
+      <div class="v2-skill-row secondary-special-skill-row" data-item-id="{{skill._id}}">
+        <span class="v2-skill-row__name rollable"
+              data-roll="1d100xa"
+              data-rollvalue="{{skill.system.level.value}}"
+              data-label="{{skill.name}}">{{skill.name}}</span>
+        <input type="number" class="v2-skill-row__base"
+               name="system.dynamic.secondarySpecialSkills.{{skill._id}}.system.level.value"
+               value="{{skill.system.level.value}}">
+        <span class="v2-skill-row__final">{{skill.system.level.value}}</span>
+        <button type="button" class="v2-combine-btn"
+                title="{{localize 'anima.ui.skills.combine'}}"
+                data-rollvalue="{{skill.system.level.value}}"
+                data-label="{{skill.name}}">
+          <i class="fas fa-link"></i>
+        </button>
+      </div>
+      {{else}}
+      <div class="v2-text-center v2-text-muted" style="padding: var(--space-3); grid-column: 1 / -1;">-</div>
+      {{/each}}
     </div>
   </div>
 </div>

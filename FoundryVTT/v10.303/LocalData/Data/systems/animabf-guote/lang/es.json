@@ -81,7 +81,7 @@
   "anima.ui.combat.baseValues.dodge.title": "Esquiva",
   "anima.ui.combat.baseValues.extraDamage.title": "Daño extra",
   "anima.ui.combat.baseValues.title": "Valores base",
-  "anima.ui.combat.baseValues.wearArmor.title": "Llevar armadura",
+  "anima.ui.combat.baseValues.wearArmor.title": "Ll. armadura",
   "anima.ui.combat.combatSpecialSkill.title": "Habilidades especiales",
   "anima.ui.combat.combatTables.title": "Tablas de combate",
   "anima.ui.combat.attackPresets.title": "Ataques Guardados",
@@ -293,8 +293,8 @@
   "anima.ui.spellbook.title": "Grimorio",
   "anima.ui.spellbook.tabName": "Grimorio",
   "anima.ui.spellbook.spellCount": "{count} conjuros",
-  "anima.ui.spellbook.expandAll": "Expandir todo",
-  "anima.ui.spellbook.collapseAll": "Contraer todo",
+  "anima.ui.spellbook.expandAll": "Expandir",
+  "anima.ui.spellbook.collapseAll": "Contrae",
   "anima.ui.spellbook.noSpells": "No tienes conjuros. Importa conjuros desde la pestaña Místico.",
   "anima.ui.spellbook.noSpellsInVia": "No tienes conjuros de esta vía.",
   "anima.ui.spellbook.otherVia": "Otros",
@@ -859,5 +859,6 @@
   "anima.ui.combat.presetName": "Nombre del preset",
   "anima.ui.combat.loadPreset": "Cargar preset",
   "anima.ui.combat.newAttack": "Nuevo ataque",
-  "anima.ui.combat.newDefense": "Nueva defensa"
+  "anima.ui.combat.newDefense": "Nueva defensa",
+  "anima.ui.combat.editDefensePreset": "Editar Defensa Guardada"
 }

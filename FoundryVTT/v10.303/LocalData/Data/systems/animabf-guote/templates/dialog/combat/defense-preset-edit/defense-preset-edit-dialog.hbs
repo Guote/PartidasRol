@@ -1,0 +1,183 @@
+<form class='{{cssClass}}' autocomplete='off'>
+  {{#> "systems/animabf-guote/templates/common/ui/group.hbs" class="defense-preset-edit-values"}}
+    {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
+        title=(localize 'anima.ui.combat.defensePresets.title')}}
+    {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs" class="defense-preset-edit-values"}}
+
+      {{!-- Preset name + save --}}
+      <div class="preset-save-row">
+        <input type="text" class="preset-name-input" name="name"
+               placeholder="{{localize 'anima.ui.combat.presetName'}}"
+               value="{{this.name}}">
+        <button type="button" class="abf-button save-defense-preset-edit" disabled
+                title="{{localize 'anima.macros.combat.dialog.savePreset'}}">
+          <i class="fas fa-save"></i> {{localize 'anima.macros.combat.dialog.savePreset'}}
+        </button>
+      </div>
+
+      {{!-- Tab navigation --}}
+      <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
+        {{#if (is 'gt' this.actor.system.mystic.spells.length 0)}}
+          <a class="item" data-tab="mystic">{{localize "anima.ui.tabs.mystic"}}</a>
+        {{/if}}
+        {{#if (is 'gt' this.actor.system.psychic.psychicPowers.length 0)}}
+          <a class="item" data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>
+        {{/if}}
+        {{#if (is 'gt' this.actor.system.mystic.summons.length 0)}}
+          <a class="item" data-tab="summon">{{localize "anima.ui.tabs.summon"}}</a>
+        {{/if}}
+      </nav>
+
+      <section class="sheet-body">
+
+        {{!-- Combat tab --}}
+        <div class="tab combat" data-group="primary" data-tab="combat">
+          {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.modifier.title')
+            inputName="preset.combat.modifier"
+            inputValue=this.preset.combat.modifier
+          }}
+
+          {{#if this.ui.hasFatiguePoints}}
+            {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+              title=(localize 'anima.macros.combat.dialog.fatigue.title')
+              inputName="preset.combat.fatigue"
+              inputValue=this.preset.combat.fatigue
+            }}
+              <option {{#if (is "eq" 0 this.preset.combat.fatigue)}}selected{{/if}} value='0'>0</option>
+              {{#iterateNumber this.actor.system.characteristics.secondaries.fatigue.value}}
+                <option {{#if (is "eq" (math this "+" 1) ../this.preset.combat.fatigue)}}selected{{/if}} value='{{math this "+" 1}}'>{{math this "+" 1}}</option>
+              {{/iterateNumber}}
+            {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+          {{/if}}
+
+          {{#if (is 'gt' this.actor.system.combat.weapons.length 0)}}
+            {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+              title=(localize 'anima.macros.combat.dialog.weapon.title')
+              inputName='preset.combat.weaponUsed'
+            }}
+              <option value="">-- {{localize 'anima.macros.combat.dialog.unarmed.title'}} --</option>
+              {{#each this.actor.system.combat.weapons}}
+                <option {{#if (is 'eq' this._id ../this.preset.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>
+                  {{this.name}} ({{localize 'anima.ui.combat.baseValues.block.title'}}: {{this.system.block.final.value}})
+                </option>
+              {{/each}}
+            {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+          {{/if}}
+
+          {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+            title=(localize 'anima.macros.combat.dialog.defenseType.title')
+            inputName='preset.combat.method'
+          }}
+            <option {{#if (is "eq" this.preset.combat.method 'dodge')}}selected{{/if}} value='dodge'>{{localize 'anima.macros.combat.dialog.defenseType.dodge.title'}}</option>
+            <option {{#if (is "eq" this.preset.combat.method 'block')}}selected{{/if}} value='block'>{{localize 'anima.macros.combat.dialog.defenseType.block.title'}}</option>
+          {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+
+          {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.at.title')
+            inputName="preset.combat.atBonus"
+            inputValue=this.preset.combat.atBonus
+          }}
+        </div>
+
+        {{!-- Mystic tab --}}
+        <div class="tab mystic" data-group="primary" data-tab="mystic">
+          {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.modifier.title')
+            inputName="preset.mystic.modifier"
+            inputValue=this.preset.mystic.modifier
+          }}
+
+          {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+            title=(localize 'anima.macros.combat.dialog.magicProjection.title')
+            inputName='preset.mystic.projectionType'
+          }}
+            <option {{#if (is "eq" this.preset.mystic.projectionType 'normal')}}selected{{/if}} value='normal'>
+              {{concat (localize 'anima.macros.combat.dialog.magicProjection.normal.title') " (" this.actor.system.mystic.magicProjection.final.value ")"}}
+            </option>
+            <option {{#if (is "eq" this.preset.mystic.projectionType 'defensive')}}selected{{/if}} value='defensive'>
+              {{concat (localize 'anima.macros.combat.dialog.magicProjection.defensive.title') " (" this.actor.system.mystic.magicProjection.imbalance.defensive.final.value ")"}}
+            </option>
+          {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+
+          {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+            title=(localize 'anima.macros.combat.dialog.spell.title')
+            inputName='preset.mystic.spellUsed'
+          }}
+            <option value="">--</option>
+            {{#each this.actor.system.mystic.spells}}
+              <option {{#if (is "eq" this._id ../this.preset.mystic.spellUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}</option>
+            {{/each}}
+          {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+
+          {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+            title=(localize 'anima.macros.combat.dialog.spellGrade.title')
+            inputName='preset.mystic.spellGrade'
+          }}
+            <option {{#if (is "eq" this.preset.mystic.spellGrade 'base')}}selected{{/if}} value='base'>{{localize 'anima.macros.combat.dialog.spellGrade.base.title'}}</option>
+            <option {{#if (is "eq" this.preset.mystic.spellGrade 'intermediate')}}selected{{/if}} value='intermediate'>{{localize 'anima.macros.combat.dialog.spellGrade.intermediate.title'}}</option>
+            <option {{#if (is "eq" this.preset.mystic.spellGrade 'advanced')}}selected{{/if}} value='advanced'>{{localize 'anima.macros.combat.dialog.spellGrade.advanced.title'}}</option>
+            <option {{#if (is "eq" this.preset.mystic.spellGrade 'arcane')}}selected{{/if}} value='arcane'>{{localize 'anima.macros.combat.dialog.spellGrade.arcane.title'}}</option>
+          {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+        </div>
+
+        {{!-- Psychic tab --}}
+        <div class="tab psychic" data-group="primary" data-tab="psychic">
+          {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.modifier.title')
+            inputName="preset.psychic.modifier"
+            inputValue=this.preset.psychic.modifier
+          }}
+
+          {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.psychicPotential.title')
+            inputName="preset.psychic.potentialBonus"
+            inputValue=this.preset.psychic.potentialBonus
+          }}
+
+          {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+            title=(localize 'anima.macros.combat.dialog.psychicPower.title')
+            inputName='preset.psychic.powerUsed'
+          }}
+            <option value="">--</option>
+            {{#each this.actor.system.psychic.psychicPowers}}
+              <option {{#if (is "eq" this._id ../this.preset.psychic.powerUsed)}}selected{{/if}} value='{{this._id}}'>
+                {{this.name}} (+{{this.system.bonus.value}})
+              </option>
+            {{/each}}
+          {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+        </div>
+
+        {{!-- Summon tab --}}
+        <div class="tab summon" data-group="primary" data-tab="summon">
+          {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.modifier.title')
+            inputName="preset.summon.modifier"
+            inputValue=this.preset.summon.modifier
+          }}
+
+          {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+            title=(localize 'anima.macros.combat.dialog.summonSelect.title')
+            inputName='preset.summon.summonUsed'
+          }}
+            <option value="">--</option>
+            {{#each this.actor.system.mystic.summons}}
+              <option {{#if (is "eq" this._id ../this.preset.summon.summonUsed)}}selected{{/if}} value='{{this._id}}'>
+                {{this.name}} (HD:{{this.system.baseDef.value}}{{#if this.system.bonusDef.value}}+{{this.system.bonusDef.value}}{{/if}})
+              </option>
+            {{/each}}
+          {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+        </div>
+
+      </section>
+
+    {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+  {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}
+</form>

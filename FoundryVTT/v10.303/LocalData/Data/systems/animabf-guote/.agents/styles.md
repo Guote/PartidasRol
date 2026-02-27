@@ -4,6 +4,22 @@ Context for working on `styles/actor-sheet-v2.css`.
 
 ---
 
+## Reuse Before Inventing
+
+Before writing new CSS classes or HTML structures for any UI element, **search the existing templates and stylesheets** for something that already does the same thing visually. Use `Grep` on `templates/` and `styles/` for keywords describing the pattern (e.g. "save", "preset", "footer", "row").
+
+If you're unsure whether something similar already exists, **ask the user** before creating new classes.
+
+Common patterns already defined (do not reinvent):
+
+| Pattern | Where it's used | Classes / structure |
+|---------|----------------|---------------------|
+| Preset name input + save button row | Attack dialog, Defense dialog, Defense preset edit | `<div class="preset-save-row">` + `<input class="preset-name-input">` + `<button class="abf-button save-*-preset" disabled>` — button enabled by JS when input has value |
+| Load preset dropdown row | Attack dialog, Defense dialog | `<div class="preset-load-row">` + `<label class="preset-label">` + `<select class="preset-selector load-*-preset">` |
+| Preset manager wrapper | Attack dialog, Defense dialog | `<div class="preset-manager">` wrapping both rows above |
+
+---
+
 ## Scoping Rule
 
 Every selector must be scoped under `.actor-sheet-v2`. No bare `v2-*` rules.
@@ -139,6 +155,52 @@ BEM-like: `.v2-[block]__[element]--[modifier]`
 | `.v2-modifiers-table` | Modifier breakdown table |
 | `.v2-zeon-display` | Zeon/accumulation display |
 | `.v2-grimoire-*` | Grimoire summary widgets |
+
+---
+
+## Grid Divider Pattern
+
+Any multi-column list of repeating items (skills, presets, etc.) uses **both row and column dividers** — not gaps or surrounding borders alone.
+
+The outer container (card or group) provides the enclosing border with `overflow: hidden` to clip row/column corners:
+```css
+/* Card body must have padding: 0 so rows are flush to edges */
+.v2-card__body { padding: 0; }
+```
+
+For an **N-column grid**, the item rules are:
+
+```css
+/* Row divider on every item */
+.v2-my-row {
+  border-bottom: 1px solid var(--abf-border-light);
+}
+
+/* Column divider: right border on all columns except the last */
+.v2-my-row:not(:nth-child(Nn)) {
+  border-right: 1px solid var(--abf-border-light);
+}
+
+/* No bottom border on the last row */
+.v2-my-row:nth-last-child(-n+N) {
+  border-bottom: none;
+}
+
+/* Hover highlight */
+.v2-my-row:hover {
+  background: var(--abf-secondary-light);
+}
+```
+
+Replace `N` with the column count (3 for skills, 2 for presets).
+
+**Applied to:**
+- `.v2-skill-row` inside `.v2-card--skills` (3 columns — uses `N=3`)
+- `.v2-preset-item` inside `.v2-preset-grid` (2 columns — uses `N=2`)
+
+Do **not** add `border-radius` to individual rows — `overflow: hidden` on the outer container clips them correctly.
+
+Do **not** add `:last-child { border-bottom: none }` — the `:nth-last-child(-n+N)` rule handles the last row correctly for all row counts.
 
 ---
 

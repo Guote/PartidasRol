@@ -11,6 +11,7 @@
   - rollLabel: Label to show in roll message
   - rollFormula: Custom roll formula (default "1d100xa")
   - compact: Use compact styling (default false)
+  - baseOnly: Show only the base input, hide the final value (default false)
 --}}
 <div class="v2-combat-value {{#if compact}}v2-combat-value--compact{{/if}}">
   <span class="v2-combat-value__label">{{label}}</span>
@@ -18,6 +19,7 @@
     <input type="number" class="v2-combat-value__input"
            name="{{baseName}}"
            value="{{baseValue}}">
+    {{#unless baseOnly}}
     {{#if rollable}}
     <span class="v2-combat-value__final rollable"
           data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
@@ -28,5 +30,6 @@
     {{else}}
     <span class="v2-combat-value__final">{{finalValue}}</span>
     {{/if}}
+    {{/unless}}
   </div>
 </div>

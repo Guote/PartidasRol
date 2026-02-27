@@ -65,7 +65,7 @@
    Base Sheet Styles
    -------------------------------- */
 .actor-sheet-v2 {
-  font-family: 'Signika', sans-serif;
+  font-family: "Signika", sans-serif;
   font-size: var(--font-size-sm);
   display: flex;
   flex-direction: column;
@@ -76,7 +76,11 @@
    Compact Header
    -------------------------------- */
 .actor-sheet-v2 .v2-header {
-  background: linear-gradient(to bottom, var(--abf-primary), var(--abf-primary-dark));
+  background: linear-gradient(
+    to bottom,
+    var(--abf-primary),
+    var(--abf-primary-dark)
+  );
   color: var(--abf-text-light);
   padding: var(--space-2) var(--space-3);
   border-bottom: 2px solid var(--abf-primary-dark);
@@ -230,17 +234,39 @@
 }
 
 /* Resource color variations */
-.actor-sheet-v2 .v2-res--hp .v2-res__label { color: var(--abf-hp); }
-.actor-sheet-v2 .v2-res--fatigue .v2-res__label { color: var(--abf-fatigue); }
-.actor-sheet-v2 .v2-res--destiny .v2-res__label { color: var(--abf-destiny); }
-.actor-sheet-v2 .v2-res--init .v2-res__icon { color: var(--abf-secondary); }
-.actor-sheet-v2 .v2-res--init .v2-res__label { color: var(--abf-secondary); }
-.actor-sheet-v2 .v2-res--zeon .v2-res__label { color: var(--abf-zeon); }
-.actor-sheet-v2 .v2-res--zeon-acc .v2-res__label { color: var(--abf-zeon); }
-.actor-sheet-v2 .v2-res--ki .v2-res__label { color: var(--abf-ki); }
-.actor-sheet-v2 .v2-res--ki-acc .v2-res__label { color: var(--abf-ki); }
-.actor-sheet-v2 .v2-res--psy .v2-res__label { color: var(--abf-psychic); }
-.actor-sheet-v2 .v2-res--shield .v2-res__label { color: #4fc3f7; }
+.actor-sheet-v2 .v2-res--hp .v2-res__label {
+  color: var(--abf-hp);
+}
+.actor-sheet-v2 .v2-res--fatigue .v2-res__label {
+  color: var(--abf-fatigue);
+}
+.actor-sheet-v2 .v2-res--destiny .v2-res__label {
+  color: var(--abf-destiny);
+}
+.actor-sheet-v2 .v2-res--init .v2-res__icon {
+  color: var(--abf-secondary);
+}
+.actor-sheet-v2 .v2-res--init .v2-res__label {
+  color: var(--abf-secondary);
+}
+.actor-sheet-v2 .v2-res--zeon .v2-res__label {
+  color: var(--abf-zeon);
+}
+.actor-sheet-v2 .v2-res--zeon-acc .v2-res__label {
+  color: var(--abf-zeon);
+}
+.actor-sheet-v2 .v2-res--ki .v2-res__label {
+  color: var(--abf-ki);
+}
+.actor-sheet-v2 .v2-res--ki-acc .v2-res__label {
+  color: var(--abf-ki);
+}
+.actor-sheet-v2 .v2-res--psy .v2-res__label {
+  color: var(--abf-psychic);
+}
+.actor-sheet-v2 .v2-res--shield .v2-res__label {
+  color: #4fc3f7;
+}
 
 /* Compact resource variant - used in resources bar */
 .actor-sheet-v2 .v2-res--compact {
@@ -440,7 +466,6 @@
   font-weight: bold;
 }
 
-
 /* Header separator */
 .actor-sheet-v2 .v2-header__sep {
   color: rgba(255, 255, 255, 0.3);
@@ -489,7 +514,6 @@
   text-align: right;
   font-weight: bold;
 }
-
 
 /* Critical resistance button styling */
 .actor-sheet-v2 .v2-header__res--crit {
@@ -839,6 +863,30 @@
   color: var(--abf-primary);
 }
 
+/* Combat tab: 5-column equal grid, no final value shown */
+.actor-sheet-v2 .v2-tab-combat .v2-combat-values {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-tab-combat .v2-combat-value {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.actor-sheet-v2 .v2-tab-combat .v2-combat-value__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.actor-sheet-v2 .v2-tab-combat .v2-combat-value__input {
+  width: 52px;
+  font-size: var(--font-size-base);
+}
+
 /* --------------------------------
    Compact Stat Block
    -------------------------------- */
@@ -914,7 +962,7 @@
   border-right: 1px solid var(--abf-border-light);
 }
 
-.actor-sheet-v2 .v2-characteristic:nth-last-child(-n+2) {
+.actor-sheet-v2 .v2-characteristic:nth-last-child(-n + 2) {
   border-bottom: none;
 }
 
@@ -1034,7 +1082,24 @@
 }
 
 /* No bottom border on last row */
-.actor-sheet-v2 .v2-card--skills .v2-skill-row:nth-last-child(-n+3) {
+.actor-sheet-v2 .v2-card--skills .v2-skill-row:nth-last-child(-n + 3) {
+  border-bottom: none;
+}
+
+/* --- Special Skills: 2-column flat grid with dividers --- */
+.actor-sheet-v2 .v2-special-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+/* Column divider: right border on column 1 */
+.actor-sheet-v2 .v2-special-skills-grid .v2-skill-row:not(:nth-child(2n)) {
+  border-right: 1px solid var(--abf-border-light);
+}
+
+/* No bottom border on last row */
+.actor-sheet-v2 .v2-special-skills-grid .v2-skill-row:nth-last-child(-n + 2) {
   border-bottom: none;
 }
 
@@ -1148,12 +1213,24 @@
 /* --------------------------------
    Utility Classes
    -------------------------------- */
-.actor-sheet-v2 .v2-text-center { text-align: center; }
-.actor-sheet-v2 .v2-text-right { text-align: right; }
-.actor-sheet-v2 .v2-text-muted { color: var(--abf-text-muted); }
-.actor-sheet-v2 .v2-text-primary { color: var(--abf-primary); }
-.actor-sheet-v2 .v2-font-bold { font-weight: bold; }
-.actor-sheet-v2 .v2-hidden { display: none !important; }
+.actor-sheet-v2 .v2-text-center {
+  text-align: center;
+}
+.actor-sheet-v2 .v2-text-right {
+  text-align: right;
+}
+.actor-sheet-v2 .v2-text-muted {
+  color: var(--abf-text-muted);
+}
+.actor-sheet-v2 .v2-text-primary {
+  color: var(--abf-primary);
+}
+.actor-sheet-v2 .v2-font-bold {
+  font-weight: bold;
+}
+.actor-sheet-v2 .v2-hidden {
+  display: none !important;
+}
 
 /* --------------------------------
    Add Item Button
@@ -1577,10 +1654,18 @@
 }
 
 /* Modifier colors */
-.actor-sheet-v2 .v2-mod--bonus { color: var(--abf-success); }
-.actor-sheet-v2 .v2-mod--malus { color: var(--abf-error); }
-.actor-sheet-v2 .v2-mod--positive { color: var(--abf-success); }
-.actor-sheet-v2 .v2-mod--negative { color: var(--abf-error); }
+.actor-sheet-v2 .v2-mod--bonus {
+  color: var(--abf-success);
+}
+.actor-sheet-v2 .v2-mod--malus {
+  color: var(--abf-error);
+}
+.actor-sheet-v2 .v2-mod--positive {
+  color: var(--abf-success);
+}
+.actor-sheet-v2 .v2-mod--negative {
+  color: var(--abf-error);
+}
 
 /* Effects List */
 .actor-sheet-v2 .v2-effects-list {
@@ -1808,10 +1893,65 @@
 
 .actor-sheet-v2 .preset-name-cell {
   color: var(--abf-primary);
+  padding-left: 8px;
 }
 
 .actor-sheet-v2 .preset-row-clickable:hover .preset-name-cell {
   text-decoration: underline;
+}
+
+/* Preset grid: 2-column flat grid with dividers (same pattern as skills) */
+.actor-sheet-v2 .v2-preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.actor-sheet-v2 .v2-preset-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--abf-border-light);
+  min-width: 0;
+}
+
+/* Column divider: right border on column 1 */
+.actor-sheet-v2 .v2-preset-item:not(:nth-child(2n)) {
+  border-right: 1px solid var(--abf-border-light);
+}
+
+/* No bottom border on last row */
+.actor-sheet-v2 .v2-preset-item:nth-last-child(-n + 2) {
+  border-bottom: none;
+}
+
+.actor-sheet-v2 .v2-preset-item:hover {
+  background: var(--abf-secondary-light);
+}
+
+.actor-sheet-v2 .v2-preset-item .preset-name-cell {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-preset-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--abf-text-muted);
+  padding: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-preset-item--dragging {
+  opacity: 0.4;
+}
+
+.actor-sheet-v2 .v2-preset-item--drag-over {
+  outline: 2px dashed var(--abf-primary);
+  outline-offset: -2px;
 }
 
 /* ---- Notes Tab ---- */
