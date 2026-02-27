@@ -9,6 +9,7 @@ import { ABFItems } from "../items/ABFItems.js";
 import { ABFDialogs } from "../dialogs/ABFDialogs.js";
 import { ABFSystemName } from "../../animabf-guote.name.js";
 import { getFormula } from "../rolls/utils/getFormula.js";
+import { getModifierTerms } from "../rolls/utils/getModifierTerms.js";
 import ABFSpellbook from "./ABFSpellbook.js";
 export default class ABFActorSheetV2 extends ActorSheet {
   constructor(actor, options) {
@@ -763,11 +764,12 @@ export default class ABFActorSheetV2 extends ActorSheet {
         : weapon.system.damage.final.value;
       const finalDamage = Math.floor(((isAccumulation ? (baseDamage + damageBonus) * 1.5 : baseDamage + damageBonus)) / 5) * 5;
 
-      let rollModifiers = [attack, getMassAttackBonus(accumulationCount), fatigueUsed * 15, modifier];
+      const { values: modTermValues, labels: modTermLabels } = getModifierTerms(actorSystem, "attack");
+      let rollModifiers = [attack, getMassAttackBonus(accumulationCount), fatigueUsed * 15, ...modTermValues, modifier];
       let formula = getFormula({
         dice: "1d100xa",
         values: rollModifiers,
-        labels: ["HA", `${accumulationCount} at. en masa`, "Cansancio", "Mod"],
+        labels: ["HA", `${accumulationCount} at. en masa`, "Cansancio", ...modTermLabels, "Mod"],
       });
 
       if (withoutRoll) {
@@ -839,11 +841,12 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const damage = mystic.damage?.value || 0;
       const ignoredTA = mystic.ignoredTA?.value || 0;
 
-      let rollModifiers = [magicProjection, getMassAttackBonus(accumulationCount), modifier];
+      const { values: modTermValues, labels: modTermLabels } = getModifierTerms(actorSystem, "general-negative");
+      let rollModifiers = [magicProjection, getMassAttackBonus(accumulationCount), ...modTermValues, modifier];
       let formula = getFormula({
         dice: isAccumulation ? "2d100khxa" : "1d100xa",
         values: rollModifiers,
-        labels: ["Proy. Mag.", `${accumulationCount} at. en masa`, "Mod."],
+        labels: ["Proy. Mag.", `${accumulationCount} at. en masa`, ...modTermLabels, "Mod."],
       });
 
       if (withoutRoll) {
@@ -905,10 +908,11 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const damage = psychic.damage?.value || 0;
       const ignoredTA = psychic.ignoredTA?.value || 0;
 
-      let rollModifiers = [psychicProjection, modifier];
+      const { values: modTermValues, labels: modTermLabels } = getModifierTerms(actorSystem, "general-negative");
+      let rollModifiers = [psychicProjection, ...modTermValues, modifier];
       let formula = getFormula({
         values: rollModifiers,
-        labels: ["Proy. Psi.", "Mod."],
+        labels: ["Proy. Psi.", ...modTermLabels, "Mod."],
       });
 
       if (withoutRoll) {
@@ -1089,24 +1093,27 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
   async _onRoll(event) {
     event.preventDefault();
+    if (event.target.tagName === 'INPUT') return;
     const element = event.currentTarget;
     const { dataset } = element;
     if (dataset.roll) {
       const label = dataset.label ? `Rolling ${dataset.label}` : "";
       const mod = await openModDialog();
-      console.log(dataset);
+
+      const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, dataset.modifierType);
+
       let formula = getFormula({
         dice: dataset.roll,
-        values: [dataset.rollvalue, mod],
-        labels: [`${dataset.label}`, "Mod"],
+        values: [dataset.rollvalue, ...modValues, mod],
+        labels: [`${dataset.label}`, ...modLabels, "Mod"],
       });
       if (formula.includes("10TO100")) {
         let totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);
         console.log("entramos", {totalLevel})
         formula = getFormula({
           dice: dataset.roll,
-          values: [dataset.rollvalue, totalLevel*10, mod],
-          labels: [`${dataset.label}`, "Nivel", "Mod"],
+          values: [dataset.rollvalue, totalLevel*10, ...modValues, mod],
+          labels: [`${dataset.label}`, "Nivel", ...modLabels, "Mod"],
         }).replace("10TO100","");
       }
       if (parseInt(dataset.extra) >= 200)

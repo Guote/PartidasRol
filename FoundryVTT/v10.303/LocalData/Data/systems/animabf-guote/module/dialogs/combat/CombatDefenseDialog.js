@@ -6,6 +6,7 @@ import {
 } from "../../types/combat/WeaponItemConfig.js";
 import { ABFSettingsKeys } from "../../../utils/registerSettings.js";
 import { getFormula } from "../../rolls/utils/getFormula.js";
+import { getModifierTerms } from "../../rolls/utils/getModifierTerms.js";
 const getInitialData = (attacker, defender) => {
   const showRollByDefault = !!game.settings.get(
     "animabf-guote",
@@ -172,13 +173,15 @@ export class CombatDefenseDialog extends FormApplication {
         baseDefense = this.defenderActor.system.combat.block.base.value;
       }
 
+      const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.defenderActor.system, "defense");
       let rollModifiers = [
         value,
         fatigue * 15,
-        modifier,
         multipleDefensesPenalty,
+        ...modTermValues,
+        modifier,
       ];
-      let rollLabels = ["HD", "Cansancio", "Mod", "Def. múlt"];
+      let rollLabels = ["HD", "Cansancio", "Def. múlt", ...modTermLabels, "Mod"];
       let formula = getFormula({ values: rollModifiers, labels: rollLabels });
 
       if (this.modalData.defender.withoutRoll) {

@@ -10,7 +10,9 @@
                 {{#if this.rollableMessage}}
                   {{this.rollableMessage}}
                 {{else}}
-                  {{this.title}} {{/if}} " {{/if}}>{{this.title}}</p>
+                  {{this.title}} {{/if}} "
+    {{#if this.modifierType}}data-modifier-type="{{this.modifierType}}"{{/if}}
+    {{/if}}>{{this.title}}</p>
   {{/unless}}
 
   <div class='input-container {{#if this.hasSecondaryInput}}big{{/if}}'>

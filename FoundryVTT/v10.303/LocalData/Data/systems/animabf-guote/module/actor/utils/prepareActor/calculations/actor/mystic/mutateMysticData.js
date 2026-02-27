@@ -20,7 +20,7 @@ export const mutateMysticData = (data) => {
         "mystic.summoning.bind",
         "mystic.summoning.control",
       ],
-      data.general.modifiers.modFinal.general.final.value,
+      0,
       0
     );
 

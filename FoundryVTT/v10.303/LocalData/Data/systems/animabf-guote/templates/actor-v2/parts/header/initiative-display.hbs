@@ -4,7 +4,8 @@
   <span class="v2-initiative__value rollable"
         data-roll="1d100Initiative"
         data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}"
-        data-label="{{localize 'anima.ui.general.initiative.base.title'}}">
+        data-label="{{localize 'anima.ui.general.initiative.base.title'}}"
+        data-modifier-type="initiative">
     {{#if (gte system.characteristics.secondaries.initiative.final.value 0)}}+{{/if}}{{system.characteristics.secondaries.initiative.final.value}}
   </span>
   <span style="margin-left: var(--space-2); opacity: 0.7;">{{localize "anima.ui.combat.weapons.title"}}</span>

@@ -10,8 +10,7 @@ export const mutateInitiative = (data) => {
     
     mutateData(
       data,
-      "characteristics.secondaries.initiative",
-      Math.floor(data.general.modifiers.modFinal.general.final.value / 10) * 5
+      "characteristics.secondaries.initiative"
     );
     
     const equippedWeapons = combat.weapons.filter(weapon => weapon.system.equipped.value);

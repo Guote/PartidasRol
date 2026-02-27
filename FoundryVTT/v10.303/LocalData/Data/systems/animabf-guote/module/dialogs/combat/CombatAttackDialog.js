@@ -8,6 +8,7 @@ import { ABFSettingsKeys } from "../../../utils/registerSettings.js";
 import { ABFConfig } from "../../ABFConfig.js";
 import { getMassAttackBonus } from "../../combat/utils/getMassAttackBonus.js";
 import { getFormula } from "../../rolls/utils/getFormula.js";
+import { getModifierTerms } from "../../rolls/utils/getModifierTerms.js";
 import { getPsychichPowerEffect } from "../../combat/utils/getPsychichPowerEffect.js";
 import { ChatAttackCard } from "../../combat/chat-combat/ChatAttackCard.js";
 
@@ -236,11 +237,13 @@ export class CombatAttackDialog extends FormApplication {
           : this.attackerActor.system.combat.attack.final.value;
         const counterAttackBonus =
           this.modalData.attacker.counterAttackBonus ?? 0;
+        const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "attack");
         let rollModifiers = [
           attack,
           getMassAttackBonus(attackAccumulation),
           counterAttackBonus,
           fatigueUsed * 15,
+          ...modTermValues,
           modifier,
         ];
         let formula = getFormula({
@@ -251,6 +254,7 @@ export class CombatAttackDialog extends FormApplication {
             `${attackAccumulation} at. en masa`,
             "Contraataque",
             "Cansancio",
+            ...modTermLabels,
             "Mod",
           ],
         });
@@ -358,15 +362,17 @@ export class CombatAttackDialog extends FormApplication {
               .base.value;
         }
 
+        const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
         let rollModifiers = [
           magicProjection,
           getMassAttackBonus(attackAccumulation),
+          ...modTermValues,
           modifier,
         ];
         let formula = getFormula({
           dice: withoutRoll ? "0" : "1d100xa",
           values: rollModifiers,
-          labels: ["Proy. Mag.", `${attackAccumulation} at. en masa`, "Mod."],
+          labels: ["Proy. Mag.", `${attackAccumulation} at. en masa`, ...modTermLabels, "Mod."],
         });
         if (baseMagicProjection >= 200) {
           // Mastery reduces the fumble range

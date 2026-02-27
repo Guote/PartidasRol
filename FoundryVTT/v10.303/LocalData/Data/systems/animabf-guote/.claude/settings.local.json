@@ -6,7 +6,8 @@
       "Bash(find:*)",
       "Bash(python:*)",
       "Bash(dir \"C:\\\\z - Git\\\\PartidasRol\\\\FoundryVTT\\\\v10.303\\\\LocalData\\\\Data\\\\systems\\\\animabf-guote\\\\module\\\\macros\\\\pdf examples\")",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(xargs grep:*)"
     ]
   }
 }

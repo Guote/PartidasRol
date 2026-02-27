@@ -86,4 +86,14 @@ export const mutatePenalties = (data, actor) => {
   data.general.modifiers.modFinal.general.final.value = penalties.general;
   data.general.modifiers.modFinal.attack.final.value = penalties.ataque;
   data.general.modifiers.modFinal.defense.final.value = penalties.defense;
+
+  // Breakdown for formula display (separate fis/sob per action type)
+  data.general.modifiers.modFinal.attack.fis =
+    getMaxAndMin(modAttackFisArray).min + getMaxAndMin(modAttackFisArray).max;
+  data.general.modifiers.modFinal.attack.sob =
+    getMaxAndMin(modAttackSobArray).min + getMaxAndMin(modAttackSobArray).max;
+  data.general.modifiers.modFinal.defense.fis =
+    getMaxAndMin(modDefenseFisArray).min + getMaxAndMin(modDefenseFisArray).max;
+  data.general.modifiers.modFinal.defense.sob =
+    getMaxAndMin(modDefenseSobArray).min + getMaxAndMin(modDefenseSobArray).max;
 };

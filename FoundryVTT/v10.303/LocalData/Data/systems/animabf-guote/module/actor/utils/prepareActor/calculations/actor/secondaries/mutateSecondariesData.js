@@ -13,8 +13,7 @@ export const mutateSecondariesData = (data) => {
     for (const key of Object.keys(secondaries[secondaryKey])) {
       mutateData(
         data,
-        `secondaries.${secondaryKey}.${key}`,
-        data.general.modifiers.modFinal.general.final.value
+        `secondaries.${secondaryKey}.${key}`
       );
     }
   }

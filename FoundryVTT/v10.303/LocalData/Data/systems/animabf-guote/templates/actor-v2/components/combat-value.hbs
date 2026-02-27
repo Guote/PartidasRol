@@ -10,26 +10,35 @@
   - rollable: Whether the final value is rollable (default true)
   - rollLabel: Label to show in roll message
   - rollFormula: Custom roll formula (default "1d100xa")
+  - modifierType: Optional modifier type for _onRoll ("general", "initiative")
   - compact: Use compact styling (default false)
   - baseOnly: Show only the base input, hide the final value (default false)
+  - rollableDiv: Make the whole component div rollable instead of just the final span (hides final span)
 --}}
-<div class="v2-combat-value {{#if compact}}v2-combat-value--compact{{/if}}">
+<div class="v2-combat-value {{#if compact}}v2-combat-value--compact{{/if}} {{#if rollableDiv}}rollable{{/if}}"
+     {{#if rollableDiv}}
+     data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
+     data-rollvalue="{{finalValue}}"
+     data-label="{{rollLabel}}"
+     {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
+     {{/if}}>
   <span class="v2-combat-value__label">{{label}}</span>
   <div class="v2-combat-value__inputs">
     <input type="number" class="v2-combat-value__input"
            name="{{baseName}}"
            value="{{baseValue}}">
-    {{#unless baseOnly}}
+    {{#unless baseOnly}}{{#unless rollableDiv}}
     {{#if rollable}}
     <span class="v2-combat-value__final rollable"
           data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
           data-rollvalue="{{finalValue}}"
-          data-label="{{rollLabel}}">
+          data-label="{{rollLabel}}"
+          {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}>
       {{finalValue}}
     </span>
     {{else}}
     <span class="v2-combat-value__final">{{finalValue}}</span>
     {{/if}}
-    {{/unless}}
+    {{/unless}}{{/unless}}
   </div>
 </div>

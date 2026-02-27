@@ -12,27 +12,27 @@
             baseName="system.combat.attack.base.value"
             baseValue=system.combat.attack.base.value
             finalValue=system.combat.attack.final.value
-            rollable=true
             rollLabel=(localize "anima.ui.combat.baseValues.attack.title")
-            baseOnly=true}}
+            modifierType="attack"
+            rollableDiv=true}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.block.title")
             baseName="system.combat.block.base.value"
             baseValue=system.combat.block.base.value
             finalValue=system.combat.block.final.value
-            rollable=true
             rollLabel=(localize "anima.ui.combat.baseValues.block.title")
-            baseOnly=true}}
+            modifierType="defense"
+            rollableDiv=true}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.dodge.title")
             baseName="system.combat.dodge.base.value"
             baseValue=system.combat.dodge.base.value
             finalValue=system.combat.dodge.final.value
-            rollable=true
             rollLabel=(localize "anima.ui.combat.baseValues.dodge.title")
-            baseOnly=true}}
+            modifierType="defense"
+            rollableDiv=true}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.wearArmor.title")
@@ -45,10 +45,10 @@
             baseName="system.characteristics.secondaries.initiative.base.value"
             baseValue=system.characteristics.secondaries.initiative.base.value
             finalValue=system.characteristics.secondaries.initiative.final.value
-            rollable=true
             rollFormula="1d100xaturn"
             rollLabel=(localize "anima.ui.combat.weapons.initiative.final.title")
-            baseOnly=true}}
+            modifierType="initiative"
+            rollableDiv=true}}
       </div>
     </div>
   </div>

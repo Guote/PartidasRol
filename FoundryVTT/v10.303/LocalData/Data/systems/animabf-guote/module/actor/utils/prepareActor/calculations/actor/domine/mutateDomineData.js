@@ -16,7 +16,7 @@ export const mutateDomineData = async (data) => {
     mutateData(
       data,
       `domine.kiAccumulation.${accum}`,
-      Math.floor(data.general.modifiers.modFinal.attack.final.value / 20),
+      Math.floor(data.general.modifiers.modFinal.general.final.value / 20),
       1
     );
   }

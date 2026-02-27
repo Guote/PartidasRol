@@ -1,6 +1,7 @@
 import { ABFSettingsKeys } from '../../../utils/registerSettings.js';
 import ABFFoundryRoll from '../../rolls/ABFFoundryRoll.js';
 import { getFormula } from '../../rolls/utils/getFormula.js';
+import { getModifierTerms } from '../../rolls/utils/getModifierTerms.js';
 import { NoneWeaponCritic, WeaponCritic } from '../../types/combat/WeaponItemConfig.js';
 import { ABFSystemName } from '../../../animabf-guote.name.js';
 
@@ -303,8 +304,9 @@ export class ChatCombatDefenseDialog extends FormApplication {
             baseDefense = this.defenderActor.system.combat.block.base.value;
         }
 
-        const rollModifiers = [value, fatigue * 15, modifier, multipleDefensesPenalty];
-        const rollLabels = ['HD', 'Cansancio', 'Mod', 'Def. múlt'];
+        const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.defenderActor.system, "defense");
+        const rollModifiers = [value, fatigue * 15, multipleDefensesPenalty, ...modTermValues, modifier];
+        const rollLabels = ['HD', 'Cansancio', 'Def. múlt', ...modTermLabels, 'Mod'];
         let formula = getFormula({ values: rollModifiers, labels: rollLabels });
 
         if (this.modalData.defender.withoutRoll) {

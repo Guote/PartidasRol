@@ -9,7 +9,7 @@ export const mutatePsychicData = (data) => {
       "psychic.psychicProjection.imbalance.defensive",
       "psychic.psychicPotential",
     ],
-    data.general.modifiers.modFinal.general.final.value,
+    0,
     0
   );
 };

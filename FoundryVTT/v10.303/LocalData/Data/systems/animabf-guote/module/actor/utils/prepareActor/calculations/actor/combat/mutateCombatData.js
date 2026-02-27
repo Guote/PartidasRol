@@ -8,7 +8,7 @@ export const mutateCombatData = async (data) => {
       data?.activeEffects?.combat?.dodge?.final?.value) ??
     0;
   
-  mutateData(data, "combat.attack", data.general.modifiers.modFinal.attack.final.value);
-  mutateData(data, "combat.block", data.general.modifiers.modFinal.defense.final.value);
-  mutateData(data, "combat.dodge", data.general.modifiers.modFinal.defense.final.value);
+  mutateData(data, "combat.attack");
+  mutateData(data, "combat.block");
+  mutateData(data, "combat.dodge");
 };
