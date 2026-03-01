@@ -637,6 +637,46 @@ img {
   margin-left: -2rem;
 }
 
+/* Spell selector row: select + open-sheet button side by side.
+   NOTE: Foundry sets button { width: 100% } globally. Any icon-only or
+   inline button MUST use width: auto !important and display: inline-flex
+   to override that rule. See memory/styles.md for full explanation.
+   Use align-items: stretch (not center) on the row so the button grows
+   to exactly match the select height instead of trying to center by midpoint. */
+.spell-select-row {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  flex: 1;
+}
+.spell-select-row .input {
+  flex: 1;
+  min-width: 0;
+}
+.spell-select-row .open-spell-sheet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;   /* override Foundry global button { width: 100% } */
+  flex-shrink: 0;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: #e7e5da;
+  border: 1px solid #6e2917;
+  color: #6e2917;
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.spell-select-row .open-spell-sheet:hover {
+  background: #6e2917;
+  color: white;
+}
+.spell-select-row .open-spell-sheet:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .animabf-guote-loading-indicator.white {
   border-color: white transparent white transparent;
 }
@@ -3033,6 +3073,14 @@ img {
 /* Override the general .group-body .abf-button margin for preset buttons */
 .combat-attack-dialog .group-body .preset-manager .abf-button,
 .chat-combat-defense-dialog .group-body .preset-manager .abf-button {
+  margin-top: 0 !important;
+}
+
+/* Override the general .group-body .abf-button margin for spell selector button */
+.combat-attack-dialog .group-body .spell-select-row .open-spell-sheet,
+.combat-defense-dialog .group-body .spell-select-row .open-spell-sheet,
+.chat-combat-defense-dialog .group-body .spell-select-row .open-spell-sheet,
+.defense-preset-edit-dialog .group-body .spell-select-row .open-spell-sheet {
   margin-top: 0 !important;
 }
 

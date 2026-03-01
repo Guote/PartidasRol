@@ -15,15 +15,23 @@
   <option {{#if (is "eq" this.attacker.mystic.magicProjectionType 'offensive')}}selected{{/if}} value='offensive'>{{concat (localize 'anima.macros.combat.dialog.magicProjection.offensive.title') " (" this.attacker.actor.system.mystic.magicProjection.imbalance.offensive.final.value ")" }}</option>
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
 
-{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-  title=(localize 'anima.macros.combat.dialog.spell.title')
-  disabled=this.attackSent
-  inputName='attacker.mystic.spellUsed'
-}}
-  {{#each this.attacker.actor.system.mystic.spells}}
-    <option {{#if (is "eq" this._id ../this.attacker.mystic.spellUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}</option>
-  {{/each}}
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+<div class='common-titled-input'>
+  <p class='label'>{{localize 'anima.macros.combat.dialog.spell.title'}}</p>
+  <div class='spell-select-row'>
+    <select class='input' name='attacker.mystic.spellUsed' {{#if this.attackSent}}disabled{{/if}}>
+      {{#each (groupSpellsByVia this.attacker.actor.system.mystic.spells)}}
+      <optgroup label="{{this.label}}">
+        {{#each this.spells}}
+        <option {{#if (is "eq" this._id @root.attacker.mystic.spellUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}</option>
+        {{/each}}
+      </optgroup>
+      {{/each}}
+    </select>
+    <button type="button" class="abf-button open-spell-sheet" title="{{localize 'anima.macros.combat.dialog.spell.open'}}" {{#if this.attackSent}}disabled{{/if}}>
+      <i class="fas fa-book-open"></i>
+    </button>
+  </div>
+</div>
 
 {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
   title=(localize 'anima.macros.combat.dialog.spellGrade.title')

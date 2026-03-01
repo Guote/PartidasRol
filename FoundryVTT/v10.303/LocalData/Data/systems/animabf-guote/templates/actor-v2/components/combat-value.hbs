@@ -1,19 +1,22 @@
 {{!--
   Reusable Combat Value Component
-  Used for values with base input + final rollable value (Attack, Block, Magic Projection, etc.)
+  Used for values with base input + optional final display. Consistent appearance
+  in both the actor sheet and the spellbook.
 
   Parameters:
   - label: The localized label text
   - baseName: The input name for the base value
   - baseValue: The base value
-  - finalValue: The final calculated value
-  - rollable: Whether the final value is rollable (default true)
+  - finalValue: The final calculated value (shown unless baseOnly or rollableDiv)
+  - rollable: Whether the final value span is rollable (click to roll)
   - rollLabel: Label to show in roll message
   - rollFormula: Custom roll formula (default "1d100xa")
-  - modifierType: Optional modifier type for _onRoll ("general", "initiative")
+  - modifierType: Modifier type for _onRoll ("attack"|"defense"|"general"|"general-negative"|"initiative")
   - compact: Use compact styling (default false)
   - baseOnly: Show only the base input, hide the final value (default false)
-  - rollableDiv: Make the whole component div rollable instead of just the final span (hides final span)
+  - rollableDiv: Make the whole div rollable instead of just the final span (hides final span)
+  - tmpModName: Name for an optional temporary modifier input (shown between base and final)
+  - tmpModValue: Value for the temporary modifier input
 --}}
 <div class="v2-combat-value {{#if compact}}v2-combat-value--compact{{/if}} {{#if rollableDiv}}rollable{{/if}}"
      {{#if rollableDiv}}
@@ -27,6 +30,12 @@
     <input type="number" class="v2-combat-value__input"
            name="{{baseName}}"
            value="{{baseValue}}">
+    {{#if tmpModName}}
+    <span class="v2-combat-value__sep">+</span>
+    <input type="number" class="v2-combat-value__input v2-combat-value__input--mod"
+           name="{{tmpModName}}"
+           value="{{tmpModValue}}">
+    {{/if}}
     {{#unless baseOnly}}{{#unless rollableDiv}}
     {{#if rollable}}
     <span class="v2-combat-value__final rollable"

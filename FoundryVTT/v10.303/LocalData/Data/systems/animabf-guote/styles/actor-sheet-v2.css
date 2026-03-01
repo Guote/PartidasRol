@@ -824,7 +824,9 @@
   flex-wrap: wrap;
 }
 
-.actor-sheet-v2 .v2-combat-value {
+/* Shared base — applies in both actor sheet and spellbook */
+.actor-sheet-v2 .v2-combat-value,
+.spellbook .v2-combat-value {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -835,19 +837,22 @@
   min-width: 70px;
 }
 
-.actor-sheet-v2 .v2-combat-value__label {
+.actor-sheet-v2 .v2-combat-value__label,
+.spellbook .v2-combat-value__label {
   font-size: var(--font-size-2xs);
   text-transform: uppercase;
   color: var(--abf-text-muted);
 }
 
-.actor-sheet-v2 .v2-combat-value__inputs {
+.actor-sheet-v2 .v2-combat-value__inputs,
+.spellbook .v2-combat-value__inputs {
   display: flex;
   align-items: center;
   gap: 2px;
 }
 
-.actor-sheet-v2 .v2-combat-value__input {
+.actor-sheet-v2 .v2-combat-value__input,
+.spellbook .v2-combat-value__input {
   width: 35px;
   text-align: center;
   font-size: var(--font-size-sm);
@@ -857,10 +862,50 @@
   border-radius: var(--radius-sm);
 }
 
-.actor-sheet-v2 .v2-combat-value__final {
+.actor-sheet-v2 .v2-combat-value__sep,
+.spellbook .v2-combat-value__sep {
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  padding: 0 1px;
+}
+
+.actor-sheet-v2 .v2-combat-value__input--mod,
+.spellbook .v2-combat-value__input--mod {
+  width: 28px;
+  font-size: var(--font-size-xs);
+}
+
+.actor-sheet-v2 .v2-combat-value__final,
+.spellbook .v2-combat-value__final {
   font-size: var(--font-size-base);
   font-weight: bold;
   color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-combat-value.rollable,
+.spellbook .v2-combat-value.rollable {
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.actor-sheet-v2 .v2-combat-value.rollable:hover,
+.spellbook .v2-combat-value.rollable:hover {
+  background: var(--abf-secondary);
+  border-color: var(--abf-primary-dark);
+}
+
+.actor-sheet-v2 .v2-combat-value__final.rollable,
+.spellbook .v2-combat-value__final.rollable {
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 1px 4px;
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-combat-value__final.rollable:hover,
+.spellbook .v2-combat-value__final.rollable:hover {
+  background: var(--abf-primary);
+  color: var(--abf-text-light);
 }
 
 /* Combat tab: 5-column equal grid, no final value shown */

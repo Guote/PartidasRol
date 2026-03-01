@@ -126,6 +126,14 @@ export class CombatDefenseDialog extends FormApplication {
   }
   activateListeners(html) {
     super.activateListeners(html);
+
+    // Open selected spell sheet
+    html.find(".open-spell-sheet").click(() => {
+      const spellId = html.find('[name="defender.mystic.spellUsed"]').val();
+      if (!spellId) return;
+      this.defenderActor.items.get(spellId)?.sheet?.render(true);
+    });
+
     html.find(".send-defense").click((e) => {
       const {
         fatigue,

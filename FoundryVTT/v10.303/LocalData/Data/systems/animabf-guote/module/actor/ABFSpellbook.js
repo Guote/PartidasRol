@@ -1,4 +1,8 @@
 import { ABFSystemName } from "../../animabf-guote.name.js";
+import { getFormula } from "../rolls/utils/getFormula.js";
+import { getModifierTerms } from "../rolls/utils/getModifierTerms.js";
+import ABFFoundryRoll from "../rolls/ABFFoundryRoll.js";
+import { openModDialog } from "../utils/dialogs/openSimpleInputDialog.js";
 
 /**
  * A dedicated spellbook window for viewing and managing spells.
@@ -11,7 +15,6 @@ export default class ABFSpellbook extends Application {
     this.actor = actor;
     this.expandedSpells = new Set();
     this.activeVia = null; // Will be set to first available via, or 'overview'
-    this.actExpanded = false; // Track ACT alternative visibility
   }
 
   /**
@@ -38,7 +41,7 @@ export default class ABFSpellbook extends Application {
   }
 
   /**
-   * Define the vias in display order
+   * Define the vias in display order (primary spheres first, then subvias)
    */
   static get VIAS() {
     return [
@@ -48,8 +51,26 @@ export default class ABFSpellbook extends Application {
       'fire', 'water',
       'air', 'earth',
       'essence',
-      'illusion', 'necromancy'
+      'illusion', 'necromancy',
+      // Subvias (minor paths that can be linked to a primary sphere)
+      'blood', 'chaos', 'death', 'dreams', 'emptiness',
+      'knowledge', 'literae', 'musical', 'nobility', 'peace',
+      'sin', 'threshold', 'time', 'war'
     ];
+  }
+
+  /**
+   * Primary sphere vias (have sphere levels in magicLevel.spheres)
+   */
+  static get SPHERE_VIAS() {
+    return ['light', 'darkness', 'fire', 'water', 'earth', 'air', 'creation', 'destruction', 'essence', 'illusion', 'necromancy'];
+  }
+
+  /**
+   * Minor (sub)via keys — vias that can be selected as a subpath of a primary sphere
+   */
+  static get SUBVIAS() {
+    return ['blood', 'chaos', 'death', 'dreams', 'emptiness', 'knowledge', 'literae', 'musical', 'nobility', 'peace', 'sin', 'threshold', 'time', 'war'];
   }
 
   /**
@@ -87,10 +108,25 @@ export default class ABFSpellbook extends Application {
   }
 
   /**
-   * Get list of vias that have at least one spell
+   * Get list of vias that should show as tabs.
+   * Always includes freeAccess. Includes any subvia assigned to a sphere
+   * (even if it has no spells yet). Includes any via with spells.
    */
   getAvailableVias(spellsByVia) {
-    return ABFSpellbook.VIAS.filter(via => spellsByVia[via]?.length > 0);
+    // Collect subvias actively assigned to a primary sphere
+    const assignedSubvias = new Set();
+    const spheres = this.actor.system.mystic?.magicLevel?.spheres || {};
+    for (const sphere of ABFSpellbook.SPHERE_VIAS) {
+      const subpath = spheres[sphere]?.subpath;
+      if (subpath) assignedSubvias.add(subpath);
+    }
+
+    return ABFSpellbook.VIAS.filter(via => {
+      if (via === 'freeAccess') return true;           // Always show
+      if (spellsByVia[via]?.length > 0) return true;  // Has spells
+      if (assignedSubvias.has(via)) return true;       // Assigned subpath
+      return false;
+    });
   }
 
   async getData(options = {}) {
@@ -159,6 +195,24 @@ export default class ABFSpellbook extends Application {
     // Get spell maintenances
     const spellMaintenances = this.actor.system.mystic?.spellMaintenances || [];
 
+    // Build subvia options for the sphere selectors
+    const subviaOptions = [
+      { value: '', label: '—' },
+      ...ABFSpellbook.SUBVIAS.map(via => ({
+        value: via,
+        label: game.i18n.localize(`anima.ui.mystic.spell.via.${via}.title`)
+      }))
+    ];
+
+    // Build sphere rows in display order for the template
+    const spheres = mystic.magicLevel?.spheres || {};
+    const sphereRows = ABFSpellbook.SPHERE_VIAS.map(key => ({
+      key,
+      label: game.i18n.localize(`anima.ui.mystic.magicLevel.spheres.${key}.title`),
+      value: spheres[key]?.value || 0,
+      subpath: spheres[key]?.subpath || ''
+    }));
+
     return {
       ...data,
       actor: this.actor,
@@ -172,10 +226,11 @@ export default class ABFSpellbook extends Application {
       overviewTabId: ABFSpellbook.OVERVIEW_TAB,
       viaLabels,
       gradeLabels,
-      actExpanded: this.actExpanded,
       totalSpells: this.actor.items.filter(i => i.type === 'spell').length,
       expandedCount: this.expandedSpells.size,
-      allExpanded: this.expandedSpells.size === this.actor.items.filter(i => i.type === 'spell').length
+      allExpanded: this.expandedSpells.size === this.actor.items.filter(i => i.type === 'spell').length,
+      subviaOptions,
+      sphereRows
     };
   }
 
@@ -261,8 +316,8 @@ export default class ABFSpellbook extends Application {
       await this._handleImportSpells();
     });
 
-    // Form input changes (save to actor) — overview form + header resources
-    html.find('.spellbook-overview input, .spellbook-header__resources input').on('change', async ev => {
+    // Form input/select changes (save to actor) — overview form + header resources
+    html.find('.spellbook-overview input, .spellbook-overview select, .spellbook-header__resources input').on('change', async ev => {
       const input = ev.currentTarget;
       const name = input.name;
       const value = input.type === 'number' ? Number(input.value) : input.value;
@@ -270,17 +325,6 @@ export default class ABFSpellbook extends Application {
       if (name) {
         await this.actor.update({ [name]: value });
       }
-    });
-
-    // ACT toggle
-    html.find('[data-action="toggle-act"]').click(ev => {
-      ev.stopPropagation();
-      this.actExpanded = !this.actExpanded;
-      const alternative = html.find('.spellbook-act__alternative');
-      alternative.attr('data-collapsed', !this.actExpanded);
-      const icon = ev.currentTarget.querySelector('i');
-      icon.classList.toggle('fa-chevron-down', !this.actExpanded);
-      icon.classList.toggle('fa-chevron-up', this.actExpanded);
     });
 
     // Add maintenance
@@ -308,29 +352,99 @@ export default class ABFSpellbook extends Application {
       this.render(false);
     });
 
-    // Rollable clicks (for magic projections)
-    html.find('.v2-combat-value__final.rollable').click(async ev => {
-      const rollValue = Number(ev.currentTarget.dataset.rollvalue) || 0;
-      const label = ev.currentTarget.dataset.label || '';
-      const roll = new Roll('1d100xa + @mod', { mod: rollValue });
-      await roll.evaluate({ async: true });
+    // Drag & drop spell items onto the spellbook window
+    html[0].addEventListener('dragover', ev => {
+      if (ev.dataTransfer.types.includes('text/plain')) ev.preventDefault();
+    });
+    html[0].addEventListener('drop', async ev => {
+      await this._onDropSpell(ev);
+    });
+
+    // Rollable clicks (rollableDiv divs — e.g. magic projections)
+    html.find('.v2-combat-value.rollable').click(async ev => {
+      if (ev.target.tagName === 'INPUT') return;
+      const element = ev.currentTarget;
+      const { dataset } = element;
+      if (!dataset.roll) return;
+      const mod = await openModDialog();
+      const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, dataset.modifierType);
+      const formula = getFormula({
+        dice: dataset.roll,
+        values: [dataset.rollvalue, ...modValues, mod],
+        labels: [dataset.label, ...modLabels, 'Mod'],
+      });
+      const roll = new ABFFoundryRoll(formula, this.actor.system);
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
+        flavor: dataset.label,
       });
     });
   }
 
   /**
-   * Handle import spells action - imports spells from compendium based on sphere levels
+   * Handle drag & drop of spell items onto the spellbook window.
+   * Creates the spell on the actor and navigates to its via tab.
+   */
+  async _onDropSpell(event) {
+    let data;
+    try {
+      data = JSON.parse(event.dataTransfer.getData('text/plain'));
+    } catch (e) {
+      return;
+    }
+
+    if (data.type !== 'Item') return;
+
+    const item = await Item.fromDropData(data);
+    if (!item || item.type !== 'spell') return;
+
+    // Don't re-add if the spell is already on this actor
+    if (item.parent?.id === this.actor.id) return;
+
+    // Duplicate check
+    const isDuplicate = this.actor.items.some(i => i.type === 'spell' && i.name === item.name);
+    if (isDuplicate) {
+      ui.notifications.warn(
+        game.i18n.format('anima.ui.mystic.importSpells.alreadyImported', { name: item.name })
+      );
+      return;
+    }
+
+    await this.actor.createEmbeddedDocuments('Item', [item.toObject()]);
+
+    // Navigate to the spell's via tab so the user sees it
+    const via = item.system.via?.value;
+    if (via && ABFSpellbook.VIAS.includes(via)) {
+      this.activeVia = via;
+    }
+
+    this.render(false);
+  }
+
+  /**
+   * Handle import spells action - imports spells from compendium based on sphere levels and selected subpaths
    */
   async _handleImportSpells() {
-    // Define sphere-to-via mapping (only the 11 direct sphere matches)
-    const sphereVias = ['air', 'creation', 'darkness', 'destruction', 'earth',
-                        'essence', 'fire', 'illusion', 'light', 'necromancy', 'water'];
+    const sphereVias = ABFSpellbook.SPHERE_VIAS;
 
     // Get character's sphere levels
     const spheres = this.actor.system.mystic.magicLevel.spheres;
+
+    // Build a map: via → max level to import
+    // A via can be either a primary sphere or a selected subpath of a sphere
+    const viaLevelMap = {};
+    for (const sphere of sphereVias) {
+      const sphereLevel = spheres[sphere]?.value || 0;
+      if (sphereLevel > 0) {
+        // Primary sphere
+        viaLevelMap[sphere] = Math.max(viaLevelMap[sphere] || 0, sphereLevel);
+        // Subpath (if any selected)
+        const subpath = spheres[sphere]?.subpath || '';
+        if (subpath) {
+          viaLevelMap[subpath] = Math.max(viaLevelMap[subpath] || 0, sphereLevel);
+        }
+      }
+    }
 
     // Get existing spell names to avoid duplicates
     const existingSpellNames = new Set(
@@ -352,12 +466,12 @@ export default class ABFSpellbook extends Application {
       const via = spell.system.via?.value;
       const level = spell.system.level?.value || 0;
 
-      // Check if via is one of the sphere vias
-      if (!sphereVias.includes(via)) return false;
+      // freeAccess spells are not imported here
+      if (!via || via === 'freeAccess') return false;
 
-      // Check if character has sufficient level in that sphere
-      const sphereLevel = spheres[via]?.value || 0;
-      if (level > sphereLevel) return false;
+      // Check if this via is eligible (primary or subpath) and level is within range
+      const maxLevel = viaLevelMap[via];
+      if (maxLevel === undefined || level > maxLevel) return false;
 
       // Check if spell already exists
       if (existingSpellNames.has(spell.name)) return false;

@@ -88,6 +88,13 @@ export class DefensePresetEditDialog extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Open selected spell sheet
+        html.find('.open-spell-sheet').click(() => {
+            const spellId = html.find('[name="preset.mystic.spellUsed"]').val();
+            if (!spellId) return;
+            this.actor.items.get(spellId)?.sheet?.render(true);
+        });
+
         const presetInput = html.find('.preset-name-input');
         const saveButton = html.find('.save-defense-preset-edit');
 

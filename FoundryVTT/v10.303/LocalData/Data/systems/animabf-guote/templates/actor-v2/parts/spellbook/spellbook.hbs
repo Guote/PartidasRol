@@ -85,36 +85,17 @@
     {{#if isOverviewTab}}
       {{!-- Overview Tab Content --}}
       <form class="spellbook-overview" autocomplete="off">
-        {{!-- Combat Stats Row: ACT + Magic Projections + Innate Magic --}}
+        {{!-- Combat Stats Row: Projections + ACT + Innate Magic --}}
         <div class="spellbook-combat-row">
-          {{!-- ACT (Collapsible) --}}
-          <div class="spellbook-act">
-            <div class="spellbook-act__primary">
-              <span class="spellbook-act__label">{{localize "anima.ui.mystic.act.title"}}</span>
-              <span class="spellbook-act__value">{{mystic.act.main.final.value}}</span>
-              {{#if mystic.act.alternative.final.value}}
-              <button type="button" class="spellbook-act__toggle" data-action="toggle-act">
-                <i class="fas fa-chevron-down"></i>
-              </button>
-              {{/if}}
-            </div>
-            {{#if mystic.act.alternative.final.value}}
-            <div class="spellbook-act__alternative" data-collapsed="true">
-              <span class="spellbook-act__label">{{localize "anima.ui.mystic.act.alternative.title"}}</span>
-              <span class="spellbook-act__value">{{mystic.act.alternative.final.value}}</span>
-            </div>
-            {{/if}}
-          </div>
-
           {{!-- Magic Projection Offensive --}}
           {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
               label=(localize "anima.ui.mystic.magicProjection.offensive.title")
               baseName="system.mystic.magicProjection.imbalance.offensive.base.value"
               baseValue=mystic.magicProjection.imbalance.offensive.base.value
               finalValue=mystic.magicProjection.imbalance.offensive.final.value
-              rollable=true
               rollLabel=(localize "anima.ui.mystic.magicProjection.offensive.title")
               modifierType="general-negative"
+              rollableDiv=true
           }}
 
           {{!-- Magic Projection Defensive --}}
@@ -123,10 +104,28 @@
               baseName="system.mystic.magicProjection.imbalance.defensive.base.value"
               baseValue=mystic.magicProjection.imbalance.defensive.base.value
               finalValue=mystic.magicProjection.imbalance.defensive.final.value
-              rollable=true
               rollLabel=(localize "anima.ui.mystic.magicProjection.defensive.title")
               modifierType="general-negative"
+              rollableDiv=true
           }}
+
+          {{!-- ACT (editable) --}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+              label=(localize "anima.ui.mystic.act.title")
+              baseName="system.mystic.act.main.base.value"
+              baseValue=mystic.act.main.base.value
+              finalValue=mystic.act.main.final.value
+          }}
+
+          {{!-- Alternative ACT (only if set) --}}
+          {{#if mystic.act.alternative.base.value}}
+          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+              label=(localize "anima.ui.mystic.act.alternative.title")
+              baseName="system.mystic.act.alternative.base.value"
+              baseValue=mystic.act.alternative.base.value
+              finalValue=mystic.act.alternative.final.value
+          }}
+          {{/if}}
 
           {{!-- Innate Magic --}}
           <div class="spellbook-innate">
@@ -137,101 +136,13 @@
           </div>
         </div>
 
-        {{!-- Spheres (Nivel de Magia) --}}
-        <div class="spellbook-spheres spellbook-spheres--compact">
-          <div class="spellbook-spheres__header">
-            <h4 class="spellbook-spheres__title">{{localize "anima.ui.mystic.magicLevel.title"}}</h4>
-            <div class="spellbook-spheres__totals-inline">
-              <span class="spellbook-spheres__total">
-                <span class="spellbook-spheres__total-label">{{localize "anima.ui.mystic.magicLevel.total.title"}}</span>
-                <span class="spellbook-spheres__total-value">{{mystic.magicLevel.total.value}}</span>
-              </span>
-              <span class="spellbook-spheres__total">
-                <span class="spellbook-spheres__total-label">{{localize "anima.ui.mystic.magicLevel.used.title"}}</span>
-                <span class="spellbook-spheres__total-value">{{mystic.magicLevel.used.value}}</span>
-              </span>
-            </div>
-            <button type="button" class="spellbook-btn spellbook-btn--small" data-action="import-spells">
-              <i class="fas fa-download"></i>
-              {{localize "anima.ui.mystic.importSpells.button"}}
-            </button>
-          </div>
-          <div class="spellbook-spheres__grid spellbook-spheres__grid--compact">
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.light.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.light.value"
-                     value="{{mystic.magicLevel.spheres.light.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.darkness.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.darkness.value"
-                     value="{{mystic.magicLevel.spheres.darkness.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.fire.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.fire.value"
-                     value="{{mystic.magicLevel.spheres.fire.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.water.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.water.value"
-                     value="{{mystic.magicLevel.spheres.water.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.earth.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.earth.value"
-                     value="{{mystic.magicLevel.spheres.earth.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.air.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.air.value"
-                     value="{{mystic.magicLevel.spheres.air.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.creation.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.creation.value"
-                     value="{{mystic.magicLevel.spheres.creation.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.destruction.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.destruction.value"
-                     value="{{mystic.magicLevel.spheres.destruction.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.essence.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.essence.value"
-                     value="{{mystic.magicLevel.spheres.essence.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.illusion.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.illusion.value"
-                     value="{{mystic.magicLevel.spheres.illusion.value}}">
-            </div>
-            <div class="spellbook-sphere spellbook-sphere--editable">
-              <span class="spellbook-sphere__label">{{localize "anima.ui.mystic.magicLevel.spheres.necromancy.title"}}</span>
-              <input type="number" class="spellbook-sphere__input"
-                     name="system.mystic.magicLevel.spheres.necromancy.value"
-                     value="{{mystic.magicLevel.spheres.necromancy.value}}">
-            </div>
-          </div>
-        </div>
-
         {{!-- Active Spells / Daily Maintenances --}}
         <div class="spellbook-maintenances">
           <div class="spellbook-maintenances__header">
             <h4 class="spellbook-maintenances__title">{{localize "anima.ui.mystic.spellMaintenances.title"}}</h4>
-            <button type="button" class="spellbook-btn spellbook-btn--small" data-action="add-maintenance">
+            <button type="button" class="spellbook-btn spellbook-btn--action" data-action="add-maintenance">
               <i class="fas fa-plus"></i>
+              {{localize "anima.ui.mystic.spellMaintenances.add"}}
             </button>
           </div>
           <div class="spellbook-maintenances__list">
@@ -252,6 +163,49 @@
             {{else}}
             <div class="spellbook-maintenances__empty">
               <span>{{localize "anima.ui.mystic.spellMaintenances.noMaintenances"}}</span>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+
+        
+        {{!-- Spheres (Nivel de Magia) --}}
+        <div class="spellbook-spheres spellbook-spheres--compact">
+          <div class="spellbook-spheres__header">
+            <h4 class="spellbook-spheres__title">{{localize "anima.ui.mystic.magicLevel.title"}}</h4>
+            <div class="spellbook-spheres__totals-inline">
+              <span class="spellbook-spheres__total">
+                <span class="spellbook-spheres__total-label">{{localize "anima.ui.mystic.magicLevel.total.title"}}</span>
+                <input type="number" class="spellbook-spheres__total-input"
+                       name="system.mystic.magicLevel.total.value"
+                       value="{{mystic.magicLevel.total.value}}">
+              </span>
+              <span class="spellbook-spheres__total">
+                <span class="spellbook-spheres__total-label">{{localize "anima.ui.mystic.magicLevel.used.title"}}</span>
+                <input type="number" class="spellbook-spheres__total-input"
+                       name="system.mystic.magicLevel.used.value"
+                       value="{{mystic.magicLevel.used.value}}">
+              </span>
+            </div>
+            <button type="button" class="spellbook-btn spellbook-btn--action" data-action="import-spells">
+              <i class="fas fa-download"></i>
+              {{localize "anima.ui.mystic.importSpells.button"}}
+            </button>
+          </div>
+          <div class="spellbook-spheres__grid spellbook-spheres__grid--compact">
+            {{#each sphereRows as |row|}}
+            <div class="spellbook-sphere spellbook-sphere--editable">
+              <span class="spellbook-sphere__label">{{row.label}}</span>
+              <input type="number" class="spellbook-sphere__input"
+                     name="system.mystic.magicLevel.spheres.{{row.key}}.value"
+                     value="{{row.value}}">
+              <select class="spellbook-sphere__subpath"
+                      name="system.mystic.magicLevel.spheres.{{row.key}}.subpath"
+                      title="{{localize 'anima.ui.mystic.spell.via.title'}}">
+                {{#each ../subviaOptions as |opt|}}
+                <option value="{{opt.value}}" {{#if (eq opt.value ../row.subpath)}}selected{{/if}}>{{opt.label}}</option>
+                {{/each}}
+              </select>
             </div>
             {{/each}}
           </div>

@@ -199,7 +199,7 @@
 }
 
 .spellbook .spellbook-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
@@ -210,10 +210,25 @@
   font-size: var(--font-size-xs);
   cursor: pointer;
   transition: background 0.15s ease;
+  width: auto;
+  flex-shrink: 0;
 }
 
 .spellbook .spellbook-btn:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* Buttons on light backgrounds (in-content sections) */
+.spellbook .spellbook-btn--action {
+  background: var(--abf-primary);
+  border-color: var(--abf-primary-dark);
+  color: var(--abf-text-light);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-2xs);
+}
+
+.spellbook .spellbook-btn--action:hover {
+  background: var(--abf-primary-light);
 }
 
 /* --------------------------------
@@ -791,12 +806,7 @@
 
 .spellbook .spellbook-combat-row .v2-combat-value {
   flex: 1;
-  min-width: 140px;
-  background: white;
-  border: 1px solid var(--abf-border-light);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  box-shadow: var(--shadow-sm);
+  min-width: 120px;
 }
 
 /* ACT Collapsible */
@@ -931,17 +941,36 @@
   font-weight: bold;
 }
 
+.spellbook .spellbook-spheres__total-input {
+  width: 42px;
+  padding: 1px 2px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--abf-text-light);
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  text-align: center;
+}
+
+.spellbook .spellbook-spheres__total-input:focus {
+  outline: none;
+  border-color: var(--abf-secondary);
+}
+
 .spellbook .spellbook-spheres__grid--compact {
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: var(--space-2);
 }
 
 .spellbook .spellbook-sphere--editable {
   padding: var(--space-2);
+  flex-wrap: wrap;
+  gap: var(--space-1);
 }
 
 .spellbook .spellbook-sphere__input {
-  width: 40px;
+  width: 38px;
   padding: var(--space-1);
   border: 1px solid var(--abf-border-light);
   border-radius: var(--radius-sm);
@@ -949,9 +978,26 @@
   font-weight: bold;
   text-align: center;
   color: var(--abf-primary);
+  flex-shrink: 0;
 }
 
 .spellbook .spellbook-sphere__input:focus {
+  outline: none;
+  border-color: var(--abf-primary);
+}
+
+.spellbook .spellbook-sphere__subpath {
+  width: 100%;
+  padding: 1px var(--space-1);
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  background: white;
+  cursor: pointer;
+}
+
+.spellbook .spellbook-sphere__subpath:focus {
   outline: none;
   border-color: var(--abf-primary);
 }
@@ -1105,50 +1151,4 @@
   color: #7b1fa2;
 }
 
-.spellbook .v2-combat-value {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.spellbook .v2-combat-value__label {
-  font-size: var(--font-size-xs);
-  color: var(--abf-text-muted);
-  font-weight: 500;
-}
-
-.spellbook .v2-combat-value__inputs {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.spellbook .v2-combat-value__input {
-  width: 50px;
-  padding: var(--space-2);
-  border: 1px solid var(--abf-border-light);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  text-align: center;
-}
-
-.spellbook .v2-combat-value__final {
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  color: var(--abf-primary);
-  min-width: 40px;
-  text-align: center;
-  padding: var(--space-2);
-  background: var(--abf-secondary-light);
-  border-radius: var(--radius-sm);
-}
-
-.spellbook .v2-combat-value__final.rollable {
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.spellbook .v2-combat-value__final.rollable:hover {
-  background: var(--abf-primary);
-  color: var(--abf-text-light);
-}
+/* v2-combat-value base styles are defined in actor-sheet-v2.css (shared selectors) */

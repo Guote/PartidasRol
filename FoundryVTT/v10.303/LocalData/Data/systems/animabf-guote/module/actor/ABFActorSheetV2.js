@@ -981,6 +981,24 @@ export default class ABFActorSheetV2 extends ActorSheet {
       return super._onDrop(event);
     }
 
+    // Handle spell item drops — create as embedded document
+    if (data.type === 'Item') {
+      const item = await Item.fromDropData(data);
+      if (item?.type === 'spell' && item.parent?.id !== this.actor.id) {
+        const isDuplicate = this.actor.items.some(i => i.type === 'spell' && i.name === item.name);
+        if (isDuplicate) {
+          ui.notifications.warn(
+            game.i18n.format('anima.ui.mystic.importSpells.alreadyImported', { name: item.name })
+          );
+          return;
+        }
+        await this.actor.createEmbeddedDocuments('Item', [item.toObject()]);
+        return;
+      }
+      // Non-spell items fall through to default handling
+      return super._onDrop(event);
+    }
+
     // Check if dropping an Actor onto the summoning tab area
     if (data.type === 'Actor') {
       const target = event.target.closest('.v2-tab-summoning');

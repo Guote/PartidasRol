@@ -304,17 +304,17 @@
         },
         "magicLevel": {
           "spheres": {
-            "essence": { "value": 0 },
-            "water": { "value": 0 },
-            "earth": { "value": 0 },
-            "creation": { "value": 0 },
-            "darkness": { "value": 0 },
-            "necromancy": { "value": 0 },
-            "light": { "value": 0 },
-            "destruction": { "value": 0 },
-            "air": { "value": 0 },
-            "fire": { "value": 0 },
-            "illusion": { "value": 0 }
+            "essence": { "value": 0, "subpath": "" },
+            "water": { "value": 0, "subpath": "" },
+            "earth": { "value": 0, "subpath": "" },
+            "creation": { "value": 0, "subpath": "" },
+            "darkness": { "value": 0, "subpath": "" },
+            "necromancy": { "value": 0, "subpath": "" },
+            "light": { "value": 0, "subpath": "" },
+            "destruction": { "value": 0, "subpath": "" },
+            "air": { "value": 0, "subpath": "" },
+            "fire": { "value": 0, "subpath": "" },
+            "illusion": { "value": 0, "subpath": "" }
           },
           "total": { "value": 0 },
           "used": { "value": 0 }

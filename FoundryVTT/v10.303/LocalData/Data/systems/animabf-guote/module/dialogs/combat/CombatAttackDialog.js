@@ -161,6 +161,13 @@ export class CombatAttackDialog extends FormApplication {
   activateListeners(html) {
     super.activateListeners(html);
 
+    // Open selected spell sheet
+    html.find(".open-spell-sheet").click(() => {
+      const spellId = html.find('[name="attacker.mystic.spellUsed"]').val();
+      if (!spellId) return;
+      this.attackerActor.items.get(spellId)?.sheet?.render(true);
+    });
+
     // Preset name input handler - track value and update button disabled state
     const presetInput = html.find(".preset-name-input");
     const saveButton = html.find(".save-attack-preset");
