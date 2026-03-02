@@ -167,7 +167,7 @@
 }
 
 .actor-sheet-v2 .v2-header__name {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: bold;
   background: transparent;
   border: none;
@@ -175,6 +175,9 @@
   color: var(--abf-text-light);
   padding: 0;
   width: 65px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .actor-sheet-v2 .v2-header__name:focus {
@@ -489,9 +492,10 @@
 
 .actor-sheet-v2 .v2-header__ta {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: var(--space-1);
   font-size: var(--font-size-xs);
+  overflow: hidden;
 }
 
 .actor-sheet-v2 .v2-header__ta-item {
@@ -499,7 +503,7 @@
   align-items: center;
   gap: 2px;
   background: rgba(0, 0, 0, 0.25);
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1) var(--space-1);
   border-radius: var(--radius-sm);
   white-space: nowrap;
 }

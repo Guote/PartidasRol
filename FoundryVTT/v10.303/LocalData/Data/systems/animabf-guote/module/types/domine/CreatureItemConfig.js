@@ -20,21 +20,14 @@ export const CreatureItemConfig = ABFItemConfigFactory({
             name,
             type: ABFItems.CREATURE,
             system: {
-                earth: {
-                    value: false
-                },
-                fire: {
-                    value: false
-                },
-                metal: {
-                    value: false
-                },
-                water: {
-                    value: false
-                },
-                wood: {
-                    value: false
-                }
+                actorId: { value: '' },
+                actorUuid: { value: '' },
+                kiSealCost: { value: '' },
+                earth: { value: false },
+                fire: { value: false },
+                metal: { value: false },
+                water: { value: false },
+                wood: { value: false }
             }
         });
     }

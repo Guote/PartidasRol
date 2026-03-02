@@ -370,7 +370,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
     });
     html.find('.incarnation-summon-bonus').click((e) => e.stopPropagation());
 
-    // Click on creature summon link to open linked actor sheet
+    // Click on creature summon link to open linked actor sheet (summoning tab)
     html.find('.creature-summon-link').click(async (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -381,6 +381,44 @@ export default class ABFActorSheetV2 extends ActorSheet {
           actor.sheet.render(true);
         } else {
           ui.notifications.warn(game.i18n.localize('anima.ui.mystic.creatureSummon.notFound'));
+        }
+      }
+    });
+
+    // Click on ki creature link to open linked actor sheet (domine tab)
+    html.find('.ki-creature-link').click(async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const uuid = e.currentTarget.dataset.uuid;
+      if (uuid) {
+        const actor = await fromUuid(uuid);
+        if (actor?.sheet) {
+          actor.sheet.render(true);
+        } else {
+          ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiCreatures.notFound'));
+        }
+      }
+    });
+
+    // Trigger the Ki accumulation macro from the domine tab
+    html.find('[data-on-click="ki-accumulation-macro"]').click((e) => {
+      e.preventDefault();
+      const macro = game.macros.find(m => m.name === 'Mantenimiento: Ki');
+      if (macro) {
+        macro.execute();
+      } else {
+        ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiAccumulation.macro.notFound'));
+      }
+    });
+
+    // Click on technique row to open technique item sheet (domine tab)
+    html.find('.technique-row').click((e) => {
+      e.preventDefault();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (itemId) {
+        const item = this.actor.items.get(itemId);
+        if (item?.sheet) {
+          item.sheet.render(true);
         }
       }
     });
@@ -1001,8 +1039,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
     // Check if dropping an Actor onto the summoning tab area
     if (data.type === 'Actor') {
-      const target = event.target.closest('.v2-tab-summoning');
-      if (target) {
+      const summoningTarget = event.target.closest('.v2-tab-summoning');
+      if (summoningTarget) {
         event.preventDefault();
         const droppedActor = await fromUuid(data.uuid);
         if (!droppedActor) {
@@ -1024,6 +1062,40 @@ export default class ABFActorSheetV2 extends ActorSheet {
             actorId: { value: droppedActor.id },
             actorUuid: { value: data.uuid },
             notes: { value: '' }
+          }
+        });
+        return;
+      }
+
+      // Check if dropping an Actor onto the domine tab area
+      const domineTarget = event.target.closest('.v2-tab-domine');
+      if (domineTarget) {
+        event.preventDefault();
+        const droppedActor = await fromUuid(data.uuid);
+        if (!droppedActor) {
+          ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiCreatures.notFound'));
+          return;
+        }
+
+        // Check for duplicates
+        const existingCreatures = (this.actor.system.domine?.creatures || []);
+        if (existingCreatures.some(c => c.system?.actorUuid?.value === data.uuid)) {
+          ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiCreatures.alreadyLinked'));
+          return;
+        }
+
+        await this.actor.createInnerItem({
+          name: droppedActor.name,
+          type: ABFItems.CREATURE,
+          system: {
+            actorId: { value: droppedActor.id },
+            actorUuid: { value: data.uuid },
+            kiSealCost: { value: '' },
+            earth: { value: false },
+            fire: { value: false },
+            metal: { value: false },
+            water: { value: false },
+            wood: { value: false }
           }
         });
         return;
