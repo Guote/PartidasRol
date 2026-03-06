@@ -47,87 +47,130 @@
   <div class="v2-card">
     <div class="v2-card__header">
       <span>{{localize "anima.ui.settings.resourceVisibility.title"}}</span>
+      <button type="button" class="v2-barbrawl-btn" data-action="configurar-barras-brawl"
+        title="Aplicar barras BarBrawl al actor y todos sus tokens">
+        <i class="fas fa-sync-alt"></i> Barras al token
+      </button>
     </div>
     <div class="v2-card__body">
-      <p class="v2-text-muted" style="font-size: var(--font-size-xs); margin-bottom: var(--space-3);">
-        {{localize "anima.ui.settings.resourceVisibility.description"}}
-      </p>
+      <div class="v2-res-vis-legend">
+        <span>Ficha</span>
+        <span>Token</span>
+      </div>
       <div class="v2-grid v2-grid--3" style="gap: var(--space-2);">
-        {{!-- HP + Sacrificed Life --}}
-        <div class="v2-res-toggle-group">
-          <label class="v2-checkbox-label">
-            <input type="checkbox"
-                   name="system.ui.resourceVisibility.hp.value"
-                   {{checked system.ui.resourceVisibility.hp.value}}>
-            <i class="fas fa-heart" style="color: var(--abf-hp);"></i> PV
-          </label>
-          <label class="v2-checkbox-label v2-checkbox-label--sub">
-            <input type="checkbox"
-                   name="system.ui.resourceVisibility.sacrificedLife.value"
-                   {{checked system.ui.resourceVisibility.sacrificedLife.value}}>
-            <i class="fas fa-heart-broken" style="color: var(--abf-hp);"></i> Vida Sacrificada
-          </label>
+        {{!-- PV --}}
+        <div class="v2-res-vis-entry">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-heart" style="color: var(--abf-hp);"></i> PV</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.hp.value" {{checked system.ui.resourceVisibility.hp.value}} title="Visibilidad en ficha">
+            <input type="checkbox" name="system.ui.tokenBarVisibility.hp.value" {{checked system.ui.tokenBarVisibility.hp.value}} title="Barra en token">
+          </div>
         </div>
-
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.fatigue.value"
-                 {{checked system.ui.resourceVisibility.fatigue.value}}>
-          <i class="fas fa-bolt" style="color: var(--abf-fatigue);"></i> Cansancio
-        </label>
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.destiny.value"
-                 {{checked system.ui.resourceVisibility.destiny.value}}>
-          <i class="fas fa-star" style="color: var(--abf-destiny);"></i> Destino
-        </label>
-
-        {{!-- Zeon + Zeon Accumulated --}}
-        <div class="v2-res-toggle-group">
-          <label class="v2-checkbox-label">
-            <input type="checkbox"
-                   name="system.ui.resourceVisibility.zeon.value"
-                   {{checked system.ui.resourceVisibility.zeon.value}}>
-            <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon
-          </label>
-          <label class="v2-checkbox-label v2-checkbox-label--sub">
-            <input type="checkbox"
-                   name="system.ui.resourceVisibility.zeonAccumulated.value"
-                   {{checked system.ui.resourceVisibility.zeonAccumulated.value}}>
-            <i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon Acum.
-          </label>
+        {{!-- Vida Sacrificada --}}
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-heart-broken" style="color: var(--abf-hp);"></i> Vida Sacrif.</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.sacrificedLife.value" {{checked system.ui.resourceVisibility.sacrificedLife.value}} title="Visibilidad en ficha">
+          </div>
         </div>
-
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.shield.value"
-                 {{checked system.ui.resourceVisibility.shield.value}}>
-          <i class="fas fa-shield-alt" style="color: #4fc3f7;"></i> Escudo
-        </label>
-
-        {{!-- Ki + Ki Accumulated --}}
-        <div class="v2-res-toggle-group">
-          <label class="v2-checkbox-label">
-            <input type="checkbox"
-                   name="system.ui.resourceVisibility.ki.value"
-                   {{checked system.ui.resourceVisibility.ki.value}}>
-            <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki
-          </label>
-          <label class="v2-checkbox-label v2-checkbox-label--sub">
-            <input type="checkbox"
-                   name="system.ui.resourceVisibility.kiAccumulated.value"
-                   {{checked system.ui.resourceVisibility.kiAccumulated.value}}>
-            <i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki Acum.
-          </label>
+        {{!-- Cansancio --}}
+        <div class="v2-res-vis-entry">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-bolt" style="color: var(--abf-fatigue);"></i> Cansancio</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.fatigue.value" {{checked system.ui.resourceVisibility.fatigue.value}} title="Visibilidad en ficha">
+            <input type="checkbox" name="system.ui.tokenBarVisibility.fatigue.value" {{checked system.ui.tokenBarVisibility.fatigue.value}} title="Barra en token">
+          </div>
         </div>
-
-        {{!-- Psychic Resources --}}
-        <label class="v2-checkbox-label">
-          <input type="checkbox"
-                 name="system.ui.resourceVisibility.psychicPoints.value"
-                 {{checked system.ui.resourceVisibility.psychicPoints.value}}>
-          <i class="fas fa-brain" style="color: var(--abf-psychic);"></i> CV Psiquicos
-        </label>
+        {{!-- Destino --}}
+        <div class="v2-res-vis-entry">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-star" style="color: var(--abf-destiny);"></i> Destino</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.destiny.value" {{checked system.ui.resourceVisibility.destiny.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        {{!-- Zeon --}}
+        <div class="v2-res-vis-entry">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.zeon.value" {{checked system.ui.resourceVisibility.zeon.value}} title="Visibilidad en ficha">
+            <input type="checkbox" name="system.ui.tokenBarVisibility.zeon.value" {{checked system.ui.tokenBarVisibility.zeon.value}} title="Barra en token">
+          </div>
+        </div>
+        {{!-- Zeon Acumulado --}}
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon Acum.</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.zeonAccumulated.value" {{checked system.ui.resourceVisibility.zeonAccumulated.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        {{!-- Ki --}}
+        <div class="v2-res-vis-entry">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.ki.value" {{checked system.ui.resourceVisibility.ki.value}} title="Visibilidad en ficha">
+            <input type="checkbox" name="system.ui.tokenBarVisibility.ki.value" {{checked system.ui.tokenBarVisibility.ki.value}} title="Barra en token">
+          </div>
+        </div>
+        {{!-- Ki Acumulado total --}}
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki Acum.</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.kiAccumulated.value" {{checked system.ui.resourceVisibility.kiAccumulated.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        {{!-- CV Psíquico --}}
+        <div class="v2-res-vis-entry">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-brain" style="color: var(--abf-psychic);"></i> CV Psíquico</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.psychicPoints.value" {{checked system.ui.resourceVisibility.psychicPoints.value}} title="Visibilidad en ficha">
+            <input type="checkbox" name="system.ui.tokenBarVisibility.psychicPoints.value" {{checked system.ui.tokenBarVisibility.psychicPoints.value}} title="Barra en token">
+          </div>
+        </div>
+        {{!-- Escudo --}}
+        <div class="v2-res-vis-entry">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-shield-alt" style="color: var(--abf-shield);"></i> Escudo</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.shield.value" {{checked system.ui.resourceVisibility.shield.value}} title="Visibilidad en ficha">
+            <input type="checkbox" name="system.ui.tokenBarVisibility.shield.value" {{checked system.ui.tokenBarVisibility.shield.value}} title="Barra en token">
+          </div>
+        </div>
+        {{!-- Ki por característica --}}
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki FUE</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.kiStr.value" {{checked system.ui.resourceVisibility.kiStr.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki AGI</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.kiAgi.value" {{checked system.ui.resourceVisibility.kiAgi.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki DES</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.kiDex.value" {{checked system.ui.resourceVisibility.kiDex.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki CON</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.kiCon.value" {{checked system.ui.resourceVisibility.kiCon.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki VOL</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.kiWp.value" {{checked system.ui.resourceVisibility.kiWp.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
+        <div class="v2-res-vis-entry v2-res-vis-entry--sub">
+          <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki POD</span>
+          <div class="v2-res-vis-entry__checks">
+            <input type="checkbox" name="system.ui.resourceVisibility.kiPow.value" {{checked system.ui.resourceVisibility.kiPow.value}} title="Visibilidad en ficha">
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -139,6 +139,7 @@ Use this exact pattern when writing new scripts.
 | `EnLLamas.js` | Applies burn damage each turn for a token with "En Llamas" condition. |
 | `PotencialPsiquico.js` | Psychic potential roll dialog with modifiers. |
 | `clearActiveEffects.js` | GM utility to remove all active effects from selected tokens. |
+| `ConfigurarBarrasBrawl.js` | Reads actor's sheet v2 resource visibility flags and sets matching BarBrawl bars (`guote-*` IDs) on the selected token. Non-guote bars (bar1, bar2) are untouched. |
 
 ---
 

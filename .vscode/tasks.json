@@ -2,11 +2,11 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "animabf-guote: Open Claude",
+      "label": "Open Claude",
       "type": "shell",
       "command": "claude",
       "options": {
-        "cwd": "${workspaceFolder}\\FoundryVTT\\v10.303\\LocalData\\Data\\systems\\animabf-guote"
+        "cwd": "${workspaceFolder}\\ClaudeCodeContext"
       },
       "presentation": {
         "echo": true,

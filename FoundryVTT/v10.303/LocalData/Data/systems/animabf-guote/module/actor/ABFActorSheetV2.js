@@ -190,6 +190,23 @@ export default class ABFActorSheetV2 extends ActorSheet {
     if (!sheet.system.ui.resourceVisibility.sacrificedLife) {
       sheet.system.ui.resourceVisibility.sacrificedLife = { value: false };
     }
+    // Ensure individual ki stat visibility flags exist (migration support)
+    for (const key of ['kiStr', 'kiAgi', 'kiDex', 'kiCon', 'kiWp', 'kiPow']) {
+      if (!sheet.system.ui.resourceVisibility[key]) {
+        sheet.system.ui.resourceVisibility[key] = { value: false };
+      }
+    }
+    // Ensure tokenBarVisibility exists (migration for older actors)
+    if (!sheet.system.ui.tokenBarVisibility) {
+      sheet.system.ui.tokenBarVisibility = {
+        hp: { value: false },
+        fatigue: { value: false },
+        ki: { value: false },
+        zeon: { value: false },
+        psychicPoints: { value: false },
+        shield: { value: false },
+      };
+    }
 
     // V2 Enhancements: Calculate equipped weapons for initiative dropdown
     sheet.equippedWeapons = sheet.system?.combat?.weapons || [];
@@ -271,6 +288,16 @@ export default class ABFActorSheetV2 extends ActorSheet {
           item.onCreate(this.actor);
         });
     }
+
+    // Configurar Barras BarBrawl button — aplica al prototipo y todos los tokens del actor
+    html.find('[data-action="configurar-barras-brawl"]').click(async () => {
+      const macro = game.macros.find(m => m.name === "Configurar Barras BarBrawl");
+      if (!macro) {
+        ui.notifications.warn("Macro 'Configurar Barras BarBrawl' no encontrada.");
+        return;
+      }
+      await macro.execute({ targetActor: this.actor });
+    });
 
     // V2 Quick Actions
     html.find(".v2-quick-action").click((e) => {
@@ -408,6 +435,19 @@ export default class ABFActorSheetV2 extends ActorSheet {
         macro.execute();
       } else {
         ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiAccumulation.macro.notFound'));
+      }
+    });
+
+    // Click on psychic power details button to open item sheet (psychic tab)
+    html.find('.psychic-power-open-sheet').click((e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (itemId) {
+        const item = this.actor.items.get(itemId);
+        if (item?.sheet) {
+          item.sheet.render(true);
+        }
       }
     });
 

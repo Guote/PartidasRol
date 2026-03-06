@@ -1,5 +1,180 @@
-{{!-- Psychic Tab - Wrapper for V1 psychic partial with V2 styling --}}
+{{!-- Psychic Tab V2 --}}
 <div class="v2-tab-psychic">
-  {{!-- Use the existing V1 psychic template --}}
-  {{> "systems/animabf-guote/templates/actor/parts/psychic/psychic.hbs"}}
-</div>
+
+  {{!-- Psychic Core Values --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <span>{{localize "anima.ui.psychic.title"}}</span>
+    </div>
+    <div class="v2-card__body">
+      <div class="v2-combat-values">
+        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+            label=(localize "anima.ui.psychic.psychicProjection.offensive.title")
+            baseName="system.psychic.psychicProjection.imbalance.offensive.base.value"
+            baseValue=system.psychic.psychicProjection.imbalance.offensive.base.value
+            finalValue=system.psychic.psychicProjection.imbalance.offensive.final.value
+            rollable=true
+            rollLabel=(localize "anima.ui.psychic.psychicProjection.offensive.rollMessage")
+            modifierType="general-negative"
+            rollableDiv=true}}
+
+        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+            label=(localize "anima.ui.psychic.psychicProjection.defensive.title")
+            baseName="system.psychic.psychicProjection.imbalance.defensive.base.value"
+            baseValue=system.psychic.psychicProjection.imbalance.defensive.base.value
+            finalValue=system.psychic.psychicProjection.imbalance.defensive.final.value
+            rollable=true
+            rollLabel=(localize "anima.ui.psychic.psychicProjection.defensive.rollMessage")
+            modifierType="general-negative"
+            rollableDiv=true}}
+
+        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+            label=(localize "anima.ui.psychic.psychicPotential.title")
+            baseName="system.psychic.psychicPotential.base.value"
+            baseValue=system.psychic.psychicPotential.base.value
+            finalValue=system.psychic.psychicPotential.final.value
+            rollable=true
+            rollLabel=(localize "anima.ui.psychic.psychicPotential.title")
+            modifierType="general-negative"
+            rollableDiv=true}}
+
+        {{!-- Psychic Points --}}
+        <div class="v2-combat-value">
+          <span class="v2-combat-value__label">{{localize "anima.ui.psychic.psychicPoints.title"}}</span>
+          <div class="v2-combat-value__inputs">
+            <input type="number" class="v2-combat-value__input"
+                   name="system.psychic.psychicPoints.value"
+                   value="{{system.psychic.psychicPoints.value}}">
+            <span class="v2-text-muted" style="font-size:0.85rem;">/</span>
+            <input type="number" class="v2-combat-value__input"
+                   name="system.psychic.psychicPoints.max"
+                   value="{{system.psychic.psychicPoints.max}}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Psychic Powers --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.psychic.psychicPowers.title"}}</span>
+      </div>
+      <div class="v2-card__header-actions" style="display:flex;align-items:center;gap:4px;">
+        <span class="v2-text-muted" style="font-size:0.7rem;white-space:nowrap;">
+          {{localize "anima.ui.psychic.innatePsychicPower.amount.title"}}:
+        </span>
+        <input type="number" style="width:36px;text-align:center;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);border-radius:3px;color:white;padding:1px 3px;font-size:0.75rem;"
+               name="system.psychic.innatePsychicPower.amount.value"
+               value="{{system.psychic.innatePsychicPower.amount.value}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-psychic-power"
+                title="{{localize 'anima.dialogs.items.psychicPower.content'}}">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" style="padding: 0;">
+      <table class="v2-table v2-table--compact" id="psychic-powers-context-menu-container">
+        <thead>
+          <tr>
+            <th style="width: 80px;">{{localize "anima.ui.psychic.psychicPowers.power.header.discipline.title"}}</th>
+            <th class="v2-text-center" style="width: 32px;">{{localize "anima.ui.psychic.psychicPowers.power.header.level.title"}}</th>
+            <th>{{localize "anima.ui.psychic.psychicPowers.power.header.name.title"}}</th>
+            <th class="v2-text-center" style="width: 42px;">{{localize "anima.ui.psychic.psychicPowers.power.footer.bonus.title"}}</th>
+            <th class="v2-text-center" style="width: 42px;" title="{{localize 'anima.ui.psychic.psychicPowers.power.footer.hasMaintenance.title'}}">
+              {{localize "anima.ui.psychic.psychicPowers.power.footer.maintained.short"}}
+            </th>
+            <th class="v2-text-center" style="width: 42px;"
+                title="{{localize 'anima.ui.psychic.innatePsychicPower.title'}}">
+              {{localize "anima.ui.psychic.psychicPowers.power.footer.innate.short"}}
+            </th>
+            <th style="width: 28px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each system.psychic.psychicPowers as |power|}}
+          <tr class="psychic-power-row" data-item-id="{{power._id}}">
+            <td>
+              <input type="text" class="v2-table__input"
+                     name="system.dynamic.psychicPowers.{{power._id}}.system.discipline.value"
+                     value="{{power.system.discipline.value}}"
+                     style="width:100%;">
+            </td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.8rem;">
+              {{power.system.level.value}}
+            </td>
+            <td>
+              <span class="v2-table__link item-link" title="{{power.name}}">{{power.name}}</span>
+            </td>
+            <td class="v2-text-center">
+              <input type="number" class="v2-table__input" style="width:38px;text-align:center;"
+                     name="system.dynamic.psychicPowers.{{power._id}}.system.bonus.value"
+                     value="{{power.system.bonus.value}}">
+            </td>
+            <td class="v2-text-center">
+              <input type="checkbox"
+                     name="system.dynamic.psychicPowers.{{power._id}}.system.isMaintained.value"
+                     {{checked power.system.isMaintained.value}}
+                     {{#unless power.system.hasMaintenance.value}}disabled{{/unless}}>
+            </td>
+            <td class="v2-text-center">
+              {{!-- Innate indicator: editable checkbox. hasMaintenance must be true to allow innate --}}
+              <input type="checkbox"
+                     name="system.dynamic.psychicPowers.{{power._id}}.system.isInnate.value"
+                     {{checked power.system.isInnate.value}}
+                     {{#unless power.system.hasMaintenance.value}}disabled{{/unless}}>
+            </td>
+            <td class="v2-text-center">
+              <button type="button" class="v2-btn-icon-sm psychic-power-open-sheet"
+                      data-item-id="{{power._id}}"
+                      title="{{localize 'anima.ui.psychic.psychicPowers.power.openSheet'}}">
+                <i class="fas fa-eye"></i>
+              </button>
+            </td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="7" class="v2-text-center v2-text-muted">-</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {{!-- Psychic Disciplines --}}
+  <div class="v2-card">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.psychic.psychicDiscipline.title"}}</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-psychic-discipline"
+                title="{{localize 'anima.dialogs.items.psychicDiscipline.content'}}">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" style="padding: 0;">
+      <table class="v2-table v2-table--compact" id="psychic-disciplines-context-menu-container">
+        <tbody>
+          {{#each system.psychic.psychicDisciplines as |discipline|}}
+          <tr class="psychic-discipline-row" data-item-id="{{discipline._id}}">
+            <td>
+              <input type="text" class="v2-table__input" style="width:100%;"
+                     name="system.dynamic.psychicDisciplines.{{discipline._id}}.name"
+                     value="{{discipline.name}}">
+            </td>
+          </tr>
+          {{else}}
+          <tr>
+            <td class="v2-text-center v2-text-muted">-</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>{{!-- end v2-tab-psychic --}}

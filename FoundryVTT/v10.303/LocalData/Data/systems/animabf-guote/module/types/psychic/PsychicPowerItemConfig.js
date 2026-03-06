@@ -30,6 +30,9 @@ export const INITIAL_PSYCHIC_POWER_DATA = {
     },
     actionType: { value: PsychicPowerActionTypes.ACTIVE },
     hasMaintenance: { value: false },
+    isMaintained: { value: false },
+    isInnate: { value: false },
+    discipline: { value: '' },
     bonus: { value: 0 }
 };
 /** @type {import("../Items").PsychicPowerItemConfig} */

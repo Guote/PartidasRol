@@ -22,6 +22,20 @@
           "zeonAccumulated": { "value": false },
           "ki": { "value": false },
           "kiAccumulated": { "value": false },
+          "kiStr": { "value": false },
+          "kiAgi": { "value": false },
+          "kiDex": { "value": false },
+          "kiCon": { "value": false },
+          "kiWp": { "value": false },
+          "kiPow": { "value": false },
+          "psychicPoints": { "value": false },
+          "shield": { "value": false }
+        },
+        "tokenBarVisibility": {
+          "hp": { "value": false },
+          "fatigue": { "value": false },
+          "ki": { "value": false },
+          "zeon": { "value": false },
           "psychicPoints": { "value": false },
           "shield": { "value": false }
         }
@@ -567,6 +581,9 @@
       },
       "actionType": { "value": "active" },
       "hasMaintenance": { "value": false },
+      "isMaintained": { "value": false },
+      "isInnate": { "value": false },
+      "discipline": { "value": "" },
       "bonus": { "value": 0 }
     },
     "technique": {
