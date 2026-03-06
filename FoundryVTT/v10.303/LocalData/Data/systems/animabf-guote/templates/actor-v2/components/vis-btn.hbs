@@ -1,0 +1,11 @@
+{{!-- Visibility toggle button component
+     Parameters:
+       name  — checkbox name (form field path)
+       value — current boolean value
+       icon  — FontAwesome class without "fa-" prefix, e.g. "fa-scroll"
+       title — tooltip text
+--}}
+<label class="v2-vis-btn" title="{{title}}">
+  <input type="checkbox" name="{{name}}" {{checked value}}>
+  <i class="fas {{icon}}"></i>
+</label>

@@ -281,37 +281,79 @@
   color: var(--abf-shield);
 }
 
-/* Resource visibility grid entries (settings tab) */
+/* Resource visibility grid (settings tab) — 4 per row */
+.actor-sheet-v2 .v2-res-vis-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+}
 .actor-sheet-v2 .v2-res-vis-entry {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-2);
+  gap: var(--space-1);
+  padding: 3px var(--space-1);
   font-size: var(--font-size-xs);
   border: 1px solid var(--abf-border-light);
   border-radius: 3px;
 }
-.actor-sheet-v2 .v2-res-vis-entry--sub { opacity: 0.7; }
+.actor-sheet-v2 .v2-res-vis-entry--sub { opacity: 0.65; }
 .actor-sheet-v2 .v2-res-vis-entry__name {
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.actor-sheet-v2 .v2-res-vis-entry__checks {
+.actor-sheet-v2 .v2-res-vis-entry__btns {
   display: flex;
-  gap: var(--space-2);
+  gap: 2px;
   flex-shrink: 0;
 }
-.actor-sheet-v2 .v2-res-vis-legend {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-2);
-  padding: 0 var(--space-2) var(--space-1);
-  font-size: var(--font-size-xs);
-  color: var(--abf-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+/* Toggle button: label wrapping a zero-size hidden checkbox + visible icon.
+   The checkbox is in the DOM (form-serializable) but takes no space,
+   so the icon is never covered. Clicking the label activates the checkbox. */
+.actor-sheet-v2 .v2-vis-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  background-color: #dcd7b7;
+
+  /* --abf-primary-light: #8b3a24;
+  --abf-primary-dark: #4a1b10;
+  --abf-secondary: #dcd7b7; */
+}
+.actor-sheet-v2 .v2-vis-btn input[type="checkbox"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  margin: 0;
+}
+.actor-sheet-v2 .v2-vis-btn i {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  transition: color 0.1s;
+}
+/* Active: sibling selector — reliable without :has() */
+.actor-sheet-v2 .v2-vis-btn input[type="checkbox"]:checked + i {
+  color: var(--abf-primary-light);
+}
+.actor-sheet-v2 .v2-vis-btn:has(input:checked) {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+/* Placeholder: same size, invisible, not interactive */
+.actor-sheet-v2 .v2-vis-btn--empty {
+  border-color: transparent;
+  pointer-events: none;
+  visibility: hidden;
 }
 .actor-sheet-v2 .v2-barbrawl-btn {
   display: inline-flex !important;

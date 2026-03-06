@@ -53,122 +53,124 @@
       </button>
     </div>
     <div class="v2-card__body">
-      <div class="v2-res-vis-legend">
-        <span>Ficha</span>
-        <span>Token</span>
-      </div>
-      <div class="v2-grid v2-grid--3" style="gap: var(--space-2);">
-        {{!-- PV --}}
+      <div class="v2-res-vis-grid">
+        {{!-- Row 1 --}}
         <div class="v2-res-vis-entry">
           <span class="v2-res-vis-entry__name"><i class="fas fa-heart" style="color: var(--abf-hp);"></i> PV</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.hp.value" {{checked system.ui.resourceVisibility.hp.value}} title="Visibilidad en ficha">
-            <input type="checkbox" name="system.ui.tokenBarVisibility.hp.value" {{checked system.ui.tokenBarVisibility.hp.value}} title="Barra en token">
+          <div class="v2-res-vis-entry__btns">
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.tokenBarVisibility.hp.value" value=system.ui.tokenBarVisibility.hp.value icon="fa-user-circle" title="Barra en token"}}
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.hp.value" value=system.ui.resourceVisibility.hp.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Vida Sacrificada --}}
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-heart-broken" style="color: var(--abf-hp);"></i> Vida Sacrif.</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.sacrificedLife.value" {{checked system.ui.resourceVisibility.sacrificedLife.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.sacrificedLife.value" value=system.ui.resourceVisibility.sacrificedLife.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Cansancio --}}
         <div class="v2-res-vis-entry">
           <span class="v2-res-vis-entry__name"><i class="fas fa-bolt" style="color: var(--abf-fatigue);"></i> Cansancio</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.fatigue.value" {{checked system.ui.resourceVisibility.fatigue.value}} title="Visibilidad en ficha">
-            <input type="checkbox" name="system.ui.tokenBarVisibility.fatigue.value" {{checked system.ui.tokenBarVisibility.fatigue.value}} title="Barra en token">
+          <div class="v2-res-vis-entry__btns">
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.tokenBarVisibility.fatigue.value" value=system.ui.tokenBarVisibility.fatigue.value icon="fa-user-circle" title="Barra en token"}}
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.fatigue.value" value=system.ui.resourceVisibility.fatigue.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Destino --}}
         <div class="v2-res-vis-entry">
           <span class="v2-res-vis-entry__name"><i class="fas fa-star" style="color: var(--abf-destiny);"></i> Destino</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.destiny.value" {{checked system.ui.resourceVisibility.destiny.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.destiny.value" value=system.ui.resourceVisibility.destiny.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Zeon --}}
+
+        {{!-- Row 2 --}}
         <div class="v2-res-vis-entry">
           <span class="v2-res-vis-entry__name"><i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.zeon.value" {{checked system.ui.resourceVisibility.zeon.value}} title="Visibilidad en ficha">
-            <input type="checkbox" name="system.ui.tokenBarVisibility.zeon.value" {{checked system.ui.tokenBarVisibility.zeon.value}} title="Barra en token">
+          <div class="v2-res-vis-entry__btns">
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.tokenBarVisibility.zeon.value" value=system.ui.tokenBarVisibility.zeon.value icon="fa-user-circle" title="Barra en token"}}
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.zeon.value" value=system.ui.resourceVisibility.zeon.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Zeon Acumulado --}}
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-hat-wizard" style="color: var(--abf-zeon);"></i> Zeon Acum.</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.zeonAccumulated.value" {{checked system.ui.resourceVisibility.zeonAccumulated.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.zeonAccumulated.value" value=system.ui.resourceVisibility.zeonAccumulated.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Ki --}}
         <div class="v2-res-vis-entry">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.ki.value" {{checked system.ui.resourceVisibility.ki.value}} title="Visibilidad en ficha">
-            <input type="checkbox" name="system.ui.tokenBarVisibility.ki.value" {{checked system.ui.tokenBarVisibility.ki.value}} title="Barra en token">
+          <div class="v2-res-vis-entry__btns">
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.tokenBarVisibility.ki.value" value=system.ui.tokenBarVisibility.ki.value icon="fa-user-circle" title="Barra en token"}}
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.ki.value" value=system.ui.resourceVisibility.ki.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Ki Acumulado total --}}
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki Acum.</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.kiAccumulated.value" {{checked system.ui.resourceVisibility.kiAccumulated.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.kiAccumulated.value" value=system.ui.resourceVisibility.kiAccumulated.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- CV Psíquico --}}
+
+        {{!-- Row 3 --}}
         <div class="v2-res-vis-entry">
           <span class="v2-res-vis-entry__name"><i class="fas fa-brain" style="color: var(--abf-psychic);"></i> CV Psíquico</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.psychicPoints.value" {{checked system.ui.resourceVisibility.psychicPoints.value}} title="Visibilidad en ficha">
-            <input type="checkbox" name="system.ui.tokenBarVisibility.psychicPoints.value" {{checked system.ui.tokenBarVisibility.psychicPoints.value}} title="Barra en token">
+          <div class="v2-res-vis-entry__btns">
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.tokenBarVisibility.psychicPoints.value" value=system.ui.tokenBarVisibility.psychicPoints.value icon="fa-user-circle" title="Barra en token"}}
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.psychicPoints.value" value=system.ui.resourceVisibility.psychicPoints.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Escudo --}}
         <div class="v2-res-vis-entry">
           <span class="v2-res-vis-entry__name"><i class="fas fa-shield-alt" style="color: var(--abf-shield);"></i> Escudo</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.shield.value" {{checked system.ui.resourceVisibility.shield.value}} title="Visibilidad en ficha">
-            <input type="checkbox" name="system.ui.tokenBarVisibility.shield.value" {{checked system.ui.tokenBarVisibility.shield.value}} title="Barra en token">
+          <div class="v2-res-vis-entry__btns">
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.tokenBarVisibility.shield.value" value=system.ui.tokenBarVisibility.shield.value icon="fa-user-circle" title="Barra en token"}}
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.shield.value" value=system.ui.resourceVisibility.shield.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
-        {{!-- Ki por característica --}}
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki FUE</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.kiStr.value" {{checked system.ui.resourceVisibility.kiStr.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.kiStr.value" value=system.ui.resourceVisibility.kiStr.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki AGI</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.kiAgi.value" {{checked system.ui.resourceVisibility.kiAgi.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.kiAgi.value" value=system.ui.resourceVisibility.kiAgi.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
+
+        {{!-- Row 4 --}}
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki DES</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.kiDex.value" {{checked system.ui.resourceVisibility.kiDex.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.kiDex.value" value=system.ui.resourceVisibility.kiDex.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki CON</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.kiCon.value" {{checked system.ui.resourceVisibility.kiCon.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.kiCon.value" value=system.ui.resourceVisibility.kiCon.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki VOL</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.kiWp.value" {{checked system.ui.resourceVisibility.kiWp.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.kiWp.value" value=system.ui.resourceVisibility.kiWp.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
         <div class="v2-res-vis-entry v2-res-vis-entry--sub">
           <span class="v2-res-vis-entry__name"><i class="fas fa-yin-yang" style="color: var(--abf-ki);"></i> Ki POD</span>
-          <div class="v2-res-vis-entry__checks">
-            <input type="checkbox" name="system.ui.resourceVisibility.kiPow.value" {{checked system.ui.resourceVisibility.kiPow.value}} title="Visibilidad en ficha">
+          <div class="v2-res-vis-entry__btns">
+            <span class="v2-vis-btn v2-vis-btn--empty"></span>
+            {{> "systems/animabf-guote/templates/actor-v2/components/vis-btn.hbs" name="system.ui.resourceVisibility.kiPow.value" value=system.ui.resourceVisibility.kiPow.value icon="fa-scroll" title="Visible en ficha"}}
           </div>
         </div>
       </div>

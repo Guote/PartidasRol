@@ -160,6 +160,7 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor-v2/components/skill-row.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/simple-item-list.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/labeled-input.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/vis-btn.hbs`,
     // V2 Spellbook
     `systems/${ABFSystemName}/templates/actor-v2/parts/spellbook/spellbook.hbs`,
     // V2 Header Parts
