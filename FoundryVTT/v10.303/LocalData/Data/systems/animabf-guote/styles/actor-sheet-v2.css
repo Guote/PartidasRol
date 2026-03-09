@@ -8,29 +8,29 @@
    CSS Variables
    -------------------------------- */
 .actor-sheet-v2 {
-  --abf-primary: #6e2917;
-  --abf-primary-light: #8b3a24;
-  --abf-primary-dark: #4a1b10;
-  --abf-secondary: #dcd7b7;
-  --abf-secondary-light: #e7e5da;
-  --abf-background: #f5f3eb;
-  --abf-text: #333333;
-  --abf-text-light: #ffffff;
-  --abf-text-muted: #666666;
-  --abf-border: #6e2917;
-  --abf-border-light: #ccc;
-  --abf-success: #2e7d32;
-  --abf-warning: #ed6c02;
-  --abf-error: #d32f2f;
+  --abf-primary: #18162e;
+  --abf-primary-light: #2b2a4a;
+  --abf-primary-dark: #0e0d15;
+  --abf-secondary: #f3c267;
+  --abf-secondary-light: #f5d47a;
+  --abf-background: #1e1c38;
+  --abf-text: #efe6d8;
+  --abf-text-light: #efe6d8;
+  --abf-text-muted: rgba(239, 230, 216, 0.55);
+  --abf-border: #f3c267;
+  --abf-border-light: rgba(243, 194, 103, 0.25);
+  --abf-success: #40a640;
+  --abf-warning: #fc8e45;
+  --abf-error: #e54e4e;
 
   /* Resource Colors */
-  --abf-hp: #80FF00;
-  --abf-fatigue: #d10000;
-  --abf-zeon: #80B3FF;
-  --abf-ki: #f5ed00;
-  --abf-psychic: #FFFFFF;
-  --abf-destiny: #a1923e;
-  --abf-shield: #d508d9;
+  --abf-hp: #72d95a;
+  --abf-fatigue: #e54e4e;
+  --abf-zeon: #8f87ee;
+  --abf-ki: #f5d47a;
+  --abf-psychic: #c38fd4;
+  --abf-destiny: #f3c267;
+  --abf-shield: #7ab8f5;
 
   /* Compact Spacing */
   --space-1: 2px;
@@ -54,8 +54,8 @@
   --radius-lg: 8px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.5);
 
   /* Transitions */
   --transition-fast: 0.1s ease;
@@ -71,6 +71,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: var(--abf-background);
 }
 
 /* --------------------------------
@@ -322,7 +323,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   cursor: pointer;
   transition: background 0.1s, border-color 0.1s;
-  background-color: #dcd7b7;
+  background-color: var(--abf-background);
 
   /* --abf-primary-light: #8b3a24;
   --abf-primary-dark: #4a1b10;
@@ -701,8 +702,8 @@
   display: flex;
   flex-direction: column;
   width: 70px;
-  background: var(--abf-secondary);
-  border-right: 2px solid var(--abf-primary);
+  background: var(--abf-primary-dark);
+  border-right: 2px solid var(--abf-secondary);
   flex-shrink: 0;
 }
 
@@ -732,7 +733,7 @@
 }
 
 .actor-sheet-v2 .v2-sidetabs__tab:hover {
-  background: rgba(110, 41, 23, 0.1);
+  background: rgba(243, 194, 103, 0.12);
 }
 
 .actor-sheet-v2 .v2-sidetabs__tab:hover i {
@@ -789,7 +790,7 @@
    Compact Card Component
    -------------------------------- */
 .actor-sheet-v2 .v2-card {
-  background: white;
+  background: var(--abf-background);
   border: 1px solid var(--abf-border-light);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -1679,7 +1680,7 @@
 
 .actor-sheet-v2 .incarnation--active {
   font-weight: bold;
-  color: #5a3a7e;
+  color: var(--abf-secondary);
 }
 
 /* Zeon Display */
@@ -1962,7 +1963,7 @@
 }
 
 .actor-sheet-v2 .v2-effect-btn--danger:hover {
-  background: rgba(211, 47, 47, 0.1);
+  background: rgba(229, 78, 78, 0.12);
   color: var(--abf-error);
 }
 
@@ -2169,4 +2170,64 @@
 .actor-sheet-v2 .v2-notes-editor .editor .tox-tinymce,
 .actor-sheet-v2 .v2-notes-editor .editor .editor-content {
   flex: 1;
+}
+
+/* --------------------------------
+   Window Chrome — Blend with Sheet
+   -------------------------------- */
+
+/* Take the header out of flow so it overlays the sheet content */
+.actor-sheet-v2.window-app .window-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: transparent;
+  border-bottom: none;
+  justify-content: flex-end;
+  z-index: 10;
+  padding: 3px 4px;
+}
+
+/* Hide the redundant title — our sheet shows the character name */
+.actor-sheet-v2.window-app .window-header .window-title {
+  display: none;
+}
+
+/* Chrome buttons: near-black pill, beige icon */
+.actor-sheet-v2.window-app .window-header .header-button {
+  background: rgba(14, 13, 21, 0.75);
+  color: #efe6d8;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  line-height: 1;
+  padding: 3px 6px;
+  text-shadow: none;
+  margin-left: 2px;
+}
+
+/* Hover: golden accent */
+.actor-sheet-v2.window-app .window-header .header-button:hover {
+  color: #f3c267;
+  border-color: #f3c267;
+  background: rgba(14, 13, 21, 0.92);
+}
+
+/* window-content: remove default Foundry padding so our sheet fills flush */
+.actor-sheet-v2.window-app .window-content {
+  padding: 0;
+}
+
+/* When minimized: restore a visible header so it's still usable */
+.actor-sheet-v2.window-app.minimized .window-header {
+  position: static;
+  background: var(--abf-primary, #18162e);
+  border-bottom: 1px solid var(--abf-border, #f3c267);
+  justify-content: space-between;
+  padding: 3px 6px;
+}
+
+.actor-sheet-v2.window-app.minimized .window-header .window-title {
+  display: block;
+  color: #efe6d8;
+  font-size: 0.8rem;
 }
