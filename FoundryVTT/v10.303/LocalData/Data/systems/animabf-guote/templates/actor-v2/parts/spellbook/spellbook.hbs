@@ -214,9 +214,9 @@
     {{else if activeVia}}
       {{#with (lookup spellsByVia activeVia) as |spells|}}
         {{#if spells.length}}
-        <div class="spellbook-grid">
+        <div class="spellbook-grid" id="spells-context-menu-container">
           {{#each spells as |spell|}}
-          <article class="spell-card {{#if spell.expanded}}spell-card--expanded{{/if}}" data-spell-id="{{spell.id}}">
+          <article class="spell-card spell-row {{#if spell.expanded}}spell-card--expanded{{/if}}" data-spell-id="{{spell.id}}" data-item-id="{{spell.id}}">
             {{!-- Spell Header (always visible) --}}
             <header class="spell-card__header">
               <span class="spell-card__level">{{spell.system.level.value}}</span>
@@ -357,12 +357,6 @@
                 {{/with}}
               </div>
 
-              {{!-- Delete button at bottom --}}
-              <footer class="spell-card__footer">
-                <button type="button" class="spell-card__delete-btn" data-action="delete-spell" title="{{localize 'anima.contextualMenu.common.options.delete'}}">
-                  <i class="fas fa-trash"></i> {{localize "anima.contextualMenu.common.options.delete"}}
-                </button>
-              </footer>
             </div>
             {{/if}}
           </article>

@@ -1,0 +1,12 @@
+{
+  "title": "tesdagger",
+  "id": "tesdagger",
+  "system": "daggerheart",
+  "coreVersion": "13.345",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "1.8.0",
+  "lastPlayed": "Mon Mar 09 2026 14:50:50 GMT+0100 (hora estándar de Europa central)"
+}

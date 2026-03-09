@@ -1,6 +1,20 @@
 <div>
+    <header class="dialog-header">
+        <h1>{{localize 'DAGGERHEART.SETTINGS.Menu.variantRules.name'}}</h1>
+    </header>
+
+    <fieldset>
+        <legend>{{localize 'DAGGERHEART.SETTINGS.Menu.range.name'}}</legend>
+
+        {{formGroup settingFields.schema.fields.rangeMeasurement.fields.enabled value=settingFields._source.rangeMeasurement.enabled localize=true}}
+        {{formGroup settingFields.schema.fields.rangeMeasurement.fields.melee value=settingFields._source.rangeMeasurement.melee localize=true}}
+        {{formGroup settingFields.schema.fields.rangeMeasurement.fields.veryClose value=settingFields._source.rangeMeasurement.veryClose localize=true}}
+        {{formGroup settingFields.schema.fields.rangeMeasurement.fields.close value=settingFields._source.rangeMeasurement.close localize=true}}
+        {{formGroup settingFields.schema.fields.rangeMeasurement.fields.far value=settingFields._source.rangeMeasurement.far localize=true}}
+    </fieldset>
+
     <div class="form-group">
-        <label>{{localize "DAGGERHEART.Settings.Menu.VariantRules.actionTokens"}}</label>
+        <label>{{localize "DAGGERHEART.SETTINGS.Menu.variantRules.actionTokens"}}</label>
 
         <div class="form-fields">
             {{formGroup settingFields.schema.fields.actionTokens.fields.enabled value=settingFields._source.actionTokens.enabled localize=true}}
@@ -8,7 +22,12 @@
         </div>
     </div>
 
-    {{formGroup settingFields.schema.fields.useCoins value=settingFields._source.useCoins localize=true }}
+    <div class="form-group">
+        <label>{{localize "DAGGERHEART.SETTINGS.VariantRules.FIELDS.massiveDamage.title"}}</label>
+        <div class="form-fields">
+            {{formGroup settingFields.schema.fields.massiveDamage.fields.enabled value=settingFields._source.massiveDamage.enabled localize=true}}
+        </div>
+    </div>
 
     <footer class="form-footer">
         <button data-action="reset">

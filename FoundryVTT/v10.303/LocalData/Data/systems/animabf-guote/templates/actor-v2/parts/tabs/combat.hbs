@@ -53,6 +53,29 @@
     </div>
   </div>
 
+  {{!-- Turno Actual --}}
+  <div class="v2-card" data-action="open-tab" data-tab="inventory" style="cursor: pointer;"
+       title="Click para cambiar armas del turno">
+    <div class="v2-card__header">
+      <span>Turno actual</span>
+      <i class="fas fa-chevron-right" style="opacity:0.5;font-size:0.75rem;margin-left:auto;"></i>
+    </div>
+    <div class="v2-card__body" style="padding: 6px 12px; display: flex; flex-wrap: wrap; gap: 4px; min-height: 28px; align-items: center;">
+      {{#each selectedWeaponsDisplay}}
+      <span style="display:inline-flex;align-items:center;gap:4px;
+                   background: {{#if this.isSlowest}}rgba(255,180,0,0.15){{else}}rgba(255,255,255,0.1){{/if}};
+                   border: 1px solid {{#if this.isSlowest}}rgba(255,180,0,0.5){{else}}rgba(255,255,255,0.25){{/if}};
+                   border-radius: 3px; padding: 2px 8px; font-size: 0.85rem;">
+        {{#if this.isSlowest}}<i class="fas fa-hourglass-half" style="font-size:0.7rem;color:rgba(255,180,0,0.9);"></i>{{/if}}
+        {{this.name}}
+        <span style="font-size:0.7rem;opacity:0.6;">({{this.initValue}})</span>
+      </span>
+      {{else}}
+      <span class="v2-text-muted" style="font-size:0.85rem;">Desarmado</span>
+      {{/each}}
+    </div>
+  </div>
+
   {{!-- Attack Presets --}}
   <div class="v2-card">
     <div class="v2-card__header">
@@ -70,18 +93,13 @@
     <div class="v2-card__body" id="attack-presets-context-menu-container" style="padding: 0;">
       <div class="v2-preset-grid">
         {{#each system.combat.attackPresets as |preset|}}
-        <div class="v2-preset-item preset-row-clickable" draggable="true"
+        <div class="v2-preset-item preset-row-clickable attack-preset-row" draggable="true"
              data-item-id="{{preset._id}}" data-preset-id="{{preset._id}}" data-preset-type="attack">
           <span class="preset-name-cell">{{preset.name}}</span>
           <button type="button" class="v2-btn-icon-sm preset-quick-attack"
                   data-preset-id="{{preset._id}}"
                   title="{{localize 'anima.ui.combat.quickAttack'}}">
             <i class="fas fa-bolt"></i>
-          </button>
-          <button type="button" class="v2-btn-icon-sm preset-delete"
-                  data-preset-id="{{preset._id}}"
-                  title="{{localize 'anima.contextualMenu.common.options.delete'}}">
-            <i class="fas fa-trash"></i>
           </button>
         </div>
         {{else}}
@@ -101,14 +119,9 @@
     <div class="v2-card__body" id="defense-presets-context-menu-container" style="padding: 0;">
       <div class="v2-preset-grid">
         {{#each system.combat.defensePresets as |preset|}}
-        <div class="v2-preset-item preset-row-clickable" draggable="true"
+        <div class="v2-preset-item preset-row-clickable defense-preset-row" draggable="true"
              data-item-id="{{preset._id}}" data-preset-id="{{preset._id}}" data-preset-type="defense">
           <span class="preset-name-cell">{{preset.name}}</span>
-          <button type="button" class="v2-btn-icon-sm preset-delete"
-                  data-preset-id="{{preset._id}}"
-                  title="{{localize 'anima.contextualMenu.common.options.delete'}}">
-            <i class="fas fa-trash"></i>
-          </button>
         </div>
         {{else}}
         <div class="v2-preset-empty">-</div>

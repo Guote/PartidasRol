@@ -1,0 +1,21 @@
+<section
+    class='tab {{tabs.main.cssClass}} {{tabs.main.id}}'
+    data-tab='{{tabs.main.id}}'
+    data-group='{{tabs.main.group}}'
+>
+    {{#if hasIcon}}
+        <fieldset class="one-column">
+            <legend>{{localize "DAGGERHEART.GENERAL.icon"}}</legend>
+
+            <input type="text" name="icon" value="{{move.icon}}" />
+        </fieldset>
+    {{/if}}
+
+    <fieldset class="one-column">
+        <legend>{{localize "DAGGERHEART.GENERAL.description"}}</legend>
+        
+        <prose-mirror name="description" value="{{move.description}}">
+            {{{ move.enrichedDescription }}}
+        </prose-mirror>
+    </fieldset>
+</section>

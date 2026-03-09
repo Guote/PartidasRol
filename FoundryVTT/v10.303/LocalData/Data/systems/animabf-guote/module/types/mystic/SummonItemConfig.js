@@ -13,11 +13,14 @@ export const INITIAL_SUMMON_DATA = {
     damage: { value: 0 },
     critic: { value: 'impact' },
     turno: { value: 20 },
+    duracion: { value: '' },
     special: { value: '' },
     bonusAtk: { value: 0 },
     bonusDef: { value: 0 },
     bonusDamage: { value: 0 },
-    bonusOther: { value: '' }
+    bonusOther: { value: '' },
+    ne: { value: 0 },
+    active: { value: false }
 };
 
 /** @type {import("../Items").SummonItemConfig} */

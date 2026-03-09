@@ -18,93 +18,90 @@
       <table class="v2-table v2-table--compact">
         <thead>
           <tr>
-            <th style="width: 55px;"></th>
-            <th class="v2-text-center" style="width: 60px;">Base</th>
-            <th class="v2-text-center" style="width: 60px;">Final</th>
-            <th class="v2-text-center" style="width: 65px;">{{localize "anima.ui.domine.kiAccumulation.accumulation.title"}}</th>
+            <th style="width: 70px;"></th>
+            <th class="v2-text-center">{{localize "anima.ui.domine.kiAccumulation.strength.title"}}</th>
+            <th class="v2-text-center">{{localize "anima.ui.domine.kiAccumulation.agility.title"}}</th>
+            <th class="v2-text-center">{{localize "anima.ui.domine.kiAccumulation.dexterity.title"}}</th>
+            <th class="v2-text-center">{{localize "anima.ui.domine.kiAccumulation.constitution.title"}}</th>
+            <th class="v2-text-center">{{localize "anima.ui.domine.kiAccumulation.willPower.title"}}</th>
+            <th class="v2-text-center">{{localize "anima.ui.domine.kiAccumulation.power.title"}}</th>
           </tr>
         </thead>
         <tbody>
+          {{!-- Base row --}}
           <tr>
-            <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.strength.title"}}</td>
+            <td class="v2-text-muted" style="font-size:0.75rem;">Base</td>
             <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:50px;text-align:center;"
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
                      name="system.domine.kiAccumulation.strength.base.value"
                      value="{{system.domine.kiAccumulation.strength.base.value}}">
             </td>
-            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.strength.final.value}}</td>
             <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:55px;text-align:center;"
-                     name="system.domine.kiAccumulation.strength.accumulated.value"
-                     value="{{system.domine.kiAccumulation.strength.accumulated.value}}">
-            </td>
-          </tr>
-          <tr>
-            <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.agility.title"}}</td>
-            <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:50px;text-align:center;"
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
                      name="system.domine.kiAccumulation.agility.base.value"
                      value="{{system.domine.kiAccumulation.agility.base.value}}">
             </td>
-            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.agility.final.value}}</td>
             <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:55px;text-align:center;"
-                     name="system.domine.kiAccumulation.agility.accumulated.value"
-                     value="{{system.domine.kiAccumulation.agility.accumulated.value}}">
-            </td>
-          </tr>
-          <tr>
-            <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.dexterity.title"}}</td>
-            <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:50px;text-align:center;"
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
                      name="system.domine.kiAccumulation.dexterity.base.value"
                      value="{{system.domine.kiAccumulation.dexterity.base.value}}">
             </td>
-            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.dexterity.final.value}}</td>
             <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:55px;text-align:center;"
-                     name="system.domine.kiAccumulation.dexterity.accumulated.value"
-                     value="{{system.domine.kiAccumulation.dexterity.accumulated.value}}">
-            </td>
-          </tr>
-          <tr>
-            <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.constitution.title"}}</td>
-            <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:50px;text-align:center;"
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
                      name="system.domine.kiAccumulation.constitution.base.value"
                      value="{{system.domine.kiAccumulation.constitution.base.value}}">
             </td>
-            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.constitution.final.value}}</td>
             <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:55px;text-align:center;"
-                     name="system.domine.kiAccumulation.constitution.accumulated.value"
-                     value="{{system.domine.kiAccumulation.constitution.accumulated.value}}">
-            </td>
-          </tr>
-          <tr>
-            <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.willPower.title"}}</td>
-            <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:50px;text-align:center;"
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
                      name="system.domine.kiAccumulation.willPower.base.value"
                      value="{{system.domine.kiAccumulation.willPower.base.value}}">
             </td>
-            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.willPower.final.value}}</td>
             <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:55px;text-align:center;"
-                     name="system.domine.kiAccumulation.willPower.accumulated.value"
-                     value="{{system.domine.kiAccumulation.willPower.accumulated.value}}">
-            </td>
-          </tr>
-          <tr>
-            <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.power.title"}}</td>
-            <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:50px;text-align:center;"
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
                      name="system.domine.kiAccumulation.power.base.value"
                      value="{{system.domine.kiAccumulation.power.base.value}}">
             </td>
+          </tr>
+          {{!-- Final row --}}
+          <tr>
+            <td class="v2-text-muted" style="font-size:0.75rem;">Final</td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.strength.final.value}}</td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.agility.final.value}}</td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.dexterity.final.value}}</td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.constitution.final.value}}</td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.willPower.final.value}}</td>
             <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{system.domine.kiAccumulation.power.final.value}}</td>
+          </tr>
+          {{!-- Accumulated row --}}
+          <tr>
+            <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.accumulation.title"}}</td>
             <td class="v2-text-center">
-              <input type="number" class="v2-table__input" style="width:55px;text-align:center;"
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
+                     name="system.domine.kiAccumulation.strength.accumulated.value"
+                     value="{{system.domine.kiAccumulation.strength.accumulated.value}}">
+            </td>
+            <td class="v2-text-center">
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
+                     name="system.domine.kiAccumulation.agility.accumulated.value"
+                     value="{{system.domine.kiAccumulation.agility.accumulated.value}}">
+            </td>
+            <td class="v2-text-center">
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
+                     name="system.domine.kiAccumulation.dexterity.accumulated.value"
+                     value="{{system.domine.kiAccumulation.dexterity.accumulated.value}}">
+            </td>
+            <td class="v2-text-center">
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
+                     name="system.domine.kiAccumulation.constitution.accumulated.value"
+                     value="{{system.domine.kiAccumulation.constitution.accumulated.value}}">
+            </td>
+            <td class="v2-text-center">
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
+                     name="system.domine.kiAccumulation.willPower.accumulated.value"
+                     value="{{system.domine.kiAccumulation.willPower.accumulated.value}}">
+            </td>
+            <td class="v2-text-center">
+              <input type="number" class="v2-table__input" style="width:44px;text-align:center;"
                      name="system.domine.kiAccumulation.power.accumulated.value"
                      value="{{system.domine.kiAccumulation.power.accumulated.value}}">
             </td>
@@ -112,10 +109,10 @@
           {{!-- Generic Ki Pool --}}
           <tr style="border-top: 1px solid var(--color-border-light-2, #d4c9a8);">
             <td class="v2-text-muted" style="font-size:0.75rem;">{{localize "anima.ui.domine.kiAccumulation.reserve.title"}}</td>
-            <td class="v2-text-center" colspan="2">
+            <td class="v2-text-center" colspan="3">
               <span class="v2-text-muted" style="font-size:0.7rem;">Total acum: {{totalKiAccumulated}}</span>
             </td>
-            <td class="v2-text-center">
+            <td class="v2-text-center" colspan="3">
               <div style="display:flex;align-items:center;justify-content:center;gap:2px;">
                 <input type="number" class="v2-table__input" style="width:42px;text-align:center;"
                        name="system.domine.kiAccumulation.generic.value"

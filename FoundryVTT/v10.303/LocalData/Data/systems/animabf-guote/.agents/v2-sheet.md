@@ -208,8 +208,61 @@ Handler must be registered in `ABFActorSheetV2.activateListeners`. To add a hand
 html.find("[data-on-click='my-action']").click(ev => { ... });
 ```
 
-### Context menus
-Rows need `data-item-id` on the `<tr>`. Built via `buildCommonContextualMenu(itemConfig)` in the sheet.
+### Context menus (right-click delete — standard pattern)
+
+**All deletable list items in the V2 sheet use right-click context menus. Never add inline delete buttons.**
+
+Each deletable item type has an `ItemConfig` in `module/actor/utils/prepareItems/constants.js` (`ALL_ITEM_CONFIGURATIONS`). Every config defines:
+- `containerSelector` — CSS selector for the `<tbody>` or wrapper (e.g. `'#weapons-context-menu-container'`)
+- `rowSelector` — CSS selector for each row element that holds `data-item-id` (e.g. `'.weapon-row'`)
+
+**Template requirements for each deletable item:**
+
+1. The container element must have the `id` matching the config's `containerSelector` (strip the `#`):
+   ```handlebars
+   <tbody id="weapons-context-menu-container">
+   ```
+
+2. Each row element must have the CSS class matching `rowSelector` and `data-item-id` on the element the selector targets:
+   ```handlebars
+   <tr class="weapon-row" data-item-id="{{weapon._id}}">
+   ```
+
+3. **Special case — ElanItemConfig**: `rowSelector = '.elan-row .base'`. The `data-item-id` must go on a child element with class `base`, not on the `<tr>` itself:
+   ```handlebars
+   <tr class="elan-row">
+     <td class="base" data-item-id="{{elan._id}}">...</td>
+   ```
+
+4. **Spell cards** (not table rows): `rowSelector = '.spell-row'`, `containerSelector = '#spells-context-menu-container'`. Both classes go on the `<article>` element:
+   ```handlebars
+   <div class="spellbook-grid" id="spells-context-menu-container">
+     <article class="spell-card spell-row ..." data-item-id="{{spell.id}}">
+   ```
+
+**Current right-click delete bindings (all via `buildCommonContextualMenu`):**
+
+| Tab | Item | containerSelector | rowSelector |
+|-----|------|-------------------|-------------|
+| Combat | Attack Presets | `#attack-presets-context-menu-container` | `.attack-preset-row` |
+| Combat | Defense Presets | `#defense-presets-context-menu-container` | `.defense-preset-row` |
+| Skills | Special Skills | `#special-skills-context-menu-container` | `.special-skill-row` |
+| Bio | Elan | `#elan-context-menu-container` | `.elan-row .base` |
+| Bio | Levels (Categorías) | `#level-context-menu-container` | `.level-row` |
+| Bio | Contacts | `#contacts-context-menu-container` | `.contact-row` |
+| Inventory | Weapons | `#weapons-context-menu-container` | `.weapon-row` |
+| Inventory | Armors | `#armors-context-menu-container` | `.armor-row` |
+| Inventory | Ammo | `#ammo-context-menu-container` | `.ammo-row` |
+| Inventory | Inventory Items | `#inventory-items-context-menu-container` | `.inventory-item-row` |
+| Grimoire | Spells | `#spells-context-menu-container` | `.spell-row` |
+| Summoning | Invocaciones | (existing) | `.invocation-row` |
+| Summoning | Encarnaciones | (existing) | `.incarnation-row` |
+| Summoning | Creatures | (existing) | `.creature-row` |
+| Domine | Ki Techniques | (existing) | `.ki-technique-row` |
+| Domine | Creatures | (existing) | `.domine-creature-row` |
+| Psychic | Powers | (existing) | `.psychic-power-row` |
+
+When adding new deletable items: check `ALL_ITEM_CONFIGURATIONS` for the item's `containerSelector` and `rowSelector`, wire the template to match, and never add inline delete buttons.
 
 ### Combine button
 Links a stat to the "combine roll" system:

@@ -793,14 +793,14 @@ export class CombatAttackDialog extends FormApplication {
       if (selectedSummon) {
         summon.summon = selectedSummon;
         if (!summon.critic || summon.critic === NoneWeaponCritic.NONE) {
-          summon.critic = selectedSummon.system.critic.value || WeaponCritic.IMPACT;
+          summon.critic = selectedSummon.system.critic?.value || WeaponCritic.IMPACT;
         }
         summon.effectiveDamage = (selectedSummon.system.damage.value || 0) + (selectedSummon.system.bonusDamage.value || 0);
       }
     } else if (summons.length > 0) {
       summon.summonUsed = summons[0]._id;
       summon.summon = summons[0];
-      summon.critic = summons[0].system.critic.value || WeaponCritic.IMPACT;
+      summon.critic = summons[0].system.critic?.value || WeaponCritic.IMPACT;
       summon.effectiveDamage = (summons[0].system.damage.value || 0) + (summons[0].system.bonusDamage.value || 0);
     }
 

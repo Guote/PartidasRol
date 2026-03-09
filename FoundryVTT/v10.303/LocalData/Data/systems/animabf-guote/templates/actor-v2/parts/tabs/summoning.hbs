@@ -62,21 +62,37 @@
       <table class="v2-table v2-table--compact">
         <thead>
           <tr>
+            <th style="width:28px;" title="Activo/Mantenido"><i class="fas fa-check-circle"></i></th>
             <th>{{localize "anima.ui.mystic.summon.name.title"}}</th>
+            <th class="v2-text-center" style="width:44px;" title="Nivel de Éxito">NE</th>
             <th class="v2-text-center" style="width:45px;">{{localize "anima.ui.mystic.summon.summonDif.short"}}</th>
             <th class="v2-text-center" style="width:45px;">{{localize "anima.ui.mystic.summon.zeonCost.short"}}</th>
             <th class="v2-text-center" style="width:60px;">{{localize "anima.ui.mystic.summon.baseAtk.short"}}</th>
             <th class="v2-text-center" style="width:60px;">{{localize "anima.ui.mystic.summon.baseDef.short"}}</th>
-            <th class="v2-text-center" style="width:60px;">{{localize "anima.ui.mystic.summon.damage.short"}}</th>
-            <th class="v2-text-center" style="width:50px;">{{localize "anima.ui.mystic.summon.critic.short"}}</th>
-            <th class="v2-text-center" style="width:40px;">{{localize "anima.ui.mystic.summon.turno.short"}}</th>
           </tr>
         </thead>
         <tbody id="summons-context-menu-container">
           {{#each system.mystic.summons as |summon|}}
-          <tr class="summon-row v2-table__row--draggable" data-item-id="{{summon._id}}">
+          <tr class="summon-row v2-table__row--draggable{{#if summon.system.active.value}} summon-row--active{{/if}}" data-item-id="{{summon._id}}">
+            <td class="v2-text-center" style="padding:0;">
+              <input type="checkbox" class="summon-active-checkbox" data-item-id="{{summon._id}}"
+                     {{checked summon.system.active.value}}
+                     title="Activo/Mantenido">
+            </td>
             <td>
-              <span class="v2-table__link" title="{{summon.name}}">{{summon.name}}</span>
+              <span class="v2-table__link" title="{{summon.system.special.value}}">{{summon.name}}</span>
+              {{#if summon.system.special.value}}
+              <div class="summon-special-text">{{summon.system.special.value}}</div>
+              {{/if}}
+              {{#if summon.resolvedDuration}}
+              <div class="summon-resolved-duration">{{summon.resolvedDuration}}</div>
+              {{/if}}
+            </td>
+            <td class="v2-text-center" style="padding: 2px 4px;">
+              <input type="number" class="summon-ne-input v2-text-center"
+                     name="system.dynamic.summons.{{summon._id}}.system.ne.value"
+                     value="{{summon.system.ne.value}}"
+                     style="width:36px; border: 1px solid rgba(255,200,80,0.6); border-radius:3px; background: rgba(255,200,80,0.08);">
             </td>
             <td class="v2-text-center">{{summon.system.summonDif.value}}</td>
             <td class="v2-text-center">{{summon.system.zeonCost.value}}</td>
@@ -92,18 +108,10 @@
               <span class="v2-text-muted">(+{{summon.system.bonusDef.value}})</span>
               {{/if}}
             </td>
-            <td class="v2-text-center">
-              {{summon.system.damage.value}}
-              {{#if summon.system.bonusDamage.value}}
-              <span class="v2-text-muted">(+{{summon.system.bonusDamage.value}})</span>
-              {{/if}}
-            </td>
-            <td class="v2-text-center" style="font-size: 0.7rem;">{{summon.system.critic.value}}</td>
-            <td class="v2-text-center">{{summon.system.turno.value}}</td>
           </tr>
           {{else}}
           <tr>
-            <td colspan="8" class="v2-text-center v2-text-muted">-</td>
+            <td colspan="7" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>

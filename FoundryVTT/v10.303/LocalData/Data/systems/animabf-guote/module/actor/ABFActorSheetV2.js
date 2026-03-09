@@ -14,7 +14,7 @@ import ABFSpellbook from "./ABFSpellbook.js";
 export default class ABFActorSheetV2 extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
-    this.buildCommonContextualMenu = (itemConfig) => {
+    this.buildCommonContextualMenu = (itemConfig, html) => {
       const {
         selectors: { containerSelector, rowSelector },
         fieldPath,
@@ -46,7 +46,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
           },
         });
       }
-      return new ContextMenu($(containerSelector), rowSelector, [
+      return new ContextMenu(html ? html.find(containerSelector) : $(containerSelector), rowSelector, [
         ...otherItems,
         {
           name: deleteRowMessage,
@@ -127,11 +127,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
         // Enable dragging item rows to the macro hotbar
         // Note: .rollable elements are handled manually in activateListeners
         dragDrop: [
-          { dragSelector: ".item-list .item", dropSelector: null },
-          { dragSelector: ".weapon-row", dropSelector: null },
-          { dragSelector: ".armor-row", dropSelector: null },
-          { dragSelector: ".spell-row", dropSelector: null },
-          { dragSelector: ".ammo-row", dropSelector: null },
+          { dragSelector: ".item-list .item, .weapon-row, .armor-row, .spell-row, .ammo-row", dropSelector: null },
           { dragSelector: null, dropSelector: ".v2-tab-summoning" },
         ],
       },
@@ -211,12 +207,19 @@ export default class ABFActorSheetV2 extends ActorSheet {
     // V2 Enhancements: Calculate equipped weapons for initiative dropdown
     sheet.equippedWeapons = sheet.system?.combat?.weapons || [];
     sheet.selectedWeaponId = sheet.system?.combat?.selectedWeaponId?.value || "";
+    sheet.selectedWeapons = sheet.equippedWeapons.filter(w => w.system?.isShown?.value);
 
-    // Calculate initiative with selected weapon bonus
-    const baseInitiative = sheet.system?.characteristics?.secondaries?.initiative?.final?.value || 0;
-    const selectedWeapon = sheet.equippedWeapons.find(w => w._id === sheet.selectedWeaponId);
-    const weaponInitBonus = selectedWeapon?.system?.initiative?.final?.value || 0;
-    sheet.initiativeWithWeapon = baseInitiative + weaponInitBonus;
+    // Build display list with slowest flag for the combat tab
+    const slowestWeapon = sheet.selectedWeapons.length > 0
+      ? sheet.selectedWeapons.reduce((min, w) =>
+          (w.system?.initiative?.final?.value ?? 0) < (min.system?.initiative?.final?.value ?? 0) ? w : min
+        )
+      : null;
+    sheet.selectedWeaponsDisplay = sheet.selectedWeapons.map(w => ({
+      name: w.name,
+      initValue: w.system?.initiative?.final?.value ?? 0,
+      isSlowest: w._id === slowestWeapon?._id,
+    }));
 
     // Calculate effective max HP (max - sacrificed)
     const hp = sheet.system?.characteristics?.secondaries?.lifePoints;
@@ -239,6 +242,15 @@ export default class ABFActorSheetV2 extends ActorSheet {
       }, 0);
     } else {
       sheet.totalKiAccumulated = 0;
+    }
+
+    // Add resolvedDuration to each summon ([NE] replaced with actual NE value)
+    for (const summon of sheet.system?.mystic?.summons || []) {
+      const dur = summon.system?.duracion?.value;
+      const ne = summon.system?.ne?.value ?? 0;
+      summon.resolvedDuration = (dur && ne > 0)
+        ? dur.replace(/\[NE\]/gi, ne)
+        : '';
     }
 
     return sheet;
@@ -277,7 +289,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       }
     });
     for (const item of Object.values(ALL_ITEM_CONFIGURATIONS)) {
-      this.buildCommonContextualMenu(item);
+      this.buildCommonContextualMenu(item, html);
       // Ensure item rows have draggable attribute (dragDrop config handles the event binding)
       html.find(item.selectors.rowSelector).each((_, row) => {
         row.setAttribute("draggable", "true");
@@ -463,8 +475,20 @@ export default class ABFActorSheetV2 extends ActorSheet {
       }
     });
 
+    // Summon active/mantenido checkbox toggle
+    html.find('.summon-active-checkbox').click(async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      const isChecked = e.currentTarget.checked;
+      await this.actor.updateEmbeddedDocuments('Item', [{ _id: itemId, 'system.active.value': isChecked }]);
+    });
+
+    html.find('.summon-ne-input').click((e) => e.stopPropagation());
+
     // Click on summon row to open summon item sheet
     html.find('.summon-row').click((e) => {
+      if (e.target.classList.contains('summon-active-checkbox') ||
+          e.target.classList.contains('summon-ne-input')) return;
       e.preventDefault();
       const itemId = e.currentTarget.dataset.itemId;
       if (itemId) {
@@ -475,10 +499,38 @@ export default class ABFActorSheetV2 extends ActorSheet {
       }
     });
 
+    // Double-click preset name to rename inline
+    html.find('.preset-name-cell').dblclick((e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const span = e.currentTarget;
+      const row = span.closest('[data-item-id]');
+      if (!row) return;
+      const itemId = row.dataset.itemId;
+      const currentName = span.textContent.trim();
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = currentName;
+      input.style.cssText = 'width:100%;font-size:inherit;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.5);outline:none;color:inherit;padding:0;';
+      span.replaceWith(input);
+      input.focus();
+      input.select();
+      const save = async () => {
+        const newName = input.value.trim() || currentName;
+        await this.actor.updateEmbeddedDocuments('Item', [{ _id: itemId, name: newName }]);
+      };
+      input.addEventListener('blur', save);
+      input.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter') { ev.preventDefault(); input.blur(); }
+        if (ev.key === 'Escape') { input.removeEventListener('blur', save); span.textContent = currentName; input.replaceWith(span); }
+      });
+    });
+
     // Preset row click (opens dialog pre-filled)
     html.find('.preset-row-clickable').click((e) => {
       if (e.target.closest('.preset-quick-attack')) return;
       if (e.target.closest('.preset-delete')) return;
+      if (e.target.closest('.preset-name-cell')) return;
       e.preventDefault();
       const presetId = e.currentTarget.dataset.presetId;
       const presetType = e.currentTarget.dataset.presetType;
@@ -1073,7 +1125,11 @@ export default class ABFActorSheetV2 extends ActorSheet {
         await this.actor.createEmbeddedDocuments('Item', [item.toObject()]);
         return;
       }
-      // Non-spell items fall through to default handling
+      if (item?.type === 'summon' && item.parent?.id !== this.actor.id) {
+        await this.actor.createEmbeddedDocuments('Item', [item.toObject()]);
+        return;
+      }
+      // Non-spell/summon items fall through to default handling
       return super._onDrop(event);
     }
 
@@ -1232,10 +1288,25 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
       const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, dataset.modifierType);
 
+      // For initiative rolls, add turn-selected weapon initiative bonus (slowest weapon)
+      const weaponInitValues = [];
+      const weaponInitLabels = [];
+      if (dataset.modifierType === "initiative") {
+        const turnWeapons = (this.actor.system?.combat?.weapons || [])
+          .filter(w => w.system?.isShown?.value);
+        if (turnWeapons.length > 0) {
+          const slowest = turnWeapons.reduce((min, w) =>
+            (w.system?.initiative?.final?.value ?? 0) < (min.system?.initiative?.final?.value ?? 0) ? w : min
+          );
+          weaponInitValues.push(slowest.system?.initiative?.final?.value ?? 0);
+          weaponInitLabels.push(slowest.name);
+        }
+      }
+
       let formula = getFormula({
         dice: dataset.roll,
-        values: [dataset.rollvalue, ...modValues, mod],
-        labels: [`${dataset.label}`, ...modLabels, "Mod"],
+        values: [dataset.rollvalue, ...modValues, ...weaponInitValues, mod],
+        labels: [`${dataset.label}`, ...modLabels, ...weaponInitLabels, "Mod"],
       });
       if (formula.includes("10TO100")) {
         let totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);

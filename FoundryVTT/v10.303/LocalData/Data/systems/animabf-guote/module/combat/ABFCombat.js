@@ -31,14 +31,26 @@ export default class ABFCombat extends Combat {
     }
     for (const id of ids) {
       const combatant = this.combatants.get(id);
+      const turnWeapons = (combatant?.actor?.system?.combat?.weapons || [])
+        .filter(w => w.system?.isShown?.value);
+      const weaponInitValues = [];
+      const weaponInitLabels = [];
+      if (turnWeapons.length > 0) {
+        const slowest = turnWeapons.reduce((min, w) =>
+          (w.system?.initiative?.final?.value ?? 0) < (min.system?.initiative?.final?.value ?? 0) ? w : min
+        );
+        weaponInitValues.push(slowest.system?.initiative?.final?.value ?? 0);
+        weaponInitLabels.push(slowest.name);
+      }
+
       let formula = getFormula({
         dice: "1d100Initiative",
         values: [
-          combatant?.actor?.system.characteristics.secondaries.initiative.final
-            .value,
+          combatant?.actor?.system.characteristics.secondaries.initiative.final.value,
+          ...weaponInitValues,
           mod,
         ],
-        labels: ["Turno", "Mod"],
+        labels: ["Turno", ...weaponInitLabels, "Mod"],
       });
       await super.rollInitiative(id, {
         formula: formula,

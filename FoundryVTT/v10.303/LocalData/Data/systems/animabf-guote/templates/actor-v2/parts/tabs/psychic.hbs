@@ -85,10 +85,6 @@
             <th class="v2-text-center" style="width: 42px;" title="{{localize 'anima.ui.psychic.psychicPowers.power.footer.hasMaintenance.title'}}">
               {{localize "anima.ui.psychic.psychicPowers.power.footer.maintained.short"}}
             </th>
-            <th class="v2-text-center" style="width: 42px;"
-                title="{{localize 'anima.ui.psychic.innatePsychicPower.title'}}">
-              {{localize "anima.ui.psychic.psychicPowers.power.footer.innate.short"}}
-            </th>
             <th style="width: 28px;"></th>
           </tr>
         </thead>
@@ -119,13 +115,6 @@
                      {{#unless power.system.hasMaintenance.value}}disabled{{/unless}}>
             </td>
             <td class="v2-text-center">
-              {{!-- Innate indicator: editable checkbox. hasMaintenance must be true to allow innate --}}
-              <input type="checkbox"
-                     name="system.dynamic.psychicPowers.{{power._id}}.system.isInnate.value"
-                     {{checked power.system.isInnate.value}}
-                     {{#unless power.system.hasMaintenance.value}}disabled{{/unless}}>
-            </td>
-            <td class="v2-text-center">
               <button type="button" class="v2-btn-icon-sm psychic-power-open-sheet"
                       data-item-id="{{power._id}}"
                       title="{{localize 'anima.ui.psychic.psychicPowers.power.openSheet'}}">
@@ -135,7 +124,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="7" class="v2-text-center v2-text-muted">-</td>
+            <td colspan="6" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>

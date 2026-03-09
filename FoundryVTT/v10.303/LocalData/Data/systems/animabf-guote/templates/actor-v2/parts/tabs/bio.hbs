@@ -73,10 +73,10 @@
               <th style="width: 60px;">{{localize "anima.ui.elanSection.elanRow.level"}}</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="elan-context-menu-container">
             {{#each system.general.elan as |elan|}}
-            <tr data-item-id="{{elan._id}}">
-              <td>
+            <tr class="elan-row">
+              <td class="base" data-item-id="{{elan._id}}">
                 <input type="text" class="v2-table__input"
                        name="system.dynamic.elan.{{elan._id}}.name"
                        value="{{elan.name}}">
@@ -117,9 +117,9 @@
               <th style="width: 60px;">{{localize "anima.ui.levelSection.level.title"}}</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="level-context-menu-container">
             {{#each system.general.levels as |level|}}
-            <tr data-item-id="{{level._id}}">
+            <tr class="level-row" data-item-id="{{level._id}}">
               <td>
                 <input type="text" class="v2-table__input"
                        name="system.dynamic.levels.{{level._id}}.name"
@@ -189,9 +189,9 @@
             <th>{{localize "anima.ui.contactSection.contactRow.description"}}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="contacts-context-menu-container">
           {{#each system.general.contacts as |contact|}}
-          <tr data-item-id="{{contact._id}}">
+          <tr class="contact-row" data-item-id="{{contact._id}}">
             <td>
               <input type="text" class="v2-table__input"
                      name="system.dynamic.contacts.{{contact._id}}.name"

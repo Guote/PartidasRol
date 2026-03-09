@@ -1,124 +1,161 @@
 <aside class="character-sidebar-sheet">
-    <div class="portrait {{#if (gte document.system.resources.hitPoints.value document.system.resources.hitPoints.maxTotal)}}death-roll{{/if}}">
+    <div class="portrait {{#if isDeath}}death-roll{{/if}}">
         <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
-        <a class="death-roll-btn" data-tooltip="{{localize "DAGGERHEART.Sheets.PC.Health.DeathMoveTooltip"}}" data-action="makeDeathMove"><i class="fas fa-skull death-save" ></i></a>
+        {{#if document.system.spellcastModifierTrait.key}}
+            <div class="icons-list">
+                <span class="spellcast-icon {{#if isDeath}}no-label{{/if}}">
+                    <span class="spellcast-label">
+                        {{localize "DAGGERHEART.ITEMS.Subclass.spellcastingTrait"}}: 
+                        {{localize (concat 'DAGGERHEART.CONFIG.Traits.' document.system.spellcastModifierTrait.key '.short')}}
+                    </span>
+                    <i class="fa-solid fa-wand-sparkles"></i>
+                </span>
+            </div>
+        {{/if}}
+        <a class="death-roll-btn" data-tooltip="DAGGERHEART.UI.Tooltip.makeDeathMove" {{#if
+            isDeath}}data-action="makeDeathMove" {{/if}}><i class="fa-solid fa-skull death-save"></i></a>
     </div>
-    
-    <div class="info-section">
+    <div class="info-section {{#if useResourcePips}}pip-display{{/if}}">
         <div class="resources-section">
-            <div class="status-bar">
-                <div class='status-value'>
-                    <p><input class="bar-input" name="system.resources.hitPoints.value" value="{{document.system.resources.hitPoints.value}}" type="number"></p>
-                    <p>/</p>
-                    <p class="bar-label">{{document.system.resources.hitPoints.maxTotal}}</p>
-                </div>
-                <progress
-                    class='progress-bar'
-                    value='{{document.system.resources.hitPoints.value}}'
-                    max='{{document.system.resources.hitPoints.maxTotal}}'
-                ></progress>
-                <div class="status-label">
-                    <h4>Health</h4>
-                </div>
-                
-            </div>
-            <div class="status-bar">
-                <div class='status-value'>
-                    <p><input class="bar-input" name="system.resources.stress.value" value="{{document.system.resources.stress.value}}" type="number"></p>
-                    <p>/</p>
-                    <p class="bar-label">{{document.system.resources.stress.maxTotal}}</p>
-                </div>
-                <progress
-                    class='progress-bar stress-color'
-                    value='{{document.system.resources.stress.value}}'
-                    max='{{document.system.resources.stress.maxTotal}}'
-                ></progress>
-                <div class="status-label">
-                    <h4>Stress</h4>
-                </div>
-            </div>
+            {{> "systems/daggerheart/templates/sheets/global/partials/resource-bar.hbs" resource=resources.hitPoints label="DAGGERHEART.GENERAL.HitPoints.short" key="system.resources.hitPoints.value" action="toggleHitPoints" }}
+            {{> "systems/daggerheart/templates/sheets/global/partials/resource-bar.hbs" resource=resources.stress label="DAGGERHEART.GENERAL.stress" key="system.resources.stress.value" action="toggleStress" }}
         </div>
-        <div class="status-section">
+        <div class="status-section {{#if useResourcePips}}pip-display{{/if}}">
             <div class="status-number">
                 <div class='status-value'>
-                    <p>{{document.system.proficiency.total}}</p>
+                    <p>{{document.system.evasion}}</p>
                 </div>
                 <div class="status-label">
-                    <h4>Proficiency</h4>
+                    <h4>{{localize "DAGGERHEART.GENERAL.evasion"}}</h4>
                 </div>
             </div>
 
-            <div class="status-number">
-                <div class='status-value armor-slots'>
-                    {{#if document.system.armor.system.marks}}
-                        <p>{{document.system.armor.system.marks.value}}/{{document.system.armor.system.marks.max}}</p>
+            {{#if document.system.armor.system.marks}}
+                <div class="status-bar armor-slots">
+                    {{#if useResourcePips}}
+                    <div class='slot-value'>
+                        <div class="slot-bar">
+                        {{#times document.system.armorScore}}
+                            <a class='armor-slot' data-action='toggleArmor'  data-value="{{add this 1}}">
+                                {{#if (gte ../document.system.armor.system.marks.value (add this 1))}}
+                                    <i class="fa-solid fa-shield"></i>
+                                {{else}}
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                {{/if}}
+                            </a>
+                        {{/times}}
+                        </div>
+                        <div class="slot-label">
+                            <span class="label">{{localize "DAGGERHEART.GENERAL.armorSlots"}}</span>
+                            <span class="value">{{document.system.armor.system.marks.value}} / {{document.system.armorScore}}</span>
+                        </div> 
+                    </div>
                     {{else}}
-                        <p>-</p>
+                    <div class='status-value'>
+                        <input class="bar-input armor-marks-input" value="{{document.system.armor.system.marks.value}}" type="number">
+                        <span>/</span>
+                        <span class="bar-label">{{document.system.armorScore}}</span>
+                    </div>
+                    <progress
+                        class='progress-bar stress-color'
+                        value='{{document.system.armor.system.marks.value}}'
+                        max='{{document.system.armorScore}}'
+                    ></progress>
+                    <div class="status-label">
+                        <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
+                    </div>
                     {{/if}}
                 </div>
-                <div class="status-label">
-                    <h4>Armor Slots</h4>
+            {{else}}
+                <div class="status-number armor-slots">
+                    <div class='status-value'>
+                        <p>-</p>
+                    </div>
+                    <div class="status-label">
+                        <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
+                    </div>
                 </div>
-            </div>
+            {{/if}}
 
             <div class="status-number">
                 <div class='status-value'>
-                    <p>{{document.system.evasion.total}}</p>
+                    <p>{{document.system.proficiency}}</p>
                 </div>
                 <div class="status-label">
-                    <h4>Evasion</h4>
+                    <h4>{{localize "DAGGERHEART.GENERAL.proficiency"}}</h4>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="equipment-section">
-        <div class="title">
-            <side-line-div  class="invert"></side-line-div>
-            <h3>Equipment</h3>
-            <side-line-div></side-line-div>
+        <div class="threshold-section">
+            <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.minor"}}</h4>
+            <h4 class="threshold-value">{{document.system.damageThresholds.major}}</h4>
+            <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</h4>
+            <h4 class="threshold-value">{{document.system.damageThresholds.severe}}</h4>
+            <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</h4>
         </div>
-        <ul class="items-sidebar-list">
-            {{#each document.items as |item|}}
+    </div>
+
+    <div class="shortcut-items-section">
+        <div class="equipment-section">
+            <div class="title">
+                <side-line-div class="invert"></side-line-div>
+                <h3>{{localize "DAGGERHEART.GENERAL.equipment"}}</h3>
+                <side-line-div></side-line-div>
+            </div>
+            <ul class="items-sidebar-list">
+                {{#if document.system.usedUnarmed}}
+                {{> 'daggerheart.inventory-item-compact'
+                    item=document.system.usedUnarmed
+                    type='attack'
+                }}
+                {{/if}}
+                {{#each document.items as |item|}}
                 {{#if item.system.equipped}}
-                    {{> 'systems/daggerheart/templates/sheets/global/partials/inventory-item.hbs' item=item type=item.type isSidebar=true}}
+                {{> 'daggerheart.inventory-item-compact'
+                    item=item
+                    type=item.type
+                }}
                 {{/if}}
-            {{/each}}
-        </ul>
-    </div>
-    <div class="loadout-section">
-        <div class="title">
-            <side-line-div  class="invert"></side-line-div>
-            <h3>Loadout</h3>
-            <side-line-div></side-line-div>
+                {{/each}}
+            </ul>
         </div>
-        <ul class="items-sidebar-list">
-            {{#each document.items as |item|}}
-                {{#if (eq item.type 'domainCard')}}
-                    {{#unless item.system.inVault}}
-                        {{> 'systems/daggerheart/templates/sheets/global/partials/inventory-item.hbs' item=item type=item.type isSidebar=true}}
-                    {{/unless}}
-                {{/if}}
-            {{/each}}
-        </ul>
-    </div>
-    <div class="experience-section">
-        <div class="title">
-            <side-line-div  class="invert"></side-line-div>
-            <h3>Experience</h3>
-            <side-line-div></side-line-div>
+        <div class="loadout-section">
+            <div class="title">
+                <side-line-div class="invert"></side-line-div>
+                <h3>{{localize "DAGGERHEART.GENERAL.loadout"}}</h3>
+                <side-line-div></side-line-div>
+            </div>
+            <ul class="items-sidebar-list">
+                {{#each document.system.domainCards.loadout as |card|}}
+                {{> 'daggerheart.inventory-item-compact'
+                    item=card
+                    type='domainCard'
+                }}
+
+                {{/each}}
+            </ul>
         </div>
-        <div class="experience-list">
-            {{#each document.system.experiences as |experience id|}}
-                <div class="experience-row">
-                    <div class="experience-value">
-                        +{{experience.total}}
+        <div class="experience-section">
+            <div class="title">
+                <side-line-div class="invert"></side-line-div>
+                <h3>{{localize "DAGGERHEART.GENERAL.experience.single"}}</h3>
+                <side-line-div></side-line-div>
+            </div>
+            <div class="experience-list">
+                {{#each document.system.experiences as |experience id|}}
+                    <div class="experience-row" data-tooltip-text="{{experience.description}}">
+                        <span class="experience-value">
+                            {{numberFormat experience.value sign=true}}
+                        </span>
+                        <span class="experience-name">{{experience.name}}</span>
+                        <div class="controls">
+                            <a data-action="sendExpToChat" data-type="experience" data-id="{{id}}">
+                                <i class="fa-regular fa-message"></i>
+                            </a>
+                        </div>
                     </div>
-                    <input name="{{concat "system.experiences." id ".description"}}" data-experience={{id}} value="{{experience.description}}" type="text" />
-                    <div class="controls">
-                        <a data-action="toChat" data-type="experience" data-uuid="{{id}}"><i class="fa-regular fa-message"></i></a>
-                    </div>
-                </div>
-            {{/each}}
+                {{/each}}
+            </div>
         </div>
     </div>
 </aside>

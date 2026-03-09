@@ -119,7 +119,7 @@
 .actor-sheet-v2 .v2-header__resources {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-1);
   align-items: center;
 }
 
@@ -373,7 +373,7 @@
 
 /* Compact resource variant - used in resources bar */
 .actor-sheet-v2 .v2-res--compact {
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1);
   gap: var(--space-1);
   flex-direction: column;
   align-items: stretch;
@@ -395,7 +395,7 @@
 }
 
 .actor-sheet-v2 .v2-res__input--compact {
-  width: 28px;
+  width: 26px;
   padding: 1px 2px;
   font-size: var(--font-size-xs);
 }
@@ -1625,6 +1625,31 @@
 
 .actor-sheet-v2 .summon-row:hover td {
   color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .summon-row--active td {
+  border-left: 3px solid var(--abf-primary);
+}
+
+.actor-sheet-v2 .summon-row--active td:not(:first-child) {
+  border-left: none;
+}
+
+.actor-sheet-v2 .summon-special-text {
+  font-size: 0.7rem;
+  color: var(--abf-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  margin-top: 1px;
+}
+
+.actor-sheet-v2 .summon-resolved-duration {
+  font-size: 0.68rem;
+  color: var(--abf-primary);
+  opacity: 0.8;
+  margin-top: 1px;
 }
 
 .actor-sheet-v2 .creature-summon-row {

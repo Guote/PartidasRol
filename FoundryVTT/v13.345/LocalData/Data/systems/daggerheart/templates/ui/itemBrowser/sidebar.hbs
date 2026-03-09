@@ -1,0 +1,23 @@
+<div class="compendium-sidebar">
+    {{#if isGM}}<button data-action="openSettings"><i class="fa-solid fa-gear"></i> {{localize "DAGGERHEART.UI.ItemBrowser.browserSettings"}}</button>{{/if}}
+    <div class="folder-list">
+        {{#each compendiums}}
+                <div class="{{#if selected}} is-selected{{/if}}" data-action="selectFolder" data-folder-id="{{id}}" {{#if folders.length}}data-tooltip="DAGGERHEART.UI.Tooltip.rightClickExtend" data-tooltip-direction="RIGHT"{{/if}}>{{label}}</div>
+                {{#if folders.length}}
+                    <div class="subfolder-list">
+                        <div class="wrapper">
+                            {{#each folders}}
+                                <div
+                                    class="subfolder-item {{#if selected}} is-selected{{/if}}"
+                                    data-action="selectFolder"
+                                    data-folder-id="{{../id}}.folders.{{id}}"
+                                >
+                                    <span>• {{label}}</span>
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+        {{/each}}
+    </div>
+</div>

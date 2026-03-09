@@ -5,28 +5,44 @@
 >
     <fieldset class="two-columns">
         <legend>{{localize tabs.settings.label}}</legend>
-        <span>{{localize "DAGGERHEART.Tiers.singular"}}</span>
-        {{formField systemFields.tier value=source.system.tier}}
-        <span>{{localize "DAGGERHEART.Sheets.Weapon.SecondaryWeapon"}}</span>
-        {{formField systemFields.secondary value=source.system.secondary}}
-        <span>{{localize "DAGGERHEART.Sheets.Weapon.Trait"}}</span>
-        {{formField systemFields.trait value=source.system.trait localize=true}}
-        <span>{{localize "DAGGERHEART.Sheets.Weapon.Range"}}</span>
-        {{formField systemFields.range value=source.system.range localize=true}}
-        <span>{{localize "DAGGERHEART.Sheets.Weapon.Burden"}}</span>
-        {{formField systemFields.burden value=source.system.burden localize=true}}
+        <span>{{localize "DAGGERHEART.GENERAL.Tiers.singular"}}</span>
+        {{formInput systemFields.tier value=source.system.tier}}
+        <span>{{localize "DAGGERHEART.ITEMS.Weapon.secondaryWeapon"}}</span>
+        {{formInput systemFields.secondary value=source.system.secondary}}
+        <span>{{localize "DAGGERHEART.GENERAL.Trait.single"}}</span>
+        {{formInput systemFields.attack.fields.roll.fields.trait value=document.system.attack.roll.trait name="system.attack.roll.trait" label="DAGGERHEART.GENERAL.Trait.single" localize=true}}
+        <span>{{localize "DAGGERHEART.GENERAL.range"}}</span>
+        {{formInput systemFields.attack.fields.range value=document.system.attack.range label="Range" name="system.attack.range" localize=true}}
+        <span>{{localize "DAGGERHEART.GENERAL.burden"}}</span>
+        {{formInput systemFields.burden value=source.system.burden localize=true}}
     </fieldset>
 
     <fieldset class="two-columns">
-        <legend>{{localize "DAGGERHEART.Sheets.Weapon.Damage.Title"}}</legend>
-        <span>{{localize "DAGGERHEART.Sheets.Weapon.Damage.Value"}}</span>
-        {{formGroup systemFields.damage.fields.value value=source.system.damage.value}}
-        <span>{{localize "DAGGERHEART.Sheets.Weapon.Damage.Type"}}</span>
-        {{formGroup systemFields.damage.fields.type value=source.system.damage.type localize=true}}
+        {{#with systemFields.attack.fields.damage.fields.parts.element.fields as | fields | }}
+        {{#with (lookup ../document.system.attack.damage.parts 0) as | source | }}
+            <legend>{{localize "DAGGERHEART.GENERAL.damage"}}</legend>
+            <span>{{localize "DAGGERHEART.ACTIONS.Config.general.customFormula"}}</span>
+            {{formInput fields.value.fields.custom.fields.enabled value=source.value.custom.enabled name="system.attack.damage.parts.0.value.custom.enabled"}}
+            {{#if source.value.custom.enabled}}
+                <span>{{localize "DAGGERHEART.ACTIONS.Config.general.formula"}}</span>
+                {{formInput fields.value.fields.custom.fields.formula value=source.value.custom.formula name="system.attack.damage.parts.0.value.custom.formula"}}
+            {{else}}
+                <span>{{localize "DAGGERHEART.GENERAL.Dice.single"}}</span>
+                {{formInput fields.value.fields.dice value=source.value.dice name="system.attack.damage.parts.0.value.dice"}}
+                <span>{{localize "DAGGERHEART.GENERAL.bonus"}}</span>
+                {{formInput fields.value.fields.bonus value=source.value.bonus name="system.attack.damage.parts.0.value.bonus" localize=true}}
+            {{/if}}
+            <span>{{localize "DAGGERHEART.GENERAL.type"}}</span>
+            {{formInput fields.type value=source.type name="system.attack.damage.parts.0.type" localize=true}}
+            <span>{{localize "DAGGERHEART.CONFIG.DamageType.direct.name"}}</span>
+            {{formInput @root.systemFields.attack.fields.damage.fields.direct value=@root.document.system.attack.damage.direct name="system.attack.damage.direct" localize=true}}
+            <input type="hidden" name="system.attack.damage.parts.0.value.multiplier" value="{{source.value.multiplier}}">
+        {{/with}}
+        {{/with}}
     </fieldset>
     <fieldset class="two-columns">
-        <legend>{{localize "DAGGERHEART.Sheets.Weapon.Feature"}}</legend>
-        <span>{{localize "DAGGERHEART.Sheets.Weapon.Feature"}}</span>
+        <legend>{{localize "TYPES.Item.feature"}}</legend>
+        <span>{{localize "TYPES.Item.feature"}}</span>
         <input type="text" class="features-input" value="{{features}}" />
     </fieldset>
 </section>

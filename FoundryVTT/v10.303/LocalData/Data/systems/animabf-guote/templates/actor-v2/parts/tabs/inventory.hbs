@@ -25,7 +25,7 @@
             <th style="width: 60px;">{{localize "anima.ui.combat.weapons.critic.primary.title"}}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="weapons-context-menu-container">
           {{#each system.combat.weapons as |weapon|}}
           <tr class="weapon-row v2-table__row--draggable" data-item-id="{{weapon._id}}">
             <td class="v2-text-center">
@@ -85,7 +85,7 @@
             <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.energy.title"}}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="armors-context-menu-container">
           {{#each system.combat.armors as |armor|}}
           <tr class="armor-row v2-table__row--draggable" data-item-id="{{armor._id}}">
             <td class="v2-text-center">
@@ -137,7 +137,7 @@
             <th style="width: 80px;">{{localize "anima.ui.combat.ammo.critic.title"}}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="ammo-context-menu-container">
           {{#each system.combat.ammo as |ammo|}}
           <tr class="ammo-row v2-table__row--draggable" data-item-id="{{ammo._id}}">
             <td><span class="item-link">{{ammo.name}}</span></td>
@@ -195,9 +195,9 @@
             <th>{{localize "anima.ui.inventoryItemsSection.description.title"}}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="inventory-items-context-menu-container">
           {{#each system.general.inventory as |item|}}
-          <tr class="item v2-table__row--draggable" data-item-id="{{item._id}}">
+          <tr class="inventory-item-row v2-table__row--draggable" data-item-id="{{item._id}}">
             <td><span class="item-link">{{item.name}}</span></td>
             <td>
               <input type="number" class="v2-table__input v2-text-center"
