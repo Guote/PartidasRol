@@ -2,8 +2,16 @@
 <div class="v2-tab-summoning">
   {{!-- Summoning Stats Header --}}
   <div class="v2-card">
-    <div class="v2-card__header">
+    <div class="v2-card__header" style="display:flex; align-items:center; justify-content:space-between;">
       <span>{{localize "anima.ui.mystic.summoning.title"}}</span>
+      <div style="display:flex; align-items:center; gap:4px;">
+        <span style="font-size:10px; color:#aaa; text-transform:uppercase;">Especialización</span>
+        <select name="system.mystic.summoning.specialization.value" style="font-size:11px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.2); color:inherit; border-radius:3px; padding:1px 4px;">
+          <option value="ninguna"   {{#if (is 'eq' system.mystic.summoning.specialization.value 'ninguna')}}selected{{/if}}>Ninguna</option>
+          <option value="elemental" {{#if (is 'eq' system.mystic.summoning.specialization.value 'elemental')}}selected{{/if}}>Elemental</option>
+          <option value="invocador" {{#if (is 'eq' system.mystic.summoning.specialization.value 'invocador')}}selected{{/if}}>Invocador</option>
+        </select>
+      </div>
     </div>
     <div class="v2-card__body">
       <div class="v2-combat-values v2-summoning-stats">
@@ -66,52 +74,46 @@
             <th>{{localize "anima.ui.mystic.summon.name.title"}}</th>
             <th class="v2-text-center" style="width:44px;" title="Nivel de Éxito">NE</th>
             <th class="v2-text-center" style="width:45px;">{{localize "anima.ui.mystic.summon.summonDif.short"}}</th>
-            <th class="v2-text-center" style="width:45px;">{{localize "anima.ui.mystic.summon.zeonCost.short"}}</th>
-            <th class="v2-text-center" style="width:60px;">{{localize "anima.ui.mystic.summon.baseAtk.short"}}</th>
-            <th class="v2-text-center" style="width:60px;">{{localize "anima.ui.mystic.summon.baseDef.short"}}</th>
+            <th class="v2-text-center" style="width:55px;">{{localize "anima.ui.mystic.summon.zeonCost.short"}}</th>
+            <th style="width:30px;"></th>
           </tr>
         </thead>
         <tbody id="summons-context-menu-container">
-          {{#each system.mystic.summons as |summon|}}
-          <tr class="summon-row v2-table__row--draggable{{#if summon.system.active.value}} summon-row--active{{/if}}" data-item-id="{{summon._id}}">
+          {{#each summonRows as |row|}}
+          <tr class="summon-row v2-table__row--draggable{{#if row.power.active.value}} summon-row--active{{/if}}"
+              data-item-id="{{row.summon._id}}" data-power-index="{{row.powerIndex}}">
             <td class="v2-text-center" style="padding:0;">
-              <input type="checkbox" class="summon-active-checkbox" data-item-id="{{summon._id}}"
-                     {{checked summon.system.active.value}}
+              <input type="checkbox" class="power-active-checkbox"
+                     data-item-id="{{row.summon._id}}" data-power-index="{{row.powerIndex}}"
+                     {{checked row.power.active.value}}
                      title="Activo/Mantenido">
             </td>
             <td>
-              <span class="v2-table__link" title="{{summon.system.special.value}}">{{summon.name}}</span>
-              {{#if summon.system.special.value}}
-              <div class="summon-special-text">{{summon.system.special.value}}</div>
-              {{/if}}
-              {{#if summon.resolvedDuration}}
-              <div class="summon-resolved-duration">{{summon.resolvedDuration}}</div>
+              <span class="v2-table__link">{{row.displayName}}</span>
+              {{#if row.resolvedDuration}}
+              <div class="summon-resolved-duration">{{row.resolvedDuration}}</div>
               {{/if}}
             </td>
             <td class="v2-text-center" style="padding: 2px 4px;">
-              <input type="number" class="summon-ne-input v2-text-center"
-                     name="system.dynamic.summons.{{summon._id}}.system.ne.value"
-                     value="{{summon.system.ne.value}}"
+              <input type="number" class="power-ne-input v2-text-center"
+                     data-item-id="{{row.summon._id}}" data-power-index="{{row.powerIndex}}"
+                     value="{{row.ne}}"
                      style="width:36px; border: 1px solid rgba(255,200,80,0.6); border-radius:3px; background: rgba(255,200,80,0.08);">
             </td>
-            <td class="v2-text-center">{{summon.system.summonDif.value}}</td>
-            <td class="v2-text-center">{{summon.system.zeonCost.value}}</td>
-            <td class="v2-text-center">
-              {{summon.system.baseAtk.value}}
-              {{#if summon.system.bonusAtk.value}}
-              <span class="v2-text-muted">(+{{summon.system.bonusAtk.value}})</span>
-              {{/if}}
-            </td>
-            <td class="v2-text-center">
-              {{summon.system.baseDef.value}}
-              {{#if summon.system.bonusDef.value}}
-              <span class="v2-text-muted">(+{{summon.system.bonusDef.value}})</span>
-              {{/if}}
+            <td class="v2-text-center">{{row.power.summonDif.value}}</td>
+            <td class="v2-text-center">{{row.zeonFinal}}</td>
+            <td class="v2-text-center" style="padding:2px;">
+              <button type="button" class="abf-button icon-button roll-summon-power"
+                data-item-id="{{row.summon._id}}" data-power-index="{{row.powerIndex}}"
+                title="Tirar invocación"
+                style="width:auto !important; display:inline-flex; padding:3px 6px;">
+                <i class="fas fa-dice-d20"></i>
+              </button>
             </td>
           </tr>
           {{else}}
           <tr>
-            <td colspan="7" class="v2-text-center v2-text-muted">-</td>
+            <td colspan="6" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>

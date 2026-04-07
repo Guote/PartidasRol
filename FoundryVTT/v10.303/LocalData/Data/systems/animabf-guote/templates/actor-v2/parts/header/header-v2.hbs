@@ -17,24 +17,30 @@
       <div class="v2-header__resistances-block">
         <span class="v2-header__block-title">{{localize "anima.ui.resistances.title"}}</span>
         <div class="v2-header__resistances">
-          <span class="v2-header__res rollable" title="{{localize 'anima.ui.resistances.physical'}}" data-roll="1d100"
-            data-rollvalue="{{system.characteristics.secondaries.resistances.physical.base.value}}"
-            data-label="{{localize 'anima.ui.resistances.physical'}}">
-            <b>RF</b><span
-              class="v2-header__res-value">{{system.characteristics.secondaries.resistances.physical.base.value}}</span>
-          </span>
-          <span class="v2-header__res rollable" title="{{localize 'anima.ui.resistances.magic'}}" data-roll="1d100"
-            data-rollvalue="{{system.characteristics.secondaries.resistances.magic.base.value}}"
-            data-label="{{localize 'anima.ui.resistances.magic'}}">
-            <b>RM</b><span
-              class="v2-header__res-value">{{system.characteristics.secondaries.resistances.magic.base.value}}</span>
-          </span>
-          <span class="v2-header__res rollable" title="{{localize 'anima.ui.resistances.psychic'}}" data-roll="1d100"
-            data-rollvalue="{{system.characteristics.secondaries.resistances.psychic.base.value}}"
-            data-label="{{localize 'anima.ui.resistances.psychic'}}">
-            <b>RP</b><span
-              class="v2-header__res-value">{{system.characteristics.secondaries.resistances.psychic.base.value}}</span>
-          </span>
+          <div class="v2-header__res">
+            <b class="rollable" title="{{localize 'anima.ui.resistances.physical'}}" data-roll="1d100"
+              data-rollvalue="{{system.characteristics.secondaries.resistances.physical.base.value}}"
+              data-label="{{localize 'anima.ui.resistances.physical'}}">RF</b>
+            <input class="v2-header__res-input" type="number"
+              name="system.characteristics.secondaries.resistances.physical.base.value"
+              value="{{system.characteristics.secondaries.resistances.physical.base.value}}">
+          </div>
+          <div class="v2-header__res">
+            <b class="rollable" title="{{localize 'anima.ui.resistances.magic'}}" data-roll="1d100"
+              data-rollvalue="{{system.characteristics.secondaries.resistances.magic.base.value}}"
+              data-label="{{localize 'anima.ui.resistances.magic'}}">RM</b>
+            <input class="v2-header__res-input" type="number"
+              name="system.characteristics.secondaries.resistances.magic.base.value"
+              value="{{system.characteristics.secondaries.resistances.magic.base.value}}">
+          </div>
+          <div class="v2-header__res">
+            <b class="rollable" title="{{localize 'anima.ui.resistances.psychic'}}" data-roll="1d100"
+              data-rollvalue="{{system.characteristics.secondaries.resistances.psychic.base.value}}"
+              data-label="{{localize 'anima.ui.resistances.psychic'}}">RP</b>
+            <input class="v2-header__res-input" type="number"
+              name="system.characteristics.secondaries.resistances.psychic.base.value"
+              value="{{system.characteristics.secondaries.resistances.psychic.base.value}}">
+          </div>
           <span class="v2-header__res v2-header__res--crit rollable"
             title="{{localize 'anima.ui.resistances.resistCritical'}}" data-roll="1d100-1d100"
             data-rollvalue="{{system.characteristics.secondaries.resistances.physical.base.value}}"

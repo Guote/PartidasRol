@@ -2,8 +2,11 @@ import { ABFSettingsKeys } from '../../../utils/registerSettings.js';
 import ABFFoundryRoll from '../../rolls/ABFFoundryRoll.js';
 import { getFormula } from '../../rolls/utils/getFormula.js';
 import { getModifierTerms } from '../../rolls/utils/getModifierTerms.js';
+import { applyMasteryFormula } from '../../rolls/utils/applyMasteryFormula.js';
 import { NoneWeaponCritic, WeaponCritic } from '../../types/combat/WeaponItemConfig.js';
 import { ABFSystemName } from '../../../animabf-guote.name.js';
+import { ABFConfig } from '../../ABFConfig.js';
+import { normalizePowers } from '../utils/normalizePowers.js';
 
 const TEMPLATE_PATH = `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/chat-combat-defense-dialog.hbs`;
 
@@ -50,14 +53,16 @@ const getInitialData = (attackMessage, defenderToken) => {
                 weaponUsed: undefined,
                 weapon: undefined,
                 unarmed: false,
+                defenseType: 'dodge',
+                increaseDefenseCounter: true,
                 at: {
+                    type: attackFlags.damageType || '',
                     special: 0,
                     final: 0
                 }
             },
             mystic: {
                 modifier: 0,
-                magicProjectionType: 'defensive',
                 spellUsed: undefined,
                 spellGrade: 'base'
             },
@@ -68,6 +73,8 @@ const getInitialData = (attackMessage, defenderToken) => {
                     final: defenderActor.system.psychic.psychicPotential.final.value
                 },
                 psychicProjection: defenderActor.system.psychic.psychicProjection.imbalance.defensive.final.value,
+                cvPotencial: 0,
+                cvProyeccion: 0,
                 powerUsed: undefined,
                 potentialResult: null
             },
@@ -77,9 +84,19 @@ const getInitialData = (attackMessage, defenderToken) => {
             summon: {
                 modifier: 0,
                 summonUsed: undefined,
+                powerUsed: 0,
                 summon: undefined,
-                effectiveHD: 0
-            }
+                summonsList: [],
+                powers: [],
+                multiPower: false,
+                effectiveHD: 0,
+                summonBonus: 0,
+                summonConvValue: 0,
+                summonDificultad: 0,
+                summoningRolled: false,
+                summoningResult: null
+            },
+            damageModifier: 0
         },
         defenseSent: false,
         presetName: '',
@@ -117,6 +134,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
         } else {
             this.modalData.defender.combat.unarmed = true;
         }
+
+        // Auto-preselect block vs dodge (whichever is higher)
+        const dodgeVal = this.defenderActor.system.combat.dodge.final.value;
+        const blockVal = this.defenderActor.system.combat.block.final.value;
+        this.modalData.defender.combat.defenseType = dodgeVal >= blockVal ? 'dodge' : 'block';
 
         this.render(true);
     }
@@ -169,29 +191,34 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.defenderActor.items.get(spellId)?.sheet?.render(true);
         });
 
-        // Physical defense (dodge/block)
+        // Open selected weapon sheet
+        html.find('.open-weapon-sheet').click(() => {
+            const weaponId = this.modalData.defender.combat.weaponUsed;
+            if (!weaponId) return;
+            this.defenderActor.items.get(weaponId)?.sheet?.render(true);
+        });
+
+        // Open selected psychic power sheet
+        html.find('.open-psychic-power-sheet').click(() => {
+            const powerId = this.modalData.defender.psychic.powerUsed;
+            if (!powerId) return;
+            this.defenderActor.items.get(powerId)?.sheet?.render(true);
+        });
+
+        // Unified defense send button — dispatches by active tab
         html.find('.send-defense').click((e) => {
             e.preventDefault();
-            const type = e.currentTarget.dataset.type === 'dodge' ? 'dodge' : 'block';
-            this._sendCombatDefense(type);
-        });
-
-        // Mystic defense
-        html.find('.send-mystic-defense').click((e) => {
-            e.preventDefault();
-            this._sendMysticDefense();
-        });
-
-        // Psychic defense
-        html.find('.send-psychic-defense').click((e) => {
-            e.preventDefault();
-            this._sendPsychicDefense();
+            const tab = this.modalData.ui.activeTab;
+            if (tab === 'combat') this._sendCombatDefense();
+            else if (tab === 'mystic') this._sendMysticDefense();
+            else if (tab === 'psychic') this._sendPsychicDefense();
+            else if (tab === 'summon') this._sendSummonDefense();
         });
 
         // Roll Only Psychic Potential button (defense)
         html.find('.roll-psychic-potential-defense').click(async (e) => {
             e.preventDefault();
-            const { psychicPotential, powerUsed } = this.modalData.defender.psychic;
+            const { basePotential, cvPotentialBonus, psychicPotential, powerUsed } = this.modalData.defender.psychic;
             if (!powerUsed) {
                 ui.notifications.warn(game.i18n.localize('anima.chat.combat.defense.selectPower'));
                 return;
@@ -201,8 +228,8 @@ export class ChatCombatDefenseDialog extends FormApplication {
             if (!power) return;
 
             const formula = getFormula({
-                values: [psychicPotential.final, power.system.bonus.value],
-                labels: ['Potencial', 'Bono Poder'],
+                values: [basePotential, cvPotentialBonus, psychicPotential.special],
+                labels: ['Potencial', 'CV', 'Mod'],
             });
 
             const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
@@ -223,10 +250,47 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.render();
         });
 
-        // Summon defense
-        html.find('.send-summon-defense').click((e) => {
+        // Open summon sheet button
+        html.find('.open-summon-sheet-def').click(() => {
+            const { summonUsed } = this.modalData.defender.summon;
+            if (!summonUsed) return;
+            this.defenderActor.items.get(summonUsed)?.sheet?.render(true);
+        });
+
+        // Roll summon convocation (defense)
+        html.find('.roll-summoning-def').click(async (e) => {
             e.preventDefault();
-            this._sendSummonDefense();
+            const { summonUsed, summonBonus, summonConvValue, summonDificultad, powerUsed } = this.modalData.defender.summon;
+            if (!summonUsed) return;
+
+            const formula = `1d100xa + ${summonConvValue}[Convocar] + ${summonBonus ?? 0}[Bonus]`;
+            const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
+            await roll.roll();
+
+            if (this.modalData.defender.showRoll) {
+                roll.toMessage({
+                    speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
+                    flavor: game.i18n.localize('anima.macros.combat.dialog.rollOnlySummoning.title'),
+                });
+            }
+
+            const ne = Math.max(0, roll.total - (summonDificultad ?? 0));
+            this.modalData.defender.summon.summoningResult = { total: roll.total, ne };
+            this.modalData.defender.summon.summoningRolled = true;
+
+            // Write NE back to the summon item so getData() re-reads it automatically
+            const summon = this.defenderActor.items.get(summonUsed);
+            if (summon) {
+                const powers = normalizePowers(summon.system.powers);
+                const updatedPowers = foundry.utils.deepClone(powers);
+                const targetIdx = updatedPowers[parseInt(powerUsed) || 0] ? (parseInt(powerUsed) || 0) : 0;
+                if (updatedPowers[targetIdx]) updatedPowers[targetIdx].ne.value = ne;
+                await this.defenderActor.updateEmbeddedDocuments('Item', [
+                    { _id: summon._id, 'system.powers': updatedPowers }
+                ]);
+            }
+
+            this.render();
         });
 
         // Damage resistance defense
@@ -295,8 +359,9 @@ export class ChatCombatDefenseDialog extends FormApplication {
     /**
      * Send physical combat defense (dodge or block)
      */
-    async _sendCombatDefense(type) {
-        const { fatigue, modifier, weapon, multipleDefensesPenalty, at } = this.modalData.defender.combat;
+    async _sendCombatDefense() {
+        const { fatigue, modifier, weapon, multipleDefensesPenalty, at, defenseType, increaseDefenseCounter } = this.modalData.defender.combat;
+        const type = defenseType === 'block' ? 'block' : 'dodge';
 
         let value;
         let baseDefense;
@@ -319,9 +384,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         if (this.modalData.defender.withoutRoll) {
             formula = formula.replace('1d100xa', '0');
         }
-        if (baseDefense >= 200) {
-            formula = formula.replace('xa', 'xamastery');
-        }
+        formula = applyMasteryFormula(formula, baseDefense);
 
         const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
         await roll.roll();
@@ -346,6 +409,8 @@ export class ChatCombatDefenseDialog extends FormApplication {
             fatigue,
             modifier,
             multipleDefensesPenalty,
+            increaseDefenseCounter: increaseDefenseCounter !== false,
+            damageModifier: this.modalData.defender.damageModifier || 0,
             at: at.final,
             armorValues: this.getArmorValues()
         });
@@ -368,6 +433,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             return;
         }
 
+        // Always use defensive projection for defense
         const magicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.final.value;
         const baseMagicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.base.value;
 
@@ -376,9 +442,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         if (this.modalData.defender.withoutRoll) {
             formula = formula.replace('1d100xa', '0');
         }
-        if (baseMagicProjection >= 200) {
-            formula = formula.replace('xa', 'xamastery');
-        }
+        formula = applyMasteryFormula(formula, baseMagicProjection);
 
         const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
         await roll.roll();
@@ -454,9 +518,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         if (this.modalData.defender.withoutRoll) {
             formula = formula.replace('1d100xa', '0');
         }
-        if (this.defenderActor.system.psychic.psychicProjection.base.value >= 200) {
-            formula = formula.replace('xa', 'xamastery');
-        }
+        formula = applyMasteryFormula(formula, this.defenderActor.system.psychic.psychicProjection.base.value);
 
         const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
         await roll.roll();
@@ -499,7 +561,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
      * Send summon defense
      */
     async _sendSummonDefense() {
-        const { summonUsed, modifier } = this.modalData.defender.summon;
+        const { summonUsed, modifier, powerUsed } = this.modalData.defender.summon;
         const { at } = this.modalData.defender.combat;
 
         if (!summonUsed) {
@@ -507,17 +569,21 @@ export class ChatCombatDefenseDialog extends FormApplication {
             return;
         }
 
-        const summons = this.defenderActor.system.mystic.summons;
-        const summon = summons.find(s => s._id === summonUsed);
+        const summon = this.defenderActor.items.get(summonUsed);
         if (!summon) return;
 
-        const effectiveHD = (summon.system.baseDef.value || 0) + (summon.system.bonusDef.value || 0);
+        const powerIdx = parseInt(powerUsed) || 0;
+        const powers = normalizePowers(summon.system.powers);
+        const power = powers[powerIdx] ?? powers[0];
+        const neHD = power?.ne?.value ?? 0;
+        const evalHD = (f) => { try { return f?.trim() ? Roll.safeEval(f.replace(/\[NE\]/gi, neHD)) : 0; } catch { return 0; } };
+        const effectiveHD = evalHD(power?.defFormula?.value);
 
-        let formula = `1d100xa + ${effectiveHD}[HD Invocación] + ${modifier ?? 0}[Mod.]`;
-
-        if (this.modalData.defender.withoutRoll) {
-            formula = formula.replace('1d100xa', '0');
-        }
+        const formula = getFormula({
+            dice: this.modalData.defender.withoutRoll ? '0' : '1d100xa',
+            values: [effectiveHD, modifier ?? 0],
+            labels: ['HD Invocación', 'Mod.'],
+        });
 
         const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
         await roll.roll();
@@ -557,53 +623,40 @@ export class ChatCombatDefenseDialog extends FormApplication {
         this.modalData.ui.hasFatiguePoints =
             this.defenderActor.system.characteristics.secondaries.fatigue.value > 0;
 
-        // Update psychic potential
-        this.modalData.defender.psychic.psychicPotential.final =
-            this.modalData.defender.psychic.psychicPotential.special +
-            this.defenderActor.system.psychic.psychicPotential.final.value;
-
-        // Calculate AT based on attacker's critic type
-        let at;
-        const critic = this.attackFlags.damageType;
-        if (critic && critic !== NoneWeaponCritic.NONE) {
+        // Calculate AT based on selected type (defaults to attacker's critic type)
+        const atType = this.modalData.defender.combat.at.type || this.attackFlags.damageType;
+        let atBase = 0;
+        if (atType && atType !== NoneWeaponCritic.NONE) {
             const armor = this.defenderActor.system.combat.totalArmor.at;
-            switch (critic) {
-                case WeaponCritic.CUT:
-                case 'cut':
-                    at = armor.cut.value;
-                    break;
-                case WeaponCritic.IMPACT:
-                case 'impact':
-                    at = armor.impact.value;
-                    break;
-                case WeaponCritic.THRUST:
-                case 'thrust':
-                    at = armor.thrust.value;
-                    break;
-                case WeaponCritic.HEAT:
-                case 'heat':
-                    at = armor.heat.value;
-                    break;
-                case WeaponCritic.ELECTRICITY:
-                case 'electricity':
-                    at = armor.electricity.value;
-                    break;
-                case WeaponCritic.COLD:
-                case 'cold':
-                    at = armor.cold.value;
-                    break;
-                case WeaponCritic.ENERGY:
-                case 'energy':
-                    at = armor.energy.value;
-                    break;
-                default:
-                    at = 0;
+            switch (atType) {
+                case WeaponCritic.CUT:    case 'cut':         atBase = armor.cut.value;         break;
+                case WeaponCritic.IMPACT: case 'impact':      atBase = armor.impact.value;      break;
+                case WeaponCritic.THRUST: case 'thrust':      atBase = armor.thrust.value;      break;
+                case WeaponCritic.HEAT:   case 'heat':        atBase = armor.heat.value;        break;
+                case WeaponCritic.ELECTRICITY: case 'electricity': atBase = armor.electricity.value; break;
+                case WeaponCritic.COLD:   case 'cold':        atBase = armor.cold.value;        break;
+                case WeaponCritic.ENERGY: case 'energy':      atBase = armor.energy.value;      break;
+                default: atBase = 0;
             }
         }
+        this.modalData.defender.combat.at.final =
+            (Number(this.modalData.defender.combat.at.special) || 0) + atBase;
 
-        if (at !== undefined) {
-            this.modalData.defender.combat.at.final =
-                this.modalData.defender.combat.at.special + at;
+        // Psychic CV derived values (mirrors CombatAttackDialog)
+        const PSYCHIC_CV_BONUS_PER_POINT = 10;
+        const psychic = this.modalData.defender.psychic;
+        if (psychic) {
+            const powerBonus = (() => {
+                const powers = this.defenderActor.system.psychic.psychicPowers;
+                const power = powers.find(p => p._id === psychic.powerUsed);
+                return power?.system.bonus.value || 0;
+            })();
+            psychic.basePotential = this.defenderActor.system.psychic.psychicPotential.final.value + powerBonus;
+            psychic.cvPotentialBonus = (psychic.cvPotencial ?? 0) * PSYCHIC_CV_BONUS_PER_POINT;
+            psychic.psychicPotential.final = psychic.basePotential + psychic.cvPotentialBonus + (psychic.psychicPotential.special ?? 0);
+            psychic.baseProjection = this.defenderActor.system.psychic.psychicProjection.imbalance.defensive.final.value;
+            psychic.cvProjectionBonus = (psychic.cvProyeccion ?? 0) * PSYCHIC_CV_BONUS_PER_POINT;
+            psychic.psychicProjection = psychic.baseProjection + psychic.cvProjectionBonus;
         }
 
         // Update weapon reference
@@ -613,19 +666,92 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         // Update summon reference
         const { summon: summonData } = this.modalData.defender;
-        const { summons } = this.defenderActor.system.mystic;
+        summonData.powerUsed = parseInt(summonData.powerUsed) || 0;
+        const summons = this.defenderActor.items.filter(i => i.type === 'summon');
+        summonData.summonsList = summons;
+        const evalDefF = (f, ne) => { try { return f?.trim() ? Roll.safeEval(f.replace(/\[NE\]/gi, ne)) : 0; } catch { return 0; } };
         if (summonData.summonUsed) {
             const selectedSummon = summons.find(s => s._id === summonData.summonUsed);
             if (selectedSummon) {
                 summonData.summon = selectedSummon;
-                summonData.effectiveHD = (selectedSummon.system.baseDef.value || 0) + (selectedSummon.system.bonusDef.value || 0);
+                const sPowers = normalizePowers(selectedSummon.system.powers);
+                summonData.powers = sPowers;
+                summonData.multiPower = sPowers.length > 1;
+                const powerIdx = parseInt(summonData.powerUsed) || 0;
+                const activePower = sPowers[powerIdx] ?? sPowers[0];
+                const ne = activePower?.ne?.value ?? 0;
+                summonData.effectiveHD = evalDefF(activePower?.defFormula?.value, ne);
             }
         } else if (summons.length > 0) {
             summonData.summonUsed = summons[0]._id;
             summonData.summon = summons[0];
-            summonData.effectiveHD = (summons[0].system.baseDef.value || 0) + (summons[0].system.bonusDef.value || 0);
+            const s0Powers = normalizePowers(summons[0].system.powers);
+            summonData.powers = s0Powers;
+            summonData.multiPower = s0Powers.length > 1;
+            summonData.powerUsed = 0;
+            const p0 = s0Powers[0];
+            const ne = p0?.ne?.value ?? 0;
+            summonData.effectiveHD = evalDefF(p0?.defFormula?.value, ne);
         }
 
+        // hasSummons flag (bypasses async race condition on actor.system.mystic.summons)
+        this.modalData.ui.hasSummons = this.defenderActor.items.some(i => i.type === 'summon');
+
+        // Summon convocation value and difficulty
+        summonData.summonConvValue = this.defenderActor.system.mystic?.summoning?.summon?.value ?? 0;
+        if (summonData.summonUsed) {
+            const powerIdx = parseInt(summonData.powerUsed) || 0;
+            const convPower = summonData.powers[powerIdx] ?? summonData.powers[0];
+            summonData.summonDificultad = convPower?.summonDif?.value ?? 0;
+        }
+
+        // Summaries for each tab
+        const atFinal = this.modalData.defender.combat.at.final;
+        const damageModifier = this.modalData.defender.damageModifier || 0;
+        const combatD = this.modalData.defender.combat;
+        const defType = combatD.defenseType === 'block' ? 'block' : 'dodge';
+        const hdBase = defType === 'dodge'
+            ? this.defenderActor.system.combat.dodge.final.value
+            : (combatD.weapon?.system.block.final.value ?? this.defenderActor.system.combat.block.final.value);
+
+        combatD.summary = {
+            hdFinal: hdBase + (combatD.modifier || 0) + (combatD.fatigue || 0) * 15 + (combatD.multipleDefensesPenalty || 0),
+            taFinal: atFinal,
+            damageModifier
+        };
+
+        const magicProj = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.final.value;
+        this.modalData.defender.mystic.summary = {
+            hdFinal: magicProj + (this.modalData.defender.mystic.modifier || 0),
+            taFinal: atFinal,
+            damageModifier
+        };
+
+        this.modalData.defender.psychic.summary = {
+            hdFinal: this.modalData.defender.psychic.psychicProjection + (this.modalData.defender.psychic.modifier || 0),
+            taFinal: atFinal,
+            damageModifier
+        };
+
+        this.modalData.defender.summon.summary = {
+            hdFinal: (summonData.effectiveHD || 0) + (summonData.modifier || 0),
+            taFinal: atFinal,
+            damageModifier
+        };
+
+        // Expose active-tab values for unified template rendering
+        const activeTab = this.modalData.ui.activeTab;
+        const tabModifierPath = {
+            combat:  'defender.combat.modifier',
+            mystic:  'defender.mystic.modifier',
+            psychic: 'defender.psychic.modifier',
+            summon:  'defender.summon.modifier',
+        };
+        this.modalData.ui.activeModifierInputName = tabModifierPath[activeTab] ?? '';
+        this.modalData.ui.activeModifierValue     = this.modalData.defender[activeTab]?.modifier ?? 0;
+        this.modalData.ui.activeSummary           = this.modalData.defender[activeTab]?.summary ?? null;
+
+        this.modalData.config = ABFConfig;
         return this.modalData;
     }
 
@@ -653,12 +779,15 @@ export class ChatCombatDefenseDialog extends FormApplication {
             defenseType: { value: defenseType },
             withoutRoll: { value: withoutRoll || false },
             showRoll: { value: showRoll ?? true },
+            damageModifier: { value: this.modalData.defender.damageModifier || 0 },
             combat: {
                 modifier: { value: combat.modifier || 0 },
                 fatigue: { value: combat.fatigue || 0 },
                 weaponUsed: { value: combat.weaponUsed || '' },
                 method: { value: 'dodge' },
                 atBonus: { value: combat.at?.special || 0 },
+                defenseType: { value: combat.defenseType || 'dodge' },
+                increaseDefenseCounter: { value: combat.increaseDefenseCounter !== false },
             },
             mystic: {
                 modifier: { value: mystic.modifier || 0 },
@@ -670,6 +799,8 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 modifier: { value: psychic.modifier || 0 },
                 potentialBonus: { value: psychic.psychicPotential?.special || 0 },
                 powerUsed: { value: psychic.powerUsed || '' },
+                cvPotencial: { value: psychic.cvPotencial || 0 },
+                cvProyeccion: { value: psychic.cvProyeccion || 0 },
             },
             summon: {
                 modifier: { value: summonData?.modifier || 0 },
@@ -697,6 +828,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
         defender.withoutRoll = Boolean(presetData.withoutRoll?.value);
         defender.showRoll = presetData.showRoll?.value !== false; // Default true
 
+        // Load common damage modifier
+        if (presetData.damageModifier !== undefined) {
+            defender.damageModifier = Number(presetData.damageModifier?.value) || 0;
+        }
+
         // Load combat data
         if (presetData.combat) {
             defender.combat.modifier = Number(presetData.combat.modifier?.value) || 0;
@@ -706,6 +842,10 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 defender.combat.at = defender.combat.at || {};
                 defender.combat.at.special = Number(presetData.combat.atBonus.value) || 0;
             }
+            if (presetData.combat.defenseType?.value) {
+                defender.combat.defenseType = presetData.combat.defenseType.value;
+            }
+            defender.combat.increaseDefenseCounter = presetData.combat.increaseDefenseCounter?.value !== false;
         }
 
         // Load mystic data
@@ -724,6 +864,8 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 defender.psychic.psychicPotential.special = Number(presetData.psychic.potentialBonus.value) || 0;
             }
             defender.psychic.powerUsed = presetData.psychic.powerUsed?.value || defender.psychic.powerUsed;
+            defender.psychic.cvPotencial = Number(presetData.psychic.cvPotencial?.value) || 0;
+            defender.psychic.cvProyeccion = Number(presetData.psychic.cvProyeccion?.value) || 0;
         }
 
         // Load summon data

@@ -1,90 +1,154 @@
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'anima.macros.combat.dialog.modifier.title')
-disabled=this.attackSent
-inputName="attacker.combat.modifier"
-inputValue=this.attacker.combat.modifier
-}}
-{{#if this.ui.hasFatiguePoints}}
-{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'anima.macros.combat.dialog.fatigue.title')
-disabled=this.attackSent
-inputName="attacker.combat.fatigueUsed"
-inputValue=this.attacker.combat.fatigueUsed
-}}
-<option {{#if (is "eq" 0 this.attacker.combat.fatigueUsed)}}selected{{/if}} value='0'>0</option>
+{{!-- ═══ TAB CONTENTS: Weapon & Fatigue ═══ --}}
+<div class="dialog-section">
+  <div class="combat-dialog-grid">
 
-{{#iterateNumber (minNumber this.attacker.actor.system.characteristics.secondaries.fatigue.value 5)}}
-<option {{#if (is "eq" (math this "+" 1) ../this.attacker.combat.fatigueUsed)}}selected{{/if}}
-  value='{{math this "+" 1}}'>{{math this "+" 1}}</option>
-{{/iterateNumber}}
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
-{{else}}
-<p class='label no-fatigue'>{{localize 'anima.macros.combat.dialog.notEnoughFatigue.title'}}</p>
+    {{!-- Weapon selector (full width) --}}
+    <div class="combat-grid-full">
+      <div class="selector-row">
+        {{#if this.attacker.combat.unarmed}}
+        {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+        title=(localize 'anima.macros.combat.dialog.weapon.title')
+        disabled=true
+        }}
+        <option>Unarmed</option>
+        {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+        {{else}}
+        {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+        title=(localize 'anima.macros.combat.dialog.weapon.title')
+        disabled=this.attackSent
+        inputName='attacker.combat.weaponUsed'
+        }}
+        {{#each this.attacker.actor.system.combat.weapons}}
+        <option {{#if (is "eq" this._id ../this.attacker.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>
+          {{localize 'anima.macros.combat.dialog.weaponRow.attack.title' name=this.name value=this.system.attack.final.value}}
+        </option>
+        {{/each}}
+        {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+        <button type="button" class="abf-button icon-button open-weapon-sheet" title="Abrir ficha del arma"
+          {{#if this.attackSent}}disabled{{/if}}>
+          <i class="fas fa-external-link-alt"></i>
+        </button>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- Fatigue (half width so it doesn't stretch full row) --}}
+    <div class="combat-grid-half">
+      {{#if this.ui.hasFatiguePoints}}
+      {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+      title=(localize 'anima.macros.combat.dialog.fatigue.title')
+      disabled=this.attackSent
+      inputName="attacker.combat.fatigueUsed"
+      inputValue=this.attacker.combat.fatigueUsed
+      }}
+      <option {{#if (is "eq" 0 this.attacker.combat.fatigueUsed)}}selected{{/if}} value='0'>0</option>
+      {{#iterateNumber (minNumber this.attacker.actor.system.characteristics.secondaries.fatigue.value 5)}}
+      <option {{#if (is "eq" (math this "+" 1) ../this.attacker.combat.fatigueUsed)}}selected{{/if}}
+        value='{{math this "+" 1}}'>{{math this "+" 1}}</option>
+      {{/iterateNumber}}
+      {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+      {{else}}
+      <p class='label no-fatigue'>{{localize 'anima.macros.combat.dialog.notEnoughFatigue.title'}}</p>
+      {{/if}}
+    </div>
+
+  </div>
+</div>
+
+{{!-- ═══ ATTACK DETAILS ═══ --}}
+<div class="dialog-section attack-details-section">
+  {{> 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/attack-details-header.hbs' this=this}}
+
+  <div class="attack-details-grid">
+
+    {{!-- Row 1: Ataques | Mod. ataque | Sin tirada --}}
+    <div>
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title="Ataques"
+      disabled=this.attackSent
+      inputName="attacker.attackAccumulation"
+      inputValue=this.attacker.attackAccumulation
+      }}
+    </div>
+    <div>
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.macros.combat.dialog.modifier.title')
+      disabled=this.attackSent
+      inputName="attacker.combat.modifier"
+      inputValue=this.attacker.combat.modifier
+      }}
+    </div>
+    <div>
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.macros.combat.dialog.noRoll.title')
+      disabled=this.attackSent
+      inputType="checkbox"
+      inputName="attacker.withoutRoll"
+      inputValue=(is 'eq' this.attacker.withoutRoll true)
+      }}
+    </div>
+
+    {{!-- Row 2: Daño | Tipo | Red. TA --}}
+    <div>
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.macros.combat.dialog.damage.title')
+      inputName="attacker.combat.damage.special"
+      inputValue=this.attacker.combat.damage.special
+      disabled=this.attackSent
+      }}
+    </div>
+    <div>
+      {{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+      choices=config.iterables.combat.weapon.criticTypes
+      title=(localize "anima.macros.combat.dialog.weapon.critic.title")
+      inputName="attacker.combat.criticSelected"
+      inputValue=this.attacker.combat.criticSelected
+      }}
+    </div>
+    <div>
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title='Reducción de TA'
+      inputName="attacker.combat.ignoredTA"
+      inputValue=this.attacker.combat.ignoredTA
+      disabled=this.attackSent
+      }}
+    </div>
+
+  </div>
+</div>
+
+{{!-- ═══ RESUMEN ═══ --}}
+{{#if this.attacker.combat.summary}}
+{{#unless this.attackSent}}
+<div class="combat-summary-bar">
+  <span class="summary-item">
+    <span class="summary-label">HA final</span>
+    <span class="summary-value">{{this.attacker.combat.summary.haFinal}}</span>
+  </span>
+  <span class="summary-item">
+    <span class="summary-label">Daño</span>
+    <span class="summary-value">{{this.attacker.combat.summary.damage}}</span>
+  </span>
+  <span class="summary-item">
+    <span class="summary-label">Red. TA</span>
+    <span class="summary-value">{{this.attacker.combat.summary.ignoredTA}}</span>
+  </span>
+  {{#if this.attacker.combat.summary.criticSelected}}
+  <span class="summary-item">
+    <span class="summary-label">Tipo</span>
+    <span class="summary-value">{{localize (concat 'anima.ui.combat.armors.at.' this.attacker.combat.summary.criticSelected '.title')}}</span>
+  </span>
+  {{/if}}
+</div>
+{{/unless}}
 {{/if}}
 
-{{#if this.attacker.combat.unarmed}}
-{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'anima.macros.combat.dialog.weapon.title')
-disabled=true
-}}
-<option>Unarmed</option>
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
-{{else}}
-{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'anima.macros.combat.dialog.weapon.title')
-disabled=this.attackSent
-inputName='attacker.combat.weaponUsed'
-}}
-{{#each this.attacker.actor.system.combat.weapons}}
-<option {{#if (is "eq" this._id ../this.attacker.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>{{localize
-  'anima.macros.combat.dialog.weaponRow.attack.title' name=this.name value=this.system.attack.final.value}}</option>
-{{/each}}
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
-{{/if}}
-
-{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-choices=config.iterables.combat.weapon.criticTypes
-title=(localize "anima.macros.combat.dialog.weapon.critic.title")
-inputName="attacker.combat.criticSelected"
-inputValue=this.attacker.combat.criticSelected
-}}
-
-{{!-- {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'anima.macros.combat.dialog.weapon.critic.title')
-disabled=this.attackSent
-inputName='attacker.combat.criticSelected'
-}}
-<option {{#if (is "eq" this.attacker.combat.weapon.system.critic.primary.value
-  this.attacker.combat.criticSelected)}}selected{{/if}}
-  value='{{this.attacker.combat.weapon.system.critic.primary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.'
-  this.attacker.combat.weapon.system.critic.primary.value '.title')}}</option>
-<option {{#if (is "eq" this.attacker.combat.weapon.system.critic.secondary.value
-  this.attacker.combat.criticSelected)}}selected{{/if}}
-  value='{{this.attacker.combat.weapon.system.critic.secondary.value}}'>{{localize (concat 'anima.ui.combat.armors.at.'
-  this.attacker.combat.weapon.system.critic.secondary.value '.title')}}</option>
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}} --}}
-
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'anima.macros.combat.dialog.damage.title')
-inputName="attacker.combat.damage.special"
-inputValue=this.attacker.combat.damage.special
-disabled=this.attackSent
-hasSecondaryInput=true
-disableSecondaryInput=true
-secondaryInputName="attacker.combat.damage.final"
-secondaryInputValue=this.attacker.combat.damage.final
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title='Reducción de TA'
-inputName="attacker.combat.ignoredTA"
-inputValue=this.attacker.combat.ignoredTA
-disabled=this.attackSent
-}}
-
-
+{{!-- ═══ ENVIAR ═══ --}}
 {{#if this.attackSent}}
 <div class='attack-sent'>
   {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}

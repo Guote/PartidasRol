@@ -2810,7 +2810,7 @@ img {
   text-align: center;
 }
 .combat-attack-dialog .group-body .abf-button {
-  margin-top: 2rem;
+  margin-top: 0rem;
 }
 .combat-attack-dialog .group-body .columns {
   display: flex;
@@ -2877,7 +2877,7 @@ img {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 0.5rem;
 }
 .combat-defense-dialog .group-body .waiting-row {
   display: flex;
@@ -2895,6 +2895,256 @@ img {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+/* ============================================
+   Combat Dialog Section Separators
+   ============================================ */
+.dialog-section {
+  margin-bottom: 0.4rem;
+}
+.dialog-section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.35rem 0 0.25rem;
+}
+.dialog-section-label .section-label-text {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #6e2917;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.dialog-section-label .section-label-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(110, 41, 23, 0.3);
+}
+/* Show-roll eye toggle in section header */
+.show-roll-toggle {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  color: #6e2917;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+  margin: 0;
+  padding: 0;
+}
+.show-roll-toggle:hover {
+  opacity: 0.9;
+}
+.show-roll-toggle.active {
+  opacity: 1;
+}
+.show-roll-toggle input[type="checkbox"] {
+  display: none;
+}
+.show-roll-toggle i {
+  font-size: 0.85rem;
+}
+
+/* Selector row: select/input controls + icon button side by side */
+.selector-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.selector-row > .common-titled-input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Inline icon buttons (open sheet, etc.) */
+.icon-button {
+  display: inline-flex !important;
+  width: auto !important;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.55rem;
+  height: 1.75rem;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+}
+
+/* ============================================
+   Combat Dialog Grid Layout
+   ============================================ */
+.combat-dialog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0.75rem;
+  row-gap: 0.1rem;
+  align-items: start;
+  margin-bottom: 0.4rem;
+}
+.combat-dialog-grid .combat-grid-full {
+  grid-column: 1 / -1;
+}
+.combat-dialog-grid .combat-grid-half {
+  grid-column: span 1;
+}
+.combat-dialog-grid .combat-checkbox-row .common-titled-input {
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.combat-dialog-grid .no-fatigue {
+  font-size: 0.75rem;
+  text-align: center;
+  margin: 0;
+}
+
+/* 3-column grid for attack details rows (default) */
+.attack-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 0.75rem;
+  row-gap: 0.1rem;
+  align-items: start;
+}
+/* Defense dialog overrides to 2-column */
+.chat-combat-defense-dialog .attack-details-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* TA combined field: [label] [number input] [type selector] all inline */
+.ta-combined-field {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+/* The horizontal-titled-input inside ta-combined-field: don't grow, stay compact */
+.ta-combined-field > .common-titled-input {
+  flex: 0 0 auto;
+}
+/* The type selector container fills remaining space */
+.ta-combined-field .ta-type-select-container {
+  flex: 1;
+  min-width: 0;
+}
+.ta-combined-field .ta-type-select-container select.input {
+  width: 100%;
+  min-width: 0;
+  height: 1.5rem;
+}
+
+/* ============================================
+   Combat Options Row (compact single line)
+   ============================================ */
+.combat-options-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  padding: 0.3rem 0;
+  border-top: 1px solid rgba(110, 41, 23, 0.2);
+  border-bottom: 1px solid rgba(110, 41, 23, 0.2);
+}
+.combat-options-row .combat-option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 0;
+}
+.combat-options-row .combat-option-accumulation input[type="number"] {
+  width: 3.5rem !important;
+  border-radius: 4px;
+  border: 1px solid #999;
+  padding: 0.1rem 0.3rem;
+  text-align: center;
+  font-weight: bold;
+  background: #e7e5da;
+}
+
+/* ============================================
+   Combat Summary Bar
+   ============================================ */
+.combat-summary-bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  background: linear-gradient(135deg, rgba(110, 41, 23, 0.12) 0%, rgba(110, 41, 23, 0.06) 100%);
+  border: 1px solid rgba(110, 41, 23, 0.35);
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  margin-bottom: 0.25rem;
+  align-items: center;
+  justify-content: space-around;
+}
+.combat-summary-bar .summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 3rem;
+}
+.combat-summary-bar .summary-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #6e2917;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+.combat-summary-bar .summary-value {
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: #1a0a00;
+  line-height: 1.2;
+}
+
+/* Roll input box — always-visible container for roll controls + result */
+.roll-input-box {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(110, 41, 23, 0.2);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.roll-input-box .roll-box-result {
+  margin: 0;
+}
+
+/* Summoning result bar uses same layout but blue-tinted */
+.summoning-result-bar {
+  background: rgba(41, 85, 110, 0.10) !important;
+  border-color: rgba(41, 85, 110, 0.3) !important;
+}
+.summoning-result-bar .summary-label {
+  color: #2a556e !important;
+}
+
+/* Potential result bar (psychic) uses teal tint */
+.potential-result-bar {
+  background: rgba(30, 100, 80, 0.10) !important;
+  border-color: rgba(30, 100, 80, 0.3) !important;
+}
+.potential-result-bar .summary-label {
+  color: #1e6450 !important;
+}
+
+/* Summon special description */
+.summon-special-description {
+  margin-top: 0.1rem;
+}
+.summon-special-description .label {
+  font-size: 0.75rem;
+  color: #4a4a4a;
+  font-style: italic;
+  line-height: 1.35;
+  margin: 0;
+  white-space: pre-wrap;
 }
 
 .generic-dialog {
@@ -3464,8 +3714,65 @@ img {
 
 .chat-combat-defense-dialog .defense-buttons .send-defense,
 .chat-combat-defense-dialog .defense-buttons .send-mystic-defense,
-.chat-combat-defense-dialog .defense-buttons .send-psychic-defense {
+.chat-combat-defense-dialog .defense-buttons .send-psychic-defense,
+.chat-combat-defense-dialog .defense-buttons .send-summon-defense {
   flex: 1;
+}
+
+/* Block/Dodge toggle — segmented control */
+.defense-type-toggle {
+  display: flex;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #b8b0a0;
+}
+
+.combat-defense-toggle-cell {
+  grid-column: span 1;
+  display: flex;
+  align-items: center;
+}
+
+.combat-defense-counter-cell {
+  grid-column: span 1;
+  display: flex;
+  align-items: center;
+}
+
+.defense-toggle-btn {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.28rem 0.4rem;
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: #e7e5da;
+  color: #444;
+  border: none;
+  border-radius: 0;
+  transition: background 0.15s, color 0.15s;
+  user-select: none;
+  line-height: 1.3;
+}
+
+.defense-toggle-btn:first-child {
+  border-right: 1px solid #b8b0a0;
+}
+
+.defense-toggle-btn input[type="radio"] {
+  display: none;
+}
+
+.defense-toggle-btn.active {
+  background: #7a1212;
+  color: #fff;
+  font-weight: 700;
+}
+
+.defense-toggle-btn:not(.active):hover {
+  background: #d8d4c8;
 }
 
 .abf-button.small {

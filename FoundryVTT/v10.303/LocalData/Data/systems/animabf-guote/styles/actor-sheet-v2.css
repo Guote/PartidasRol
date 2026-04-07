@@ -63,6 +63,26 @@
 }
 
 /* --------------------------------
+   Window Frame Integration
+   (matches .abf-dialog treatment)
+   -------------------------------- */
+.actor-sheet-v2.window-app {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.actor-sheet-v2 .window-header {
+  background: linear-gradient(to bottom, #6e2917, #4a1b10);
+  color: white;
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.actor-sheet-v2 .window-content {
+  padding: 0;
+}
+
+/* --------------------------------
    Base Sheet Styles
    -------------------------------- */
 .actor-sheet-v2 {
@@ -567,6 +587,32 @@
   min-width: 28px;
   text-align: right;
   font-weight: bold;
+}
+
+.actor-sheet-v2 .v2-header__res-input {
+  width: 36px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: inherit;
+  font-size: inherit;
+  font-weight: bold;
+  text-align: right;
+  padding: 0;
+  outline: none;
+}
+
+.actor-sheet-v2 .v2-header__res-input:focus {
+  border-bottom-color: var(--abf-secondary);
+}
+
+.actor-sheet-v2 .v2-header__res b.rollable {
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.actor-sheet-v2 .v2-header__res b.rollable:hover {
+  color: var(--abf-secondary);
 }
 
 /* Header separator */

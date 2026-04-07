@@ -1,0 +1,104 @@
+{{!-- Per-power body: invocation stats + combat grid + text accordions --}}
+
+{{!-- Row 1: Zeón | Dif | NE --}}
+<div class="ss-row">
+
+  <div class="ss-field">
+    <span class="ss-label">Zeón</span>
+    <span class="ss-zeon-final" data-power="{{index}}">{{power.zeonFinal}}</span>
+    <div class="ss-zeon-base-wrap">
+      <span class="ss-zeon-base-paren">(</span>
+      <input type="number" class="ss-zeon-base-input" name="system.powers.{{index}}.zeon.base.value"
+        value="{{power.zeon.base.value}}" title="Coste base de zeón">
+      <span class="ss-zeon-base-paren">)</span>
+    </div>
+  </div>
+
+  <div class="ss-field">
+    <span class="ss-label">Dif.</span>
+    <input type="number" name="system.powers.{{index}}.summonDif.value" value="{{power.summonDif.value}}">
+  </div>
+
+  <div class="ss-field">
+    <span class="ss-label">NE</span>
+    <input type="number" class="ss-ne-input" name="system.powers.{{index}}.ne.value" value="{{power.ne.value}}">
+  </div>
+
+</div>
+
+{{!-- Row 2: Acción | Duración --}}
+<div class="ss-row">
+  <div class="ss-field">
+    <span class="ss-label">Acción</span>
+    <select name="system.powers.{{index}}.accion.value">
+      <option value="activa"   {{#if (is 'eq' power.accion.value 'activa')}}selected{{/if}}>Activa</option>
+      <option value="pasiva"   {{#if (is 'eq' power.accion.value 'pasiva')}}selected{{/if}}>Pasiva</option>
+      <option value="variable" {{#if (is 'eq' power.accion.value 'variable')}}selected{{/if}}>Variable</option>
+    </select>
+  </div>
+  <div class="ss-field" style="flex:1; min-width:120px;">
+    <span class="ss-label">Duración</span>
+    <input type="text" name="system.powers.{{index}}.duracion.value" value="{{power.duracion.value}}"
+      placeholder="Instantáneo / [NE]/10 asaltos" style="flex:1; min-width:0;">
+  </div>
+</div>
+
+{{!-- Combat 2-column grid --}}
+<div class="ss-combat-grid" style="margin-top:4px;">
+
+  <div class="ss-stat-row">
+    <span class="ss-stat-label">HA</span>
+    <span class="ss-final-badge" data-power="{{index}}" data-field="atk">{{power.atkFinal}}</span>
+    <input type="text" class="ss-formula-input" name="system.powers.{{index}}.atkFormula.value"
+      value="{{power.atkFormula.value}}" placeholder="120+[NE]/2">
+  </div>
+
+  <div class="ss-stat-row">
+    <span class="ss-stat-label">Daño</span>
+    <span class="ss-final-badge" data-power="{{index}}" data-field="damage">{{power.damageFinal}}</span>
+    <input type="text" class="ss-formula-input" name="system.powers.{{index}}.damageFormula.value"
+      value="{{power.damageFormula.value}}" placeholder="60+[NE]*5">
+  </div>
+
+  <div class="ss-stat-row">
+    <span class="ss-stat-label">HD</span>
+    <span class="ss-final-badge" data-power="{{index}}" data-field="def">{{power.defFinal}}</span>
+    <input type="text" class="ss-formula-input" name="system.powers.{{index}}.defFormula.value"
+      value="{{power.defFormula.value}}" placeholder="80+[NE]/2">
+  </div>
+
+  <div class="ss-stat-row">
+    <span class="ss-stat-label">RM</span>
+    <span class="ss-final-badge" data-power="{{index}}" data-field="rm">{{power.rmFinal}}</span>
+    <input type="text" class="ss-formula-input" name="system.powers.{{index}}.rmFormula.value"
+      value="{{power.rmFormula.value}}" placeholder="80+[NE]*5">
+  </div>
+
+  <div class="ss-stat-row">
+    <span class="ss-stat-label">Tipo</span>
+    <select name="system.powers.{{index}}.critic.value">
+      <option value="cut"         {{#if (is 'eq' 'cut'         power.critic.value)}}selected{{/if}}>{{localize 'anima.ui.combat.armors.at.cut.title'}}</option>
+      <option value="impact"      {{#if (is 'eq' 'impact'      power.critic.value)}}selected{{/if}}>{{localize 'anima.ui.combat.armors.at.impact.title'}}</option>
+      <option value="thrust"      {{#if (is 'eq' 'thrust'      power.critic.value)}}selected{{/if}}>{{localize 'anima.ui.combat.armors.at.thrust.title'}}</option>
+      <option value="heat"        {{#if (is 'eq' 'heat'        power.critic.value)}}selected{{/if}}>{{localize 'anima.ui.combat.armors.at.heat.title'}}</option>
+      <option value="electricity" {{#if (is 'eq' 'electricity' power.critic.value)}}selected{{/if}}>{{localize 'anima.ui.combat.armors.at.electricity.title'}}</option>
+      <option value="cold"        {{#if (is 'eq' 'cold'        power.critic.value)}}selected{{/if}}>{{localize 'anima.ui.combat.armors.at.cold.title'}}</option>
+      <option value="energy"      {{#if (is 'eq' 'energy'      power.critic.value)}}selected{{/if}}>{{localize 'anima.ui.combat.armors.at.energy.title'}}</option>
+    </select>
+  </div>
+
+</div>
+
+{{!-- Apariencia (collapsible) --}}
+<details class="ss-text-accordion">
+  <summary>Apariencia</summary>
+  <textarea name="system.powers.{{index}}.appearance.value"
+    placeholder="Descripción de apariencia...">{{power.appearance.value}}</textarea>
+</details>
+
+{{!-- Efecto (collapsible) --}}
+<details class="ss-text-accordion">
+  <summary>Efecto</summary>
+  <textarea name="system.powers.{{index}}.effect.value"
+    placeholder="Descripción del efecto...">{{power.effect.value}}</textarea>
+</details>

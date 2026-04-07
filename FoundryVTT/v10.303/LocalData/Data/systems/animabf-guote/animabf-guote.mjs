@@ -56,7 +56,7 @@ Hooks.once('setup', () => {
 /* ------------------------------------ */
 /* When ready */
 /* ------------------------------------ */
-Hooks.once('ready', () => {
+Hooks.once('ready', async () => {
     registerCombatWebsocketRoutes();
     attachCustomMacroBar();
     registerMasaHooks();
@@ -66,6 +66,37 @@ Hooks.once('ready', () => {
 
     // Expose macros globally for GM scripts
     window.ABFMacros = ABFMacros;
+
+    // Migrate existing summon items from flat schema to multi-power schema
+    if (game.user.isGM) {
+        for (const actor of game.actors) {
+            const summons = actor.items.filter(i => i.type === 'summon');
+            for (const summon of summons) {
+                const sys = summon.system;
+                // Detect old flat schema: has no powers OR empty powers but has old fields
+                if (!sys.powers || (sys.powers.length === 0 && (sys.ne !== undefined || sys.atkFormula !== undefined))) {
+                    const power = {
+                        name:          '',
+                        active:        { value: sys.active?.value ?? false },
+                        ne:            { value: sys.ne?.value ?? 0 },
+                        zeon:          { base: { value: sys.zeon?.base?.value ?? sys.zeon?.value ?? 0 }, final: { value: 0 } },
+                        summonDif:     { value: sys.summonDif?.value ?? 0 },
+                        accion:        { value: sys.accion?.value ?? 'activa' },
+                        duracion:      { value: sys.duracion?.value ?? '' },
+                        atkFormula:    { value: sys.atkFormula?.value ?? '' },
+                        defFormula:    { value: sys.defFormula?.value ?? '' },
+                        damageFormula: { value: sys.damageFormula?.value ?? '' },
+                        rmFormula:     { value: '' },
+                        critic:        { value: sys.critic?.value ?? 'ENERGY' },
+                        appearance:    { value: sys.appearance?.value ?? '' },
+                        effect:        { value: sys.effect?.value ?? '' },
+                    };
+                    console.log(`AnimaBF | Migrating summon "${summon.name}" on actor "${actor.name}" to multi-power schema`);
+                    await summon.update({ 'system.powers': [power] });
+                }
+            }
+        }
+    }
 });
 // Handle custom drag-to-hotbar for attack button
 Hooks.on('hotbarDrop', async (bar, data, slot) => {

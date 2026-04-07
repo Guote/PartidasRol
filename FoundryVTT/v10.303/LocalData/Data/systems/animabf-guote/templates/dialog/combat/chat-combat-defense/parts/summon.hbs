@@ -1,42 +1,81 @@
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'anima.macros.combat.dialog.modifier.title')
-disabled=this.defenseSent
-inputName="defender.summon.modifier"
-inputValue=this.defender.summon.modifier
-}}
+{{!-- ═══ TAB CONTENTS: Summon Defense ═══ --}}
+<div class="dialog-section">
+  <div class="combat-dialog-grid">
 
-{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'anima.macros.combat.dialog.summonSelect.title')
-disabled=this.defenseSent
-inputName='defender.summon.summonUsed'
-}}
-{{#each this.defender.actor.system.mystic.summons}}
-<option {{#if (is "eq" this._id ../this.defender.summon.summonUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}
-  (HD:{{this.system.baseDef.value}}{{#if this.system.bonusDef.value}}+{{this.system.bonusDef.value}}{{/if}})</option>
-{{/each}}
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+    {{!-- Summon selector + power selector + open sheet button --}}
+    <div class="combat-grid-full">
+      <div class="selector-row">
+        {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+        title=(localize 'anima.macros.combat.dialog.summonSelect.title')
+        disabled=this.defenseSent
+        inputName='defender.summon.summonUsed'
+        }}
+        {{#each this.defender.summon.summonsList}}
+        <option {{#if (is "eq" this._id ../this.defender.summon.summonUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}</option>
+        {{/each}}
+        {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+        {{#if this.defender.summon.multiPower}}
+        <select name="defender.summon.powerUsed" class="input"
+          style="flex: 0 0 auto; min-width: 80px; max-width: 130px; border-radius: 10px; background: #e7e5da; font-weight: bold; padding: 0.25rem 0.5rem; color: #000;"
+          {{#if this.defenseSent}}disabled{{/if}}>
+          {{#each this.defender.summon.powers as |power index|}}
+          <option {{#if (is "eq" index ../this.defender.summon.powerUsed)}}selected{{/if}} value='{{index}}'>
+            {{power.name}}{{#if power.ne.value}} [NE {{power.ne.value}}]{{/if}}
+          </option>
+          {{/each}}
+        </select>
+        {{/if}}
+        <button type="button" class="abf-button icon-button open-summon-sheet-def"
+          title="Abrir ficha del convocado"
+          {{#if this.defenseSent}}disabled{{/if}}>
+          <i class="fas fa-external-link-alt"></i>
+        </button>
+      </div>
+    </div>
 
-{{#if this.defender.summon.summon}}
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'anima.ui.mystic.summon.baseDef.title')
-disabled=true
-inputValue=this.defender.summon.effectiveHD
-}}
-{{/if}}
+    {{!-- Roll box: Convocar | Bonus | Dif. | Roll button + result --}}
+    <div class="combat-grid-full">
+      <div class="roll-input-box">
+        <div class="selector-row">
+          {{>
+          "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          title="Convocar"
+          disabled=true
+          inputValue=this.defender.summon.summonConvValue
+          }}
+          {{>
+          "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          title="Bonus"
+          disabled=this.defenseSent
+          inputName="defender.summon.summonBonus"
+          inputValue=this.defender.summon.summonBonus
+          }}
+          {{>
+          "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          title="Dif."
+          disabled=true
+          inputValue=this.defender.summon.summonDificultad
+          }}
+          <button type="button" class="abf-button icon-button roll-summoning-def"
+            title="{{localize 'anima.macros.combat.dialog.rollOnlySummoning.title'}}"
+            {{#if this.defenseSent}}disabled{{/if}}>
+            <i class="fas fa-dice-d20"></i>
+          </button>
+        </div>
+        {{#if this.defender.summon.summoningResult}}
+        <div class="combat-summary-bar roll-box-result">
+          <span class="summary-item">
+            <span class="summary-label">{{localize 'anima.macros.combat.dialog.summoningResult.title'}}</span>
+            <span class="summary-value">{{this.defender.summon.summoningResult.total}}</span>
+          </span>
+          <span class="summary-item">
+            <span class="summary-label">NE</span>
+            <span class="summary-value">{{this.defender.summon.summoningResult.ne}}</span>
+          </span>
+        </div>
+        {{/if}}
+      </div>
+    </div>
 
-{{#if this.defenseSent}}
-<div class='defense-sent'>
-  {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
-  <p class='label'>
-    {{localize 'anima.macros.combat.dialog.defenseSent.title'}}
-  </p>
+  </div>
 </div>
-{{else}}
-<div class='defense-buttons'>
-  <button type="button" class='abf-button send-summon-defense'>
-    {{localize 'anima.macros.combat.dialog.defenseButton.title'}}{{#if this.defender.summon.summon}} ({{this.defender.summon.effectiveHD}}){{/if}}
-  </button>
-</div>
-{{/if}}

@@ -128,7 +128,6 @@ export default class ABFActorSheetV2 extends ActorSheet {
         // Note: .rollable elements are handled manually in activateListeners
         dragDrop: [
           { dragSelector: ".item-list .item, .weapon-row, .armor-row, .spell-row, .ammo-row", dropSelector: null },
-          { dragSelector: null, dropSelector: ".v2-tab-summoning" },
         ],
       },
     };
@@ -244,13 +243,36 @@ export default class ABFActorSheetV2 extends ActorSheet {
       sheet.totalKiAccumulated = 0;
     }
 
-    // Add resolvedDuration to each summon ([NE] replaced with actual NE value)
+    // Build flattened summonRows (one row per power per summon)
+    const evalSummonFormula = (formula, ne) => {
+      if (!formula?.trim()) return 0;
+      try { return Roll.safeEval(formula.replace(/\[NE\]/gi, ne)); } catch { return 0; }
+    };
+    const specialization = sheet.system?.mystic?.summoning?.specialization?.value ?? 'ninguna';
+    sheet.summonRows = [];
     for (const summon of sheet.system?.mystic?.summons || []) {
-      const dur = summon.system?.duracion?.value;
-      const ne = summon.system?.ne?.value ?? 0;
-      summon.resolvedDuration = (dur && ne > 0)
-        ? dur.replace(/\[NE\]/gi, ne)
-        : '';
+      const powers = summon.system?.powers ?? [];
+      const multiPower = powers.length > 1;
+      for (let i = 0; i < powers.length; i++) {
+        const power = powers[i];
+        const ne = power.ne?.value ?? 0;
+        const base = power.zeon?.base?.value ?? 0;
+        const dur = power.duracion?.value;
+        sheet.summonRows.push({
+          summon,
+          powerIndex: i,
+          multiPower,
+          displayName: multiPower ? `${summon.name} \u2013 ${power.name || '?'}` : summon.name,
+          power,
+          ne,
+          atkFinal:    evalSummonFormula(power.atkFormula?.value, ne),
+          defFinal:    evalSummonFormula(power.defFormula?.value, ne),
+          damageFinal: evalSummonFormula(power.damageFormula?.value, ne),
+          rmFinal:     evalSummonFormula(power.rmFormula?.value, ne),
+          zeonFinal:   specialization === 'invocador' ? Math.ceil(base / 2) : base,
+          resolvedDuration: (dur && ne > 0) ? dur.replace(/\[NE\]/gi, ne) : '',
+        });
+      }
     }
 
     return sheet;
@@ -475,25 +497,78 @@ export default class ABFActorSheetV2 extends ActorSheet {
       }
     });
 
-    // Summon active/mantenido checkbox toggle
-    html.find('.summon-active-checkbox').click(async (e) => {
+    // Per-power active/mantenido checkbox toggle
+    html.find('.power-active-checkbox').click(async (e) => {
       e.stopPropagation();
-      const itemId = e.currentTarget.dataset.itemId;
-      const isChecked = e.currentTarget.checked;
-      await this.actor.updateEmbeddedDocuments('Item', [{ _id: itemId, 'system.active.value': isChecked }]);
+      const { itemId, powerIndex } = e.currentTarget.dataset;
+      const item = this.actor.items.get(itemId);
+      if (!item) return;
+      const idx = parseInt(powerIndex);
+      const rawPowers = item.system.powers;
+      const powers = foundry.utils.deepClone(Array.isArray(rawPowers) ? rawPowers : (rawPowers ? Object.values(rawPowers) : []));
+      if (powers[idx]) {
+        powers[idx].active.value = e.currentTarget.checked;
+        await item.update({ 'system.powers': powers });
+      }
     });
 
-    html.find('.summon-ne-input').click((e) => e.stopPropagation());
+    // Per-power NE input — save on change, block row click
+    html.find('.power-ne-input').change(async (e) => {
+      e.stopPropagation();
+      const { itemId, powerIndex } = e.currentTarget.dataset;
+      const value = parseInt(e.currentTarget.value) || 0;
+      const item = this.actor.items.get(itemId);
+      if (!item) return;
+      const idx = parseInt(powerIndex);
+      const rawPowers = item.system.powers;
+      const powers = foundry.utils.deepClone(Array.isArray(rawPowers) ? rawPowers : (rawPowers ? Object.values(rawPowers) : []));
+      if (powers[idx]) {
+        powers[idx].ne.value = value;
+        await item.update({ 'system.powers': powers });
+      }
+    });
+    html.find('.power-ne-input').click((e) => e.stopPropagation());
 
-    // Click on summon row to open summon item sheet
+    // Roll summoning for a specific power and update its NE
+    html.find('.roll-summon-power').click(async (e) => {
+      e.stopPropagation();
+      const { itemId, powerIndex } = e.currentTarget.dataset;
+      const item = this.actor.items.get(itemId);
+      if (!item) return;
+      const idx = parseInt(powerIndex);
+      const rawPowers = item.system.powers;
+      const powers = foundry.utils.deepClone(Array.isArray(rawPowers) ? rawPowers : (rawPowers ? Object.values(rawPowers) : []));
+      const power = powers[idx];
+      if (!power) return;
+
+      const summoningValue = this.actor.system.mystic.summoning.summon.final.value;
+      const formula = getFormula({ values: [summoningValue], labels: ['Convocación'] });
+      const roll = new ABFFoundryRoll(formula, this.actor.system);
+      await roll.roll();
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ token: this.actor.token?.document ?? this.actor.token }),
+        flavor: powers.length > 1 && power?.name
+          ? game.i18n.format('anima.macros.combat.dialog.summoningSummonPower.title', { summon: item.name, power: power.name })
+          : game.i18n.format('anima.macros.combat.dialog.summoningSummon.title', { summon: item.name }),
+      });
+
+      const difficulty = power.summonDif?.value || 0;
+      power.ne.value = Math.max(0, roll.total - difficulty);
+      await item.update({ 'system.powers': powers });
+    });
+
+    // Click on summon row to open item sheet (at the correct power accordion)
     html.find('.summon-row').click((e) => {
-      if (e.target.classList.contains('summon-active-checkbox') ||
-          e.target.classList.contains('summon-ne-input')) return;
+      if (e.target.classList.contains('power-active-checkbox') ||
+          e.target.classList.contains('power-ne-input') ||
+          e.target.classList.contains('roll-summon-power') ||
+          e.target.closest('.roll-summon-power')) return;
       e.preventDefault();
-      const itemId = e.currentTarget.dataset.itemId;
+      const { itemId, powerIndex } = e.currentTarget.dataset;
       if (itemId) {
         const item = this.actor.items.get(itemId);
         if (item?.sheet) {
+          item.sheet._initialPowerIndex = parseInt(powerIndex) || 0;
           item.sheet.render(true);
         }
       }

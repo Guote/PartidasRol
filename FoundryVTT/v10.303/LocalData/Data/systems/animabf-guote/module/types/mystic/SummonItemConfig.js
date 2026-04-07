@@ -2,25 +2,33 @@ import { ABFItems } from '../../items/ABFItems.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
 
 /**
+ * Default data for a single power within a summon item.
+ * @readonly
+ */
+export const INITIAL_POWER_DATA = {
+    name:          '',
+    active:        { value: false },
+    ne:            { value: 0 },
+    zeon:          { base: { value: 0 }, final: { value: 0 } },
+    summonDif:     { value: 0 },
+    accion:        { value: 'activa' },
+    duracion:      { value: '' },
+    atkFormula:    { value: '' },
+    defFormula:    { value: '' },
+    damageFormula: { value: '' },
+    rmFormula:     { value: '' },
+    critic:        { value: 'energy' },
+    appearance:    { value: '' },
+    effect:        { value: '' }
+};
+
+/**
  * Initial data for a new summon item.
  * @readonly
  */
 export const INITIAL_SUMMON_DATA = {
-    summonDif: { value: 0 },
-    zeonCost: { value: 0 },
-    baseAtk: { value: 0 },
-    baseDef: { value: 0 },
-    damage: { value: 0 },
-    critic: { value: 'impact' },
-    turno: { value: 20 },
-    duracion: { value: '' },
-    special: { value: '' },
-    bonusAtk: { value: 0 },
-    bonusDef: { value: 0 },
-    bonusDamage: { value: 0 },
-    bonusOther: { value: '' },
-    ne: { value: 0 },
-    active: { value: false }
+    pacto:  { value: '' },
+    powers: [{ ...INITIAL_POWER_DATA }]
 };
 
 /** @type {import("../Items").SummonItemConfig} */

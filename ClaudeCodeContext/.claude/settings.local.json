@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(find 'c:/z - Git/PartidasRol/FoundryVTT/v10.303/LocalData/Data/systems/animabf-guote' -type f -name *combat*.css -o -name *dialog*.css)"
     ]
   }
 }

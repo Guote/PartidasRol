@@ -402,6 +402,25 @@ export class CombatDefenseDialog extends FormApplication {
     const { combat } = this.modalData.defender;
     const { weapons } = this.defenderActor.system.combat;
     combat.weapon = weapons.find((w) => w._id === combat.weaponUsed);
+    // Compute live summary for display in dialog
+    {
+      const { values: defSummaryTermValues } = getModifierTerms(this.defenderActor.system, "defense");
+      const defModTermSum = defSummaryTermValues.reduce((a, b) => a + b, 0);
+      const dodgeBase = this.defenderActor.system.combat.dodge.final.value;
+      const blockBase = combat.weapon
+        ? combat.weapon.system.block.final.value
+        : this.defenderActor.system.combat.block.final.value;
+      const defFatigue = combat.fatigue ?? 0;
+      const multiDefPenalty = combat.multipleDefensesPenalty ?? 0;
+      const defModifier = combat.modifier ?? 0;
+      combat.summary = {
+        dodgeTotal: dodgeBase + defFatigue * 15 + multiDefPenalty + defModTermSum + defModifier,
+        blockTotal: blockBase + defFatigue * 15 + multiDefPenalty + defModTermSum + defModifier,
+        atFinal: combat.at.final,
+        atReduction: combat.at.final * 10,
+        hasCritic: this.modalData.attacker.critic !== NoneWeaponCritic.NONE && !!this.modalData.attacker.critic,
+      };
+    }
     return this.modalData;
   }
   async _updateObject(event, formData) {

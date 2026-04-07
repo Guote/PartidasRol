@@ -10,6 +10,7 @@ export const preloadTemplates = () => {
     Templates.Dialog.Combat.CombatAttackDialog.parts.mystic,
     Templates.Dialog.Combat.CombatAttackDialog.parts.psychic,
     Templates.Dialog.Combat.CombatAttackDialog.parts.summon,
+    Templates.Dialog.Combat.CombatAttackDialog.parts.attackDetailsHeader,
     Templates.Dialog.Combat.CombatDefenseDialog.main,
     Templates.Dialog.Combat.CombatDefenseDialog.parts.combat,
     Templates.Dialog.Combat.CombatDefenseDialog.parts.damageResistance,
@@ -61,6 +62,7 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/items/psychicPower/psychicPower.hbs`,
     `systems/${ABFSystemName}/templates/items/inventoryItem/inventoryItem.hbs`,
     `systems/${ABFSystemName}/templates/items/summon/summon.hbs`,
+    `systems/${ABFSystemName}/templates/items/summon/parts/power-body.hbs`,
     `systems/${ABFSystemName}/templates/items/incarnation/incarnation.hbs`,
     // Actor sheet parts
     `systems/${ABFSystemName}/templates/actor/parts/header/header.hbs`,

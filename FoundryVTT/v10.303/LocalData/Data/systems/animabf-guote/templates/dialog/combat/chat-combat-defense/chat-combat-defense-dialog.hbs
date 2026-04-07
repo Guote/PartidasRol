@@ -55,51 +55,10 @@
         {{#if (is 'gt' this.defender.actor.system.psychic.psychicPowers.length 0)}}
           <a class="item" data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>
         {{/if}}
-        {{#if (is 'gt' this.defender.actor.system.mystic.summons.length 0)}}
+        {{#if this.ui.hasSummons}}
           <a class="item" data-tab="summon">{{localize "anima.ui.tabs.summon"}}</a>
         {{/if}}
       </nav>
-
-      {{#if (is 'neq' this.ui.activeTab 'damageResistance')}}
-        <div class='columns'>
-          <div>
-            {{>
-                "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-                title=(localize 'anima.macros.combat.dialog.noRoll.title')
-                disabled=this.defenseSent
-                inputType="checkbox"
-                inputName="defender.withoutRoll"
-                inputValue=(is 'eq' this.defender.withoutRoll true)
-            }}
-          </div>
-          <div>
-            {{#if this.ui.isGM}}
-              {{>
-              "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-                title=(localize 'anima.macros.combat.dialog.showRoll.title')
-                disabled=this.defenseSent
-                inputType="checkbox"
-                inputName="defender.showRoll"
-                inputValue=(is 'eq' this.defender.showRoll true)
-              }}
-            {{/if}}
-          </div>
-        </div>
-      {{/if}}
-
-      {{#if (and (is "neq" this.attacker.critic "-") this.attacker.critic)}}
-        {{>
-        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-          title=(localize 'anima.macros.combat.dialog.at.title')
-          disabled=this.defenseSent
-          inputName="defender.combat.at.special"
-          inputValue=this.defender.combat.at.special
-          hasSecondaryInput=true
-          disableSecondaryInput=true
-          secondaryInputName="defender.combat.at.final"
-          secondaryInputValue=this.defender.combat.at.final
-        }}
-      {{/if}}
 
       <section class="sheet-body">
         <div class="tab combat" data-group="primary" data-tab="combat">
@@ -122,6 +81,120 @@
           {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/summon.hbs' this=this}}
         </div>
       </section>
+
+      {{!-- ═══ DEFENSE DETAILS (shared, rendered once to avoid duplicate inputs) ═══ --}}
+      {{#if (is 'neq' this.ui.activeTab 'damageResistance')}}
+      {{#unless this.defenseSent}}
+      <div class="dialog-section attack-details-section">
+        <div class="dialog-section-label">
+          <span class="section-label-text">Modificadores de defensa</span>
+          <span class="section-label-line"></span>
+          {{#if this.ui.isGM}}
+          <label class="show-roll-toggle {{#if this.defender.showRoll}}active{{/if}}"
+            title="{{localize 'anima.macros.combat.dialog.showRoll.title'}}">
+            <input type="checkbox" name="defender.showRoll"
+              {{#if this.defender.showRoll}}checked{{/if}} />
+            <i class="fas {{#if this.defender.showRoll}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
+          </label>
+          {{/if}}
+        </div>
+
+        <div class="attack-details-grid">
+
+          {{!-- Row 1 col 1: HD modifier (driven by active tab via getData) --}}
+          <div>
+            {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.modifier.title')
+            inputName=this.ui.activeModifierInputName
+            inputValue=this.ui.activeModifierValue
+            }}
+          </div>
+
+          {{!-- Row 1 col 2: Sin tirada --}}
+          <div>
+            {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.noRoll.title')
+            inputType="checkbox"
+            inputName="defender.withoutRoll"
+            inputValue=(is 'eq' this.defender.withoutRoll true)
+            }}
+          </div>
+
+          {{!-- Row 2 col 1: TA bonus input + type selector inline --}}
+          <div class="ta-combined-field">
+            {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title=(localize 'anima.macros.combat.dialog.at.title')
+            inputName="defender.combat.at.special"
+            inputValue=this.defender.combat.at.special
+            }}
+            {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+            hideTitle=true
+            class="ta-type-select-container"
+            inputName="defender.combat.at.type"
+            }}
+              {{#if config.iterables.combat.weapon.criticTypes}}
+                {{selectOptions config.iterables.combat.weapon.criticTypes selected=this.defender.combat.at.type localize=true}}
+              {{/if}}
+            {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+          </div>
+
+          {{!-- Row 2 col 2: Daño Base --}}
+          <div>
+            {{>
+            "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+            title="Daño Base"
+            inputName="defender.damageModifier"
+            inputValue=this.defender.damageModifier
+            }}
+          </div>
+
+        </div>
+      </div>
+      {{/unless}}
+      {{/if}}
+
+      {{!-- ═══ RESUMEN ═══ --}}
+      {{#if (is 'neq' this.ui.activeTab 'damageResistance')}}
+      {{#unless this.defenseSent}}
+      {{#if this.ui.activeSummary}}
+      <div class="combat-summary-bar">
+        <span class="summary-item">
+          <span class="summary-label">HD final</span>
+          <span class="summary-value">{{this.ui.activeSummary.hdFinal}}</span>
+        </span>
+        <span class="summary-item">
+          <span class="summary-label">TA</span>
+          <span class="summary-value">{{this.ui.activeSummary.taFinal}}</span>
+        </span>
+        {{#if this.ui.activeSummary.damageModifier}}
+        <span class="summary-item">
+          <span class="summary-label">Mod. Daño</span>
+          <span class="summary-value">{{this.ui.activeSummary.damageModifier}}</span>
+        </span>
+        {{/if}}
+      </div>
+      {{/if}}
+      {{/unless}}
+      {{/if}}
+
+      {{!-- ═══ ENVIAR ═══ --}}
+      {{#if this.defenseSent}}
+      <div class='defense-sent'>
+        {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
+        <p class='label'>
+          {{localize 'anima.macros.combat.dialog.defenseSent.title'}}
+        </p>
+      </div>
+      {{else if (is 'neq' this.ui.activeTab 'damageResistance')}}
+      <div class='defense-buttons'>
+        <button type="button" class='abf-button send-defense'>
+          {{localize 'anima.macros.combat.dialog.defenseButton.title'}}
+        </button>
+      </div>
+      {{/if}}
 
     {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
   {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

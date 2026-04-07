@@ -13,6 +13,5 @@ export const getFormula = ({
         ${formula} ${value > 0 ? "+" : ""}
         ${value}${labels?.[i] ? `[ ${labels[i]} ]` : ""}`;
   }
-  console.log("formula", formula);
   return formula;
 };

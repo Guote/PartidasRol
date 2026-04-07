@@ -1,0 +1,13 @@
+<div class="dialog-section-label">
+  <span class="section-label-text">Detalles del ataque</span>
+  <span class="section-label-line"></span>
+  {{#if this.ui.isGM}}
+  <label class="show-roll-toggle {{#if this.attacker.showRoll}}active{{/if}}"
+    title="{{localize 'anima.macros.combat.dialog.showRoll.title'}}">
+    <input type="checkbox" name="attacker.showRoll"
+      {{#if this.attacker.showRoll}}checked{{/if}}
+      {{#if this.attackSent}}disabled{{/if}} />
+    <i class="fas {{#if this.attacker.showRoll}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
+  </label>
+  {{/if}}
+</div>

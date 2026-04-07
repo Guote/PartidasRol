@@ -1,162 +1,369 @@
 <form class="summon-sheet flexcol" autocomplete="off">
   <style>
+    /* ── Tokens / palette ── */
     .summon-sheet {
+      --ss-red:       #6e2917;
+      --ss-red-dark:  #4a1b10;
+      --ss-red-mid:   #8b3a24;
+      --ss-bg:        #f5f3eb;
+      --ss-bg-alt:    #ede9db;
+      --ss-border:    #d4c9a8;
+      --ss-text:      #333;
+      --ss-muted:     #777;
+      --ss-white:     #fff;
+
       font-size: 12px;
-      padding: 6px;
-      background: #f4f1ea;
-      color: #333;
+      background: var(--ss-bg);
+      color: var(--ss-text);
+      padding: 0;
+      gap: 0;
     }
-    .summon-sheet .ss-header {
+
+    /* ── Counter .flexcol > * { flex: 1 } ── */
+    .summon-sheet .ss-name-bar,
+    .summon-sheet .ss-section,
+    .summon-sheet .ss-power-accordion,
+    .summon-sheet .ss-single-power {
+      flex: 0 0 auto !important;
+    }
+
+    /* ── Name bar ── */
+    .summon-sheet .ss-name-bar {
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 6px;
-      padding-bottom: 4px;
-      border-bottom: 2px solid #8b4513;
-    }
-    .summon-sheet .ss-header img {
-      width: 32px;
+      background: linear-gradient(to bottom, var(--ss-red), var(--ss-red-dark));
+      padding: 2px 8px;
       height: 32px;
-      border: 1px solid #8b4513;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      margin-bottom: 2px;
+    }
+    .summon-sheet .ss-name-bar img {
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(255,255,255,0.3);
       border-radius: 3px;
       cursor: pointer;
+      flex-shrink: 0;
     }
-    .summon-sheet .ss-header input {
+    .summon-sheet .ss-name-bar input[type="text"] {
       flex: 1;
-      font-size: 14px;
-      font-weight: bold;
-      border: none;
-      border-bottom: 1px solid #ccc;
       background: transparent;
-      padding: 1px 4px;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      color: var(--ss-white);
+      font-size: 13px;
+      font-weight: bold;
+      padding: 0 4px;
+      min-width: 0;
     }
-    .summon-sheet .ss-header input:focus {
-      border-bottom-color: #8b4513;
+    .summon-sheet .ss-name-bar input[type="text"]::placeholder { color: rgba(255,255,255,0.5); }
+    .summon-sheet .ss-name-bar input[type="text"]:focus {
+      border-bottom-color: rgba(255,255,255,0.9);
       outline: none;
     }
+    .summon-sheet .ss-name-bar .ss-add-power {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--ss-white);
+      border-radius: 3px;
+      width: auto !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 6px;
+      font-size: 10px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .summon-sheet .ss-name-bar .ss-add-power:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── Section headers (red bar with white label) ── */
+    .summon-sheet .ss-section { margin: 0; }
+    .summon-sheet .ss-section-header {
+      background: linear-gradient(to bottom, var(--ss-red), var(--ss-red-dark));
+      color: var(--ss-white);
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      user-select: none;
+    }
+    .summon-sheet .ss-section-body {
+      padding: 4px 8px 6px;
+      background: var(--ss-bg);
+    }
+
+    /* ── Generic row / field ── */
     .summon-sheet .ss-row {
       display: flex;
-      gap: 6px;
       flex-wrap: wrap;
+      gap: 8px;
       align-items: center;
-      margin: 3px 0;
+      margin-bottom: 5px;
     }
-    .summon-sheet .ss-label {
-      font-size: 10px;
-      font-weight: bold;
-      color: #666;
-      text-transform: uppercase;
-    }
-    .summon-sheet .ss-sep {
-      width: 100%;
-      height: 1px;
-      background: #d4c9a8;
-      margin: 4px 0;
-    }
-    .summon-sheet .ss-sep-title {
-      font-size: 10px;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: #8b4513;
-      margin: 6px 0 2px;
-    }
+    .summon-sheet .ss-row:last-child { margin-bottom: 0; }
     .summon-sheet .ss-field {
       display: flex;
       align-items: center;
       gap: 3px;
+      flex-shrink: 0;
     }
-    .summon-sheet .ss-field b {
+    .summon-sheet .ss-label {
       font-size: 10px;
-      color: #666;
-      min-width: 24px;
+      font-weight: bold;
+      color: var(--ss-muted);
+      text-transform: uppercase;
+      white-space: nowrap;
     }
+
+    /* ── Inputs ── */
     .summon-sheet input[type="number"] {
-      width: 42px;
+      width: 46px;
       text-align: center;
-      border: 1px solid #d4c9a8;
+      border: 1px solid var(--ss-border);
       border-radius: 3px;
-      padding: 1px 2px;
+      padding: 2px 3px;
       font-size: 12px;
+      background: var(--ss-white);
+      color: var(--ss-text);
     }
     .summon-sheet input[type="text"] {
-      flex: 1;
-      border: 1px solid #d4c9a8;
+      border: 1px solid var(--ss-border);
       border-radius: 3px;
-      padding: 1px 4px;
+      padding: 2px 5px;
       font-size: 11px;
+      background: var(--ss-white);
+      color: var(--ss-text);
     }
     .summon-sheet select {
-      border: 1px solid #d4c9a8;
+      border: 1px solid var(--ss-border);
       border-radius: 3px;
-      padding: 1px 4px;
+      padding: 2px 4px;
       font-size: 11px;
+      background: var(--ss-white);
+      color: var(--ss-text);
     }
     .summon-sheet textarea {
       width: 100%;
-      min-height: 40px;
+      min-height: 55px;
       resize: vertical;
-      border: 1px solid #d4c9a8;
-      border-radius: 3px;
-      padding: 3px 4px;
+      border: none;
+      padding: 4px 6px;
       font-size: 11px;
       font-family: inherit;
+      background: var(--ss-bg-alt);
+      color: var(--ss-text);
+      box-sizing: border-box;
     }
-    .summon-sheet input:focus, .summon-sheet select:focus, .summon-sheet textarea:focus {
-      border-color: #8b4513;
+    .summon-sheet input:focus,
+    .summon-sheet select:focus,
+    .summon-sheet textarea:focus {
+      border-color: var(--ss-red-mid);
       outline: none;
+    }
+
+    /* ── Zeón ── */
+    .summon-sheet .ss-zeon-final {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--ss-text);
+      min-width: 28px;
+      text-align: right;
+    }
+    .summon-sheet .ss-zeon-base-wrap {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .summon-sheet .ss-zeon-base-paren { font-size: 11px; color: var(--ss-muted); }
+    .summon-sheet .ss-zeon-base-input {
+      width: 38px !important;
+      font-size: 11px !important;
+      color: var(--ss-muted) !important;
+      border-color: #c8c0a0 !important;
+    }
+    .summon-sheet .ss-ne-input {
+      width: 40px !important;
+      border-color: rgba(180,140,30,0.5) !important;
+      background: rgba(255,220,80,0.08) !important;
+    }
+
+    /* ── Combat 2-column grid ── */
+    .summon-sheet .ss-combat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 14px;
+    }
+    .summon-sheet .ss-stat-row { display: flex; align-items: center; gap: 4px; }
+    .summon-sheet .ss-stat-label {
+      font-size: 10px;
+      font-weight: bold;
+      color: var(--ss-muted);
+      min-width: 26px;
+      text-transform: uppercase;
+    }
+    .summon-sheet .ss-final-badge {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--ss-text);
+      min-width: 30px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .summon-sheet .ss-formula-input {
+      border: 1px solid var(--ss-border) !important;
+      border-radius: 3px !important;
+      padding: 2px 4px !important;
+      font-size: 11px !important;
+      font-style: italic;
+      color: var(--ss-muted) !important;
+      flex: 1;
+      min-width: 0;
+      background: var(--ss-white) !important;
+    }
+
+    /* ── Power accordions (multi-power) ── */
+    .summon-sheet .ss-power-accordion {
+      border-bottom: 1px solid var(--ss-border);
+    }
+    .summon-sheet .ss-power-accordion:last-child { border-bottom: none; }
+    .summon-sheet .ss-power-accordion > summary {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, rgba(110,41,23,0.12), rgba(74,27,16,0.08));
+      border-bottom: 1px solid var(--ss-border);
+      color: var(--ss-red);
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+    }
+    .summon-sheet .ss-power-accordion > summary::-webkit-details-marker { display: none; }
+    .summon-sheet .ss-power-accordion > summary::before { content: "▶"; font-size: 7px; opacity: 0.6; }
+    .summon-sheet .ss-power-accordion[open] > summary::before { content: "▼"; }
+    .summon-sheet .ss-power-accordion > summary .ss-power-name-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(110,41,23,0.3);
+      color: var(--ss-red);
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 0 2px;
+      min-width: 0;
+    }
+    .summon-sheet .ss-power-accordion > summary .ss-power-name-input:focus {
+      outline: none;
+      border-bottom-color: var(--ss-red);
+    }
+    .summon-sheet .ss-power-accordion > summary .ss-remove-power {
+      width: auto !important;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(110,41,23,0.1);
+      border: 1px solid rgba(110,41,23,0.3);
+      border-radius: 3px;
+      color: var(--ss-red);
+      font-size: 9px;
+      padding: 1px 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .summon-sheet .ss-power-accordion > summary .ss-remove-power:hover { background: rgba(110,41,23,0.2); }
+    .summon-sheet .ss-power-body { padding: 6px 8px; }
+
+    /* ── Single power (no accordion) ── */
+    .summon-sheet .ss-single-power { padding: 6px 8px; }
+
+    /* ── Text accordions (appearance, pacto, effect) ── */
+    .summon-sheet .ss-text-accordion {
+      border-top: 1px solid var(--ss-border);
+      margin-top: 5px;
+    }
+    .summon-sheet .ss-text-accordion summary {
+      font-size: 9px;
+      font-weight: bold;
+      color: var(--ss-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 4px;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .summon-sheet .ss-text-accordion summary::-webkit-details-marker { display: none; }
+    .summon-sheet .ss-text-accordion summary::before { content: "▶"; font-size: 6px; opacity: 0.5; }
+    .summon-sheet .ss-text-accordion[open] summary::before { content: "▼"; }
+    .summon-sheet .ss-text-accordion textarea {
+      border-top: 1px solid var(--ss-border);
+      border-radius: 0 0 3px 3px;
+    }
+
+    /* ── Shared pacto section ── */
+    .summon-sheet .ss-pacto-section {
+      padding: 0 8px 2px;
+      background: var(--ss-bg);
     }
   </style>
 
-  <div class="ss-header">
+  {{!-- Name bar --}}
+  <div class="ss-name-bar">
     <img src="{{item.img}}" data-edit="img" title="{{item.name}}">
-    <input type="text" name="name" value="{{item.name}}">
+    <input type="text" name="name" value="{{item.name}}" placeholder="Nombre del convocado">
+    <button type="button" class="ss-add-power" title="Añadir poder"><i class="fas fa-plus"></i> Poder</button>
   </div>
 
-  {{!-- Summoning --}}
-  <div class="ss-row">
-    <div class="ss-field"><b>Dif</b><input type="number" name="system.summonDif.value" value="{{system.summonDif.value}}"></div>
-    <div class="ss-field"><b>Zeon</b><input type="number" name="system.zeonCost.value" value="{{system.zeonCost.value}}"></div>
-    <div class="ss-field"><b>Turno</b><input type="number" name="system.turno.value" value="{{system.turno.value}}"></div>
-  </div>
-  <div class="ss-row">
-    <div class="ss-field" style="flex:1;">
-      <b style="min-width:48px;">Duración</b>
-      <input type="text" name="system.duracion.value" value="{{system.duracion.value}}" placeholder="ej. [NE]/10 asaltos">
+  {{!-- ── Shared: Pacto (collapsible) ── --}}
+  <div class="ss-section">
+    <div class="ss-section-header">Invocado</div>
+    <div class="ss-pacto-section">
+      <details class="ss-text-accordion" style="border-top: none;">
+        <summary>Pacto</summary>
+        <textarea name="system.pacto.value" placeholder="Condiciones del pacto...">{{system.pacto.value}}</textarea>
+      </details>
     </div>
   </div>
 
-  <div class="ss-sep"></div>
+  {{!-- ── Per-power sections ── --}}
+  {{#if multiPower}}
 
-  {{!-- Combat --}}
-  <div class="ss-sep-title">{{localize "anima.ui.tabs.combat"}}</div>
-  <div class="ss-row">
-    <div class="ss-field"><b>Atq</b><input type="number" name="system.baseAtk.value" value="{{system.baseAtk.value}}"></div>
-    <div class="ss-field"><b>+</b><input type="number" name="system.bonusAtk.value" value="{{system.bonusAtk.value}}"></div>
-    <div class="ss-field"><b>Def</b><input type="number" name="system.baseDef.value" value="{{system.baseDef.value}}"></div>
-    <div class="ss-field"><b>+</b><input type="number" name="system.bonusDef.value" value="{{system.bonusDef.value}}"></div>
-  </div>
-  <div class="ss-row">
-    <div class="ss-field"><b>Daño</b><input type="number" name="system.damage.value" value="{{system.damage.value}}"></div>
-    <div class="ss-field"><b>+</b><input type="number" name="system.bonusDamage.value" value="{{system.bonusDamage.value}}"></div>
-    <div class="ss-field"><b>Crit</b>
-      <select name="system.critic.value">
-        {{#each config.iterables.combat.weapon.criticTypes as |label key|}}
-        <option value="{{key}}" {{#if (is 'eq' key ../system.critic.value)}}selected{{/if}}>{{localize label}}</option>
-        {{/each}}
-      </select>
+  {{#each powersComputed as |power|}}
+  <details class="ss-power-accordion" data-power-index="{{@index}}" {{#if (is 'eq' @index 0)}}open{{/if}}>
+    <summary>
+      <input type="text" class="ss-power-name-input" name="system.powers.{{@index}}.name"
+        value="{{power.name}}" placeholder="Nombre del poder"
+        onclick="event.stopPropagation()">
+      <button type="button" class="ss-remove-power" data-power-index="{{@index}}"
+        onclick="event.stopPropagation()" title="Eliminar poder">
+        <i class="fas fa-times"></i>
+      </button>
+    </summary>
+    <div class="ss-power-body">
+      {{> "systems/animabf-guote/templates/items/summon/parts/power-body.hbs" power=power index=@index config=config}}
     </div>
+  </details>
+  {{/each}}
+
+  {{else}}
+
+  {{#each powersComputed as |power|}}
+  <div class="ss-single-power" data-power-index="{{@index}}">
+    {{> "systems/animabf-guote/templates/items/summon/parts/power-body.hbs" power=power index=@index config=config}}
   </div>
+  {{/each}}
 
-  <div class="ss-sep"></div>
+  {{/if}}
 
-  {{!-- Special --}}
-  <div class="ss-sep-title">{{localize "anima.ui.mystic.summon.special.title"}}</div>
-  <textarea name="system.special.value" placeholder="{{localize 'anima.ui.mystic.summon.special.title'}}">{{system.special.value}}</textarea>
-
-  <div class="ss-row" style="margin-top: 4px;">
-    <div class="ss-field" style="flex: 1;">
-      <b style="min-width: 36px;">Otros</b>
-      <input type="text" name="system.bonusOther.value" value="{{system.bonusOther.value}}">
-    </div>
-  </div>
 </form>

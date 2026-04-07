@@ -1,67 +1,87 @@
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'anima.macros.combat.dialog.modifier.title')
-disabled=this.defenseSent
-inputName="defender.psychic.modifier"
-inputValue=this.defender.psychic.modifier
-}}
+{{!-- ═══ TAB CONTENTS: Psychic Defense ═══ --}}
+<div class="dialog-section">
+  <div class="combat-dialog-grid">
 
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'anima.macros.combat.dialog.psychicProjection.title')
-disabled=true
-inputName="defender.psychic.psychicProjection"
-inputValue=this.defender.psychic.psychicProjection
-}}
+    {{!-- Row 1: Power selector + open sheet button --}}
+    <div class="combat-grid-full">
+      <div class="selector-row">
+        {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+        title=(localize 'anima.macros.combat.dialog.psychicPower.title')
+        disabled=this.defenseSent
+        inputName='defender.psychic.powerUsed'
+        }}
+        {{#each this.defender.actor.system.psychic.psychicPowers}}
+        <option {{#if (is "eq" this._id ../this.defender.psychic.powerUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}
+          (+{{this.system.bonus.value}})</option>
+        {{/each}}
+        {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+        <button type="button" class="abf-button icon-button open-psychic-power-sheet"
+          title="Abrir ficha del poder"
+          {{#if this.defenseSent}}disabled{{/if}}>
+          <i class="fas fa-external-link-alt"></i>
+        </button>
+      </div>
+    </div>
 
-{{>
-"systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-title=(localize 'anima.macros.combat.dialog.psychicPotential.title')
-disabled=this.defenseSent
-inputName="defender.psychic.psychicPotential.special"
-inputValue=this.defender.psychic.psychicPotential.special
-hasSecondaryInput=true
-disableSecondaryInput=true
-secondaryInputName="defender.psychic.psychicPotential.final"
-secondaryInputValue=this.defender.psychic.psychicPotential.final
-}}
+    {{!-- Roll box: Potential | CV Potencial | Mod | Roll button + result --}}
+    <div class="combat-grid-full">
+      <div class="roll-input-box">
+        <div class="selector-row">
+          {{>
+          "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          title=(localize 'anima.macros.combat.dialog.psychicPotential.title')
+          disabled=true
+          inputValue=this.defender.psychic.psychicPotential.final
+          }}
+          {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+          title="CV Potencial"
+          disabled=this.defenseSent
+          inputName="defender.psychic.cvPotencial"
+          inputValue=this.defender.psychic.cvPotencial
+          }}
+          <option {{#if (is "eq" 0 this.defender.psychic.cvPotencial)}}selected{{/if}} value='0'>0</option>
+          {{#iterateNumber 5}}
+          <option {{#if (is "eq" (math this "+" 1) ../this.defender.psychic.cvPotencial)}}selected{{/if}} value='{{math this "+" 1}}'>{{math this "+" 1}}</option>
+          {{/iterateNumber}}
+          {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+          {{>
+          "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+          title="Mod"
+          disabled=this.defenseSent
+          inputName="defender.psychic.psychicPotential.special"
+          inputValue=this.defender.psychic.psychicPotential.special
+          }}
+          <button type="button" class="abf-button icon-button roll-psychic-potential-defense"
+            title="{{localize 'anima.macros.combat.dialog.rollOnlyPotential.title'}}"
+            {{#if this.defenseSent}}disabled{{/if}}>
+            <i class="fas fa-dice-d20"></i>
+          </button>
+        </div>
+        {{#if this.defender.psychic.potentialResult}}
+        <div class="combat-summary-bar roll-box-result">
+          <span class="summary-item">
+            <span class="summary-label">{{localize 'anima.macros.combat.dialog.psychicPotentialResult.title'}}</span>
+            <span class="summary-value">{{this.defender.psychic.potentialResult.total}}</span>
+          </span>
+        </div>
+        {{/if}}
+      </div>
+    </div>
 
-{{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
-title=(localize 'anima.macros.combat.dialog.psychicPower.title')
-disabled=this.defenseSent
-inputName='defender.psychic.powerUsed'
-}}
-{{#each this.defender.actor.system.psychic.psychicPowers}}
-<option {{#if (is "eq" this._id ../this.defender.psychic.powerUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}
-  (+{{this.system.bonus.value}})</option>
-{{/each}}
-{{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+    {{!-- CV Proyección (half width, outside the box) --}}
+    <div class="combat-grid-half">
+      {{#> 'systems/animabf-guote/templates/common/ui/custom-select.hbs'
+      title="CV Proyección"
+      disabled=this.defenseSent
+      inputName="defender.psychic.cvProyeccion"
+      inputValue=this.defender.psychic.cvProyeccion
+      }}
+      <option {{#if (is "eq" 0 this.defender.psychic.cvProyeccion)}}selected{{/if}} value='0'>0</option>
+      {{#iterateNumber 5}}
+      <option {{#if (is "eq" (math this "+" 1) ../this.defender.psychic.cvProyeccion)}}selected{{/if}} value='{{math this "+" 1}}'>{{math this "+" 1}}</option>
+      {{/iterateNumber}}
+      {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
+    </div>
 
-{{#if this.defender.psychic.potentialResult}}
-<div class="potential-result-display">
-  {{>
-  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-  title=(localize 'anima.macros.combat.dialog.psychicPotentialResult.title')
-  disabled=true
-  inputValue=this.defender.psychic.potentialResult.total
-  }}
+  </div>
 </div>
-{{/if}}
-
-{{#if this.defenseSent}}
-<div class='defense-sent'>
-  {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
-  <p class='label'>
-    {{localize 'anima.macros.combat.dialog.defenseSent.title'}}
-  </p>
-</div>
-{{else}}
-<div class='defense-buttons'>
-  <button type="button" class='abf-button roll-psychic-potential-defense'>
-    <i class="fas fa-dice-d20"></i> {{localize 'anima.macros.combat.dialog.rollOnlyPotential.title'}}
-  </button>
-  <button type="button" class='abf-button send-psychic-defense'>
-    {{localize 'anima.macros.combat.dialog.defenseButton.title'}} ({{this.defender.psychic.psychicProjection}})
-  </button>
-</div>
-{{/if}}

@@ -11,7 +11,8 @@ export const Templates = {
                     combat: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/combat.hbs`,
                     mystic: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/mystic.hbs`,
                     psychic: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/psychic.hbs`,
-                    summon: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/summon.hbs`
+                    summon: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/summon.hbs`,
+                    attackDetailsHeader: `systems/${ABFSystemName}/templates/dialog/combat/combat-attack/parts/attack-details-header.hbs`
                 }
             },
             CombatDefenseDialog: {

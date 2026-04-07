@@ -337,7 +337,8 @@
           "summon": { "base": { "value": 0 }, "final": { "value": 0 } },
           "banish": { "base": { "value": 0 }, "final": { "value": 0 } },
           "bind": { "base": { "value": 0 }, "final": { "value": 0 } },
-          "control": { "base": { "value": 0 }, "final": { "value": 0 } }
+          "control": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "specialization": { "value": "ninguna" }
         },
         "spells": [],
         "spellMaintenances": [],
@@ -657,18 +658,8 @@
       "weight": { "value": 0 }
     },
     "summon": {
-      "summonDif": { "value": 0 },
-      "zeonCost": { "value": 0 },
-      "baseAtk": { "value": 0 },
-      "baseDef": { "value": 0 },
-      "damage": { "value": 0 },
-      "critic": { "value": "impact" },
-      "turno": { "value": 20 },
-      "special": { "value": "" },
-      "bonusAtk": { "value": 0 },
-      "bonusDef": { "value": 0 },
-      "bonusDamage": { "value": 0 },
-      "bonusOther": { "value": "" }
+      "pacto":  { "value": "" },
+      "powers": []
     },
     "incarnation": {
       "level": { "value": 0 },
