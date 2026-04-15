@@ -25,7 +25,9 @@ const secondarySkillMap = {
   // Vigor - Spanish
   "Frialdad": "composure",
   "Proezas de Fuerza": "featsOfStrength",
+  "P. Fuerza": "featsOfStrength",
   "Resistir el dolor": "withstandPain",
+  "Res. Dolor": "withstandPain",
   // Vigor - English
   "Composure": "composure",
   "Feats of Strength": "featsOfStrength",
@@ -185,7 +187,7 @@ export const buildActorData = (parsed) => {
           },
           defenseType: { value: defenseType },
           initiative: {
-            base: { value: combat.naturalInitiative },
+            base: { value: combat.naturalInitiative + 20 },
           },
           fatigue: {
             value: general.fatigue,
@@ -332,23 +334,24 @@ export const buildWeaponsData = (parsed) => {
     name: weapon.name || "Imported Weapon",
     type: "weapon",
     system: {
+      // calculateWeaponAttack = actor.attack.final + attack.special + quality + penalties
+      // attack.base is NOT read by the system for non-fixed weapons; use special.
       attack: {
-        base: { value: weapon.attackBonus || 0 },
-        special: { value: 0 },
+        special: { value: weapon.attackBonus || 0 },
       },
+      // calculateWeaponBlock = actor.block.final + block.special + quality + penalties
       block: {
-        base: { value: weapon.blockBonus || 0 },
-        special: { value: 0 },
+        special: { value: weapon.blockBonus || 0 },
       },
       damage: {
         base: { value: weapon.damage || 0 },
-        special: { value: 0 },
       },
+      // calculateWeaponInitiative = initiative.base + quality (quality = 0 → final = base = turnBonus)
       initiative: {
         base: { value: weapon.turnBonus || 0 },
-        special: { value: 0 },
       },
       equipped: { value: true },
+      isShown: { value: true },
       knowledgeType: { value: "known" },
       manageabilityType: { value: "one_hand" },
     },

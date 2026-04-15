@@ -598,6 +598,7 @@
       "martialKnowledge": { "value": 0 }
     },
     "weapon": {
+      "description": { "value": "" },
       "special": { "value": "" },
       "integrity": {
         "base": { "value": 0 },

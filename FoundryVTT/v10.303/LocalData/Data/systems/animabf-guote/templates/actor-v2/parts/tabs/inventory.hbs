@@ -23,6 +23,7 @@
             <th style="width: 50px;">{{localize "anima.ui.combat.weapons.damage.final.title"}}</th>
             <th style="width: 40px;">{{localize "anima.ui.general.initiative.base.title"}}</th>
             <th style="width: 60px;">{{localize "anima.ui.combat.weapons.critic.primary.title"}}</th>
+            <th style="width: 30px;"></th>
           </tr>
         </thead>
         <tbody id="weapons-context-menu-container">
@@ -47,10 +48,18 @@
             <td class="v2-text-center">{{weapon.system.damage.final.value}}</td>
             <td class="v2-text-center">{{weapon.system.initiative.final.value}}</td>
             <td class="v2-text-center">{{weapon.system.critic.primary.value}}</td>
+            <td class="v2-text-center">
+              <button type="button" class="v2-btn-icon-sm weapon-open-sheet"
+                      data-item-id="{{weapon._id}}"
+                      onclick="event.stopPropagation()"
+                      title="Ver ficha">
+                <i class="fas fa-eye"></i>
+              </button>
+            </td>
           </tr>
           {{else}}
           <tr>
-            <td colspan="7" class="v2-text-center v2-text-muted">-</td>
+            <td colspan="8" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>

@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(node:*)",
-      "Bash(find 'c:/z - Git/PartidasRol/FoundryVTT/v10.303/LocalData/Data/systems/animabf-guote' -type f -name *combat*.css -o -name *dialog*.css)"
+      "Bash(find 'c:/z - Git/PartidasRol/FoundryVTT/v10.303/LocalData/Data/systems/animabf-guote' -type f -name *combat*.css -o -name *dialog*.css)",
+      "Bash(xargs grep:*)",
+      "Bash(python3 -m json.tool)",
+      "Bash(sed 's/\"via\":\"//')",
+      "Bash(xargs cat:*)"
     ]
   }
 }

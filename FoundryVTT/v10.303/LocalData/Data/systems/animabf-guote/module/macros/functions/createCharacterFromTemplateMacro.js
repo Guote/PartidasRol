@@ -350,6 +350,7 @@ export const createCharacterFromTemplateMacro = async () => {
       if (desarmadoWeapon) {
         const weaponData = desarmadoWeapon.toObject();
         weaponData.system.equipped = { value: true };
+        weaponData.system.isShown = { value: true };
         await actor.createEmbeddedDocuments("Item", [weaponData]);
       }
 

@@ -85,12 +85,14 @@
       <div class="v2-res v2-res--init" title="{{localize 'anima.ui.general.initiative.base.title'}}">
         <span class="v2-res__icon rollable" data-roll="1d100Initiative"
           data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}"
-          data-label="{{localize 'anima.ui.general.initiative.base.title'}}"><i class="fas fa-dice-d20"></i></span>
+          data-label="{{localize 'anima.ui.general.initiative.base.title'}}"
+          data-modifier-type="initiative"><i class="fas fa-dice-d20"></i></span>
         <div class="v2-res__content">
           <span class="v2-res__label">Turno</span>
           <span class="v2-res__value rollable" data-roll="1d100Initiative"
             data-rollvalue="{{system.characteristics.secondaries.initiative.final.value}}"
-            data-label="{{localize 'anima.ui.general.initiative.base.title'}}">{{system.characteristics.secondaries.initiative.final.value}}</span>
+            data-label="{{localize 'anima.ui.general.initiative.base.title'}}"
+            data-modifier-type="initiative">{{system.characteristics.secondaries.initiative.final.value}}</span>
         </div>
       </div>
 

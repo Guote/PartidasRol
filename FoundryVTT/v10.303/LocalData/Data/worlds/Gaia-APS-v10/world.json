@@ -57,28 +57,13 @@
       "flags": {}
     },
     {
-      "label": "Invocaciones 2 (animabf-guote)",
-      "type": "Item",
-      "name": "invocaciones-2-animabf-guote",
-      "path": "packs/invocaciones-2-animabf-guote.db",
-      "system": "animabf-guote",
-      "private": false,
-      "flags": {},
-      "package": "world",
-      "id": "world.invocaciones-2-animabf-guote",
-      "packageType": "world",
-      "packageName": "Gaia-APS-v10",
-      "index": []
-    },
-    {
       "label": "Invocaciones (animabf-guote)",
       "type": "Item",
       "name": "invocaciones-animabf-guote",
       "path": "packs/invocaciones-animabf-guote.db",
       "system": "animabf-guote",
       "private": false,
-      "flags": {},
-      "package": "world"
+      "flags": {}
     }
   ],
   "system": "animabf-guote",

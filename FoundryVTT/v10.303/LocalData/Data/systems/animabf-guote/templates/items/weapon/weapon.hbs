@@ -1,307 +1,402 @@
-{{#> "systems/animabf-guote/templates/items/base/base-sheet.hbs"}}
-{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
-class="weapon-item-dialog"
-}}
-{{#> "systems/animabf-guote/templates/common/ui/group-header.hbs"}}
-<div class='weapon-header'>
-  {{>
-  "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-  class="name"
-  hideTitle=true
-  inputType="text"
-  inputName="name"
-  inputValue=item.name
-  }}
-</div>
-{{/"systems/animabf-guote/templates/common/ui/group-header.hbs"}}
-{{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"
-class="weapon-item-dialog"
-}}
-{{#unless (is 'eq' system.isSummon.value true)}}
-{{#unless (and (is 'eq' system.isRanged.value true) (is 'eq' system.shotType.value 'shot'))}}
-{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-class="critic-primary"
-isVertical=true
-choices=config.iterables.combat.weapon.criticTypes
-title=(localize "anima.ui.combat.weapons.critic.primary.title")
-inputName="system.critic.primary.value"
-inputValue=system.critic.primary.value
-}}
-{{/unless}}
-{{#if (or (is 'eq' system.isRanged.value false) (is 'eq' system.shotType.value 'throw'))}}
-{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-class="critic-secondary"
-isVertical=true
-choices=config.iterables.combat.weapon.criticTypesWithNone
-title=(localize "anima.ui.combat.weapons.critic.secondary.title")
-inputName="system.critic.secondary.value"
-inputValue=system.critic.secondary.value
-}}
-{{/if}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="presence"
-title=(localize "anima.ui.combat.weapons.presence.base.title")
-inputName="system.presence.base.value"
-inputValue=system.presence.base.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="is-shield"
-title=(localize "anima.ui.combat.weapons.isShield.title")
-inputType="checkbox"
-inputName="system.isShield.value"
-inputValue=system.isShield.value
-}}
-{{>
-'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-class="size"
-isVertical=true
-choices=config.iterables.combat.weapon.sizes
-title=(localize "anima.ui.combat.weapons.size.title")
-inputName="system.size.value"
-inputValue=system.size.value
-}}
-{{>
-'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-class="size-proportion"
-isVertical=true
-choices=config.iterables.combat.weapon.sizeProportions
-title=(localize "anima.ui.combat.weapons.sizeProportion.title")
-inputName="system.sizeProportion.value"
-inputValue=system.sizeProportion.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="integrity"
-title=(localize "anima.ui.combat.weapons.integrity.base.title")
-inputName="system.integrity.base.value"
-inputValue=system.integrity.base.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="breaking"
-title=(localize "anima.ui.combat.weapons.breaking.base.title")
-inputName="system.breaking.base.value"
-inputValue=system.breaking.base.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="damage"
-title=(localize "anima.ui.combat.weapons.damage.base.title")
-inputName="system.damage.base.value"
-inputValue=system.damage.base.value
-}}
-{{/unless}}
-{{#if (is 'eq' system.isSummon.value true)}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-title="Dificultad"
-inputName=(concat "system.summonDif.value")
-inputValue=system.summonDif.value
-}}
-{{>
-  "systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-  title="Coste"
-  inputName=(concat "system.summonCost.value")
-  inputValue=system.summonCost.value
-  }}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-title="Ataque"
-inputName=(concat "system.baseAtk.value")
-inputValue=system.baseAtk.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-title="Defensa"
-inputName=(concat "system.baseDef.value")
-inputValue=system.baseDef.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="damage"
-title=(localize "anima.ui.combat.weapons.damage.base.title")
-inputName="system.damage.base.value"
-inputValue=system.damage.base.value
-}}
-{{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-class="critic-primary"
-isVertical=true
-choices=config.iterables.combat.weapon.criticTypes
-title=(localize "anima.ui.combat.weapons.critic.primary.title")
-inputName="system.critic.primary.value"
-inputValue=system.critic.primary.value
-}}
-{{/if}}
+<form class="weapon-sheet flexcol" autocomplete="off">
+  <style>
+    /* ── Tokens / palette ── */
+    .weapon-sheet {
+      --ws-red:       #6e2917;
+      --ws-red-dark:  #4a1b10;
+      --ws-red-mid:   #8b3a24;
+      --ws-bg:        #f5f3eb;
+      --ws-bg-alt:    #ede9db;
+      --ws-border:    #d4c9a8;
+      --ws-text:      #333;
+      --ws-muted:     #777;
+      --ws-white:     #fff;
 
-{{#unless (is 'eq' system.isSummon.value true)}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="damage"
-title="Daño fijo"
-inputType="checkbox"
-inputName=(concat "system.damage.isFixed.value")
-inputValue=(is 'eq' system.damage.isFixed.value true)
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="damage"
-title="Ataque fijo"
-inputType="checkbox"
-inputName=(concat "system.attack.isFixed.value")
-inputValue=(is 'eq' system.attack.isFixed.value true)
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="damage"
-title="Parada fija"
-inputType="checkbox"
-inputName=(concat "system.block.isFixed.value")
-inputValue=(is 'eq' system.block.isFixed.value true)
-}}
-{{#if (or (is 'eq' system.block.isFixed.value true) (is 'eq' system.block.isFixed.value true))}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-title="Ataque Base"
-inputName=(concat "system.baseAtk.value")
-inputValue=system.baseAtk.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-title="Defensa Base"
-inputName=(concat "system.baseDef.value")
-inputValue=system.baseDef.value
-}}
-{{/if}}
-{{/unless}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="initiative-base"
-title=(localize "anima.ui.combat.weapons.initiative.base.title")
-inputName="system.initiative.base.value"
-inputValue=system.initiative.base.value
-}}
+      font-size: 12px;
+      background: var(--ws-bg);
+      color: var(--ws-text);
+      padding: 0;
+      gap: 0;
+    }
 
-{{#unless (is 'eq' system.isSummon.value true)}}
-{{>
-'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-class="manageability-type"
-isVertical=true
-choices=config.iterables.combat.weapon.manageabilityTypes
-title=(localize "anima.ui.combat.weapon.manageabilityType.title")
-inputName="system.manageabilityType.value"
-inputValue=system.manageabilityType.value
-}}
-{{#if (or (is 'eq' system.manageabilityType.value 'one_hand') (is 'eq' system.manageabilityType.value
-'one_or_two_hands'))}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="fue-required"
-title=(localize "anima.ui.combat.weapons.strRequired.oneHand.title")
-inputName="system.strRequired.oneHand.base.value"
-inputValue=system.strRequired.oneHand.base.value
-hasSecondaryInput=true
-disableSecondaryInput=true
-secondaryInputName="system.strRequired.oneHand.final.value"
-secondaryInputValue=system.strRequired.oneHand.final.value
-}}
-{{/if}}
-{{#if (or (is 'eq' system.manageabilityType.value 'two_hands') (is 'eq' system.manageabilityType.value
-'one_or_two_hands'))}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="fue-required-two-hands"
-title=(localize "anima.ui.combat.weapons.strRequired.twoHands.title")
-inputName="system.strRequired.twoHands.base.value"
-inputValue=system.strRequired.twoHands.base.value
-hasSecondaryInput=true
-disableSecondaryInput=true
-secondaryInputName="system.strRequired.twoHands.final.value"
-secondaryInputValue=system.strRequired.twoHands.final.value
-}}
-{{/if}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="is-ranged"
-title=(localize "anima.ui.combat.weapons.isRanged.title")
-inputType="checkbox"
-inputName="system.isRanged.value"
-inputValue=system.isRanged.value
-}}
-{{#if system.isRanged.value}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="range"
-title=(localize "anima.ui.combat.weapons.range.base.title")
-inputName="system.range.base.value"
-inputValue=system.range.base.value
-}}
-{{>
-'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
-class="shot-type"
-isVertical=true
-choices=config.iterables.combat.weapon.shotTypes
-title=(localize "anima.ui.combat.weapon.shotType.title")
-inputName="system.shotType.value"
-inputValue=system.shotType.value
-}}
-{{#if (is 'eq' system.shotType.value 'throw')}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="cadence"
-title=(localize "anima.ui.combat.weapons.cadence.title")
-inputName="system.cadence.value"
-inputValue=system.cadence.value
-}}
-{{else}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="has-own-strength"
-title=(localize "anima.ui.combat.weapons.hasOwnStr.title")
-inputType="checkbox"
-inputName="system.hasOwnStr.value"
-inputValue=system.hasOwnStr.value
-}}
-{{#if system.hasOwnStr.value}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="weapon-fue"
-title=(localize "anima.ui.combat.weapons.weaponStrength.title")
-inputName="system.weaponStrength.base.value"
-inputValue=system.weaponStrength.base.value
-hasSecondaryInput=true
-disableSecondaryInput=true
-secondaryInputName="system.weaponStrength.final.value"
-secondaryInputValue=system.weaponStrength.final.value
-}}
-{{/if}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="reload"
-title=(localize "anima.ui.combat.weapons.reload.base.title")
-inputName="system.reload.base.value"
-inputValue=system.reload.base.value
-}}
-{{/if}}
-{{/if}}
-{{/unless}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="special"
-title=(localize "anima.ui.combat.weapons.special.title")
-inputType="text"
-inputName="system.special.value"
-inputValue=system.special.value
-}}
-{{>
-"systems/animabf-guote/templates/common/ui/vertical-titled-input.hbs"
-class="damage"
-title="Es summon"
-inputType="checkbox"
-inputName=(concat "system.isSummon.value")
-inputValue=(is 'eq' system.isSummon.value true)
-}}
-{{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
-{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}
-{{/"systems/animabf-guote/templates/items/base/base-sheet.hbs"}}
+    /* ── Counter .flexcol > * { flex: 1 } ── */
+    .weapon-sheet .ws-name-bar,
+    .weapon-sheet .ws-description-accordion,
+    .weapon-sheet .ws-section {
+      flex: 0 0 auto !important;
+    }
+
+    /* ── Name bar ── */
+    .weapon-sheet .ws-name-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(to bottom, var(--ws-red), var(--ws-red-dark));
+      padding: 2px 8px;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      margin-bottom: 2px;
+    }
+    .weapon-sheet .ws-name-bar img {
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 3px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .weapon-sheet .ws-name-bar input[type="text"] {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      color: var(--ws-white);
+      font-size: 13px;
+      font-weight: bold;
+      padding: 0 4px;
+      min-width: 0;
+    }
+    .weapon-sheet .ws-name-bar input[type="text"]::placeholder { color: rgba(255,255,255,0.5); }
+    .weapon-sheet .ws-name-bar input[type="text"]:focus {
+      border-bottom-color: rgba(255,255,255,0.9);
+      outline: none;
+    }
+
+    /* ── Description accordion ── */
+    .weapon-sheet .ws-description-accordion {
+      border-bottom: 1px solid var(--ws-border);
+    }
+    .weapon-sheet .ws-description-accordion > summary {
+      font-size: 9px;
+      font-weight: bold;
+      color: var(--ws-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 8px;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--ws-bg-alt);
+    }
+    .weapon-sheet .ws-description-accordion > summary::-webkit-details-marker { display: none; }
+    .weapon-sheet .ws-description-accordion > summary::before { content: "▶"; font-size: 6px; opacity: 0.5; }
+    .weapon-sheet .ws-description-accordion[open] > summary::before { content: "▼"; }
+    .weapon-sheet .ws-description-accordion .editor { min-height: 80px; }
+    .weapon-sheet .ws-description-accordion .editor-content { min-height: 80px; }
+
+    /* ── Section headers ── */
+    .weapon-sheet .ws-section { margin: 0; }
+    .weapon-sheet .ws-section-header {
+      background: linear-gradient(to bottom, var(--ws-red), var(--ws-red-dark));
+      color: var(--ws-white);
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      user-select: none;
+    }
+    .weapon-sheet .ws-section-body {
+      padding: 5px 8px 6px;
+      background: var(--ws-bg);
+    }
+
+    /* ── Rows and fields ── */
+    .weapon-sheet .ws-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .weapon-sheet .ws-row:last-child { margin-bottom: 0; }
+    .weapon-sheet .ws-field {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+    .weapon-sheet .ws-field.ws-full { flex: 1 1 100%; }
+    .weapon-sheet .ws-label {
+      font-size: 10px;
+      font-weight: bold;
+      color: var(--ws-muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ── Inputs ── */
+    .weapon-sheet input[type="number"] {
+      width: 46px;
+      text-align: center;
+      border: 1px solid var(--ws-border);
+      border-radius: 3px;
+      padding: 2px 3px;
+      font-size: 12px;
+      background: var(--ws-white);
+      color: var(--ws-text);
+    }
+    .weapon-sheet input[type="text"] {
+      border: 1px solid var(--ws-border);
+      border-radius: 3px;
+      padding: 2px 5px;
+      font-size: 11px;
+      background: var(--ws-white);
+      color: var(--ws-text);
+    }
+    .weapon-sheet .ws-name-bar input[type="text"] {
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ws-white);
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .weapon-sheet select {
+      border: 1px solid var(--ws-border);
+      border-radius: 3px;
+      padding: 2px 4px;
+      font-size: 11px;
+      background: var(--ws-white);
+      color: var(--ws-text);
+    }
+    .weapon-sheet input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+    .weapon-sheet input:focus,
+    .weapon-sheet select:focus {
+      border-color: var(--ws-red-mid);
+      outline: none;
+    }
+    .weapon-sheet .ws-input-wide { width: 100% !important; }
+    .weapon-sheet .ws-input-sm  { width: 36px !important; }
+  </style>
+
+  {{!-- Name bar --}}
+  <div class="ws-name-bar">
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}">
+    <input type="text" name="name" value="{{item.name}}" placeholder="Nombre del arma">
+  </div>
+
+  {{!-- Description (collapsible, starts closed) --}}
+  <details class="ws-description-accordion">
+    <summary>Descripción</summary>
+    {{editor system.enrichedDescription target="system.description.value" button=true owner=true editable=true}}
+  </details>
+
+  {{!-- ── Stats ── --}}
+  <div class="ws-section">
+    <div class="ws-section-header">Stats</div>
+    <div class="ws-section-body">
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Calidad</span>
+          <select name="system.quality.value">
+            <option value="-10" {{#if (is 'eq' system.quality.value -10)}}selected{{/if}}>-10</option>
+            <option value="-5"  {{#if (is 'eq' system.quality.value -5)}}selected{{/if}}>-5</option>
+            <option value="0"   {{#if (is 'eq' system.quality.value 0)}}selected{{/if}}>0</option>
+            <option value="5"   {{#if (is 'eq' system.quality.value 5)}}selected{{/if}}>5</option>
+            <option value="10"  {{#if (is 'eq' system.quality.value 10)}}selected{{/if}}>10</option>
+            <option value="15"  {{#if (is 'eq' system.quality.value 15)}}selected{{/if}}>15</option>
+            <option value="20"  {{#if (is 'eq' system.quality.value 20)}}selected{{/if}}>20</option>
+            <option value="25"  {{#if (is 'eq' system.quality.value 25)}}selected{{/if}}>25</option>
+            <option value="30"  {{#if (is 'eq' system.quality.value 30)}}selected{{/if}}>30</option>
+          </select>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Presencia</span>
+          <input type="number" name="system.presence.base.value" value="{{system.presence.base.value}}">
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Integridad</span>
+          <input type="number" name="system.integrity.base.value" value="{{system.integrity.base.value}}">
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Rotura</span>
+          <input type="number" name="system.breaking.base.value" value="{{system.breaking.base.value}}">
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Daño</span>
+          <input type="number" name="system.damage.base.value" value="{{system.damage.base.value}}">
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Ini</span>
+          <input type="number" name="system.initiative.base.value" value="{{system.initiative.base.value}}">
+        </div>
+      </div>
+      <div class="ws-row">
+        <div class="ws-field ws-full">
+          <span class="ws-label">Especial</span>
+          <input type="text" class="ws-input-wide" name="system.special.value" value="{{system.special.value}}" placeholder="—">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- ── Tipo ── --}}
+  <div class="ws-section">
+    <div class="ws-section-header">Tipo</div>
+    <div class="ws-section-body">
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Escudo</span>
+          <input type="checkbox" name="system.isShield.value" {{checked system.isShield.value}}>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Tamaño</span>
+          <select name="system.size.value">
+            {{#each config.iterables.combat.weapon.sizes}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.size.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Proporción</span>
+          <select name="system.sizeProportion.value">
+            {{#each config.iterables.combat.weapon.sizeProportions}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.sizeProportion.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Manejabilidad</span>
+          <select name="system.manageabilityType.value">
+            {{#each config.iterables.combat.weapon.manageabilityTypes}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.manageabilityType.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+      <div class="ws-row">
+        {{#if (or (is 'eq' system.manageabilityType.value 'one_hand') (is 'eq' system.manageabilityType.value 'one_or_two_hands'))}}
+        <div class="ws-field">
+          <span class="ws-label">FUE 1M</span>
+          <input type="number" name="system.strRequired.oneHand.base.value" value="{{system.strRequired.oneHand.base.value}}">
+        </div>
+        {{/if}}
+        {{#if (or (is 'eq' system.manageabilityType.value 'two_hands') (is 'eq' system.manageabilityType.value 'one_or_two_hands'))}}
+        <div class="ws-field">
+          <span class="ws-label">FUE 2M</span>
+          <input type="number" name="system.strRequired.twoHands.base.value" value="{{system.strRequired.twoHands.base.value}}">
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{!-- ── Críticos ── --}}
+  {{#unless (and (is 'eq' system.isRanged.value true) (is 'eq' system.shotType.value 'shot'))}}
+  <div class="ws-section">
+    <div class="ws-section-header">Críticos</div>
+    <div class="ws-section-body">
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Principal</span>
+          <select name="system.critic.primary.value">
+            {{#each config.iterables.combat.weapon.criticTypes}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.critic.primary.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        {{#if (or (is 'eq' system.isRanged.value false) (is 'eq' system.shotType.value 'throw'))}}
+        <div class="ws-field">
+          <span class="ws-label">Secundario</span>
+          <select name="system.critic.secondary.value">
+            {{#each config.iterables.combat.weapon.criticTypesWithNone}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.critic.secondary.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{/unless}}
+
+  {{!-- ── Fijo ── --}}
+  <div class="ws-section">
+    <div class="ws-section-header">Valores fijos</div>
+    <div class="ws-section-body">
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Daño fijo</span>
+          <input type="checkbox" name="system.damage.isFixed.value" {{checked system.damage.isFixed.value}}>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Ataque fijo</span>
+          <input type="checkbox" name="system.attack.isFixed.value" {{checked system.attack.isFixed.value}}>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Parada fija</span>
+          <input type="checkbox" name="system.block.isFixed.value" {{checked system.block.isFixed.value}}>
+        </div>
+        {{#if (or (is 'eq' system.attack.isFixed.value true) (is 'eq' system.block.isFixed.value true))}}
+        <div class="ws-field">
+          <span class="ws-label">ATK base</span>
+          <input type="number" name="system.baseAtk.value" value="{{system.baseAtk.value}}">
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">DEF base</span>
+          <input type="number" name="system.baseDef.value" value="{{system.baseDef.value}}">
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{!-- ── A distancia ── --}}
+  <div class="ws-section">
+    <div class="ws-section-header">A distancia</div>
+    <div class="ws-section-body">
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Es a distancia</span>
+          <input type="checkbox" name="system.isRanged.value" {{checked system.isRanged.value}}>
+        </div>
+        {{#if system.isRanged.value}}
+        <div class="ws-field">
+          <span class="ws-label">Alcance</span>
+          <input type="number" name="system.range.base.value" value="{{system.range.base.value}}">
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Tipo</span>
+          <select name="system.shotType.value">
+            {{#each config.iterables.combat.weapon.shotTypes}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.shotType.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        {{#if (is 'eq' system.shotType.value 'throw')}}
+        <div class="ws-field">
+          <span class="ws-label">Cadencia</span>
+          <input type="text" class="ws-input-sm" name="system.cadence.value" value="{{system.cadence.value}}">
+        </div>
+        {{else}}
+        <div class="ws-field">
+          <span class="ws-label">FUE propia</span>
+          <input type="checkbox" name="system.hasOwnStr.value" {{checked system.hasOwnStr.value}}>
+        </div>
+        {{#if system.hasOwnStr.value}}
+        <div class="ws-field">
+          <span class="ws-label">FUE arma</span>
+          <input type="number" name="system.weaponStrength.base.value" value="{{system.weaponStrength.base.value}}">
+        </div>
+        {{/if}}
+        <div class="ws-field">
+          <span class="ws-label">Recarga</span>
+          <input type="number" name="system.reload.base.value" value="{{system.reload.base.value}}">
+        </div>
+        {{/if}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+</form>

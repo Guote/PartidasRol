@@ -208,17 +208,31 @@ export default class ABFActorSheetV2 extends ActorSheet {
     sheet.selectedWeaponId = sheet.system?.combat?.selectedWeaponId?.value || "";
     sheet.selectedWeapons = sheet.equippedWeapons.filter(w => w.system?.isShown?.value);
 
-    // Build display list with slowest flag for the combat tab
+    // Build display list with effective initiative values and slowest flag for the combat tab
+    const naturalTurno = sheet.system?.characteristics?.secondaries?.initiative?.base?.value ?? 0;
+    const naturalBase = naturalTurno - 20; // base without unarmed bonus
+    const weaponEffective = w => naturalBase + (w.system?.initiative?.final?.value ?? 0);
     const slowestWeapon = sheet.selectedWeapons.length > 0
       ? sheet.selectedWeapons.reduce((min, w) =>
-          (w.system?.initiative?.final?.value ?? 0) < (min.system?.initiative?.final?.value ?? 0) ? w : min
+          weaponEffective(w) < weaponEffective(min) ? w : min
         )
       : null;
+    const slowestEffective = slowestWeapon ? weaponEffective(slowestWeapon) : null;
     sheet.selectedWeaponsDisplay = sheet.selectedWeapons.map(w => ({
       name: w.name,
-      initValue: w.system?.initiative?.final?.value ?? 0,
+      initValue: weaponEffective(w),
       isSlowest: w._id === slowestWeapon?._id,
     }));
+
+    // Add "Natural" entry when no weapons selected OR natural is faster than slowest weapon
+    const showNatural = sheet.selectedWeapons.length === 0 || naturalTurno > slowestEffective;
+    if (showNatural) {
+      sheet.selectedWeaponsDisplay.unshift({
+        name: "Natural",
+        initValue: naturalTurno,
+        isSlowest: sheet.selectedWeapons.length === 0,
+      });
+    }
 
     // Calculate effective max HP (max - sacrificed)
     const hp = sheet.system?.characteristics?.secondaries?.lifePoints;
@@ -469,6 +483,17 @@ export default class ABFActorSheetV2 extends ActorSheet {
         macro.execute();
       } else {
         ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiAccumulation.macro.notFound'));
+      }
+    });
+
+    // Click eye button to open weapon item sheet (inventory tab)
+    html.find('.weapon-open-sheet').click((e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (itemId) {
+        const item = this.actor.items.get(itemId);
+        if (item?.sheet) item.sheet.render(true);
       }
     });
 
@@ -1363,25 +1388,40 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
       const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, dataset.modifierType);
 
-      // For initiative rolls, add turn-selected weapon initiative bonus (slowest weapon)
+      // For initiative rolls, use base-20 as "Turno" and add each usar-para-turno weapon separately
       const weaponInitValues = [];
       const weaponInitLabels = [];
+      let initiativeRollValue = dataset.rollvalue;
+      let initiativeRollLabel = dataset.label;
       if (dataset.modifierType === "initiative") {
+        const naturalTurno = this.actor.system?.characteristics?.secondaries?.initiative?.base?.value ?? 0;
+        initiativeRollValue = naturalTurno - 20;
+        initiativeRollLabel = "Turno";
         const turnWeapons = (this.actor.system?.combat?.weapons || [])
-          .filter(w => w.system?.isShown?.value);
-        if (turnWeapons.length > 0) {
-          const slowest = turnWeapons.reduce((min, w) =>
-            (w.system?.initiative?.final?.value ?? 0) < (min.system?.initiative?.final?.value ?? 0) ? w : min
-          );
-          weaponInitValues.push(slowest.system?.initiative?.final?.value ?? 0);
-          weaponInitLabels.push(slowest.name);
+          .filter(w => w.system?.isShown?.value)
+          .slice(0, 2);
+        if (turnWeapons.length === 1) {
+          weaponInitValues.push(turnWeapons[0].system?.initiative?.final?.value ?? 0);
+          weaponInitLabels.push(turnWeapons[0].name);
+        } else if (turnWeapons.length === 2) {
+          const w1 = turnWeapons[0];
+          const w2 = turnWeapons[1];
+          weaponInitValues.push(w1.system?.initiative?.final?.value ?? 0);
+          weaponInitLabels.push(w1.name);
+          weaponInitValues.push(w2.system?.initiative?.final?.value ?? 0);
+          weaponInitLabels.push(w2.name);
+          if (w1.system?.size?.value === w2.system?.size?.value) {
+            const minBase = Math.min(w1.system?.initiative?.base?.value ?? 0, w2.system?.initiative?.base?.value ?? 0);
+            weaponInitValues.push(minBase < 0 ? -20 : -10);
+            weaponInitLabels.push("Ambidiestro");
+          }
         }
       }
 
       let formula = getFormula({
         dice: dataset.roll,
-        values: [dataset.rollvalue, ...modValues, ...weaponInitValues, mod],
-        labels: [`${dataset.label}`, ...modLabels, ...weaponInitLabels, "Mod"],
+        values: [initiativeRollValue, ...modValues, ...weaponInitValues, mod],
+        labels: [initiativeRollLabel, ...modLabels, ...weaponInitLabels, "Mod"],
       });
       if (formula.includes("10TO100")) {
         let totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);

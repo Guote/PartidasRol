@@ -82,6 +82,7 @@ export const WeaponSizeProportion = {
 export const INITIAL_WEAPON_DATA = {
   equipped: { value: false },
   isShield: { value: false },
+  description: { value: "" },
   special: { value: "" },
   hasOwnStr: { value: false },
   integrity: {

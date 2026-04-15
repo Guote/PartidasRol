@@ -411,11 +411,23 @@ const parseArmors = (text) => {
       }
     }
 
-    // Parse each line as a potential armor entry
-    for (const line of armorLines) {
+    // Parse each line as a potential armor entry.
+    // If the first (TA) line has no AT values (just a name) and the next line
+    // has AT values but no name, merge them so the name is preserved.
+    for (let i = 0; i < armorLines.length; i++) {
+      const line = armorLines[i];
       const armor = parseArmorEntry(line);
       if (armor && armor.name) {
         armors.push(armor);
+      } else if (!armor && i === 0 && armorLines.length > 1) {
+        // TA line was name-only; combine it with the next AT line
+        const combined = line.trim() + " " + (armorLines[i + 1] || "");
+        const mergedArmor = parseArmorEntry(combined);
+        if (mergedArmor) {
+          if (!mergedArmor.name) mergedArmor.name = line.trim();
+          armors.push(mergedArmor);
+          i++; // skip the next line, already consumed
+        }
       }
     }
   }
@@ -543,8 +555,8 @@ const parseDomine = (text) => {
     genericKi: 0,
   };
 
-  // CM: 280
-  const cmMatch = text.match(/CM:?\s*(\d+)/i);
+  // Conocimiento Marcial: 280 (full label only — avoids matching Ki technique costs "CM: 35")
+  const cmMatch = text.match(/Conocimiento\s*Marcial:?\s*(\d+)/i);
   if (cmMatch) {
     domine.martialKnowledge = parseInt(cmMatch[1]) || 0;
   }
@@ -832,6 +844,10 @@ const parseSpecialAbilities = (text) => {
  * Main parser function - parses PDF text into structured data
  */
 export const parsePdfText = (text) => {
+  // Join soft-wrapped lines: if a line ends mid-sentence and the next starts with
+  // a lowercase letter or '(' (continuation of a wrapped value), merge them.
+  text = text.replace(/([^\n])\n([a-záéíóúüñ(+])/g, '$1 $2');
+
   const combat = parseCombat(text);
   const general = parseGeneral(text);
   const specialAbilities = parseSpecialAbilities(text);

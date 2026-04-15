@@ -43,7 +43,7 @@ export default class ABFItemSheet extends ItemSheet {
             case ABFItems.SPELL:
                 return 450;
             case ABFItems.WEAPON:
-                return 300;
+                return 520;
             case ABFItems.ARMOR:
                 return 235;
             case ABFItems.AMMO:
@@ -86,9 +86,22 @@ export default class ABFItemSheet extends ItemSheet {
             sheet.multiPower = powers.length > 1;
         }
 
+        if (sheet.item.type === 'weapon') {
+            sheet.system.enrichedDescription = await TextEditor.enrichHTML(
+                sheet.system.description?.value ?? '',
+                { async: true }
+            );
+        }
+
         return sheet;
     }
     async _updateObject(event, formData) {
+        if (this.item.type === 'weapon') {
+            if ('system.quality.value' in formData) {
+                formData['system.quality.value'] = parseInt(formData['system.quality.value']) || 0;
+            }
+            return super._updateObject(event, formData);
+        }
         if (this.item.type !== 'summon') return super._updateObject(event, formData);
 
         // Reconstruct the powers array from dot-notation form keys
@@ -106,6 +119,18 @@ export default class ABFItemSheet extends ItemSheet {
         formData['system.powers'] = powers;
         return super._updateObject(event, formData);
     }
+    async _render(force, options) {
+        // Capture which power accordions are open before re-render
+        if (this.item.type === 'summon' && this.element?.length) {
+            const states = {};
+            this.element.find('.ss-power-accordion').each(function() {
+                states[parseInt(this.dataset.powerIndex)] = this.open;
+            });
+            if (Object.keys(states).length > 0) this._accordionStates = states;
+        }
+        return super._render(force, options);
+    }
+
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -150,13 +175,23 @@ export default class ABFItemSheet extends ItemSheet {
             updatePowerZeon(pi);
         });
 
-        // Open the correct power accordion when the sheet is opened from the actor tab
-        const initialPower = this._initialPowerIndex ?? 0;
-        if (initialPower > 0) {
-            html.find('.ss-power-accordion').each(function(i) {
-                if (i === initialPower) this.open = true;
-                else if (i === 0) this.open = false;
+        // Restore accordion states saved before re-render (takes priority over template defaults)
+        if (this._accordionStates) {
+            const saved = this._accordionStates;
+            this._accordionStates = null;
+            html.find('.ss-power-accordion').each(function() {
+                const idx = parseInt(this.dataset.powerIndex);
+                if (idx in saved) this.open = saved[idx];
             });
+        } else {
+            // Open the correct power accordion when the sheet is first opened from the actor tab
+            const initialPower = this._initialPowerIndex ?? 0;
+            if (initialPower > 0) {
+                html.find('.ss-power-accordion').each(function(i) {
+                    if (i === initialPower) this.open = true;
+                    else if (i === 0) this.open = false;
+                });
+            }
         }
 
         // Add new power button
