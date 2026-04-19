@@ -6,7 +6,9 @@
       "Bash(xargs grep:*)",
       "Bash(python3 -m json.tool)",
       "Bash(sed 's/\"via\":\"//')",
-      "Bash(xargs cat:*)"
+      "Bash(xargs cat:*)",
+      "Bash(python3:*)",
+      "Bash(find:*)"
     ]
   }
 }

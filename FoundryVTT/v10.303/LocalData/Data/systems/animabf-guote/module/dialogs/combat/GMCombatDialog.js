@@ -191,10 +191,11 @@ export class GMCombatDialog extends FormApplication {
       const damageTotal =
         attacker.result.values.damage +
         this.modalData.attacker.customModifier_Damage;
+      const weaponTAMod = attacker.result.weapon?.system?.taModifier?.final?.value;
       const taTotal = Math.max(
         0,
         defender.result.values.at -
-          calculateATReductionByQuality(attacker.result) +
+          (weaponTAMod !== undefined ? weaponTAMod : calculateATReductionByQuality(attacker.result)) +
           this.modalData.defender.customModifier_TA -
           attacker.result.values.ignoredTA
       );

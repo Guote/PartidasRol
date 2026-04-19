@@ -828,6 +828,7 @@ export class CombatAttackDialog extends FormApplication {
         haFinal: attackValue + ((combat.fatigueUsed ?? 0) * 15) + (combat.modifier ?? 0) + (counterAttackBonus ?? 0) + massBonus + modTermSum,
         damage: Math.floor((isAccumulation ? combat.damage.final * 1.5 : combat.damage.final) / 5) * 5,
         ignoredTA: combat.ignoredTA ?? 0,
+        weaponTAMod: combat.weapon?.system?.taModifier?.final?.value ?? 0,
         criticSelected: (combat.criticSelected && combat.criticSelected !== NoneWeaponCritic.NONE && combat.criticSelected !== "-") ? combat.criticSelected : null,
       };
     }

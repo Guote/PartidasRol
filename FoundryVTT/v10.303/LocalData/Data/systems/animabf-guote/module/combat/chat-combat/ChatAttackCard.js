@@ -24,8 +24,9 @@ export class ChatAttackCard {
         const sessionId = foundry.utils.randomID();
 
         // Calculate TA reduction from weapon quality and ignoredTA
+        const weaponTAMod = options.weapon?.system?.taModifier?.final?.value;
         const taReduction = (attackResult.values.ignoredTA || 0) +
-            calculateATReductionByQuality({ weapon: options.weapon });
+            (weaponTAMod !== undefined ? weaponTAMod : calculateATReductionByQuality({ weapon: options.weapon }));
 
         // Get localized damage type label
         const damageTypeKey = `anima.ui.combat.criticalType.${attackResult.values.critic || 'impact'}`;

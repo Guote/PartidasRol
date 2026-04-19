@@ -13,7 +13,7 @@ export const mutateInitiative = (data) => {
       "characteristics.secondaries.initiative"
     );
     
-    const equippedWeapons = combat.weapons.filter(weapon => weapon.system.isShown.value);
+    const equippedWeapons = combat.weapons.filter(weapon => weapon.system.isShown?.value);
     const firstTwoWeapons = equippedWeapons.filter(weapon => !weapon.system.isShield.value).slice(0, 2);
     const equippedShield = equippedWeapons.find(weapon => weapon.system.isShield.value);
     // We subtract 20 because people are used to put as base unarmed initiative

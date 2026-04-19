@@ -29,7 +29,7 @@ export default class ABFItemSheet extends ItemSheet {
             case ABFItems.ARMOR:
                 return 1000;
             case ABFItems.WEAPON:
-                return 815;
+                return 440;
             case ABFItems.SUMMON:
                 return 500;
             case ABFItems.INCARNATION:
@@ -91,6 +91,11 @@ export default class ABFItemSheet extends ItemSheet {
                 sheet.system.description?.value ?? '',
                 { async: true }
             );
+            sheet.computed = {
+                attackFinal: (sheet.system.attack?.special?.value ?? 0) + (sheet.system.quality?.value ?? 0),
+                blockFinal:  (sheet.system.block?.special?.value  ?? 0) + (sheet.system.quality?.value ?? 0),
+                damageFinal: (sheet.system.damage?.base?.value    ?? 0) + (sheet.system.quality?.value ?? 0) * 2,
+            };
         }
 
         return sheet;
@@ -120,6 +125,11 @@ export default class ABFItemSheet extends ItemSheet {
         return super._updateObject(event, formData);
     }
     async _render(force, options) {
+        // Capture weapon description open state before re-render
+        if (this.item.type === 'weapon' && this.element?.length) {
+            const el = this.element.find('.ws-description-accordion')[0];
+            if (el) this._descriptionOpen = el.open;
+        }
         // Capture which power accordions are open before re-render
         if (this.item.type === 'summon' && this.element?.length) {
             const states = {};
@@ -133,6 +143,14 @@ export default class ABFItemSheet extends ItemSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
+
+        if (this.item.type === 'weapon') {
+            const $desc = html.find('.ws-description-accordion');
+            if (this._descriptionOpen !== undefined) {
+                $desc[0].open = this._descriptionOpen;
+            }
+            $desc.on('toggle', () => { this._descriptionOpen = $desc[0].open; });
+        }
 
         if (this.item.type !== 'summon') return;
 

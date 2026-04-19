@@ -14,7 +14,9 @@
             finalValue=system.combat.attack.final.value
             rollLabel=(localize "anima.ui.combat.baseValues.attack.title")
             modifierType="attack"
-            rollableDiv=true}}
+            rollableDiv=true
+            tmpModName="system.combat.attack.special.value"
+            tmpModValue=system.combat.attack.special.value}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.block.title")
@@ -23,7 +25,9 @@
             finalValue=system.combat.block.final.value
             rollLabel=(localize "anima.ui.combat.baseValues.block.title")
             modifierType="defense"
-            rollableDiv=true}}
+            rollableDiv=true
+            tmpModName="system.combat.block.special.value"
+            tmpModValue=system.combat.block.special.value}}
 
         {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
             label=(localize "anima.ui.combat.baseValues.dodge.title")
@@ -48,7 +52,9 @@
             rollFormula="1d100xaturn"
             rollLabel="Turno Natural"
             modifierType="initiative"
-            rollableDiv=true}}
+            rollableDiv=true
+            tmpModName="system.characteristics.secondaries.initiative.special.value"
+            tmpModValue=system.characteristics.secondaries.initiative.special.value}}
       </div>
     </div>
   </div>

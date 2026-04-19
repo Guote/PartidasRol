@@ -1,10 +1,12 @@
 import { mutateStrRequired } from "./mutations/mutateStrRequired.js";
 import { mutateWeaponStrength } from "./mutations/mutateWeaponStrength.js";
 import { mutateHAHDifFixed } from "./mutations/mutateHAHDifFixed.js";
+import { mutateWeaponTAModifier } from "./mutations/mutateWeaponTAModifier.js";
 const DERIVED_DATA_FUNCTIONS = [
   mutateStrRequired,
   mutateWeaponStrength,
   mutateHAHDifFixed,
+  mutateWeaponTAModifier,
 ];
 export const mutateWeapon = async (item) => {
   const { system: data } = item;

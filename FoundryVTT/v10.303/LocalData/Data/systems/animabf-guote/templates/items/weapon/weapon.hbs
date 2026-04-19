@@ -129,6 +129,35 @@
       white-space: nowrap;
     }
 
+    /* ── Base+Final inline pair ── */
+    .weapon-sheet .ws-pair {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+    .weapon-sheet .ws-pair-label {
+      font-size: 9px;
+      color: var(--ws-muted);
+      text-transform: uppercase;
+    }
+    .weapon-sheet .ws-final {
+      display: inline-block;
+      min-width: 36px;
+      text-align: center;
+      background: var(--ws-bg-alt);
+      border: 1px solid var(--ws-border);
+      border-radius: 3px;
+      padding: 2px 3px;
+      font-size: 12px;
+      color: var(--ws-muted);
+    }
+    .weapon-sheet .ws-sep {
+      font-size: 10px;
+      color: var(--ws-muted);
+      opacity: 0.6;
+    }
+
     /* ── Inputs ── */
     .weapon-sheet input[type="number"] {
       width: 46px;
@@ -185,16 +214,18 @@
     <input type="text" name="name" value="{{item.name}}" placeholder="Nombre del arma">
   </div>
 
-  {{!-- Description (collapsible, starts closed) --}}
-  <details class="ws-description-accordion">
+  {{!-- Description (collapsible, open by default; JS manages state) --}}
+  <details class="ws-description-accordion" open>
     <summary>Descripción</summary>
     {{editor system.enrichedDescription target="system.description.value" button=true owner=true editable=true}}
   </details>
 
-  {{!-- ── Stats ── --}}
+  {{!-- ── Combat ── --}}
   <div class="ws-section">
-    <div class="ws-section-header">Stats</div>
+    <div class="ws-section-header">Combat</div>
     <div class="ws-section-body">
+
+      {{!-- Row 1: Quality / Ini / Presencia --}}
       <div class="ws-row">
         <div class="ws-field">
           <span class="ws-label">Calidad</span>
@@ -211,9 +242,144 @@
           </select>
         </div>
         <div class="ws-field">
+          <span class="ws-label">Ini</span>
+          <input type="number" name="system.initiative.base.value" value="{{system.initiative.base.value}}">
+        </div>
+        <div class="ws-field">
           <span class="ws-label">Presencia</span>
           <input type="number" name="system.presence.base.value" value="{{system.presence.base.value}}">
         </div>
+      </div>
+
+      {{!-- Row 2: HA mod (base editable + final read-only) --}}
+      <div class="ws-row">
+        <div class="ws-pair">
+          <span class="ws-label">HA mod</span>
+          <span class="ws-pair-label">base</span>
+          <input type="number" name="system.attack.special.value" value="{{system.attack.special.value}}">
+          <span class="ws-sep">/</span>
+          <span class="ws-pair-label">final</span>
+          <span class="ws-final">{{computed.attackFinal}}</span>
+        </div>
+      </div>
+
+      {{!-- Row 3: Daño (base editable + final read-only) --}}
+      <div class="ws-row">
+        <div class="ws-pair">
+          <span class="ws-label">Daño</span>
+          <span class="ws-pair-label">base</span>
+          <input type="number" name="system.damage.base.value" value="{{system.damage.base.value}}">
+          <span class="ws-sep">/</span>
+          <span class="ws-pair-label">final</span>
+          <span class="ws-final">{{computed.damageFinal}}</span>
+        </div>
+        <div class="ws-pair">
+          <span class="ws-label">Mod TA</span>
+          <span class="ws-pair-label">base</span>
+          <input type="number" name="system.taModifier.base.value" value="{{system.taModifier.base.value}}">
+          <span class="ws-sep">/</span>
+          <span class="ws-pair-label">final</span>
+          <span class="ws-final">{{system.taModifier.final.value}}</span>
+        </div>
+      </div>
+
+      {{!-- Row 4+5: Críticos --}}
+      {{#unless (and (is 'eq' system.isRanged.value true) (is 'eq' system.shotType.value 'shot'))}}
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Crítico</span>
+          <select name="system.critic.primary.value">
+            {{#each config.iterables.combat.weapon.criticTypes}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.critic.primary.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        {{#if (or (is 'eq' system.isRanged.value false) (is 'eq' system.shotType.value 'throw'))}}
+        <div class="ws-field">
+          <span class="ws-label">Crítico 2</span>
+          <select name="system.critic.secondary.value">
+            {{#each config.iterables.combat.weapon.criticTypesWithNone}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.critic.secondary.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        {{/if}}
+      </div>
+      {{/unless}}
+
+      {{!-- Row 6: HD mod (base editable + final read-only) --}}
+      <div class="ws-row">
+        <div class="ws-pair">
+          <span class="ws-label">HD mod</span>
+          <span class="ws-pair-label">base</span>
+          <input type="number" name="system.block.special.value" value="{{system.block.special.value}}">
+          <span class="ws-sep">/</span>
+          <span class="ws-pair-label">final</span>
+          <span class="ws-final">{{computed.blockFinal}}</span>
+        </div>
+      </div>
+
+      {{!-- Row 7: Special text --}}
+      <div class="ws-row">
+        <div class="ws-field ws-full">
+          <span class="ws-label">Especial</span>
+          <input type="text" class="ws-input-wide" name="system.special.value" value="{{system.special.value}}" placeholder="—">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {{!-- ── Configuración ── --}}
+  <div class="ws-section">
+    <div class="ws-section-header">Configuración</div>
+    <div class="ws-section-body">
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Daño fijo</span>
+          <input type="checkbox" name="system.damage.isFixed.value" {{checked system.damage.isFixed.value}}>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Ataque fijo</span>
+          <input type="checkbox" name="system.attack.isFixed.value" {{checked system.attack.isFixed.value}}>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">Parada fija</span>
+          <input type="checkbox" name="system.block.isFixed.value" {{checked system.block.isFixed.value}}>
+        </div>
+      </div>
+      {{#if (or (is 'eq' system.attack.isFixed.value true) (is 'eq' system.block.isFixed.value true))}}
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">ATK base</span>
+          <input type="number" name="system.baseAtk.value" value="{{system.baseAtk.value}}">
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">DEF base</span>
+          <input type="number" name="system.baseDef.value" value="{{system.baseDef.value}}">
+        </div>
+      </div>
+      {{/if}}
+      <div class="ws-row">
+        <div class="ws-field">
+          <span class="ws-label">Escudo</span>
+          <input type="checkbox" name="system.isShield.value" {{checked system.isShield.value}}>
+        </div>
+        <div class="ws-field">
+          <span class="ws-label">A distancia</span>
+          <input type="checkbox" name="system.isRanged.value" {{checked system.isRanged.value}}>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- ── Otros ── --}}
+  <div class="ws-section">
+    <div class="ws-section-header">Otros</div>
+    <div class="ws-section-body">
+
+      {{!-- Integridad / Rotura --}}
+      <div class="ws-row">
         <div class="ws-field">
           <span class="ws-label">Integridad</span>
           <input type="number" name="system.integrity.base.value" value="{{system.integrity.base.value}}">
@@ -222,32 +388,17 @@
           <span class="ws-label">Rotura</span>
           <input type="number" name="system.breaking.base.value" value="{{system.breaking.base.value}}">
         </div>
-        <div class="ws-field">
-          <span class="ws-label">Daño</span>
-          <input type="number" name="system.damage.base.value" value="{{system.damage.base.value}}">
-        </div>
-        <div class="ws-field">
-          <span class="ws-label">Ini</span>
-          <input type="number" name="system.initiative.base.value" value="{{system.initiative.base.value}}">
-        </div>
       </div>
-      <div class="ws-row">
-        <div class="ws-field ws-full">
-          <span class="ws-label">Especial</span>
-          <input type="text" class="ws-input-wide" name="system.special.value" value="{{system.special.value}}" placeholder="—">
-        </div>
-      </div>
-    </div>
-  </div>
 
-  {{!-- ── Tipo ── --}}
-  <div class="ws-section">
-    <div class="ws-section-header">Tipo</div>
-    <div class="ws-section-body">
+      {{!-- Manejabilidad / Tamaño / Proporción --}}
       <div class="ws-row">
         <div class="ws-field">
-          <span class="ws-label">Escudo</span>
-          <input type="checkbox" name="system.isShield.value" {{checked system.isShield.value}}>
+          <span class="ws-label">Manejabilidad</span>
+          <select name="system.manageabilityType.value">
+            {{#each config.iterables.combat.weapon.manageabilityTypes}}
+            <option value="{{@key}}" {{#if (is 'eq' ../system.manageabilityType.value @key)}}selected{{/if}}>{{localize this}}</option>
+            {{/each}}
+          </select>
         </div>
         <div class="ws-field">
           <span class="ws-label">Tamaño</span>
@@ -265,15 +416,9 @@
             {{/each}}
           </select>
         </div>
-        <div class="ws-field">
-          <span class="ws-label">Manejabilidad</span>
-          <select name="system.manageabilityType.value">
-            {{#each config.iterables.combat.weapon.manageabilityTypes}}
-            <option value="{{@key}}" {{#if (is 'eq' ../system.manageabilityType.value @key)}}selected{{/if}}>{{localize this}}</option>
-            {{/each}}
-          </select>
-        </div>
       </div>
+
+      {{!-- FUE requerida --}}
       <div class="ws-row">
         {{#if (or (is 'eq' system.manageabilityType.value 'one_hand') (is 'eq' system.manageabilityType.value 'one_or_two_hands'))}}
         <div class="ws-field">
@@ -288,79 +433,10 @@
         </div>
         {{/if}}
       </div>
-    </div>
-  </div>
 
-  {{!-- ── Críticos ── --}}
-  {{#unless (and (is 'eq' system.isRanged.value true) (is 'eq' system.shotType.value 'shot'))}}
-  <div class="ws-section">
-    <div class="ws-section-header">Críticos</div>
-    <div class="ws-section-body">
+      {{!-- Ranged stats (only when isRanged) --}}
+      {{#if system.isRanged.value}}
       <div class="ws-row">
-        <div class="ws-field">
-          <span class="ws-label">Principal</span>
-          <select name="system.critic.primary.value">
-            {{#each config.iterables.combat.weapon.criticTypes}}
-            <option value="{{@key}}" {{#if (is 'eq' ../system.critic.primary.value @key)}}selected{{/if}}>{{localize this}}</option>
-            {{/each}}
-          </select>
-        </div>
-        {{#if (or (is 'eq' system.isRanged.value false) (is 'eq' system.shotType.value 'throw'))}}
-        <div class="ws-field">
-          <span class="ws-label">Secundario</span>
-          <select name="system.critic.secondary.value">
-            {{#each config.iterables.combat.weapon.criticTypesWithNone}}
-            <option value="{{@key}}" {{#if (is 'eq' ../system.critic.secondary.value @key)}}selected{{/if}}>{{localize this}}</option>
-            {{/each}}
-          </select>
-        </div>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-  {{/unless}}
-
-  {{!-- ── Fijo ── --}}
-  <div class="ws-section">
-    <div class="ws-section-header">Valores fijos</div>
-    <div class="ws-section-body">
-      <div class="ws-row">
-        <div class="ws-field">
-          <span class="ws-label">Daño fijo</span>
-          <input type="checkbox" name="system.damage.isFixed.value" {{checked system.damage.isFixed.value}}>
-        </div>
-        <div class="ws-field">
-          <span class="ws-label">Ataque fijo</span>
-          <input type="checkbox" name="system.attack.isFixed.value" {{checked system.attack.isFixed.value}}>
-        </div>
-        <div class="ws-field">
-          <span class="ws-label">Parada fija</span>
-          <input type="checkbox" name="system.block.isFixed.value" {{checked system.block.isFixed.value}}>
-        </div>
-        {{#if (or (is 'eq' system.attack.isFixed.value true) (is 'eq' system.block.isFixed.value true))}}
-        <div class="ws-field">
-          <span class="ws-label">ATK base</span>
-          <input type="number" name="system.baseAtk.value" value="{{system.baseAtk.value}}">
-        </div>
-        <div class="ws-field">
-          <span class="ws-label">DEF base</span>
-          <input type="number" name="system.baseDef.value" value="{{system.baseDef.value}}">
-        </div>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-
-  {{!-- ── A distancia ── --}}
-  <div class="ws-section">
-    <div class="ws-section-header">A distancia</div>
-    <div class="ws-section-body">
-      <div class="ws-row">
-        <div class="ws-field">
-          <span class="ws-label">Es a distancia</span>
-          <input type="checkbox" name="system.isRanged.value" {{checked system.isRanged.value}}>
-        </div>
-        {{#if system.isRanged.value}}
         <div class="ws-field">
           <span class="ws-label">Alcance</span>
           <input type="number" name="system.range.base.value" value="{{system.range.base.value}}">
@@ -394,8 +470,9 @@
           <input type="number" name="system.reload.base.value" value="{{system.reload.base.value}}">
         </div>
         {{/if}}
-        {{/if}}
       </div>
+      {{/if}}
+
     </div>
   </div>
 

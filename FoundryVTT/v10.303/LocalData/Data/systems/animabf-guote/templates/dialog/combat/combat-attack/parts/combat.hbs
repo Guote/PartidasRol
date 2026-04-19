@@ -138,6 +138,12 @@
     <span class="summary-label">Red. TA</span>
     <span class="summary-value">{{this.attacker.combat.summary.ignoredTA}}</span>
   </span>
+  {{#if this.attacker.combat.summary.weaponTAMod}}
+  <span class="summary-item">
+    <span class="summary-label">Mod TA arma</span>
+    <span class="summary-value">{{this.attacker.combat.summary.weaponTAMod}}</span>
+  </span>
+  {{/if}}
   {{#if this.attacker.combat.summary.criticSelected}}
   <span class="summary-item">
     <span class="summary-label">Tipo</span>

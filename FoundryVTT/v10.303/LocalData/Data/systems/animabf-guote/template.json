@@ -155,7 +155,7 @@
         },
         "secondaries": {
           "lifePoints": { "value": 100, "max": 100, "lpMultiplier": 1 },
-          "initiative": { "base": { "value": 0 }, "final": { "value": 0 } },
+          "initiative": { "base": { "value": 0 }, "final": { "value": 0 }, "special": { "value": 0 } },
           "fatigue": { "value": 5, "max": 5 },
           "regenerationType": {
             "mod": { "value": 0 },
@@ -271,8 +271,8 @@
         "secondarySpecialSkills": []
       },
       "combat": {
-        "attack": { "base": { "value": 0 }, "final": { "value": 0 } },
-        "block": { "base": { "value": 0 }, "final": { "value": 0 } },
+        "attack": { "base": { "value": 0 }, "final": { "value": 0 }, "special": { "value": 0 } },
+        "block": { "base": { "value": 0 }, "final": { "value": 0 }, "special": { "value": 0 } },
         "dodge": { "base": { "value": 0 }, "final": { "value": 0 } },
         "wearArmor": { "value": 0 },
         "totalArmor": {
@@ -641,6 +641,7 @@
         "twoHands": { "base": { "value": 0 }, "final": { "value": 0 } }
       },
       "quality": { "value": 0 },
+      "taModifier": { "base": { "value": 0 }, "final": { "value": 0 } },
       "oneOrTwoHanded": { "value": "one-handed" },
       "knowledgeType": { "value": "known" },
       "manageabilityType": { "value": "one_hand" },
