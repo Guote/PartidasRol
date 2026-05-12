@@ -319,3 +319,62 @@ When header shows the same field as a tab partial, Foundry submits arrays. Fix:
 - `_updateObject(event, formData)` — strips `_header.` prefix → `unflat()` → `splitAsActorAndItemChanges()` → save
 - `_onDropItem()` — drag-and-drop handling
 - `buildCommonContextualMenu(itemConfig)` — right-click menu for any item table
+
+---
+
+## Column Sorting Pattern for V2 Tables
+
+Implemented on: Inventory (weapons/armors/ammo/items), Summoning (summons/incarnations), Psychic (powers).
+
+**1. Sort state on the sheet instance** (constructor):
+```js
+this._inventorySort = {
+  mySection: { field: null, dir: 'asc' },
+};
+```
+State is in-memory — resets on sheet close. No DB writes.
+
+**2. Sort array + build header state in `getData()`**, just before `return sheet;`:
+```js
+const _sortArr = (arr, { field, dir }) => {
+  if (!field || !arr?.length) return arr;
+  return [...arr].sort((a, b) => {
+    const av = _sortVal(a, field), bv = _sortVal(b, field);
+    const cmp = typeof av === 'string' ? av.localeCompare(bv) : (av ?? 0) - (bv ?? 0);
+    return dir === 'asc' ? cmp : -cmp;
+  });
+};
+sheet.system.my.items = _sortArr(sheet.system.my.items, this._inventorySort.mySection);
+
+const _sortHeaders = (section, fields) => {
+  const s = this._inventorySort[section];
+  return Object.fromEntries(fields.map(f => [f, { active: s.field === f, dir: s.field === f ? s.dir : 'asc' }]));
+};
+sheet.inventorySortHeaders = {
+  mySection: _sortHeaders('mySection', ['name', 'fieldA', 'fieldB']),
+};
+```
+For pre-computed arrays (e.g. `summonRows`), write a custom field accessor — the structure differs from raw items.
+
+**3. One generic click handler in `activateListeners()`** — covers all tables:
+```js
+html.find('.inventory-sort-th').click((e) => {
+  const { sortTable, sortField } = e.currentTarget.dataset;
+  const s = this._inventorySort[sortTable];
+  s.field === sortField ? (s.dir = s.dir === 'asc' ? 'desc' : 'asc') : (s.field = sortField, s.dir = 'asc');
+  this.render(false);
+});
+```
+
+**4. Template `<th>` pattern**:
+```handlebars
+<th class="inventory-sort-th v2-sort-th" data-sort-table="mySection" data-sort-field="fieldA">
+  Label
+  {{#if inventorySortHeaders.mySection.fieldA.active}}
+    <i class="fas fa-sort-{{inventorySortHeaders.mySection.fieldA.dir}} v2-sort-icon--active"></i>
+  {{else}}
+    <i class="fas fa-sort v2-sort-icon--inactive"></i>
+  {{/if}}
+</th>
+```
+CSS classes `.v2-sort-th`, `.v2-sort-icon--active`, `.v2-sort-icon--inactive` are defined in `styles/actor-sheet-v2.css`.

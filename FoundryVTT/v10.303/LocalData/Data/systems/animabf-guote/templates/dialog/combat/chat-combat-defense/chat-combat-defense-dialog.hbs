@@ -15,13 +15,15 @@
         <span class="chat-combat-defender-name-dialog">{{this.defender.token.name}}</span>
       </div>
 
-      {{!-- Attacker info --}}
+      {{!-- Attacker info (hidden in standalone mode) --}}
+      {{#unless this.standalone}}
       <div class="chat-combat-attacker-summary">
         <img src="{{this.attacker.img}}" class="chat-combat-portrait-mini" alt="{{this.attacker.name}}" />
         <span class="chat-combat-vs-label">{{localize 'anima.chat.combat.defense.vsLabel'}}</span>
         <span class="chat-combat-attacker-name">{{this.attacker.name}}</span>
         <span class="chat-combat-attack-value">({{this.attacker.attackTotal}})</span>
       </div>
+      {{/unless}}
 
       {{#unless this.defenseSent}}
       <div class="preset-manager">

@@ -47,6 +47,35 @@ Do **not** edit files in any module directory other than `guote-module/`.
 
 ---
 
+## Hard Rules (Claude Code Behavior)
+
+These rules apply in every session, every task, unconditionally.
+
+### No git commands
+Never run any git command — no `git status`, `git diff`, `git commit`, `git push`, `git log`, or any other git operation. The user controls all git operations. If you want to describe what changed, write it in chat. If you want to suggest a commit message, write it in chat — do not run `git commit`.
+
+### Python is not available on this machine
+`python3` and `python` are not installed. Use **Node.js** for any scripting, data parsing, or automation tasks.
+
+Node inline script pattern (avoids shell escaping issues):
+```bash
+node --input-type=module << 'EOF'
+import { readFileSync } from 'fs';
+// your code here
+EOF
+```
+
+### Never edit macros.db
+Macro source lives under `systems/animabf-guote/module/macros/functions/`. The `worlds/.../data/macros.db` is a NeDB runtime database — editing it directly is fragile and gets overwritten by the runtime. Always edit the `.js` source files.
+
+### CSS: Foundry overrides `button { width: 100% }` globally
+Any inline or icon button MUST use `width: auto !important; display: inline-flex` to override this. Forgetting this causes buttons to stretch full-width. See `systems/animabf-guote/.agents/styles.md` for the full pattern.
+
+### Memory dual-write protocol
+When saving anything to the local auto-memory files (`~/.claude/projects/.../memory/`), **also** write the same rule or finding to the relevant `CLAUDE.md` in the repo (this file, or the system/module/world CLAUDE.md as appropriate). Local memory files are machine-only — CLAUDE.md travels with the repo and is visible to all collaborators.
+
+---
+
 ## Key File Paths (Quick Reference)
 
 | File | Purpose |

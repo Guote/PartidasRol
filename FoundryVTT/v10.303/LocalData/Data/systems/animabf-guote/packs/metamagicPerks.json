@@ -1,0 +1,797 @@
+[
+  {
+    "name": "Escudos Potenciados",
+    "branch": "Bellum Domini Archanum",
+    "description": "Los escudos incrementan su resistencia, aumentando considerablemente la cantidad de puntos de daño que soportan sin que el hechicero haya de invertir una mayor cantidad de puntos de Zeon. Dependiendo del número de esferas que el brujo domine, el aguante puede doblar o triplicar su valor originario.",
+    "visual_effect": "No suele haber cambios a nivel visual en los escudos, salvo que estos parecen más resistentes y recios.",
+    "levels": [
+      {
+        "name": "Nivel Básico (Una esfera)",
+        "description": "El aguante de los escudos se dobla.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "El aguante de los escudos se triplica.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Precisión Mística",
+    "branch": "Bellum Domini Archanum",
+    "description": "Este principio representa que el hechicero puede hacer cálculos matemáticos avanzados para guiar sus sortilegios ofensivos con una precisión milimétrica.",
+    "visual_effect": "En algunas ocasiones, al usar este poder aparece una marca determinada en el punto exacto donde el ataque va a ser proyectado.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "Los conjuros de ataque del brujo obtienen la regla de Preciso. No tiene efecto sobre conjuros de ataque en área.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "Como el anterior, pero los conjuros en área también obtienen la regla de Preciso, pudiendo designar blancos específicos diferentes en cada objetivo.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Incremento Destructivo",
+    "branch": "Bellum Domini Archanum",
+    "description": "El daño base que producen los sortilegios de ataque de un personaje se incrementa en una cantidad determinada por el número de ventajas dominadas.",
+    "visual_effect": "Ninguno, salvo que el conjuro aparenta ser más poderoso de lo que es en realidad.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "El daño base de los conjuros del personaje se incrementa en +10 en grado base, +20 en grado intermedio, +30 en grado avanzado y +40 en sortilegios de grado arcano. Límite: este poder no modifica el daño de los sortilegios que permiten realizar varios ataques, como Esfera de Destrucción o Espina de la Tierra. En estos casos, únicamente uno de los ataques, elegido por el lanzador, obtendría el bono.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "Como el anterior, salvo que el daño se incrementa en +20 en grado base, +40 en grado intermedio, +60 en grado avanzado y +80 en sortilegios de grado arcano. Límite: este poder no modifica el daño de los sortilegios que permiten realizar varios ataques, como Esfera de Destrucción o Espina de la Tierra. En estos casos, únicamente uno de los ataques, elegido por el lanzador, obtendría el bono.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Área Potenciada",
+    "branch": "Bellum Domini Archanum",
+    "description": "Al lanzar un conjuro que tiene un área determinada, ya sea de Efecto, Anímico o un Ataque en área, el personaje que lo usa incrementa la distancia que cubre el sortilegio dependiendo de cuántas esferas domine. No aumenta en ningún caso el alcance máximo de sus sortilegios, que sigue estando fijado por su Proyección Mágica, sino únicamente las áreas de los mismos.",
+    "visual_effect": "Ninguno es especial, salvo los que tuvieran las áreas de los conjuros lanzados.",
+    "levels": [
+      {
+        "name": "Nivel Básico (Una esfera)",
+        "description": "El área de efecto de los conjuros se incrementa un 50%.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "El área de efecto se dobla.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Eliminar Protección",
+    "branch": "Bellum Domini Archanum",
+    "description": "A la hora de lanzar un conjuro de Ataque o Anímico, el brujo puede invertir Zeon extra para disminuir el Tipo de Armadura del defensor en una cantidad equivalente a 1 punto de TA cada 10 puntos de Zeon.",
+    "visual_effect": "De un modo muy parecido a lo que ocurre en la Erudición Ofensiva, este efecto va creando runas de potenciación. Por lo general se dibujan en mitad del aire alrededor del lugar que el personaje utiliza para lanzar el conjuro, como su mano, boca o pecho, en lugar de directamente sobre su cuerpo. Cada 10 puntos que gaste con este fin forma una runa.",
+    "levels": [
+      {
+        "name": "Nivel Básico (Una esfera)",
+        "description": "El personaje puede gastar hasta 20 puntos de Zeon adicionales para reducir el Tipo de Armadura de su objetivo.",
+        "zeon_to_accumulate": 20,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Avanzado (Dos esferas)",
+        "description": "Igual que el anterior, salvo porque el límite máximo de Zeon que se puede invertir se incrementa hasta +40.",
+        "zeon_to_accumulate": 40,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Tres esferas)",
+        "description": "Como los anteriores, salvo porque el límite máximo de Zeon es de +60.",
+        "zeon_to_accumulate": 60,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Erudición Defensiva",
+    "branch": "Bellum Domini Archanum",
+    "description": "A la hora de lanzar un Escudo, el brujo puede invertir Zeon extra para obtener un bono equivalente a dicho gasto a su Proyección Mágica defensiva. Este bono se conserva durante todo el tiempo en el que dicho conjuro está activo, por lo que mientras el escudo se mantenga, todas las defensas que el personaje ejecute con él obtendrán su beneficio. El límite de Zeon que alguien puede emplear para incrementar su Proyección Mágica está determinado por el número de esferas de Erudición Defensiva que posea.",
+    "visual_effect": "Este efecto suele dibujar runas en el cuerpo del hechicero, por lo general en uno de sus brazos o en ambas manos, las cuales se iluminan según va acumulando Zeon. Cada 5 puntos que gaste con este fin dibuja una marca en su cuerpo.",
+    "levels": [
+      {
+        "name": "Nivel Básico (Una esfera)",
+        "description": "El personaje puede gastar hasta 20 puntos de Zeon adicionales para incrementar su Proyección Mágica hasta +20. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Defensiva.",
+        "zeon_to_accumulate": 20,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Avanzado (Dos esferas)",
+        "description": "Igual que el anterior, salvo porque el límite máximo de Zeon que se puede invertir se incrementa hasta 40. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Defensiva.",
+        "zeon_to_accumulate": 40,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Tres esferas)",
+        "description": "Como los anteriores, salvo porque el límite máximo de Zeon es de 60. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Defensiva.",
+        "zeon_to_accumulate": 60,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Erudición Ofensiva",
+    "branch": "Bellum Domini Archanum",
+    "description": "A la hora de lanzar un conjuro de Ataque o Anímico, el brujo puede invertir Zeon extra para obtener un bono igual a dicho gasto a su Proyección Mágica ofensiva. El límite de Zeon que alguien puede emplear para incrementar su Proyección Mágica está determinado por el número de esferas de Erudición Ofensiva que posea.",
+    "visual_effect": "Este efecto suele dibujar runas en el cuerpo del hechicero, por lo general en uno de sus brazos o en ambas manos, las cuales se iluminan según va acumulando Zeon. Cada 5 puntos que gaste con este fin dibuja una marca en su cuerpo.",
+    "levels": [
+      {
+        "name": "Nivel Básico (Una esfera)",
+        "description": "El personaje puede gastar hasta 20 puntos de Zeon adicionales para incrementar su Proyección Mágica hasta +20. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Ofensiva.",
+        "zeon_to_accumulate": 20,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Avanzado (Dos esferas)",
+        "description": "Igual que el anterior, salvo porque el límite máximo de Zeon que se puede invertir se incrementa hasta +40. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Ofensiva.",
+        "zeon_to_accumulate": 40,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Tres esferas)",
+        "description": "Como los anteriores, salvo porque el límite máximo de Zeon es de +60. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Ofensiva.",
+        "zeon_to_accumulate": 60,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Metamagister: Doble Daño",
+    "branch": "Bellum Domini Archanum",
+    "description": "Al dominar este principio, el brujo tiene semejante dominio sobre la magia que es capaz de convertir su energía mágica directamente en poder destructivo; incluso a nivel básico, uno sólo de sus conjuros es una fuerza destructiva incomparable.",
+    "visual_effect": "Todos los conjuros ofensivos del personaje alteran su aspecto original, adoptando una apariencia mucho más viva y poderosa.",
+    "levels": [
+      {
+        "name": "Nivel Básico",
+        "description": "El daño base de todos los conjuros ofensivos se dobla. Límite: los bonos adicionales que el personaje pudiera recibir al daño base de sus sortilegios, ya sea por otras ventajas Metamágicas, objetos o conjuros de potenciación, no se ven afectados por esta habilidad.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+
+  {
+    "name": "Magia Combinada",
+    "branch": "Potestas Archanum",
+    "description": "Los personajes que poseen este principio pueden combinar sus energías mágicas para ejecutar un sortilegio con otros brujos. Los brujos suman el Zeon que cada uno ha acumulado para calcular el valor zeónico final del conjuro, y emplean la Proyección Mágica más elevada de cuantos lo lanzan. Para calcular el grado máximo que puede alcanzar el sortilegio, se utiliza el valor de Inteligencia más elevado del grupo, más una cantidad determinada por el número de personas que lancen el conjuro. El hechicero que tiene el Atributo de Poder más elevado es quien tiene el control final del conjuro, salvo que prefiera dejar que otro lo haga. En caso de ser un conjuro Activo, para determinar el momento de su lanzamiento se emplea siempre el turno más lento de sus lanzadores. Todos los componentes deben estar cerca entre sí, conocer el conjuro y acumular al menos la mitad del coste del sortilegio en grado base. Límite: no puede existir entre los brujos una diferencia en su Proyección Mágica superior a 100 puntos. De haberla, el hechicero con mayor habilidad debe rebajarla hasta que sólo haya 100 puntos de diferencia entre la suya y la del que posee la menor.",
+    "visual_effect": "Los hechiceros realizan ensalmos de manera independiente, pero en el momento de la ejecución del conjuro todos desencadenan diferentes fragmentos del conjuro que se unen para completar el sortilegio final.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite combinar las energías mágicas de dos o más brujos para lanzar un mismo conjuro entre todos.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Efectos Persistentes",
+    "branch": "Potestas Archanum",
+    "description": "Este principio permite al brujo reforzar el tiempo que un conjuro permanece anclado a la esencia de sus objetivos. Cualquier conjuro Anímico que permita a los afectados volver a repetir el control de RM cada 5 asaltos para librarse de sus consecuencias pasa a ser cada 10 asaltos.",
+    "visual_effect": "En aquellos conjuros anímicos que tienen efectos visuales para quienes pueden ver magia, los hechizos del brujo hacen surgir cadenas o lazos místicos alrededor de los cuerpos de los afectados.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Los conjuros Anímicos que permiten repetir el control de RM cada 5 asaltos para librarse de sus consecuencias pasan a permitirlo cada 10 asaltos.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Proyección Mágica Determinada",
+    "branch": "Potestas Archanum",
+    "description": "El personaje puede optar por gastar cierta cantidad de Zeon para hacer que sus conjuros, ya sean de ataque o defensa, en lugar de emplear su propia Proyección Mágica usen una Habilidad Final determinada. El brujo no lanza los dados ni suma el resultado a su Proyección, sino que emplea un valor prefijado que depende del número de esferas que posea y de la cantidad de Zeon que gaste. Un personaje que posea varias esferas puede decidir emplear una Proyección menor para consumir menos puntos de Zeon. El valor zeónico que se consume al utilizar este principio se descuenta directamente de la reserva del personaje, sin necesidad de acumular previamente dicha cantidad. Límite: la habilidad final determinada de este principio no admite modificadores especiales, y siempre emplea como resultado final el valor prefijado. Por ejemplo, no recibe el bono de una Bendición ni los de una Erudición Ofensiva.",
+    "visual_effect": "Cada nivel de dificultad tiene un efecto visual determinado, que suele representarse formando alas sobrenaturales en la espalda o en las manos del lanzador. Cuanto más elevada es la habilidad alcanzada, más alas se forman.",
+    "levels": [
+      {
+        "name": "Nivel Difícil (Una esfera)",
+        "description": "Al lanzar un conjuro, el personaje puede optar por consumir 10 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 120.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 10,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Muy Difícil (Dos esferas)",
+        "description": "El personaje puede consumir 20 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 140.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 20,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Absurdo (Tres esferas)",
+        "description": "El personaje puede consumir 40 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 180.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 40,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Casi Imposible (Cuatro esferas)",
+        "description": "El personaje puede optar por consumir 60 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 240.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 60,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Imposible (Cinco esferas)",
+        "description": "El personaje puede optar por consumir 80 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 280.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 80,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Inhumano (Seis esferas)",
+        "description": "El personaje puede optar por consumir 100 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 320.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 100,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Zen (Siete esferas)",
+        "description": "El personaje puede optar por consumir 200 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 440.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 200,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Explotación de la Energía Física",
+    "branch": "Potestas Archanum",
+    "description": "Cuando el personaje gasta un punto de Cansancio con el objetivo de incrementar su ACT, obtiene un bono especial a su acumulación superior al +15 habitual. El valor exacto de dicho modificador depende del número de esferas dominadas.",
+    "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de este principio.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "El brujo obtiene un +25 al ACT por punto de Cansancio invertido.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "El brujo obtiene un +40 al ACT por punto de Cansancio invertido.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Regeneración Zeónica Avanzada",
+    "branch": "Potestas Archanum",
+    "description": "El mago incrementa su Regeneración zeónica base en la cantidad indicada por el número de esferas que posea. Este bono se suma antes de aplicar cualquier otro modificador adicional, como la ventaja Regeneración superior de magia.",
+    "visual_effect": "Generalmente no hay ningún efecto visual en el uso de este principio.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "El personaje incrementa su Regeneración zeónica base 10 puntos.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Intermedio (Dos esferas)",
+        "description": "El personaje incrementa su Regeneración zeónica base 20 puntos.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Tres esferas)",
+        "description": "El personaje incrementa su Regeneración zeónica base 30 puntos.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Elevación",
+    "branch": "Potestas Archanum",
+    "description": "Mientras esté activando este principio, el personaje permanece en un trance similar a un sueño, durante el cual aplica los mismos penalizadores perceptivos que si estuviera dormido (-200 a Advertir). Como beneficio, el tiempo que está en trance cuenta como el doble a la hora de contabilizar cuánto Zeon recupera. Salir de este estado de un modo abrupto tiene serias consecuencias: pierde la mitad de sus puntos de cansancio actuales o, en caso de ser una criatura incansable, aplica un penalizador a toda acción de -60 que se recupera a un ritmo de 5 por asalto. Tras salir de un estado de elevación espiritual, voluntaria o abruptamente, el personaje debe esperar al menos un día antes de poder volver a entrar en él.",
+    "visual_effect": "Cada individuo usa este principio de diferentes maneras, pero por lo general representa quedarse completamente inmóvil en una pose determinada. Aquellos que sean capaces de ver o sentir magia pueden notar cómo su cuerpo atrae y absorbe la energía sobrenatural que hay en el ambiente.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "El personaje entra en un trance durante el cual el tiempo cuenta como el doble a efectos de regeneración zeónica.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Avatar",
+    "branch": "Potestas Archanum",
+    "description": "El personaje se convierte en una criatura intangible que aplica las reglas de acumulación de Daño, sustituyendo sus PV actuales por sus puntos de Zeon. Al recibir daños pierde puntos de Zeon en lugar de PV. Mientras esté en este estado, también obtiene un bono de +50 a su ACT y un +20 a todas sus Resistencias (RF, RM, RP, RV, RE). Al activar Avatar, el personaje gasta la mitad de los puntos de Zeon que le quedan en su reserva. Límite: un personaje sólo puede permanecer en Avatar un número de asaltos equivalente a su atributo de Poder. Después, sale de dicho estado y, para volver a entrar, debe volver a gastar la mitad de sus puntos de Zeon actuales.",
+    "visual_effect": "El cuerpo del archimago estalla, exteriorizando una forma monstruosa hecha de pura magia. Tanto la apariencia como el color predominante dependen de la naturaleza y el alma del personaje, y puede ser cualquier cosa imaginable, desde un ser demoníaco hasta uno angelical.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "El personaje se transforma en una criatura intangible de pura magia, usa sus puntos de Zeon en lugar de sus PV, obtiene +50 a su ACT y +20 a todas sus Resistencias. Al activarlo gasta la mitad de su reserva actual de Zeon.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Metamagister: Zeon Ilimitado",
+    "branch": "Potestas Archanum",
+    "description": "Cuando lanza un conjuro, el brujo gasta únicamente la mitad del Zeon total que cuesta dicho sortilegio. Eso no significa que el personaje tenga que acumular la mitad de Zeon para ejecutar los conjuros: sigue necesitando acumular su valor zeónico pleno, pero en el momento de su ejecución sólo gasta la mitad. Si acumulara 200 puntos de Zeon para lanzar un sortilegio, a la hora de lanzar dicho conjuro sólo costaría 100 puntos para él, recuperando automáticamente los otros 100 puntos en su reserva.",
+    "visual_effect": "No hay ningún efecto visual.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "El brujo sigue acumulando el coste total del conjuro, pero al lanzarlo sólo gasta la mitad del Zeon total.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+
+  {
+    "name": "Seguridad Defensiva",
+    "branch": "Esoteros Archanum",
+    "description": "Aunque el brujo obtenga un resultado de Pifia en el momento en el que lanza un escudo mágico, el conjuro sigue siendo activado, independientemente del nivel de Pifia obtenido. En estos casos, simplemente se resta el valor de la Pifia a la habilidad defensiva del personaje, igual que si la hubiera obtenido en una defensa convencional.",
+    "visual_effect": "En el momento en el que el hechicero lanza el conjuro, el escudo se rodea de sellos mágicos enlazados entre sí.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Los escudos mágicos se activan incluso si el brujo obtiene una Pifia al lanzarlos. El valor de la Pifia se resta a la habilidad defensiva del personaje.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Magia Vital",
+    "branch": "Esoteros Archanum",
+    "description": "Los conjuros que permiten al hechicero curar Puntos de Vida ven incrementado el poder de sus Efectos Añadidos en la cantidad indicada por el número de esferas dominadas.",
+    "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de este principio.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "La curación se incrementa en +20 PV en grado base, +40 PV en grado intermedio, +60 PV en grado avanzado y +80 PV en sortilegios de grado arcano. Límite: este principio no tiene efecto sobre aquellos sortilegios que curen cantidades porcentuales de Puntos de Vida.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "La curación se incrementa en +40 PV en grado base, +80 PV en grado intermedio, +120 PV en grado avanzado y +160 PV en sortilegios de grado arcano. Límite: este principio no tiene efecto sobre aquellos sortilegios que curen cantidades porcentuales de Puntos de Vida.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Sentir la Magia",
+    "branch": "Esoteros Archanum",
+    "description": "El brujo incrementa automáticamente un grado cualquier control de Valoración Mágica para detectar personas con el Don o para tratar de detectar conjuros que sean lanzados cerca de ella. Del mismo modo, de tener éxito en el control, puede sentir además quién es el blanco del conjuro y qué finalidad tiene dicho sortilegio.",
+    "visual_effect": "Al usar este principio los ojos del personaje pueden llegar a cambiar levemente.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Incrementa automáticamente un grado los controles de Valoración Mágica para detectar personas con el Don o conjuros lanzados cerca. Si tiene éxito, también permite sentir quién es el blanco del conjuro y qué finalidad tiene.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Magia Oculta",
+    "branch": "Esoteros Archanum",
+    "description": "Este principio tiene dos efectos. Para empezar, el brujo disminuye a la mitad los penalizadores que sufre su Valoración Mágica para ocultar sortilegios cuando acumula Zeon. Es decir, si tuviera acumulados 100 puntos de Zeon, sólo aplicaría un -50 en lugar de -100. En segundo lugar, hace que cualquiera que trate de detectar si posee o no habilidades sobrenaturales aplique un penalizador de -120 a su Valoración Mágica.",
+    "visual_effect": "Por la naturaleza intrínseca de este principio no suele haber ningún efecto visual.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Reduce a la mitad los penalizadores de Valoración Mágica para ocultar sortilegios al acumular Zeon. Además, quienes traten de detectar si el brujo posee habilidades sobrenaturales aplican un penalizador de -120 a su Valoración Mágica.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Bucle Existencial",
+    "branch": "Esoteros Archanum",
+    "description": "Este principio permite al personaje consumir grandes cantidades de magia para encerrarse en un bucle que lo aísla unos instantes de la realidad y del fluir del tiempo. Durante ese breve lapso el tiempo sólo pasa para él y es el único capaz de actuar. Puede preparar conjuros, acumular magia o realizar cualquier acción, pero no puede moverse más de un metro de su posición actual, tocar su entorno ni afectar a otros individuos externos al lanzador. Si lo hace, sale inmediatamente del bucle perdiendo todas las ventajas obtenidas, el Zeon acumulado y los conjuros preparados. La activación del bucle es una acción activa. Al salir, el tiempo de todo cuanto le rodea se reactiva, regresando al mismo instante exacto en que entró. Después de usar un Bucle, el personaje debe esperar al menos tantos asaltos como estuvo en su interior antes de poder volver a emplearlo. Cada asalto dentro del Bucle Existencial consume 100 puntos de Zeon, que se restan automáticamente de su reserva sin necesidad de acumularlos.",
+    "visual_effect": "Al activar este principio, las personas que se encuentran alrededor del personaje perciben que el mundo entero se detiene y se oscurece, como si el tiempo mismo acabase de congelarse. Sólo el brujo sigue moviéndose, preparando los ensalmos del conjuro que se dispone a lanzar.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "El Bucle Existencial puede mantenerse hasta dos asaltos. Cada asalto consume 100 puntos de Zeon directamente de la reserva. Límite: este poder no tiene efectos sobre entidades cuyo Gnosis sea 40 o mayor, a menos que quien usa el bucle tenga a su vez un Gnosis superior.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 100,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "El Bucle Existencial puede mantenerse hasta cinco asaltos. Cada asalto consume 100 puntos de Zeon directamente de la reserva. Límite: este poder no tiene efectos sobre entidades cuyo Gnosis sea 40 o mayor, a menos que quien usa el bucle tenga a su vez un Gnosis superior.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 100,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Control del Espacio",
+    "branch": "Esoteros Archanum",
+    "description": "Esta habilidad permite al mago elegir qué blancos recibirán el ataque dentro del área de efecto de sus sortilegios ofensivos, incluso en aquellos conjuros que explícitamente indican lo contrario, como una Bola de Fuego o una Cúpula de Destrucción. No es posible evitar que reciban el ataque los objetivos de los que no se tiene constancia, como aquellos que estén ocultos para el personaje. Hacer uso de esta habilidad tiene un coste añadido de 10 puntos de Zeon al valor del conjuro lanzado.",
+    "visual_effect": "No hay una forma determinada de representar este principio, pues varía dependiendo del conjuro y de la voluntad del lanzador. Es posible que un inmenso meteoro se convierta en una selecta lluvia de rocas espaciales o una bola de fuego se torne en decenas de columnas ígneas que sólo abrasan aquello que elija el brujo.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite elegir qué blancos reciben el ataque dentro del área de efecto de los sortilegios ofensivos, incluso si el conjuro normalmente no lo permite. No puede excluir objetivos de los que el personaje no tenga constancia. Añade 10 puntos de Zeon al valor del conjuro lanzado.",
+        "zeon_to_accumulate": 10,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Control de la Energía",
+    "branch": "Esoteros Archanum",
+    "description": "El hechicero puede invertir 10 puntos de Zeon en el lanzamiento de cualquiera de sus conjuros de Ataque para hacer que dicho sortilegio sea capaz de dañar energía. Así pues, incluso conjuros como Cuchilla de Aire o Espina de la Tierra tendrían suficiente presencia mística para afectar a seres inmateriales o inmunes a ataques no basados en energía. Del mismo modo, puede gastar 10 puntos de Zeon durante el lanzamiento de cualquier conjuro de defensa para hacer que su escudo mágico pueda detener energía, incluso cuando dicho conjuro no lo permite.",
+    "visual_effect": "Las descargas o escudos suelen cambiar su color cuando su poder se incrementa para que dañen energía. Por ejemplo, es posible que las llamas de un conjuro de Bola de Fuego se tornen verdosas o azuladas, en contra del color que tuvieran originalmente.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite gastar 10 puntos de Zeon al lanzar un conjuro de Ataque para que pueda dañar energía, o 10 puntos de Zeon al lanzar un conjuro de defensa para que el escudo mágico pueda detener energía.",
+        "zeon_to_accumulate": 10,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Aguante al Daño Sobrenatural",
+    "branch": "Esoteros Archanum",
+    "description": "Cuando el brujo es blanco de un ataque mágico puede elegir sufrir la mitad del daño recibido en puntos de Zeon en lugar de perderlo todo en Puntos de Vida. Esta habilidad sólo funciona contra efectos sobrenaturales basados en magia, y no en otras capacidades sobrenaturales. También funciona contra daños producidos por efectos que obliguen a superar controles de Resistencia, siempre que sean de carácter místico. Esta habilidad es completamente voluntaria; si lo prefiere, el personaje puede sufrir únicamente daño físico en lugar de perder puntos de Zeon.",
+    "visual_effect": "Al recibir un ataque mágico que produzca daños al personaje, líneas sobrenaturales brillan en su cuerpo unos instantes, como si hubiera sido afectado tanto espiritual como físicamente.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite convertir la mitad del daño recibido por ataques mágicos en pérdida de Zeon en lugar de Puntos de Vida. Límite: esta habilidad no permite paliar el daño recibido por un ataque sobrenatural procedente de una entidad con 20 puntos de Gnosis por encima del que posee el personaje.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Transmisión de Magia",
+    "branch": "Esoteros Archanum",
+    "description": "A la hora de absorber o transmitir Zeon con otra persona, el brujo no requiere estar tocándola; basta con que no estén a más de su Presencia en metros para pasarse mutuamente energías mágicas.",
+    "visual_effect": "Generalmente, al usar este principio la energía mágica forma un vínculo de unión entre ambos personajes, aunque sólo es posible percibirlo por aquellos que ven magia.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite absorber o transmitir Zeon con otra persona sin contacto físico, siempre que no esté a más de su Presencia en metros.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Forzar Velocidad",
+    "branch": "Esoteros Archanum",
+    "description": "El personaje puede gastar Zeon antes de determinar su iniciativa para obtener un bono a su Turno equivalente a los puntos invertidos. Este gasto cuenta como parte de la acumulación de un conjuro determinado, declarado en el momento en el que se inicia la acumulación del sortilegio, y por tanto el hechicero está obligado a lanzar dicho sortilegio.",
+    "visual_effect": "Normalmente, en el momento en el que el personaje activa el sortilegio se dibujan en el aire símbolos similares a un reloj moviéndose a toda velocidad.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "El personaje puede gastar hasta 20 puntos de Zeon para obtener un bono equivalente a su Turno. Límite: este principio sólo puede hacerse valer si la primera acción que el personaje declara es un conjuro determinado. Una vez que ha hecho uso de ella, deberá lanzar el sortilegio declarado en el instante en el que le corresponda actuar.",
+        "zeon_to_accumulate": 20,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Intermedio (Dos esferas)",
+        "description": "El personaje puede gastar hasta 40 puntos de Zeon para obtener un bono equivalente a su Turno. Límite: este principio sólo puede hacerse valer si la primera acción que el personaje declara es un conjuro determinado. Una vez que ha hecho uso de ella, deberá lanzar el sortilegio declarado en el instante en el que le corresponda actuar.",
+        "zeon_to_accumulate": 40,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Tres esferas)",
+        "description": "El personaje puede gastar hasta 60 puntos de Zeon para obtener un bono equivalente a su Turno. Límite: este principio sólo puede hacerse valer si la primera acción que el personaje declara es un conjuro determinado. Una vez que ha hecho uso de ella, deberá lanzar el sortilegio declarado en el instante en el que le corresponda actuar.",
+        "zeon_to_accumulate": 60,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Doble Conjuro Innato",
+    "branch": "Esoteros Archanum",
+    "description": "En contra de las reglas generales, en lugar de uno el personaje es capaz de lanzar dos conjuros innatos diferentes por asalto.",
+    "visual_effect": "Cuando usa dos conjuros innatos, el hechicero pronuncia verbalmente los ensalmos de uno de ellos mientras gesticula para hacer el otro.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite lanzar dos conjuros innatos diferentes por asalto. Límite: esta habilidad no modifica el número de conjuros innatos que un personaje puede mantener sin tener que pagar su mantenimiento; sigue estando limitado a sólo uno.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Metamagister: Mantenimiento Añadido",
+    "branch": "Esoteros Archanum",
+    "description": "Los conjuros con mantenimiento dejan de tener coste por asalto y pasan a pagarse cada 5 turnos. Al mismo tiempo, los conjuros diarios se convierten en semanales y sólo hace falta mantenerlos una vez cada siete días para que sigan funcionando.",
+    "visual_effect": "No hay ningún efecto visual.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Los conjuros con mantenimiento pasan de pagarse cada asalto a pagarse cada 5 turnos, y los conjuros diarios pasan a mantenerse una vez cada siete días. Límite: esta habilidad está limitada a un conjuro por cada dos puntos de Poder del personaje.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+
+  {
+    "name": "Concentración Mística",
+    "branch": "Cognos Archanum",
+    "description": "El personaje disminuye a la mitad la Dificultad del control de Resistir el Dolor que debe realizar cuando sufre daño para mantener el Zeon acumulado. Es decir, si sufriera un ataque que le causase 80 puntos de daño, requeriría superar un control de Resistir el Dolor contra 80 para mantener el Zeon acumulado o contra 40 para no perder completamente dichos puntos.",
+    "visual_effect": "No suele haber ningún efecto visual en este principio.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Reduce a la mitad la dificultad del control de Resistir el Dolor necesario para no perder completamente el Zeon acumulado al sufrir daño.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Conjuro Especialista",
+    "branch": "Cognos Archanum",
+    "description": "Al dominar alguna esfera de Conjuro Especialista, el personaje debe elegir un sortilegio determinado que conozca. Desde ese momento, cada vez que declare que quiere prepararse para lanzar ese conjuro incrementa +10 su ACT y aplica un +1 a su Inteligencia para calcular el Grado de conjuro en el que puede lanzarlo. A lo largo del árbol de ventajas Metamágicas puede haber varias esferas de Conjuro Especialista con un nivel señalado; ese límite indica cuál es el nivel máximo de conjuro que el personaje puede elegir como especialista dominando esa esfera en concreto. Un personaje puede dominar varias veces esta esfera, escogiendo diferentes conjuros o incrementando la especialización en uno ya elegido. Cada esfera adicional sobre el mismo conjuro incrementa en +10 su ACT y otorga otro +1 a su Inteligencia al lanzarlo.",
+    "visual_effect": "Esta esfera no suele tener ningún efecto visual.",
+    "levels": [
+      {
+        "name": "Nivel Variable",
+        "description": "El personaje elige un conjuro determinado que conozca, dentro del nivel máximo permitido por la esfera concreta del árbol metamágico. Al prepararse para lanzar ese conjuro obtiene +10 ACT y +1 a Inteligencia para calcular el Grado en el que puede lanzarlo. Puede seleccionarse varias veces para distintos conjuros o para acumular el bono sobre el mismo conjuro.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Romper Resistencias",
+    "branch": "Cognos Archanum",
+    "description": "Al lanzar cualquier conjuro Anímico, el personaje incrementa la dificultad de la RM a superar dependiendo del resultado del asalto obtenido. Cada 50% de daño que obtenga aumenta en 5 o 10 puntos el valor de la RM de su hechizo, dependiendo del nivel dominado.",
+    "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de esta esfera.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "El personaje incrementa la dificultad de la RM de sus conjuros Anímicos 5 puntos por cada 50% de daño obtenido. Límite: esta habilidad no tiene efectos especiales contra criaturas con acumulación de daño.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "Como el anterior, salvo que la dificultad de las RM se incrementa en 10 puntos por cada 50% de daño obtenido. Límite: esta habilidad no tiene efectos especiales contra criaturas con acumulación de daño.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Distancia Incrementada",
+    "branch": "Cognos Archanum",
+    "description": "Los conjuros incrementan la distancia indicada por la Proyección Mágica del lanzador.",
+    "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de este principio.",
+    "levels": [
+      {
+        "name": "Nivel Inicial (Una esfera)",
+        "description": "El alcance de un conjuro dobla lo que indique el valor obtenido por la Proyección Mágica del lanzador. Límite: este principio no tiene efecto sobre aquellos sortilegios que tengan distancias determinadas en su descripción en lugar de por su Proyección Mágica.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "Nivel Arcano (Dos esferas)",
+        "description": "El alcance de los conjuros se cuadriplica. Límite: este principio no tiene efecto sobre aquellos sortilegios que tengan distancias determinadas en su descripción en lugar de por su Proyección Mágica.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Enlazar Conjuros",
+    "branch": "Cognos Archanum",
+    "description": "Esta esfera permite al brujo entrelazar dos conjuros diferentes creando como resultado uno completamente nuevo mucho más poderoso que cualquiera de sus componentes por separado. Para combinarlos, el personaje debe acumular Zeon suficiente para usar cada uno de los conjuros, declarando que quiere lanzarlos de manera enlazada. Al hacerlo, sólo realiza una tirada de Proyección Mágica, ejecutándolos ambos como una unidad. Habitualmente sólo pueden combinarse conjuros de tipo Anímico y de Ataque, ya que enlazar otra clase de sortilegios produce resultados caóticos e inestables. Si combina dos conjuros de Ataque, el Daño Base resultante toma el más elevado y le suma la mitad del menor, absorbiendo las mejores características de cada uno. Si combina dos conjuros Anímicos, la RM de cada efecto se lanza por separado, pero el brujo decide el orden de los controles. Si combina un conjuro de Ataque y otro Anímico, en caso de producir daño el objetivo debe realizar la RM propia del conjuro Anímico para saber si es afectado. Si combina un conjuro Anímico de un único blanco con un conjuro de Ataque o con otro Anímico con área, puede afectar a un solo blanco dentro del área o rebajar 50 puntos la RM para afectar a todos aquellos que estén dentro del área y sean alcanzados.",
+    "visual_effect": "No hay un efecto determinado, ya que la combinación de conjuros siempre da como resultado un sortilegio de aspecto diferente al de cualquiera de sus componentes por separado.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite enlazar dos conjuros, normalmente de Ataque o Anímicos, acumulando el Zeon necesario para ambos y realizando una única tirada de Proyección Mágica para ejecutarlos como una unidad.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Maximización de Conjuros",
+    "branch": "Cognos Archanum",
+    "description": "El personaje obtiene un +1 a Inteligencia a la hora de calcular el requisito de los conjuros.",
+    "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de esta esfera.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Otorga +1 a Inteligencia a la hora de calcular el requisito de los conjuros.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Doble Conjuro",
+    "branch": "Cognos Archanum",
+    "description": "Durante un mismo asalto el personaje es capaz de lanzar dos conjuros diferentes usando el doble de su ACT. Ninguno de ambos sortilegios puede, individualmente, superar el ACT base del personaje; a todos los efectos es como si dispusiera de su ACT pleno dos asaltos consecutivos para lanzar, en un mismo turno, un conjuro diferente. El coste en Zeon de lanzar dos conjuros de este modo es equivalente al doble del que hubieran tenido dichos sortilegios usados de manera independiente.",
+    "visual_effect": "El hechicero parece desdoblarse, entonando dos ensalmos a la vez y gesticulando a una velocidad indescriptible. Por lo general, en el momento de la ejecución de los conjuros cada una de sus manos se llena de crepitante energía de diferente color, en representación de los dos sortilegios que se prepara a lanzar.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite lanzar dos conjuros diferentes en el mismo asalto usando el doble de su ACT. Cada conjuro individual no puede superar el ACT base del personaje, y el coste total en Zeon se dobla. Límite: únicamente los conjuros que el personaje sea capaz de ejecutar con su ACT base, sin aplicar modificadores de ningún tipo, pueden ser lanzados con esta habilidad. Además, al activar esta esfera el brujo está limitado a lanzar como máximo dos conjuros, incluso si su ACT sobrante le permitiera ejecutar más.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Conjuro Innato Superior",
+    "branch": "Cognos Archanum",
+    "description": "El personaje puede lanzar conjuros innatos mientras acumula Zeon.",
+    "visual_effect": "El archimago ni siquiera parece emplear conjuros innatos; la magia meramente brota de él de manera natural adoptando la forma de conjuros mientras él sigue gesticulando y preparando su verdadero sortilegio.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite lanzar conjuros innatos mientras se acumula Zeon. Límite: aunque puede lanzar conjuros innatos mientras acumula magia, esta esfera no le permite hacerlo mientras está lanzando un conjuro de manera natural.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  },
+  {
+    "name": "Metamagister: Alta Magia",
+    "branch": "Cognos Archanum",
+    "description": "Al poseer esta esfera, el personaje puede usar conjuros de Alta Magia sin necesidad de tener Gnosis 25 o superior. No obstante, el lanzamiento de dichos sortilegios se logra invirtiendo cantidades desiguales de poder, muy por encima del valor real del conjuro. Por ello, en el momento de realizar un conjuro de Alta Magia el brujo pierde una cantidad de Zeon equivalente al valor zeónico invertido, y el coste de mantenimiento se dobla. Es decir, al lanzar un conjuro de valor zeónico 200 el personaje perdería 400 de total.",
+    "visual_effect": "Generalmente, al preparar un conjuro de Alta Magia gracias a esta esfera, el archimago comienza a rodearse de runas esféricas con simbología siempre cambiante.",
+    "levels": [
+      {
+        "name": "Nivel Único",
+        "description": "Permite usar conjuros de Alta Magia sin Gnosis 25 o superior. Al lanzar un conjuro de Alta Magia, el brujo pierde una cantidad de Zeon equivalente al valor zeónico invertido, y el coste de mantenimiento se dobla. Límite: esta ventaja sólo funciona al lanzar un conjuro determinado, y no acumulando magia pura.",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 0,
+        "required_level": null,
+        "connected_to": []
+      }
+    ]
+  }
+]

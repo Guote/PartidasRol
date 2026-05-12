@@ -1,0 +1,49 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="abf-chat-message abf-spell-card"
+}}
+  {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=spellName
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+    <div class="chat-combat-body">
+      {{!-- Caster info row --}}
+      <div class="chat-combat-attacker-row">
+        <img src="{{actorImg}}" class="chat-combat-portrait" alt="{{actorName}}" />
+        <span class="chat-combat-name">{{actorName}}</span>
+      </div>
+
+      {{!-- Grade info --}}
+      <div class="chat-combat-grade-row">
+        <span class="chat-combat-grade-label">{{localize "anima.chat.spellCard.castGrade"}}:</span>
+        <span class="chat-combat-grade-value">{{gradeLabel}}</span>
+        {{#if zeonCost}}
+        <span class="chat-combat-grade-zeon">{{localize "anima.ui.mystic.spell.grade.zeon.title"}}: {{zeonCost}}</span>
+        {{/if}}
+      </div>
+
+      {{!-- Grade description --}}
+      {{#if description}}
+      <details class="chat-combat-details">
+        <summary>{{localize "anima.chat.combat.details"}}</summary>
+        <div class="chat-combat-description">{{description}}</div>
+      </details>
+      {{/if}}
+
+      {{!-- Action buttons (removed by JS for non-senders) --}}
+      <div class="abf-spell-card-actions">
+        <button type="button" class="set-as-attack"
+                data-spell-id="{{spellId}}"
+                data-spell-grade="{{grade}}">
+          <i class="fas fa-sword"></i>
+          {{localize "anima.chat.spellCard.setAsAttack"}}
+        </button>
+        <button type="button" class="set-as-defense"
+                data-spell-id="{{spellId}}"
+                data-spell-grade="{{grade}}">
+          <i class="fas fa-shield-alt"></i>
+          {{localize "anima.chat.spellCard.setAsDefense"}}
+        </button>
+      </div>
+    </div>
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

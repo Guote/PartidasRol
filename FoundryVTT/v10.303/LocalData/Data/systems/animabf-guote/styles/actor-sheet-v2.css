@@ -969,6 +969,25 @@
   cursor: grab;
 }
 
+.actor-sheet-v2 .v2-sort-th {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-sort-th:hover {
+  background: var(--abf-secondary-light, rgba(255,255,255,0.08));
+}
+
+.actor-sheet-v2 .v2-sort-icon--inactive {
+  opacity: 0.3;
+  margin-left: 3px;
+}
+
+.actor-sheet-v2 .v2-sort-icon--active {
+  margin-left: 3px;
+}
+
 /* --------------------------------
    Compact Combat Values
    -------------------------------- */

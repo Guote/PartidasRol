@@ -15,18 +15,18 @@ const TEMPLATE_PATH = `systems/${ABFSystemName}/templates/dialog/combat/chat-com
  * @param {ChatMessage} attackMessage - The attack chat message
  * @param {TokenDocument} defenderToken - The defending token
  */
-const getInitialData = (attackMessage, defenderToken) => {
+const getInitialData = (attackMessage, defenderToken, options = {}) => {
     const showRollByDefault = !!game.settings.get(
         'animabf-guote',
         ABFSettingsKeys.SEND_ROLL_MESSAGES_ON_COMBAT_BY_DEFAULT
     );
     const isGM = !!game.user?.isGM;
     const defenderActor = defenderToken.actor;
-    const attackFlags = attackMessage.flags['animabf-guote'].chatCombat;
+    const attackFlags = attackMessage ? attackMessage.flags['animabf-guote'].chatCombat : null;
 
     const activeTab = defenderActor.system.general.settings.defenseType.value === 'resistance'
         ? 'damageResistance'
-        : 'combat';
+        : options.spellUsed ? 'mystic' : 'combat';
 
     return {
         ui: {
@@ -34,13 +34,13 @@ const getInitialData = (attackMessage, defenderToken) => {
             hasFatiguePoints: defenderActor.system.characteristics.secondaries.fatigue.value > 0,
             activeTab
         },
-        attacker: {
+        attacker: attackFlags ? {
             name: attackFlags.attackerInfo.name,
             img: attackFlags.attackerInfo.img,
             attackType: attackFlags.attackType,
             critic: attackFlags.damageType,
             attackTotal: attackFlags.attackTotal
-        },
+        } : null,
         defender: {
             token: defenderToken,
             actor: defenderActor,
@@ -56,15 +56,15 @@ const getInitialData = (attackMessage, defenderToken) => {
                 defenseType: 'dodge',
                 increaseDefenseCounter: true,
                 at: {
-                    type: attackFlags.damageType || '',
+                    type: attackFlags?.damageType || '',
                     special: 0,
                     final: 0
                 }
             },
             mystic: {
                 modifier: 0,
-                spellUsed: undefined,
-                spellGrade: 'base'
+                spellUsed: options.spellUsed ?? undefined,
+                spellGrade: options.spellGrade ?? 'base'
             },
             psychic: {
                 modifier: 0,
@@ -109,12 +109,13 @@ const getInitialData = (attackMessage, defenderToken) => {
  * Supports combat (dodge/block), mystic, and psychic defenses.
  */
 export class ChatCombatDefenseDialog extends FormApplication {
-    constructor(attackMessage, defenderToken, hooks) {
-        super(getInitialData(attackMessage, defenderToken));
+    constructor(attackMessage, defenderToken, hooks, options = {}) {
+        super(getInitialData(attackMessage, defenderToken, options));
         this.attackMessage = attackMessage;
-        this.attackFlags = attackMessage.flags['animabf-guote'].chatCombat;
+        this.attackFlags = attackMessage ? attackMessage.flags['animabf-guote'].chatCombat : null;
+        this.standalone = !attackMessage;
         this.defenderToken = defenderToken;
-        this.modalData = getInitialData(attackMessage, defenderToken);
+        this.modalData = getInitialData(attackMessage, defenderToken, options);
         this.hooks = hooks;
 
         // Set initial tab based on defense type
@@ -163,6 +164,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
     get defenderActor() {
         return this.defenderToken.actor;
+    }
+
+    get _targetLabel() {
+        return this.attackFlags?.attackerInfo?.name
+            ?? game.i18n.localize('anima.chat.combat.defense.standaloneTarget');
     }
 
     /**
@@ -391,7 +397,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         if (this.modalData.defender.showRoll) {
             const flavor = game.i18n.format(`anima.macros.combat.dialog.physicalDefense.${type}.title`, {
-                target: this.attackFlags.attackerInfo.name
+                target: this._targetLabel
             });
             roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
@@ -401,7 +407,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
 
-        this.hooks.onDefense({
+        const defenseResult = {
             type: 'combat',
             defenseType: type,
             total: roll.total,
@@ -413,7 +419,13 @@ export class ChatCombatDefenseDialog extends FormApplication {
             damageModifier: this.modalData.defender.damageModifier || 0,
             at: at.final,
             armorValues: this.getArmorValues()
-        });
+        };
+
+        if (this.standalone) {
+            await this._postStandaloneDefenseResult(defenseResult);
+        } else {
+            this.hooks.onDefense(defenseResult);
+        }
 
         this.modalData.defenseSent = true;
         this.render();
@@ -452,7 +464,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             const spell = spells.find(w => w._id === spellUsed);
             const flavor = game.i18n.format('anima.macros.combat.dialog.magicDefense.title', {
                 spell: spell?.name || 'Unknown',
-                target: this.attackFlags.attackerInfo.name
+                target: this._targetLabel
             });
             roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
@@ -462,7 +474,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         const rolled = roll.total - magicProjection - (modifier ?? 0);
 
-        this.hooks.onDefense({
+        const defenseResult = {
             type: 'mystic',
             total: roll.total,
             roll: rolled,
@@ -472,7 +484,13 @@ export class ChatCombatDefenseDialog extends FormApplication {
             spellGrade,
             at: at.final,
             armorValues: this.getArmorValues()
-        });
+        };
+
+        if (this.standalone) {
+            await this._postStandaloneDefenseResult(defenseResult);
+        } else {
+            this.hooks.onDefense(defenseResult);
+        }
 
         this.modalData.defenseSent = true;
         this.render();
@@ -487,13 +505,19 @@ export class ChatCombatDefenseDialog extends FormApplication {
         const { at } = this.modalData.defender.combat;
         const { surprised } = this.modalData.defender.resistance;
 
-        this.hooks.onDefense({
+        const defenseResult = {
             type: 'resistance',
             total: 0,
             surprised,
             at: at.final,
             armorValues: this.getArmorValues()
-        });
+        };
+
+        if (this.standalone) {
+            await this._postStandaloneDefenseResult(defenseResult);
+        } else {
+            this.hooks.onDefense(defenseResult);
+        }
 
         this.modalData.defenseSent = true;
         this.render();
@@ -529,7 +553,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         if (this.modalData.defender.showRoll) {
             const flavor = game.i18n.format('anima.macros.combat.dialog.psychicDefense.title', {
                 power: power?.name || 'Unknown',
-                target: this.attackFlags.attackerInfo.name
+                target: this._targetLabel
             });
             roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
@@ -539,7 +563,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         const rolled = roll.total - psychicProjection - (modifier ?? 0);
 
-        this.hooks.onDefense({
+        const defenseResult = {
             type: 'psychic',
             total: roll.total,
             roll: rolled,
@@ -549,7 +573,13 @@ export class ChatCombatDefenseDialog extends FormApplication {
             psychicPotential: psychicPotential.final + (power?.system.bonus.value ?? 0),
             at: at.final,
             armorValues: this.getArmorValues()
-        });
+        };
+
+        if (this.standalone) {
+            await this._postStandaloneDefenseResult(defenseResult);
+        } else {
+            this.hooks.onDefense(defenseResult);
+        }
 
         this.modalData.defenseSent = true;
         this.render();
@@ -591,7 +621,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         if (this.modalData.defender.showRoll) {
             const flavor = game.i18n.format('anima.macros.combat.dialog.summonDefense.title', {
                 summon: summon.name,
-                target: this.attackFlags.attackerInfo.name
+                target: this._targetLabel
             });
             roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
@@ -601,7 +631,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         const rolled = roll.total - effectiveHD - (modifier ?? 0);
 
-        this.hooks.onDefense({
+        const defenseResult = {
             type: 'summon',
             total: roll.total,
             roll: rolled,
@@ -610,12 +640,50 @@ export class ChatCombatDefenseDialog extends FormApplication {
             effectiveHD,
             at: at.final,
             armorValues: this.getArmorValues()
-        });
+        };
+
+        if (this.standalone) {
+            await this._postStandaloneDefenseResult(defenseResult);
+        } else {
+            this.hooks.onDefense(defenseResult);
+        }
 
         this.modalData.defenseSent = true;
         this.render();
 
         setTimeout(() => this.close({ force: true }), 500);
+    }
+
+    async _postStandaloneDefenseResult(result) {
+        const typeLabels = {
+            combat: result.defenseType === 'block'
+                ? game.i18n.localize('anima.macros.combat.dialog.physicalDefense.block.title')
+                : game.i18n.localize('anima.macros.combat.dialog.physicalDefense.dodge.title'),
+            mystic: game.i18n.localize('anima.chat.combat.attackType.mystic'),
+            psychic: game.i18n.localize('anima.chat.combat.attackType.psychic'),
+            summon: game.i18n.localize('anima.chat.combat.attackType.summon'),
+            resistance: game.i18n.localize('anima.chat.combat.defense.title'),
+        };
+
+        const content = await renderTemplate(
+            `systems/animabf-guote/templates/chat/defense-result-card.hbs`,
+            {
+                defenderName: this.defenderActor.name,
+                defenderImg: this.defenderToken.texture?.src ?? this.defenderActor.img,
+                defenseTypeLabel: typeLabels[result.type] ?? result.type,
+                defenseTotal: result.total,
+                roll: result.roll != null ? { dice: result.roll, base: result.total - result.roll } : null,
+            }
+        );
+
+        const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
+        const whisperIds = [...new Set([...gmIds, game.user.id])];
+
+        await ChatMessage.create({
+            content,
+            whisper: whisperIds,
+            speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
+        });
     }
 
     getData() {
@@ -624,7 +692,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.defenderActor.system.characteristics.secondaries.fatigue.value > 0;
 
         // Calculate AT based on selected type (defaults to attacker's critic type)
-        const atType = this.modalData.defender.combat.at.type || this.attackFlags.damageType;
+        const atType = this.modalData.defender.combat.at.type || (this.standalone ? '' : this.attackFlags.damageType);
         let atBase = 0;
         if (atType && atType !== NoneWeaponCritic.NONE) {
             const armor = this.defenderActor.system.combat.totalArmor.at;
@@ -752,6 +820,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         this.modalData.ui.activeSummary           = this.modalData.defender[activeTab]?.summary ?? null;
 
         this.modalData.config = ABFConfig;
+        this.modalData.standalone = this.standalone;
         return this.modalData;
     }
 

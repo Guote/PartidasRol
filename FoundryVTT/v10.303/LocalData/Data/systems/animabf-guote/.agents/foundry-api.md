@@ -123,3 +123,60 @@ game.settings.get("animabf-guote", "DEVELOP_MODE")
 ## Reloading After Changes
 
 Press `F5` in the Foundry browser window. No build step — all JS/HBS/CSS is served as-is.
+
+---
+
+## Core Classes
+
+| Class | Location | Purpose |
+|-------|----------|---------|
+| `ABFActor` | `module/actor/ABFActor.js` | Custom Actor document |
+| `ABFItem` | `module/items/ABFItem.js` | Custom Item document |
+| `ABFCombat` | `module/combat/ABFCombat.js` | d100 initiative tracker |
+| `ABFActorSheetV2` | `module/actor/ABFActorSheetV2.js` | V2 character sheet (primary) |
+| `ABFActorSheet` | `module/actor/ABFActorSheet.js` | V1 sheet (legacy) |
+| `ABFFoundryRoll` | `module/rolls/ABFFoundryRoll.js` | Base custom roll |
+| `ABFExploderRoll` | `module/rolls/ABFExploderRoll/` | Critical/fumble explosion |
+| `ABFInitiativeRoll` | `module/rolls/ABFInitiativeRoll/` | `1d100Initiative` formula |
+| `ChatCombatManager` | `module/combat/chat-combat/ChatCombatManager.js` | `window.ChatCombat` |
+| `ChatAttackCard` | `module/combat/chat-combat/ChatAttackCard.js` | Attack card in chat |
+
+All registered in `animabf-guote.mjs` via the `init` hook.
+
+---
+
+## Custom Hotbar
+
+`utils/attachCustomMacroBar.js`, template `templates/custom-hotbar/custom-hotbar.hbs`:
+
+| Button | GM Shortcut | Player Shortcut | Action |
+|--------|-------------|-----------------|--------|
+| Damage Calculator | ctrl+1 | — | Opens damage calculator dialog |
+| Send Attack (WebSocket) | ctrl+2 | ctrl+1 | `window.Websocket.sendAttack()` |
+| Send Attack (Chat) | ctrl+3 | ctrl+2 | `window.ChatCombat.sendAttack()` |
+
+---
+
+## Localization Key Prefixes
+
+Files: `lang/es.json`.
+
+| Prefix | Used for |
+|--------|---------|
+| `anima.ui.*` | UI labels and titles |
+| `anima.macros.combat.*` | Combat dialog messages |
+| `anima.chat.combat.*` | Chat-based combat system |
+| `anima.customHotbar.*` | Hotbar button tooltips |
+| `anima.dialogs.items.*` | Item add/delete dialogs |
+| `anima.contextualMenu.*` | Right-click menu labels |
+
+---
+
+## Testing
+
+Jest test files (no `package.json` in deployed version — tests live in the source repo):
+- `module/actor/utils/splitAsActorAndItemChanges.test.js`
+- `module/combat/utils/__test__/calculateCounterAttackBonus.test.js`
+- `module/combat/utils/__test__/calculateDamage.test.js`
+- `module/rolls/ABFExploderRoll/ABFExploderRoll.test.js`
+- `module/rolls/ABFInitiativeRoll/ABFInitiativeRoll.test.js`

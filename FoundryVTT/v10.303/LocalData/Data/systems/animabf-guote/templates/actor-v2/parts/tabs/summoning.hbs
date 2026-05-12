@@ -71,10 +71,38 @@
         <thead>
           <tr>
             <th style="width:28px;" title="Activo/Mantenido"><i class="fas fa-check-circle"></i></th>
-            <th>{{localize "anima.ui.mystic.summon.name.title"}}</th>
-            <th class="v2-text-center" style="width:44px;" title="Nivel de Éxito">NE</th>
-            <th class="v2-text-center" style="width:45px;">{{localize "anima.ui.mystic.summon.summonDif.short"}}</th>
-            <th class="v2-text-center" style="width:55px;">{{localize "anima.ui.mystic.summon.zeonCost.short"}}</th>
+            <th class="inventory-sort-th v2-sort-th" data-sort-table="summons" data-sort-field="name">
+              {{localize "anima.ui.mystic.summon.name.title"}}
+              {{#if inventorySortHeaders.summons.name.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.summons.name.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th v2-text-center" style="width:44px;" title="Nivel de Éxito" data-sort-table="summons" data-sort-field="ne">
+              NE
+              {{#if inventorySortHeaders.summons.ne.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.summons.ne.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th v2-text-center" style="width:45px;" data-sort-table="summons" data-sort-field="summonDif">
+              {{localize "anima.ui.mystic.summon.summonDif.short"}}
+              {{#if inventorySortHeaders.summons.summonDif.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.summons.summonDif.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th v2-text-center" style="width:55px;" data-sort-table="summons" data-sort-field="zeon">
+              {{localize "anima.ui.mystic.summon.zeonCost.short"}}
+              {{#if inventorySortHeaders.summons.zeon.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.summons.zeon.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
             <th style="width:30px;"></th>
           </tr>
         </thead>
@@ -187,9 +215,30 @@
         <thead>
           <tr>
             <th style="width:28px;"></th>
-            <th>{{localize "anima.ui.mystic.incarnation.name"}}</th>
-            <th class="v2-text-center" style="width:45px;">Dif</th>
-            <th class="v2-text-center" style="width:55px;">{{localize "anima.ui.mystic.incarnation.summonBonus.short"}}</th>
+            <th class="inventory-sort-th v2-sort-th" data-sort-table="incarnations" data-sort-field="name">
+              {{localize "anima.ui.mystic.incarnation.name"}}
+              {{#if inventorySortHeaders.incarnations.name.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.incarnations.name.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th v2-text-center" style="width:45px;" data-sort-table="incarnations" data-sort-field="difficulty">
+              Dif
+              {{#if inventorySortHeaders.incarnations.difficulty.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.incarnations.difficulty.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th v2-text-center" style="width:55px;" data-sort-table="incarnations" data-sort-field="summonBonus">
+              {{localize "anima.ui.mystic.incarnation.summonBonus.short"}}
+              {{#if inventorySortHeaders.incarnations.summonBonus.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.incarnations.summonBonus.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
           </tr>
         </thead>
         <tbody id="incarnations-context-menu-container">

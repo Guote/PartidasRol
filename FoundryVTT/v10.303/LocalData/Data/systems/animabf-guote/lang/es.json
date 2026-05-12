@@ -879,5 +879,12 @@
   "anima.ui.combat.loadPreset": "Cargar preset",
   "anima.ui.combat.newAttack": "Nuevo ataque",
   "anima.ui.combat.newDefense": "Nueva defensa",
-  "anima.ui.combat.editDefensePreset": "Editar Defensa Guardada"
+  "anima.ui.combat.editDefensePreset": "Editar Defensa Guardada",
+  "anima.chat.spellCard.setAsAttack": "Usar como Ataque",
+  "anima.chat.spellCard.setAsDefense": "Usar como Defensa",
+  "anima.chat.spellCard.castGrade": "Grado",
+  "anima.chat.spellCard.noTokenSelected": "Selecciona un token o configura tu personaje por defecto",
+  "anima.chat.defenseResult.title": "Resultado de Defensa",
+  "anima.chat.defenseResult.standalone": "Defensa libre",
+  "anima.chat.combat.defense.standaloneTarget": "— práctica libre —"
 }

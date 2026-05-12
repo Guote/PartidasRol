@@ -283,14 +283,12 @@ export default class ABFSpellbook extends Application {
       }
     });
 
-    // Spell grade click (for future casting functionality)
+    // Spell grade click — post spell card to chat with "Set as Attack" / "Set as Defense" buttons
     html.find('.spell-grade').click(ev => {
       ev.stopPropagation();
       const grade = ev.currentTarget.dataset.grade;
       const spellId = ev.currentTarget.dataset.spellId;
-      // TODO: Implement spell casting at this grade
-      console.log(`ABF Spellbook | Grade clicked: ${grade} for spell ${spellId}`);
-      // For now, just log it - future implementation will cast the spell
+      window.ChatCombat._postSpellCard(this.actor, spellId, grade);
     });
 
     // Delete spell

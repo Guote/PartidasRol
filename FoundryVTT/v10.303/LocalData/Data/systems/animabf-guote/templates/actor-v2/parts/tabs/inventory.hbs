@@ -17,12 +17,54 @@
         <thead>
           <tr>
             <th style="width: 30px;" title="Usar para turno"><i class="fas fa-dice-d20"></i></th>
-            <th>{{localize "anima.ui.combat.ammo.name.title"}}</th>
-            <th style="width: 50px;">{{localize "anima.ui.combat.baseValues.attack.title"}}</th>
-            <th style="width: 50px;">{{localize "anima.ui.combat.baseValues.block.title"}}</th>
-            <th style="width: 50px;">{{localize "anima.ui.combat.weapons.damage.final.title"}}</th>
-            <th style="width: 40px;">{{localize "anima.ui.general.initiative.base.title"}}</th>
-            <th style="width: 60px;">{{localize "anima.ui.combat.weapons.critic.primary.title"}}</th>
+            <th class="inventory-sort-th v2-sort-th" data-sort-table="weapons" data-sort-field="name">
+              {{localize "anima.ui.combat.ammo.name.title"}}
+              {{#if inventorySortHeaders.weapons.name.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.weapons.name.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 50px;" data-sort-table="weapons" data-sort-field="attack">
+              {{localize "anima.ui.combat.baseValues.attack.title"}}
+              {{#if inventorySortHeaders.weapons.attack.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.weapons.attack.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 50px;" data-sort-table="weapons" data-sort-field="block">
+              {{localize "anima.ui.combat.baseValues.block.title"}}
+              {{#if inventorySortHeaders.weapons.block.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.weapons.block.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 50px;" data-sort-table="weapons" data-sort-field="damage">
+              {{localize "anima.ui.combat.weapons.damage.final.title"}}
+              {{#if inventorySortHeaders.weapons.damage.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.weapons.damage.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 40px;" data-sort-table="weapons" data-sort-field="initiative">
+              {{localize "anima.ui.general.initiative.base.title"}}
+              {{#if inventorySortHeaders.weapons.initiative.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.weapons.initiative.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 60px;" data-sort-table="weapons" data-sort-field="critic">
+              {{localize "anima.ui.combat.weapons.critic.primary.title"}}
+              {{#if inventorySortHeaders.weapons.critic.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.weapons.critic.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
             <th style="width: 30px;"></th>
           </tr>
         </thead>
@@ -84,14 +126,70 @@
         <thead>
           <tr>
             <th style="width: 30px;" title="Equipada"><i class="fas fa-shield-alt"></i></th>
-            <th>{{localize "anima.ui.combat.armors.name.title"}}</th>
-            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.cut.title"}}</th>
-            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.impact.title"}}</th>
-            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.thrust.title"}}</th>
-            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.heat.title"}}</th>
-            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.electricity.title"}}</th>
-            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.cold.title"}}</th>
-            <th style="width: 35px;">{{localize "anima.ui.combat.armors.at.energy.title"}}</th>
+            <th class="inventory-sort-th v2-sort-th" data-sort-table="armors" data-sort-field="name">
+              {{localize "anima.ui.combat.armors.name.title"}}
+              {{#if inventorySortHeaders.armors.name.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.name.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="cut">
+              {{localize "anima.ui.combat.armors.at.cut.title"}}
+              {{#if inventorySortHeaders.armors.cut.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.cut.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="impact">
+              {{localize "anima.ui.combat.armors.at.impact.title"}}
+              {{#if inventorySortHeaders.armors.impact.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.impact.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="thrust">
+              {{localize "anima.ui.combat.armors.at.thrust.title"}}
+              {{#if inventorySortHeaders.armors.thrust.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.thrust.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="heat">
+              {{localize "anima.ui.combat.armors.at.heat.title"}}
+              {{#if inventorySortHeaders.armors.heat.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.heat.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="electricity">
+              {{localize "anima.ui.combat.armors.at.electricity.title"}}
+              {{#if inventorySortHeaders.armors.electricity.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.electricity.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="cold">
+              {{localize "anima.ui.combat.armors.at.cold.title"}}
+              {{#if inventorySortHeaders.armors.cold.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.cold.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="energy">
+              {{localize "anima.ui.combat.armors.at.energy.title"}}
+              {{#if inventorySortHeaders.armors.energy.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.armors.energy.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
           </tr>
         </thead>
         <tbody id="armors-context-menu-container">
@@ -140,10 +238,38 @@
       <table class="v2-table">
         <thead>
           <tr>
-            <th>{{localize "anima.ui.combat.ammo.name.title"}}</th>
-            <th style="width: 70px;">{{localize "anima.ui.combat.ammo.amount.title"}}</th>
-            <th style="width: 70px;">{{localize "anima.ui.combat.ammo.damage.title"}}</th>
-            <th style="width: 80px;">{{localize "anima.ui.combat.ammo.critic.title"}}</th>
+            <th class="inventory-sort-th v2-sort-th" data-sort-table="ammo" data-sort-field="name">
+              {{localize "anima.ui.combat.ammo.name.title"}}
+              {{#if inventorySortHeaders.ammo.name.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.ammo.name.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 70px;" data-sort-table="ammo" data-sort-field="amount">
+              {{localize "anima.ui.combat.ammo.amount.title"}}
+              {{#if inventorySortHeaders.ammo.amount.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.ammo.amount.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 70px;" data-sort-table="ammo" data-sort-field="damage">
+              {{localize "anima.ui.combat.ammo.damage.title"}}
+              {{#if inventorySortHeaders.ammo.damage.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.ammo.damage.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 80px;" data-sort-table="ammo" data-sort-field="critic">
+              {{localize "anima.ui.combat.ammo.critic.title"}}
+              {{#if inventorySortHeaders.ammo.critic.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.ammo.critic.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
           </tr>
         </thead>
         <tbody id="ammo-context-menu-container">
@@ -198,9 +324,30 @@
       <table class="v2-table">
         <thead>
           <tr>
-            <th>{{localize "anima.ui.inventoryItemsSection.name.title"}}</th>
-            <th style="width: 80px;">{{localize "anima.ui.inventoryItemsSection.amount.title"}}</th>
-            <th style="width: 80px;">{{localize "anima.ui.inventoryItemsSection.weight.title"}}</th>
+            <th class="inventory-sort-th v2-sort-th" data-sort-table="inventory" data-sort-field="name">
+              {{localize "anima.ui.inventoryItemsSection.name.title"}}
+              {{#if inventorySortHeaders.inventory.name.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.inventory.name.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 80px;" data-sort-table="inventory" data-sort-field="amount">
+              {{localize "anima.ui.inventoryItemsSection.amount.title"}}
+              {{#if inventorySortHeaders.inventory.amount.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.inventory.amount.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 80px;" data-sort-table="inventory" data-sort-field="weight">
+              {{localize "anima.ui.inventoryItemsSection.weight.title"}}
+              {{#if inventorySortHeaders.inventory.weight.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.inventory.weight.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
             <th>{{localize "anima.ui.inventoryItemsSection.description.title"}}</th>
           </tr>
         </thead>

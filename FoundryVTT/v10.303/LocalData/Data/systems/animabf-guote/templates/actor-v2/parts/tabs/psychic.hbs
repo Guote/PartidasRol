@@ -78,10 +78,38 @@
       <table class="v2-table v2-table--compact" id="psychic-powers-context-menu-container">
         <thead>
           <tr>
-            <th style="width: 80px;">{{localize "anima.ui.psychic.psychicPowers.power.header.discipline.title"}}</th>
-            <th class="v2-text-center" style="width: 32px;">{{localize "anima.ui.psychic.psychicPowers.power.header.level.title"}}</th>
-            <th>{{localize "anima.ui.psychic.psychicPowers.power.header.name.title"}}</th>
-            <th class="v2-text-center" style="width: 42px;">{{localize "anima.ui.psychic.psychicPowers.power.footer.bonus.title"}}</th>
+            <th class="inventory-sort-th v2-sort-th" style="width: 80px;" data-sort-table="psychicPowers" data-sort-field="discipline">
+              {{localize "anima.ui.psychic.psychicPowers.power.header.discipline.title"}}
+              {{#if inventorySortHeaders.psychicPowers.discipline.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.psychicPowers.discipline.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th v2-text-center" style="width: 32px;" data-sort-table="psychicPowers" data-sort-field="level">
+              {{localize "anima.ui.psychic.psychicPowers.power.header.level.title"}}
+              {{#if inventorySortHeaders.psychicPowers.level.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.psychicPowers.level.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th" data-sort-table="psychicPowers" data-sort-field="name">
+              {{localize "anima.ui.psychic.psychicPowers.power.header.name.title"}}
+              {{#if inventorySortHeaders.psychicPowers.name.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.psychicPowers.name.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
+            <th class="inventory-sort-th v2-sort-th v2-text-center" style="width: 42px;" data-sort-table="psychicPowers" data-sort-field="bonus">
+              {{localize "anima.ui.psychic.psychicPowers.power.footer.bonus.title"}}
+              {{#if inventorySortHeaders.psychicPowers.bonus.active}}
+                <i class="fas fa-sort-{{inventorySortHeaders.psychicPowers.bonus.dir}} v2-sort-icon--active"></i>
+              {{else}}
+                <i class="fas fa-sort v2-sort-icon--inactive"></i>
+              {{/if}}
+            </th>
             <th class="v2-text-center" style="width: 42px;" title="{{localize 'anima.ui.psychic.psychicPowers.power.footer.hasMaintenance.title'}}">
               {{localize "anima.ui.psychic.psychicPowers.power.footer.maintained.short"}}
             </th>

@@ -95,6 +95,15 @@ export default class ABFActorSheetV2 extends ActorSheet {
       ]);
     };
     this.i18n = game.i18n;
+    this._inventorySort = {
+      weapons:      { field: null, dir: 'asc' },
+      armors:       { field: null, dir: 'asc' },
+      ammo:         { field: null, dir: 'asc' },
+      inventory:    { field: null, dir: 'asc' },
+      summons:      { field: null, dir: 'asc' },
+      incarnations: { field: null, dir: 'asc' },
+      psychicPowers:{ field: null, dir: 'asc' },
+    };
     this.position.width = this.getWidthDependingFromContent();
   }
   static get defaultOptions() {
@@ -288,6 +297,72 @@ export default class ABFActorSheetV2 extends ActorSheet {
         });
       }
     }
+
+    // Inventory / table column sorting
+    const _sortVal = (item, field) => ({
+      attack:       item.system?.attack?.final?.value,
+      block:        item.system?.block?.final?.value,
+      damage:       item.system?.damage?.final?.value,
+      initiative:   item.system?.initiative?.final?.value,
+      critic:       item.system?.critic?.primary?.value ?? item.system?.critic?.value,
+      cut:          item.system?.cut?.final?.value,
+      impact:       item.system?.impact?.final?.value,
+      thrust:       item.system?.thrust?.final?.value,
+      heat:         item.system?.heat?.final?.value,
+      electricity:  item.system?.electricity?.final?.value,
+      cold:         item.system?.cold?.final?.value,
+      energy:       item.system?.energy?.final?.value,
+      name:         item.name?.toLowerCase(),
+      amount:       item.system?.amount?.value,
+      weight:       item.system?.weight?.value,
+      difficulty:   item.system?.difficulty?.value,
+      summonBonus:  item.system?.summonBonus?.value,
+      discipline:   item.system?.discipline?.value?.toLowerCase(),
+      level:        item.system?.level?.value,
+      bonus:        item.system?.bonus?.value,
+    })[field] ?? 0;
+    const _sortArr = (arr, { field, dir }) => {
+      if (!field || !arr?.length) return arr;
+      return [...arr].sort((a, b) => {
+        const av = _sortVal(a, field), bv = _sortVal(b, field);
+        const cmp = typeof av === 'string' ? av.localeCompare(bv) : (av ?? 0) - (bv ?? 0);
+        return dir === 'asc' ? cmp : -cmp;
+      });
+    };
+    sheet.system.combat.weapons    = _sortArr(sheet.system.combat.weapons,    this._inventorySort.weapons);
+    sheet.system.combat.armors     = _sortArr(sheet.system.combat.armors,     this._inventorySort.armors);
+    sheet.system.combat.ammo       = _sortArr(sheet.system.combat.ammo,       this._inventorySort.ammo);
+    sheet.system.general.inventory = _sortArr(sheet.system.general.inventory, this._inventorySort.inventory);
+    sheet.system.mystic.incarnations  = _sortArr(sheet.system.mystic.incarnations,  this._inventorySort.incarnations);
+    sheet.system.psychic.psychicPowers = _sortArr(sheet.system.psychic.psychicPowers, this._inventorySort.psychicPowers);
+    // summonRows is pre-computed above — sort it by its own fields
+    const _summonSortVal = (row, field) => ({
+      name:      row.displayName?.toLowerCase(),
+      ne:        row.ne,
+      summonDif: row.power?.summonDif?.value,
+      zeon:      row.zeonFinal,
+    })[field] ?? 0;
+    const { field: sField, dir: sDir } = this._inventorySort.summons;
+    if (sField && sheet.summonRows?.length) {
+      sheet.summonRows = [...sheet.summonRows].sort((a, b) => {
+        const av = _summonSortVal(a, sField), bv = _summonSortVal(b, sField);
+        const cmp = typeof av === 'string' ? av.localeCompare(bv) : (av ?? 0) - (bv ?? 0);
+        return sDir === 'asc' ? cmp : -cmp;
+      });
+    }
+    const _sortHeaders = (section, fields) => {
+      const s = this._inventorySort[section];
+      return Object.fromEntries(fields.map(f => [f, { active: s.field === f, dir: s.field === f ? s.dir : 'asc' }]));
+    };
+    sheet.inventorySortHeaders = {
+      weapons:      _sortHeaders('weapons',      ['name','attack','block','damage','initiative','critic']),
+      armors:       _sortHeaders('armors',       ['name','cut','impact','thrust','heat','electricity','cold','energy']),
+      ammo:         _sortHeaders('ammo',         ['name','amount','damage','critic']),
+      inventory:    _sortHeaders('inventory',    ['name','amount','weight']),
+      summons:      _sortHeaders('summons',      ['name','ne','summonDif','zeon']),
+      incarnations: _sortHeaders('incarnations', ['name','difficulty','summonBonus']),
+      psychicPowers:_sortHeaders('psychicPowers',['discipline','level','name','bonus']),
+    };
 
     return sheet;
   }
@@ -484,6 +559,19 @@ export default class ABFActorSheetV2 extends ActorSheet {
       } else {
         ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiAccumulation.macro.notFound'));
       }
+    });
+
+    // Inventory column sort headers
+    html.find('.inventory-sort-th').click((e) => {
+      const { sortTable, sortField } = e.currentTarget.dataset;
+      const s = this._inventorySort[sortTable];
+      if (s.field === sortField) {
+        s.dir = s.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        s.field = sortField;
+        s.dir = 'asc';
+      }
+      this.render(false);
     });
 
     // Click eye button to open weapon item sheet (inventory tab)
@@ -910,8 +998,15 @@ export default class ABFActorSheetV2 extends ActorSheet {
         closeOnSend: true  // Close dialog after sending attack (chat combat mode)
       });
     } else if (type === 'defense') {
-      const { DefensePresetEditDialog } = await import('../dialogs/combat/DefensePresetEditDialog.js');
-      new DefensePresetEditDialog(this.actor, preset);
+      const token = canvas.tokens.controlled[0] ?? this.actor.getActiveTokens()[0];
+      if (!token) {
+        ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));
+        return;
+      }
+      const tokenDoc = token.document ?? token;
+      const { ChatCombatDefenseDialog } = await import('../combat/chat-combat/ChatCombatDefenseDialog.js');
+      const dialog = new ChatCombatDefenseDialog(null, tokenDoc, { onDefense: () => {} });
+      dialog._loadPresetData(preset.system);
     }
   }
 

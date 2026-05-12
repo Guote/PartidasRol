@@ -1,0 +1,106 @@
+/* ================================
+   Chat Card Styles
+   Spell grade card + standalone defense result card
+   ================================ */
+
+/* --------------------------------
+   Spell Grade Card
+   -------------------------------- */
+
+.abf-spell-card .chat-combat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.abf-spell-card .chat-combat-attacker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.abf-spell-card .chat-combat-grade-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.abf-spell-card .chat-combat-grade-label {
+  font-weight: bold;
+  color: #6e2917;
+}
+
+.abf-spell-card .chat-combat-grade-zeon {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.abf-spell-card .chat-combat-description {
+  font-size: 0.8rem;
+  color: #333;
+  line-height: 1.4;
+  border-top: 1px solid #ccc;
+  padding-top: 4px;
+}
+
+.abf-spell-card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  justify-content: flex-end;
+}
+
+.abf-spell-card-actions button {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  background: #6e2917;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.abf-spell-card-actions button:hover {
+  background: #8b3a24;
+}
+
+/* --------------------------------
+   Standalone Defense Result Card
+   -------------------------------- */
+
+.abf-defense-result-card .chat-combat-defense-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.abf-defense-result-card .chat-combat-defender-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.abf-defense-result-card .chat-combat-defender-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.abf-defense-result-card .chat-combat-standalone-flavor {
+  font-size: 0.75rem;
+  color: #888;
+  font-style: italic;
+}
+
+.abf-defense-result-card .chat-combat-values {
+  border-top: 1px solid #ccc;
+  padding-top: 4px;
+}

@@ -229,6 +229,8 @@ export class ChatCombatManager {
 
         if (flags.cardType === 'attack') {
             this._attachAttackCardListeners(message, html);
+        } else if (flags.cardType === 'spell') {
+            this._attachSpellCardListeners(message, html);
         }
     }
 
@@ -468,6 +470,174 @@ export class ChatCombatManager {
     _handleDamageUndone(payload) {
         // Re-render chat to update button states
         ui.chat.render();
+    }
+
+    /**
+     * Resolve the token to use for the current user.
+     * 1 selected → use it; 0 selected → use character's token; otherwise warn + null.
+     * @returns {TokenDocument|null}
+     */
+    _resolveToken() {
+        const controlled = canvas.tokens.controlled;
+        if (controlled.length === 1) return controlled[0].document;
+        if (controlled.length === 0) {
+            const character = game.user.character;
+            if (character) {
+                const token = canvas.tokens.placeables.find(t => t.actor?.id === character.id);
+                if (token) return token.document;
+            }
+        }
+        ui.notifications.warn(game.i18n.localize('anima.chat.spellCard.noTokenSelected'));
+        return null;
+    }
+
+    /**
+     * Post a spell-grade chat card from the spellbook.
+     * @param {ABFActor} actor
+     * @param {string} spellId
+     * @param {string} spellGrade - 'base' | 'intermediate' | 'advanced' | 'arcane'
+     */
+    async _postSpellCard(actor, spellId, spellGrade) {
+        const spell = actor.items.get(spellId);
+        if (!spell) return;
+
+        const gradeData = spell.system.grades?.[spellGrade];
+        const gradeLabel = game.i18n.localize(`anima.ui.mystic.spell.grade.${spellGrade}.title`);
+
+        const token = canvas.tokens.controlled.find(t => t.actor?.id === actor.id)
+            ?? canvas.tokens.placeables.find(t => t.actor?.id === actor.id);
+        const actorImg = token?.document?.texture?.src ?? actor.img;
+
+        const content = await renderTemplate(
+            'systems/animabf-guote/templates/chat/spell-grade-card.hbs',
+            {
+                actorName: actor.name,
+                actorImg,
+                spellName: spell.name,
+                spellId,
+                grade: spellGrade,
+                gradeLabel,
+                zeonCost: gradeData?.zeon?.value,
+                description: gradeData?.description?.value,
+            }
+        );
+
+        await ChatMessage.create({
+            content,
+            speaker: ChatMessage.getSpeaker({ actor }),
+            flags: {
+                'animabf-guote': {
+                    chatCombat: {
+                        cardType: 'spell',
+                        spellId,
+                        spellGrade,
+                        actorId: actor.id,
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Attach click handlers to spell grade chat card buttons.
+     * Removes buttons for users who are not the message sender.
+     * @param {ChatMessage} message
+     * @param {jQuery} html
+     */
+    _attachSpellCardListeners(message, html) {
+        if (game.user.id !== message.user?.id) {
+            html.find('.set-as-attack, .set-as-defense').remove();
+            return;
+        }
+
+        html.find('.set-as-attack').click((ev) => {
+            ev.preventDefault();
+            this._onSetAsAttack(message);
+        });
+
+        html.find('.set-as-defense').click((ev) => {
+            ev.preventDefault();
+            this._onSetAsDefense(message);
+        });
+    }
+
+    /**
+     * Handle "Set as Attack" button click on a spell card.
+     * Opens CombatAttackDialog with the mystic tab and spell preselected.
+     * @param {ChatMessage} message
+     */
+    async _onSetAsAttack(message) {
+        const token = this._resolveToken();
+        if (!token) return;
+
+        const flags = message.flags['animabf-guote'].chatCombat;
+        const { spellId, spellGrade } = flags;
+
+        const defenderTarget = game.user.targets.first() ?? null;
+        const defenderToken = defenderTarget ? defenderTarget.document : token;
+
+        const existingDialog = Object.values(ui.windows).find(
+            w => w instanceof CombatAttackDialog && w.modalData?.attacker?.token?.id === token.id
+        );
+
+        if (existingDialog) {
+            existingDialog.modalData.attacker.mystic.spellUsed = spellId;
+            existingDialog.modalData.attacker.mystic.spellGrade = spellGrade;
+            existingDialog._tabs[0].active = 'mystic';
+            existingDialog.render(false);
+        } else {
+            new CombatAttackDialog(
+                token,
+                defenderToken,
+                { onAttack: async () => {} },
+                {
+                    allowed: true,
+                    closeOnSend: true,
+                    presetData: {
+                        attackType: { value: 'mystic' },
+                        mystic: {
+                            spellUsed: { value: spellId },
+                            spellGrade: { value: spellGrade },
+                        }
+                    }
+                }
+            );
+        }
+    }
+
+    /**
+     * Handle "Set as Defense" button click on a spell card.
+     * Opens ChatCombatDefenseDialog in standalone mode with the spell preselected.
+     * @param {ChatMessage} message
+     */
+    async _onSetAsDefense(message) {
+        const token = this._resolveToken();
+        if (!token) return;
+
+        const flags = message.flags['animabf-guote'].chatCombat;
+        const { spellId, spellGrade } = flags;
+
+        const { ChatCombatDefenseDialog } = await import('./ChatCombatDefenseDialog.js');
+
+        const existingDialog = Object.values(ui.windows).find(
+            w => w instanceof ChatCombatDefenseDialog && w.standalone
+                && w.defenderToken?.id === token.id
+        );
+
+        if (existingDialog) {
+            existingDialog.modalData.defender.mystic.spellUsed = spellId;
+            existingDialog.modalData.defender.mystic.spellGrade = spellGrade;
+            existingDialog._tabs[0].active = 'mystic';
+            existingDialog.modalData.ui.activeTab = 'mystic';
+            existingDialog.render(false);
+        } else {
+            new ChatCombatDefenseDialog(
+                null,
+                token,
+                { onDefense: () => {} },
+                { spellUsed: spellId, spellGrade }
+            );
+        }
     }
 
     /**

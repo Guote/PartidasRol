@@ -133,3 +133,24 @@ Do not call `actor.update()` directly in sheet code.
 4. Add to `ALL_ITEM_CONFIGURATIONS` in `module/actor/utils/prepareItems/constants.js`
 5. Create item sheet template in `templates/items/your-type/`
 6. Optionally register a sheet in `ABFItemSheet.js`
+
+---
+
+## Item Types (full list)
+
+Defined in `template.json` under `Item.types` and registered in `module/items/ABFItems.js`:
+
+`weapon`, `armor`, `ammo`, `spell`, `psychicPower`, `psychicDiscipline`, `technique`, `inventoryItem`, `advantage`, `disadvantage`, `mentalPattern`, `note`, `summon`, `incarnation`, `kiCreature`, `creatureSummon`, `elan`, `level`, `contact`, `attackPreset`, `defensePreset`, `specialSkill`
+
+**Damage types** (used in weapon/armor/ammo): `cut`, `impact`, `thrust`, `heat`, `electricity`, `cold`, `energy`
+
+---
+
+## Compendium Packs
+
+Spanish content in `packs/` directory:
+- `weapons_es.db` — weapon items
+- `armors_es.db` — armor items
+- `magic_es.db` — spells
+- `psychic_powers_es.db` — psychic powers
+- `npcs_es.db` — NPC actors

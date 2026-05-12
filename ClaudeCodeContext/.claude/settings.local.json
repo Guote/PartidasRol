@@ -8,7 +8,8 @@
       "Bash(sed 's/\"via\":\"//')",
       "Bash(xargs cat:*)",
       "Bash(python3:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }
