@@ -1,0 +1,364 @@
+<form class="zeon-calculator">
+
+  {{!-- Header strip: ACT / accumulated / reserve --}}
+  <div class="zc-header">
+    <span>{{localize "anima.ui.zeonCalc.header.act"}}: <strong>{{actValue}}</strong></span>
+    <span>{{localize "anima.ui.zeonCalc.header.accumulated"}}: <strong>{{currentAccumulated}}</strong></span>
+    <span>{{localize "anima.ui.zeonCalc.header.reserve"}}: <strong>{{currentZeon}}/{{zeonMax}}</strong></span>
+  </div>
+
+  {{!-- Spell rows (scrollable) --}}
+  <div class="zc-spells">
+    {{#each spells}}
+    <div class="zc-spell-row" data-row-id="{{this.id}}">
+
+      {{!-- Top: spell selector + grade + actions --}}
+      <div class="zc-spell-row__top">
+        <select name="spell.{{this.id}}.spellId" class="zc-select zc-select--spell">
+          <option value="">{{localize "anima.ui.zeonCalc.spell.placeholder"}}</option>
+          {{#each (groupSpellsByVia @root.actorSpells)}}
+          <optgroup label="{{this.label}}">
+            {{#each this.spells}}
+            <option value="{{this.id}}" {{#if (is "eq" this.id ../../spellId)}}selected{{/if}}>{{this.name}}</option>
+            {{/each}}
+          </optgroup>
+          {{/each}}
+        </select>
+
+        <select name="spell.{{this.id}}.grade" class="zc-select zc-select--grade">
+          <option value="base"         {{#if (is "eq" this.grade "base")}}selected{{/if}}>{{localize "anima.ui.mystic.spell.grade.base.title"}}</option>
+          <option value="intermediate" {{#if (is "eq" this.grade "intermediate")}}selected{{/if}}>{{localize "anima.ui.mystic.spell.grade.intermediate.title"}}</option>
+          <option value="advanced"     {{#if (is "eq" this.grade "advanced")}}selected{{/if}}>{{localize "anima.ui.mystic.spell.grade.advanced.title"}}</option>
+          <option value="arcane"       {{#if (is "eq" this.grade "arcane")}}selected{{/if}}>{{localize "anima.ui.mystic.spell.grade.arcane.title"}}</option>
+        </select>
+
+        <button type="button" data-action="open-spell-sheet" data-spell-id="{{this.spellId}}"
+                class="abf-button icon-button zc-icon-btn"
+                style="width:auto!important;display:inline-flex"
+                {{#unless this.spellId}}disabled{{/unless}}
+                title="Abrir ficha del conjuro">
+          <i class="fas fa-external-link-alt"></i>
+        </button>
+
+        <button type="button" data-action="remove-spell"
+                class="abf-button icon-button zc-icon-btn zc-btn-remove"
+                style="width:auto!important;display:inline-flex"
+                {{#if (is "eq" @root.spells.length 1)}}disabled{{/if}}
+                title="Eliminar conjuro">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      {{!-- Bottom: zeon values --}}
+      <div class="zc-spell-row__bottom">
+        <div class="zc-field">
+          <span class="zc-field__label">Zeon base</span>
+          <span class="zc-field__value">{{this.baseZeon}}</span>
+        </div>
+
+        <div class="zc-field">
+          <label class="zc-field__label">{{localize "anima.ui.zeonCalc.spell.extraAccumulate.title"}}</label>
+          <input type="number" name="spell.{{this.id}}.extraAccumulate" value="{{this.extraAccumulate}}" class="zc-input" min="0">
+        </div>
+
+        <div class="zc-field">
+          <label class="zc-field__label">{{localize "anima.ui.zeonCalc.spell.extraReserve.title"}}</label>
+          <input type="number" name="spell.{{this.id}}.extraReserve" value="{{this.extraReserve}}" class="zc-input" min="0">
+        </div>
+
+        <input type="text" name="spell.{{this.id}}.comment" value="{{this.comment}}"
+               class="zc-input zc-input--comment"
+               placeholder="{{localize "anima.ui.zeonCalc.spell.comment.placeholder"}}">
+
+        <span class="zc-row-total" title="Subtotal: acumulado + reserva">
+          {{this.rowAccumulate}}<span class="zc-row-total__sep">/</span>{{this.rowReserve}}r
+        </span>
+      </div>
+
+      {{!-- Metamagic perk collapsible --}}
+      {{#if @root.perks.length}}
+      <details class="zc-perks-details">
+        <summary class="zc-perks-summary">Añadir metamagia</summary>
+        <div class="zc-perks">
+          {{#each @root.perks as |perk perkIdx|}}
+            {{#each perk.levels as |level levelIdx|}}
+              {{#if (or level.zeon_to_accumulate level.zeon_reserve)}}
+              <label class="zc-perk-option">
+                <input type="checkbox"
+                  name="spell.{{../../id}}.perk.{{perkIdx}}.{{levelIdx}}"
+                  {{#if (includesPerk ../../selectedPerkLevels perkIdx levelIdx)}}checked{{/if}}>
+                <span class="zc-perk-name">{{perk.name}} — {{level.name}}</span>
+                {{#if level.zeon_to_accumulate}}<span class="zc-perk-cost">(+{{level.zeon_to_accumulate}} acum)</span>{{/if}}
+                {{#if level.zeon_reserve}}<span class="zc-perk-cost zc-perk-cost--reserve">(+{{level.zeon_reserve}} reserva)</span>{{/if}}
+              </label>
+              {{/if}}
+            {{/each}}
+          {{/each}}
+        </div>
+      </details>
+      {{/if}}
+
+    </div>
+    {{/each}}
+  </div>
+
+  {{!-- Add / Duplicate buttons --}}
+  <div class="zc-add-buttons">
+    <button type="button" data-action="add-spell"
+            class="abf-button zc-btn"
+            style="width:auto!important;display:inline-flex">
+      <i class="fas fa-plus"></i> {{localize "anima.ui.zeonCalc.spell.add"}}
+    </button>
+    <button type="button" data-action="duplicate-spell"
+            class="abf-button zc-btn"
+            style="width:auto!important;display:inline-flex"
+            {{#unless canDuplicate}}disabled{{/unless}}>
+      <i class="fas fa-copy"></i> {{localize "anima.ui.zeonCalc.spell.duplicate"}}
+    </button>
+  </div>
+
+  {{!-- Fatigue --}}
+  <div class="zc-fatigue">
+    <label>{{localize "anima.ui.zeonCalc.fatigue.label"}}:</label>
+    <input type="number" name="fatigue.pointsToUse"
+           value="{{fatigue.pointsToUse}}" min="0" class="zc-input zc-input--sm">
+    <label>{{localize "anima.ui.zeonCalc.fatigue.pts"}}</label>
+    <select name="fatigue.bonusPerPoint" class="zc-select zc-select--sm">
+      <option value="15" {{#if (is "eq" fatigue.bonusPerPoint 15)}}selected{{/if}}>+15</option>
+      <option value="25" {{#if (is "eq" fatigue.bonusPerPoint 25)}}selected{{/if}}>+25</option>
+      <option value="40" {{#if (is "eq" fatigue.bonusPerPoint 40)}}selected{{/if}}>+40</option>
+    </select>
+    <span class="zc-fatigue__result">
+      = <strong>+{{fatigueBonus}}</strong> Ze &nbsp;
+      <span class="zc-hint">{{localize "anima.ui.zeonCalc.fatigue.hint"}}</span>
+    </span>
+  </div>
+
+  {{!-- Global modifiers --}}
+  <div class="zc-global-mods">
+    <label>{{localize "anima.ui.zeonCalc.globalMods.accumulate"}}:</label>
+    <input type="number" name="globalExtraAccumulate"
+           value="{{globalExtraAccumulate}}" class="zc-input zc-input--sm">
+    <label>{{localize "anima.ui.zeonCalc.globalMods.reserve"}}:</label>
+    <input type="number" name="globalExtraReserve"
+           value="{{globalExtraReserve}}" class="zc-input zc-input--sm">
+  </div>
+
+  {{!-- Totals bar --}}
+  <div class="zc-totals">
+    <div class="zc-total-item">
+      <span class="zc-total-label">{{localize "anima.ui.zeonCalc.totals.toAccumulate"}}</span>
+      <span class="zc-total-value">{{totalToAccumulate}}</span>
+    </div>
+    <div class="zc-total-item">
+      <span class="zc-total-label">{{localize "anima.ui.zeonCalc.totals.fromReserve"}}</span>
+      <span class="zc-total-value">{{totalFromReserve}}</span>
+    </div>
+    <div class="zc-total-item">
+      <span class="zc-total-label">{{localize "anima.ui.zeonCalc.totals.thisRound"}}</span>
+      <span class="zc-total-value">{{thisRound}}</span>
+    </div>
+    <div class="zc-total-item zc-total-item--highlight">
+      <span class="zc-total-label">{{localize "anima.ui.zeonCalc.totals.turns"}}</span>
+      <span class="zc-total-value">
+        {{#if canConfirm}}
+          {{#if (is "eq" turnsNeeded 0)}}✓{{else}}{{turnsNeeded}}{{/if}}
+        {{else}}—{{/if}}
+      </span>
+    </div>
+  </div>
+
+  {{!-- Confirm --}}
+  <div class="zc-confirm">
+    <button type="button" data-action="confirm"
+            class="abf-button zc-btn zc-btn--confirm"
+            style="width:auto!important;display:inline-flex"
+            {{#unless canConfirm}}disabled{{/unless}}>
+      {{confirmLabel}}
+    </button>
+  </div>
+
+</form>
+
+<style>
+  .zeon-calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  /* Header */
+  .zc-header {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #c8c4b4;
+    font-size: 0.82rem;
+    flex-wrap: wrap;
+  }
+
+  /* Spell list */
+  .zc-spells {
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-right: 0.2rem;
+  }
+  .zc-spell-row {
+    border: 1px solid #d8d4c4;
+    border-radius: 4px;
+    padding: 0.4rem 0.5rem;
+    background: #faf9f5;
+  }
+
+  /* Spell row — top line: selector, grade, action buttons */
+  .zc-spell-row__top {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .zc-spell-row__top .zc-select--spell { flex: 1 1 0; min-width: 0; }
+
+  /* Spell row — bottom line: zeon values */
+  .zc-spell-row__bottom {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  /* Selects */
+  .zc-select {
+    background: #e7e5da;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 0.1rem 0.2rem;
+    font-size: 0.82rem;
+  }
+  .zc-select--grade { width: 118px; flex-shrink: 0; }
+  .zc-select--sm { width: 60px; }
+
+  /* Icon buttons in spell row */
+  .zc-icon-btn {
+    padding: 0.15rem 0.35rem;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    color: #555;
+  }
+  .zc-btn-remove { color: #8b2020; }
+
+  /* Labeled field (label above value/input) */
+  .zc-field { display: flex; flex-direction: column; }
+  .zc-field__label { font-size: 0.68rem; color: #777; line-height: 1.1; white-space: nowrap; }
+  .zc-field__value { font-size: 0.85rem; font-weight: 600; padding: 0.1rem 0; }
+
+  /* Inputs */
+  .zc-input {
+    width: 46px;
+    text-align: center;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    padding: 0.1rem 0.2rem;
+    font-size: 0.82rem;
+  }
+  .zc-input--sm { width: 44px; }
+  .zc-input--comment {
+    width: auto;
+    flex: 1 1 60px;
+    min-width: 60px;
+    text-align: left;
+    align-self: flex-end;
+    font-size: 0.82rem;
+  }
+
+  /* Row subtotal */
+  .zc-row-total {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #444;
+    white-space: nowrap;
+    align-self: flex-end;
+    margin-left: auto;
+  }
+  .zc-row-total__sep { margin: 0 2px; color: #aaa; font-weight: normal; }
+
+  /* Metamagic collapsible */
+  .zc-perks-details { margin-top: 0.35rem; }
+  .zc-perks-summary {
+    font-size: 0.78rem;
+    color: #7a6030;
+    cursor: pointer;
+    user-select: none;
+  }
+  .zc-perks {
+    margin-top: 0.2rem;
+    padding-left: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    border-left: 2px solid #d0cfc0;
+  }
+  .zc-perk-option {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+  .zc-perk-option input[type="checkbox"] { margin: 0; flex-shrink: 0; }
+  .zc-perk-name { flex: 1; }
+  .zc-perk-cost { color: #7a6030; font-style: italic; white-space: nowrap; }
+  .zc-perk-cost--reserve { color: #30607a; }
+
+  /* Add/Duplicate buttons */
+  .zc-add-buttons { display: flex; gap: 0.5rem; }
+  .zc-btn {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.82rem;
+    gap: 0.3rem;
+  }
+
+  /* Fatigue & global mods rows */
+  .zc-fatigue, .zc-global-mods {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    padding: 0.25rem 0;
+    border-top: 1px solid #e0ddd0;
+  }
+  .zc-fatigue__result { font-size: 0.8rem; }
+  .zc-hint { color: #999; font-size: 0.72rem; }
+
+  /* Totals bar */
+  .zc-totals {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0.4rem 0.5rem;
+    background: #f0efe8;
+    border-radius: 4px;
+    border: 1px solid #d0cfc0;
+    flex-wrap: wrap;
+  }
+  .zc-total-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 65px;
+  }
+  .zc-total-label { font-size: 0.68rem; color: #777; text-transform: uppercase; letter-spacing: 0.03em; }
+  .zc-total-value { font-size: 1.05rem; font-weight: bold; color: #333; }
+  .zc-total-item--highlight .zc-total-value { font-size: 1.4rem; color: #4a3820; }
+
+  /* Confirm */
+  .zc-confirm { display: flex; justify-content: flex-end; padding-top: 0.2rem; }
+  .zc-btn--confirm { padding: 0.3rem 1.2rem; font-size: 0.9rem; }
+</style>

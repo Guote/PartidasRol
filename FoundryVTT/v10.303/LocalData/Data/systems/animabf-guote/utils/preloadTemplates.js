@@ -107,6 +107,7 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor/parts/combat/parts/ammo.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/combat/parts/armors.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/combat/parts/weapons.hbs`,
+    `systems/${ABFSystemName}/templates/dialog/mystic/zeon-calculator-dialog.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/mystic/mystic.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/mystic/parts/act.hbs`,
     `systems/${ABFSystemName}/templates/actor/parts/mystic/parts/magic-projection.hbs`,

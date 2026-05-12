@@ -11,6 +11,7 @@ import { minNumberHBSHelper } from './helpers/minNumberHBSHelper.js';
 import { logHBSHelper } from './helpers/logHBSHelper.js';
 import { orHBSHelper } from './helpers/orHBSHelper.js';
 import { groupSpellsByViaHBSHelper } from './helpers/groupSpellsByViaHBSHelper.js';
+import { includesPerkHBSHelper } from './helpers/includesPerkHBSHelper.js';
 export const registerHelpers = () => {
     const helpers = [
         calculateExperienceHBSHelper,
@@ -25,7 +26,8 @@ export const registerHelpers = () => {
         minNumberHBSHelper,
         logHBSHelper,
         orHBSHelper,
-        groupSpellsByViaHBSHelper
+        groupSpellsByViaHBSHelper,
+        includesPerkHBSHelper
     ];
     for (const helper of helpers) {
         Handlebars.registerHelper(helper.name, helper.fn);

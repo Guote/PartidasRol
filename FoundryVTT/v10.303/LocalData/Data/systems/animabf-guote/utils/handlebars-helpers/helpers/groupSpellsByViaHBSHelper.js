@@ -47,6 +47,8 @@ export const groupSpellsByViaHBSHelper = {
       result.push({ via, label: via, spells: spellList });
     }
 
+    result.sort((a, b) => a.label.localeCompare(b.label, 'es'));
+
     return result;
   }
 };

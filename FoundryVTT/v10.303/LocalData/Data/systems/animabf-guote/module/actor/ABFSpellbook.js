@@ -1,4 +1,5 @@
 import { ABFSystemName } from "../../animabf-guote.name.js";
+import { ZeonCalculatorDialog } from "../dialogs/mystic/ZeonCalculatorDialog.js";
 import { getFormula } from "../rolls/utils/getFormula.js";
 import { getModifierTerms } from "../rolls/utils/getModifierTerms.js";
 import ABFFoundryRoll from "../rolls/ABFFoundryRoll.js";
@@ -236,6 +237,11 @@ export default class ABFSpellbook extends Application {
 
   activateListeners(html) {
     super.activateListeners(html);
+
+    // Zeon accumulation calculator
+    html.find('[data-action="open-zeon-calculator"]').click(() => {
+      ZeonCalculatorDialog.openForActor(this.actor);
+    });
 
     // Via tab clicks
     html.find('.spellbook-sidetab').click(ev => {
