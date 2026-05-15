@@ -288,6 +288,10 @@
 .actor-sheet-v2 .v2-res--zeon-acc .v2-res__label {
   color: var(--abf-zeon);
 }
+.actor-sheet-v2 .v2-res--zeon .v2-res__input--long,
+.actor-sheet-v2 .v2-res--zeon-acc .v2-res__input--long {
+  font-size: 0.65rem;
+}
 .actor-sheet-v2 .v2-res--ki .v2-res__label {
   color: var(--abf-ki);
 }

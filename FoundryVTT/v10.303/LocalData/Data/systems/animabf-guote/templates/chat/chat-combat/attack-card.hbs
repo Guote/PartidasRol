@@ -10,7 +10,11 @@
       <div class="chat-combat-attacker-row">
         <img src="{{attacker.img}}" class="chat-combat-portrait" alt="{{attacker.name}}" />
         <span class="chat-combat-name">{{attacker.name}}</span>
+        {{#if roll}}
+        <span class="chat-combat-ha">HA: {{attackBase}} (+{{roll}}) = {{attackTotal}}</span>
+        {{else}}
         <span class="chat-combat-ha">HA: {{attackTotal}}</span>
+        {{/if}}
       </div>
 
       {{!-- Collapsible attack details --}}
@@ -28,7 +32,7 @@
           {{#if taReduction}}
           <div class="chat-combat-value-row">
             <span class="chat-combat-label">{{localize "anima.chat.combat.taReduction"}}</span>
-            <span class="chat-combat-value">-{{taReduction}}</span>
+            <span class="chat-combat-value">{{taReduction}}</span>
           </div>
           {{/if}}
         </div>
@@ -65,7 +69,16 @@
                 {{/if}}
               </td>
               <td class="chat-combat-action-cell">
-                {{#if canCounter}}
+                {{#if defenseSucceeded}}
+                  {{#if shieldApplied}}
+                  <button type="button" class="chat-combat-undo-shield" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.undoShield'}}">
+                    <i class="fas fa-undo"></i>
+                  </button>
+                  {{else}}
+                  <button type="button" class="chat-combat-apply-shield" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.applyShield'}}">
+                    <i class="fas fa-shield-alt"></i>
+                  </button>
+                  {{/if}}
                 {{else if (is "gt" damage 0)}}
                   {{#if damageApplied}}
                   <button type="button" class="chat-combat-undo-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.undoDamage'}}">
@@ -73,7 +86,7 @@
                   </button>
                   {{else}}
                   <button type="button" class="chat-combat-apply-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.applyDamage'}}">
-                    <i class="fas fa-check"></i>
+                    <i class="fas fa-heart-broken"></i>
                   </button>
                   {{/if}}
                 {{/if}}

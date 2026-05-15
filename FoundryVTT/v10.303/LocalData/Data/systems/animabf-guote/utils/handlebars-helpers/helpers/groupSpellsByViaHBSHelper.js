@@ -29,7 +29,7 @@ export const groupSpellsByViaHBSHelper = {
 
     // Sort alphabetically within each group
     for (const spellList of groups.values()) {
-      spellList.sort((a, b) => a.name.localeCompare(b.name));
+      spellList.sort((a, b) => a.name.localeCompare(b.name, 'es', { numeric: true }));
     }
 
     // Build result in defined via order
@@ -47,7 +47,7 @@ export const groupSpellsByViaHBSHelper = {
       result.push({ via, label: via, spells: spellList });
     }
 
-    result.sort((a, b) => a.label.localeCompare(b.label, 'es'));
+    result.sort((a, b) => a.label.localeCompare(b.label, 'es', { numeric: true }));
 
     return result;
   }

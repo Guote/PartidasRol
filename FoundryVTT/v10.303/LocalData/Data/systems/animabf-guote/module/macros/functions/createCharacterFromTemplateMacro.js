@@ -14,7 +14,7 @@ const loadArmorsFromCompendium = async () => {
   const armors = await pack.getDocuments();
   return armors
     .map((armor) => ({ id: armor.id, name: armor.name }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.name.localeCompare(b.name, 'es', { numeric: true }));
 };
 
 /**
@@ -274,8 +274,8 @@ const buildActorData = (stats, subsystems) => {
         psychicProjection: {
           base: { value: stats.psychicProjection },
           imbalance: {
-            offensive: { base: { value: psychicProjection } },
-            defensive: { base: { value: psychicProjection } },
+            offensive: { base: { value: stats.psychicProjection } },
+            defensive: { base: { value: stats.psychicProjection } },
           },
         },
       },

@@ -10,33 +10,14 @@
   class="attack-values"
   }}
   {{#if this.allowed}}
-  {{#unless this.attackSent}}
-  <div class="preset-manager">
-    <div class="preset-load-row">
-      <label class="preset-label">{{localize 'anima.ui.combat.loadPreset'}}</label>
-      <select class="preset-selector load-attack-preset">
-        <option value="">-- {{localize 'anima.ui.combat.newAttack'}} --</option>
-        {{#each this.attacker.actor.system.combat.attackPresets}}
-        <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
-        {{/each}}
-      </select>
-    </div>
-    <div class="preset-save-row">
-      <input type="text" class="preset-name-input" placeholder="{{localize 'anima.ui.combat.presetName'}}" value="{{this.presetName}}">
-      <button type="button" class="abf-button save-attack-preset" disabled title="{{localize 'anima.macros.combat.dialog.savePreset'}}">
-        <i class="fas fa-save"></i> {{localize 'anima.macros.combat.dialog.savePreset'}}
-      </button>
-    </div>
-  </div>
-  {{/unless}}
 
   <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
-    {{#if (is 'gt' this.attacker.actor.system.mystic.spells.length 0)}}<a class="item" data-tab="mystic">{{localize
+    {{#if this.ui.hasMysticSpells}}<a class="item" data-tab="mystic">{{localize
       "anima.ui.tabs.mystic"}}</a>{{/if}}
-    {{#if (is 'gt' this.attacker.actor.system.psychic.psychicPowers.length 0)}}<a class="item"
+    {{#if this.ui.hasPsychicPowers}}<a class="item"
       data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>{{/if}}
-    {{#if (is 'gt' this.attacker.actor.system.mystic.summons.length 0)}}<a class="item"
+    {{#if (is 'gt' this.attacker.summon.summonsList.length 0)}}<a class="item"
       data-tab="summon">{{localize "anima.ui.tabs.summon"}}</a>{{/if}}
   </nav>
 
@@ -66,6 +47,147 @@
       {{> 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/summon.hbs' this=this}}
     </div>
   </section>
+
+  {{!-- ═══ ATTACK MODIFIERS (shared, rendered once) ═══ --}}
+  <div class="dialog-section attack-details-section">
+    {{> 'systems/animabf-guote/templates/dialog/combat/combat-attack/parts/attack-details-header.hbs' this=this}}
+    <div class="attack-details-grid">
+      <div>
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        title="Número de ataques"
+        disabled=this.attackSent
+        inputName="attacker.attackAccumulation"
+        inputValue=this.attacker.attackAccumulation
+        }}
+      </div>
+      <div>
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        title="HA mod."
+        disabled=this.attackSent
+        inputName=this.ui.activeAttackModifiers.modifierInputName
+        inputValue=this.ui.activeAttackModifiers.modifierValue
+        }}
+      </div>
+      <div>
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        title="Sin tirar dado"
+        disabled=this.attackSent
+        inputType="checkbox"
+        inputName="attacker.withoutRoll"
+        inputValue=(is 'eq' this.attacker.withoutRoll true)
+        }}
+      </div>
+      <div>
+        {{#if this.ui.activeAttackModifiers.damageDisabled}}
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        title="Mod daño"
+        disabled=true
+        inputValue=this.ui.activeAttackModifiers.damageValue
+        }}
+        {{else}}
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        title="Mod daño"
+        disabled=this.attackSent
+        inputName=this.ui.activeAttackModifiers.damageInputName
+        inputValue=this.ui.activeAttackModifiers.damageValue
+        }}
+        {{/if}}
+      </div>
+      <div>
+        {{#if this.ui.activeAttackModifiers.useCriticWithNone}}
+        {{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+        disabled=this.attackSent
+        choices=config.iterables.combat.weapon.criticTypesWithNone
+        title="Crítico"
+        inputName=this.ui.activeAttackModifiers.criticInputName
+        inputValue=this.ui.activeAttackModifiers.criticValue
+        }}
+        {{else}}
+        {{> 'systems/animabf-guote/templates/common/ui/custom-select-choices.hbs'
+        disabled=this.attackSent
+        choices=config.iterables.combat.weapon.criticTypes
+        title="Crítico"
+        inputName=this.ui.activeAttackModifiers.criticInputName
+        inputValue=this.ui.activeAttackModifiers.criticValue
+        }}
+        {{/if}}
+      </div>
+      <div>
+        {{>
+        "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+        title="Mod TA enemigo"
+        disabled=this.attackSent
+        inputName=this.ui.activeAttackModifiers.ignoredTAInputName
+        inputValue=this.ui.activeAttackModifiers.ignoredTAValue
+        }}
+      </div>
+    </div>
+  </div>
+
+  {{!-- ═══ RESUMEN ═══ --}}
+  {{#unless this.attackSent}}
+  {{#if this.ui.activeSummary}}
+  <div class="combat-summary-bar">
+    <span class="summary-item">
+      <span class="summary-label">HA</span>
+      <span class="summary-value">{{this.ui.activeSummary.haFinal}}</span>
+    </span>
+    <span class="summary-item">
+      <span class="summary-label">Daño Base</span>
+      <span class="summary-value">{{this.ui.activeSummary.damage}}</span>
+    </span>
+    <span class="summary-item">
+      <span class="summary-label">Mod TA enemigo</span>
+      <span class="summary-value">{{this.ui.activeSummary.ignoredTA}}</span>
+    </span>
+    {{#if this.ui.activeSummary.criticSelected}}
+    <span class="summary-item">
+      <span class="summary-label">Tipo Daño</span>
+      <span class="summary-value">{{localize (concat 'anima.ui.combat.armors.at.' this.ui.activeSummary.criticSelected '.title')}}</span>
+    </span>
+    {{/if}}
+  </div>
+  {{/if}}
+  {{/unless}}
+
+  {{!-- ═══ PRESET SAVE/LOAD ═══ --}}
+  {{#unless this.attackSent}}
+  <details class="preset-section">
+    <summary class="preset-section__summary">{{localize 'anima.ui.combat.savePresetSection.attack'}}</summary>
+    <div class="preset-section__row">
+      <select class="preset-selector load-attack-preset">
+        <option value="">-- {{localize 'anima.ui.combat.newAttack'}} --</option>
+        {{#each this.attacker.actor.system.combat.attackPresets}}
+        <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
+        {{/each}}
+      </select>
+      <button type="button" class="abf-button save-attack-preset"
+              style="width:auto!important;display:inline-flex"
+              title="{{localize 'anima.ui.combat.saveCurrentTooltip'}}">
+        <i class="fas fa-save"></i> {{localize 'anima.ui.combat.saveCurrent'}}
+      </button>
+    </div>
+  </details>
+  {{/unless}}
+
+  {{!-- ═══ ENVIAR ═══ --}}
+  {{#if this.attackSent}}
+  <div class='attack-sent'>
+    {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
+    <p class='label'>{{localize 'anima.macros.combat.dialog.attackSent.title'}}</p>
+  </div>
+  {{else}}
+  <div class='attack-buttons'>
+    <button type="button" class='abf-button send-attack'>
+      {{localize 'anima.macros.combat.dialog.attackButton.title'}}
+    </button>
+  </div>
+  {{/if}}
 
   {{else}}
   <div class='waiting-row'>

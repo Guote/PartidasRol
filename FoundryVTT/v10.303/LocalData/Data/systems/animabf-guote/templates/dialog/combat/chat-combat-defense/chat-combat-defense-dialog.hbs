@@ -25,36 +25,16 @@
       </div>
       {{/unless}}
 
-      {{#unless this.defenseSent}}
-      <div class="preset-manager">
-        <div class="preset-load-row">
-          <label class="preset-label">{{localize 'anima.ui.combat.loadPreset'}}</label>
-          <select class="preset-selector load-defense-preset">
-            <option value="">-- {{localize 'anima.ui.combat.newDefense'}} --</option>
-            {{#each this.defender.actor.system.combat.defensePresets}}
-            <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
-            {{/each}}
-          </select>
-        </div>
-        <div class="preset-save-row">
-          <input type="text" class="preset-name-input" placeholder="{{localize 'anima.ui.combat.presetName'}}" value="{{this.presetName}}">
-          <button type="button" class="abf-button save-defense-preset" disabled title="{{localize 'anima.macros.combat.dialog.savePreset'}}">
-            <i class="fas fa-save"></i> {{localize 'anima.macros.combat.dialog.savePreset'}}
-          </button>
-        </div>
-      </div>
-      {{/unless}}
-
       <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
         {{#if (is 'eq' this.defender.actor.system.general.settings.defenseType.value 'resistance')}}
           <a class="item" data-tab="damageResistance">{{localize "anima.ui.tabs.damageResistance"}}</a>
         {{else}}
           <a class="item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
         {{/if}}
-        {{#if (is 'gt' this.defender.actor.system.mystic.spells.length 0)}}
+        {{#if this.ui.hasMysticSpells}}
           <a class="item" data-tab="mystic">{{localize "anima.ui.tabs.mystic"}}</a>
         {{/if}}
-        {{#if (is 'gt' this.defender.actor.system.psychic.psychicPowers.length 0)}}
+        {{#if this.ui.hasPsychicPowers}}
           <a class="item" data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>
         {{/if}}
         {{#if this.ui.hasSummons}}
@@ -107,17 +87,17 @@
           <div>
             {{>
             "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title=(localize 'anima.macros.combat.dialog.modifier.title')
+            title="HD mod."
             inputName=this.ui.activeModifierInputName
             inputValue=this.ui.activeModifierValue
             }}
           </div>
 
-          {{!-- Row 1 col 2: Sin tirada --}}
+          {{!-- Row 1 col 2: Sin tirar dado --}}
           <div>
             {{>
             "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title=(localize 'anima.macros.combat.dialog.noRoll.title')
+            title="Sin tirar dado"
             inputType="checkbox"
             inputName="defender.withoutRoll"
             inputValue=(is 'eq' this.defender.withoutRoll true)
@@ -128,7 +108,7 @@
           <div class="ta-combined-field">
             {{>
             "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title=(localize 'anima.macros.combat.dialog.at.title')
+            title="TA mod."
             inputName="defender.combat.at.special"
             inputValue=this.defender.combat.at.special
             }}
@@ -143,11 +123,11 @@
             {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
           </div>
 
-          {{!-- Row 2 col 2: Daño Base --}}
+          {{!-- Row 2 col 2: Mod. Daño enemigo --}}
           <div>
             {{>
             "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
-            title="Daño Base"
+            title="Mod. Daño enemigo"
             inputName="defender.damageModifier"
             inputValue=this.defender.damageModifier
             }}
@@ -164,7 +144,7 @@
       {{#if this.ui.activeSummary}}
       <div class="combat-summary-bar">
         <span class="summary-item">
-          <span class="summary-label">HD final</span>
+          <span class="summary-label">HD</span>
           <span class="summary-value">{{this.ui.activeSummary.hdFinal}}</span>
         </span>
         <span class="summary-item">
@@ -173,12 +153,34 @@
         </span>
         {{#if this.ui.activeSummary.damageModifier}}
         <span class="summary-item">
-          <span class="summary-label">Mod. Daño</span>
+          <span class="summary-label">Mod. Daño enemigo</span>
           <span class="summary-value">{{this.ui.activeSummary.damageModifier}}</span>
         </span>
         {{/if}}
       </div>
       {{/if}}
+      {{/unless}}
+      {{/if}}
+
+      {{!-- ═══ PRESET SAVE/LOAD ═══ --}}
+      {{#if (is 'neq' this.ui.activeTab 'damageResistance')}}
+      {{#unless this.defenseSent}}
+      <details class="preset-section">
+        <summary class="preset-section__summary">{{localize 'anima.ui.combat.savePresetSection.defense'}}</summary>
+        <div class="preset-section__row">
+          <select class="preset-selector load-defense-preset">
+            <option value="">-- {{localize 'anima.ui.combat.newDefense'}} --</option>
+            {{#each this.defender.actor.system.combat.defensePresets}}
+            <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+          <button type="button" class="abf-button save-defense-preset"
+                  style="width:auto!important;display:inline-flex"
+                  title="{{localize 'anima.ui.combat.saveCurrentTooltip'}}">
+            <i class="fas fa-save"></i> {{localize 'anima.ui.combat.saveCurrent'}}
+          </button>
+        </div>
+      </details>
       {{/unless}}
       {{/if}}
 

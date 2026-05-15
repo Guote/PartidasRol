@@ -99,7 +99,6 @@ const getInitialData = (attackMessage, defenderToken, options = {}) => {
             damageModifier: 0
         },
         defenseSent: false,
-        presetName: '',
         selectedPresetId: ''
     };
 };
@@ -211,6 +210,8 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.defenderActor.items.get(powerId)?.sheet?.render(true);
         });
 
+        this._applyModifiedShading(html);
+
         // Unified defense send button — dispatches by active tab
         html.find('.send-defense').click((e) => {
             e.preventDefault();
@@ -280,7 +281,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 });
             }
 
-            const ne = Math.max(0, roll.total - (summonDificultad ?? 0));
+            const ne = Math.floor(Math.max(0, roll.total - (summonDificultad ?? 0)));
             this.modalData.defender.summon.summoningResult = { total: roll.total, ne };
             this.modalData.defender.summon.summoningRolled = true;
 
@@ -305,60 +306,42 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this._sendDamageResistanceDefense();
         });
 
-        // Preset name input handler - track value and update button disabled state
-        const presetInput = html.find('.preset-name-input');
-        const saveButton = html.find('.save-defense-preset');
-
-        // Update button disabled state based on input value
-        const updateSaveButtonState = () => {
-            const hasValue = presetInput.val()?.trim().length > 0;
-            saveButton.prop('disabled', !hasValue);
-        };
-
-        // Listen for input changes
-        presetInput.on('input keyup', (e) => {
-            // Save value to modalData so it survives re-renders
-            this.modalData.presetName = e.target.value;
-            updateSaveButtonState();
-        });
-
-        // Initial state check
-        updateSaveButtonState();
-
         // Load preset selector handler
         html.find('.load-defense-preset').change((e) => {
             const presetId = e.target.value;
             if (!presetId) {
-                // "New defense" selected - reset to defaults
                 this.modalData.selectedPresetId = '';
                 return;
             }
-
-            // Find the preset and load its data
             const preset = this.defenderActor.system.combat.defensePresets.find(p => p._id === presetId);
             if (!preset) return;
-
             this.modalData.selectedPresetId = presetId;
             this._loadPresetData(preset.system);
         });
 
-        // Save defense preset handler
-        saveButton.click(async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const name = this.modalData.presetName?.trim();
-            if (!name) return; // Button should be disabled, but double-check
-
-            // Get the current active tab as the defense type
+        // Save preset — opens a name-prompt dialog
+        html.find('.save-defense-preset').click(() => {
             const defenseType = this._tabs[0].active || 'combat';
-
-            await this._saveAsPreset(defenseType, name);
-
-            // Clear input and update state
-            this.modalData.presetName = '';
-            presetInput.val('');
-            updateSaveButtonState();
+            const defaultName = game.i18n.localize('anima.ui.combat.defaultPresetName.defense');
+            new Dialog({
+                title: game.i18n.localize('anima.ui.combat.savePreset.title'),
+                content: `<form style="padding:0.5rem 0"><div class="form-group">
+                  <label>${game.i18n.localize('anima.ui.combat.presetName')}</label>
+                  <input type="text" name="presetName" placeholder="${defaultName}" style="width:100%;margin-top:0.3rem" autofocus>
+                </div></form>`,
+                buttons: {
+                    save: {
+                        icon: '<i class="fas fa-save"></i>',
+                        label: game.i18n.localize('anima.macros.combat.dialog.savePreset'),
+                        callback: html => {
+                            const name = html.find("[name='presetName']").val().trim() || defaultName;
+                            this._saveAsPreset(defenseType, name);
+                        }
+                    },
+                    cancel: { label: 'Cancelar' }
+                },
+                default: 'save'
+            }).render(true);
         });
     }
 
@@ -423,6 +406,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         if (this.standalone) {
             await this._postStandaloneDefenseResult(defenseResult);
+            Hooks.callAll('animabf.defenseSent', this.defenderToken, defenseResult);
         } else {
             this.hooks.onDefense(defenseResult);
         }
@@ -606,7 +590,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         const powers = normalizePowers(summon.system.powers);
         const power = powers[powerIdx] ?? powers[0];
         const neHD = power?.ne?.value ?? 0;
-        const evalHD = (f) => { try { return f?.trim() ? Roll.safeEval(f.replace(/\[NE\]/gi, neHD)) : 0; } catch { return 0; } };
+        const evalHD = (f) => { try { return f?.trim() ? Math.floor(Roll.safeEval(f.replace(/\[NE\]/gi, neHD))) : 0; } catch { return 0; } };
         const effectiveHD = evalHD(power?.defFormula?.value);
 
         const formula = getFormula({
@@ -737,7 +721,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         summonData.powerUsed = parseInt(summonData.powerUsed) || 0;
         const summons = this.defenderActor.items.filter(i => i.type === 'summon');
         summonData.summonsList = summons;
-        const evalDefF = (f, ne) => { try { return f?.trim() ? Roll.safeEval(f.replace(/\[NE\]/gi, ne)) : 0; } catch { return 0; } };
+        const evalDefF = (f, ne) => { try { return f?.trim() ? Math.floor(Roll.safeEval(f.replace(/\[NE\]/gi, ne))) : 0; } catch { return 0; } };
         if (summonData.summonUsed) {
             const selectedSummon = summons.find(s => s._id === summonData.summonUsed);
             if (selectedSummon) {
@@ -761,6 +745,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
             const ne = p0?.ne?.value ?? 0;
             summonData.effectiveHD = evalDefF(p0?.defFormula?.value, ne);
         }
+
+        // hasPsychicPowers / hasMysticSpells: read from actor.items (always in sync;
+        // actor.system derived arrays may lag after an item update, same as summons)
+        this.modalData.ui.hasPsychicPowers = this.defenderActor.items.some(i => i.type === 'psychicPower');
+        this.modalData.ui.hasMysticSpells = this.defenderActor.items.some(i => i.type === 'spell');
 
         // hasSummons flag (bypasses async race condition on actor.system.mystic.summons)
         this.modalData.ui.hasSummons = this.defenderActor.items.some(i => i.type === 'summon');
@@ -835,6 +824,21 @@ export class ChatCombatDefenseDialog extends FormApplication {
         this.render();
     }
 
+    _applyModifiedShading(html) {
+        // Number inputs: shade when value != 0
+        html.find('input[type="number"].input').each((_, el) => {
+            if (!el.name) return;
+            el.classList.toggle('abf-input-modified', (parseFloat(el.value) || 0) !== 0);
+        });
+
+        // Numeric selects (fatigue, CV points): shade when != 0
+        ['defender.combat.fatigue', 'defender.psychic.cvProyeccion', 'defender.psychic.cvPotencial'].forEach(name => {
+            html.find(`select[name="${name}"]`).each((_, el) => {
+                el.classList.toggle('abf-input-modified', parseInt(el.value) !== 0);
+            });
+        });
+    }
+
     /**
      * Save current defense configuration as a preset
      * @param {string} defenseType - The type of defense ('combat', 'mystic', or 'psychic')
@@ -884,6 +888,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         }]);
 
         ui.notifications.info(i18n.format('anima.notifications.presetSaved', { name }));
+        this.render(false);
     }
 
     /**

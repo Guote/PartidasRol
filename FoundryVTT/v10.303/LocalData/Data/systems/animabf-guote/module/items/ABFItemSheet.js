@@ -68,7 +68,7 @@ export default class ABFItemSheet extends ItemSheet {
             const specialization = sheet.item.actor?.system?.mystic?.summoning?.specialization?.value ?? 'ninguna';
             const evalF = (formula, ne) => {
                 if (!formula?.trim()) return 0;
-                try { return Roll.safeEval(formula.replace(/\[NE\]/gi, ne)); } catch { return '?'; }
+                try { return Math.floor(Roll.safeEval(formula.replace(/\[NE\]/gi, ne))); } catch { return '?'; }
             };
             const powers = sheet.system.powers ?? [];
             sheet.powersComputed = powers.map(power => {

@@ -108,7 +108,6 @@ const getInitialData = (attacker, defender, options = {}) => {
     config: ABFConfig,
     initialTab: hasPreset ? (presetData.attackType?.value ?? "combat") : (macroCookies?.initialTab ?? "combat"),
     presetId: options.presetId,
-    presetName: "",
     selectedPresetId: "",
   };
   console.log(
@@ -134,6 +133,7 @@ export class CombatAttackDialog extends FormApplication {
     // Set initial tab based on preset data or saved preferences
     const initialTab = this.modalData.initialTab || "combat";
     this._tabs[0].active = initialTab;
+    this._tabs[0].callback = () => { this.render(); };
 
     this.render(true);
   }
@@ -199,269 +199,239 @@ export class CombatAttackDialog extends FormApplication {
       this.attackerActor.items.get(summonId)?.sheet?.render(true);
     });
 
-    // Preset name input handler - track value and update button disabled state
-    const presetInput = html.find(".preset-name-input");
-    const saveButton = html.find(".save-attack-preset");
-
-    // Update button disabled state based on input value
-    const updateSaveButtonState = () => {
-      const hasValue = presetInput.val()?.trim().length > 0;
-      saveButton.prop("disabled", !hasValue);
-    };
-
-    // Listen for input changes (keyup for real-time feedback)
-    presetInput.on("input keyup", (e) => {
-      // Save value to modalData so it survives re-renders
-      this.modalData.presetName = e.target.value;
-      updateSaveButtonState();
-    });
-
-    // Initial state check
-    updateSaveButtonState();
-
     // Load preset selector handler
     html.find(".load-attack-preset").change((e) => {
       const presetId = e.target.value;
       if (!presetId) {
-        // "New attack" selected - reset to defaults
         this.modalData.selectedPresetId = "";
         return;
       }
-
-      // Find the preset and load its data
       const preset = this.attackerActor.system.combat.attackPresets.find(p => p._id === presetId);
       if (!preset) return;
-
       this.modalData.selectedPresetId = presetId;
       this._loadPresetData(preset.system);
     });
 
-    // Save preset button handler
-    saveButton.click(async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const name = this.modalData.presetName?.trim();
-      if (!name) return; // Button should be disabled, but double-check
-
-      // Get the current active tab as the attack type
+    // Save preset — opens a name-prompt dialog
+    html.find(".save-attack-preset").click(() => {
       const attackType = this._tabs[0].active || "combat";
-
-      await this._saveAsPreset(attackType, name);
-
-      // Clear input and update state
-      this.modalData.presetName = "";
-      presetInput.val("");
-      updateSaveButtonState();
+      const defaultName = game.i18n.localize("anima.ui.combat.defaultPresetName.attack");
+      new Dialog({
+        title: game.i18n.localize("anima.ui.combat.savePreset.title"),
+        content: `<form style="padding:0.5rem 0"><div class="form-group">
+          <label>${game.i18n.localize("anima.ui.combat.presetName")}</label>
+          <input type="text" name="presetName" placeholder="${defaultName}" style="width:100%;margin-top:0.3rem" autofocus>
+        </div></form>`,
+        buttons: {
+          save: {
+            icon: '<i class="fas fa-save"></i>',
+            label: game.i18n.localize("anima.macros.combat.dialog.savePreset"),
+            callback: html => {
+              const name = html.find("[name='presetName']").val().trim() || defaultName;
+              this._saveAsPreset(attackType, name);
+            }
+          },
+          cancel: { label: "Cancelar" }
+        },
+        default: "save"
+      }).render(true);
     });
 
     html.find(".send-attack").click(() => {
-      const {
-        weapon,
-        criticSelected,
-        modifier,
-        fatigueUsed,
-        damage,
-        weaponUsed,
-        unarmed,
-        ignoredTA,
-      } = this.modalData.attacker.combat;
-
-      const { withoutRoll, attackAccumulation } =
-        this.modalData.attacker;
+      const activeTab = this._tabs[0]?.active ?? 'combat';
+      const { withoutRoll, attackAccumulation } = this.modalData.attacker;
       const isAttackAccumulation = (attackAccumulation ?? 1) > 1;
-      if (typeof damage !== "undefined") {
-        const attack = weapon
-          ? weapon.system.attack.final.value
-          : this.attackerActor.system.combat.attack.final.value;
-        const counterAttackBonus =
-          this.modalData.attacker.counterAttackBonus ?? 0;
-        const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "attack");
-        let rollModifiers = [
-          attack,
-          getMassAttackBonus(attackAccumulation),
-          counterAttackBonus,
-          fatigueUsed * 15,
-          ...modTermValues,
-          modifier,
-        ];
-        let formula = getFormula({
-          dice: withoutRoll ? "0": "1d100xa",
-          values: rollModifiers,
-          labels: [
-            "HA",
-            `${attackAccumulation} at. en masa`,
-            "Contraataque",
-            "Cansancio",
-            ...modTermLabels,
-            "Mod",
-          ],
-        });
-        formula = applyMasteryFormula(formula, this.attackerActor.system.combat.attack.base.value);
+
+      if (activeTab === 'combat') {
+        const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed, ignoredTA } = this.modalData.attacker.combat;
+        if (typeof damage !== "undefined") {
+          const attack = weapon
+            ? weapon.system.attack.final.value
+            : this.attackerActor.system.combat.attack.final.value;
+          const counterAttackBonus = this.modalData.attacker.counterAttackBonus ?? 0;
+          const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "attack");
+          let rollModifiers = [attack, getMassAttackBonus(attackAccumulation), counterAttackBonus, fatigueUsed * 15, ...modTermValues, modifier];
+          let formula = getFormula({
+            dice: withoutRoll ? "0" : "1d100xa",
+            values: rollModifiers,
+            labels: ["HA", `${attackAccumulation} at. en masa`, "Contraataque", "Cansancio", ...modTermLabels, "Mod"],
+          });
+          formula = applyMasteryFormula(formula, this.attackerActor.system.combat.attack.base.value);
+          const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
+          roll.roll();
+          if (this.modalData.attacker.showRoll) {
+            const { i18n } = game;
+            const flavor = weapon
+              ? i18n.format("anima.macros.combat.dialog.physicalAttack.title", { weapon: weapon?.name, target: this.modalData.defender.token.name })
+              : i18n.format("anima.macros.combat.dialog.physicalAttack.unarmed.title", { target: this.modalData.defender.token.name });
+            roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor });
+          }
+          const critic = criticSelected ?? WeaponCritic.IMPACT;
+          const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
+          const attackResult = {
+            type: "combat",
+            values: {
+              unarmed,
+              damage: Math.floor((isAttackAccumulation ? damage.final * 1.5 : damage.final) / 5) * 5,
+              ignoredTA, attack, weaponUsed, critic, modifier, fatigueUsed,
+              roll: rolled, total: roll.total, fumble: roll.fumbled,
+            },
+          };
+          this.hooks.onAttack(attackResult);
+          ChatAttackCard.create(this.modalData.attacker.token, attackResult, { weapon });
+          if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
+          this.attackerActor.update({
+            "system.macroCookies.combatAttackDialog": {
+              initialTab: "combat",
+              combat: { modifier, unarmed, weaponUsed, criticSelected: critic, weapon, damage, ignoredTA },
+            },
+          });
+        }
+
+      } else if (activeTab === 'mystic') {
+        const { spellGrade, spellUsed, modifier, critic, damage, ignoredTA, magicProjectionType } = this.modalData.attacker.mystic;
+        if (spellUsed) {
+          const magicProjection = this.attackerActor.system.mystic.magicProjection.imbalance.offensive.final.value;
+          const baseMagicProjection = this.attackerActor.system.mystic.magicProjection.imbalance.offensive.base.value;
+          const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
+          let rollModifiers = [magicProjection, getMassAttackBonus(attackAccumulation), ...modTermValues, modifier];
+          let formula = getFormula({
+            dice: withoutRoll ? "0" : "1d100xa",
+            values: rollModifiers,
+            labels: ["Proy. Mag.", `${attackAccumulation} at. en masa`, ...modTermLabels, "Mod."],
+          });
+          formula = applyMasteryFormula(formula, baseMagicProjection);
+          const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
+          roll.roll();
+          if (this.modalData.attacker.showRoll) {
+            const { i18n } = game;
+            const { spells } = this.attackerActor.system.mystic;
+            const spell = spells.find((w) => w._id === spellUsed);
+            const flavor = i18n.format("anima.macros.combat.dialog.magicAttack.title", { spell: spell.name, target: this.modalData.defender.token.name });
+            roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor });
+          }
+          const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
+          const mysticAttackResult = {
+            type: "mystic",
+            values: {
+              modifier, spellUsed, spellGrade, magicProjection, critic,
+              damage: Math.floor((isAttackAccumulation ? damage * 1.5 : damage) / 5) * 5,
+              ignoredTA, roll: rolled, total: roll.total, fumble: roll.fumbled,
+            },
+          };
+          this.hooks.onAttack(mysticAttackResult);
+          ChatAttackCard.create(this.modalData.attacker.token, mysticAttackResult);
+          if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
+          this.attackerActor.update({
+            "system.macroCookies.combatAttackDialog": {
+              initialTab: "mystic",
+              mystic: { modifier, magicProjectionType, spellUsed, spellGrade, critic, damage, ignoredTA },
+            },
+          });
+        }
+
+      } else if (activeTab === 'psychic') {
+        const { powerUsed, modifier, psychicPotential, baseProjection, cvProjectionBonus, basePotential, cvPotentialBonus, critic, damage, ignoredTA } = this.modalData.attacker.psychic;
+        if (powerUsed) {
+          const massBonus = getMassAttackBonus(attackAccumulation);
+          let formula = getFormula({
+            dice: withoutRoll ? "0" : "1d100xa",
+            values: [baseProjection, cvProjectionBonus, massBonus, modifier],
+            labels: ["Proy. Psi.", "CV", "En masa", "Mod."],
+          });
+          formula = applyMasteryFormula(formula, this.attackerActor.system.psychic.psychicProjection.base.value);
+          const psychicProjectionRoll = new ABFFoundryRoll(formula, this.attackerActor.system);
+          psychicProjectionRoll.roll();
+          const powers = this.attackerActor.system.psychic.psychicPowers;
+          const power = powers.find((w) => w._id === powerUsed);
+          const psychicPotentialRoll = new ABFFoundryRoll(
+            getFormula({ values: [basePotential, cvPotentialBonus, psychicPotential.special], labels: ["Potencial", "CV", "Mod"] }),
+            this.modalData.attacker.actor.system
+          );
+          psychicPotentialRoll.roll();
+          if (this.modalData.attacker.showRoll) {
+            const { i18n } = game;
+            psychicPotentialRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicPotential.title") });
+            psychicProjectionRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicAttack.title", { power: power.name, target: this.modalData.defender.token.name, potential: psychicPotentialRoll.total }) });
+          }
+          const rolled = psychicProjectionRoll.total - baseProjection - cvProjectionBonus - massBonus - (modifier ?? 0);
+          const psychicAttackResult = {
+            type: "psychic",
+            values: {
+              modifier, powerUsed,
+              psychicPotential: psychicPotentialRoll.total,
+              psychicProjection: baseProjection + cvProjectionBonus,
+              critic,
+              damage: Math.floor((isAttackAccumulation ? damage * 1.5 : damage) / 5) * 5,
+              ignoredTA, roll: rolled, total: psychicProjectionRoll.total, fumble: psychicProjectionRoll.fumbled,
+            },
+          };
+          this.hooks.onAttack(psychicAttackResult);
+          ChatAttackCard.create(this.modalData.attacker.token, psychicAttackResult);
+          if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
+          ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }),
+            flavor: `Poder usado: ${power.name} con potencial ${psychicPotentialRoll.total}`,
+            content: `Efecto: ${getPsychichPowerEffect(power.system, psychicPotentialRoll.total)}`,
+            whisper: game.users.filter((u) => u.isGM).map((u) => u._id),
+          });
+          this.attackerActor.update({
+            "system.macroCookies.combatAttackDialog": {
+              initialTab: "psychic",
+              psychic: { modifier, powerUsed, critic, damage, ignoredTA },
+            },
+          });
+        }
+
+      } else if (activeTab === 'summon') {
+        const { summonUsed, modifier, critic, ignoredTA, powerUsed } = this.modalData.attacker.summon;
+        if (!summonUsed) {
+          ui.notifications.warn(game.i18n.localize('anima.chat.combat.defense.selectSummon'));
+          return;
+        }
+        const summon = this.attackerActor.items.get(summonUsed);
+        if (!summon) return;
+        const powerIdx = parseInt(powerUsed) || 0;
+        const powers = normalizePowers(summon.system.powers);
+        const power = powers[powerIdx] ?? powers[0];
+        const ne = power?.ne?.value ?? 0;
+        const evalSummonFormula = (f) => { try { return f?.trim() ? Math.floor(Roll.safeEval(f.replace(/\[NE\]/gi, ne))) : 0; } catch { return 0; } };
+        const effectiveHA = evalSummonFormula(power?.atkFormula?.value);
+        const effectiveDamage = evalSummonFormula(power?.damageFormula?.value);
+        const massBonus = getMassAttackBonus(attackAccumulation);
+        const rollModifiers = [effectiveHA, massBonus, modifier];
+        let formula = getFormula({ values: rollModifiers, labels: ["HA Invocación", "En masa", "Mod."] });
+        if (withoutRoll) { formula = formula.replace("1d100xa", "0"); }
         const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
         roll.roll();
         if (this.modalData.attacker.showRoll) {
           const { i18n } = game;
-          const flavor = weapon
-            ? i18n.format("anima.macros.combat.dialog.physicalAttack.title", {
-                weapon: weapon?.name,
-                target: this.modalData.defender.token.name,
-              })
-            : i18n.format("anima.macros.combat.dialog.physicalAttack.unarmed.title", {
-                target: this.modalData.defender.token.name,
-              });
-          roll.toMessage({
-            speaker: ChatMessage.getSpeaker({
-              token: this.modalData.attacker.token,
-            }),
-            flavor,
-          });
+          roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.summonAttack.title", { summon: summon.name, target: this.modalData.defender.token.name }) });
         }
-        const critic = criticSelected ?? WeaponCritic.IMPACT;
         const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
+        const summonCritic = critic || power?.critic?.value || WeaponCritic.IMPACT;
         const attackResult = {
-          type: "combat",
+          type: "summon",
           values: {
-            unarmed,
-            damage:
-              Math.floor(
-                (isAttackAccumulation ? damage.final * 1.5 : damage.final) / 5
-              ) * 5,
-            ignoredTA: ignoredTA,
-            attack,
-            weaponUsed,
-            critic,
-            modifier,
-            fatigueUsed,
-            roll: rolled,
-            total: roll.total,
-            fumble: roll.fumbled,
+            summonUsed,
+            damage: Math.floor((isAttackAccumulation ? effectiveDamage * 1.5 : effectiveDamage) / 5) * 5,
+            ignoredTA, attack: effectiveHA, critic: summonCritic, modifier, roll: rolled, total: roll.total, fumble: roll.fumbled,
           },
         };
         this.hooks.onAttack(attackResult);
-
-        // Post attack card to chat for chat-based combat system
-        ChatAttackCard.create(this.modalData.attacker.token, attackResult, { weapon });
-
-        // Close dialog or show loading indicator
-        if (this.closeOnSend) {
-          this.close();
-        } else {
-          this.modalData.attackSent = true;
-          this.render();
-        }
-
-        // Save preferences for next time
+        ChatAttackCard.create(this.modalData.attacker.token, attackResult);
+        if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
         this.attackerActor.update({
           "system.macroCookies.combatAttackDialog": {
-            initialTab: "combat",
-            combat: {
-              modifier: modifier,
-              unarmed: unarmed,
-              weaponUsed: weaponUsed,
-              criticSelected: critic,
-              weapon: weapon,
-              damage: damage,
-              ignoredTA: ignoredTA,
-            },
+            initialTab: "summon",
+            summon: { modifier, summonUsed, critic: summonCritic, ignoredTA },
           },
         });
       }
     });
-    html.find(".send-mystic-attack").click(() => {
-      const {
-        spellGrade,
-        spellUsed,
-        modifier,
-        critic,
-        damage,
-        ignoredTA,
-      } = this.modalData.attacker.mystic;
 
-      const { withoutRoll, attackAccumulation } =
-        this.modalData.attacker;
-      const isAttackAccumulation = (attackAccumulation ?? 1) > 1;
-      if (spellUsed) {
-        const magicProjection =
-          this.attackerActor.system.mystic.magicProjection.imbalance.offensive.final.value;
-        const baseMagicProjection =
-          this.attackerActor.system.mystic.magicProjection.imbalance.offensive.base.value;
+    this._applyModifiedShading(html);
 
-        const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
-        let rollModifiers = [
-          magicProjection,
-          getMassAttackBonus(attackAccumulation),
-          ...modTermValues,
-          modifier,
-        ];
-        let formula = getFormula({
-          dice: withoutRoll ? "0" : "1d100xa",
-          values: rollModifiers,
-          labels: ["Proy. Mag.", `${attackAccumulation} at. en masa`, ...modTermLabels, "Mod."],
-        });
-        formula = applyMasteryFormula(formula, baseMagicProjection);
-        const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
-        roll.roll();
-        if (this.modalData.attacker.showRoll) {
-          const { i18n } = game;
-          const { spells } = this.attackerActor.system.mystic;
-          const spell = spells.find((w) => w._id === spellUsed);
-          const flavor = i18n.format("anima.macros.combat.dialog.magicAttack.title", {
-            spell: spell.name,
-            target: this.modalData.defender.token.name,
-          });
-          roll.toMessage({
-            speaker: ChatMessage.getSpeaker({
-              token: this.modalData.attacker.token,
-            }),
-            flavor,
-          });
-        }
-        const rolled = roll.total - rollModifiers;
-        const mysticAttackResult = {
-          type: "mystic",
-          values: {
-            modifier,
-            spellUsed,
-            spellGrade,
-            magicProjection,
-            critic,
-            damage,
-            ignoredTA: ignoredTA,
-            roll: rolled,
-            total: roll.total,
-            fumble: roll.fumbled,
-          },
-        };
-        this.hooks.onAttack(mysticAttackResult);
-
-        // Post attack card to chat for chat-based combat system
-        ChatAttackCard.create(this.modalData.attacker.token, mysticAttackResult);
-
-        // Close dialog or show loading indicator
-        if (this.closeOnSend) {
-          this.close();
-        } else {
-          this.modalData.attackSent = true;
-          this.render();
-        }
-        // Save preferences for next time
-        this.attackerActor.update({
-          "system.macroCookies.combatAttackDialog": {
-            initialTab: "mystic",
-            mystic: {
-              modifier: modifier,
-              magicProjectionType: magicProjectionType,
-              spellUsed: spellUsed,
-              spellGrade: spellGrade,
-              critic: critic,
-              damage: damage,
-              ignoredTA: ignoredTA,
-            },
-          },
-        });
-      }
-    });
     // Roll Only Psychic Potential button (attack)
     html.find(".roll-psychic-potential").click(() => {
       const { psychicPotential, basePotential, cvPotentialBonus, powerUsed } = this.modalData.attacker.psychic;
@@ -514,125 +484,6 @@ export class CombatAttackDialog extends FormApplication {
       this.render();
     });
 
-    html.find(".send-psychic-attack").click(() => {
-      const {
-        powerUsed,
-        modifier,
-        psychicPotential,
-        baseProjection,
-        cvProjectionBonus,
-        basePotential,
-        cvPotentialBonus,
-        critic,
-        damage,
-        ignoredTA,
-      } = this.modalData.attacker.psychic;
-
-      if (powerUsed) {
-        let formula = getFormula({
-          dice: this.modalData.attacker.withoutRoll ? "0" : "1d100xa",
-          values: [baseProjection, cvProjectionBonus, modifier],
-          labels: ["Proy. Psi.", "CV", "Mod."],
-        });
-
-        formula = applyMasteryFormula(formula, this.attackerActor.system.psychic.psychicProjection.base.value);
-        const psychicProjectionRoll = new ABFFoundryRoll(
-          formula,
-          this.attackerActor.system
-        );
-        psychicProjectionRoll.roll();
-        const powers = this.attackerActor.system.psychic.psychicPowers;
-        const power = powers.find((w) => w._id === powerUsed);
-        const psychicPotentialRoll = new ABFFoundryRoll(
-          getFormula({
-            values: [basePotential, cvPotentialBonus, psychicPotential.special],
-            labels: ["Potencial", "CV", "Mod"],
-          }),
-          this.modalData.attacker.actor.system
-        );
-        psychicPotentialRoll.roll();
-
-        if (this.modalData.attacker.showRoll) {
-          const { i18n } = game;
-
-          psychicPotentialRoll.toMessage({
-            speaker: ChatMessage.getSpeaker({
-              token: this.modalData.attacker.token,
-            }),
-            flavor: i18n.format("anima.macros.combat.dialog.psychicPotential.title"),
-          });
-          const projectionFlavor = i18n.format(
-            "anima.macros.combat.dialog.psychicAttack.title",
-            {
-              power: power.name,
-              target: this.modalData.defender.token.name,
-              potential: psychicPotentialRoll.total,
-            }
-          );
-          psychicProjectionRoll.toMessage({
-            speaker: ChatMessage.getSpeaker({
-              token: this.modalData.attacker.token,
-            }),
-            flavor: projectionFlavor,
-          });
-        }
-        const rolled =
-          psychicProjectionRoll.total - baseProjection - cvProjectionBonus - (modifier ?? 0);
-        const psychicAttackResult = {
-          type: "psychic",
-          values: {
-            modifier,
-            powerUsed,
-            psychicPotential: psychicPotentialRoll.total,
-            psychicProjection: baseProjection + cvProjectionBonus,
-            critic,
-            damage,
-            ignoredTA: ignoredTA,
-            roll: rolled,
-            total: psychicProjectionRoll.total,
-            fumble: psychicProjectionRoll.fumbled,
-          },
-        };
-        this.hooks.onAttack(psychicAttackResult);
-
-        // Post attack card to chat for chat-based combat system
-        ChatAttackCard.create(this.modalData.attacker.token, psychicAttackResult);
-
-        // Close dialog or show loading indicator
-        if (this.closeOnSend) {
-          this.close();
-        } else {
-          this.modalData.attackSent = true;
-          this.render();
-        }
-        ChatMessage.create({
-          speaker: ChatMessage.getSpeaker({
-            token: this.modalData.attacker.token,
-          }),
-          flavor: `Poder usado: ${power.name} con potencial ${psychicPotentialRoll.total}`,
-          content: `Efecto: ${getPsychichPowerEffect(
-            power.system,
-            psychicPotentialRoll.total
-          )}`,
-          whisper: game.users.filter((u) => u.isGM).map((u) => u._id),
-        });
-
-        // Save preferences for next time
-        this.attackerActor.update({
-          "system.macroCookies.combatAttackDialog": {
-            initialTab: "psychic",
-            psychic: {
-              modifier: modifier,
-              powerUsed: powerUsed,
-              critic: critic,
-              damage: damage,
-              ignoredTA: ignoredTA,
-            },
-          },
-        });
-      }
-    });
-
     // Roll Summoning Only button
     html.find(".roll-summoning").click(async () => {
       const { summonUsed, summoningBonus, powerUsed } = this.modalData.attacker.summon;
@@ -671,7 +522,7 @@ export class CombatAttackDialog extends FormApplication {
       }
 
       const difficulty = power?.summonDif?.value || 0;
-      const ne = Math.max(0, roll.total - difficulty);
+      const ne = Math.floor(Math.max(0, roll.total - difficulty));
 
       this.modalData.attacker.summon.summoningRolled = true;
       this.modalData.attacker.summon.summoningResult = {
@@ -691,90 +542,6 @@ export class CombatAttackDialog extends FormApplication {
       this.render();
     });
 
-    // Send Summon Attack button
-    html.find(".send-summon-attack").click(() => {
-      const { summonUsed, modifier, critic, ignoredTA, powerUsed } = this.modalData.attacker.summon;
-      if (!summonUsed) {
-        ui.notifications.warn(game.i18n.localize('anima.chat.combat.defense.selectSummon'));
-        return;
-      }
-      const summon = this.attackerActor.items.get(summonUsed);
-      if (!summon) return;
-
-      const powerIdx = parseInt(powerUsed) || 0;
-      const powers = normalizePowers(summon.system.powers);
-      const power = powers[powerIdx] ?? powers[0];
-      const ne = power?.ne?.value ?? 0;
-      const evalSummonFormula = (f) => { try { return f?.trim() ? Roll.safeEval(f.replace(/\[NE\]/gi, ne)) : 0; } catch { return 0; } };
-      const effectiveHA = evalSummonFormula(power?.atkFormula?.value);
-      const effectiveDamage = evalSummonFormula(power?.damageFormula?.value);
-
-      const rollModifiers = [effectiveHA, modifier];
-      let formula = getFormula({
-        values: rollModifiers,
-        labels: ["HA Invocación", "Mod."],
-      });
-
-      if (this.modalData.attacker.withoutRoll) {
-        formula = formula.replace("1d100xa", "0");
-      }
-
-      const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
-      roll.roll();
-
-      if (this.modalData.attacker.showRoll) {
-        const { i18n } = game;
-        const flavor = i18n.format("anima.macros.combat.dialog.summonAttack.title", {
-          summon: summon.name,
-          target: this.modalData.defender.token.name,
-        });
-        roll.toMessage({
-          speaker: ChatMessage.getSpeaker({
-            token: this.modalData.attacker.token,
-          }),
-          flavor,
-        });
-      }
-
-      const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
-      const summonCritic = critic || power?.critic?.value || WeaponCritic.IMPACT;
-      const attackResult = {
-        type: "summon",
-        values: {
-          summonUsed,
-          damage: Math.floor(effectiveDamage / 5) * 5,
-          ignoredTA,
-          attack: effectiveHA,
-          critic: summonCritic,
-          modifier,
-          roll: rolled,
-          total: roll.total,
-          fumble: roll.fumbled,
-        },
-      };
-      this.hooks.onAttack(attackResult);
-
-      ChatAttackCard.create(this.modalData.attacker.token, attackResult);
-
-      if (this.closeOnSend) {
-        this.close();
-      } else {
-        this.modalData.attackSent = true;
-        this.render();
-      }
-
-      this.attackerActor.update({
-        "system.macroCookies.combatAttackDialog": {
-          initialTab: "summon",
-          summon: {
-            modifier,
-            summonUsed,
-            critic: summonCritic,
-            ignoredTA,
-          },
-        },
-      });
-    });
   }
   getData() {
     const {
@@ -783,6 +550,9 @@ export class CombatAttackDialog extends FormApplication {
     } = this.modalData;
     ui.hasFatiguePoints =
       this.attackerActor.system.characteristics.secondaries.fatigue.value > 0;
+    const activeTab = this._tabs[0]?.active ?? 'combat';
+    const attackSent = this.modalData.attackSent;
+    ui.activeTab = activeTab;
     {
       const activePower = this.attackerActor.system.psychic.psychicPowers.find(p => p._id === psychic.powerUsed);
       const powerBonus = activePower?.system.bonus.value || 0;
@@ -827,8 +597,7 @@ export class CombatAttackDialog extends FormApplication {
       combat.summary = {
         haFinal: attackValue + ((combat.fatigueUsed ?? 0) * 15) + (combat.modifier ?? 0) + (counterAttackBonus ?? 0) + massBonus + modTermSum,
         damage: Math.floor((isAccumulation ? combat.damage.final * 1.5 : combat.damage.final) / 5) * 5,
-        ignoredTA: combat.ignoredTA ?? 0,
-        weaponTAMod: combat.weapon?.system?.taModifier?.final?.value ?? 0,
+        ignoredTA: (combat.ignoredTA ?? 0) - (combat.weapon?.system?.taModifier?.final?.value ?? 0),
         criticSelected: (combat.criticSelected && combat.criticSelected !== NoneWeaponCritic.NONE && combat.criticSelected !== "-") ? combat.criticSelected : null,
       };
     }
@@ -839,18 +608,22 @@ export class CombatAttackDialog extends FormApplication {
       const { values: mysticModTermValues } = getModifierTerms(this.attackerActor.system, "general-negative");
       const mysticModTermSum = mysticModTermValues.reduce((a, b) => a + b, 0);
       const mysticMassBonus = getMassAttackBonus(attackAccumulation ?? 0);
+      const isMysticAccum = (attackAccumulation ?? 1) > 1;
       mystic.summary = {
         haFinal: magicProjection + mysticMassBonus + mysticModTermSum + (mystic.modifier ?? 0),
-        damage: mystic.damage ?? 0,
+        damage: Math.floor((isMysticAccum ? (mystic.damage ?? 0) * 1.5 : (mystic.damage ?? 0)) / 5) * 5,
         ignoredTA: mystic.ignoredTA ?? 0,
         criticSelected: (mystic.critic && mystic.critic !== NoneWeaponCritic.NONE && mystic.critic !== "-") ? mystic.critic : null,
       };
     }
     // Psychic summary
     {
+      const { attackAccumulation } = this.modalData.attacker;
+      const psychicMassBonus = getMassAttackBonus(attackAccumulation ?? 0);
+      const isPsychicAccum = (attackAccumulation ?? 1) > 1;
       psychic.summary = {
-        haFinal: psychic.projectionValue + (psychic.modifier ?? 0),
-        damage: psychic.damage ?? 0,
+        haFinal: psychic.projectionValue + (psychic.modifier ?? 0) + psychicMassBonus,
+        damage: Math.floor((isPsychicAccum ? (psychic.damage ?? 0) * 1.5 : (psychic.damage ?? 0)) / 5) * 5,
         ignoredTA: psychic.ignoredTA ?? 0,
         criticSelected: (psychic.critic && psychic.critic !== NoneWeaponCritic.NONE && psychic.critic !== "-") ? psychic.critic : null,
       };
@@ -862,7 +635,7 @@ export class CombatAttackDialog extends FormApplication {
     // is repopulated asynchronously via prepareDerivedData and may lag after an item update)
     const summons = this.attackerActor.items.filter(i => i.type === 'summon');
     summon.summonsList = summons;
-    const evalSummonF = (f, ne) => { try { return f?.trim() ? Roll.safeEval(f.replace(/\[NE\]/gi, ne)) : 0; } catch { return 0; } };
+    const evalSummonF = (f, ne) => { try { return f?.trim() ? Math.floor(Roll.safeEval(f.replace(/\[NE\]/gi, ne))) : 0; } catch { return 0; } };
     if (summon.summonUsed) {
       const selectedSummon = summons.find((s) => s._id === summon.summonUsed);
       if (selectedSummon) {
@@ -900,15 +673,83 @@ export class CombatAttackDialog extends FormApplication {
       const activeP = sPowers[powerIdx] ?? sPowers[0];
       const neS = activeP?.ne?.value ?? 0;
       const effectiveHA = evalSummonF(activeP?.atkFormula?.value, neS);
+      const { attackAccumulation: sAccum } = this.modalData.attacker;
+      const summonMassBonus = getMassAttackBonus(sAccum ?? 0);
+      const isSummonAccum = (sAccum ?? 1) > 1;
       summon.summary = {
-        haFinal: effectiveHA + (summon.modifier ?? 0),
-        damage: summon.effectiveDamage,
+        haFinal: effectiveHA + (summon.modifier ?? 0) + summonMassBonus,
+        damage: Math.floor((isSummonAccum ? summon.effectiveDamage * 1.5 : summon.effectiveDamage) / 5) * 5,
         ignoredTA: summon.ignoredTA ?? 0,
         criticSelected: (summon.critic && summon.critic !== NoneWeaponCritic.NONE && summon.critic !== "-") ? summon.critic : null,
       };
     } else {
       summon.summary = null;
     }
+
+    // Shared attack modifiers — used by the single shared section in combat-attack-dialog.hbs
+    {
+      const tabModifiers = {
+        combat: {
+          modifierInputName: 'attacker.combat.modifier',
+          modifierValue:     combat.modifier ?? 0,
+          damageInputName:   'attacker.combat.damage.special',
+          damageValue:       combat.damage?.special ?? 0,
+          damageDisabled:    attackSent,
+          criticInputName:   'attacker.combat.criticSelected',
+          criticValue:       combat.criticSelected,
+          useCriticWithNone: false,
+          ignoredTAInputName: 'attacker.combat.ignoredTA',
+          ignoredTAValue:    combat.ignoredTA ?? 0,
+          summary:           combat.summary,
+        },
+        mystic: {
+          modifierInputName: 'attacker.mystic.modifier',
+          modifierValue:     mystic.modifier ?? 0,
+          damageInputName:   'attacker.mystic.damage',
+          damageValue:       mystic.damage ?? 0,
+          damageDisabled:    attackSent,
+          criticInputName:   'attacker.mystic.critic',
+          criticValue:       mystic.critic,
+          useCriticWithNone: true,
+          ignoredTAInputName: 'attacker.mystic.ignoredTA',
+          ignoredTAValue:    mystic.ignoredTA ?? 0,
+          summary:           mystic.summary,
+        },
+        psychic: {
+          modifierInputName: 'attacker.psychic.modifier',
+          modifierValue:     psychic.modifier ?? 0,
+          damageInputName:   'attacker.psychic.damage',
+          damageValue:       psychic.damage ?? 0,
+          damageDisabled:    attackSent,
+          criticInputName:   'attacker.psychic.critic',
+          criticValue:       psychic.critic,
+          useCriticWithNone: false,
+          ignoredTAInputName: 'attacker.psychic.ignoredTA',
+          ignoredTAValue:    psychic.ignoredTA ?? 0,
+          summary:           psychic.summary,
+        },
+        summon: {
+          modifierInputName: 'attacker.summon.modifier',
+          modifierValue:     summon.modifier ?? 0,
+          damageInputName:   null,
+          damageValue:       summon.effectiveDamage ?? 0,
+          damageDisabled:    true,
+          criticInputName:   'attacker.summon.critic',
+          criticValue:       summon.critic,
+          useCriticWithNone: false,
+          ignoredTAInputName: 'attacker.summon.ignoredTA',
+          ignoredTAValue:    summon.ignoredTA ?? 0,
+          summary:           summon.summary,
+        },
+      };
+      ui.activeAttackModifiers = tabModifiers[activeTab] ?? tabModifiers.combat;
+      ui.activeSummary = ui.activeAttackModifiers.summary;
+    }
+
+    // hasPsychicPowers / hasMysticSpells: read from actor.items (always in sync;
+    // actor.system derived arrays may lag after an item update, same as summons)
+    this.modalData.ui.hasPsychicPowers = this.attackerActor.items.some(i => i.type === 'psychicPower');
+    this.modalData.ui.hasMysticSpells = this.attackerActor.items.some(i => i.type === 'spell');
 
     this.modalData.config = ABFConfig;
     return this.modalData;
@@ -918,6 +759,11 @@ export class CombatAttackDialog extends FormApplication {
     if (this._loadingPreset) {
       this._loadingPreset = false;
       return;
+    }
+
+    if (formData.attacker?.attackAccumulation !== undefined) {
+      formData.attacker.attackAccumulation =
+        Math.max(1, parseInt(formData.attacker.attackAccumulation) || 1);
     }
 
     const prevWeapon = this.modalData.attacker.combat.weaponUsed;
@@ -984,6 +830,42 @@ export class CombatAttackDialog extends FormApplication {
     }]);
 
     ui.notifications.info(i18n.format("anima.notifications.presetSaved", { name }));
+    this.render(false);
+  }
+
+  _applyModifiedShading(html) {
+    // Number inputs: shade when value differs from default
+    html.find('input[type="number"].input').each((_, el) => {
+      if (!el.name) return;
+      const defVal = el.name === 'attacker.attackAccumulation' ? 1 : 0;
+      el.classList.toggle('abf-input-modified', (parseFloat(el.value) || 0) !== defVal);
+    });
+
+    // Numeric selects (fatigue, CV points): shade when != 0
+    ['attacker.combat.fatigueUsed', 'attacker.psychic.cvProyeccion', 'attacker.psychic.cvPotencial'].forEach(name => {
+      html.find(`select[name="${name}"]`).each((_, el) => {
+        el.classList.toggle('abf-input-modified', parseInt(el.value) !== 0);
+      });
+    });
+
+    // Combat critic: shade when differs from weapon's primary damage type
+    html.find('select[name="attacker.combat.criticSelected"]').each((_, el) => {
+      const defaultCritic = this.modalData.attacker.combat.weapon?.system.critic.primary.value;
+      el.classList.toggle('abf-input-modified', !!defaultCritic && el.value !== defaultCritic);
+    });
+
+    // Psychic critic: default is 'energy'
+    html.find('select[name="attacker.psychic.critic"]').each((_, el) => {
+      el.classList.toggle('abf-input-modified', el.value !== 'energy');
+    });
+
+    // Mystic / summon critics: default is none / '-'
+    ['attacker.mystic.critic', 'attacker.summon.critic'].forEach(name => {
+      html.find(`select[name="${name}"]`).each((_, el) => {
+        const v = el.value;
+        el.classList.toggle('abf-input-modified', !!v && v !== '-' && v !== 'none');
+      });
+    });
   }
 
   /**

@@ -155,6 +155,30 @@ const cubRemove = (name, token) => { try { game.cub.removeCondition(name, token)
 // Apply conditions based on total modifier (physical + supernatural). GM only.
 // NOTE: modFinal.general.final.value is derived by the async prepareActor pipeline and is
 // not yet calculated when updateActor fires. Read raw bonus/malus directly instead.
+Hooks.on('animabf.defenseSent', (defenderToken, defenseResult) => {
+  if (defenseResult.type !== 'combat') return;
+  if (!defenseResult.increaseDefenseCounter) return;
+
+  const one   = 'Defensas: 1';
+  const two   = 'Defensas: 2';
+  const three = 'Defensas: 3+';
+
+  const isOne   = cubHas(one,   defenderToken);
+  const isTwo   = cubHas(two,   defenderToken);
+  const isThree = cubHas(three, defenderToken);
+
+  if (isOne) {
+    cubAdd(two, defenderToken);
+    setTimeout(() => cubRemove(one, defenderToken), 500);
+  } else if (isTwo) {
+    cubAdd(three, defenderToken);
+    setTimeout(() => cubRemove(two, defenderToken), 500);
+  } else if (!isThree) {
+    cubAdd(one, defenderToken);
+  }
+  // isThree → stays at 3+, no change needed
+});
+
 Hooks.on("updateActor", (actor, updateData, options, userId) => {
   if (!game.user.isGM) return;
   if (!updateData.system) return; // Skip updates caused by CUB adding/removing conditions

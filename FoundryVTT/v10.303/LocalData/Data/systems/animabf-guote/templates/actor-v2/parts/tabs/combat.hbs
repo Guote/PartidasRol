@@ -121,6 +121,13 @@
       <div class="v2-card__header-title">
         <span>{{localize "anima.ui.combat.defensePresets.title"}}</span>
       </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn open-defense-dialog" draggable="true"
+                title="{{localize 'anima.macros.combat.dialog.defenseButton.title'}}"
+                data-actor-id="{{actor._id}}">
+          <i class="fas fa-shield-alt"></i> {{localize "anima.macros.combat.dialog.defense.title"}}
+        </button>
+      </div>
     </div>
     <div class="v2-card__body" id="defense-presets-context-menu-container" style="padding: 0;">
       <div class="v2-preset-grid">

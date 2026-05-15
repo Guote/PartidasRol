@@ -1,5 +1,6 @@
 import { Templates } from '../../utils/constants.js';
 import { calculateATReductionByQuality } from '../utils/calculateATReductionByQuality.js';
+import { calculateShieldDamage } from '../utils/calculateShieldDamage.js';
 
 /**
  * Handles creation and updating of attack chat cards for the chat-based combat system.
@@ -23,14 +24,19 @@ export class ChatAttackCard {
         // Generate unique session ID for this attack
         const sessionId = foundry.utils.randomID();
 
-        // Calculate TA reduction from weapon quality and ignoredTA
+        // taReduction: signed modifier to enemy TA (negative = reduces TA).
+        // ignoredTA from the attack dialog is already signed (user enters -2 to reduce by 2).
+        // Weapon TA bonus is a positive reduction, so we subtract it.
         const weaponTAMod = options.weapon?.system?.taModifier?.final?.value;
-        const taReduction = (attackResult.values.ignoredTA || 0) +
-            (weaponTAMod !== undefined ? weaponTAMod : calculateATReductionByQuality({ weapon: options.weapon }));
+        const weaponBonus = weaponTAMod !== undefined ? weaponTAMod : calculateATReductionByQuality({ weapon: options.weapon });
+        const taReduction = (attackResult.values.ignoredTA || 0) - weaponBonus;
 
         // Get localized damage type label
         const damageTypeKey = `anima.ui.combat.criticalType.${attackResult.values.critic || 'impact'}`;
         const damageTypeLabel = game.i18n.localize(damageTypeKey);
+
+        const attackRoll = attackResult.values.roll || 0;
+        const attackTotal = attackResult.values.total || 0;
 
         // Prepare display data
         const displayData = {
@@ -40,12 +46,13 @@ export class ChatAttackCard {
             },
             attackType: attackResult.type,
             attackTypeLabel: game.i18n.localize(`anima.chat.combat.attackType.${attackResult.type}`),
-            attackTotal: attackResult.values.total,
+            attackTotal,
+            attackBase: attackTotal - attackRoll,
             baseDamage: attackResult.values.damage,
             damageType: attackResult.values.critic,
             damageTypeLabel: damageTypeLabel,
             taReduction: taReduction,
-            roll: attackResult.values.roll,
+            roll: attackRoll,
             fumbled: attackResult.values.fumble,
             results: [] // Empty initially, populated when defenders respond
         };
@@ -61,12 +68,13 @@ export class ChatAttackCard {
                     attackerTokenId: attackerToken.id,
                     attackerActorId: attackerToken.actor?.id,
                     attackType: attackResult.type,
-                    attackTotal: attackResult.values.total,
+                    attackTotal,
+                    attackBase: attackTotal - attackRoll,
                     baseDamage: attackResult.values.damage,
                     damageType: attackResult.values.critic,
                     damageTypeLabel: damageTypeLabel,
                     taReduction: taReduction,
-                    roll: attackResult.values.roll,
+                    roll: attackRoll,
                     fumbled: attackResult.values.fumble,
                     results: [],
                     attackerInfo: {
@@ -136,6 +144,8 @@ export class ChatAttackCard {
         const displayData = {
             attacker: flags.attackerInfo,
             attackTotal: flags.attackTotal,
+            attackBase: flags.attackBase ?? flags.attackTotal,
+            roll: flags.roll,
             baseDamage: flags.baseDamage,
             damageType: flags.damageType,
             damageTypeLabel: flags.damageTypeLabel,
@@ -271,6 +281,88 @@ export class ChatAttackCard {
     }
 
     /**
+     * Apply attack damage to the defender's supernatural shield.
+     * Shield absorbs baseDamage + 10 per ignored TA. Overflow goes to HP.
+     * @param {string} attackMessageId
+     * @param {string} defenderTokenId
+     */
+    static async applyDamageToShield(attackMessageId, defenderTokenId) {
+        const attackMessage = game.messages.get(attackMessageId);
+        if (!attackMessage) {
+            console.warn('ChatAttackCard: Attack message not found:', attackMessageId);
+            return;
+        }
+
+        const flags = attackMessage.flags['animabf-guote'].chatCombat;
+        const entryIndex = flags.results.findIndex(r => r.defenderTokenId === defenderTokenId);
+        if (entryIndex < 0) {
+            console.warn('ChatAttackCard: Defender not found in results:', defenderTokenId);
+            return;
+        }
+
+        const entry = flags.results[entryIndex];
+        if (entry.damageApplied || entry.shieldApplied) return;
+
+        const ignoredTA = entry.defenderTA - entry.effectiveTA;
+        const shieldDamage = calculateShieldDamage(flags.baseDamage, ignoredTA);
+
+        const token = canvas.tokens.get(defenderTokenId);
+        if (token?.actor) {
+            const currentShield = token.actor.system.mystic.shield.value || 0;
+            const absorbed = Math.min(currentShield, shieldDamage);
+            const hpDamage = Math.max(0, shieldDamage - absorbed);
+            const newShieldValue = Math.max(0, currentShield - shieldDamage);
+
+            await token.actor.update({ 'system.mystic.shield.value': newShieldValue });
+            if (hpDamage > 0) {
+                await token.actor.applyDamage(hpDamage);
+            }
+
+            ui.notifications.info(
+                game.i18n.format('anima.chat.combat.result.shieldAppliedNotification', {
+                    name: entry.defenderName,
+                    absorbed,
+                    hpDamage
+                })
+            );
+        }
+
+        const updatedResults = [...flags.results];
+        updatedResults[entryIndex] = { ...entry, shieldApplied: true, shieldAbsorbed: absorbed, shieldOverflowHp: hpDamage };
+        await this._updateCard(attackMessage, flags, updatedResults);
+    }
+
+    /**
+     * Undo a previously applied shield action.
+     * @param {string} attackMessageId
+     * @param {string} defenderTokenId
+     */
+    static async undoShield(attackMessageId, defenderTokenId) {
+        const attackMessage = game.messages.get(attackMessageId);
+        if (!attackMessage) return;
+
+        const flags = attackMessage.flags['animabf-guote'].chatCombat;
+        const entryIndex = flags.results.findIndex(r => r.defenderTokenId === defenderTokenId);
+        if (entryIndex < 0) return;
+
+        const entry = flags.results[entryIndex];
+        if (!entry.shieldApplied) return;
+
+        const token = canvas.tokens.get(defenderTokenId);
+        if (token?.actor) {
+            const currentShield = token.actor.system.mystic.shield.value || 0;
+            await token.actor.update({ 'system.mystic.shield.value': currentShield + (entry.shieldAbsorbed || 0) });
+            if (entry.shieldOverflowHp > 0) {
+                await token.actor.applyDamage(-entry.shieldOverflowHp);
+            }
+        }
+
+        const updatedResults = [...flags.results];
+        updatedResults[entryIndex] = { ...entry, shieldApplied: false, shieldAbsorbed: 0, shieldOverflowHp: 0 };
+        await this._updateCard(attackMessage, flags, updatedResults);
+    }
+
+    /**
      * Helper to update the card content and flags
      * @param {ChatMessage} attackMessage
      * @param {Object} flags
@@ -280,6 +372,8 @@ export class ChatAttackCard {
         const displayData = {
             attacker: flags.attackerInfo,
             attackTotal: flags.attackTotal,
+            attackBase: flags.attackBase ?? flags.attackTotal,
+            roll: flags.roll,
             baseDamage: flags.baseDamage,
             damageType: flags.damageType,
             damageTypeLabel: flags.damageTypeLabel,
@@ -307,13 +401,15 @@ export class ChatAttackCard {
             defenderTokenId: defenderToken.id,
             defenderName: defenderToken.name,
             defenderImg: defenderToken.texture?.src || defenderToken.actor?.img,
-            defenseTotal: result.defenseTotal || 0,
+            defenseTotal: Math.max(0, result.defenseTotal || 0),
             defenderTA: result.defenderTA || 0,
             effectiveTA: result.effectiveTA || 0,
             canCounter: result.canCounterAttack,
             counterBonus: result.counterAttackBonus || 0,
             damage: result.damage || 0,
-            damageApplied: false
+            defenseSucceeded: result.defenseSucceeded ?? false,
+            damageApplied: false,
+            shieldApplied: false
         };
     }
 }

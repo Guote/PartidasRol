@@ -463,6 +463,7 @@
       "electricity": { "value": 0 },
       "cold": { "value": 0 },
       "energy": { "value": 0 },
+      "quality": { "value": 0 },
       "integrity": { "base": { "value": 0 }, "final": { "value": 0 } },
       "presence": { "base": { "value": 0 }, "final": { "value": 0 } },
       "movementRestriction": {
@@ -583,6 +584,7 @@
       "actionType": { "value": "active" },
       "hasMaintenance": { "value": false },
       "isMaintained": { "value": false },
+      "maintainedCV": { "value": 0 },
       "isInnate": { "value": false },
       "discipline": { "value": "" },
       "bonus": { "value": 0 }

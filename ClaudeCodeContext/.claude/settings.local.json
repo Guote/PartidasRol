@@ -9,7 +9,12 @@
       "Bash(xargs cat:*)",
       "Bash(python3:*)",
       "Bash(find:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(Get-ChildItem *)",
+      "Bash(Select-Object FullName)",
+      "Bash(grep -E \"\\\\.\\(hbs|css\\)$\")",
+      "Bash(grep -r '\"-\"\\\\s*$\\\\|\"-\"[,}]' --include=\"*.hbs\" templates/dialog/combat/)",
+      "Bash(awk '/\\\\.chat-combat-apply-shield\\\\s*{/,/^}/' animabf-guote.css)"
     ]
   }
 }

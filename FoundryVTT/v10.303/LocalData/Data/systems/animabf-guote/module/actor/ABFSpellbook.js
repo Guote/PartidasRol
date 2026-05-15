@@ -242,6 +242,13 @@ export default class ABFSpellbook extends Application {
     html.find('[data-action="open-zeon-calculator"]').click(() => {
       ZeonCalculatorDialog.openForActor(this.actor);
     });
+    html.find('[data-action="open-zeon-calculator"]').on('dragstart', ev => {
+      ev.originalEvent.dataTransfer.setData('text/plain', JSON.stringify({
+        type: 'ZeonCalculator',
+        name: 'Calculadora ACT',
+        img:  'icons/magic/symbols/runes-star-blue.webp'
+      }));
+    });
 
     // Via tab clicks
     html.find('.spellbook-sidetab').click(ev => {

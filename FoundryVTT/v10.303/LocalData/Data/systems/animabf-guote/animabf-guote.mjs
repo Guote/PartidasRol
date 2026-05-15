@@ -15,6 +15,7 @@ import { attachCustomMacroBar } from './utils/attachCustomMacroBar.js';
 import { ChatCombatManager } from './module/combat/chat-combat/ChatCombatManager.js';
 import { ABFMacros } from './module/macros/ABFMacros.js';
 import { registerMasaHooks } from './module/actor/hooks/registerMasaHooks.js';
+import { ZeonCalculatorDialog } from './module/dialogs/mystic/ZeonCalculatorDialog.js';
 /* ------------------------------------ */
 /* Initialize system */
 /* ------------------------------------ */
@@ -66,6 +67,7 @@ Hooks.once('ready', async () => {
 
     // Expose macros globally for GM scripts
     window.ABFMacros = ABFMacros;
+    window.ZeonCalculatorDialog = ZeonCalculatorDialog;
 
     // Migrate existing summon items from flat schema to multi-power schema
     if (game.user.isGM) {
@@ -112,6 +114,30 @@ Hooks.on('hotbarDrop', async (bar, data, slot) => {
             img,
             command,
             flags: { 'animabf-guote': { attackMacro: true } }
+        });
+    }
+    game.user.assignHotbarMacro(macro, slot);
+    return false;
+});
+
+// Handle custom drag-to-hotbar for ZeonCalculator button
+Hooks.on('hotbarDrop', async (bar, data, slot) => {
+    if (data.type !== 'ZeonCalculator') return true;
+    const name = data.name ?? 'Calculadora ACT';
+    const img  = data.img  ?? 'icons/magic/symbols/runes-star-blue.webp';
+    // Note: Foundry pre-declares 'actor', 'token', 'character' in every macro scope,
+    // so we use 'selectedActor' to avoid a re-declaration SyntaxError.
+    const command = `const selectedActor = canvas.tokens.controlled[0]?.actor ?? game.user.character;
+if (!selectedActor) {
+  ui.notifications.warn('Selecciona un token o establece un personaje por defecto.');
+} else {
+  ZeonCalculatorDialog.openForActor(selectedActor);
+}`;
+    let macro = game.macros.find(m => m.name === name && m.command === command);
+    if (!macro) {
+        macro = await Macro.create({
+            name, type: 'script', img, command,
+            flags: { 'animabf-guote': { zeonCalculatorMacro: true } }
         });
     }
     game.user.assignHotbarMacro(macro, slot);

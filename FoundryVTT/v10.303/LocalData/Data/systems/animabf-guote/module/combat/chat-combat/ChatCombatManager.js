@@ -1,5 +1,6 @@
 import { Templates } from '../../utils/constants.js';
 import { calculateCombatResult } from '../utils/calculateCombatResult.js';
+import { calculateShieldDamage } from '../utils/calculateShieldDamage.js';
 import { ChatAttackCard } from './ChatAttackCard.js';
 import { CombatAttackDialog } from '../../dialogs/combat/CombatAttackDialog.js';
 
@@ -69,6 +70,12 @@ export class ChatCombatManager {
             }
             if (msg.type === 'chatCombat.damageUndone') {
                 this._handleDamageUndone(msg.payload);
+            }
+            if (msg.type === 'chatCombat.shieldApplied') {
+                this._handleShieldApplied(msg.payload);
+            }
+            if (msg.type === 'chatCombat.shieldUndone') {
+                ui.chat.render();
             }
             if (msg.type === 'chatCombat.promptDefense') {
                 this._handlePromptDefense(msg.payload);
@@ -261,6 +268,44 @@ export class ChatCombatManager {
             const defenderTokenId = ev.currentTarget.dataset.defenderId;
             await this._onUndoDamageClick(message, defenderTokenId);
         });
+
+        // Undo shield buttons (GM only)
+        html.find('.chat-combat-undo-shield').click(async (ev) => {
+            ev.preventDefault();
+            if (!game.user.isGM) return;
+            const defenderTokenId = ev.currentTarget.dataset.defenderId;
+            await this._onUndoShieldClick(message, defenderTokenId);
+        });
+
+        // Apply to shield buttons (GM only) — two-click confirmation
+        html.find('.chat-combat-apply-shield').click(async (ev) => {
+            ev.preventDefault();
+            if (!game.user.isGM) return;
+            const btn = ev.currentTarget;
+            const defenderTokenId = btn.dataset.defenderId;
+
+            if (btn.dataset.pending === 'true') {
+                btn.dataset.pending = '';
+                await this._onApplyShieldClick(message, defenderTokenId);
+            } else {
+                const flags = message.flags['animabf-guote'].chatCombat;
+                const entry = flags.results.find(r => r.defenderTokenId === defenderTokenId);
+                const ignoredTA = Math.max(0, entry.defenderTA - entry.effectiveTA);
+                const shieldDamage = calculateShieldDamage(flags.baseDamage, ignoredTA);
+
+                btn.dataset.pending = 'true';
+                btn.innerHTML = `<i class="fas fa-shield-alt"></i> -${shieldDamage}`;
+
+                const cancel = (e) => {
+                    if (!btn.contains(e.target)) {
+                        btn.dataset.pending = '';
+                        btn.innerHTML = '<i class="fas fa-shield-alt"></i>';
+                        document.removeEventListener('click', cancel);
+                    }
+                };
+                setTimeout(() => document.addEventListener('click', cancel), 0);
+            }
+        });
     }
 
     /**
@@ -333,14 +378,15 @@ export class ChatCombatManager {
         const combatResult = this._calculateResult(attackFlags, defenseResult);
 
         // Build extended result with defense data
-        const defenderTA = defenseResult.armorValues?.[attackFlags.damageType] ?? 0;
-        const effectiveTA = Math.max(0, defenderTA - attackFlags.taReduction);
+        const defenderTA = defenseResult.at ?? 0;
+        const effectiveTA = Math.max(0, Math.min(10, defenderTA + attackFlags.taReduction));
 
         const result = {
             ...combatResult,
-            defenseTotal: defenseResult.total,
+            defenseTotal: Math.max(0, defenseResult.total),
             defenderTA: defenderTA,
-            effectiveTA: effectiveTA
+            effectiveTA: effectiveTA,
+            defenseSucceeded: Math.max(0, defenseResult.total) > Math.max(0, attackFlags.attackTotal)
         };
 
         // Check if we can update the card directly (GM or message owner)
@@ -377,6 +423,8 @@ export class ChatCombatManager {
                 }
             });
         }
+
+        Hooks.callAll('animabf.defenseSent', defenderToken, defenseResult);
     }
 
     /**
@@ -386,14 +434,14 @@ export class ChatCombatManager {
      * @returns {Object}
      */
     _calculateResult(attackFlags, defenseResult) {
-        const attack = attackFlags.attackTotal;
-        const defense = defenseResult.total;
+        const attack = Math.max(0, attackFlags.attackTotal);
+        const defense = Math.max(0, defenseResult.total);
 
         // Get appropriate TA based on damage type
-        const at = Math.max(0,
-            (defenseResult.armorValues?.[attackFlags.damageType] ?? 0)
-            - attackFlags.taReduction
-        );
+        const at = Math.max(0, Math.min(10,
+            (defenseResult.at ?? 0)
+            + attackFlags.taReduction
+        ));
 
         // For resistance defense, "surprised" means halved absorption
         const halvedAbsorption = defenseResult.type === 'resistance'
@@ -443,6 +491,40 @@ export class ChatCombatManager {
                 defenderTokenId
             }
         });
+    }
+
+    /**
+     * Handle Apply Shield button click
+     * @param {ChatMessage} attackMessage
+     * @param {string} defenderTokenId
+     */
+    async _onUndoShieldClick(attackMessage, defenderTokenId) {
+        await ChatAttackCard.undoShield(attackMessage.id, defenderTokenId);
+
+        game.socket.emit('system.animabf-guote', {
+            type: 'chatCombat.shieldUndone',
+            payload: { attackMessageId: attackMessage.id, defenderTokenId }
+        });
+    }
+
+    async _onApplyShieldClick(attackMessage, defenderTokenId) {
+        await ChatAttackCard.applyDamageToShield(attackMessage.id, defenderTokenId);
+
+        game.socket.emit('system.animabf-guote', {
+            type: 'chatCombat.shieldApplied',
+            payload: {
+                attackMessageId: attackMessage.id,
+                defenderTokenId
+            }
+        });
+    }
+
+    /**
+     * Handle shield applied notification from another client
+     * @param {Object} payload
+     */
+    _handleShieldApplied(payload) {
+        ui.chat.render();
     }
 
     /**

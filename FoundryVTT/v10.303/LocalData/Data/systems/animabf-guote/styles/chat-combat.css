@@ -1,4 +1,13 @@
 /* ================================
+   Modified-value input shading
+   Applied to any input/select whose value differs from its default
+   ================================ */
+input.input.abf-input-modified,
+select.input.abf-input-modified {
+    background: rgba(120, 46, 34, 0.25) !important;
+}
+
+/* ================================
    Chat Card Styles
    Spell grade card + standalone defense result card
    ================================ */

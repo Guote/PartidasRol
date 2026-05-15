@@ -204,6 +204,34 @@ Do **not** add `:last-child { border-bottom: none }` — the `:nth-last-child(-n
 
 ---
 
+## Foundry Input Width Override
+
+Foundry's global CSS uses attribute-qualified selectors for inputs:
+
+```css
+input[type="text"], input[type="number"], input[type="password"], ... { width: 100%; }
+```
+
+An attribute selector `[type="number"]` has specificity **(0,1,0)**. Combined with the type selector `input` it totals **(0,1,1)**.
+
+A plain class rule like `.my-input { width: 40px }` has specificity **(0,1,0)** and **loses** to Foundry's rule — the input stretches full-width regardless.
+
+**Fix:** Always scope custom input-width rules under the dialog/container class:
+
+```css
+/* Wrong — (0,1,0) loses to Foundry's (0,1,1) */
+.my-input { width: 40px; }
+
+/* Correct — (0,2,0) beats Foundry's (0,1,1) */
+.my-dialog .my-input { width: 40px; }
+```
+
+This is the input equivalent of the `button { width: 100% }` problem. The fix for buttons is `width: auto !important`; for inputs the cleaner fix is specificity scoping via the container class.
+
+**Applied in:** `templates/dialog/mystic/zeon-calculator-dialog.hbs` — all `.zc-input*` and `.zc-res__input*` width rules are scoped under `.zeon-calculator`.
+
+---
+
 ## Inline Styles vs Classes
 
 Use **inline styles** only for one-off layout tweaks that won't repeat:

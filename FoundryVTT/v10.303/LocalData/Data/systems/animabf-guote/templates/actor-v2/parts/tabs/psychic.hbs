@@ -113,6 +113,7 @@
             <th class="v2-text-center" style="width: 42px;" title="{{localize 'anima.ui.psychic.psychicPowers.power.footer.hasMaintenance.title'}}">
               {{localize "anima.ui.psychic.psychicPowers.power.footer.maintained.short"}}
             </th>
+            <th class="v2-text-center" style="width: 48px;">CV Mant</th>
             <th style="width: 28px;"></th>
           </tr>
         </thead>
@@ -143,6 +144,11 @@
                      {{#unless power.system.hasMaintenance.value}}disabled{{/unless}}>
             </td>
             <td class="v2-text-center">
+              <input type="number" class="v2-table__input" style="width:42px;text-align:center;"
+                     name="system.dynamic.psychicPowers.{{power._id}}.system.maintainedCV.value"
+                     value="{{power.system.maintainedCV.value}}">
+            </td>
+            <td class="v2-text-center">
               <button type="button" class="v2-btn-icon-sm psychic-power-open-sheet"
                       data-item-id="{{power._id}}"
                       title="{{localize 'anima.ui.psychic.psychicPowers.power.openSheet'}}">
@@ -152,7 +158,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="6" class="v2-text-center v2-text-muted">-</td>
+            <td colspan="7" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>

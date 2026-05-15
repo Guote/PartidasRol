@@ -115,11 +115,11 @@
         <div class="v2-res v2-res--hp v2-res--compact" title="{{localize 'anima.ui.general.life.current.title'}}">
           <span class="v2-res__label"><i class="fas fa-heart"></i> PV</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="system.characteristics.secondaries.lifePoints.value"
               value="{{system.characteristics.secondaries.lifePoints.value}}">
             <span class="v2-res__sep">/</span>
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="system.characteristics.secondaries.lifePoints.max"
               value="{{system.characteristics.secondaries.lifePoints.max}}">
           </div>
@@ -129,7 +129,7 @@
         <div class="v2-res v2-res--hp v2-res--compact v2-res--single" title="Vida Sacrificada">
           <span class="v2-res__label"><i class="fas fa-heart-broken"></i> Sacr</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="system.characteristics.secondaries.lifePoints.sacrificed"
               value="{{system.characteristics.secondaries.lifePoints.sacrificed}}">
           </div>
@@ -143,11 +143,11 @@
       <div class="v2-res v2-res--fatigue v2-res--compact" title="{{localize 'anima.ui.general.fatigue.title'}}">
         <span class="v2-res__label"><i class="fas fa-bolt"></i> Cans</span>
         <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact"
+          <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
             name="system.characteristics.secondaries.fatigue.value"
             value="{{system.characteristics.secondaries.fatigue.value}}">
           <span class="v2-res__sep">/</span>
-          <input type="number" class="v2-res__input v2-res__input--compact"
+          <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
             name="system.characteristics.secondaries.fatigue.max"
             value="{{system.characteristics.secondaries.fatigue.max}}">
         </div>
@@ -159,7 +159,7 @@
       <div class="v2-res v2-res--destiny v2-res--compact" title="{{localize 'anima.ui.general.destinyPoints.title'}}">
         <span class="v2-res__label"><i class="fas fa-star"></i> PD</span>
         <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact"
+          <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
             name="system.general.destinyPoints.base.value" value="{{system.general.destinyPoints.base.value}}"
             data-header-resource>
         </div>
@@ -172,10 +172,10 @@
         <div class="v2-res v2-res--zeon v2-res--compact" title="{{localize 'anima.ui.mystic.zeon.title'}}">
           <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Zeon</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.value"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.value"
               value="{{system.mystic.zeon.value}}">
             <span class="v2-res__sep">/</span>
-            <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.max"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.zeon.max"
               value="{{system.mystic.zeon.max}}">
           </div>
         </div>
@@ -184,7 +184,7 @@
         <div class="v2-res v2-res--zeon-acc v2-res--compact v2-res--single" title="Zeon Acumulado">
           <span class="v2-res__label"><i class="fas fa-hat-wizard"></i> Acum</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.mystic.zeonAccumulated.value" value="{{system.mystic.zeonAccumulated.value}}">
           </div>
         </div>
@@ -198,11 +198,11 @@
         <div class="v2-res v2-res--ki v2-res--compact" title="Ki">
           <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Ki</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.generic.value"
               value="{{system.domine.kiAccumulation.generic.value}}">
             <span class="v2-res__sep">/</span>
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.generic.max"
               value="{{system.domine.kiAccumulation.generic.max}}">
           </div>
@@ -226,7 +226,7 @@
         <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.strength.title'}}">
           <span class="v2-res__label">FUE</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.strength.accumulated.value"
               value="{{system.domine.kiAccumulation.strength.accumulated.value}}">
           </div>
@@ -236,7 +236,7 @@
         <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.agility.title'}}">
           <span class="v2-res__label">AGI</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.agility.accumulated.value"
               value="{{system.domine.kiAccumulation.agility.accumulated.value}}">
           </div>
@@ -246,7 +246,7 @@
         <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.dexterity.title'}}">
           <span class="v2-res__label">DES</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.dexterity.accumulated.value"
               value="{{system.domine.kiAccumulation.dexterity.accumulated.value}}">
           </div>
@@ -256,7 +256,7 @@
         <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.constitution.title'}}">
           <span class="v2-res__label">CON</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.constitution.accumulated.value"
               value="{{system.domine.kiAccumulation.constitution.accumulated.value}}">
           </div>
@@ -266,7 +266,7 @@
         <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.willPower.title'}}">
           <span class="v2-res__label">VOL</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.willPower.accumulated.value"
               value="{{system.domine.kiAccumulation.willPower.accumulated.value}}">
           </div>
@@ -276,7 +276,7 @@
         <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.power.title'}}">
           <span class="v2-res__label">POD</span>
           <div class="v2-res__values">
-            <input type="number" class="v2-res__input v2-res__input--compact"
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.power.accumulated.value"
               value="{{system.domine.kiAccumulation.power.accumulated.value}}">
           </div>
@@ -290,10 +290,10 @@
       <div class="v2-res v2-res--psy v2-res--compact" title="{{localize 'anima.ui.psychic.psychicPoints.title'}}">
         <span class="v2-res__label"><i class="fas fa-brain"></i> CV</span>
         <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact"
+          <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
             name="_header.system.psychic.psychicPoints.value" value="{{system.psychic.psychicPoints.value}}">
           <span class="v2-res__sep">/</span>
-          <input type="number" class="v2-res__input v2-res__input--compact"
+          <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
             name="_header.system.psychic.psychicPoints.max" value="{{system.psychic.psychicPoints.max}}">
         </div>
       </div>
@@ -304,10 +304,10 @@
       <div class="v2-res v2-res--shield v2-res--compact" title="{{localize 'anima.ui.mystic.shield.title'}}">
         <span class="v2-res__label"><i class="fas fa-shield-alt"></i> Escudo</span>
         <div class="v2-res__values">
-          <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.shield.value"
+          <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.shield.value"
             value="{{system.mystic.shield.value}}">
           <span class="v2-res__sep">/</span>
-          <input type="number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.shield.max"
+          <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact" name="_header.system.mystic.shield.max"
             value="{{system.mystic.shield.max}}">
         </div>
       </div>

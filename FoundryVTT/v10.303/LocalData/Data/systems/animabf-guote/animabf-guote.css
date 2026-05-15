@@ -2782,18 +2782,14 @@ img {
   overflow-y: scroll;
   height: 100%;
 }
-.combat-attack-dialog .group-body .attack-sent,
-.combat-attack-dialog .group-body .mystic-attack-sent,
-.combat-attack-dialog .group-body .psychic-attack-sent {
+.combat-attack-dialog .group-body .attack-sent {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
 }
-.combat-attack-dialog .group-body .attack-sent .label,
-.combat-attack-dialog .group-body .mystic-attack-sent .label,
-.combat-attack-dialog .group-body .psychic-attack-sent .label {
+.combat-attack-dialog .group-body .attack-sent .label {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
@@ -3003,7 +2999,7 @@ img {
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 0.75rem;
   row-gap: 0.1rem;
-  align-items: start;
+  align-items: center;
 }
 /* Defense dialog overrides to 2-column */
 .chat-combat-defense-dialog .attack-details-grid {
@@ -3326,6 +3322,51 @@ img {
   margin-top: 0 !important;
 }
 
+/* Collapsible preset section (replaces old preset-manager) */
+.combat-attack-dialog .preset-section,
+.chat-combat-defense-dialog .preset-section {
+  margin: 4px 0;
+}
+.combat-attack-dialog .preset-section__summary,
+.chat-combat-defense-dialog .preset-section__summary {
+  font-size: 0.8rem;
+  color: #6e2917;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 0;
+  list-style: disclosure-closed;
+}
+.combat-attack-dialog .preset-section[open] .preset-section__summary,
+.chat-combat-defense-dialog .preset-section[open] .preset-section__summary {
+  list-style: disclosure-open;
+}
+.combat-attack-dialog .preset-section__row,
+.chat-combat-defense-dialog .preset-section__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.combat-attack-dialog .preset-section__row .preset-selector,
+.chat-combat-defense-dialog .preset-section__row .preset-selector {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 4px 8px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  height: 30px;
+  box-sizing: border-box;
+  background: white;
+}
+.combat-attack-dialog .group-body .preset-section .abf-button,
+.chat-combat-defense-dialog .group-body .preset-section .abf-button {
+  margin-top: 0 !important;
+  height: 30px;
+  font-size: 0.82rem;
+  gap: 5px;
+}
+
 /* Override the general .group-body .abf-button margin for spell selector button */
 .combat-attack-dialog .group-body .spell-select-row .open-spell-sheet,
 .combat-defense-dialog .group-body .spell-select-row .open-spell-sheet,
@@ -3597,10 +3638,13 @@ img {
 .chat-combat-action-cell {
   width: 36px;
   text-align: center;
+  position: relative;
 }
 
 .chat-combat-apply-damage,
-.chat-combat-undo-damage {
+.chat-combat-undo-damage,
+.chat-combat-apply-shield,
+.chat-combat-undo-shield {
   padding: 4px 8px;
   font-size: 0.85em;
   min-width: auto;
@@ -3610,31 +3654,37 @@ img {
   transition: all 0.15s ease;
 }
 
-.chat-combat-apply-damage {
+.chat-combat-apply-damage,
+.chat-combat-apply-shield {
   background: rgba(110, 41, 23, 0.1);
   border-color: #6e2917;
   color: #6e2917;
 }
 
-.chat-combat-apply-damage:hover {
+.chat-combat-apply-damage:hover,
+.chat-combat-apply-shield:hover {
   background: #6e2917;
   color: white;
 }
 
-.chat-combat-undo-damage {
+.chat-combat-undo-damage,
+.chat-combat-undo-shield {
   background: rgba(110, 41, 23, 0.05);
   border-color: #999;
   color: #666;
 }
 
-.chat-combat-undo-damage:hover {
+.chat-combat-undo-damage:hover,
+.chat-combat-undo-shield:hover {
   background: rgba(0, 0, 0, 0.1);
   border-color: #666;
   color: #333;
 }
 
 .chat-combat-apply-damage i,
-.chat-combat-undo-damage i {
+.chat-combat-undo-damage i,
+.chat-combat-apply-shield i,
+.chat-combat-undo-shield i {
   font-size: 0.9em;
 }
 

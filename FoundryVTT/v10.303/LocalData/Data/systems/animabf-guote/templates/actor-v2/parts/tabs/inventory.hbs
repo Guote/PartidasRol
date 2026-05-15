@@ -25,6 +25,7 @@
                 <i class="fas fa-sort v2-sort-icon--inactive"></i>
               {{/if}}
             </th>
+            <th class="v2-text-center" style="width: 36px;" title="Calidad">Cal.</th>
             <th class="inventory-sort-th v2-sort-th" style="width: 50px;" data-sort-table="weapons" data-sort-field="attack">
               {{localize "anima.ui.combat.baseValues.attack.title"}}
               {{#if inventorySortHeaders.weapons.attack.active}}
@@ -85,6 +86,7 @@
                 {{weapon.name}}
               </span>
             </td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.8rem;">{{#if (is 'neq' weapon.system.quality.value 0)}}{{weapon.system.quality.value}}{{/if}}</td>
             <td class="v2-text-center">{{weapon.system.attack.final.value}}</td>
             <td class="v2-text-center">{{weapon.system.block.final.value}}</td>
             <td class="v2-text-center">{{weapon.system.damage.final.value}}</td>
@@ -101,7 +103,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="8" class="v2-text-center v2-text-muted">-</td>
+            <td colspan="9" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>
@@ -134,6 +136,7 @@
                 <i class="fas fa-sort v2-sort-icon--inactive"></i>
               {{/if}}
             </th>
+            <th class="v2-text-center" style="width: 36px;" title="Calidad">Cal.</th>
             <th class="inventory-sort-th v2-sort-th" style="width: 35px;" data-sort-table="armors" data-sort-field="cut">
               {{localize "anima.ui.combat.armors.at.cut.title"}}
               {{#if inventorySortHeaders.armors.cut.active}}
@@ -204,6 +207,7 @@
             <td>
               <span class="item-link">{{armor.name}}</span>
             </td>
+            <td class="v2-text-center v2-text-muted" style="font-size:0.8rem;">{{#if (is 'neq' armor.system.quality.value 0)}}{{armor.system.quality.value}}{{/if}}</td>
             <td class="v2-text-center">{{armor.system.cut.final.value}}</td>
             <td class="v2-text-center">{{armor.system.impact.final.value}}</td>
             <td class="v2-text-center">{{armor.system.thrust.final.value}}</td>
@@ -214,7 +218,7 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="9" class="v2-text-center v2-text-muted">-</td>
+            <td colspan="10" class="v2-text-center v2-text-muted">-</td>
           </tr>
           {{/each}}
         </tbody>

@@ -2,6 +2,7 @@ import { ABFSystemName } from '../../../animabf-guote.name.js';
 
 export class ZeonCalculatorDialog extends FormApplication {
   static _perksCache = null;
+  static _chatHookRegistered = false;
 
   static async loadPerks() {
     if (ZeonCalculatorDialog._perksCache) return ZeonCalculatorDialog._perksCache;
@@ -9,15 +10,57 @@ export class ZeonCalculatorDialog extends FormApplication {
     const all = await res.json();
     ZeonCalculatorDialog._perksCache = all
       .filter(p => p.levels.some(l => l.zeon_to_accumulate > 0 || l.zeon_reserve > 0))
-      .sort((a, b) => a.name.localeCompare(b.name, 'es'));
+      .sort((a, b) => a.name.localeCompare(b.name, 'es', { numeric: true }));
     return ZeonCalculatorDialog._perksCache;
   }
 
   static async openForActor(actor) {
+    ZeonCalculatorDialog._registerChatHook();
     const perks = await ZeonCalculatorDialog.loadPerks();
     const dlg = new ZeonCalculatorDialog(actor, perks);
     dlg.render(true);
     return dlg;
+  }
+
+  static _registerChatHook() {
+    if (ZeonCalculatorDialog._chatHookRegistered) return;
+    ZeonCalculatorDialog._chatHookRegistered = true;
+
+    Hooks.on('renderChatMessage', (msg, html) => {
+      const pending = msg.flags?.['animabf-guote']?.zeonCalcPending;
+      if (!pending) return;
+      const btn = html.find('[data-action="apply-zeon-calc"]');
+      if (!btn.length) return;
+
+      if (pending.applied) {
+        btn.prop('disabled', true).text(game.i18n.localize('anima.ui.zeonCalc.chat.applied'));
+        return;
+      }
+
+      btn.on('click', async () => {
+        const actor = game.actors.get(pending.actorId);
+        if (!actor) return;
+
+        const updateData = {};
+        const fatigueVal = actor.system.characteristics.secondaries.fatigue.value;
+        updateData['system.characteristics.secondaries.fatigue.value'] =
+          Math.max(0, fatigueVal - pending.fatigueCost);
+
+        if (pending.clearAccumulated) {
+          const currentZeon = actor.system.mystic.zeon.value;
+          updateData['system.mystic.zeon.value'] = Math.max(0, currentZeon - pending.zeonReserveCost);
+          updateData['system.mystic.zeonAccumulated.value'] = 0;
+        } else {
+          const currentAccumulated = actor.system.mystic.zeonAccumulated.value;
+          updateData['system.mystic.zeonAccumulated.value'] = currentAccumulated + pending.accumulatedToAdd;
+        }
+
+        await actor.update({ 'system.macroCookies.zeonCalculator.fatigueBonusPerPoint': pending.fatigueBonusPerPoint });
+        await actor.update(updateData);
+        await msg.update({ 'flags.animabf-guote.zeonCalcPending.applied': true });
+        btn.prop('disabled', true).text(game.i18n.localize('anima.ui.zeonCalc.chat.applied'));
+      });
+    });
   }
 
   constructor(actor, perks, options = {}) {
@@ -26,6 +69,19 @@ export class ZeonCalculatorDialog extends FormApplication {
     this.perks = perks;
     this._openDetailsIds = new Set();
     this._initModalData();
+    this._actorUpdateHandler = (updatedActor) => {
+      if (updatedActor.id === this.actor.id) this.render(false);
+    };
+    Hooks.on('updateActor', this._actorUpdateHandler);
+  }
+
+  async close(...args) {
+    Hooks.off('updateActor', this._actorUpdateHandler);
+    return super.close(...args);
+  }
+
+  get title() {
+    return `${game.i18n.localize('anima.ui.zeonCalc.title')} — ${this.actor?.name ?? ''}`;
   }
 
   static get defaultOptions() {
@@ -50,6 +106,8 @@ export class ZeonCalculatorDialog extends FormApplication {
         pointsToUse: 0,
         bonusPerPoint: saved?.fatigueBonusPerPoint ?? 15
       },
+      actModifier: 0,
+      useAlternativeAct: false,
       globalExtraAccumulate: 0,
       globalExtraReserve: 0
     };
@@ -69,7 +127,11 @@ export class ZeonCalculatorDialog extends FormApplication {
 
   async getData() {
     const sys = this.actor.system;
-    const actValue = sys.mystic?.act?.main?.final?.value ?? 0;
+    const actBase = this.modalData.useAlternativeAct
+      ? (sys.mystic?.act?.alternative?.final?.value ?? 0)
+      : (sys.mystic?.act?.main?.final?.value ?? 0);
+    const actModifier = this.modalData.actModifier || 0;
+    const actFinal = actBase + actModifier;
     const currentAccumulated = sys.mystic?.zeonAccumulated?.value ?? 0;
     const currentZeon = sys.mystic?.zeon?.value ?? 0;
     const zeonMax = sys.mystic?.zeon?.max ?? 0;
@@ -102,21 +164,21 @@ export class ZeonCalculatorDialog extends FormApplication {
 
     const { pointsToUse, bonusPerPoint } = this.modalData.fatigue;
     const fatigueBonus = (pointsToUse || 0) * (bonusPerPoint || 15);
-    const thisRound = actValue + fatigueBonus;
+    const thisRound = actFinal + fatigueBonus;
     const remaining = Math.max(0, totalToAccumulate - currentAccumulated);
 
     let turnsNeeded;
-    if (actValue === 0) {
+    if (actFinal === 0) {
       turnsNeeded = null;
     } else if (remaining === 0) {
       turnsNeeded = 0;
     } else if (remaining <= thisRound) {
       turnsNeeded = 1;
     } else {
-      turnsNeeded = 1 + Math.ceil((remaining - thisRound) / actValue);
+      turnsNeeded = 1 + Math.ceil((remaining - thisRound) / actFinal);
     }
 
-    const canConfirm = actValue > 0;
+    const canConfirm = actFinal > 0;
     let confirmLabel;
     if (!canConfirm) {
       confirmLabel = game.i18n.localize('anima.ui.zeonCalc.confirm.noAct');
@@ -136,7 +198,10 @@ export class ZeonCalculatorDialog extends FormApplication {
       fatigue: this.modalData.fatigue,
       globalExtraAccumulate: this.modalData.globalExtraAccumulate || 0,
       globalExtraReserve: this.modalData.globalExtraReserve || 0,
-      actValue,
+      actBase,
+      actModifier,
+      actFinal,
+      useAlternativeAct: this.modalData.useAlternativeAct,
       currentAccumulated,
       currentZeon,
       zeonMax,
@@ -169,7 +234,14 @@ export class ZeonCalculatorDialog extends FormApplication {
       else this._openDetailsIds.delete(rowId);
     });
 
-    html.on('change', 'input, select', () => {
+    html.on('change', '[data-actor-update]', async ev => {
+      const field = ev.currentTarget.dataset.actorUpdate;
+      const value = Number(ev.currentTarget.value) || 0;
+      await this.actor.update({ [field]: value });
+      this.render(false);
+    });
+
+    html.on('change', 'input:not([data-actor-update]), select', () => {
       this._syncFromForm(html);
       this.render(false);
     });
@@ -213,6 +285,10 @@ export class ZeonCalculatorDialog extends FormApplication {
       Number(html.find('[name="fatigue.pointsToUse"]').val()) || 0;
     this.modalData.fatigue.bonusPerPoint =
       Number(html.find('[name="fatigue.bonusPerPoint"]').val()) || 15;
+    this.modalData.actModifier =
+      Number(html.find('[name="actModifier"]').val()) || 0;
+    this.modalData.useAlternativeAct =
+      html.find('[name="useAlternativeAct"]').prop('checked') === true;
     this.modalData.globalExtraAccumulate =
       Number(html.find('[name="globalExtraAccumulate"]').val()) || 0;
     this.modalData.globalExtraReserve =
@@ -247,89 +323,116 @@ export class ZeonCalculatorDialog extends FormApplication {
       'system.macroCookies.zeonCalculator.fatigueBonusPerPoint': computed.fatigue.bonusPerPoint
     });
 
+    const pending = {
+      actorId: this.actor.id,
+      fatigueCost: computed.fatigue.pointsToUse,
+      fatigueBonusPerPoint: computed.fatigue.bonusPerPoint,
+      clearAccumulated: computed.turnsNeeded !== null && computed.turnsNeeded <= 1,
+      zeonReserveCost: computed.totalToAccumulate + computed.totalFromReserve,
+      accumulatedToAdd: Math.min(computed.thisRound, computed.remaining),
+      applied: false
+    };
+
     const content = this._buildChatContent(computed);
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     ChatMessage.create({
       content,
+      flags: { 'animabf-guote': { zeonCalcPending: pending } },
       whisper: ChatMessage.getWhisperRecipients('GM'),
       speaker
     });
 
-    const updateData = {};
-    const fatigueVal = this.actor.system.characteristics.secondaries.fatigue.value;
-    updateData['system.characteristics.secondaries.fatigue.value'] =
-      Math.max(0, fatigueVal - computed.fatigue.pointsToUse);
-
-    if (computed.turnsNeeded <= 1 && computed.turnsNeeded !== null) {
-      updateData['system.mystic.zeon.value'] =
-        Math.max(0, computed.currentZeon - (computed.totalToAccumulate + computed.totalFromReserve));
-      updateData['system.mystic.zeonAccumulated.value'] = 0;
-    } else {
-      const addedThisTurn = Math.min(computed.thisRound, computed.remaining);
-      updateData['system.mystic.zeonAccumulated.value'] =
-        computed.currentAccumulated + addedThisTurn;
-    }
-
-    await this.actor.update(updateData);
     this.close();
   }
 
-  _buildChatContent(computed) {
-    const lines = [];
-    lines.push(`<b>═══ ${game.i18n.localize('anima.ui.zeonCalc.title')} — ${this.actor.name} ═══</b>`);
-    lines.push(
-      `${game.i18n.localize('anima.ui.zeonCalc.header.act')}: <b>${computed.actValue}</b> &nbsp;|&nbsp; ` +
-      `${game.i18n.localize('anima.ui.zeonCalc.header.accumulated')}: <b>${computed.currentAccumulated}</b> &nbsp;|&nbsp; ` +
-      `${game.i18n.localize('anima.ui.zeonCalc.header.reserve')}: <b>${computed.currentZeon}/${computed.zeonMax}</b>`
-    );
-    lines.push('<hr style="margin:0.3rem 0">');
-
-    for (const row of computed.spells) {
+  _deduplicateSpells(spells) {
+    const groups = new Map();
+    for (const row of spells) {
       const hasContent = row.spellId || row.extraAccumulate || row.extraReserve || row.selectedPerkLevels.length;
       if (!hasContent) continue;
+      const perkKey = [...row.selectedPerkLevels]
+        .sort((a, b) => a.perkIndex - b.perkIndex || a.levelIndex - b.levelIndex)
+        .map(s => `${s.perkIndex}:${s.levelIndex}`)
+        .join(',');
+      const key = `${row.spellId}|${row.grade}|${row.extraAccumulate}|${row.extraReserve}|${perkKey}`;
+      if (groups.has(key)) {
+        groups.get(key).count++;
+      } else {
+        groups.set(key, { row, count: 1 });
+      }
+    }
+    return [...groups.values()];
+  }
 
-      lines.push(`<b>${row.spellName || '(sin conjuro)'}</b> (${row.grade}): ${row.baseZeon} Ze base`);
+  _buildChatContent(computed) {
+    let html = '';
 
-      for (const sel of row.selectedPerkLevels) {
-        const perk  = this.perks[sel.perkIndex];
+    const actDisplay = computed.actModifier
+      ? `${computed.actBase} + ${computed.actModifier} = <b>${computed.actFinal}</b>`
+      : `<b>${computed.actFinal}</b>`;
+    html += `<b>═══ ${game.i18n.localize('anima.ui.zeonCalc.title')} — ${this.actor.name} ═══</b><br>`;
+    html +=
+      `${game.i18n.localize('anima.ui.zeonCalc.header.act')}: ${actDisplay} &nbsp;|&nbsp; ` +
+      `${game.i18n.localize('anima.ui.zeonCalc.header.accumulated')}: <b>${computed.currentAccumulated}</b> &nbsp;|&nbsp; ` +
+      `${game.i18n.localize('anima.ui.zeonCalc.header.reserve')}: <b>${computed.currentZeon}/${computed.zeonMax}</b><br>`;
+    html += '<hr style="margin:0.3rem 0">';
+
+    const groups = this._deduplicateSpells(computed.spells);
+    for (const { row, count } of groups) {
+      const prefix = count > 1 ? `${count}x ` : '';
+      html += `${prefix}<b>${row.spellName || '(sin conjuro)'}</b> (${row.grade}): ${row.baseZeon} Ze base<br>`;
+
+      const perkItems = row.selectedPerkLevels.map(sel => {
+        const perk = this.perks[sel.perkIndex];
         const level = perk?.levels[sel.levelIndex];
-        if (!perk || !level) continue;
+        if (!perk || !level) return null;
         const costStr = level.zeon_to_accumulate
           ? `+${level.zeon_to_accumulate} acum`
           : `+${level.zeon_reserve} reserva`;
-        lines.push(`&nbsp;&nbsp;↳ Metamagia: ${perk.name} — ${level.name} (${costStr})`);
+        return `&nbsp;&nbsp;• ${perk.name} — ${level.name} (${costStr})`;
+      }).filter(Boolean);
+
+      if (perkItems.length) {
+        html +=
+          `<details class="chat-combat-details">` +
+          `<summary>${game.i18n.localize('anima.ui.zeonCalc.chat.perks')}</summary>` +
+          `<div style="padding-left:0.5rem">${perkItems.join('<br>')}</div>` +
+          `</details>`;
       }
 
-      if (row.extraAccumulate) lines.push(`&nbsp;&nbsp;↳ Extra acumulado: +${row.extraAccumulate}`);
-      if (row.extraReserve)    lines.push(`&nbsp;&nbsp;↳ Extra reserva: +${row.extraReserve}`);
-      if (row.comment)         lines.push(`&nbsp;&nbsp;↳ Nota: <i>${row.comment}</i>`);
-      lines.push(`&nbsp;&nbsp;<i>Subtotal: ${row.rowAccumulate} acum / ${row.rowReserve} reserva</i>`);
+      if (row.extraAccumulate) html += `&nbsp;&nbsp;↳ Extra acumulado: +${row.extraAccumulate}<br>`;
+      if (row.extraReserve)    html += `&nbsp;&nbsp;↳ Extra reserva: +${row.extraReserve}<br>`;
+      if (row.comment)         html += `&nbsp;&nbsp;↳ Nota: <i>${row.comment}</i><br>`;
+      html += `&nbsp;&nbsp;<i>Subtotal: ${row.rowAccumulate} acum / ${row.rowReserve} reserva</i><br>`;
     }
 
-    lines.push('<hr style="margin:0.3rem 0">');
+    html += '<hr style="margin:0.3rem 0">';
 
     if (computed.fatigue.pointsToUse > 0) {
-      lines.push(
-        `Cansancio: ${computed.fatigue.pointsToUse} pts × +${computed.fatigue.bonusPerPoint} = <b>+${computed.fatigueBonus} Ze</b> extra este turno`
-      );
+      html += `Cansancio: ${computed.fatigue.pointsToUse} pts × +${computed.fatigue.bonusPerPoint} = <b>+${computed.fatigueBonus} Ze</b> extra este turno<br>`;
     }
     if (computed.globalExtraAccumulate || computed.globalExtraReserve) {
-      lines.push(
-        `Modificadores globales: +${computed.globalExtraAccumulate} acum / +${computed.globalExtraReserve} reserva`
-      );
+      html += `Modificadores globales: +${computed.globalExtraAccumulate} acum / +${computed.globalExtraReserve} reserva<br>`;
     }
 
-    lines.push(`<b>Total a acumular: ${computed.totalToAccumulate}</b>`);
+    html += `<b>Total a acumular: ${computed.totalToAccumulate}</b><br>`;
     if (computed.totalFromReserve > 0) {
-      lines.push(`<b>Total de reserva: ${computed.totalFromReserve}</b>`);
+      html += `<b>Total de reserva: ${computed.totalFromReserve}</b><br>`;
     }
-    lines.push(`Turno actual: ${computed.actValue} + ${computed.fatigueBonus} = <b>${computed.thisRound}</b>`);
+    html += `Turno actual: ${computed.actFinal} + ${computed.fatigueBonus} = <b>${computed.thisRound}</b><br>`;
 
     const turnsDisplay = computed.turnsNeeded === null ? '—'
       : computed.turnsNeeded === 0 ? '✓ (ya acumulado)'
       : `${computed.turnsNeeded}`;
-    lines.push(`<b>Turnos necesarios: ${turnsDisplay}</b>`);
+    html += `<b>Turnos necesarios: ${turnsDisplay}</b>`;
 
-    return lines.join('<br>');
+    html +=
+      '<hr style="margin:0.3rem 0">' +
+      `<div style="text-align:right">` +
+      `<button type="button" data-action="apply-zeon-calc" style="width:auto!important;display:inline-flex;gap:0.3rem;padding:0.2rem 0.6rem">` +
+      `<i class="fas fa-check"></i> ${game.i18n.localize('anima.ui.zeonCalc.chat.confirm')}` +
+      `</button></div>`;
+
+    return html;
   }
 }

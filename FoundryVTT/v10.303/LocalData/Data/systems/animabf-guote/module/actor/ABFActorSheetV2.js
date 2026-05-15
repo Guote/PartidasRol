@@ -325,7 +325,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       if (!field || !arr?.length) return arr;
       return [...arr].sort((a, b) => {
         const av = _sortVal(a, field), bv = _sortVal(b, field);
-        const cmp = typeof av === 'string' ? av.localeCompare(bv) : (av ?? 0) - (bv ?? 0);
+        const cmp = typeof av === 'string' ? av.localeCompare(bv, 'es', { numeric: true }) : (av ?? 0) - (bv ?? 0);
         return dir === 'asc' ? cmp : -cmp;
       });
     };
@@ -346,7 +346,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
     if (sField && sheet.summonRows?.length) {
       sheet.summonRows = [...sheet.summonRows].sort((a, b) => {
         const av = _summonSortVal(a, sField), bv = _summonSortVal(b, sField);
-        const cmp = typeof av === 'string' ? av.localeCompare(bv) : (av ?? 0) - (bv ?? 0);
+        const cmp = typeof av === 'string' ? av.localeCompare(bv, 'es', { numeric: true }) : (av ?? 0) - (bv ?? 0);
         return sDir === 'asc' ? cmp : -cmp;
       });
     }
@@ -442,6 +442,32 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
       toggle.classList.toggle("expanded");
       target.toggleClass("expanded");
+    });
+
+    // Zeon inputs: shrink font when value reaches 4+ digits
+    const zeonInputs = html.find('.v2-res--zeon .v2-res__input, .v2-res--zeon-acc .v2-res__input');
+    const updateZeonLong = () => zeonInputs.each(function () {
+      this.classList.toggle('v2-res__input--long', this.value.length >= 4);
+    });
+    updateZeonLong();
+    zeonInputs.on('change', updateZeonLong);
+
+    // Resource inputs: select-all on focus, delta notation (+3 / -2) on change
+    html.find('.v2-res__input').on('focus', function () {
+      this.select();
+    }).on('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.blur();
+      }
+    }).on('change', function () {
+      const raw = this.value.trim();
+      if (/^[+-]\d+$/.test(raw)) {
+        const base = parseInt(this.defaultValue, 10);
+        this.value = isNaN(base) ? this.defaultValue : base + parseInt(raw, 10);
+      } else if (raw === '' || isNaN(Number(raw))) {
+        this.value = this.defaultValue;
+      }
     });
 
     // General modifier click - switch to effects tab
@@ -769,6 +795,24 @@ export default class ABFActorSheetV2 extends ActorSheet {
       };
       e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(dragData));
     });
+
+    // Open standalone defense dialog button
+    html.find('.open-defense-dialog').click((e) => {
+      e.preventDefault();
+      this._openDefenseDialog();
+    });
+
+    // Make the defense button draggable to macro hotbar
+    html.find('.open-defense-dialog').on('dragstart', (e) => {
+      const actorId = this.actor.id;
+      const dragData = {
+        type: "ABFDefenseDialog",
+        command: `{\nconst _actor = game.actors.get("${actorId}");\nconst _token = canvas.tokens.controlled[0] ?? _actor?.getActiveTokens()[0];\nif (!_token) return ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));\nconst { ChatCombatDefenseDialog } = await import("/systems/animabf-guote/module/combat/chat-combat/ChatCombatDefenseDialog.js");\nnew ChatCombatDefenseDialog(null, _token.document ?? _token, { onDefense: () => {} });\n}`,
+        name: `${game.i18n.localize("anima.macros.combat.dialog.defense.title")} - ${this.actor.name}`,
+        img: "icons/skills/defense/shield-protect-blue.webp"
+      };
+      e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+    });
   }
 
   /**
@@ -1030,6 +1074,20 @@ export default class ABFActorSheetV2 extends ActorSheet {
       allowed: true,
       closeOnSend: true  // Close dialog after sending attack (chat combat mode)
     });
+  }
+
+  /**
+   * Open the defense dialog in standalone mode (no attack to respond to)
+   */
+  async _openDefenseDialog() {
+    const token = canvas.tokens.controlled[0] ?? this.actor.getActiveTokens()[0];
+    if (!token) {
+      ui.notifications.warn(game.i18n.localize("anima.notifications.noTokenSelected"));
+      return;
+    }
+    const tokenDoc = token.document ?? token;
+    const { ChatCombatDefenseDialog } = await import('../combat/chat-combat/ChatCombatDefenseDialog.js');
+    new ChatCombatDefenseDialog(null, tokenDoc, { onDefense: () => {} });
   }
 
   /**
