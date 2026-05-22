@@ -95,12 +95,6 @@ const triggerMaintenanceMacro = (combat, delta) => {
       macroName: "Mantenimiento: Ki",
       extraCondition: extraCondition,
     });
-    triggerMacroIfActiveEffect({
-      token: token,
-      effectName: "Usando Zeon",
-      macroName: "Mantenimiento: Zeon",
-      extraCondition: extraCondition,
-    });
   });
 };
 
@@ -123,6 +117,7 @@ Hooks.on("updateCombat", async (combat, delta) => {
   // Trigger accumulation and maintenance macros on round start, before rolling
   if (combat.flags.world.newRound === true && delta?.round) {
     triggerMaintenanceMacro(combat, delta);
+    await sendZeonRoundReminder(combat);
   }
   // Trigger macro on turn start for current actor
   const conditionEnLlamas = "En Llamas";
@@ -151,6 +146,8 @@ Hooks.on("updateCombatant", async function (combatant, data, options, userId) {
 const cubHas = (name, token) => { try { return game.cub.hasCondition(name, token); } catch { return false; } };
 const cubAdd = (name, token) => { try { game.cub.addCondition(name, token); } catch { } };
 const cubRemove = (name, token) => { try { game.cub.removeCondition(name, token); } catch { } };
+
+const USANDO_ZEON = 'Usando Zeon';
 
 // Apply conditions based on total modifier (physical + supernatural). GM only.
 // NOTE: modFinal.general.final.value is derived by the async prepareActor pipeline and is
@@ -205,7 +202,171 @@ Hooks.on("updateActor", (actor, updateData, options, userId) => {
   }
 });
 
-/*********************************************************************************** 
+// ─── Zeon: auto-apply "Usando Zeon" when accumulated > 0 ───────────────────
+Hooks.on('updateActor', (actor, updateData) => {
+  if (!game.user.isGM) return;
+  const newAccum = updateData?.system?.mystic?.zeonAccumulated?.value;
+  if (newAccum === undefined) return;
+  const token = actor.getActiveTokens()[0];
+  if (!token) return;
+  if (newAccum > 0) {
+    if (!cubHas(USANDO_ZEON, token)) cubAdd(USANDO_ZEON, token);
+  } else {
+    if (cubHas(USANDO_ZEON, token)) cubRemove(USANDO_ZEON, token);
+  }
+});
+
+// ─── Zeon: apply condition when spell is cast from attack/defense dialog ────
+Hooks.on('animabf.mysticSpellCast', (actor) => {
+  if (!game.user.isGM) return;
+  const token = actor.getActiveTokens()[0];
+  if (!token) return;
+  if (!cubHas(USANDO_ZEON, token)) cubAdd(USANDO_ZEON, token);
+});
+
+// ─── Zeon: upkeep helpers ────────────────────────────────────────────────────
+function getActorRoundUpkeep(actor) {
+  return (actor.system?.mystic?.spellMaintenances ?? [])
+    .filter(m => m.system?.active?.value !== false)
+    .reduce((sum, m) =>
+      sum + (m.system?.roundCost?.value ?? 0) + (m.system?.roundCostMod?.value ?? 0), 0);
+}
+
+async function applyUpkeepCosts(actor) {
+  const total = getActorRoundUpkeep(actor);
+  if (total <= 0) return;
+  const currentZeon = actor.system.mystic.zeon.value;
+  await actor.update({ 'system.mystic.zeon.value': Math.max(0, currentZeon - total) });
+  const ownerIds = Object.entries(actor.ownership ?? {})
+    .filter(([uid, lvl]) => lvl >= 3 && uid !== 'default').map(([uid]) => uid);
+  const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
+  ChatMessage.create({
+    content: `<i class="fas fa-hat-wizard"></i> <b>${actor.name}</b>: Mantenimiento aplicado (−${total} reserva).`,
+    whisper: [...new Set([...ownerIds, ...gmIds])]
+  });
+}
+
+// ─── Zeon: round-start / combat-end whisper ─────────────────────────────────
+function buildZeonSection(e) {
+  const btnStyle = 'width:auto!important;display:inline-flex;align-items:center;font-size:0.8em;padding:1px 6px';
+  let html = `<div style="margin-bottom:6px">` +
+    `<img src="${e.tokenSrc}" style="width:28px;height:28px;border-radius:50%;vertical-align:middle;object-fit:cover"> ` +
+    `<b>${e.actor.name}</b>`;
+  if (e.accumulated > 0) {
+    const warn = e.pending?.isPure && (e.pending?.leftover ?? 0) > 0 ? ' ⚠️ -10 reserva' : '';
+    html += `<br>Zeon acumulado: <b>${e.accumulated}</b>${warn} ` +
+      `<button data-action="zeon-cleanup" data-actor-id="${e.actor.id}" style="${btnStyle}">` +
+      `<i class="fas fa-broom"></i> Limpiar</button>` +
+      `<span title="Si lanzaste algún hechizo o has dejado de acumular, tu zeon acumulado debería pasar a 0" style="cursor:help;margin-left:2px">ⓘ</span>`;
+  }
+  if (e.roundUpkeep > 0) {
+    html += `<br>Mantenimiento/asalto: <b>${e.roundUpkeep}</b> ` +
+      `<button data-action="apply-upkeep" data-actor-id="${e.actor.id}" style="${btnStyle}">` +
+      `<i class="fas fa-coins"></i> Aplicar</button> ` +
+      `<button data-action="open-grimoire" data-actor-id="${e.actor.id}" style="${btnStyle}">` +
+      `<i class="fas fa-book-open"></i> Grimorio</button>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+async function sendZeonRoundReminder(combat) {
+  if (!game.user.isGM) return;
+  const playerActors = new Map(); // playerId → entries[]
+  const gmOnlyEntries = [];       // actors with no player owner
+
+  for (const combatant of combat.combatants) {
+    const token = getTokenFromCombatant(combatant);
+    const actor = combatant.actor;
+    if (!actor) continue;
+
+    const accumulated = actor.system?.mystic?.zeonAccumulated?.value ?? 0;
+    const roundUpkeep = getActorRoundUpkeep(actor);
+    if (accumulated === 0 && roundUpkeep === 0) continue;
+
+    const pending = actor.system?.macroCookies?.pendingZeonCleanup;
+    const tokenSrc = token?.document?.texture?.src ?? actor.img;
+    const entry = { actor, accumulated, roundUpkeep, pending, tokenSrc };
+
+    const playerOwnerIds = Object.entries(actor.ownership ?? {})
+      .filter(([uid, lvl]) => lvl >= 3 && uid !== 'default' && !game.users.get(uid)?.isGM)
+      .map(([uid]) => uid);
+
+    if (playerOwnerIds.length === 0) {
+      gmOnlyEntries.push(entry);
+    } else {
+      for (const uid of playerOwnerIds) {
+        if (!playerActors.has(uid)) playerActors.set(uid, []);
+        playerActors.get(uid).push(entry);
+      }
+    }
+  }
+
+  const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
+
+  for (const [userId, entries] of playerActors) {
+    ChatMessage.create({
+      content: `<i class="fas fa-hat-wizard"></i> <b>Usando Zeon</b>:<br>${entries.map(buildZeonSection).join('')}`,
+      whisper: [...new Set([userId, ...gmIds])]
+    });
+  }
+
+  if (gmOnlyEntries.length > 0) {
+    ChatMessage.create({
+      content: `<i class="fas fa-hat-wizard"></i> <b>Usando Zeon</b>:<br>${gmOnlyEntries.map(buildZeonSection).join('')}`,
+      whisper: gmIds
+    });
+  }
+}
+
+Hooks.on('deleteCombat', async (combat) => {
+  await sendZeonRoundReminder(combat);
+});
+
+// ─── Zeon: cleanup function ──────────────────────────────────────────────────
+async function applyZeonCleanup(actor) {
+  const pending = actor.system?.macroCookies?.pendingZeonCleanup;
+  const accumulated = actor.system?.mystic?.zeonAccumulated?.value ?? 0;
+  const isPure = pending?.isPure ?? true;
+  const leftover = pending?.leftover ?? accumulated;
+  const penalty = (isPure && leftover > 0) ? -10 : 0;
+
+  const update = { 'system.mystic.zeonAccumulated.value': 0 };
+  if (penalty !== 0)
+    update['system.mystic.zeon.value'] = Math.max(0, actor.system.mystic.zeon.value + penalty);
+  await actor.update(update);
+
+  if (pending) await actor.update({ 'system.macroCookies.pendingZeonCleanup': null });
+
+  const token = actor.getActiveTokens()[0];
+  if (token && cubHas(USANDO_ZEON, token)) cubRemove(USANDO_ZEON, token);
+
+  const ownerIds = Object.entries(actor.ownership ?? {})
+    .filter(([uid, lvl]) => lvl >= 3 && uid !== 'default').map(([uid]) => uid);
+  const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
+  const penaltyText = penalty < 0 ? ` Penalización: <b>${penalty}</b> reserva.` : '';
+  ChatMessage.create({
+    content: `<i class="fas fa-hat-wizard"></i> <b>${actor.name}</b>: Zeon limpiado.${penaltyText}`,
+    whisper: [...new Set([...ownerIds, ...gmIds])]
+  });
+}
+
+Hooks.on('renderChatMessage', (msg, html) => {
+  html.find('[data-action="zeon-cleanup"]').on('click', async ev => {
+    const actor = game.actors.get(ev.currentTarget.dataset.actorId);
+    if (actor) await applyZeonCleanup(actor);
+  });
+  html.find('[data-action="apply-upkeep"]').on('click', async ev => {
+    const actor = game.actors.get(ev.currentTarget.dataset.actorId);
+    if (actor) await applyUpkeepCosts(actor);
+  });
+  html.find('[data-action="open-grimoire"]').on('click', ev => {
+    const actor = game.actors.get(ev.currentTarget.dataset.actorId);
+    if (actor) actor.sheet.render(true);
+  });
+});
+
+/***********************************************************************************
  * Merge Simple Calendar and SmallTime Styles
  **********************************************************************************/
 // Merge Simple Calendar and SmallTime styles

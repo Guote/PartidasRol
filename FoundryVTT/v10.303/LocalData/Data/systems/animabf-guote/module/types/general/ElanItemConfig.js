@@ -2,6 +2,8 @@ import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
 import { ElanPowerItemConfig } from './ElanPowerItemConfig.js';
+export const ELAN_INITIAL_SYSTEM = { level: { value: 0 }, powers: [] };
+
 /** @type {import("../Items").ElanItemConfig} */
 export const ElanItemConfig = ABFItemConfigFactory({
     type: ABFItems.ELAN,
@@ -34,10 +36,7 @@ export const ElanItemConfig = ABFItemConfigFactory({
         await actor.createInnerItem({
             name,
             type: ABFItems.ELAN,
-            system: {
-                level: { value: 0 },
-                powers: []
-            }
+            system: ELAN_INITIAL_SYSTEM
         });
     },
     onUpdate: async (actor, changes) => {

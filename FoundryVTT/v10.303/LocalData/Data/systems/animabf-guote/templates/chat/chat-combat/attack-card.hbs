@@ -17,6 +17,16 @@
         {{/if}}
       </div>
 
+      {{!-- Pending targets row (awaiting defense) --}}
+      {{#if pendingTargets.length}}
+      <div class="chat-combat-pending-row">
+        <span class="chat-combat-pending-label">{{localize "anima.chat.combat.pendingDefenders"}}</span>
+        {{#each pendingTargets}}
+        <img src="{{img}}" class="chat-combat-portrait-tiny" title="{{name}}" />
+        {{/each}}
+      </div>
+      {{/if}}
+
       {{!-- Collapsible attack details --}}
       <details class="chat-combat-details">
         <summary>{{localize "anima.chat.combat.details"}}</summary>

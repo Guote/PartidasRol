@@ -1,6 +1,7 @@
 import { renderTemplates } from "../../utils/renderTemplates.js";
 import { Templates } from "../../utils/constants.js";
 import { ABFDialogs } from "../../dialogs/ABFDialogs.js";
+import { createDesarmadoWeapon } from "../../actor/utils/createDesarmadoWeapon.js";
 
 /**
  * Load armors from compendium for the dialog selector
@@ -15,23 +16,6 @@ const loadArmorsFromCompendium = async () => {
   return armors
     .map((armor) => ({ id: armor.id, name: armor.name }))
     .sort((a, b) => a.name.localeCompare(b.name, 'es', { numeric: true }));
-};
-
-/**
- * Get "Desarmado" weapon from compendium
- */
-const getDesarmadoWeapon = async () => {
-  const pack = game.packs.get("animabf-guote.weapons");
-  if (!pack) {
-    console.warn("Weapons compendium not found");
-    return null;
-  }
-  const weapons = await pack.getDocuments();
-  return weapons.find(
-    (w) =>
-      w.name.toLowerCase() === "desarmado" ||
-      w.name.toLowerCase() === "unarmed",
-  );
 };
 
 /**
@@ -345,14 +329,8 @@ export const createCharacterFromTemplateMacro = async () => {
         "system.psychic.psychicProjection.base.value": stats.psychicProjection,
       });
 
-      // Add "Desarmado" weapon from compendium (equipped)
-      const desarmadoWeapon = await getDesarmadoWeapon();
-      if (desarmadoWeapon) {
-        const weaponData = desarmadoWeapon.toObject();
-        weaponData.system.equipped = { value: true };
-        weaponData.system.isShown = { value: true };
-        await actor.createEmbeddedDocuments("Item", [weaponData]);
-      }
+      // Add "Desarmado" weapon from compendium (non-removable default)
+      await createDesarmadoWeapon(actor);
 
       // Add selected armor from compendium (equipped)
       if (selectedArmorId) {

@@ -16,6 +16,7 @@ import { ChatCombatManager } from './module/combat/chat-combat/ChatCombatManager
 import { ABFMacros } from './module/macros/ABFMacros.js';
 import { registerMasaHooks } from './module/actor/hooks/registerMasaHooks.js';
 import { ZeonCalculatorDialog } from './module/dialogs/mystic/ZeonCalculatorDialog.js';
+import { createDesarmadoWeapon } from './module/actor/utils/createDesarmadoWeapon.js';
 /* ------------------------------------ */
 /* Initialize system */
 /* ------------------------------------ */
@@ -99,6 +100,11 @@ Hooks.once('ready', async () => {
             }
         }
     }
+});
+// Auto-add Desarmado to any newly created character actor
+Hooks.on('createActor', async (actor) => {
+    if (actor.type !== 'character') return;
+    await createDesarmadoWeapon(actor);
 });
 // Handle custom drag-to-hotbar for attack button
 Hooks.on('hotbarDrop', async (bar, data, slot) => {

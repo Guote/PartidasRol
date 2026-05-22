@@ -6,6 +6,8 @@ import { ALL_ITEM_CONFIGURATIONS } from "./utils/prepareItems/constants.js";
 import { getFieldValueFromPath } from "./utils/prepareItems/util/getFieldValueFromPath.js";
 import { getUpdateObjectFromPath } from "./utils/prepareItems/util/getUpdateObjectFromPath.js";
 import { ABFItems } from "../items/ABFItems.js";
+import { CREATURE_SUMMON_INITIAL_SYSTEM } from "../types/mystic/CreatureSummonItemConfig.js";
+import { CREATURE_INITIAL_SYSTEM } from "../types/domine/CreatureItemConfig.js";
 import { ABFDialogs } from "../dialogs/ABFDialogs.js";
 import { ABFSystemName } from "../../animabf-guote.name.js";
 import { getFormula } from "../rolls/utils/getFormula.js";
@@ -51,6 +53,12 @@ export default class ABFActorSheetV2 extends ActorSheet {
         {
           name: deleteRowMessage,
           icon: '<i class="fas fa-trash fa-fw"></i>',
+          condition: (target) => {
+            const id = target[0]?.dataset?.itemId;
+            if (!id) return true;
+            const item = this.actor.items.get(id);
+            return !item?.system?.isDefault?.value;
+          },
           callback: (target) => {
             if (!customCallbackFn && !fieldPath) {
               console.warn(
@@ -213,35 +221,38 @@ export default class ABFActorSheetV2 extends ActorSheet {
     }
 
     // V2 Enhancements: Calculate equipped weapons for initiative dropdown
+    // Sort so Desarmado (isDefault) always appears first
+    if (sheet.system?.combat?.weapons) {
+      sheet.system.combat.weapons.sort((a, b) =>
+        (b.system?.isDefault?.value ? 1 : 0) - (a.system?.isDefault?.value ? 1 : 0)
+      );
+    }
     sheet.equippedWeapons = sheet.system?.combat?.weapons || [];
     sheet.selectedWeaponId = sheet.system?.combat?.selectedWeaponId?.value || "";
     sheet.selectedWeapons = sheet.equippedWeapons.filter(w => w.system?.isShown?.value);
 
     // Build display list with effective initiative values and slowest flag for the combat tab
     const naturalTurno = sheet.system?.characteristics?.secondaries?.initiative?.base?.value ?? 0;
-    const naturalBase = naturalTurno - 20; // base without unarmed bonus
+    const naturalBase = naturalTurno - 20;
     const weaponEffective = w => naturalBase + (w.system?.initiative?.final?.value ?? 0);
-    const slowestWeapon = sheet.selectedWeapons.length > 0
-      ? sheet.selectedWeapons.reduce((min, w) =>
-          weaponEffective(w) < weaponEffective(min) ? w : min
-        )
-      : null;
-    const slowestEffective = slowestWeapon ? weaponEffective(slowestWeapon) : null;
-    sheet.selectedWeaponsDisplay = sheet.selectedWeapons.map(w => ({
-      name: w.name,
-      initValue: weaponEffective(w),
-      isSlowest: w._id === slowestWeapon?._id,
-    }));
 
-    // Add "Natural" entry when no weapons selected OR natural is faster than slowest weapon
-    const showNatural = sheet.selectedWeapons.length === 0 || naturalTurno > slowestEffective;
-    if (showNatural) {
-      sheet.selectedWeaponsDisplay.unshift({
-        name: "Natural",
-        initValue: naturalTurno,
-        isSlowest: sheet.selectedWeapons.length === 0,
-      });
+    const desarmadoEntry = sheet.selectedWeapons.find(w => w.system?.isDefault?.value);
+    const regularTurnWeapons = sheet.selectedWeapons
+      .filter(w => !w.system?.isShield?.value && !w.system?.isDefault?.value);
+
+    const allInitEntries = [
+      ...(desarmadoEntry ? [{ name: desarmadoEntry.name, initValue: weaponEffective(desarmadoEntry) }] : []),
+      ...regularTurnWeapons.map(w => ({ name: w.name, initValue: weaponEffective(w) })),
+    ];
+    if (allInitEntries.length === 0) {
+      allInitEntries.push({ name: "Natural", initValue: naturalTurno });
     }
+    const minInitValue = Math.min(...allInitEntries.map(e => e.initValue));
+    sheet.selectedWeaponsDisplay = allInitEntries.map(e => ({
+      name: e.name,
+      initValue: e.initValue,
+      isSlowest: e.initValue === minInitValue,
+    }));
 
     // Calculate effective max HP (max - sacrificed)
     const hp = sheet.system?.characteristics?.secondaries?.lifePoints;
@@ -812,6 +823,31 @@ export default class ABFActorSheetV2 extends ActorSheet {
         img: "icons/skills/defense/shield-protect-blue.webp"
       };
       e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+    });
+
+    // Grade selector in spell-maintenances table: auto-fill base costs from the linked spell
+    html.on('change', 'select.sm-grade-select[data-spell-id]', async ev => {
+      const spellId = ev.currentTarget.dataset.spellId;
+      if (!spellId) return;
+      const itemId = ev.currentTarget.dataset.itemId;
+      if (!itemId) return;
+      const grade = ev.currentTarget.value;
+      const spell = this.actor.items.get(spellId);
+      if (!spell) return;
+      const maintenanceCost = spell.system?.grades?.[grade]?.maintenanceCost?.value ?? 0;
+      const isDaily = spell.system?.hasDailyMaintenance?.value ?? false;
+      const current = this.actor.getInnerItem(ABFItems.SPELL_MAINTENANCE, itemId);
+      if (!current) return;
+      await this.actor.updateInnerItem({
+        type: ABFItems.SPELL_MAINTENANCE,
+        id: itemId,
+        system: {
+          ...current.system,
+          grade:     { value: grade },
+          roundCost: { value: isDaily ? 0 : maintenanceCost },
+          cost:      { value: isDaily ? maintenanceCost : 0 },
+        }
+      });
     });
   }
 
@@ -1408,9 +1444,9 @@ export default class ABFActorSheetV2 extends ActorSheet {
           name: droppedActor.name,
           type: ABFItems.CREATURE_SUMMON,
           system: {
+            ...CREATURE_SUMMON_INITIAL_SYSTEM,
             actorId: { value: droppedActor.id },
-            actorUuid: { value: data.uuid },
-            notes: { value: '' }
+            actorUuid: { value: data.uuid }
           }
         });
         return;
@@ -1437,14 +1473,9 @@ export default class ABFActorSheetV2 extends ActorSheet {
           name: droppedActor.name,
           type: ABFItems.CREATURE,
           system: {
+            ...CREATURE_INITIAL_SYSTEM,
             actorId: { value: droppedActor.id },
-            actorUuid: { value: data.uuid },
-            kiSealCost: { value: '' },
-            earth: { value: false },
-            fire: { value: false },
-            metal: { value: false },
-            water: { value: false },
-            wood: { value: false }
+            actorUuid: { value: data.uuid }
           }
         });
         return;
@@ -1541,33 +1572,38 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
       const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, dataset.modifierType);
 
-      // For initiative rolls, use base-20 as "Turno" and add each usar-para-turno weapon separately
+      // For initiative rolls: base-20 as "Turno", plus the modifier of the slowest option
+      // (Natural +20, or slowest weapon modifier). Mirrors the highlighted entry in the combat tab.
       const weaponInitValues = [];
       const weaponInitLabels = [];
       let initiativeRollValue = dataset.rollvalue;
       let initiativeRollLabel = dataset.label;
       if (dataset.modifierType === "initiative") {
         const naturalTurno = this.actor.system?.characteristics?.secondaries?.initiative?.base?.value ?? 0;
-        initiativeRollValue = naturalTurno - 20;
+        const naturalBase = naturalTurno - 20;
+        initiativeRollValue = naturalBase;
         initiativeRollLabel = "Turno";
-        const turnWeapons = (this.actor.system?.combat?.weapons || [])
-          .filter(w => w.system?.isShown?.value)
-          .slice(0, 2);
-        if (turnWeapons.length === 1) {
-          weaponInitValues.push(turnWeapons[0].system?.initiative?.final?.value ?? 0);
-          weaponInitLabels.push(turnWeapons[0].name);
-        } else if (turnWeapons.length === 2) {
-          const w1 = turnWeapons[0];
-          const w2 = turnWeapons[1];
-          weaponInitValues.push(w1.system?.initiative?.final?.value ?? 0);
-          weaponInitLabels.push(w1.name);
-          weaponInitValues.push(w2.system?.initiative?.final?.value ?? 0);
-          weaponInitLabels.push(w2.name);
-          if (w1.system?.size?.value === w2.system?.size?.value) {
-            const minBase = Math.min(w1.system?.initiative?.base?.value ?? 0, w2.system?.initiative?.base?.value ?? 0);
-            weaponInitValues.push(minBase < 0 ? -20 : -10);
-            weaponInitLabels.push("Ambidiestro");
-          }
+
+        const allWeapons = this.actor.system?.combat?.weapons || [];
+        const desarmadoW = allWeapons.find(w => w.system?.isDefault?.value);
+        const unarmedMod = desarmadoW?.system?.initiative?.final?.value ?? 20;
+        const unarmedEff = naturalBase + unarmedMod;
+
+        const regularWeapons = allWeapons
+          .filter(w => w.system?.isShown?.value && !w.system?.isShield?.value && !w.system?.isDefault?.value);
+
+        const wEff = w => naturalBase + (w.system?.initiative?.final?.value ?? 0);
+        const slowestWeaponEff = regularWeapons.length > 0
+          ? Math.min(...regularWeapons.map(wEff))
+          : Infinity;
+
+        if (unarmedEff <= slowestWeaponEff) {
+          weaponInitValues.push(unarmedMod);
+          weaponInitLabels.push(desarmadoW?.name ?? "Natural");
+        } else {
+          const slowestW = regularWeapons.reduce((min, w) => wEff(w) <= wEff(min) ? w : min);
+          weaponInitValues.push(slowestW.system?.initiative?.final?.value ?? 0);
+          weaponInitLabels.push(slowestW.name);
         }
       }
 

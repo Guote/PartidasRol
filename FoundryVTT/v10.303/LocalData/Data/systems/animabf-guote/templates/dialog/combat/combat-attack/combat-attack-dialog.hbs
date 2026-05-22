@@ -155,35 +155,26 @@
   {{/if}}
   {{/unless}}
 
-  {{!-- ═══ PRESET SAVE/LOAD ═══ --}}
-  {{#unless this.attackSent}}
-  <details class="preset-section">
-    <summary class="preset-section__summary">{{localize 'anima.ui.combat.savePresetSection.attack'}}</summary>
-    <div class="preset-section__row">
-      <select class="preset-selector load-attack-preset">
-        <option value="">-- {{localize 'anima.ui.combat.newAttack'}} --</option>
-        {{#each this.attacker.actor.system.combat.attackPresets}}
-        <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
-        {{/each}}
-      </select>
-      <button type="button" class="abf-button save-attack-preset"
-              style="width:auto!important;display:inline-flex"
-              title="{{localize 'anima.ui.combat.saveCurrentTooltip'}}">
-        <i class="fas fa-save"></i> {{localize 'anima.ui.combat.saveCurrent'}}
-      </button>
-    </div>
-  </details>
-  {{/unless}}
-
-  {{!-- ═══ ENVIAR ═══ --}}
+  {{!-- ═══ FOOTER ═══ --}}
   {{#if this.attackSent}}
   <div class='attack-sent'>
     {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
     <p class='label'>{{localize 'anima.macros.combat.dialog.attackSent.title'}}</p>
   </div>
   {{else}}
-  <div class='attack-buttons'>
-    <button type="button" class='abf-button send-attack'>
+  <div class="dialog-footer-row">
+    <select class="input preset-selector load-attack-preset">
+      <option value="">-- {{localize 'anima.ui.combat.newAttack'}} --</option>
+      {{#each this.attacker.actor.system.combat.attackPresets}}
+      <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
+      {{/each}}
+    </select>
+    <button type="button" class="abf-button icon-button save-attack-preset"
+      title="{{localize 'anima.ui.combat.saveCurrentTooltip'}}">
+      <i class="fas fa-save"></i>
+    </button>
+    <span></span>
+    <button type="button" class="abf-button send-attack dialog-footer-send">
       {{localize 'anima.macros.combat.dialog.attackButton.title'}}
     </button>
   </div>

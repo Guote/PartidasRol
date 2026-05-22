@@ -6,6 +6,7 @@
 import { parsePdfText } from "./pdfTextParser.js";
 import { buildActorData, buildWeaponsData, buildArmorsData, buildSpecialAbilitiesNotes } from "./actorMapper.js";
 import { ABFDialogs } from "../../../dialogs/ABFDialogs.js";
+import { createDesarmadoWeapon } from "../../../actor/utils/createDesarmadoWeapon.js";
 
 /**
  * Open dialog for pasting PDF text
@@ -392,6 +393,8 @@ export const importFromPdfMacro = async () => {
 
     // Set SimpleActorSheet as the default sheet for this actor
     await actor.setFlag("core", "sheetClass", "abf.SimpleActorSheet");
+
+    await createDesarmadoWeapon(actor);
 
     const weaponsData = buildWeaponsData(edited);
     if (weaponsData.length > 0) {

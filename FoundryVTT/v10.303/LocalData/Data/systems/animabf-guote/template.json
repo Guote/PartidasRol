@@ -654,7 +654,8 @@
       "reload": { "base": { "value": 0 }, "final": { "value": 0 } },
       "sizeProportion": { "value": "" },
       "weaponStrength": { "base": { "value": 0 }, "final": { "value": 0 } },
-      "critic": { "primary": { "value": "-" }, "secondary": { "value": "-" } }
+      "critic": { "primary": { "value": "-" }, "secondary": { "value": "-" } },
+      "isDefault": { "value": false }
     },
     "inventoryItem": {
       "description": { "value": "" },

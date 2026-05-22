@@ -33,6 +33,42 @@
       </div>
     </div>
 
+    {{!-- Zeon consumption row --}}
+    <div class="combat-grid-full">
+      <div class="consume-zeon-row">
+        <input type="checkbox" name="attacker.mystic.consumeZeon"
+          {{#if this.attacker.mystic.consumeZeon}}checked{{/if}}
+          {{#if this.attackSent}}disabled{{/if}}>
+        <div class="common-titled-input" style="flex: 1 1 auto;">
+          <p class="label">{{localize 'anima.ui.combat.consumeZeon'}}</p>
+          <div class="input-container">
+            <input type="number" class="input" name="attacker.mystic.zeonMod"
+              value="{{this.attacker.mystic.zeonMod}}"
+              title="{{localize 'anima.ui.combat.zeonMod'}}"
+              {{#if this.attackSent}}disabled{{/if}}>
+          </div>
+        </div>
+        {{#if this.attacker.mystic.zeonCost}}
+        <span class="consume-zeon-final">
+          <i class="fas fa-hat-wizard"></i> {{this.attacker.mystic.zeonFinal}}
+        </span>
+        {{/if}}
+        <button type="button" class="abf-button icon-button open-act-calculator"
+          title="{{localize 'anima.ui.combat.openActCalculator'}}"
+          {{#if this.attackSent}}disabled{{/if}}>
+          <i class="fas fa-calculator"></i>
+        </button>
+      </div>
+      {{#if this.attacker.mystic.maintenanceCost}}
+      <label class="add-active-row" style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.8em;margin-top:0.25rem;cursor:pointer;color:#1a5a3a;">
+        <input type="checkbox" name="attacker.mystic.addToActiveSpells"
+          {{#if this.attacker.mystic.addToActiveSpells}}checked{{/if}}
+          {{#if this.attackSent}}disabled{{/if}}>
+        <i class="fas fa-clock"></i> {{localize "anima.ui.combat.addToActiveSpells"}}
+        <span style="color:#777;">({{this.attacker.mystic.maintenanceCost}}/{{#if this.attacker.mystic.hasDailyMaintenance}}día{{else}}asalto{{/if}})</span>
+      </label>
+      {{/if}}
+    </div>
+
   </div>
 </div>
-

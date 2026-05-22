@@ -162,29 +162,7 @@
       {{/unless}}
       {{/if}}
 
-      {{!-- ═══ PRESET SAVE/LOAD ═══ --}}
-      {{#if (is 'neq' this.ui.activeTab 'damageResistance')}}
-      {{#unless this.defenseSent}}
-      <details class="preset-section">
-        <summary class="preset-section__summary">{{localize 'anima.ui.combat.savePresetSection.defense'}}</summary>
-        <div class="preset-section__row">
-          <select class="preset-selector load-defense-preset">
-            <option value="">-- {{localize 'anima.ui.combat.newDefense'}} --</option>
-            {{#each this.defender.actor.system.combat.defensePresets}}
-            <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
-            {{/each}}
-          </select>
-          <button type="button" class="abf-button save-defense-preset"
-                  style="width:auto!important;display:inline-flex"
-                  title="{{localize 'anima.ui.combat.saveCurrentTooltip'}}">
-            <i class="fas fa-save"></i> {{localize 'anima.ui.combat.saveCurrent'}}
-          </button>
-        </div>
-      </details>
-      {{/unless}}
-      {{/if}}
-
-      {{!-- ═══ ENVIAR ═══ --}}
+      {{!-- ═══ FOOTER ═══ --}}
       {{#if this.defenseSent}}
       <div class='defense-sent'>
         {{>'systems/animabf-guote/templates/common/ui/loading-indicator.hbs' class="big"}}
@@ -193,8 +171,19 @@
         </p>
       </div>
       {{else if (is 'neq' this.ui.activeTab 'damageResistance')}}
-      <div class='defense-buttons'>
-        <button type="button" class='abf-button send-defense'>
+      <div class="dialog-footer-row">
+        <select class="input preset-selector load-defense-preset">
+          <option value="">-- {{localize 'anima.ui.combat.newDefense'}} --</option>
+          {{#each this.defender.actor.system.combat.defensePresets}}
+          <option value="{{this._id}}" {{#if (is 'eq' this._id ../this.selectedPresetId)}}selected{{/if}}>{{this.name}}</option>
+          {{/each}}
+        </select>
+        <button type="button" class="abf-button icon-button save-defense-preset"
+          title="{{localize 'anima.ui.combat.saveCurrentTooltip'}}">
+          <i class="fas fa-save"></i>
+        </button>
+        <span></span>
+        <button type="button" class="abf-button send-defense dialog-footer-send">
           {{localize 'anima.macros.combat.dialog.defenseButton.title'}}
         </button>
       </div>

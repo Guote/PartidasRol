@@ -1,6 +1,8 @@
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+export const INVENTORY_ITEM_INITIAL_SYSTEM = { amount: { value: 0 }, weight: { value: 0 } };
+
 /** @type {import("../Items").InventoryItemConfig} */
 export const InventoryItemItemConfig = ABFItemConfigFactory({
     type: ABFItems.INVENTORY_ITEM,
@@ -19,10 +21,7 @@ export const InventoryItemItemConfig = ABFItemConfigFactory({
         actor.createInnerItem({
             type: ABFItems.INVENTORY_ITEM,
             name,
-            system: {
-                amount: { value: 0 },
-                weight: { value: 0 }
-            }
+            system: INVENTORY_ITEM_INITIAL_SYSTEM
         });
     }
 });

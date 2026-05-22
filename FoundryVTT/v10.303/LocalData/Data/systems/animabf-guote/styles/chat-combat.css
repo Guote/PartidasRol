@@ -113,3 +113,52 @@ select.input.abf-input-modified {
   border-top: 1px solid #ccc;
   padding-top: 4px;
 }
+
+/* --------------------------------
+   Zeon consumption row (mystic/summon tabs)
+   -------------------------------- */
+
+.consume-zeon-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 4px;
+  max-width: 50%;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  margin-top: 4px;
+}
+
+/* Final zeon value display (icon + number, mystic tab) */
+.consume-zeon-final {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85em;
+  color: #5a4fcf;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Inline cost badge inside summon checkbox label */
+.consume-zeon-cost-inline {
+  font-size: 0.82em;
+  font-weight: bold;
+  color: #6e2917;
+  margin-left: 1px;
+}
+
+/* Inline checkbox+icon for summon roll row */
+.consume-zeon-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  padding: 0 4px;
+  color: #5a4fcf;
+  font-size: 0.9em;
+  user-select: none;
+}
+
+.consume-zeon-inline input[type="checkbox"] {
+  cursor: pointer;
+}

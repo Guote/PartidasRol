@@ -1,6 +1,8 @@
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+export const SELECTED_SPELL_INITIAL_SYSTEM = { cost: { value: 0 } };
+
 /** @type {import("../Items").SelectedSpellItemConfig} */
 export const SelectedSpellItemConfig = ABFItemConfigFactory({
     type: ABFItems.SELECTED_SPELL,
@@ -19,7 +21,7 @@ export const SelectedSpellItemConfig = ABFItemConfigFactory({
         actor.createInnerItem({
             type: ABFItems.SELECTED_SPELL,
             name,
-            system: { cost: { value: 0 } }
+            system: SELECTED_SPELL_INITIAL_SYSTEM
         });
     }
 });

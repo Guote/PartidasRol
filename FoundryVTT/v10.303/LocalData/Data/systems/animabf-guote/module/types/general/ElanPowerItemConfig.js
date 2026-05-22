@@ -2,6 +2,9 @@ import { nanoid } from '../../../vendor/nanoid/nanoid.js';
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+
+export const ELAN_POWER_INITIAL_SYSTEM = { level: { value: 0 } };
+
 /** @type {import("../Items").ElanPowerItemConfig} */
 export const ElanPowerItemConfig = ABFItemConfigFactory({
     type: ABFItems.ELAN_POWER,
@@ -22,7 +25,7 @@ export const ElanPowerItemConfig = ABFItemConfigFactory({
         const name = await openSimpleInputDialog({
             content: i18n.localize('anima.dialogs.items.elanPower.content')
         });
-        const InitialData = { level: { value: 0 } };
+        const InitialData = ELAN_POWER_INITIAL_SYSTEM;
         /** @type {import("../Items").ElanPowerDataSource} */
         const power = {
             _id: nanoid(),

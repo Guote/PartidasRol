@@ -1,6 +1,8 @@
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+export const MARTIAL_ART_INITIAL_SYSTEM = { grade: { value: '' } };
+
 /** @type {import("../Items").MartialArtItemConfig} */
 export const MartialArtItemConfig = ABFItemConfigFactory({
     type: ABFItems.MARTIAL_ART,
@@ -19,9 +21,7 @@ export const MartialArtItemConfig = ABFItemConfigFactory({
         await actor.createInnerItem({
             name,
             type: ABFItems.MARTIAL_ART,
-            system: {
-                grade: { value: '' }
-            }
+            system: MARTIAL_ART_INITIAL_SYSTEM
         });
     }
 });

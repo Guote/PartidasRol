@@ -140,7 +140,7 @@
           </div>
         </div>
 
-        {{!-- Active Spells / Daily Maintenances --}}
+        {{!-- Active Spells / Maintenances --}}
         <div class="spellbook-maintenances">
           <div class="spellbook-maintenances__header">
             <h4 class="spellbook-maintenances__title">{{localize "anima.ui.mystic.spellMaintenances.title"}}</h4>
@@ -149,27 +149,78 @@
               {{localize "anima.ui.mystic.spellMaintenances.add"}}
             </button>
           </div>
-          <div class="spellbook-maintenances__list">
-            {{#each spellMaintenances as |maint|}}
-            <div class="spellbook-maintenance" data-item-id="{{maint._id}}">
-              <input type="text" class="spellbook-maintenance__name"
-                     name="system.dynamic.spellMaintenances.{{maint._id}}.name"
-                     value="{{maint.name}}"
-                     placeholder="{{localize 'anima.ui.mystic.spellMaintenances.name.title'}}">
-              <input type="number" class="spellbook-maintenance__cost"
-                     name="system.dynamic.spellMaintenances.{{maint._id}}.cost"
-                     value="{{maint.cost}}"
-                     placeholder="{{localize 'anima.ui.mystic.spellMaintenances.cost.title'}}">
-              <button type="button" class="spellbook-maintenance__delete" data-action="delete-maintenance" data-item-id="{{maint._id}}">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-            {{else}}
-            <div class="spellbook-maintenances__empty">
-              <span>{{localize "anima.ui.mystic.spellMaintenances.noMaintenances"}}</span>
-            </div>
-            {{/each}}
-          </div>
+          {{#if spellMaintenances.length}}
+          <table class="spell-maintenances-table">
+            <thead>
+              <tr>
+                <th title="{{localize 'anima.ui.mystic.spellMaintenance.active.title'}}">✓</th>
+                <th>{{localize 'anima.ui.mystic.spellMaintenance.name.title'}}</th>
+                <th>{{localize 'anima.ui.mystic.spellMaintenance.grade.title'}}</th>
+                <th title="{{localize 'anima.ui.mystic.spellMaintenance.roundCost.title'}}">{{localize 'anima.ui.mystic.spellMaintenance.roundCost.title'}}</th>
+                <th>+</th>
+                <th title="{{localize 'anima.ui.mystic.spellMaintenance.cost.title'}}">{{localize 'anima.ui.mystic.spellMaintenance.cost.title'}}</th>
+                <th>+</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each spellMaintenances as |maint|}}
+              <tr data-item-id="{{maint._id}}" class="spell-maintenance-row{{#unless maint.system.active.value}} sm-row--inactive{{/unless}}">
+                <td class="sm-col--active">
+                  <input type="hidden"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.spellId.value'}}"
+                    value="{{maint.system.spellId.value}}">
+                  <input type="checkbox"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.active.value'}}"
+                    {{#if maint.system.active.value}}checked{{/if}}>
+                </td>
+                <td class="sm-col--name">
+                  <input type="text" class="v2-input"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.name'}}"
+                    value="{{maint.name}}">
+                </td>
+                <td class="sm-col--grade">
+                  <select class="v2-select sm-grade-select"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.grade.value'}}"
+                    data-spell-id="{{maint.system.spellId.value}}"
+                    data-item-id="{{maint._id}}">
+                    <option value="" {{#unless maint.system.grade.value}}selected{{/unless}}>—</option>
+                    <option value="base" {{#if (is "eq" maint.system.grade.value "base")}}selected{{/if}}>{{localize 'anima.macros.combat.dialog.spellGrade.base.title'}}</option>
+                    <option value="intermediate" {{#if (is "eq" maint.system.grade.value "intermediate")}}selected{{/if}}>{{localize 'anima.macros.combat.dialog.spellGrade.intermediate.title'}}</option>
+                    <option value="advanced" {{#if (is "eq" maint.system.grade.value "advanced")}}selected{{/if}}>{{localize 'anima.macros.combat.dialog.spellGrade.advanced.title'}}</option>
+                    <option value="arcane" {{#if (is "eq" maint.system.grade.value "arcane")}}selected{{/if}}>{{localize 'anima.macros.combat.dialog.spellGrade.arcane.title'}}</option>
+                  </select>
+                </td>
+                <td class="sm-col--cost">
+                  <input type="number" class="v2-input v2-input--number"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.roundCost.value'}}"
+                    value="{{maint.system.roundCost.value}}">
+                </td>
+                <td class="sm-col--mod">
+                  <input type="number" class="v2-input v2-input--number"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.roundCostMod.value'}}"
+                    value="{{maint.system.roundCostMod.value}}">
+                </td>
+                <td class="sm-col--cost">
+                  <input type="number" class="v2-input v2-input--number"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.cost.value'}}"
+                    value="{{maint.system.cost.value}}">
+                </td>
+                <td class="sm-col--mod">
+                  <input type="number" class="v2-input v2-input--number"
+                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.dayCostMod.value'}}"
+                    value="{{maint.system.dayCostMod.value}}">
+                </td>
+                <td class="sm-col--delete">
+                  <button type="button" class="abf-button icon-button" data-action="delete-maintenance" data-item-id="{{maint._id}}" style="width:auto!important;display:inline-flex">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          {{/if}}
         </div>
 
         

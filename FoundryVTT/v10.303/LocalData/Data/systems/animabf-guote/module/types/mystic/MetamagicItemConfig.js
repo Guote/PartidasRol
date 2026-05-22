@@ -1,6 +1,8 @@
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+export const METAMAGIC_INITIAL_SYSTEM = { grade: { value: 0 } };
+
 /** @type {import("../Items").MetamagicItemConfig} */
 export const MetamagicItemConfig = ABFItemConfigFactory({
     type: ABFItems.METAMAGIC,
@@ -19,7 +21,7 @@ export const MetamagicItemConfig = ABFItemConfigFactory({
         await actor.createInnerItem({
             name,
             type: ABFItems.METAMAGIC,
-            system: { grade: { value: 0 } }
+            system: METAMAGIC_INITIAL_SYSTEM
         });
     }
 });

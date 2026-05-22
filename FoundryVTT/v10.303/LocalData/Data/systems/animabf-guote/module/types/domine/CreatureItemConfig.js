@@ -1,6 +1,17 @@
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+export const CREATURE_INITIAL_SYSTEM = {
+    actorId: { value: '' },
+    actorUuid: { value: '' },
+    kiSealCost: { value: '' },
+    earth: { value: false },
+    fire: { value: false },
+    metal: { value: false },
+    water: { value: false },
+    wood: { value: false }
+};
+
 /** @type {import("../Items").CreatureItemConfig} */
 export const CreatureItemConfig = ABFItemConfigFactory({
     type: ABFItems.CREATURE,
@@ -19,16 +30,7 @@ export const CreatureItemConfig = ABFItemConfigFactory({
         await actor.createInnerItem({
             name,
             type: ABFItems.CREATURE,
-            system: {
-                actorId: { value: '' },
-                actorUuid: { value: '' },
-                kiSealCost: { value: '' },
-                earth: { value: false },
-                fire: { value: false },
-                metal: { value: false },
-                water: { value: false },
-                wood: { value: false }
-            }
+            system: CREATURE_INITIAL_SYSTEM
         });
     }
 });

@@ -1,4 +1,5 @@
 import { ABFSettingsKeys } from '../../../utils/registerSettings.js';
+import { upsertSpellMaintenance } from '../../dialogs/mystic/ZeonCalculatorDialog.js';
 import ABFFoundryRoll from '../../rolls/ABFFoundryRoll.js';
 import { getFormula } from '../../rolls/utils/getFormula.js';
 import { getModifierTerms } from '../../rolls/utils/getModifierTerms.js';
@@ -64,7 +65,10 @@ const getInitialData = (attackMessage, defenderToken, options = {}) => {
             mystic: {
                 modifier: 0,
                 spellUsed: options.spellUsed ?? undefined,
-                spellGrade: options.spellGrade ?? 'base'
+                spellGrade: options.spellGrade ?? 'base',
+                consumeZeon: true,
+                zeonMod: 0,
+                addToActiveSpells: false,
             },
             psychic: {
                 modifier: 0,
@@ -94,7 +98,8 @@ const getInitialData = (attackMessage, defenderToken, options = {}) => {
                 summonConvValue: 0,
                 summonDificultad: 0,
                 summoningRolled: false,
-                summoningResult: null
+                summoningResult: null,
+                consumeZeon: true
             },
             damageModifier: 0
         },
@@ -194,6 +199,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
             const spellId = html.find('[name="defender.mystic.spellUsed"]').val();
             if (!spellId) return;
             this.defenderActor.items.get(spellId)?.sheet?.render(true);
+        });
+
+        // Open ACT calculator
+        html.find('.open-act-calculator').click(() => {
+            window.ZeonCalculatorDialog?.openForActor(this.defenderActor);
         });
 
         // Open selected weapon sheet
@@ -411,6 +421,13 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.hooks.onDefense(defenseResult);
         }
 
+        if (fatigue > 0) {
+            const currentFatigue = this.defenderActor.system.characteristics.secondaries.fatigue.value;
+            await this.defenderActor.update({
+                'system.characteristics.secondaries.fatigue.value': Math.max(0, currentFatigue - fatigue)
+            });
+        }
+
         this.modalData.defenseSent = true;
         this.render();
 
@@ -421,7 +438,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
      * Send mystic defense
      */
     async _sendMysticDefense() {
-        const { modifier, spellUsed, spellGrade } = this.modalData.defender.mystic;
+        const { modifier, spellUsed, spellGrade, consumeZeon, zeonMod, addToActiveSpells } = this.modalData.defender.mystic;
         const { at } = this.modalData.defender.combat;
 
         if (!spellUsed) {
@@ -474,6 +491,29 @@ export class ChatCombatDefenseDialog extends FormApplication {
             await this._postStandaloneDefenseResult(defenseResult);
         } else {
             this.hooks.onDefense(defenseResult);
+        }
+
+        if (addToActiveSpells) {
+            const selectedSpell = this.defenderActor.items.get(spellUsed);
+            const maintenanceCost = selectedSpell?.system?.grades?.[spellGrade]?.maintenanceCost?.value ?? 0;
+            if (maintenanceCost > 0) {
+                const hasDailyMaintenance = selectedSpell?.system?.hasDailyMaintenance?.value ?? false;
+                await upsertSpellMaintenance(this.defenderActor, {
+                    spellId: spellUsed, spellName: selectedSpell?.name ?? '', grade: spellGrade, maintenanceCost, hasDailyMaintenance
+                });
+            }
+        }
+        if (consumeZeon !== false) {
+            const selectedSpell = this.defenderActor.items.get(spellUsed);
+            const zeonCost = selectedSpell?.system?.grades?.[spellGrade]?.zeon?.value ?? 0;
+            const zeonFinal = Math.max(0, zeonCost + (zeonMod ?? 0));
+            if (zeonFinal > 0) {
+                const currentZeon = this.defenderActor.system.mystic.zeon.value;
+                await this.defenderActor.update({
+                    'system.mystic.zeon.value': Math.max(0, currentZeon - zeonFinal)
+                });
+            }
+            Hooks.callAll('animabf.mysticSpellCast', this.defenderActor);
         }
 
         this.modalData.defenseSent = true;
@@ -565,6 +605,18 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.hooks.onDefense(defenseResult);
         }
 
+        {
+            const cvProyeccion = this.modalData.defender.psychic.cvProyeccion ?? 0;
+            const cvPotencial = this.modalData.defender.psychic.cvPotencial ?? 0;
+            const totalCV = cvProyeccion + cvPotencial;
+            if (totalCV > 0) {
+                const currentCV = this.defenderActor.system.psychic.psychicPoints.value;
+                await this.defenderActor.update({
+                    'system.psychic.psychicPoints.value': Math.max(0, currentCV - totalCV)
+                });
+            }
+        }
+
         this.modalData.defenseSent = true;
         this.render();
 
@@ -575,7 +627,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
      * Send summon defense
      */
     async _sendSummonDefense() {
-        const { summonUsed, modifier, powerUsed } = this.modalData.defender.summon;
+        const { summonUsed, modifier, powerUsed, consumeZeon } = this.modalData.defender.summon;
         const { at } = this.modalData.defender.combat;
 
         if (!summonUsed) {
@@ -630,6 +682,17 @@ export class ChatCombatDefenseDialog extends FormApplication {
             await this._postStandaloneDefenseResult(defenseResult);
         } else {
             this.hooks.onDefense(defenseResult);
+        }
+
+        if (consumeZeon !== false) {
+            const zeonCost = power?.zeon?.base?.value ?? 0;
+            if (zeonCost > 0) {
+                const currentZeon = this.defenderActor.system.mystic.zeon.value;
+                await this.defenderActor.update({
+                    'system.mystic.zeon.value': Math.max(0, currentZeon - zeonCost)
+                });
+            }
+            Hooks.callAll('animabf.mysticSpellCast', this.defenderActor);
         }
 
         this.modalData.defenseSent = true;
@@ -784,6 +847,18 @@ export class ChatCombatDefenseDialog extends FormApplication {
             damageModifier
         };
 
+        // Mystic zeon cost display
+        {
+            const mystic = this.modalData.defender.mystic;
+            const selectedSpell = this.defenderActor.items.get(mystic.spellUsed);
+            mystic.zeonCost = selectedSpell?.system?.grades?.[mystic.spellGrade]?.zeon?.value ?? 0;
+            mystic.zeonFinal = Math.max(0, mystic.zeonCost + (mystic.zeonMod ?? 0));
+            mystic.currentZeon = this.defenderActor.system.mystic.zeon.value;
+            mystic.zeonAfter = Math.max(0, mystic.currentZeon - (mystic.consumeZeon !== false ? mystic.zeonFinal : 0));
+            mystic.maintenanceCost = selectedSpell?.system?.grades?.[mystic.spellGrade]?.maintenanceCost?.value ?? 0;
+            mystic.hasDailyMaintenance = selectedSpell?.system?.hasDailyMaintenance?.value ?? false;
+        }
+
         this.modalData.defender.psychic.summary = {
             hdFinal: this.modalData.defender.psychic.psychicProjection + (this.modalData.defender.psychic.modifier || 0),
             taFinal: atFinal,
@@ -795,6 +870,21 @@ export class ChatCombatDefenseDialog extends FormApplication {
             taFinal: atFinal,
             damageModifier
         };
+
+        // Summon zeon cost display
+        {
+            const currentZeon = this.defenderActor.system.mystic.zeon.value;
+            summonData.currentZeon = currentZeon;
+            if (summonData.powers?.length > 0) {
+                const powerIdx = parseInt(summonData.powerUsed) || 0;
+                const activeP = summonData.powers[powerIdx] ?? summonData.powers[0];
+                summonData.zeonCost = activeP?.zeon?.base?.value ?? 0;
+                summonData.zeonAfter = Math.max(0, currentZeon - (summonData.consumeZeon !== false ? summonData.zeonCost : 0));
+            } else {
+                summonData.zeonCost = 0;
+                summonData.zeonAfter = currentZeon;
+            }
+        }
 
         // Expose active-tab values for unified template rendering
         const activeTab = this.modalData.ui.activeTab;
@@ -867,6 +957,8 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 projectionType: { value: mystic.magicProjectionType || 'defensive' },
                 spellUsed: { value: mystic.spellUsed || '' },
                 spellGrade: { value: mystic.spellGrade || 'base' },
+                consumeZeon: { value: mystic.consumeZeon ?? true },
+                zeonMod: { value: mystic.zeonMod ?? 0 },
             },
             psychic: {
                 modifier: { value: psychic.modifier || 0 },
@@ -878,6 +970,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             summon: {
                 modifier: { value: summonData?.modifier || 0 },
                 summonUsed: { value: summonData?.summonUsed || '' },
+                consumeZeon: { value: summonData?.consumeZeon ?? true },
             },
         };
 
@@ -928,6 +1021,8 @@ export class ChatCombatDefenseDialog extends FormApplication {
             defender.mystic.magicProjectionType = presetData.mystic.projectionType?.value || 'defensive';
             defender.mystic.spellUsed = presetData.mystic.spellUsed?.value || defender.mystic.spellUsed;
             defender.mystic.spellGrade = presetData.mystic.spellGrade?.value || 'base';
+            defender.mystic.consumeZeon = presetData.mystic.consumeZeon?.value ?? true;
+            defender.mystic.zeonMod = Number(presetData.mystic.zeonMod?.value) || 0;
         }
 
         // Load psychic data
@@ -946,6 +1041,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         if (presetData.summon) {
             defender.summon.modifier = Number(presetData.summon.modifier?.value) || 0;
             defender.summon.summonUsed = presetData.summon.summonUsed?.value || defender.summon.summonUsed;
+            defender.summon.consumeZeon = presetData.summon.consumeZeon?.value ?? true;
         }
 
         // Switch to the preset's defense type tab

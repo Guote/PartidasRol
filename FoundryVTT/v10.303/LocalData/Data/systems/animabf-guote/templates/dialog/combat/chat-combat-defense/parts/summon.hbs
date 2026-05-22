@@ -56,6 +56,11 @@
           disabled=true
           inputValue=this.defender.summon.summonDificultad
           }}
+          <label class="consume-zeon-inline" title="{{localize 'anima.ui.combat.consumeZeon'}}">
+            <input type="checkbox" name="defender.summon.consumeZeon" {{#if this.defender.summon.consumeZeon}}checked{{/if}} {{#if this.defenseSent}}disabled{{/if}}>
+            <i class="fas fa-hat-wizard"></i>
+            {{#if this.defender.summon.zeonCost}}<span class="consume-zeon-cost-inline">{{this.defender.summon.zeonCost}}</span>{{/if}}
+          </label>
           <button type="button" class="abf-button icon-button roll-summoning-def"
             title="{{localize 'anima.macros.combat.dialog.rollOnlySummoning.title'}}"
             {{#if this.defenseSent}}disabled{{/if}}>

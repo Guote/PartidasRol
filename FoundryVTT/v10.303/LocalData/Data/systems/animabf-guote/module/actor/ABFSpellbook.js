@@ -4,6 +4,8 @@ import { getFormula } from "../rolls/utils/getFormula.js";
 import { getModifierTerms } from "../rolls/utils/getModifierTerms.js";
 import ABFFoundryRoll from "../rolls/ABFFoundryRoll.js";
 import { openModDialog } from "../utils/dialogs/openSimpleInputDialog.js";
+import { ABFItems } from "../items/ABFItems.js";
+import { SPELL_MAINTENANCE_INITIAL_SYSTEM } from "../types/mystic/SpellMaintenanceItemConfig.js";
 
 /**
  * A dedicated spellbook window for viewing and managing spells.
@@ -327,27 +329,71 @@ export default class ABFSpellbook extends Application {
       await this._handleImportSpells();
     });
 
+    // Grade selector in maintenance table: auto-fill base costs from the linked spell
+    html.on('change', 'select.sm-grade-select[data-spell-id]', async ev => {
+      ev.stopImmediatePropagation();
+      const spellId = ev.currentTarget.dataset.spellId;
+      if (!spellId) return;
+      const itemId = ev.currentTarget.dataset.itemId;
+      if (!itemId) return;
+      const grade = ev.currentTarget.value;
+      const spell = this.actor.items.get(spellId);
+      if (!spell) return;
+      const maintenanceCost = spell.system?.grades?.[grade]?.maintenanceCost?.value ?? 0;
+      const isDaily = spell.system?.hasDailyMaintenance?.value ?? false;
+      const current = this.actor.system?.mystic?.spellMaintenances?.find(m => m._id === itemId);
+      if (!current) return;
+      await this.actor.updateInnerItem({
+        type: ABFItems.SPELL_MAINTENANCE,
+        id: itemId,
+        system: {
+          ...current.system,
+          grade:     { value: grade },
+          roundCost: { value: isDaily ? 0 : maintenanceCost },
+          cost:      { value: isDaily ? maintenanceCost : 0 },
+        }
+      });
+      this.render(false);
+    });
+
     // Form input/select changes (save to actor) — overview form + header resources
+    const MAINT_PREFIX = 'system.dynamic.spellMaintenances.';
     html.find('.spellbook-overview input, .spellbook-overview select, .spellbook-header__resources input').on('change', async ev => {
       const input = ev.currentTarget;
       const name = input.name;
-      const value = input.type === 'number' ? Number(input.value) : input.value;
+      if (!name) return;
 
-      if (name) {
-        await this.actor.update({ [name]: value });
+      if (name.startsWith(MAINT_PREFIX)) {
+        const rest = name.slice(MAINT_PREFIX.length);
+        const dotIdx = rest.indexOf('.');
+        const itemId = dotIdx >= 0 ? rest.slice(0, dotIdx) : rest;
+        const fieldPath = dotIdx >= 0 ? rest.slice(dotIdx + 1) : '';
+        const current = this.actor.system?.mystic?.spellMaintenances?.find(m => m._id === itemId);
+        if (!current) return;
+
+        const value = input.type === 'checkbox' ? input.checked : (input.type === 'number' ? Number(input.value) : input.value);
+
+        if (fieldPath === 'name') {
+          await this.actor.updateInnerItem({ type: ABFItems.SPELL_MAINTENANCE, id: itemId, name: value, system: current.system });
+        } else if (fieldPath.startsWith('system.')) {
+          const systemField = fieldPath.slice(7);
+          const system = foundry.utils.deepClone(current.system ?? {});
+          foundry.utils.setProperty(system, systemField, value);
+          await this.actor.updateInnerItem({ type: ABFItems.SPELL_MAINTENANCE, id: itemId, system });
+        }
+        return;
       }
+
+      const value = input.type === 'number' ? Number(input.value) : input.value;
+      await this.actor.update({ [name]: value });
     });
 
     // Add maintenance
     html.find('[data-action="add-maintenance"]').click(async () => {
-      const maintenances = this.actor.system.mystic?.spellMaintenances || [];
-      const newMaintenance = {
-        _id: foundry.utils.randomID(),
+      await this.actor.createInnerItem({
+        type: ABFItems.SPELL_MAINTENANCE,
         name: '',
-        cost: 0
-      };
-      await this.actor.update({
-        'system.mystic.spellMaintenances': [...maintenances, newMaintenance]
+        system: SPELL_MAINTENANCE_INITIAL_SYSTEM
       });
       this.render(false);
     });

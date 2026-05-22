@@ -52,9 +52,51 @@ export class ChatCombatManager {
             this._pendingTargets = null;
             this._pendingAttackerTokenId = null;
 
+            // Build target info for card display
+            const targetInfos = targetedTokenIds.flatMap(id => {
+                const token = canvas.tokens.get(id);
+                if (!token) return [];
+                return [{ tokenId: id, name: token.name, img: token.document?.texture?.src || token.actor?.img || 'icons/svg/mystery-man.svg' }];
+            });
+
+            // Update the card to show pending targets (fire and forget)
+            this._updateCardWithTargets(message, flags, targetInfos);
+
             // Prompt defenders
             this._promptTargetedDefenders(message.id, flags, targetedTokenIds);
         }
+    }
+
+    /**
+     * Re-render the attack card to include target portrait row, and persist targetInfos in flags.
+     * @param {ChatMessage} message
+     * @param {Object} flags
+     * @param {Array} targetInfos
+     */
+    async _updateCardWithTargets(message, flags, targetInfos) {
+        const displayData = {
+            attacker: flags.attackerInfo,
+            attackType: flags.attackType,
+            attackTotal: flags.attackTotal,
+            attackBase: flags.attackBase ?? flags.attackTotal,
+            roll: flags.roll,
+            fumbled: flags.fumbled,
+            baseDamage: flags.baseDamage,
+            damageType: flags.damageType,
+            damageTypeLabel: flags.damageTypeLabel,
+            taReduction: flags.taReduction,
+            results: flags.results || [],
+            targetInfos,
+            pendingTargets: targetInfos,
+            isGM: game.user.isGM
+        };
+
+        const content = await renderTemplate(Templates.Chat.ChatCombat.AttackCard, displayData);
+
+        await message.update({
+            content,
+            'flags.animabf-guote.chatCombat.targetInfos': targetInfos
+        });
     }
 
     /**
@@ -164,6 +206,21 @@ export class ChatCombatManager {
             } else if (game.user.isGM) {
                 // GM controls this token, open defense dialog directly
                 this._openDefenseDialogForToken(attackMessageId, attackFlags, tokenId);
+            } else {
+                // Player attacking a GM-controlled token — route to active GM
+                const activeGM = game.users.find(u => u.isGM && u.active);
+                if (activeGM) {
+                    game.socket.emit('system.animabf-guote', {
+                        type: 'chatCombat.promptDefense',
+                        payload: {
+                            attackMessageId,
+                            sessionId: attackFlags.sessionId,
+                            attackFlags,
+                            defenderTokenId: tokenId,
+                            targetUserId: activeGM.id
+                        }
+                    });
+                }
             }
         }
     }

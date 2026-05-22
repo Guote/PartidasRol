@@ -71,7 +71,8 @@
         </thead>
         <tbody id="weapons-context-menu-container">
           {{#each system.combat.weapons as |weapon|}}
-          <tr class="weapon-row v2-table__row--draggable" data-item-id="{{weapon._id}}">
+          <tr class="weapon-row v2-table__row--draggable" data-item-id="{{weapon._id}}"
+              {{#if weapon.system.isDefault.value}}style="background: rgba(255,255,255,0.05);"{{/if}}>
             <td class="v2-text-center">
               <input type="checkbox" class="weapon-initiative-checkbox"
                      name="system.dynamic.weapons.{{weapon._id}}.system.isShown.value"

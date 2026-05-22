@@ -2,6 +2,8 @@ import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
 
+export const CREATURE_SUMMON_INITIAL_SYSTEM = { actorId: { value: '' }, actorUuid: { value: '' }, notes: { value: '' } };
+
 export const CreatureSummonItemConfig = ABFItemConfigFactory({
     type: ABFItems.CREATURE_SUMMON,
     isInternal: true,
@@ -19,11 +21,7 @@ export const CreatureSummonItemConfig = ABFItemConfigFactory({
         await actor.createInnerItem({
             name,
             type: ABFItems.CREATURE_SUMMON,
-            system: {
-                actorId: { value: '' },
-                actorUuid: { value: '' },
-                notes: { value: '' }
-            }
+            system: CREATURE_SUMMON_INITIAL_SYSTEM
         });
     }
 });

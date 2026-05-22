@@ -1575,6 +1575,68 @@ img {
 .mystic .mystic-main-tab .spell-maintenances .spell-maintenance-row .name .input-container {
   width: 100%;
 }
+
+/* Spell maintenance redesign — table layout */
+.spell-maintenances-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+.spell-maintenances-table thead th {
+  font-size: 0.68rem;
+  font-weight: bold;
+  background: #4a3820;
+  color: #fff;
+  text-align: center;
+  padding: 0.15rem 0.25rem;
+  white-space: nowrap;
+}
+.spell-maintenances-table tbody tr {
+  border-bottom: 1px solid #d8d4c4;
+}
+.spell-maintenances-table tbody tr:last-child {
+  border-bottom: none;
+}
+.spell-maintenances-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+.spell-maintenances-table td {
+  padding: 0.15rem 0.2rem;
+  vertical-align: middle;
+}
+.spell-maintenances-table .sm-col--active {
+  text-align: center;
+  width: 20px;
+}
+.spell-maintenances-table .sm-col--name {
+  min-width: 80px;
+}
+.spell-maintenances-table .sm-col--grade {
+  width: 70px;
+}
+.spell-maintenances-table .sm-col--cost {
+  width: 44px;
+  text-align: center;
+}
+.spell-maintenances-table .sm-col--mod {
+  width: 36px;
+  text-align: center;
+}
+.spell-maintenances-table .sm-col--delete {
+  width: 20px;
+}
+.spell-maintenances-table .sm-row--inactive {
+  opacity: 0.45;
+}
+.spell-maintenances-table .v2-input--number {
+  width: 36px !important;
+  text-align: center;
+  font-size: 0.78rem;
+}
+.spell-maintenances-table .sm-grade-select {
+  font-size: 0.75rem;
+  padding: 0.05rem 0.1rem;
+}
 .mystic .mystic-main-tab .selected-spells .selected-spell-row:first-child {
   margin-top: 0;
 }
@@ -3418,6 +3480,24 @@ img {
   margin-bottom: 8px;
 }
 
+/* Pending targets row */
+.chat-combat-pending-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.chat-combat-pending-label {
+  font-size: 0.8em;
+  color: #666;
+  white-space: nowrap;
+}
+
 /* Portrait styles */
 .chat-combat-portrait {
   width: 36px;
@@ -3841,6 +3921,27 @@ img {
 .combat-attack-dialog .attack-buttons .send-mystic-attack,
 .combat-attack-dialog .attack-buttons .send-psychic-attack {
   flex: 1;
+}
+
+/* ─── Unified dialog footer row: 4 equal columns ─── */
+/* Foundry sets button { width: 100% } globally — grid cells contain that to 25% each */
+.combat-attack-dialog .dialog-footer-row,
+.chat-combat-defense-dialog .dialog-footer-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.5fr 2fr;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+/* All buttons in the footer: fill cell width, centre content vertically */
+.combat-attack-dialog .dialog-footer-row button,
+.chat-combat-defense-dialog .dialog-footer-row button {
+  width: 100%;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 

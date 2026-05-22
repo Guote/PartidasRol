@@ -1,6 +1,8 @@
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
+export const INNATE_PSYCHIC_POWER_INITIAL_SYSTEM = { effect: { value: '' }, value: { value: 0 } };
+
 /** @type {import("../Items").InnatePsychicPowerItemConfig} */
 export const InnatePsychicPowerItemConfig = ABFItemConfigFactory({
     type: ABFItems.INNATE_PSYCHIC_POWER,
@@ -19,10 +21,7 @@ export const InnatePsychicPowerItemConfig = ABFItemConfigFactory({
         await actor.createInnerItem({
             name,
             type: ABFItems.INNATE_PSYCHIC_POWER,
-            system: {
-                effect: { value: '' },
-                value: { value: 0 }
-            }
+            system: INNATE_PSYCHIC_POWER_INITIAL_SYSTEM
         });
     }
 });

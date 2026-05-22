@@ -14,8 +14,10 @@ export const mutateInitiative = (data) => {
     );
     
     const equippedWeapons = combat.weapons.filter(weapon => weapon.system.isShown?.value);
-    const firstTwoWeapons = equippedWeapons.filter(weapon => !weapon.system.isShield.value).slice(0, 2);
     const equippedShield = equippedWeapons.find(weapon => weapon.system.isShield.value);
+    const desarmadoWeapon = combat.weapons.find(w => w.system?.isDefault?.value);
+    const unarmedBonus = desarmadoWeapon?.system?.initiative?.final?.value ?? 20;
+
     // We subtract 20 because people are used to put as base unarmed initiative
     initiative.final.value -= 20;
     if (equippedShield) {
@@ -29,23 +31,13 @@ export const mutateInitiative = (data) => {
             initiative.final.value -= 40;
         }
     }
-    if (firstTwoWeapons.length === 0) {
-        initiative.final.value += 20;
-    }
-    else if (firstTwoWeapons.length === 1) {
-        initiative.final.value += firstTwoWeapons[0].system.initiative.final.value;
-    }
-    else if (firstTwoWeapons.length === 2) {
-        const leftWeapon = firstTwoWeapons[0].system;
-        const rightWeapon = firstTwoWeapons[1].system;
-        initiative.final.value += Math.min(leftWeapon.initiative.final.value, rightWeapon.initiative.final.value);
-        if (leftWeapon.size.value === rightWeapon.size.value) {
-            if (Math.min(leftWeapon.initiative.base.value, rightWeapon.initiative.base.value) < 0) {
-                initiative.final.value -= 20;
-            }
-            else {
-                initiative.final.value -= 10;
-            }
-        }
+    const equippedNonShieldWeapons = equippedWeapons.filter(
+        w => !w.system.isShield.value && !w.system?.isDefault?.value
+    );
+    if (equippedNonShieldWeapons.length === 0) {
+        initiative.final.value += unarmedBonus;
+    } else {
+        const minWeaponInit = Math.min(...equippedNonShieldWeapons.map(w => w.system.initiative.final.value));
+        initiative.final.value += minWeaponInit;
     }
 };

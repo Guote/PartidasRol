@@ -57,6 +57,11 @@
           inputName="attacker.summon.summoningBonus"
           inputValue=this.attacker.summon.summoningBonus
           }}
+          <label class="consume-zeon-inline" title="{{localize 'anima.ui.combat.consumeZeon'}}">
+            <input type="checkbox" name="attacker.summon.consumeZeon" {{#if this.attacker.summon.consumeZeon}}checked{{/if}} {{#if this.attackSent}}disabled{{/if}}>
+            <i class="fas fa-hat-wizard"></i>
+            {{#if this.attacker.summon.zeonCost}}<span class="consume-zeon-cost-inline">{{this.attacker.summon.zeonCost}}</span>{{/if}}
+          </label>
           <button type="button" class="abf-button icon-button roll-summoning"
             title="{{localize 'anima.macros.combat.dialog.rollOnlySummoning.title'}}"
             {{#if this.attackSent}}disabled{{/if}}

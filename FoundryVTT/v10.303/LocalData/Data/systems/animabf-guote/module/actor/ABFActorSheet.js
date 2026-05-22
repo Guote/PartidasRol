@@ -185,6 +185,31 @@ export default class ABFActorSheet extends ActorSheet {
           item.onCreate(this.actor);
         });
     }
+
+    // Grade selector on spell-maintenance rows: auto-fill base costs when a linked spell is selected
+    html.on('change', 'select.sm-grade-select[data-spell-id]', async ev => {
+      const spellId = ev.currentTarget.dataset.spellId;
+      if (!spellId) return;
+      const itemId = ev.currentTarget.dataset.itemId;
+      if (!itemId) return;
+      const grade = ev.currentTarget.value;
+      const spell = this.actor.items.get(spellId);
+      if (!spell) return;
+      const maintenanceCost = spell.system?.grades?.[grade]?.maintenanceCost?.value ?? 0;
+      const isDaily = spell.system?.hasDailyMaintenance?.value ?? false;
+      const current = this.actor.getInnerItem(ABFItems.SPELL_MAINTENANCE, itemId);
+      if (!current) return;
+      await this.actor.updateInnerItem({
+        type: ABFItems.SPELL_MAINTENANCE,
+        id: itemId,
+        system: {
+          ...current.system,
+          grade:     { value: grade },
+          roundCost: { value: isDaily ? 0 : maintenanceCost },
+          cost:      { value: isDaily ? maintenanceCost : 0 },
+        }
+      });
+    });
   }
   async _onRoll(event) {
     event.preventDefault();

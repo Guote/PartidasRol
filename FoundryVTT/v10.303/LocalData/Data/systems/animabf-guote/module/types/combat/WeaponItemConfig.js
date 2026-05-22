@@ -152,6 +152,7 @@ export const INITIAL_WEAPON_DATA = {
     primary: { value: WeaponCritic.CUT },
     secondary: { value: NoneWeaponCritic.NONE },
   },
+  isDefault: { value: false },
 };
 /** @type {import("../Items").WeaponItemConfig} */
 export const WeaponItemConfig = ABFItemConfigFactory({

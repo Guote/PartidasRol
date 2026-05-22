@@ -141,6 +141,7 @@ export class ChatAttackCard {
         }
 
         // Prepare display data
+        const targetInfos = flags.targetInfos || [];
         const displayData = {
             attacker: flags.attackerInfo,
             attackTotal: flags.attackTotal,
@@ -151,6 +152,8 @@ export class ChatAttackCard {
             damageTypeLabel: flags.damageTypeLabel,
             taReduction: flags.taReduction,
             results: updatedResults,
+            targetInfos,
+            pendingTargets: targetInfos.filter(t => !updatedResults.some(r => r.defenderTokenId === t.tokenId)),
             isGM: game.user.isGM
         };
 
@@ -369,6 +372,7 @@ export class ChatAttackCard {
      * @param {Array} updatedResults
      */
     static async _updateCard(attackMessage, flags, updatedResults) {
+        const targetInfos = flags.targetInfos || [];
         const displayData = {
             attacker: flags.attackerInfo,
             attackTotal: flags.attackTotal,
@@ -379,6 +383,8 @@ export class ChatAttackCard {
             damageTypeLabel: flags.damageTypeLabel,
             taReduction: flags.taReduction,
             results: updatedResults,
+            targetInfos,
+            pendingTargets: targetInfos.filter(t => !updatedResults.some(r => r.defenderTokenId === t.tokenId)),
             isGM: game.user.isGM
         };
 

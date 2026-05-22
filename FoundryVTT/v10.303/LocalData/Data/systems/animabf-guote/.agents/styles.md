@@ -232,6 +232,62 @@ This is the input equivalent of the `button { width: 100% }` problem. The fix fo
 
 ---
 
+## Button Icon Alignment
+
+Foundry's default button styles do **not** set `align-items: center`, so icons inside buttons sit at the baseline, not vertically centered with the text.
+
+**Fix:** Always add `align-items: center` alongside `display: inline-flex` on any button that contains both an `<i>` icon and text:
+
+```css
+/* In a CSS class (preferred) */
+.my-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.3rem;
+  width: auto !important;   /* also required — Foundry sets button { width: 100% } */
+}
+```
+
+```handlebars
+{{!-- Inline style fallback for one-off buttons --}}
+<button style="width:auto!important;display:inline-flex;align-items:center">
+  <i class="fas fa-save"></i> Guardar
+</button>
+```
+
+**Applied in:** `zeon-calculator-dialog.hbs` — `.zc-btn` bakes in `display:inline-flex; align-items:center; width:auto`.
+
+---
+
+## Non-Default Input Highlight
+
+When an input or select has a non-default value, apply a reddish tint so the user can quickly see that something has been changed from the default state.
+
+**Color:** `rgba(120, 46, 34, 0.25)` — subtle warm red, works on both light and dark input backgrounds.
+
+**Implementation:** Use `!important` to override any base background on the element:
+
+```css
+.zc-input--modified,
+.zc-select--modified {
+  background: rgba(120, 46, 34, 0.25) !important;
+}
+```
+
+**In templates**, conditionally add the modifier class based on whether the value differs from its default:
+
+```handlebars
+{{!-- Numeric input: shaded when non-zero --}}
+<input class="zc-input{{#if someValue}} zc-input--modified{{/if}}">
+
+{{!-- Select: shaded when not the default option --}}
+<select class="zc-select{{#if (is "neq" selectedValue defaultValue)}} zc-select--modified{{/if}}">
+```
+
+**Applied in:** `templates/dialog/mystic/zeon-calculator-dialog.hbs` — fatigue pointsToUse, fatigue bonusPerPoint (select, default +15), actModifier, spell extraAccumulate, spell extraReserve.
+
+---
+
 ## Inline Styles vs Classes
 
 Use **inline styles** only for one-off layout tweaks that won't repeat:
