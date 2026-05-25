@@ -1,0 +1,32 @@
+<div class="guote-zeon-reminder">
+  <div class="gzr-title"><i class="fas fa-yin-yang"></i> <b>Usando Ki</b></div>
+  {{#each entries}}
+  <div class="gzr-actor">
+    {{!-- Row 1: portrait (→ actor sheet) · name --}}
+    <div class="gzr-row1">
+      <img src="{{this.tokenSrc}}" class="gzr-portrait"
+        data-action="open-actor-sheet" data-actor-id="{{this.actorId}}"
+        title="{{this.actorName}}">
+      <span class="gzr-name"><b>{{this.actorName}}</b></span>
+    </div>
+    {{!-- Row 2: action buttons --}}
+    {{#if (or this.totalAccumulated this.roundUpkeep)}}
+    <div class="gzr-row2">
+      {{#if this.totalAccumulated}}
+      <button data-action="ki-cleanup" data-actor-id="{{this.actorId}}"
+        class="guote-zeon-btn gzr-data-btn"
+        title="Establece todo el ki acumulado a 0. Penalización: -1 reserva ki.">
+        Limpiar <i class="fas fa-yin-yang gzr-icon--ki"></i> Acum <b>{{this.totalAccumulated}}</b> (-1 ki)
+      </button>
+      {{/if}}
+      {{#if this.roundUpkeep}}
+      <button data-action="ki-apply-upkeep" data-actor-id="{{this.actorId}}"
+        class="guote-zeon-btn gzr-data-btn">
+        Pagar costes <i class="fas fa-sync-alt gzr-icon--ki"></i> <b>{{this.roundUpkeep}}</b>
+      </button>
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+  {{/each}}
+</div>

@@ -17,7 +17,15 @@
       "Bash(awk '/\\\\.chat-combat-apply-shield\\\\s*{/,/^}/' animabf-guote.css)",
       "Bash(Select-Object -ExpandProperty FullName)",
       "Bash(Sort-Object)",
-      "Bash(Select-Object -First 30)"
+      "Bash(Select-Object -First 30)",
+      "Bash(xargs wc -l)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(findstr /I \"concentrado\" *.js)",
+      "Bash(findstr /I \"condition\\\\|estado\\\\|concentr\" module/actor/*.js)",
+      "Bash(Select-Object Name)",
+      "Bash(dir \"C:\\\\z - Git\\\\PartidasRol\\\\FoundryVTT\\\\v10.303\\\\LocalData\\\\Data\\\\systems\\\\animabf-guote\")",
+      "Bash(grep -E \"\\\\.mjs$|\\\\.json$\")"
     ]
   }
 }

@@ -1,0 +1,801 @@
+{{!-- Ki Accumulation Calculator --}}
+<div class="ki-calc">
+
+  {{!-- ── Section 1: ¿Para qué acumulo? ────────────────────────────────── --}}
+  <div class="ki-calc__section">
+    <div class="kc-section-title">Necesito Ki para</div>
+
+    <div class="kc-toolbar">
+      <label class="kc-radio-lbl {{#if (is "eq" mode "generic")}}kc-radio-lbl--active{{/if}}">
+        <input type="radio" name="mode" value="generic" {{#if (is "eq" mode "generic")}}checked{{/if}}>
+        Ki genérico
+      </label>
+      <label class="kc-radio-lbl {{#if (is "eq" mode "specific")}}kc-radio-lbl--active{{/if}}">
+        <input type="radio" name="mode" value="specific" {{#if (is "eq" mode "specific")}}checked{{/if}}>
+        Técnica concreta
+      </label>
+    </div>
+
+    {{!-- Generic: accordion for optional target techniques --}}
+    {{#if (is "eq" mode "generic")}}
+    <div class="kc-accordion kc-accordion--inline {{#if accordionOpen}}kc-accordion--open{{/if}}">
+      <button type="button" class="kc-accordion-toggle">
+        <i class="fas fa-chevron-{{#if accordionOpen}}up{{else}}down{{/if}}"></i>
+        Técnicas objetivo <small class="kc-muted">(opcional)</small>
+      </button>
+      {{#if accordionOpen}}
+      <div class="kc-accordion-body">
+        {{#each accordionTechniqueRows as |row|}}
+        <div class="kc-accordion-row" data-row-id="{{row.id}}">
+          <select name="accordion.{{row.id}}.techniqueId" class="kc-select kc-select--half">
+            <option value="">— Selecciona —</option>
+            {{#each ../actorTechniques as |tech|}}
+            <option value="{{tech.id}}" {{#if (is "eq" row.techniqueId tech.id)}}selected{{/if}}>
+              {{tech.name}} (Niv.{{tech.system.level.value}})
+            </option>
+            {{/each}}
+          </select>
+          {{#if row.hasTech}}
+          <span class="kc-tech-cost-str">{{row.costStr}}</span>
+          <button type="button" data-action="open-accordion-technique-sheet"
+            class="kc-btn kc-btn--icon kc-btn--stretch" title="Abrir ficha">
+            <i class="fas fa-external-link-alt"></i>
+          </button>
+          {{/if}}
+          <button type="button" data-action="remove-accordion-technique"
+            class="kc-btn kc-btn--icon kc-btn--danger"><i class="fas fa-times"></i></button>
+        </div>
+        {{/each}}
+        <button type="button" data-action="add-accordion-technique" class="kc-btn kc-btn--sm">
+          <i class="fas fa-plus"></i> Añadir técnica
+        </button>
+      </div>
+      {{/if}}
+    </div>
+    {{/if}}
+
+    {{!-- Specific: technique selector + cost display + open button --}}
+    {{#if (is "eq" mode "specific")}}
+    <div class="kc-specific-block">
+      <div class="kc-specific-row">
+        <select name="techniqueId" class="kc-select kc-select--half">
+          <option value="">— Selecciona una técnica —</option>
+          {{#each actorTechniques as |tech|}}
+          <option value="{{tech.id}}" {{#if (is "eq" ../techniqueId tech.id)}}selected{{/if}}>
+            {{tech.name}} (Niv.{{tech.system.level.value}})
+          </option>
+          {{/each}}
+        </select>
+        {{#if techCostStr}}
+        <span class="kc-tech-cost-str">{{techCostStr}}</span>
+        {{/if}}
+        {{#if techniqueId}}
+        <button type="button" data-action="open-technique-sheet"
+          class="kc-btn kc-btn--icon kc-btn--stretch" title="Abrir ficha de técnica">
+          <i class="fas fa-external-link-alt"></i>
+        </button>
+        {{/if}}
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if heldRows.length}}
+    <div class="kc-held-rows">
+      {{#each heldRows}}
+      <div class="kc-held-row">
+        <i class="fas fa-lock"></i>
+        <span class="kc-held-row__name">{{this.name}}</span>
+        <span class="kc-held-row__info">Niv.{{this.level}} · {{this.level}} ki/asalto</span>
+        <label class="kc-held-row__continue">
+          <input type="checkbox" name="continueHolding.{{this.id}}" {{#if this.continueHolding}}checked{{/if}}>
+          Continuar aguantando
+        </label>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+  </div>
+
+  {{!-- ── Section 2: ¿Qué acumulo? ─────────────────────────────────────── --}}
+  <div class="ki-calc__section">
+    <div class="kc-section-title">Acumulación de Ki</div>
+
+    <table class="kc-stat-grid">
+      <tbody>
+        <tr>
+          {{#if (is "eq" mode "generic")}}
+          <td class="kc-stat-grid__toggle">
+            <button type="button" data-action="toggle-all-stats" class="kc-toggle-all-btn"
+              title="Marcar / desmarcar todo">∀</button>
+          </td>
+          {{/if}}
+          {{#each statColumns as |col|}}
+          <td class="kc-stat-col {{#if col.selected}}kc-stat-col--active{{else}}kc-stat-col--inactive{{/if}}">
+            <label class="kc-stat-col__toggle">
+              <input type="checkbox" name="selectedStats.{{col.key}}" {{#if col.selected}}checked{{/if}}>
+              <span class="kc-stat-col__name">{{col.label}}</span>
+            </label>
+            <div class="kc-stat-col__row2">
+              <span class="kc-stat-col__accrate">{{col.accRate}}</span>
+              <div class="kc-stat-col__mod">
+                <span class="kc-stat-col__mod-label">mod.</span>
+                <input type="number" name="statMods.{{col.key}}"
+                  class="kc-input kc-input--sm{{#if col.mod}} kc-input--modified{{/if}}" value="{{col.mod}}"
+                  placeholder="0">
+              </div>
+            </div>
+          </td>
+          {{/each}}
+        </tr>
+      </tbody>
+    </table>
+
+    {{!-- Fatigue + full accumulation --}}
+    <div class="kc-options-halves kc-options-halves--mt">
+      <label class="kc-option-label kc-half">
+        <span>Cansancio:</span>
+        <input type="number" name="fatigueUsed"
+          class="kc-input kc-input--sm{{#if fatigueUsed}} kc-input--modified{{/if}}" value="{{fatigueUsed}}" min="0">
+      </label>
+      <label class="kc-option-label kc-half"
+        title="Permite mantener todo el ki acumulado al terminar el asalto.
+         Si no lo haces (el caso más común), al finalizar el asalto perderás la mitad del ki que hayas acumulado este turno.
+         Concentrarse es una 'acción de asalto completa', de modo que si haces cualquier otra cosa, incluso pasiva, pierdes el efecto.">
+        <input type="checkbox" name="fullAccumulation" {{#if fullAccumulation}}checked{{/if}}>
+        Concentrarse
+      </label>
+    </div>
+
+  </div>
+
+  {{!-- ── Section 3: Resumen ────────────────────────────────────────────── --}}
+  <div class="ki-calc__section">
+    <div class="kc-section-title">Resumen</div>
+
+    <div class="kc-summary-row">
+      {{#if kiTargetStr}}
+      <div class="kc-ki-target">
+        <i class="fas fa-yin-yang"></i> Ki objetivo: <b>{{kiTargetStr}}</b>
+      </div>
+      {{/if}}
+      <div class="kc-turns">
+        {{#if hasTurnsInfo}}
+        {{#if castableThisRound}}
+        <span class="kc-castable">¡Listo para lanzar!</span>
+        {{else}}
+        Turnos: <b>{{turnsNeeded}}</b>
+        {{/if}}
+        {{else}}
+        <span class="kc-muted">Sin objetivo</span>
+        {{/if}}
+      </div>
+      <div class="kc-tech-toggle">
+        <label class="kc-tech-toggle__opt {{#if (is "eq" techAction "cast")}}kc-tech-toggle__opt--active{{/if}}">
+          <input type="radio" name="techAction" value="cast" {{#if (is "eq" techAction "cast")}}checked{{/if}}>
+          <i class="fas fa-bolt"></i> Lanzar si listo
+        </label>
+        {{#if showTechOptions}}
+        <label class="kc-tech-toggle__opt {{#if (is "eq" techAction "hold")}}kc-tech-toggle__opt--active{{/if}}">
+          <input type="radio" name="techAction" value="hold" {{#if (is "eq" techAction "hold")}}checked{{/if}}>
+          <i class="fas fa-lock"></i> Aguantar{{#if holdTechniqueLevel}} ({{holdTechniqueLevel}}){{/if}}
+        </label>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="kc-resumen-footer">
+
+      <div class="ki-calc__footer">
+        <div class="kc-res-row">
+          <div class="v2-res v2-res--compact kc-chip-ki">
+            <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Ki</span>
+            <div class="v2-res__values">
+              <span class="v2-res__readonly">{{kiPoolValue}}</span>
+              <span class="v2-res__sep">/</span>
+              <span class="v2-res__readonly">{{kiPoolMax}}</span>
+            </div>
+          </div>
+          {{#if totalAccumulated}}
+          <div class="v2-res v2-res--compact v2-res--single kc-chip-acc-total">
+            <span class="v2-res__label"><i class="fas fa-yin-yang"></i> ACUM</span>
+            <div class="v2-res__values"><span class="v2-res__readonly">{{totalAccumulated}}</span></div>
+          </div>
+          {{/if}}
+          {{#each footerInitial as |chip|}}
+          <div class="v2-res v2-res--compact v2-res--single kc-chip-ki">
+            <span class="v2-res__label">{{chip.label}}</span>
+            <div class="v2-res__values"><span class="v2-res__readonly">{{chip.value}}</span></div>
+          </div>
+          {{/each}}
+          {{#if fatigueUsed}}
+          <div class="v2-res v2-res--compact v2-res--single kc-chip-fat">
+            <span class="v2-res__label"><i class="fas fa-bolt"></i> Cans</span>
+            <div class="v2-res__values"><span class="v2-res__readonly">{{currentFatigue}}</span></div>
+          </div>
+          {{/if}}
+        </div>
+        <div class="kc-res-arrow-down">↓</div>
+        <div class="kc-res-row">
+          <div class="v2-res v2-res--compact kc-chip-ki">
+            <span class="v2-res__label"><i class="fas fa-yin-yang"></i> Ki</span>
+            <div class="v2-res__values">
+              <span class="v2-res__readonly">{{finalKiPool}}</span>
+              <span class="v2-res__sep">/</span>
+              <span class="v2-res__readonly">{{kiPoolMax}}</span>
+            </div>
+          </div>
+          {{#if finalTotalAccumulated}}
+          <div class="v2-res v2-res--compact v2-res--single kc-chip-acc-total">
+            <span class="v2-res__label"><i class="fas fa-yin-yang"></i> ACUM</span>
+            <div class="v2-res__values"><span class="v2-res__readonly">{{finalTotalAccumulated}}</span></div>
+          </div>
+          {{/if}}
+          {{#each footerFinal as |chip|}}
+          <div class="v2-res v2-res--compact v2-res--single kc-chip-ki">
+            <span class="v2-res__label">{{chip.label}}</span>
+            <div class="v2-res__values"><span class="v2-res__readonly">{{chip.value}}</span></div>
+          </div>
+          {{/each}}
+          {{#if fatigueUsed}}
+          <div class="v2-res v2-res--compact v2-res--single kc-chip-fat">
+            <span class="v2-res__label"><i class="fas fa-bolt"></i> Cans</span>
+            <div class="v2-res__values"><span class="v2-res__readonly">{{finalFatigue}}</span></div>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="ki-calc__actions">
+        <button type="button" data-action="confirm" class="kc-btn kc-btn--primary">
+          <i class="fas fa-check"></i> Confirmar
+        </button>
+        <button type="button" data-action="clear" class="kc-btn kc-btn--secondary">
+          <i class="fas fa-redo"></i> Limpiar
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+  .ki-calc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.88em;
+  }
+
+  .ki-calc__section {
+    padding: 6px 8px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+  }
+
+  .kc-section-title {
+    font-size: 0.68rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+    border-bottom: 1px solid #d8d4c4;
+    padding-bottom: 0.15rem;
+    margin-bottom: 4px;
+  }
+
+  .kc-resumen-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 6px;
+  }
+
+  .ki-calc__footer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ki-calc__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    align-items: stretch;
+    min-width: 96px;
+  }
+
+  /* Mode toolbar */
+  .kc-toolbar {
+    display: flex;
+    gap: 4px;
+  }
+
+  .kc-radio-lbl {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border: 1px solid #c0a96c;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .kc-radio-lbl--active {
+    background: #4a3728;
+    color: #f0e8d0;
+  }
+
+  .kc-radio-lbl input {
+    display: none;
+  }
+
+  /* Accordion */
+  .kc-accordion--inline {
+    margin-top: 6px;
+  }
+
+  .kc-accordion-toggle {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .kc-accordion-body {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .kc-accordion-row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  /* Specific-mode block */
+  .kc-specific-block {
+    margin-top: 6px;
+  }
+
+  .kc-specific-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .kc-select {
+    width: 100%;
+  }
+
+  .kc-select--half {
+    width: 50%;
+    flex-shrink: 0;
+  }
+
+  .kc-tech-cost-str {
+    font-size: 0.75em;
+    color: #666;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Stat grid — single row, 6 columns */
+  .kc-stat-grid {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .kc-stat-grid__toggle {
+    width: 28px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .kc-stat-col {
+    text-align: center;
+    padding: 2px 4px;
+    cursor: pointer;
+  }
+
+  .kc-stat-col__toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    gap: 1px;
+  }
+
+  .kc-stat-col__toggle input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+  }
+
+  .kc-stat-col__name {
+    display: block;
+    font-weight: bold;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .kc-stat-col--active .kc-stat-col__name {
+    color: #f5ed00;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  }
+
+  .kc-stat-col--inactive .kc-stat-col__name {
+    color: #bbb;
+  }
+
+  .kc-stat-col__row2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 2px;
+  }
+
+  .kc-stat-col__accrate {
+    font-size: 1em;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  .kc-stat-col__mod {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .kc-stat-col__mod-label {
+    font-size: 0.5rem;
+    color: #999;
+    text-align: center;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .kc-stat-col--inactive .kc-stat-col__row2 {
+    opacity: 0.35;
+  }
+
+  .kc-stat-col .kc-input--sm {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .kc-toggle-all-btn {
+    width: auto !important;
+    padding: 0 4px;
+    font-size: 0.9em;
+  }
+
+  /* Stat colors */
+  .kc-stat--strength {
+    color: #c62828;
+  }
+
+  .kc-stat--agility {
+    color: #1565c0;
+  }
+
+  .kc-stat--dexterity {
+    color: #6a1fa2;
+  }
+
+  .kc-stat--constitution {
+    color: #2e7d32;
+  }
+
+  .kc-stat--willPower {
+    color: #e65100;
+  }
+
+  .kc-stat--power {
+    color: #795548;
+  }
+
+  /* Options halves row */
+  .kc-options-halves {
+    display: flex;
+  }
+
+  .kc-options-halves--mt {
+    margin-top: 8px;
+  }
+
+  .kc-half {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  /* Summary row */
+  .kc-summary-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .kc-ki-target {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .kc-turns {
+    font-size: 0.9em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Common */
+  .kc-muted {
+    color: #888;
+  }
+
+  .kc-castable {
+    color: #2e7d32;
+    font-weight: bold;
+  }
+
+  .kc-option-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .kc-input {
+    width: 52px;
+    text-align: center;
+    border: 1px solid #c0a96c;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .kc-input--sm {
+    width: 20px;
+  }
+
+  .kc-input--modified {
+    background: rgba(120, 46, 34, 0.25) !important;
+  }
+
+  /* Resources row */
+  .kc-res-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .kc-res-arrow-down {
+    text-align: center;
+    color: #888;
+    font-size: 0.9em;
+    line-height: 1;
+    padding: 1px 0;
+    width: 100%;
+  }
+
+  /* v2-res chips scoped for dialog */
+  .ki-calc .v2-res {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75em;
+    background: rgba(0, 0, 0, 0.06);
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  .ki-calc .v2-res--compact {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1px;
+    padding: 2px 5px;
+  }
+
+  .ki-calc .v2-res__label {
+    font-weight: bold;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--abf-secondary, #c0a96c);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    white-space: nowrap;
+  }
+
+  .ki-calc .v2-res__label i {
+    font-size: 0.62rem;
+  }
+
+  .ki-calc .v2-res__values {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .ki-calc .v2-res__readonly {
+    font-weight: bold;
+    font-size: 0.8rem;
+    min-width: 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    padding: 0 3px;
+  }
+
+  .ki-calc .v2-res__sep {
+    color: var(--abf-secondary, #c0a96c);
+    font-weight: bold;
+    font-size: 0.7rem;
+  }
+
+  .ki-calc .kc-chip-ki .v2-res__label {
+    color: #f5ed00;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  }
+
+  .ki-calc .kc-chip-fat .v2-res__label {
+    color: #d10000;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  }
+
+  .ki-calc .kc-chip-acc-total .v2-res__label {
+    color: #f5ed00;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  }
+
+  /* Buttons */
+  .kc-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: auto !important;
+    padding: 3px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.85em;
+    border: 1px solid currentColor;
+  }
+
+  .kc-btn--primary {
+    background: #1a4b8c;
+    color: #fff;
+    border-color: #1a4b8c;
+  }
+
+  .kc-btn--secondary {
+    background: rgba(0, 0, 0, 0.06);
+    color: #555;
+    border-color: #aaa;
+  }
+
+  .kc-btn--danger {
+    background: #c62828;
+    color: #fff;
+    border-color: #c62828;
+  }
+
+  .kc-btn--sm {
+    padding: 1px 6px;
+    font-size: 0.8em;
+  }
+
+  .kc-btn--icon {
+    padding: 1px 5px;
+  }
+
+  .kc-held-rows {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .kc-held-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 6px;
+    font-size: 0.8em;
+    color: #7a4a00;
+    background: rgba(180, 100, 0, 0.08);
+    border: 1px solid #b87020;
+    border-radius: 3px;
+  }
+
+  .kc-held-row__name {
+    font-weight: bold;
+    flex: 1;
+  }
+
+  .kc-held-row__info {
+    color: #888;
+    white-space: nowrap;
+  }
+
+  .kc-held-row__continue {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.92em;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #5a3800;
+    margin-left: 4px;
+  }
+
+  /* Stretch button: fills row height to match an adjacent input/select */
+  .kc-btn--stretch {
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+
+  /* Ki objetivo display */
+  .kc-ki-target {
+    font-size: 0.88em;
+    color: #3a1008;
+  }
+
+  /* Cast / hold pill toggle */
+  .kc-tech-toggle {
+    display: inline-flex;
+    border: 1px solid #c0a96c;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .kc-tech-toggle__opt {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 0.85em;
+  }
+
+  .kc-tech-toggle__opt input {
+    display: none;
+  }
+
+  .kc-tech-toggle__opt--active {
+    background: #4a3728;
+    color: #f0e8d0;
+  }
+</style>

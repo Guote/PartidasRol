@@ -23,5 +23,6 @@
       }
     ]
   },
+  "styles": ["styles/guote-module.css"],
   "scripts": ["guote-module.js"]
 }

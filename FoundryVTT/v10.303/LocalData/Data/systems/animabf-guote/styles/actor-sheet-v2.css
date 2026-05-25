@@ -298,6 +298,36 @@
 .actor-sheet-v2 .v2-res--ki-acc .v2-res__label {
   color: var(--abf-ki);
 }
+.actor-sheet-v2 .v2-res--ki-acum-total .v2-res__readonly {
+  color: #111;
+  text-shadow: 0 0 6px #f5ed00;
+  font-weight: bold;
+}
+
+/* Ki accumulated table row */
+.actor-sheet-v2 .ki-acc-row__cell {
+  background: var(--abf-primary-dark, #4a1b10);
+  color: white;
+  padding: 3px 2px;
+}
+.actor-sheet-v2 .v2-ki-acc-input {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 3px;
+  width: 36px;
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 1px 2px;
+}
+.actor-sheet-v2 .v2-ki-acc-input:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.6);
+}
+.actor-sheet-v2 .ki-acc-total {
+  color: white;
+  font-weight: bold;
+}
 .actor-sheet-v2 .v2-res--psy .v2-res__label {
   color: var(--abf-psychic);
 }
@@ -1913,6 +1943,29 @@
 .actor-sheet-v2 .v2-mod--negative {
   color: var(--abf-error);
 }
+
+/* === Resource text glow utilities ===
+   v2-text--{res}   = plain resource color, no shadow
+   v2-shadow--{res} = dark (#111) text + resource-colored glow  (light bg)
+   v2-glow--{res}   = resource-colored text + dark shadow        (dark bg)
+   Note: v2-shadow--{res} on a dark bg renders as pure glow — dark text becomes
+   invisible, leaving only the colored halo. Useful for icons on dark cells. */
+/* ki */
+.actor-sheet-v2 .v2-text--ki   { color: var(--abf-ki); }
+.actor-sheet-v2 .v2-shadow--ki { color: #111; text-shadow: 0 0 5px var(--abf-ki); }
+.actor-sheet-v2 .v2-glow--ki   { color: var(--abf-ki); text-shadow: 0 0 5px #111; }
+/* zeon */
+.actor-sheet-v2 .v2-text--zeon   { color: var(--abf-zeon); }
+.actor-sheet-v2 .v2-shadow--zeon { color: #111; text-shadow: 0 0 5px var(--abf-zeon); }
+.actor-sheet-v2 .v2-glow--zeon   { color: var(--abf-zeon); text-shadow: 0 0 5px #111; }
+/* psychic */
+.actor-sheet-v2 .v2-text--psychic   { color: var(--abf-psychic); }
+.actor-sheet-v2 .v2-shadow--psychic { color: #111; text-shadow: 0 0 5px var(--abf-psychic); }
+.actor-sheet-v2 .v2-glow--psychic   { color: var(--abf-psychic); text-shadow: 0 0 5px #111; }
+/* hp */
+.actor-sheet-v2 .v2-text--hp   { color: var(--abf-hp); }
+.actor-sheet-v2 .v2-shadow--hp { color: #111; text-shadow: 0 0 5px var(--abf-hp); }
+.actor-sheet-v2 .v2-glow--hp   { color: var(--abf-hp); text-shadow: 0 0 5px #111; }
 
 /* Effects List */
 .actor-sheet-v2 .v2-effects-list {

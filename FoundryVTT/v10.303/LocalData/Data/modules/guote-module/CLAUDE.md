@@ -18,8 +18,10 @@ This module holds game-table-specific automation that is too opinionated for the
 
 ```
 guote-module/
-  module.json                          # Module manifest — only guote-module.js is registered
+  module.json                          # Module manifest — declares styles/ and guote-module.js
   guote-module.js                      # Entry point: all hooks live here
+  styles/
+    guote-module.css                   # ALL module CSS lives here (chat message styles, etc.)
   helpers.js                           # Color interpolation helpers (not loaded by module.json)
   module-manipulation/
     simpleCalendar-smallTime.js        # Isolated color sync utility
@@ -39,6 +41,16 @@ guote-module/
 ```
 
 **Only `guote-module.js` is loaded automatically** (declared in `module.json`). All `scripts/` files must be pasted into Foundry's macro editor and saved as macros.
+
+### CSS for chat messages — never use `<style>` in templates
+
+FoundryVTT sanitizes chat message HTML with DOMPurify and **strips all `<style>` tags**. CSS embedded in `.hbs` templates is silently discarded.
+
+All styles must be in `styles/guote-module.css`, which is declared in `module.json` under `"styles"` and loaded as a proper stylesheet at page load:
+
+```json
+"styles": ["styles/guote-module.css"]
+```
 
 ---
 

@@ -144,22 +144,26 @@
         <div class="spellbook-maintenances">
           <div class="spellbook-maintenances__header">
             <h4 class="spellbook-maintenances__title">{{localize "anima.ui.mystic.spellMaintenances.title"}}</h4>
-            <button type="button" class="spellbook-btn spellbook-btn--action" data-action="add-maintenance">
-              <i class="fas fa-plus"></i>
-              {{localize "anima.ui.mystic.spellMaintenances.add"}}
-            </button>
+            <div class="spellbook-maintenances__btn-group">
+              <button type="button" class="spellbook-btn spellbook-btn--action" data-action="add-maintenance-linked">
+                <i class="fas fa-book"></i>
+                {{localize "anima.ui.mystic.spellMaintenances.addKnown"}}
+              </button>
+              <button type="button" class="spellbook-btn spellbook-btn--action" data-action="add-maintenance">
+                <i class="fas fa-plus"></i>
+                {{localize "anima.ui.mystic.spellMaintenances.add"}}
+              </button>
+            </div>
           </div>
           {{#if spellMaintenances.length}}
           <table class="spell-maintenances-table">
             <thead>
               <tr>
                 <th title="{{localize 'anima.ui.mystic.spellMaintenance.active.title'}}">✓</th>
-                <th>{{localize 'anima.ui.mystic.spellMaintenance.name.title'}}</th>
+                <th class="sm-th--sortable" data-action="sort-maintenances-by-name" title="Ordenar alfabéticamente">Conjuro {{#if maintenanceSortAsc}}<i class="fas fa-sort-alpha-down"></i>{{else}}<i class="fas fa-sort sm-sort-idle"></i>{{/if}}</th>
                 <th>{{localize 'anima.ui.mystic.spellMaintenance.grade.title'}}</th>
                 <th title="{{localize 'anima.ui.mystic.spellMaintenance.roundCost.title'}}">{{localize 'anima.ui.mystic.spellMaintenance.roundCost.title'}}</th>
-                <th>+</th>
                 <th title="{{localize 'anima.ui.mystic.spellMaintenance.cost.title'}}">{{localize 'anima.ui.mystic.spellMaintenance.cost.title'}}</th>
-                <th>+</th>
                 <th></th>
               </tr>
             </thead>
@@ -175,9 +179,18 @@
                     {{#if maint.system.active.value}}checked{{/if}}>
                 </td>
                 <td class="sm-col--name">
+                  {{#if maint.isLinked}}
+                  <select class="v2-select sm-spell-select" data-item-id="{{maint._id}}">
+                    <option value="">—</option>
+                    {{#each maint.spellOptions}}
+                    <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+                    {{/each}}
+                  </select>
+                  {{else}}
                   <input type="text" class="v2-input"
                     name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.name'}}"
                     value="{{maint.name}}">
+                  {{/if}}
                 </td>
                 <td class="sm-col--grade">
                   <select class="v2-select sm-grade-select"
@@ -191,25 +204,21 @@
                     <option value="arcane" {{#if (is "eq" maint.system.grade.value "arcane")}}selected{{/if}}>{{localize 'anima.macros.combat.dialog.spellGrade.arcane.title'}}</option>
                   </select>
                 </td>
-                <td class="sm-col--cost">
-                  <input type="number" class="v2-input v2-input--number"
-                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.roundCost.value'}}"
-                    value="{{maint.system.roundCost.value}}">
+                <td class="sm-col--upkeep">
+                  <div class="sm-upkeep-cell">
+                    <input type="number" class="v2-input v2-input--number"
+                      name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.roundCostMod.value'}}"
+                      value="{{maint.system.roundCostMod.value}}">
+                    <span class="sm-upkeep-final">{{maint.roundCostFinal}}</span>
+                  </div>
                 </td>
-                <td class="sm-col--mod">
-                  <input type="number" class="v2-input v2-input--number"
-                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.roundCostMod.value'}}"
-                    value="{{maint.system.roundCostMod.value}}">
-                </td>
-                <td class="sm-col--cost">
-                  <input type="number" class="v2-input v2-input--number"
-                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.cost.value'}}"
-                    value="{{maint.system.cost.value}}">
-                </td>
-                <td class="sm-col--mod">
-                  <input type="number" class="v2-input v2-input--number"
-                    name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.dayCostMod.value'}}"
-                    value="{{maint.system.dayCostMod.value}}">
+                <td class="sm-col--upkeep">
+                  <div class="sm-upkeep-cell">
+                    <input type="number" class="v2-input v2-input--number"
+                      name="{{concat 'system.dynamic.spellMaintenances.' maint._id '.system.dayCostMod.value'}}"
+                      value="{{maint.system.dayCostMod.value}}">
+                    <span class="sm-upkeep-final">{{maint.dayCostFinal}}</span>
+                  </div>
                 </td>
                 <td class="sm-col--delete">
                   <button type="button" class="abf-button icon-button" data-action="delete-maintenance" data-item-id="{{maint._id}}" style="width:auto!important;display:inline-flex">
@@ -219,6 +228,14 @@
               </tr>
               {{/each}}
             </tbody>
+            <tfoot>
+              <tr class="sm-footer-row">
+                <td colspan="3" class="sm-footer-label">Total activos</td>
+                <td class="sm-footer-val">{{maintenanceTotalRound}}</td>
+                <td class="sm-footer-val">{{maintenanceTotalDay}}</td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
           {{/if}}
         </div>

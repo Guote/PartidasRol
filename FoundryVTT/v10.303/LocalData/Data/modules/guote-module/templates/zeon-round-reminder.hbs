@@ -1,0 +1,36 @@
+<div class="guote-zeon-reminder">
+  <div class="gzr-title"><i class="fas fa-hat-wizard"></i> <b>Usando Zeon</b></div>
+  {{#each entries}}
+  <div class="gzr-actor">
+    {{!-- Row 1: portrait (→ actor sheet) · name · grimoire button (right) --}}
+    <div class="gzr-row1">
+      <img src="{{this.tokenSrc}}" class="gzr-portrait"
+        data-action="open-actor-sheet" data-actor-id="{{this.actorId}}"
+        title="{{this.actorName}}">
+      <span class="gzr-name"><b>{{this.actorName}}</b></span>
+      <button data-action="open-grimoire" data-actor-id="{{this.actorId}}"
+        class="guote-zeon-btn gzr-grimoire-btn" title="Abrir grimorio">
+        <i class="fas fa-book-open"></i>
+      </button>
+    </div>
+    {{!-- Row 2: action buttons with embedded data --}}
+    {{#if (or this.accumulated this.roundUpkeep)}}
+    <div class="gzr-row2">
+      {{#if this.accumulated}}
+      <button data-action="zeon-cleanup" data-actor-id="{{this.actorId}}"
+        class="guote-zeon-btn gzr-data-btn{{#if this.pureLeftoverWarn}} gzr-btn--warn{{/if}}"
+        title="Establece el zeon acumulado a 0. El -10 a la reserva se aplica si acumulaste con magia pura y hay zeon sobrante.{{#if this.pureLeftoverWarn}} ⚠ Se aplicará la penalización.{{/if}}">
+        Limpiar <i class="fas fa-hat-wizard gzr-icon--zeon"></i> Acum <b>{{this.accumulated}}</b> (-10 reserva)
+      </button>
+      {{/if}}
+      {{#if this.roundUpkeep}}
+      <button data-action="apply-upkeep" data-actor-id="{{this.actorId}}"
+        class="guote-zeon-btn gzr-data-btn">
+        Pagar costes <i class="fas fa-sync-alt gzr-icon--upkeep"></i> <b>{{this.roundUpkeep}}</b>
+      </button>
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+  {{/each}}
+</div>

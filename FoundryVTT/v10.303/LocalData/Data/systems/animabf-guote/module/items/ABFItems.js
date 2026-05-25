@@ -36,4 +36,5 @@ export var ABFItems;
     ABFItems["DEFENSE_PRESET"] = "defensePreset";
     ABFItems["INCARNATION"] = "incarnation";
     ABFItems["CREATURE_SUMMON"] = "creatureSummon";
+    ABFItems["KI_MAINTENANCE"] = "kiMaintenance";
 })(ABFItems || (ABFItems = {}));

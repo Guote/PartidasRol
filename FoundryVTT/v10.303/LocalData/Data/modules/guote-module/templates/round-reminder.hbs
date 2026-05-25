@@ -1,0 +1,121 @@
+<div class="gzr-card common-group">
+
+  {{!-- Card title --}}
+  <div class="gzr-card-header">
+    <i class="fas fa-shield-alt"></i>
+    Inicio de Asalto {{round}}
+  </div>
+
+  {{#each entries}}
+  <div class="gzr-entry">
+
+    {{!-- Actor row: whole div clickable → opens character sheet --}}
+    <div class="gzr-actor-row" data-action="open-actor-sheet" data-actor-id="{{this.actorId}}"
+      title="Abrir ficha de {{this.actorName}}">
+      <img src="{{this.tokenSrc}}" class="gzr-portrait" alt="{{this.actorName}}">
+      <span class="gzr-actor-name">{{this.actorName}}</span>
+      {{#if this.showGrimoire}}
+      <button data-action="open-grimoire" data-actor-id="{{this.actorId}}" class="gzr-grimoire-btn"
+        title="Abrir grimorio">
+        <i class="fas fa-book-open"></i>
+      </button>
+      {{/if}}
+    </div>
+
+    {{!-- Lost ki accumulation (not concentrated, already 0 when concentrated) --}}
+    {{#if this.hasKiAccLost}}
+    <div class="gzr-info-row gzr-info-row--acclost">
+      <span>Parte de tu ki deja de estar acumulado por falta de concentración.</span>
+      <span class="gzr-acclost-value">
+        <i class="fas fa-yin-yang gzr-icon--ki"></i>
+        <span class="gzr-icon--ki gzr-acum-label">ACUM</span>
+        −{{this.kiAccLost}}
+        {{#if this.kiAccLostStats.length}}
+        <span class="gzr-acclost-detail">({{#each this.kiAccLostStats}}{{this.label}} −{{this.loss}}{{#unless @last}}, {{/unless}}{{/each}})</span>
+        {{/if}}
+      </span>
+    </div>
+    {{/if}}
+
+    {{!-- Held ki techniques --}}
+    {{#if this.heldKiTechniques.length}}
+    <div class="gzr-info-row gzr-info-row--held">
+      {{#each this.heldKiTechniques}}
+      <div class="gzr-held-item">
+        <i class="fas fa-lock gzr-icon--ki"></i>
+        <span class="gzr-held-name">Poder preparado: <b>{{this.name}}</b></span>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    {{!-- Held zeon spells --}}
+    {{#if this.heldZeonSpells.length}}
+    <div class="gzr-info-row gzr-info-row--held">
+      {{#each this.heldZeonSpells}}
+      <div class="gzr-held-item">
+        <i class="fas fa-lock gzr-icon--zeon"></i>
+        <span class="gzr-held-name">Poder preparado: <b>{{this.name}}</b></span>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    {{!-- Action buttons: table layout --}}
+    <div class="gzr-actions-table">
+
+      {{!-- Header row: single separator spans all columns --}}
+      <div class="gzr-tbl-header-row">
+        {{#if this.hasUpkeep}}
+        <div class="gzr-tbl-header"><i class="fas fa-sync-alt"></i> Pagar Mantenimientos</div>
+        {{/if}}
+        {{#if this.hasCleanup}}
+        <div class="gzr-tbl-header"><i class="fas fa-broom"></i> Limpiar ACUM</div>
+        {{/if}}
+      </div>
+
+      {{!-- Button rows: row i pairs upkeepSlots[i] with cleanupSlots[i] --}}
+      {{#each this.buttonRows}}
+      <div class="gzr-tbl-row">
+
+        {{#if ../hasUpkeep}}
+        <div class="gzr-tbl-cell">
+          {{#if this.upkeep}}
+          <button data-action="{{this.upkeep.action}}" data-actor-id="{{../actorId}}"
+            class="gzr-action-btn" title="{{this.upkeep.tooltip}}">
+            <i class="{{this.upkeep.iconClass}} {{this.upkeep.colorClass}}"></i>
+            −{{this.upkeep.value}}
+          </button>
+          {{/if}}
+        </div>
+        {{/if}}
+
+        {{#if ../hasCleanup}}
+        <div class="gzr-tbl-cell">
+          {{#if this.cleanup}}
+          <button data-action="{{this.cleanup.action}}" data-actor-id="{{../actorId}}"
+            class="gzr-action-btn gzr-action-btn--stack" title="{{this.cleanup.tooltip}}">
+            <span class="gzr-btn-line">
+              <i class="{{this.cleanup.iconClass}} {{this.cleanup.colorClass}}"></i>
+              <span class="{{this.cleanup.colorClass}} gzr-acum-label">ACUM</span>
+              {{this.cleanup.acc}} <i class="fas fa-arrow-right gzr-arrow"></i> 0
+            </span>
+            {{#if this.cleanup.hasPenalty}}
+            <span class="gzr-btn-line">
+              <i class="{{this.cleanup.iconClass}} {{this.cleanup.colorClass}}"></i>
+              −{{this.cleanup.penalty}}
+            </span>
+            {{/if}}
+          </button>
+          {{/if}}
+        </div>
+        {{/if}}
+
+      </div>
+      {{/each}}
+
+    </div>
+  </div>
+  {{/each}}
+
+</div>

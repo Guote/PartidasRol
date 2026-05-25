@@ -1,0 +1,85 @@
+<style>
+  .technique-sheet { display: flex; flex-direction: column; gap: 10px; padding: 8px; height: 100%; box-sizing: border-box; }
+  .technique-sheet .ts-name { font-size: 1.1em; font-weight: bold; width: 100%; border: 1px solid var(--color-border-light-2, #c9c7b8); border-radius: 3px; padding: 3px 6px; background: var(--color-bg-option, #f0ece0); }
+  .technique-sheet .ts-name:focus { outline: none; border-color: var(--color-border-highlight, #7a5c3a); }
+  .technique-sheet .ts-section-label { font-size: 0.7em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-light-heading, #4b4a44); margin-bottom: 3px; }
+  .technique-sheet .ts-general { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .technique-sheet .ts-field { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .technique-sheet .ts-field label { font-size: 0.65em; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-light-5, #7a7971); white-space: nowrap; }
+  .technique-sheet .ts-field input[type="number"],
+  .technique-sheet .ts-field input[type="text"] { width: 100%; text-align: center; font-size: 0.85em; border: 1px solid var(--color-border-light-2, #c9c7b8); border-radius: 2px; padding: 2px 4px; background: var(--color-bg-option, #f0ece0); }
+  .technique-sheet .ts-field input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; }
+  .technique-sheet .ts-ki-grid { width: 100%; border-collapse: collapse; }
+  .technique-sheet .ts-ki-grid th { font-size: 0.65em; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-light-5, #7a7971); text-align: center; padding: 2px 4px; border-bottom: 1px solid var(--color-border-light-2, #c9c7b8); }
+  .technique-sheet .ts-ki-grid td { text-align: center; padding: 3px 4px; }
+  .technique-sheet .ts-ki-grid td input { width: 52px; text-align: center; font-size: 0.85em; border: 1px solid var(--color-border-light-2, #c9c7b8); border-radius: 2px; padding: 2px 4px; background: var(--color-bg-option, #f0ece0); }
+  .technique-sheet .ts-description { display: flex; flex-direction: column; gap: 3px; flex: 1; min-height: 0; }
+  .technique-sheet .ts-description textarea { flex: 1; min-height: 60px; resize: vertical; font-size: 0.82em; border: 1px solid var(--color-border-light-2, #c9c7b8); border-radius: 2px; padding: 4px; background: var(--color-bg-option, #f0ece0); }
+</style>
+
+<form class="technique-sheet" autocomplete="off">
+
+  {{!-- Name --}}
+  <input type="text" name="name" class="ts-name" value="{{item.name}}" placeholder="Nombre de la técnica">
+
+  {{!-- General fields --}}
+  <div>
+    <div class="ts-section-label">General</div>
+    <div class="ts-general">
+      <div class="ts-field">
+        <label>Nivel</label>
+        <input type="number" name="system.level.value" value="{{system.level.value}}" min="0">
+      </div>
+      <div class="ts-field">
+        <label>Con. Marcial</label>
+        <input type="number" name="system.martialKnowledge.value" value="{{system.martialKnowledge.value}}" min="0">
+      </div>
+      <div class="ts-field">
+        <label>Ki/Asalto</label>
+        <input type="number" name="system.roundCost.value" value="{{system.roundCost.value}}" min="0">
+      </div>
+      <div class="ts-field">
+        <label>Activa</label>
+        <input type="checkbox" name="system.active.value" {{checked system.active.value}}>
+      </div>
+      <div class="ts-field">
+        <label>Ki Total</label>
+        <span style="font-size:0.85em;font-weight:bold;padding:2px 4px;">{{kiTotal}}</span>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Ki costs --}}
+  <div>
+    <div class="ts-section-label">Coste en Ki</div>
+    <table class="ts-ki-grid">
+      <thead>
+        <tr>
+          <th>Agi</th>
+          <th>Con</th>
+          <th>Des</th>
+          <th>Fue</th>
+          <th>Pod</th>
+          <th>Vol</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="number" name="system.agility.value"      value="{{system.agility.value}}"      min="0"></td>
+          <td><input type="number" name="system.constitution.value" value="{{system.constitution.value}}" min="0"></td>
+          <td><input type="number" name="system.dexterity.value"    value="{{system.dexterity.value}}"    min="0"></td>
+          <td><input type="number" name="system.strength.value"     value="{{system.strength.value}}"     min="0"></td>
+          <td><input type="number" name="system.power.value"        value="{{system.power.value}}"        min="0"></td>
+          <td><input type="number" name="system.willPower.value"    value="{{system.willPower.value}}"    min="0"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  {{!-- Description --}}
+  <div class="ts-description">
+    <div class="ts-section-label">Descripción</div>
+    <textarea name="system.description.value" placeholder="Describe la técnica...">{{system.description.value}}</textarea>
+  </div>
+
+</form>

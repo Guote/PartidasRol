@@ -4,6 +4,19 @@
   <div class="zc-section">
     <div class="zc-section-title">Conjuros</div>
 
+    {{#if heldSpellRows.length}}
+    <div class="zc-held-rows">
+      {{#each heldSpellRows}}
+      <div class="zc-held-row">
+        <i class="fas fa-lock"></i>
+        <span class="zc-held-row__name">{{this.name}}</span>
+        <span class="zc-held-row__grade">{{this.grade}}</span>
+        <span class="zc-held-row__cost">{{this.zeonCost}} z</span>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
     {{!-- Spell action buttons --}}
     <div class="zc-add-buttons">
       <button type="button" data-action="add-spell" class="abf-button zc-btn">
@@ -135,16 +148,20 @@
               </div>
             </div>
           </div>
-          {{#if this.rowMaintenanceCost}}
-          <label class="zc-add-active-label">
-            <input type="checkbox" name="spell.{{this.id}}.addToActiveSpells"
-              {{#if this.addToActiveSpells}}checked{{/if}}>
-            <i class="fas fa-clock"></i> {{localize "anima.ui.combat.addToActiveSpells"}}
-            <span class="zc-maint-info">({{this.rowMaintenanceCost}}/{{#if this.rowHasDailyMaintenance}}día{{else}}asalto{{/if}})</span>
-          </label>
-          {{/if}}
-          <input type="text" name="spell.{{this.id}}.comment" value="{{this.comment}}"
-            class="zc-input zc-input--comment-full" placeholder="Nota...">
+          <div class="zc-spell-checkboxes">
+            <label class="zc-checkbox-label">
+              <input type="checkbox" name="spell.{{this.id}}.castear" {{#if this.castear}}checked{{/if}}>
+              Contabilizar para castear
+            </label>
+            {{#if this.rowMaintenanceCost}}
+            <label class="zc-add-active-label">
+              <input type="checkbox" name="spell.{{this.id}}.addToActiveSpells"
+                {{#if this.addToActiveSpells}}checked{{/if}}>
+              <i class="fas fa-clock"></i> {{localize "anima.ui.combat.addToActiveSpells"}}
+              <span class="zc-maint-info">({{this.rowMaintenanceCost}}/{{#if this.rowHasDailyMaintenance}}día{{else}}asalto{{/if}})</span>
+            </label>
+            {{/if}}
+          </div>
         </div>
 
       </div>
@@ -169,12 +186,15 @@
         <tr>
           <td class="zc-cell--center">
             <div class="zc-radio-toolbar">
-              <input type="radio" id="use-main-act" name="useAlternativeAct" value="false"
-                {{#unless useAlternativeAct}}checked{{/unless}}>
-              <label for="use-main-act">Base {{actMainValue}}</label>
-              <input type="radio" id="use-alt-act" name="useAlternativeAct" value="true"
-                {{#if useAlternativeAct}}checked{{/if}}>
-              <label for="use-alt-act">Alt. {{actAltValue}}</label>
+              <input type="radio" id="act-main" name="actChoice" value="main"
+                {{#if (is "eq" actChoice "main")}}checked{{/if}}>
+              <label for="act-main">Base {{actMainValue}}</label>
+              <input type="radio" id="act-alt" name="actChoice" value="alternative"
+                {{#if (is "eq" actChoice "alternative")}}checked{{/if}}>
+              <label for="act-alt">Alt. {{actAltValue}}</label>
+              <input type="radio" id="act-none" name="actChoice" value="none"
+                {{#if (is "eq" actChoice "none")}}checked{{/if}}>
+              <label for="act-none">No acumular</label>
             </div>
           </td>
           <td class="zc-cell--center">
@@ -214,6 +234,12 @@
       {{#if holdRounds}}
       <span class="zc-hold-info">Puede sostenerse {{holdRounds}} asaltos</span>
       {{/if}}
+      {{#if canHold}}
+      <label class="zc-cast-label">
+        <input type="checkbox" name="holdThisRound" {{#if holdThisRound}}checked{{/if}}>
+        Aguantar conjuro
+      </label>
+      {{/if}}
     </div>
   </div>
 
@@ -243,7 +269,8 @@
           </td>
           <td class="zc-summary-val">
             <label class="zc-cast-label">
-              <input type="checkbox" name="castThisRound" {{#if castThisRound}}checked{{/if}}>
+              <input type="checkbox" name="castThisRound" {{#if castThisRoundChecked}}checked{{/if}}
+              {{#if castThisRoundReadonly}}disabled{{/if}}>
             </label>
           </td>
           <td class="zc-summary-val">{{totalFromReserve}}</td>
@@ -313,6 +340,13 @@
       Confirmar
     </button>
   </div>
+
+  {{#if activeSpellsToAdd.length}}
+  <div class="zc-active-list">
+    <span class="zc-active-list__label">Nuevos activos:</span>
+    <span class="zc-active-list__spells">{{#each activeSpellsToAdd}}{{#if @index}}, {{/if}}{{this.spellName}} ({{this.gradeLabel}}){{/each}}</span>
+  </div>
+  {{/if}}
 
 </form>
 
@@ -924,5 +958,79 @@
   .zc-maint-info {
     color: #777;
     font-size: 0.7rem;
+  }
+
+  /* Contabilizar + Mantener row — 2-col grid aligned with the summary grid above */
+  .zc-spell-checkboxes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .zc-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #333;
+  }
+
+  /* Active spells list below the footer */
+  .zc-active-list {
+    font-size: 0.72rem;
+    color: #1a5a3a;
+    padding: 0.2rem 0.1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    align-items: baseline;
+  }
+
+  .zc-active-list__label {
+    font-weight: bold;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .zc-active-list__spells {
+    flex: 1 1 0;
+    min-width: 0;
+    word-break: break-word;
+  }
+
+  .zc-held-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 0.3rem;
+  }
+
+  .zc-held-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 2px 6px;
+    font-size: 0.78em;
+    color: #5a1a90;
+    font-style: italic;
+    background: rgba(100, 0, 180, 0.08);
+    border: 1px solid #7a30b0;
+    border-radius: 3px;
+  }
+
+  .zc-held-row__name {
+    font-weight: bold;
+    flex: 1;
+  }
+
+  .zc-held-row__grade {
+    color: #7a30b0;
+  }
+
+  .zc-held-row__cost {
+    font-weight: bold;
+    white-space: nowrap;
   }
 </style>

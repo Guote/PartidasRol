@@ -1637,6 +1637,49 @@ img {
   font-size: 0.75rem;
   padding: 0.05rem 0.1rem;
 }
+.spell-maintenances-table .sm-col--upkeep {
+  width: 86px;
+  text-align: center;
+}
+.spell-maintenances-table .sm-upkeep-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  justify-content: center;
+}
+.spell-maintenances-table .sm-upkeep-final {
+  font-size: 0.82rem;
+  font-weight: 600;
+  min-width: 22px;
+  text-align: right;
+  color: #4a20a0;
+  white-space: nowrap;
+}
+.spell-maintenances-table .sm-th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.spell-maintenances-table .sm-th--sortable:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.spell-maintenances-table .sm-sort-idle {
+  opacity: 0.3;
+}
+.spell-maintenances-table tfoot .sm-footer-row {
+  border-top: 2px solid #c8c4b4;
+}
+.spell-maintenances-table .sm-footer-label {
+  font-size: 0.68rem;
+  color: #777;
+  font-style: italic;
+  padding: 0.15rem 0.2rem;
+}
+.spell-maintenances-table .sm-footer-val {
+  font-weight: bold;
+  color: #4a20a0;
+  font-size: 0.82rem;
+  text-align: center;
+}
 .mystic .mystic-main-tab .selected-spells .selected-spell-row:first-child {
   margin-top: 0;
 }

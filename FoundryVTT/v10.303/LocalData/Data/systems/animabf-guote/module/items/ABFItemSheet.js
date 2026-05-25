@@ -11,7 +11,8 @@ export default class ABFItemSheet extends ItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['sheet', 'item'],
-            resizable: true
+            resizable: true,
+            submitOnChange: true
         });
     }
     get template() {
@@ -34,6 +35,8 @@ export default class ABFItemSheet extends ItemSheet {
                 return 500;
             case ABFItems.INCARNATION:
                 return 600;
+            case ABFItems.TECHNIQUE:
+                return 460;
             default:
                 return 900;
         }
@@ -54,6 +57,8 @@ export default class ABFItemSheet extends ItemSheet {
                 return 480;
             case ABFItems.INCARNATION:
                 return 700;
+            case ABFItems.TECHNIQUE:
+                return 400;
             default:
                 return 450;
         }
@@ -84,6 +89,11 @@ export default class ABFItemSheet extends ItemSheet {
                 };
             });
             sheet.multiPower = powers.length > 1;
+        }
+
+        if (sheet.item.type === 'technique') {
+            const KI_STATS = ['agility', 'constitution', 'dexterity', 'strength', 'power', 'willPower'];
+            sheet.kiTotal = KI_STATS.reduce((sum, s) => sum + (Number(sheet.system?.[s]?.value) || 0), 0);
         }
 
         if (sheet.item.type === 'weapon') {

@@ -6,6 +6,7 @@ import { CombatTableItemConfig } from '../../../types/combat/CombatTableItemConf
 import { DefensePresetItemConfig } from '../../../types/combat/DefensePresetItemConfig.js';
 import { ContactItemConfig } from '../../../types/general/ContactItemConfig.js';
 import { CreatureItemConfig } from '../../../types/domine/CreatureItemConfig.js';
+import { KiMaintenanceItemConfig } from '../../../types/domine/KiMaintenanceItemConfig.js';
 import { DisadvantageItemConfig } from '../../../types/general/DisadvantageItemConfig.js';
 import { SpellItemConfig } from '../../../types/mystic/SpellItemConfig.js';
 import { ElanItemConfig } from '../../../types/general/ElanItemConfig.js';
@@ -55,7 +56,8 @@ export const INTERNAL_ITEM_CONFIGURATIONS = {
     [SpellMaintenanceItemConfig.type]: SpellMaintenanceItemConfig,
     [TitleItemConfig.type]: TitleItemConfig,
     [InventoryItemItemConfig.type]: InventoryItemItemConfig,
-    [CreatureSummonItemConfig.type]: CreatureSummonItemConfig
+    [CreatureSummonItemConfig.type]: CreatureSummonItemConfig,
+    [KiMaintenanceItemConfig.type]: KiMaintenanceItemConfig
 };
 export const ITEM_CONFIGURATIONS = {
     [AmmoItemConfig.type]: AmmoItemConfig,

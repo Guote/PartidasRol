@@ -13,6 +13,8 @@ import { ABFSystemName } from "../../animabf-guote.name.js";
 import { getFormula } from "../rolls/utils/getFormula.js";
 import { getModifierTerms } from "../rolls/utils/getModifierTerms.js";
 import ABFSpellbook from "./ABFSpellbook.js";
+import { KiCalculatorDialog, KI_STATS } from "../dialogs/domine/KiCalculatorDialog.js";
+import { KI_MAINTENANCE_INITIAL_SYSTEM } from "../types/domine/KiMaintenanceItemConfig.js";
 export default class ABFActorSheetV2 extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
@@ -269,13 +271,51 @@ export default class ABFActorSheetV2 extends ActorSheet {
     // Calculate total Ki accumulated (sum of all characteristic accumulated values)
     const kiAccumulation = sheet.system?.domine?.kiAccumulation;
     if (kiAccumulation) {
-      const characteristics = ['strength', 'agility', 'dexterity', 'constitution', 'willPower', 'power'];
+      const characteristics = ['agility', 'constitution', 'dexterity', 'strength', 'power', 'willPower'];
       sheet.totalKiAccumulated = characteristics.reduce((sum, char) => {
         return sum + (kiAccumulation[char]?.accumulated?.value || 0);
       }, 0);
+      sheet.totalKiAccRate = characteristics.reduce((sum, char) => {
+        return sum + (kiAccumulation[char]?.final?.value || 0);
+      }, 0);
     } else {
       sheet.totalKiAccumulated = 0;
+      sheet.totalKiAccRate = 0;
     }
+
+    // Active technique upkeeps for the ki effects table
+    sheet.activeTechniqueUpkeeps = this.actor.items
+      .filter(i => i.type === 'technique' && (i.system?.roundCost?.value ?? 0) > 0)
+      .map(i => ({ id: i.id, name: i.name, roundCost: i.system.roundCost.value, active: i.system?.active?.value ?? false }));
+
+    const KI_STAT_DISPLAY = [
+      ['agility', 'Agi'], ['constitution', 'Con'], ['dexterity', 'Des'],
+      ['strength', 'Fue'], ['power', 'Pod'], ['willPower', 'Vol']
+    ];
+    sheet.techniqueRows = (sheet.system?.domine?.techniques ?? []).map(t => {
+      const parts = KI_STAT_DISPLAY
+        .filter(([s]) => (Number(t.system?.[s]?.value) || 0) > 0)
+        .map(([s, label]) => `${label} ${Number(t.system[s].value) || 0}`);
+      const total = KI_STAT_DISPLAY.reduce((sum, [s]) => sum + (Number(t.system?.[s]?.value) || 0), 0);
+      const kiCostStr = parts.length > 0 ? `${parts.join(', ')} (Total: ${total})` : '—';
+      const mant = Number(t.system?.roundCost?.value) || 0;
+      return {
+        _id: t._id,
+        name: t.name,
+        system: t.system,
+        kiCostStr,
+        kiTotal: total,
+        mantenimientoStr: mant > 0 ? String(mant) : '—'
+      };
+    });
+
+    sheet.kiMaintenanceTotalRound =
+      (sheet.system?.domine?.kiMaintenances ?? [])
+        .filter(m => m.system?.active?.value)
+        .reduce((s, m) => s + (m.system?.roundCost?.value || 0), 0)
+      + sheet.activeTechniqueUpkeeps
+        .filter(t => t.active)
+        .reduce((s, t) => s + t.roundCost, 0);
 
     // Build flattened summonRows (one row per power per summon)
     const evalSummonFormula = (formula, ne) => {
@@ -587,15 +627,122 @@ export default class ABFActorSheetV2 extends ActorSheet {
       }
     });
 
-    // Trigger the Ki accumulation macro from the domine tab
-    html.find('[data-on-click="ki-accumulation-macro"]').click((e) => {
+    // Open Ki Accumulation Calculator from the domine tab
+    html.find('[data-on-click="ki-accumulation-calculator"]').click((e) => {
       e.preventDefault();
-      const macro = game.macros.find(m => m.name === 'Mantenimiento: Ki');
-      if (macro) {
-        macro.execute();
-      } else {
-        ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiAccumulation.macro.notFound'));
+      KiCalculatorDialog.openForActor(this.actor);
+    });
+    // Make button draggable to hotbar
+    html.find('[data-on-click="ki-accumulation-calculator"]').on('dragstart', (e) => {
+      e.originalEvent.dataTransfer.setData('text/plain', JSON.stringify({
+        type: 'KiCalculator',
+        actorId: this.actor.id,
+        name: `Ki — ${this.actor.name}`,
+        img: '_Recursos/Iconos/kiRitual.png'
+      }));
+    });
+
+    // Accumulate ki by one round (each stat += its final rate)
+    html.find('[data-on-click="ki-accumulate-generic"]').click(async (e) => {
+      e.preventDefault();
+      const updates = {};
+      for (const stat of KI_STATS) {
+        const rate = this.actor.system.domine.kiAccumulation[stat]?.final?.value ?? 0;
+        const acc  = this.actor.system.domine.kiAccumulation[stat]?.accumulated?.value ?? 0;
+        updates[`system.domine.kiAccumulation.${stat}.accumulated.value`] = acc + rate;
       }
+      if (Object.keys(updates).length) await this.actor.update(updates);
+    });
+
+    // Reset all ki accumulation to 0
+    html.find('[data-on-click="ki-reset-accumulation"]').click(async (e) => {
+      e.preventDefault();
+      const updates = {};
+      for (const stat of KI_STATS) {
+        updates[`system.domine.kiAccumulation.${stat}.accumulated.value`] = 0;
+      }
+      await this.actor.update(updates);
+    });
+
+    // Ki accumulated row: direct update bypasses form/header priority conflict
+    html.find('.v2-ki-acc-input').on('change', async (e) => {
+      const field = e.currentTarget.dataset.field;
+      if (!field) return;
+      await this.actor.update({ [field]: Number(e.currentTarget.value) || 0 });
+    });
+
+    // Ki maintenance: add new entry
+    html.find('[data-on-click="add-ki-maintenance"]').on('click', async () => {
+      await this.actor.createInnerItem({
+        type: ABFItems.KI_MAINTENANCE,
+        name: 'Nuevo efecto',
+        system: KI_MAINTENANCE_INITIAL_SYSTEM
+      });
+    });
+
+    // Ki maintenance: active toggle
+    html.find('.km-active-toggle').on('click', async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.closest('[data-item-id]')?.dataset.itemId;
+      if (!itemId) return;
+      const maintenances = this.actor.system.domine.kiMaintenances ?? [];
+      const entry = maintenances.find(m => m._id === itemId);
+      if (!entry) return;
+      await this.actor.updateInnerItem({
+        type: ABFItems.KI_MAINTENANCE,
+        id: itemId,
+        system: { ...entry.system, active: { value: e.currentTarget.checked } }
+      });
+    });
+
+    // Ki maintenance: name change
+    html.find('.km-name-input').on('change', async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.closest('[data-item-id]')?.dataset.itemId;
+      if (!itemId) return;
+      const maintenances = this.actor.system.domine.kiMaintenances ?? [];
+      const entry = maintenances.find(m => m._id === itemId);
+      if (!entry) return;
+      await this.actor.updateInnerItem({
+        type: ABFItems.KI_MAINTENANCE,
+        id: itemId,
+        name: e.currentTarget.value,
+        system: entry.system
+      });
+    });
+
+    // Ki maintenance: cost change
+    html.find('.km-cost-input').on('change', async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.closest('[data-item-id]')?.dataset.itemId;
+      if (!itemId) return;
+      const maintenances = this.actor.system.domine.kiMaintenances ?? [];
+      const entry = maintenances.find(m => m._id === itemId);
+      if (!entry) return;
+      await this.actor.updateInnerItem({
+        type: ABFItems.KI_MAINTENANCE,
+        id: itemId,
+        system: { ...entry.system, roundCost: { value: Number(e.currentTarget.value) || 0 } }
+      });
+    });
+
+    // Ki maintenance: delete
+    html.find('[data-on-click="delete-ki-maintenance"]').on('click', async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (!itemId) return;
+      ABFDialogs.confirm(
+        game.i18n.localize('anima.dialogs.items.delete.title'),
+        game.i18n.localize('anima.dialogs.items.delete.body'),
+        {
+          onConfirm: async () => {
+            const maintenances = this.actor.system.domine.kiMaintenances ?? [];
+            await this.actor.update({
+              'system.domine.kiMaintenances': maintenances.filter(m => m._id !== itemId)
+            });
+          }
+        }
+      );
     });
 
     // Inventory column sort headers
@@ -637,6 +784,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
     // Click on technique row to open technique item sheet (domine tab)
     html.find('.technique-row').click((e) => {
+      if (e.target.closest('button, input')) return;
       e.preventDefault();
       const itemId = e.currentTarget.dataset.itemId;
       if (itemId) {
@@ -644,6 +792,43 @@ export default class ABFActorSheetV2 extends ActorSheet {
         if (item?.sheet) {
           item.sheet.render(true);
         }
+      }
+    });
+
+    // Technique upkeep active toggle (technique-derived rows in ki effects table)
+    html.find('.technique-upkeep-active-toggle').on('click', async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (!itemId) return;
+      const item = this.actor.items.get(itemId);
+      if (!item) return;
+      await item.update({ 'system.active.value': e.currentTarget.checked });
+    });
+
+    // Cast technique button — deducts ki costs from accumulated pools and base ki pool
+    html.find('[data-on-click="cast-technique"]').on('click', async (e) => {
+      e.stopPropagation();
+      const itemId = e.currentTarget.dataset.itemId;
+      if (!itemId) return;
+      const technique = this.actor.items.get(itemId);
+      if (!technique) return;
+      const updates = {};
+      let totalCost = 0;
+      for (const stat of KI_STATS) {
+        const cost = Number(technique.system?.[stat]?.value ?? 0);
+        if (cost > 0) {
+          totalCost += cost;
+          const acc = this.actor.system.domine.kiAccumulation[stat].accumulated.value;
+          updates[`system.domine.kiAccumulation.${stat}.accumulated.value`] = Math.max(0, acc - cost);
+        }
+      }
+      if (totalCost > 0) {
+        const ki = this.actor.system.domine.kiAccumulation.generic.value;
+        updates['system.domine.kiAccumulation.generic.value'] = Math.max(0, ki - totalCost);
+      }
+      if (Object.keys(updates).length > 0) await this.actor.update(updates);
+      if ((technique.system?.roundCost?.value ?? 0) > 0) {
+        await technique.update({ 'system.active.value': true });
       }
     });
 

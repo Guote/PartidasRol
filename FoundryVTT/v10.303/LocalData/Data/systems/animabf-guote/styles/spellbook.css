@@ -1017,14 +1017,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-3);
+  padding: var(--space-2) var(--space-3);
   background: var(--abf-secondary-light);
   border-bottom: 1px solid var(--abf-border-light);
 }
 
+.spellbook .spellbook-maintenances__btn-group {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
 .spellbook .spellbook-maintenances__title {
   margin: 0;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: bold;
   color: var(--abf-primary);
 }

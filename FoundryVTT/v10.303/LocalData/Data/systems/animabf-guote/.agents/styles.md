@@ -58,12 +58,13 @@ Defined on `.actor-sheet-v2` (not `:root`) to avoid global leakage.
 
 ### Resource colors (labels and accents only)
 ```css
---abf-hp: #c62828
---abf-fatigue: #f57c00
---abf-zeon: #1565c0
---abf-ki: #2e7d32
---abf-psychic: #7b1fa2
---abf-destiny: #ffd700
+--abf-hp: #80FF00       /* bright green */
+--abf-fatigue: #d10000  /* red */
+--abf-zeon: #80B3FF     /* light blue */
+--abf-ki: #f5ed00       /* yellow */
+--abf-psychic: #FFFFFF  /* white */
+--abf-destiny: #a1923e  /* gold */
+--abf-shield: #d508d9   /* purple */
 ```
 
 ### Spacing scale
@@ -113,6 +114,35 @@ BEM-like: `.v2-[block]__[element]--[modifier]`
 .v2-hidden           /* display: none !important */
 .v2-mod--bonus / .v2-mod--positive    /* green */
 .v2-mod--malus / .v2-mod--negative   /* red */
+```
+
+---
+
+## Resource Text Glow Utilities
+
+Three utility classes per resource color for text/icon emphasis.
+All scoped to `.actor-sheet-v2`.
+
+| Variant | Class example | Effect | Best on |
+|---------|--------------|--------|---------|
+| Plain color | `v2-text--ki` | Resource-colored text, no shadow | Any bg |
+| Shadow | `v2-shadow--ki` | Dark (#111) text + resource-colored glow | Light bg |
+| Glow | `v2-glow--ki` | Resource-colored text + dark shadow | Dark bg |
+
+Available suffixes: `ki` · `zeon` · `psychic` · `hp`
+
+**Tip:** `v2-shadow--ki` on a **dark** background renders as a pure glow — the dark
+text becomes invisible, only the colored halo shows. This is intentional and useful for
+icons inside dark cells (e.g., `.ki-acc-row__cell` with the yin-yang icon).
+
+Equivalent in `guote-module.css` (global scope, no `.actor-sheet-v2` wrapper):
+`.gzr-icon--ki` = same visual as `v2-shadow--ki`.
+
+To add a new color variant, append three rules to `actor-sheet-v2.css`:
+```css
+.actor-sheet-v2 .v2-text--{res}   { color: var(--abf-{res}); }
+.actor-sheet-v2 .v2-shadow--{res} { color: #111; text-shadow: 0 0 5px var(--abf-{res}); }
+.actor-sheet-v2 .v2-glow--{res}   { color: var(--abf-{res}); text-shadow: 0 0 5px #111; }
 ```
 
 ---

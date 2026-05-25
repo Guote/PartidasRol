@@ -55,6 +55,8 @@ export class ZeonCalculatorDialog extends FormApplication {
     this.actor = actor;
     this.perks = perks;
     this._openDetailsIds = new Set();
+    this._lastActMain = 0;
+    this._lastActAlt = 0;
     this._initModalData();
     this._actorUpdateHandler = (updatedActor) => {
       if (updatedActor.id === this.actor.id) this.render(false);
@@ -96,9 +98,10 @@ export class ZeonCalculatorDialog extends FormApplication {
       },
       fatigueBonusPerPointDefault: savedBonus,
       actModifier: 0,
-      useAlternativeAct: false,
+      actChoice: 'main',
       accumulationType: 'pure',
-      castThisRound: false,
+      castThisRound: null,
+      holdThisRound: false,
       halfAct: false
     };
   }
@@ -110,7 +113,7 @@ export class ZeonCalculatorDialog extends FormApplication {
       grade: 'base',
       extraAccumulate: 0,
       extraReserve: 0,
-      comment: '',
+      castear: true,
       selectedPerkLevels: [],
       addToActiveSpells: false
     };
@@ -118,9 +121,14 @@ export class ZeonCalculatorDialog extends FormApplication {
 
   async getData() {
     const sys = this.actor.system;
-    const actMainValue = sys.mystic?.act?.main?.final?.value ?? 0;
-    const actAltValue = sys.mystic?.act?.alternative?.final?.value ?? 0;
-    const actBase = this.modalData.useAlternativeAct ? actAltValue : actMainValue;
+    const actMainRaw = sys.mystic?.act?.main?.final?.value ?? 0;
+    const actAltRaw = sys.mystic?.act?.alternative?.final?.value ?? 0;
+    if (actMainRaw > 0) this._lastActMain = actMainRaw;
+    if (actAltRaw > 0) this._lastActAlt = actAltRaw;
+    const actMainValue = actMainRaw > 0 ? actMainRaw : this._lastActMain;
+    const actAltValue = actAltRaw > 0 ? actAltRaw : this._lastActAlt;
+    const actChoice = this.modalData.actChoice ?? 'main';
+    const actBase = actChoice === 'none' ? 0 : (actChoice === 'alternative' ? actAltValue : actMainValue);
     const actModifier = this.modalData.actModifier || 0;
     const halfAct = this.modalData.halfAct;
     const actFinal = (halfAct ? Math.floor(actBase / 2) : actBase) + actModifier;
@@ -146,6 +154,7 @@ export class ZeonCalculatorDialog extends FormApplication {
 
       return {
         ...row,
+        castear: row.castear !== false,
         spellName: spell?.name ?? '',
         baseZeon,
         rowAccumulate: baseZeon + perkAccumulate + (row.extraAccumulate || 0),
@@ -155,8 +164,19 @@ export class ZeonCalculatorDialog extends FormApplication {
       };
     });
 
-    const totalToAccumulate = spells.reduce((s, r) => s + r.rowAccumulate, 0);
-    const totalFromReserve = spells.reduce((s, r) => s + r.rowReserve, 0);
+    const heldSpellMaints = (this.actor.system?.mystic?.spellMaintenances ?? [])
+      .filter(m => m.system?.active?.value !== false && m.name?.startsWith('Aguantando:'));
+    const heldSpellRows = heldSpellMaints.map(m => {
+      const spell = actorSpells.find(s => s.id === m.system?.spellId?.value);
+      const grade = m.system?.grade?.value ?? 'base';
+      const zeonCost = spell?.system?.grades?.[grade]?.zeon?.value ?? 0;
+      return { name: m.name.replace('Aguantando: ', ''), grade, zeonCost };
+    });
+    const heldZeonTotal = heldSpellRows.reduce((s, r) => s + r.zeonCost, 0);
+
+    const activeRows = spells.filter(r => r.castear);
+    const totalToAccumulate = activeRows.reduce((s, r) => s + r.rowAccumulate, 0) + heldZeonTotal;
+    const totalFromReserve = activeRows.reduce((s, r) => s + r.rowReserve, 0);
 
     const { pointsToUse, bonusPerPoint } = this.modalData.fatigue;
     const fatigueBonus = (pointsToUse || 0) * (bonusPerPoint || 15);
@@ -166,12 +186,10 @@ export class ZeonCalculatorDialog extends FormApplication {
     let turnsNeeded;
     if (actFinal === 0) {
       turnsNeeded = null;
-    } else if (remaining === 0) {
-      turnsNeeded = 0;
     } else if (remaining <= thisRound) {
-      turnsNeeded = 1;
+      turnsNeeded = 0;
     } else {
-      turnsNeeded = 1 + Math.ceil((remaining - thisRound) / actFinal);
+      turnsNeeded = Math.ceil((remaining - thisRound) / actFinal);
     }
 
     const isPure = this.modalData.accumulationType === 'pure';
@@ -179,18 +197,31 @@ export class ZeonCalculatorDialog extends FormApplication {
     // pure: accumulate full ACT (may overshoot — leftover subject to penalty on cast)
     // specific: cap at remaining so accumulated never exceeds target
     const accumulatedToAdd = actFinal > 0 ? (isPure ? thisRound : Math.min(thisRound, remaining)) : 0;
-    const castThisRound = this.modalData.castThisRound && (turnsNeeded !== null && turnsNeeded <= 1);
+    const castThisRoundReadonly = turnsNeeded !== 0;
+    const castThisRound = turnsNeeded === 0 && this.modalData.castThisRound !== false;
     const leftover = castThisRound
       ? Math.max(0, currentAccumulated + accumulatedToAdd - totalToAccumulate)
       : 0;
     const cleanupPenalty = isPure && leftover > 0 ? -10 : 0;
     const poderValue = sys.characteristics?.primaries?.power?.value ?? 0;
     const holdRounds = !isPure ? poderValue : null;
+    const canHold = !isPure && turnsNeeded === 0;
+    const holdThisRound = canHold && (this.modalData.holdThisRound ?? false);
 
     const finalAccumulated = castThisRound ? leftover : (currentAccumulated + accumulatedToAdd);
     const zeonDeductIfCasting = castThisRound ? (totalToAccumulate + totalFromReserve) : 0;
     const finalZeon = Math.max(0, currentZeon - zeonDeductIfCasting);
     const finalFatigue = Math.max(0, currentFatigue - (pointsToUse || 0));
+
+    const gradeLabels = {
+      base:         game.i18n.localize('anima.ui.mystic.spell.grade.base.title'),
+      intermediate: game.i18n.localize('anima.ui.mystic.spell.grade.intermediate.title'),
+      advanced:     game.i18n.localize('anima.ui.mystic.spell.grade.advanced.title'),
+      arcane:       game.i18n.localize('anima.ui.mystic.spell.grade.arcane.title'),
+    };
+    const activeSpellsToAdd = spells.filter(r =>
+      r.castear && r.addToActiveSpells && r.rowMaintenanceCost > 0 && r.spellId
+    ).map(r => ({ spellName: r.spellName, gradeLabel: gradeLabels[r.grade] ?? r.grade }));
 
     return {
       actor: this.actor,
@@ -205,7 +236,7 @@ export class ZeonCalculatorDialog extends FormApplication {
       actModifier,
       actFinal,
       halfAct,
-      useAlternativeAct: this.modalData.useAlternativeAct,
+      actChoice,
       accumulationType: this.modalData.accumulationType,
       currentAccumulated,
       currentZeon,
@@ -225,9 +256,16 @@ export class ZeonCalculatorDialog extends FormApplication {
       finalFatigue,
       isPure,
       castThisRound,
+      castThisRoundChecked: castThisRound,
+      castThisRoundReadonly,
       leftover,
       cleanupPenalty,
-      holdRounds
+      holdRounds,
+      heldSpellRows,
+      heldSpellMaints,
+      canHold,
+      holdThisRound,
+      activeSpellsToAdd
     };
   }
 
@@ -297,6 +335,7 @@ export class ZeonCalculatorDialog extends FormApplication {
     });
 
     html.find('[data-action="confirm"]').click(() => this._onConfirm(html));
+
   }
 
   _syncFromForm(html) {
@@ -306,14 +345,20 @@ export class ZeonCalculatorDialog extends FormApplication {
       Number(html.find('[name="fatigue.bonusPerPoint"]').val()) || 15;
     this.modalData.actModifier =
       Number(html.find('[name="actModifier"]').val()) || 0;
-    this.modalData.useAlternativeAct =
-      html.find('[name="useAlternativeAct"]:checked').val() === 'true';
+    this.modalData.actChoice =
+      html.find('[name="actChoice"]:checked').val() ?? 'main';
     this.modalData.accumulationType =
       html.find('[name="accumulationType"]:checked').val() ?? 'pure';
-    this.modalData.castThisRound =
-      html.find('[name="castThisRound"]').prop('checked') === true;
+    const castThisRoundEl = html.find('[name="castThisRound"]');
+    if (!castThisRoundEl.prop('disabled')) {
+      this.modalData.castThisRound = castThisRoundEl.prop('checked') === true;
+    }
     this.modalData.halfAct =
       html.find('[name="halfAct"]').prop('checked') === true;
+    const holdEl = html.find('[name="holdThisRound"]');
+    if (holdEl.length) {
+      this.modalData.holdThisRound = holdEl.prop('checked') === true;
+    }
 
     this.modalData.spells = this.modalData.spells.map(row => {
       const p = `spell.${row.id}`;
@@ -321,8 +366,8 @@ export class ZeonCalculatorDialog extends FormApplication {
       const grade   = html.find(`[name="${p}.grade"]`).val() ?? row.grade;
       const extraAccumulate = Number(html.find(`[name="${p}.extraAccumulate"]`).val()) || 0;
       const extraReserve    = Number(html.find(`[name="${p}.extraReserve"]`).val()) || 0;
-      const comment = html.find(`[name="${p}.comment"]`).val() ?? '';
-
+      const castearEl = html.find(`[name="${p}.castear"]`);
+      const castear = castearEl.length ? castearEl.prop('checked') : (row.castear ?? true);
       const selectedPerkLevels = [];
       html.find(`input[type="checkbox"][name^="${p}.perk."]`).each(function () {
         if (!this.checked) return;
@@ -334,7 +379,7 @@ export class ZeonCalculatorDialog extends FormApplication {
 
       const addToActiveSpells = html.find(`[name="${p}.addToActiveSpells"]`).prop('checked') === true;
 
-      return { ...row, spellId, grade, extraAccumulate, extraReserve, comment, selectedPerkLevels, addToActiveSpells };
+      return { ...row, spellId, grade, extraAccumulate, extraReserve, castear, selectedPerkLevels, addToActiveSpells };
     });
   }
 
@@ -354,7 +399,12 @@ export class ZeonCalculatorDialog extends FormApplication {
       updateData['system.characteristics.secondaries.fatigue.value'] = computed.finalFatigue;
     }
 
-    if (computed.castThisRound) {
+    if (computed.holdThisRound) {
+      // Hold: accumulate this round but do not cast; mark spells as held
+      if (computed.accumulatedToAdd > 0) {
+        updateData['system.mystic.zeonAccumulated.value'] = computed.finalAccumulated;
+      }
+    } else if (computed.castThisRound) {
       // Casting: deduct spell cost from reserve, set accumulated to leftover
       updateData['system.mystic.zeon.value'] = computed.finalZeon;
       updateData['system.mystic.zeonAccumulated.value'] = computed.leftover;
@@ -364,13 +414,46 @@ export class ZeonCalculatorDialog extends FormApplication {
 
     if (Object.keys(updateData).length > 0) await this.actor.update(updateData);
 
-    if (computed.castThisRound) {
+    if (computed.holdThisRound) {
+      // Create "Aguantando:" SPELL_MAINTENANCE items for each active spell row not already held
+      for (const row of computed.spells) {
+        if (!row.castear || !row.spellId) continue;
+        const alreadyHeld = computed.heldSpellMaints.some(
+          m => m.system?.spellId?.value === row.spellId && m.system?.grade?.value === row.grade
+        );
+        if (!alreadyHeld) {
+          await this.actor.createInnerItem({
+            type: ABFItems.SPELL_MAINTENANCE,
+            name: `Aguantando: ${row.spellName}`,
+            system: {
+              ...SPELL_MAINTENANCE_INITIAL_SYSTEM,
+              spellId:   { value: row.spellId },
+              grade:     { value: row.grade },
+              roundCost: { value: 1 },
+              active:    { value: true },
+            }
+          });
+        }
+      }
+    } else if (computed.castThisRound) {
       await this.actor.update({
         'system.macroCookies.pendingZeonCleanup': {
           isPure: computed.isPure,
           leftover: computed.leftover
         }
       });
+      // Deactivate "Aguantando:" maintenance items for spells that were just cast
+      for (const row of computed.spells) {
+        if (!row.castear || !row.spellId) continue;
+        const held = (this.actor.system?.mystic?.spellMaintenances ?? [])
+          .find(m => m.name?.startsWith('Aguantando:')
+                  && m.system?.spellId?.value === row.spellId
+                  && m.system?.grade?.value === row.grade);
+        if (held) {
+          const inst = this.actor.items.get(held._id);
+          if (inst) await inst.update({ 'system.active.value': false });
+        }
+      }
       if (!game.combat?.active) {
         const penalty = computed.cleanupPenalty;
         const cleanUpdate = { 'system.mystic.zeonAccumulated.value': 0 };
@@ -382,7 +465,7 @@ export class ZeonCalculatorDialog extends FormApplication {
     }
 
     for (const row of computed.spells) {
-      if (row.addToActiveSpells && row.rowMaintenanceCost > 0 && row.spellId) {
+      if (row.castear && row.addToActiveSpells && row.rowMaintenanceCost > 0 && row.spellId) {
         await upsertSpellMaintenance(this.actor, {
           spellId: row.spellId,
           spellName: row.spellName,

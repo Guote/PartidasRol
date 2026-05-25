@@ -17,7 +17,18 @@ export default class ABFSpellbook extends Application {
     super(options);
     this.actor = actor;
     this.expandedSpells = new Set();
+    this._linkedMaintenanceIds = new Set();
+    this._maintenanceSortAsc = false;
     this.activeVia = null; // Will be set to first available via, or 'overview'
+    this._actorUpdateHandler = updatedActor => {
+      if (updatedActor.id === this.actor.id) this.render(false);
+    };
+    Hooks.on('updateActor', this._actorUpdateHandler);
+  }
+
+  async close(...args) {
+    Hooks.off('updateActor', this._actorUpdateHandler);
+    return super.close(...args);
   }
 
   /**
@@ -195,8 +206,42 @@ export default class ABFSpellbook extends Application {
     // Get mystic system data for overview tab
     const mystic = this.actor.system.mystic || {};
 
-    // Get spell maintenances
-    const spellMaintenances = this.actor.system.mystic?.spellMaintenances || [];
+    // Get spell maintenances — enrich with linked-spell metadata for the UI
+    const actorSpells = this.actor.items
+      .filter(i => i.type === 'spell')
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    let spellMaintenances = (this.actor.system.mystic?.spellMaintenances || []).map(m => {
+      const spellIdValue = m.system?.spellId?.value ?? '';
+      const roundCostFinal = (Number(m.system?.roundCost?.value) || 0) + (Number(m.system?.roundCostMod?.value) || 0);
+      const dayCostFinal = (Number(m.system?.cost?.value) || 0) + (Number(m.system?.dayCostMod?.value) || 0);
+      return {
+        ...m,
+        isLinked: !!spellIdValue || this._linkedMaintenanceIds.has(m._id),
+        spellOptions: actorSpells.map(s => ({ id: s.id, name: s.name, selected: s.id === spellIdValue })),
+        roundCostFinal,
+        dayCostFinal
+      };
+    });
+
+    if (this._maintenanceSortAsc) {
+      spellMaintenances = [...spellMaintenances].sort((a, b) => {
+        const nameA = a.name?.trim() ?? '';
+        const nameB = b.name?.trim() ?? '';
+        if (!nameA && !nameB) return 0;
+        if (!nameA) return 1;
+        if (!nameB) return -1;
+        return nameA.localeCompare(nameB, 'es');
+      });
+    }
+
+    const activeMaintenances = spellMaintenances.filter(m => m.system?.active?.value);
+    const maintenanceTotalRound = activeMaintenances.reduce(
+      (s, m) => s + (Number(m.system?.roundCost?.value) || 0) + (Number(m.system?.roundCostMod?.value) || 0), 0
+    );
+    const maintenanceTotalDay = activeMaintenances.reduce(
+      (s, m) => s + (Number(m.system?.cost?.value) || 0) + (Number(m.system?.dayCostMod?.value) || 0), 0
+    );
 
     // Build subvia options for the sphere selectors
     const subviaOptions = [
@@ -223,6 +268,9 @@ export default class ABFSpellbook extends Application {
       mystic,
       spellsByVia: preparedSpells,
       spellMaintenances,
+      maintenanceSortAsc: this._maintenanceSortAsc,
+      maintenanceTotalRound,
+      maintenanceTotalDay,
       availableVias,
       activeVia: this.activeVia,
       isOverviewTab,
@@ -388,13 +436,61 @@ export default class ABFSpellbook extends Application {
       await this.actor.update({ [name]: value });
     });
 
-    // Add maintenance
+    // Add maintenance (blank free-text row)
     html.find('[data-action="add-maintenance"]').click(async () => {
       await this.actor.createInnerItem({
         type: ABFItems.SPELL_MAINTENANCE,
         name: '',
         system: SPELL_MAINTENANCE_INITIAL_SYSTEM
       });
+      this.render(false);
+    });
+
+    // Add maintenance linked to a known spell (shows spell dropdown instead of text input)
+    html.find('[data-action="add-maintenance-linked"]').click(async () => {
+      const before = new Set((this.actor.system?.mystic?.spellMaintenances ?? []).map(m => m._id));
+      await this.actor.createInnerItem({
+        type: ABFItems.SPELL_MAINTENANCE,
+        name: '',
+        system: SPELL_MAINTENANCE_INITIAL_SYSTEM
+      });
+      const after = this.actor.system?.mystic?.spellMaintenances ?? [];
+      const newItem = after.find(m => !before.has(m._id));
+      if (newItem) this._linkedMaintenanceIds.add(newItem._id);
+      this.render(false);
+    });
+
+    // Spell select in linked maintenance rows — update spellId, name, and auto-fill costs
+    html.on('change', 'select.sm-spell-select', async ev => {
+      ev.stopImmediatePropagation();
+      const itemId = ev.currentTarget.dataset.itemId;
+      const spellId = ev.currentTarget.value;
+      if (!itemId) return;
+      const current = this.actor.system?.mystic?.spellMaintenances?.find(m => m._id === itemId);
+      if (!current) return;
+      const spell = this.actor.items.get(spellId);
+      const grade = current.system?.grade?.value || 'base';
+      const maintenanceCost = spell?.system?.grades?.[grade]?.maintenanceCost?.value ?? 0;
+      const isDaily = spell?.system?.hasDailyMaintenance?.value ?? false;
+      this._linkedMaintenanceIds.delete(itemId);
+      await this.actor.updateInnerItem({
+        type: ABFItems.SPELL_MAINTENANCE,
+        id: itemId,
+        name: spell?.name ?? '',
+        system: {
+          ...current.system,
+          spellId:   { value: spellId },
+          grade:     { value: grade },
+          roundCost: { value: isDaily ? 0 : maintenanceCost },
+          cost:      { value: isDaily ? maintenanceCost : 0 },
+        }
+      });
+      this.render(false);
+    });
+
+    // Sort maintenances by name
+    html.find('[data-action="sort-maintenances-by-name"]').click(() => {
+      this._maintenanceSortAsc = !this._maintenanceSortAsc;
       this.render(false);
     });
 

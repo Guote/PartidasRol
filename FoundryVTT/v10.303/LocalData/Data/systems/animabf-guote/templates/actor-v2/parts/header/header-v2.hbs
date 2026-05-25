@@ -222,16 +222,6 @@
           </div>
         </div>
         {{/if}}
-        {{#if system.ui.resourceVisibility.kiStr.value}}
-        <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.strength.title'}}">
-          <span class="v2-res__label">FUE</span>
-          <div class="v2-res__values">
-            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
-              name="_header.system.domine.kiAccumulation.strength.accumulated.value"
-              value="{{system.domine.kiAccumulation.strength.accumulated.value}}">
-          </div>
-        </div>
-        {{/if}}
         {{#if system.ui.resourceVisibility.kiAgi.value}}
         <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.agility.title'}}">
           <span class="v2-res__label">AGI</span>
@@ -239,16 +229,6 @@
             <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.agility.accumulated.value"
               value="{{system.domine.kiAccumulation.agility.accumulated.value}}">
-          </div>
-        </div>
-        {{/if}}
-        {{#if system.ui.resourceVisibility.kiDex.value}}
-        <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.dexterity.title'}}">
-          <span class="v2-res__label">DES</span>
-          <div class="v2-res__values">
-            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
-              name="_header.system.domine.kiAccumulation.dexterity.accumulated.value"
-              value="{{system.domine.kiAccumulation.dexterity.accumulated.value}}">
           </div>
         </div>
         {{/if}}
@@ -262,13 +242,23 @@
           </div>
         </div>
         {{/if}}
-        {{#if system.ui.resourceVisibility.kiWp.value}}
-        <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.willPower.title'}}">
-          <span class="v2-res__label">VOL</span>
+        {{#if system.ui.resourceVisibility.kiDex.value}}
+        <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.dexterity.title'}}">
+          <span class="v2-res__label">DES</span>
           <div class="v2-res__values">
             <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
-              name="_header.system.domine.kiAccumulation.willPower.accumulated.value"
-              value="{{system.domine.kiAccumulation.willPower.accumulated.value}}">
+              name="_header.system.domine.kiAccumulation.dexterity.accumulated.value"
+              value="{{system.domine.kiAccumulation.dexterity.accumulated.value}}">
+          </div>
+        </div>
+        {{/if}}
+        {{#if system.ui.resourceVisibility.kiStr.value}}
+        <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.strength.title'}}">
+          <span class="v2-res__label">FUE</span>
+          <div class="v2-res__values">
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
+              name="_header.system.domine.kiAccumulation.strength.accumulated.value"
+              value="{{system.domine.kiAccumulation.strength.accumulated.value}}">
           </div>
         </div>
         {{/if}}
@@ -279,6 +269,16 @@
             <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
               name="_header.system.domine.kiAccumulation.power.accumulated.value"
               value="{{system.domine.kiAccumulation.power.accumulated.value}}">
+          </div>
+        </div>
+        {{/if}}
+        {{#if system.ui.resourceVisibility.kiWp.value}}
+        <div class="v2-res v2-res--ki v2-res--compact v2-res--single" title="{{localize 'anima.ui.domine.kiAccumulation.willPower.title'}}">
+          <span class="v2-res__label">VOL</span>
+          <div class="v2-res__values">
+            <input type="text" data-dtype="Number" class="v2-res__input v2-res__input--compact"
+              name="_header.system.domine.kiAccumulation.willPower.accumulated.value"
+              value="{{system.domine.kiAccumulation.willPower.accumulated.value}}">
           </div>
         </div>
         {{/if}}

@@ -58,16 +58,16 @@
           {{#if this.defenseSent}}disabled{{/if}}>
           <i class="fas fa-calculator"></i>
         </button>
+        {{#if this.defender.mystic.maintenanceCost}}
+        <label class="add-active-row" style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.8em;cursor:pointer;color:#1a5a3a;white-space:nowrap;">
+          <input type="checkbox" name="defender.mystic.addToActiveSpells"
+            {{#if this.defender.mystic.addToActiveSpells}}checked{{/if}}
+            {{#if this.defenseSent}}disabled{{/if}}>
+          <i class="fas fa-clock"></i> {{localize "anima.ui.combat.addToActiveSpells"}}
+          <span style="color:#777;">({{this.defender.mystic.maintenanceCost}}/{{#if this.defender.mystic.hasDailyMaintenance}}día{{else}}asalto{{/if}})</span>
+        </label>
+        {{/if}}
       </div>
-      {{#if this.defender.mystic.maintenanceCost}}
-      <label class="add-active-row" style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.8em;margin-top:0.25rem;cursor:pointer;color:#1a5a3a;">
-        <input type="checkbox" name="defender.mystic.addToActiveSpells"
-          {{#if this.defender.mystic.addToActiveSpells}}checked{{/if}}
-          {{#if this.defenseSent}}disabled{{/if}}>
-        <i class="fas fa-clock"></i> {{localize "anima.ui.combat.addToActiveSpells"}}
-        <span style="color:#777;">({{this.defender.mystic.maintenanceCost}}/{{#if this.defender.mystic.hasDailyMaintenance}}día{{else}}asalto{{/if}})</span>
-      </label>
-      {{/if}}
     </div>
 
   </div>

@@ -1,5 +1,4 @@
 import { ABFItems } from '../../items/ABFItems.js';
-import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
 /**
  * Initial data for a new technique. Used to infer the type of the data inside `technique.system`
@@ -8,6 +7,8 @@ import { ABFItemConfigFactory } from '../ABFItemConfig.js';
 export const INITIAL_TECHNIQUE_DATA = {
     description: { value: '' },
     level: { value: 0 },
+    roundCost: { value: 0 },
+    active: { value: false },
     strength: { value: 0 },
     agility: { value: 0 },
     dexterity: { value: 0 },
@@ -20,6 +21,7 @@ export const INITIAL_TECHNIQUE_DATA = {
 export const TechniqueItemConfig = ABFItemConfigFactory({
     type: ABFItems.TECHNIQUE,
     isInternal: false,
+    hasSheet: true,
     fieldPath: ['domine', 'techniques'],
     selectors: {
         addItemButtonSelector: 'add-technique',
@@ -27,15 +29,12 @@ export const TechniqueItemConfig = ABFItemConfigFactory({
         rowSelector: '.technique-row'
     },
     onCreate: async (actor) => {
-        const { i18n } = game;
-        const name = await openSimpleInputDialog({
-            content: i18n.localize('anima.dialogs.items.technique.content')
-        });
-        await actor.createItem({
-            name,
+        const created = await actor.createEmbeddedDocuments('Item', [{
+            name: 'Nueva Técnica',
             type: ABFItems.TECHNIQUE,
             system: INITIAL_TECHNIQUE_DATA
-        });
+        }]);
+        if (created[0]) created[0].sheet.render(true);
     },
     // TODO: This should go inside prepareItem, as in spellItemConfig. Same for other TextEditors
     // That it's called also when opening the standalone sheet.

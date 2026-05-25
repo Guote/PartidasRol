@@ -1,0 +1,289 @@
+/* ─── Override dfce-cm-bottom / whisper layout on messages containing our card ─ */
+.chat-message:has(.gzr-card) {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+.chat-message:has(.gzr-card) .message-content {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding-right: 0 !important;
+}
+.message-content {
+  padding-right: 0 !important;
+}
+
+/* ─── Round reminder: single card ───────────────────────────────────────────── */
+
+/* common-group provides: display: flex; flex-direction: column; width: 100% */
+.gzr-card {
+  width: 100% !important; /* JS also forces .message-content to display:block */
+  align-items: stretch; /* override common-group's flex-end */
+  border-radius: 6px; /* override common-group's 10px */
+  border: 1px solid rgba(110, 41, 23, 0.35);
+  overflow: hidden;
+  font-size: 1em;
+  line-height: 1.4;
+  background: #dcd7b7;
+}
+
+/* ─── Card title bar ────────────────────────────────────────────────────────── */
+.gzr-card-header {
+  padding: 5px 10px;
+  background: var(--color-underline-header);
+  color: var(--color-text-light-heading, #fff);
+  font-weight: 700;
+  font-size: 1.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── Per-actor section ─────────────────────────────────────────────────────── */
+.gzr-entry {
+  padding: 5px 8px 7px;
+  border-top: 1px solid rgba(110, 41, 23, 0.12);
+}
+.gzr-entry:first-of-type {
+  border-top: none;
+}
+
+/* ─── Actor identity row (clickable) ────────────────────────────────────────── */
+.gzr-actor-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  margin: 0 -8px 5px;
+  background: rgba(110, 41, 23, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.gzr-actor-row:hover {
+  background: rgba(110, 41, 23, 0.18);
+}
+
+.gzr-portrait {
+  width: 1.8em;
+  height: 1.8em;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(110, 41, 23, 0.3);
+  pointer-events: none;
+}
+
+.gzr-actor-name {
+  flex: 1;
+  font-weight: 600;
+  color: #3a1008;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Grimoire button (inside actor row, stops propagation in JS) ────────────── */
+.gzr-grimoire-btn {
+  background: rgba(110, 41, 23, 0.12) !important;
+  color: #3a1008 !important;
+  border: 1px solid rgba(110, 41, 23, 0.3) !important;
+  border-radius: 3px;
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  padding: 1px 6px;
+  font-size: 0.85em;
+  flex-shrink: 0;
+}
+.gzr-grimoire-btn:hover {
+  background: rgba(110, 41, 23, 0.25) !important;
+}
+
+/* ─── Info rows (penalty, held techs, held spells) ──────────────────────────── */
+.gzr-info-row {
+  font-size: 0.9em;
+  color: #444;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 6px;
+  margin-bottom: 3px;
+}
+.gzr-info-row--penalty {
+  color: #8b2000;
+  font-style: italic;
+}
+.gzr-info-row--acclost {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  color: #444;
+}
+.gzr-acclost-value {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.gzr-acclost-detail {
+  color: #666;
+  font-weight: normal;
+}
+.gzr-info-row--held {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+.gzr-held-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+}
+.gzr-held-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+.gzr-penalty-stat {
+  display: inline-block;
+  margin-right: 0.2em;
+}
+
+/* ─── Icon colors: black with colored glow shadow ───────────────────────────── */
+.gzr-icon--ki {
+  color: #222;
+  text-shadow: 0 0 5px var(--abf-ki, #f5ed00);
+}
+.gzr-icon--zeon {
+  color: #222;
+  text-shadow: 0 0 5px var(--abf-zeon, #80b3ff);
+}
+
+/* ─── Action buttons: table layout (row-first) ───────────────────────────────── */
+.gzr-actions-table {
+  margin-top: 6px;
+}
+
+/* Header row — single separator spans all columns */
+.gzr-tbl-header-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 4px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(110, 41, 23, 0.3);
+}
+
+.gzr-tbl-header {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.82em;
+  font-weight: 700;
+  color: #3a1008;
+  text-align: center;
+}
+
+/* Button row — flex-stretch equalises heights across columns */
+.gzr-tbl-row {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.gzr-tbl-cell {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Buttons fill their cell so they all reach the same height */
+.gzr-action-btn {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex: 1;
+  width: auto !important;
+  padding: 6px 10px;
+  font-size: 0.9em;
+  min-height: 34px;
+  color: #111 !important;
+  background: rgba(255, 255, 240, 0.8) !important;
+  border: 1px solid rgba(110, 41, 23, 0.3) !important;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+.gzr-action-btn:hover {
+  border-color: rgba(110, 41, 23, 0.65) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Stacked (multi-line) button: column layout, centered */
+.gzr-action-btn--stack {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  white-space: normal;
+  font-size: 0.85em; /* slightly smaller to fit 3-digit values */
+}
+
+.gzr-btn-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  line-height: 1;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ACUM label: bold text with the same colored glow as its sibling icon */
+.gzr-acum-label {
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Arrow: force vertical centering inside the flex line */
+.gzr-arrow {
+  font-size: 0.8em;
+  opacity: 0.6;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.gzr-penalty-badge {
+  color: #8b2000;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+/* Legacy flat layout kept for backward compat */
+.gzr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+  justify-content: center;
+}
+.gzr-actions--2 {
+  justify-content: space-between;
+}
+.gzr-actions--3,
+.gzr-actions--4 {
+  justify-content: flex-start;
+}

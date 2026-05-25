@@ -16,6 +16,7 @@ import { ChatCombatManager } from './module/combat/chat-combat/ChatCombatManager
 import { ABFMacros } from './module/macros/ABFMacros.js';
 import { registerMasaHooks } from './module/actor/hooks/registerMasaHooks.js';
 import { ZeonCalculatorDialog } from './module/dialogs/mystic/ZeonCalculatorDialog.js';
+import { KiCalculatorDialog } from './module/dialogs/domine/KiCalculatorDialog.js';
 import { createDesarmadoWeapon } from './module/actor/utils/createDesarmadoWeapon.js';
 /* ------------------------------------ */
 /* Initialize system */
@@ -69,6 +70,7 @@ Hooks.once('ready', async () => {
     // Expose macros globally for GM scripts
     window.ABFMacros = ABFMacros;
     window.ZeonCalculatorDialog = ZeonCalculatorDialog;
+    window.KiCalculatorDialog = KiCalculatorDialog;
 
     // Migrate existing summon items from flat schema to multi-power schema
     if (game.user.isGM) {
@@ -144,6 +146,28 @@ if (!selectedActor) {
         macro = await Macro.create({
             name, type: 'script', img, command,
             flags: { 'animabf-guote': { zeonCalculatorMacro: true } }
+        });
+    }
+    game.user.assignHotbarMacro(macro, slot);
+    return false;
+});
+
+// Handle custom drag-to-hotbar for KiCalculator button
+Hooks.on('hotbarDrop', async (bar, data, slot) => {
+    if (data.type !== 'KiCalculator') return true;
+    const name = data.name ?? 'Calculadora Ki';
+    const img  = data.img  ?? 'icons/skills/melee/unarmed-punch-fist.webp';
+    const command = `const selectedActor = canvas.tokens.controlled[0]?.actor ?? game.user.character;
+if (!selectedActor) {
+  ui.notifications.warn('Selecciona un token o establece un personaje por defecto.');
+} else {
+  KiCalculatorDialog.openForActor(selectedActor);
+}`;
+    let macro = game.macros.find(m => m.name === name && m.command === command);
+    if (!macro) {
+        macro = await Macro.create({
+            name, type: 'script', img, command,
+            flags: { 'animabf-guote': { kiCalculatorMacro: true } }
         });
     }
     game.user.assignHotbarMacro(macro, slot);
