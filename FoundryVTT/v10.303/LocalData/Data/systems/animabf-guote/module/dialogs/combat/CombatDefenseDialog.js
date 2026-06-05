@@ -7,6 +7,7 @@ import {
 import { ABFSettingsKeys } from "../../../utils/registerSettings.js";
 import { getFormula } from "../../rolls/utils/getFormula.js";
 import { getModifierTerms } from "../../rolls/utils/getModifierTerms.js";
+import { attachItemSheetHandler } from "./utils/attachItemSheetHandlers.js";
 const getInitialData = (attacker, defender) => {
   const showRollByDefault = !!game.settings.get(
     "animabf-guote",
@@ -128,11 +129,8 @@ export class CombatDefenseDialog extends FormApplication {
     super.activateListeners(html);
 
     // Open selected spell sheet
-    html.find(".open-spell-sheet").click(() => {
-      const spellId = html.find('[name="defender.mystic.spellUsed"]').val();
-      if (!spellId) return;
-      this.defenderActor.items.get(spellId)?.sheet?.render(true);
-    });
+    attachItemSheetHandler(html, ".open-spell-sheet", this.defenderActor,
+      () => html.find('[name="defender.mystic.spellUsed"]').val());
 
     html.find(".send-defense").click((e) => {
       const {
@@ -158,7 +156,6 @@ export class CombatDefenseDialog extends FormApplication {
         let isCountOne = game.cub.hasCondition(one, this.defenderActor);
         let isCountTwo = game.cub.hasCondition(two, this.defenderActor);
         let isCountThree = game.cub.hasCondition(three, this.defenderActor);
-        console.log(isCountOne, isCountTwo, isCountThree);
         if (isCountOne) {
           add(two);
           setTimeout(() => rem(one), 500);
@@ -367,32 +364,20 @@ export class CombatDefenseDialog extends FormApplication {
     this.modalData.defender.psychic.psychicPotential.final =
       this.modalData.defender.psychic.psychicPotential.special +
       this.defenderActor.system.psychic.psychicPotential.final.value;
+    const AT_BY_DAMAGE_TYPE = {
+      [WeaponCritic.CUT]:         "cut",
+      [WeaponCritic.IMPACT]:      "impact",
+      [WeaponCritic.THRUST]:      "thrust",
+      [WeaponCritic.HEAT]:        "heat",
+      [WeaponCritic.ELECTRICITY]: "electricity",
+      [WeaponCritic.COLD]:        "cold",
+      [WeaponCritic.ENERGY]:      "energy",
+    };
     let at;
     if (this.modalData.attacker.critic !== NoneWeaponCritic.NONE) {
-      switch (this.modalData.attacker.critic) {
-        case WeaponCritic.CUT:
-          at = this.defenderActor.system.combat.totalArmor.at.cut.value;
-          break;
-        case WeaponCritic.IMPACT:
-          at = this.defenderActor.system.combat.totalArmor.at.impact.value;
-          break;
-        case WeaponCritic.THRUST:
-          at = this.defenderActor.system.combat.totalArmor.at.thrust.value;
-          break;
-        case WeaponCritic.HEAT:
-          at = this.defenderActor.system.combat.totalArmor.at.heat.value;
-          break;
-        case WeaponCritic.ELECTRICITY:
-          at = this.defenderActor.system.combat.totalArmor.at.electricity.value;
-          break;
-        case WeaponCritic.COLD:
-          at = this.defenderActor.system.combat.totalArmor.at.cold.value;
-          break;
-        case WeaponCritic.ENERGY:
-          at = this.defenderActor.system.combat.totalArmor.at.energy.value;
-          break;
-        default:
-          at = undefined;
+      const atKey = AT_BY_DAMAGE_TYPE[this.modalData.attacker.critic];
+      if (atKey !== undefined) {
+        at = this.defenderActor.system.combat.totalArmor.at[atKey].value;
       }
     }
     if (at !== undefined) {

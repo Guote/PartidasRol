@@ -84,43 +84,7 @@ const reactions = {
   nothing: { name: "nothing", label: "No hacer nada" },
 };
 
-const styles = `
-<style>
-  .radio-toolbar-3 {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19);
-    width: 100%;
-    display: flex;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-
-  .radio-toolbar-3 label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0.3rem 0 0.3rem 0;
-    font-size: 1rem;
-    text-align: center;
-}
-
-  .radio-toolbar-3 label:hover {
-    background-color: #B4B4B4;
-    font-weigth: 1000;
-  }
-
-  .radio-toolbar-3 input[type="radio"]:checked+label {
-    background-color: #782e22;
-    color: white;
-  }
-
-  input[type="radio"] {
-    position: fixed;
-    opacity: 0;
-    pointer-events: none;
-  }
-</style>
-`;
+// Styles for .radio-toolbar-3 are defined in styles/guote-module.css (loaded globally by the module).
 const radioSection = `
 <div class="radio-toolbar-3">
 <input 
@@ -159,7 +123,6 @@ const radioSection = `
 <br> 
 `;
 const dialogContent = `
-${styles}
   <center><h3>En Llamas. Contador actual : ${
     macroCookies?.value ?? 0
   }</h3></center>

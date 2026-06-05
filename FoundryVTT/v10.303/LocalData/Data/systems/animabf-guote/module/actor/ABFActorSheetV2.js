@@ -12,98 +12,13 @@ import { ABFDialogs } from "../dialogs/ABFDialogs.js";
 import { ABFSystemName } from "../../animabf-guote.name.js";
 import { getFormula } from "../rolls/utils/getFormula.js";
 import { getModifierTerms } from "../rolls/utils/getModifierTerms.js";
+import { hasInhumanity, hasZen } from "./utils/humanidad.js";
 import ABFSpellbook from "./ABFSpellbook.js";
 import { KiCalculatorDialog, KI_STATS } from "../dialogs/domine/KiCalculatorDialog.js";
 import { KI_MAINTENANCE_INITIAL_SYSTEM } from "../types/domine/KiMaintenanceItemConfig.js";
 export default class ABFActorSheetV2 extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
-    this.buildCommonContextualMenu = (itemConfig, html) => {
-      const {
-        selectors: { containerSelector, rowSelector },
-        fieldPath,
-      } = itemConfig;
-      const deleteRowMessage =
-        itemConfig.contextMenuConfig?.customDeleteRowMessage ??
-        this.i18n.localize("anima.contextualMenu.common.options.delete");
-      const customCallbackFn = itemConfig.onDelete;
-      const otherItems =
-        itemConfig.contextMenuConfig?.buildExtraOptionsInContextMenu?.(
-          this.actor
-        ) ?? [];
-      if (!itemConfig.isInternal && itemConfig.hasSheet) {
-        otherItems.push({
-          name: this.i18n.localize("anima.contextualMenu.common.options.edit"),
-          icon: '<i class="fas fa-edit fa-fw"></i>',
-          callback: (target) => {
-            const { itemId } = target[0].dataset;
-            if (itemId) {
-              const item = this.actor.items.get(itemId);
-              if (item?.sheet) {
-                item.sheet.render(true);
-              } else {
-                console.warn("Item sheet was not found for item:", item);
-              }
-            } else {
-              console.warn("Item ID was not found for target:", target);
-            }
-          },
-        });
-      }
-      return new ContextMenu(html ? html.find(containerSelector) : $(containerSelector), rowSelector, [
-        ...otherItems,
-        {
-          name: deleteRowMessage,
-          icon: '<i class="fas fa-trash fa-fw"></i>',
-          condition: (target) => {
-            const id = target[0]?.dataset?.itemId;
-            if (!id) return true;
-            const item = this.actor.items.get(id);
-            return !item?.system?.isDefault?.value;
-          },
-          callback: (target) => {
-            if (!customCallbackFn && !fieldPath) {
-              console.warn(
-                `buildCommonContextualMenu: no custom callback and configuration set, could not delete the item: ${itemConfig.type}`
-              );
-            }
-            if (customCallbackFn) {
-              customCallbackFn(this.actor, target);
-            } else {
-              const id = target[0].dataset.itemId;
-              if (!id) {
-                throw new Error(
-                  "Data id missing. Are you sure to set data-item-id to rows?"
-                );
-              }
-              ABFDialogs.confirm(
-                this.i18n.localize("anima.dialogs.items.delete.title"),
-                this.i18n.localize("anima.dialogs.items.delete.body"),
-                {
-                  onConfirm: () => {
-                    if (fieldPath) {
-                      if (this.actor.getEmbeddedDocument("Item", id)) {
-                        this.actor.deleteEmbeddedDocuments("Item", [id]);
-                      } else {
-                        let items = getFieldValueFromPath(
-                          this.actor.system,
-                          fieldPath
-                        );
-                        items = items.filter((item) => item._id !== id);
-                        const dataToUpdate = {
-                          system: getUpdateObjectFromPath(items, fieldPath),
-                        };
-                        this.actor.update(dataToUpdate);
-                      }
-                    }
-                  },
-                }
-              );
-            }
-          },
-        },
-      ]);
-    };
     this.i18n = game.i18n;
     this._inventorySort = {
       weapons:      { field: null, dir: 'asc' },
@@ -417,8 +332,107 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
     return sheet;
   }
+  _buildCommonContextualMenu(itemConfig, html) {
+    const {
+      selectors: { containerSelector, rowSelector },
+      fieldPath,
+    } = itemConfig;
+    const deleteRowMessage =
+      itemConfig.contextMenuConfig?.customDeleteRowMessage ??
+      this.i18n.localize("anima.contextualMenu.common.options.delete");
+    const customCallbackFn = itemConfig.onDelete;
+    const otherItems =
+      itemConfig.contextMenuConfig?.buildExtraOptionsInContextMenu?.(
+        this.actor
+      ) ?? [];
+    if (!itemConfig.isInternal && itemConfig.hasSheet) {
+      otherItems.push({
+        name: this.i18n.localize("anima.contextualMenu.common.options.edit"),
+        icon: '<i class="fas fa-edit fa-fw"></i>',
+        callback: (target) => {
+          const { itemId } = target[0].dataset;
+          if (itemId) {
+            const item = this.actor.items.get(itemId);
+            if (item?.sheet) {
+              item.sheet.render(true);
+            } else {
+              console.warn("Item sheet was not found for item:", item);
+            }
+          } else {
+            console.warn("Item ID was not found for target:", target);
+          }
+        },
+      });
+    }
+    return new ContextMenu(html ? html.find(containerSelector) : $(containerSelector), rowSelector, [
+      ...otherItems,
+      {
+        name: deleteRowMessage,
+        icon: '<i class="fas fa-trash fa-fw"></i>',
+        condition: (target) => {
+          const id = target[0]?.dataset?.itemId;
+          if (!id) return true;
+          const item = this.actor.items.get(id);
+          return !item?.system?.isDefault?.value;
+        },
+        callback: (target) => {
+          if (!customCallbackFn && !fieldPath) {
+            console.warn(
+              `buildCommonContextualMenu: no custom callback and configuration set, could not delete the item: ${itemConfig.type}`
+            );
+          }
+          if (customCallbackFn) {
+            customCallbackFn(this.actor, target);
+          } else {
+            const id = target[0].dataset.itemId;
+            if (!id) {
+              throw new Error(
+                "Data id missing. Are you sure to set data-item-id to rows?"
+              );
+            }
+            ABFDialogs.confirm(
+              this.i18n.localize("anima.dialogs.items.delete.title"),
+              this.i18n.localize("anima.dialogs.items.delete.body"),
+              {
+                onConfirm: () => {
+                  if (fieldPath) {
+                    if (this.actor.getEmbeddedDocument("Item", id)) {
+                      this.actor.deleteEmbeddedDocuments("Item", [id]);
+                    } else {
+                      let items = getFieldValueFromPath(
+                        this.actor.system,
+                        fieldPath
+                      );
+                      items = items.filter((item) => item._id !== id);
+                      const dataToUpdate = {
+                        system: getUpdateObjectFromPath(items, fieldPath),
+                      };
+                      this.actor.update(dataToUpdate);
+                    }
+                  }
+                },
+              }
+            );
+          }
+        },
+      },
+    ]);
+  }
   activateListeners(html) {
     super.activateListeners(html);
+
+    // Inline-style the active humanidad toggle pill so it wins over Foundry's global label resets.
+    html.find('.v2-humanidad-toggle__opt').each((_, el) => {
+      if (el.classList.contains('active')) {
+        el.style.setProperty('background', 'rgba(255, 255, 255, 0.4)', 'important');
+        el.style.setProperty('color', '#fff', 'important');
+        el.style.setProperty('border-color', 'rgba(255, 255, 255, 0.8)', 'important');
+        el.style.setProperty('font-weight', 'bold', 'important');
+        el.style.setProperty('opacity', '1', 'important');
+        el.style.setProperty('box-shadow', '0 0 0 1px rgba(255, 255, 255, 0.25)', 'important');
+      }
+    });
+
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
@@ -451,7 +465,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       }
     });
     for (const item of Object.values(ALL_ITEM_CONFIGURATIONS)) {
-      this.buildCommonContextualMenu(item, html);
+      this._buildCommonContextualMenu(item, html);
       // Ensure item rows have draggable attribute (dragDrop config handles the event binding)
       html.find(item.selectors.rowSelector).each((_, row) => {
         row.setAttribute("draggable", "true");
@@ -601,30 +615,14 @@ export default class ABFActorSheetV2 extends ActorSheet {
     html.find('.creature-summon-link').click(async (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const uuid = e.currentTarget.dataset.uuid;
-      if (uuid) {
-        const actor = await fromUuid(uuid);
-        if (actor?.sheet) {
-          actor.sheet.render(true);
-        } else {
-          ui.notifications.warn(game.i18n.localize('anima.ui.mystic.creatureSummon.notFound'));
-        }
-      }
+      await this._openLinkedActorSheet(e.currentTarget.dataset.uuid, 'anima.ui.mystic.creatureSummon.notFound');
     });
 
     // Click on ki creature link to open linked actor sheet (domine tab)
     html.find('.ki-creature-link').click(async (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const uuid = e.currentTarget.dataset.uuid;
-      if (uuid) {
-        const actor = await fromUuid(uuid);
-        if (actor?.sheet) {
-          actor.sheet.render(true);
-        } else {
-          ui.notifications.warn(game.i18n.localize('anima.ui.domine.kiCreatures.notFound'));
-        }
-      }
+      await this._openLinkedActorSheet(e.currentTarget.dataset.uuid, 'anima.ui.domine.kiCreatures.notFound');
     });
 
     // Open Ki Accumulation Calculator from the domine tab
@@ -1010,6 +1008,39 @@ export default class ABFActorSheetV2 extends ActorSheet {
       e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(dragData));
     });
 
+    // Capacidades físicas: TM modes
+    html.find('[data-on-click="add-tm-mode"]').on('click', async () => {
+      const modes = [...(this.actor.system.flags.tmModes ?? [])];
+      modes.push({ _id: foundry.utils.randomID(), label: 'Nuevo modo', mod: 0 });
+      await this.actor.update({ 'system.flags.tmModes': modes });
+    });
+
+    html.find('.tm-mode-label-input').on('change', async (e) => {
+      const modeId = e.currentTarget.closest('[data-mode-id]')?.dataset.modeId;
+      if (!modeId) return;
+      const modes = (this.actor.system.flags.tmModes ?? []).map(m =>
+        m._id === modeId ? { ...m, label: e.currentTarget.value } : m
+      );
+      await this.actor.update({ 'system.flags.tmModes': modes });
+    });
+
+    html.find('.tm-mode-mod-input').on('change', async (e) => {
+      const modeId = e.currentTarget.closest('[data-mode-id]')?.dataset.modeId;
+      if (!modeId) return;
+      const modes = (this.actor.system.flags.tmModes ?? []).map(m =>
+        m._id === modeId ? { ...m, mod: Number(e.currentTarget.value) || 0 } : m
+      );
+      await this.actor.update({ 'system.flags.tmModes': modes });
+    });
+
+    html.find('.delete-tm-mode').on('click', async (e) => {
+      e.stopPropagation();
+      const modeId = e.currentTarget.dataset.modeId;
+      if (!modeId) return;
+      const modes = (this.actor.system.flags.tmModes ?? []).filter(m => m._id !== modeId);
+      await this.actor.update({ 'system.flags.tmModes': modes });
+    });
+
     // Grade selector in spell-maintenances table: auto-fill base costs from the linked spell
     html.on('change', 'select.sm-grade-select[data-spell-id]', async ev => {
       const spellId = ev.currentTarget.dataset.spellId;
@@ -1360,7 +1391,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const fatigueUsed = combat.fatigueUsed?.value || 0;
       const modifier = combat.modifier?.value || 0;
       const damageBonus = combat.damageBonus?.value || 0;
-      const ignoredTA = combat.ignoredTA?.value || 0;
+      const enemyTAModifier = combat.enemyTAModifier?.value || 0;
       const criticSelected = combat.criticSelected?.value || (weapon?.system.critic.primary.value) || "impact";
 
       const baseDamage = unarmed
@@ -1407,7 +1438,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
         values: {
           unarmed,
           damage: finalDamage,
-          ignoredTA,
+          enemyTAModifier,
           attack,
           weaponUsed: weaponId,
           critic: criticSelected,
@@ -1443,7 +1474,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const modifier = mystic.modifier?.value || 0;
       const critic = mystic.critic?.value || "-";
       const damage = mystic.damage?.value || 0;
-      const ignoredTA = mystic.ignoredTA?.value || 0;
+      const enemyTAModifier = mystic.enemyTAModifier?.value || 0;
 
       const { values: modTermValues, labels: modTermLabels } = getModifierTerms(actorSystem, "general-negative");
       let rollModifiers = [magicProjection, getMassAttackBonus(accumulationCount), ...modTermValues, modifier];
@@ -1484,7 +1515,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
           magicProjection,
           critic,
           damage,
-          ignoredTA,
+          enemyTAModifier,
           roll: rolled,
           total: roll.total,
           fumble: roll.fumbled,
@@ -1510,7 +1541,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const psychicPotentialBase = actorSystem.psychic.psychicPotential.final.value;
       const critic = psychic.critic?.value || "-";
       const damage = psychic.damage?.value || 0;
-      const ignoredTA = psychic.ignoredTA?.value || 0;
+      const enemyTAModifier = psychic.enemyTAModifier?.value || 0;
 
       const { values: modTermValues, labels: modTermLabels } = getModifierTerms(actorSystem, "general-negative");
       let rollModifiers = [psychicProjection, ...modTermValues, modifier];
@@ -1562,7 +1593,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
           psychicProjection,
           critic,
           damage,
-          ignoredTA,
+          enemyTAModifier,
           roll: rolled,
           total: projectionRoll.total,
           fumble: projectionRoll.fumbled,
@@ -1798,13 +1829,35 @@ export default class ABFActorSheetV2 extends ActorSheet {
         labels: [initiativeRollLabel, ...modLabels, ...weaponInitLabels, "Mod"],
       });
       if (formula.includes("10TO100")) {
-        let totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);
-        console.log("entramos", {totalLevel})
+        const totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);
+        const humanidad = this.actor.system.flags?.humanidad ?? 'human';
+        const statRaw = parseInt(dataset.rollvalue);
+        const statVal = statRaw / 10;
+
+        let effectiveStatBonus;
+        if (hasZen(humanidad)) {
+          effectiveStatBonus = statRaw;
+        } else if (hasInhumanity(humanidad)) {
+          effectiveStatBonus = Math.min(statVal, 13) * 10;
+        } else {
+          effectiveStatBonus = Math.min(statVal, 10) * 10;
+        }
+
+        const extraValues = [];
+        const extraLabels = [];
+        if (statVal > 13 && hasZen(humanidad)) {
+          extraValues.push(80);
+          extraLabels.push('Zen');
+        } else if (statVal > 10 && hasInhumanity(humanidad)) {
+          extraValues.push(40);
+          extraLabels.push('Inhumanidad');
+        }
+
         formula = getFormula({
           dice: dataset.roll,
-          values: [dataset.rollvalue, totalLevel*10, ...modValues, mod],
-          labels: [`${dataset.label}`, "Nivel", ...modLabels, "Mod"],
-        }).replace("10TO100","");
+          values: [effectiveStatBonus, totalLevel * 10, ...extraValues, ...modValues, mod],
+          labels: [dataset.label, "Nivel", ...extraLabels, ...modLabels, "Mod"],
+        }).replace("10TO100", "");
       }
       if (parseInt(dataset.extra) >= 200)
         formula = formula.replace("xa", "xamastery");
@@ -1836,6 +1889,13 @@ export default class ABFActorSheetV2 extends ActorSheet {
       flavor: `${game.i18n.localize("anima.ui.skills.combine")}: ${label} (${combinedValue})`,
     });
   }
+  async _openLinkedActorSheet(uuid, errorLocKey) {
+    if (!uuid) return;
+    const actor = await fromUuid(uuid);
+    if (actor?.sheet) actor.sheet.render(true);
+    else ui.notifications.warn(game.i18n.localize(errorLocKey));
+  }
+
   async _updateObject(event, formData) {
     // Handle header resource inputs (prefixed with _header.)
     // Header inputs use _header.system.X.Y to avoid duplicate names with tab inputs

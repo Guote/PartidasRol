@@ -44,7 +44,9 @@
         "fatigueNone": 0,
         "intensity": {
           "dolor": 0
-        }
+        },
+        "humanidad": "human",
+        "tmModes": []
       },
       "masa": {
         "isMasa": false,
@@ -168,6 +170,13 @@
           },
           "movementType": { "mod": { "value": 0 }, "final": { "value": 0 } },
           "movement": { "maximum": { "value": 0 }, "running": { "value": 0 } },
+          "weightIndex": {
+            "mod": { "value": 0 },
+            "final": { "value": 0 }
+          },
+          "weightLoad": {
+            "max": { "value": 0 }
+          },
           "resistances": {
             "physical": { "base": { "value": 0 }, "final": { "value": 0 } },
             "disease": { "base": { "value": 0 }, "final": { "value": 0 } },
@@ -489,7 +498,7 @@
         "weaponUsed": { "value": "" },
         "criticSelected": { "value": "-" },
         "damageBonus": { "value": 0 },
-        "ignoredTA": { "value": 0 }
+        "enemyTAModifier": { "value": 0 }
       },
       "mystic": {
         "modifier": { "value": 0 },
@@ -498,7 +507,7 @@
         "spellGrade": { "value": "base" },
         "critic": { "value": "-" },
         "damage": { "value": 0 },
-        "ignoredTA": { "value": 0 }
+        "enemyTAModifier": { "value": 0 }
       },
       "psychic": {
         "modifier": { "value": 0 },
@@ -506,7 +515,7 @@
         "powerUsed": { "value": "" },
         "critic": { "value": "-" },
         "damage": { "value": 0 },
-        "ignoredTA": { "value": 0 }
+        "enemyTAModifier": { "value": 0 }
       }
     },
     "defensePreset": {

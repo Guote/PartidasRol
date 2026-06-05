@@ -122,8 +122,8 @@
         "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
         title="Mod TA enemigo"
         disabled=this.attackSent
-        inputName=this.ui.activeAttackModifiers.ignoredTAInputName
-        inputValue=this.ui.activeAttackModifiers.ignoredTAValue
+        inputName=this.ui.activeAttackModifiers.enemyTAModifierInputName
+        inputValue=this.ui.activeAttackModifiers.enemyTAModifierValue
         }}
       </div>
     </div>
@@ -143,7 +143,7 @@
     </span>
     <span class="summary-item">
       <span class="summary-label">Mod TA enemigo</span>
-      <span class="summary-value">{{this.ui.activeSummary.ignoredTA}}</span>
+      <span class="summary-value">{{this.ui.activeSummary.enemyTAModifier}}</span>
     </span>
     {{#if this.ui.activeSummary.criticSelected}}
     <span class="summary-item">

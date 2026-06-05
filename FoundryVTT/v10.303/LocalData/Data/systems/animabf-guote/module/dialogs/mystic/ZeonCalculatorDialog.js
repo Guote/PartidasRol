@@ -115,7 +115,8 @@ export class ZeonCalculatorDialog extends FormApplication {
       extraReserve: 0,
       castear: true,
       selectedPerkLevels: [],
-      addToActiveSpells: false
+      addToActiveSpells: false,
+      quantity: 1
     };
   }
 
@@ -136,6 +137,7 @@ export class ZeonCalculatorDialog extends FormApplication {
     const currentZeon = sys.mystic?.zeon?.value ?? 0;
     const zeonMax = sys.mystic?.zeon?.max ?? 0;
     const currentFatigue = sys.characteristics?.secondaries?.fatigue?.value ?? 0;
+    const maxFatigue = sys.characteristics?.secondaries?.fatigue?.max ?? 0;
     const actorSpells = this.actor.items.filter(i => i.type === 'spell');
 
     const spells = this.modalData.spells.map(row => {
@@ -160,7 +162,9 @@ export class ZeonCalculatorDialog extends FormApplication {
         rowAccumulate: baseZeon + perkAccumulate + (row.extraAccumulate || 0),
         rowReserve: perkReserve + (row.extraReserve || 0),
         rowMaintenanceCost,
-        rowHasDailyMaintenance
+        rowHasDailyMaintenance,
+        rowIsUpkeepable: rowMaintenanceCost > 0 || rowHasDailyMaintenance,
+        quantity: row.quantity ?? 1
       };
     });
 
@@ -175,8 +179,8 @@ export class ZeonCalculatorDialog extends FormApplication {
     const heldZeonTotal = heldSpellRows.reduce((s, r) => s + r.zeonCost, 0);
 
     const activeRows = spells.filter(r => r.castear);
-    const totalToAccumulate = activeRows.reduce((s, r) => s + r.rowAccumulate, 0) + heldZeonTotal;
-    const totalFromReserve = activeRows.reduce((s, r) => s + r.rowReserve, 0);
+    const totalToAccumulate = activeRows.reduce((s, r) => s + r.rowAccumulate * (r.quantity ?? 1), 0) + heldZeonTotal;
+    const totalFromReserve = activeRows.reduce((s, r) => s + r.rowReserve * (r.quantity ?? 1), 0);
 
     const { pointsToUse, bonusPerPoint } = this.modalData.fatigue;
     const fatigueBonus = (pointsToUse || 0) * (bonusPerPoint || 15);
@@ -265,7 +269,8 @@ export class ZeonCalculatorDialog extends FormApplication {
       heldSpellMaints,
       canHold,
       holdThisRound,
-      activeSpellsToAdd
+      activeSpellsToAdd,
+      maxFatigue
     };
   }
 
@@ -315,7 +320,8 @@ export class ZeonCalculatorDialog extends FormApplication {
       this.modalData.spells.push({
         ...foundry.utils.deepClone(last),
         id: foundry.utils.randomID(),
-        comment: ''
+        comment: '',
+        quantity: 1
       });
       this.render(false);
     });
@@ -378,8 +384,9 @@ export class ZeonCalculatorDialog extends FormApplication {
       });
 
       const addToActiveSpells = html.find(`[name="${p}.addToActiveSpells"]`).prop('checked') === true;
+      const quantity = Math.max(1, Number(html.find(`[name="${p}.quantity"]`).val()) || 1);
 
-      return { ...row, spellId, grade, extraAccumulate, extraReserve, castear, selectedPerkLevels, addToActiveSpells };
+      return { ...row, spellId, grade, extraAccumulate, extraReserve, castear, selectedPerkLevels, addToActiveSpells, quantity };
     });
   }
 
@@ -476,6 +483,89 @@ export class ZeonCalculatorDialog extends FormApplication {
       }
     }
 
+    this._sendGMWhisper(computed);
     this.close();
+  }
+
+  _sendGMWhisper(computed) {
+    const tokenName = this.actor.getActiveTokens()[0]?.name ?? this.actor.name;
+
+    // black bold + colored shadow — works in Foundry chat (color:#000 is static, shadow uses CSS var)
+    const sv = (content, cssVar) =>
+      `<b style="color:#000;text-shadow:0 0 6px ${cssVar}">${content}</b>`;
+
+    // --- Group spells once (reused for action line and details) ---
+    const activeRows = computed.spells.filter(r => r.castear && r.spellId);
+    const groupMap = new Map();
+    for (const row of activeRows) {
+      const sortedPerks = [...(row.selectedPerkLevels ?? [])].sort(
+        (a, b) => a.perkIndex !== b.perkIndex ? a.perkIndex - b.perkIndex : a.levelIndex - b.levelIndex
+      );
+      const key = JSON.stringify([row.spellId, row.grade, sortedPerks, row.extraAccumulate ?? 0, row.extraReserve ?? 0]);
+      const existing = groupMap.get(key);
+      if (existing) existing.quantity += row.quantity ?? 1;
+      else groupMap.set(key, { ...row, quantity: row.quantity ?? 1 });
+    }
+    const grouped = [...groupMap.values()];
+
+    // --- Line 1: deltas + resource indicators (colored glow) ---
+    const summaryParts = [];
+    const accSign = computed.accumulatedToAdd >= 0 ? '+' : '';
+    summaryParts.push(
+      `<b>${accSign}${computed.accumulatedToAdd}</b> ${sv('<i class="fas fa-hat-wizard"></i>ACUM', 'var(--abf-zeon)')}`
+    );
+    if (computed.castThisRound) {
+      const reserveDelta = computed.finalZeon - computed.currentZeon;
+      const resSign = reserveDelta >= 0 ? '+' : '';
+      summaryParts.push(
+        `<b>${resSign}${reserveDelta}</b> ${sv('<i class="fas fa-hat-wizard"></i>', 'var(--abf-zeon)')}`
+      );
+    }
+    if (computed.fatigue.pointsToUse > 0) {
+      summaryParts.push(
+        `<b>-${computed.fatigue.pointsToUse}</b> ${sv('<i class="fas fa-bolt"></i>', 'var(--abf-fatigue)')}`
+      );
+    }
+    const headerLine = `${tokenName} acumula: ${summaryParts.join(' | ')}`;
+
+    // --- Line 2: action (Lanza / Aguanta) ---
+    let actionLine = '';
+    if (grouped.length > 0 && (computed.castThisRound || computed.holdThisRound)) {
+      const verb = computed.holdThisRound ? 'Aguanta' : 'Lanza';
+      const spellParts = grouped.map(r => {
+        const perkNames = (r.selectedPerkLevels ?? []).map(sel => this.perks[sel.perkIndex]?.name ?? '').filter(Boolean);
+        return `<b>${r.quantity}x</b> <b>${r.spellName}</b> (${[r.grade, ...perkNames].join(', ')})`;
+      });
+      actionLine = `${verb}: ${spellParts.join(', ')}`;
+    }
+
+    // --- Details accordion (closed by default) ---
+    const detailLines = [];
+    const currentValParts = [
+      sv(`${computed.finalAccumulated} <i class="fas fa-hat-wizard"></i>ACUM`, 'var(--abf-zeon)')
+    ];
+    if (computed.castThisRound) {
+      currentValParts.push(sv(`${computed.finalZeon}/${computed.zeonMax} <i class="fas fa-hat-wizard"></i>`, 'var(--abf-zeon)'));
+    }
+    if (computed.fatigue.pointsToUse > 0) {
+      currentValParts.push(sv(`${computed.finalFatigue}/${computed.maxFatigue} <i class="fas fa-bolt"></i>`, 'var(--abf-fatigue)'));
+    }
+    detailLines.push(currentValParts.join(' | '));
+
+    for (const r of grouped) {
+      const perkNames = (r.selectedPerkLevels ?? []).map(sel => this.perks[sel.perkIndex]?.name ?? '').filter(Boolean);
+      const label = [r.grade, ...perkNames].join(', ');
+      const cost = r.rowAccumulate * r.quantity;
+      const prefix = r.quantity > 1 ? `${r.quantity}× ` : '';
+      detailLines.push(`- ${prefix}${r.spellName} (${label}) — ${cost}`);
+    }
+
+    const detailsHtml = `<details><summary>Detalles</summary><small>${detailLines.join('<br>')}</small></details>`;
+    const content = [headerLine, actionLine].filter(Boolean).join('<br>') + '<br>' + detailsHtml;
+    ChatMessage.create({
+      content,
+      whisper: ChatMessage.getWhisperRecipients('GM').map(u => u.id),
+      speaker: ChatMessage.getSpeaker({ actor: this.actor })
+    });
   }
 }

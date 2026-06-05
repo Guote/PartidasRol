@@ -7,6 +7,18 @@
 /* --------------------------------
    CSS Variables
    -------------------------------- */
+
+/* Resource colors at :root so they resolve everywhere (e.g. chat message inline styles) */
+:root {
+  --abf-hp:      #80FF00;
+  --abf-fatigue: #d10000;
+  --abf-zeon:    #80B3FF;
+  --abf-ki:      #f5ed00;
+  --abf-psychic: #FFFFFF;
+  --abf-destiny: #a1923e;
+  --abf-shield:  #d508d9;
+}
+
 .actor-sheet-v2 {
   --abf-primary: #6e2917;
   --abf-primary-light: #8b3a24;
@@ -297,11 +309,6 @@
 }
 .actor-sheet-v2 .v2-res--ki-acc .v2-res__label {
   color: var(--abf-ki);
-}
-.actor-sheet-v2 .v2-res--ki-acum-total .v2-res__readonly {
-  color: #111;
-  text-shadow: 0 0 6px #f5ed00;
-  font-weight: bold;
 }
 
 /* Ki accumulated table row */
@@ -1593,68 +1600,6 @@
   background: var(--abf-primary-light);
 }
 
-/* ================================
-   Grimoire Tab Styles
-   ================================ */
-
-/* Grimoire Summary/Launcher */
-.actor-sheet-v2 .v2-grimoire-summary {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.actor-sheet-v2 .v2-grimoire-quick-stats {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3);
-  width: 100%;
-}
-
-.actor-sheet-v2 .v2-grimoire-quick-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--space-2) var(--space-3);
-  background: var(--abf-secondary-light);
-  border: 1px solid var(--abf-border-light);
-  border-radius: var(--radius-sm);
-  min-width: 80px;
-}
-
-.actor-sheet-v2 .v2-grimoire-quick-stat__label {
-  font-size: var(--font-size-2xs);
-  color: var(--abf-text-muted);
-  text-transform: uppercase;
-}
-
-.actor-sheet-v2 .v2-grimoire-quick-stat__value {
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  color: var(--abf-primary);
-}
-
-.actor-sheet-v2 .v2-grimoire-spell-count {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-5);
-  background: var(--abf-secondary);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  color: var(--abf-text);
-}
-
-.actor-sheet-v2 .v2-grimoire-spell-count i {
-  color: var(--abf-primary);
-}
-
-.actor-sheet-v2 .v2-grimoire-open-btn {
-  padding: var(--space-3) var(--space-6);
-  font-size: var(--font-size-sm);
-}
 
 /* Buttons */
 .actor-sheet-v2 .v2-btn {
@@ -2291,4 +2236,290 @@
 .actor-sheet-v2 .v2-notes-editor .editor .tox-tinymce,
 .actor-sheet-v2 .v2-notes-editor .editor .editor-content {
   flex: 1;
+}
+
+/* ================================
+   Capacidades Físicas
+   ================================ */
+
+/* Humanidad toggle — pill/segmented control in card header */
+.actor-sheet-v2 .v2-humanidad-toggle {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.actor-sheet-v2 .v2-humanidad-toggle__opt {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-2xs);
+  font-weight: normal;
+  color: rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
+  user-select: none;
+  opacity: 0.5;
+}
+
+.actor-sheet-v2 .v2-humanidad-toggle__opt input[type="radio"] {
+  display: none;
+}
+
+.actor-sheet-v2 .v2-humanidad-toggle__opt.active,
+.actor-sheet-v2 .v2-humanidad-toggle__opt:has(input:checked) {
+  background: rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: bold !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) !important;
+}
+
+.actor-sheet-v2 .v2-humanidad-toggle__opt:hover {
+  opacity: 0.75;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Card body for capacidades */
+.actor-sheet-v2 .v2-capacidades-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+/* Each sub-section group */
+.actor-sheet-v2 .v2-capacidad-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--abf-border-light);
+  padding-bottom: var(--space-3);
+}
+
+.actor-sheet-v2 .v2-capacidad-group:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.actor-sheet-v2 .v2-capacidad-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-capacidad-group__title {
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  color: var(--abf-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* TM mode rows */
+.actor-sheet-v2 .v2-tm-modes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.actor-sheet-v2 .v2-tm-mode-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  background: var(--abf-secondary-light);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__mov-val {
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  color: var(--abf-text);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__name {
+  font-size: var(--font-size-xs);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--abf-text);
+  padding: 0;
+  width: 100%;
+  min-width: 60px;
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__name:focus {
+  border-bottom-color: var(--abf-primary);
+  outline: none;
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__label {
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__mod {
+  width: 40px;
+  font-size: var(--font-size-xs);
+  text-align: center;
+  background: white;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  padding: 1px 2px;
+}
+
+.actor-sheet-v2 .v2-tm-mode-row__tm,
+.actor-sheet-v2 .v2-tm-mode-row__meters {
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  color: var(--abf-text);
+  white-space: nowrap;
+}
+
+/* IP row */
+.actor-sheet-v2 .v2-ip-row,
+.actor-sheet-v2 .v2-regen-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-1) var(--space-2);
+  background: var(--abf-secondary-light);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-ip-row__left,
+.actor-sheet-v2 .v2-regen-row__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-ip-row__right,
+.actor-sheet-v2 .v2-regen-row__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.actor-sheet-v2 .v2-ip-row__load-label {
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-ip-row__load-val {
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  color: var(--abf-text);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-ip-row__label,
+.actor-sheet-v2 .v2-regen-row__label {
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-ip-row__val,
+.actor-sheet-v2 .v2-regen-row__val {
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  color: var(--abf-text);
+  white-space: nowrap;
+}
+
+.actor-sheet-v2 .v2-ip-row__mod,
+.actor-sheet-v2 .v2-regen-row__mod {
+  width: 40px;
+  font-size: var(--font-size-xs);
+  text-align: center;
+  background: white;
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  padding: 1px 2px;
+}
+
+/* Extra rules text (small, muted, italic) */
+.actor-sheet-v2 .v2-tm-extra-rules {
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.actor-sheet-v2 .v2-tm-extra-rules p {
+  margin: 0;
+}
+
+.actor-sheet-v2 .v2-tm-extra-rules p + p {
+  margin-top: 2px;
+}
+
+.actor-sheet-v2 .v2-regen-especial {
+  font-style: normal;
+  color: var(--abf-primary);
+}
+
+/* Icon buttons for capacidades (add/delete) */
+.actor-sheet-v2 .v2-icon-btn {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 2px var(--space-2);
+  font-size: var(--font-size-2xs);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-sm);
+  color: var(--abf-text-light);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  line-height: 1;
+}
+
+.actor-sheet-v2 .v2-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Icon button inside card body (dark bg context) */
+.actor-sheet-v2 .v2-capacidad-group__header .v2-icon-btn {
+  border-color: var(--abf-border-light);
+  color: var(--abf-primary);
+}
+
+.actor-sheet-v2 .v2-capacidad-group__header .v2-icon-btn:hover {
+  background: var(--abf-secondary-light);
+}
+
+/* Danger variant (delete) */
+.actor-sheet-v2 .v2-icon-btn--danger {
+  border-color: var(--abf-border-light);
+  color: var(--abf-error);
+}
+
+.actor-sheet-v2 .v2-icon-btn--danger:hover {
+  background: rgba(211, 47, 47, 0.1);
 }

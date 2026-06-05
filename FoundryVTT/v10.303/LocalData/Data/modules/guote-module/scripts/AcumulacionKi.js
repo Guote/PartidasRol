@@ -1,3 +1,23 @@
+// ─── Standard actor-resolution pattern for standalone macro scripts ───────────
+// These files run directly in Foundry's macro editor and do NOT support ES module
+// imports (import statements will break execution). Copy this block into any new
+// macro script that needs to resolve the current actor/token.
+//
+//   let currentToken, currentActor;
+//   if (typeof token !== "undefined") {
+//     // Scope provided by an external macro or module hook (e.g. guote-module)
+//     currentToken = token;
+//     currentActor = token.actor;
+//   } else if (canvas.tokens.controlled?.[0]) {
+//     currentToken = canvas.tokens.controlled[0];
+//     currentActor = currentToken.document.actor;
+//   } else {
+//     let defaultActorId = game.users.get(game.userId)._source.character;
+//     currentActor = game.actors.get(defaultActorId);
+//   }
+//   if (!currentActor) throw new Error("Selecciona un token");
+// ─────────────────────────────────────────────────────────────────────────────
+
 let currentToken, currentActor;
 
 if (typeof token !== "undefined") {
@@ -107,23 +127,19 @@ const getDialogColumn = (stat) => {
           /> 
           <h4>${currentStat.abr}</h4>
         <h4>
-          <span style="color:#B22C2C";>
+          <span class="ki-full-accum-color">
             +${getAccumulation(currentStat.name)}
           </span>
           /
-          <span style="color:#782e22";>
+          <span class="ki-half-accum-color">
           +${Math.round(getAccumulation(currentStat.name) / 2)}
           </span>
         </h4>
         </label>
-        <center> <small>Extra mod.</small> 
-          <input 
-            ${
-              currentStat.lastAccumMod !== 0
-                ? `style="background-color:rgba(120, 46, 34, 0.25);"`
-                : ""
-            } 
-            id="accumMod-${currentStat.abr}" 
+        <center> <small>Extra mod.</small>
+          <input
+            ${currentStat.lastAccumMod !== 0 ? 'class="ki-has-value"' : ''}
+            id="accumMod-${currentStat.abr}"
             type="number" value="${
               currentStat.lastAccumMod ?? "0"
             }" /> </center>
@@ -476,51 +492,7 @@ function updateAcumulation({
 }
 
 let stayOpen = false;
-let htmlStyle = `
-<style>
-  .radio-toolbar-3 {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19);
-    width: 100%;
-    display: flex;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-
-  .radio-toolbar-3 label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0.3rem 0 0.3rem 0;
-    font-size: 1rem;
-    text-align: center;
-}
-
-  .radio-toolbar-3 label:hover {
-    background-color: #B4B4B4;
-    font-weigth: 1000;
-  }
-  .radio-toolbar-3 input[id="${updateModes.fullAccumulate.name}"]+label {
-    color: #B22C2C;
-  }
-  .radio-toolbar-3 input[id="${updateModes.accumulate.name}"]+label {
-    color: #782e22;
-  }
-
-  .radio-toolbar-3 input[type="radio"]:checked+label {
-    background-color: #782e22;
-    color: white;
-  }
-
-  input[type="radio"] {
-    position: fixed;
-    opacity: 0;
-    pointer-events: none;
-  }
-</style>
-`;
 let dialogContent = `
-  ${htmlStyle}
   <center><h3>Fase de mantenimiento: Pagar costes de Ki</h3></center>
   <small>
   <b>· Lanzamiento:</b> Coste total de las técnicas que he lanzado la <b>ronda anterior</b>. Si he hecho esto, esta ronda comienzo con 0 ki acumulado. <br>
@@ -538,13 +510,9 @@ let dialogContent = `
       </label> 
       <label>
         <small>MANTENIMIENTO</small>
-        <input 
-          ${
-            macroCookies?.upkeep && macroCookies?.upkeep !== 0
-              ? `style="background-color:rgba(120, 46, 34, 0.25);"`
-              : ""
-          }
-          type="Number" id="upkeepKi" name="mod" placeholder="0" 
+        <input
+          ${macroCookies?.upkeep && macroCookies?.upkeep !== 0 ? 'class="ki-has-value"' : ''}
+          type="Number" id="upkeepKi" name="mod" placeholder="0"
             value="${macroCookies?.upkeep ?? 0}" autofocus
         >
       </label>

@@ -17,7 +17,7 @@ export const INITIAL_ATTACK_PRESET_DATA = {
     weaponUsed: { value: "" },
     criticSelected: { value: "-" },
     damageBonus: { value: 0 },
-    ignoredTA: { value: 0 },
+    enemyTAModifier: { value: 0 },
   },
   mystic: {
     modifier: { value: 0 },
@@ -26,7 +26,7 @@ export const INITIAL_ATTACK_PRESET_DATA = {
     spellGrade: { value: "base" },
     critic: { value: "-" },
     damage: { value: 0 },
-    ignoredTA: { value: 0 },
+    enemyTAModifier: { value: 0 },
   },
   psychic: {
     modifier: { value: 0 },
@@ -34,13 +34,13 @@ export const INITIAL_ATTACK_PRESET_DATA = {
     powerUsed: { value: "" },
     critic: { value: "-" },
     damage: { value: 0 },
-    ignoredTA: { value: 0 },
+    enemyTAModifier: { value: 0 },
   },
   summon: {
     modifier: { value: 0 },
     summonUsed: { value: "" },
     critic: { value: "impact" },
-    ignoredTA: { value: 0 },
+    enemyTAModifier: { value: 0 },
   },
 };
 

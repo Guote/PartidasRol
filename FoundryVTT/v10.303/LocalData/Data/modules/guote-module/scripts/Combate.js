@@ -56,13 +56,13 @@ function onSubmit() {
   if (DEF > ATK) {
     final =
       final +
-      '<h2>Bono al contraataque: <span style="color:#ff1515">' +
+      '<h2>Bono al contraataque: <span class="gzr-critical-color">' +
       round5(cuenta(ATK, DEF, TA, BDMG)) +
       "</span></h2>";
   } else {
     final =
       final +
-      '<h2>Daño final: <span style="color:#ff1515">' +
+      '<h2>Daño final: <span class="gzr-critical-color">' +
       round5(cuenta(ATK, DEF, TA, BDMG)) +
       "</span></h2>";
   }

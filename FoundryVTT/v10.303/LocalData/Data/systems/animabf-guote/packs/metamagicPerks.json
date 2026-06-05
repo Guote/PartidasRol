@@ -6,7 +6,7 @@
     "visual_effect": "No suele haber cambios a nivel visual en los escudos, salvo que estos parecen más resistentes y recios.",
     "levels": [
       {
-        "name": "Nivel Básico (Una esfera)",
+        "name": "1",
         "description": "El aguante de los escudos se dobla.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -14,7 +14,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "El aguante de los escudos se triplica.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -30,7 +30,7 @@
     "visual_effect": "En algunas ocasiones, al usar este poder aparece una marca determinada en el punto exacto donde el ataque va a ser proyectado.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "Los conjuros de ataque del brujo obtienen la regla de Preciso. No tiene efecto sobre conjuros de ataque en área.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -38,7 +38,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "Como el anterior, pero los conjuros en área también obtienen la regla de Preciso, pudiendo designar blancos específicos diferentes en cada objetivo.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -54,7 +54,7 @@
     "visual_effect": "Ninguno, salvo que el conjuro aparenta ser más poderoso de lo que es en realidad.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "El daño base de los conjuros del personaje se incrementa en +10 en grado base, +20 en grado intermedio, +30 en grado avanzado y +40 en sortilegios de grado arcano. Límite: este poder no modifica el daño de los sortilegios que permiten realizar varios ataques, como Esfera de Destrucción o Espina de la Tierra. En estos casos, únicamente uno de los ataques, elegido por el lanzador, obtendría el bono.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -62,7 +62,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "Como el anterior, salvo que el daño se incrementa en +20 en grado base, +40 en grado intermedio, +60 en grado avanzado y +80 en sortilegios de grado arcano. Límite: este poder no modifica el daño de los sortilegios que permiten realizar varios ataques, como Esfera de Destrucción o Espina de la Tierra. En estos casos, únicamente uno de los ataques, elegido por el lanzador, obtendría el bono.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -78,7 +78,7 @@
     "visual_effect": "Ninguno es especial, salvo los que tuvieran las áreas de los conjuros lanzados.",
     "levels": [
       {
-        "name": "Nivel Básico (Una esfera)",
+        "name": "1",
         "description": "El área de efecto de los conjuros se incrementa un 50%.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -86,7 +86,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "El área de efecto se dobla.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -102,7 +102,7 @@
     "visual_effect": "De un modo muy parecido a lo que ocurre en la Erudición Ofensiva, este efecto va creando runas de potenciación. Por lo general se dibujan en mitad del aire alrededor del lugar que el personaje utiliza para lanzar el conjuro, como su mano, boca o pecho, en lugar de directamente sobre su cuerpo. Cada 10 puntos que gaste con este fin forma una runa.",
     "levels": [
       {
-        "name": "Nivel Básico (Una esfera)",
+        "name": "1",
         "description": "El personaje puede gastar hasta 20 puntos de Zeon adicionales para reducir el Tipo de Armadura de su objetivo.",
         "zeon_to_accumulate": 20,
         "zeon_reserve": 0,
@@ -110,7 +110,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Avanzado (Dos esferas)",
+        "name": "2",
         "description": "Igual que el anterior, salvo porque el límite máximo de Zeon que se puede invertir se incrementa hasta +40.",
         "zeon_to_accumulate": 40,
         "zeon_reserve": 0,
@@ -118,7 +118,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Tres esferas)",
+        "name": "3",
         "description": "Como los anteriores, salvo porque el límite máximo de Zeon es de +60.",
         "zeon_to_accumulate": 60,
         "zeon_reserve": 0,
@@ -134,7 +134,7 @@
     "visual_effect": "Este efecto suele dibujar runas en el cuerpo del hechicero, por lo general en uno de sus brazos o en ambas manos, las cuales se iluminan según va acumulando Zeon. Cada 5 puntos que gaste con este fin dibuja una marca en su cuerpo.",
     "levels": [
       {
-        "name": "Nivel Básico (Una esfera)",
+        "name": "1",
         "description": "El personaje puede gastar hasta 20 puntos de Zeon adicionales para incrementar su Proyección Mágica hasta +20. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Defensiva.",
         "zeon_to_accumulate": 20,
         "zeon_reserve": 0,
@@ -142,7 +142,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Avanzado (Dos esferas)",
+        "name": "2",
         "description": "Igual que el anterior, salvo porque el límite máximo de Zeon que se puede invertir se incrementa hasta 40. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Defensiva.",
         "zeon_to_accumulate": 40,
         "zeon_reserve": 0,
@@ -150,7 +150,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Tres esferas)",
+        "name": "3",
         "description": "Como los anteriores, salvo porque el límite máximo de Zeon es de 60. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Defensiva.",
         "zeon_to_accumulate": 60,
         "zeon_reserve": 0,
@@ -166,7 +166,7 @@
     "visual_effect": "Este efecto suele dibujar runas en el cuerpo del hechicero, por lo general en uno de sus brazos o en ambas manos, las cuales se iluminan según va acumulando Zeon. Cada 5 puntos que gaste con este fin dibuja una marca en su cuerpo.",
     "levels": [
       {
-        "name": "Nivel Básico (Una esfera)",
+        "name": "1",
         "description": "El personaje puede gastar hasta 20 puntos de Zeon adicionales para incrementar su Proyección Mágica hasta +20. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Ofensiva.",
         "zeon_to_accumulate": 20,
         "zeon_reserve": 0,
@@ -174,7 +174,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Avanzado (Dos esferas)",
+        "name": "2",
         "description": "Igual que el anterior, salvo porque el límite máximo de Zeon que se puede invertir se incrementa hasta +40. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Ofensiva.",
         "zeon_to_accumulate": 40,
         "zeon_reserve": 0,
@@ -182,7 +182,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Tres esferas)",
+        "name": "3",
         "description": "Como los anteriores, salvo porque el límite máximo de Zeon es de +60. Límite: los bonos de este principio no se acumulan con los del conjuro de Libre Acceso Erudición Ofensiva.",
         "zeon_to_accumulate": 60,
         "zeon_reserve": 0,
@@ -198,7 +198,7 @@
     "visual_effect": "Todos los conjuros ofensivos del personaje alteran su aspecto original, adoptando una apariencia mucho más viva y poderosa.",
     "levels": [
       {
-        "name": "Nivel Básico",
+        "name": "1",
         "description": "El daño base de todos los conjuros ofensivos se dobla. Límite: los bonos adicionales que el personaje pudiera recibir al daño base de sus sortilegios, ya sea por otras ventajas Metamágicas, objetos o conjuros de potenciación, no se ven afectados por esta habilidad.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -215,7 +215,7 @@
     "visual_effect": "Los hechiceros realizan ensalmos de manera independiente, pero en el momento de la ejecución del conjuro todos desencadenan diferentes fragmentos del conjuro que se unen para completar el sortilegio final.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "1",
         "description": "Permite combinar las energías mágicas de dos o más brujos para lanzar un mismo conjuro entre todos.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -231,7 +231,7 @@
     "visual_effect": "En aquellos conjuros anímicos que tienen efectos visuales para quienes pueden ver magia, los hechizos del brujo hacen surgir cadenas o lazos místicos alrededor de los cuerpos de los afectados.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "1",
         "description": "Los conjuros Anímicos que permiten repetir el control de RM cada 5 asaltos para librarse de sus consecuencias pasan a permitirlo cada 10 asaltos.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -247,58 +247,58 @@
     "visual_effect": "Cada nivel de dificultad tiene un efecto visual determinado, que suele representarse formando alas sobrenaturales en la espalda o en las manos del lanzador. Cuanto más elevada es la habilidad alcanzada, más alas se forman.",
     "levels": [
       {
-        "name": "Nivel Difícil (Una esfera)",
-        "description": "Al lanzar un conjuro, el personaje puede optar por consumir 10 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 120.",
-        "zeon_to_accumulate": 0,
-        "zeon_reserve": 10,
-        "required_level": null,
-        "connected_to": []
-      },
-      {
-        "name": "Nivel Muy Difícil (Dos esferas)",
-        "description": "El personaje puede consumir 20 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 140.",
+        "name": "1",
+        "description": "",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 20,
         "required_level": null,
         "connected_to": []
       },
       {
-        "name": "Nivel Absurdo (Tres esferas)",
-        "description": "El personaje puede consumir 40 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 180.",
+        "name": "2",
+        "description": "",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 40,
         "required_level": null,
         "connected_to": []
       },
       {
-        "name": "Nivel Casi Imposible (Cuatro esferas)",
-        "description": "El personaje puede optar por consumir 60 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 240.",
+        "name": "3",
+        "description": "",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 60,
         "required_level": null,
         "connected_to": []
       },
       {
-        "name": "Nivel Imposible (Cinco esferas)",
-        "description": "El personaje puede optar por consumir 80 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 280.",
+        "name": "4",
+        "description": "",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 80,
         "required_level": null,
         "connected_to": []
       },
       {
-        "name": "Nivel Inhumano (Seis esferas)",
-        "description": "El personaje puede optar por consumir 100 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 320.",
+        "name": "5",
+        "description": "",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 100,
         "required_level": null,
         "connected_to": []
       },
       {
-        "name": "Nivel Zen (Siete esferas)",
-        "description": "El personaje puede optar por consumir 200 puntos de Zeon para que su hechizo sea proyectado directamente con una Habilidad Final de 440.",
+        "name": "6",
+        "description": "",
         "zeon_to_accumulate": 0,
-        "zeon_reserve": 200,
+        "zeon_reserve": 120,
+        "required_level": null,
+        "connected_to": []
+      },
+      {
+        "name": "7",
+        "description": "",
+        "zeon_to_accumulate": 0,
+        "zeon_reserve": 140,
         "required_level": null,
         "connected_to": []
       }
@@ -311,7 +311,7 @@
     "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de este principio.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "El brujo obtiene un +25 al ACT por punto de Cansancio invertido.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -319,7 +319,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "El brujo obtiene un +40 al ACT por punto de Cansancio invertido.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -335,7 +335,7 @@
     "visual_effect": "Generalmente no hay ningún efecto visual en el uso de este principio.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "El personaje incrementa su Regeneración zeónica base 10 puntos.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -343,7 +343,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Intermedio (Dos esferas)",
+        "name": "2",
         "description": "El personaje incrementa su Regeneración zeónica base 20 puntos.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -351,7 +351,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Tres esferas)",
+        "name": "3",
         "description": "El personaje incrementa su Regeneración zeónica base 30 puntos.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -367,7 +367,7 @@
     "visual_effect": "Cada individuo usa este principio de diferentes maneras, pero por lo general representa quedarse completamente inmóvil en una pose determinada. Aquellos que sean capaces de ver o sentir magia pueden notar cómo su cuerpo atrae y absorbe la energía sobrenatural que hay en el ambiente.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "1",
         "description": "El personaje entra en un trance durante el cual el tiempo cuenta como el doble a efectos de regeneración zeónica.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -383,7 +383,7 @@
     "visual_effect": "El cuerpo del archimago estalla, exteriorizando una forma monstruosa hecha de pura magia. Tanto la apariencia como el color predominante dependen de la naturaleza y el alma del personaje, y puede ser cualquier cosa imaginable, desde un ser demoníaco hasta uno angelical.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "El personaje se transforma en una criatura intangible de pura magia, usa sus puntos de Zeon en lugar de sus PV, obtiene +50 a su ACT y +20 a todas sus Resistencias. Al activarlo gasta la mitad de su reserva actual de Zeon.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -399,7 +399,7 @@
     "visual_effect": "No hay ningún efecto visual.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "El brujo sigue acumulando el coste total del conjuro, pero al lanzarlo sólo gasta la mitad del Zeon total.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -416,7 +416,7 @@
     "visual_effect": "En el momento en el que el hechicero lanza el conjuro, el escudo se rodea de sellos mágicos enlazados entre sí.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Los escudos mágicos se activan incluso si el brujo obtiene una Pifia al lanzarlos. El valor de la Pifia se resta a la habilidad defensiva del personaje.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -432,7 +432,7 @@
     "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de este principio.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "La curación se incrementa en +20 PV en grado base, +40 PV en grado intermedio, +60 PV en grado avanzado y +80 PV en sortilegios de grado arcano. Límite: este principio no tiene efecto sobre aquellos sortilegios que curen cantidades porcentuales de Puntos de Vida.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -440,7 +440,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "La curación se incrementa en +40 PV en grado base, +80 PV en grado intermedio, +120 PV en grado avanzado y +160 PV en sortilegios de grado arcano. Límite: este principio no tiene efecto sobre aquellos sortilegios que curen cantidades porcentuales de Puntos de Vida.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -456,7 +456,7 @@
     "visual_effect": "Al usar este principio los ojos del personaje pueden llegar a cambiar levemente.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Incrementa automáticamente un grado los controles de Valoración Mágica para detectar personas con el Don o conjuros lanzados cerca. Si tiene éxito, también permite sentir quién es el blanco del conjuro y qué finalidad tiene.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -472,7 +472,7 @@
     "visual_effect": "Por la naturaleza intrínseca de este principio no suele haber ningún efecto visual.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "1",
         "description": "Reduce a la mitad los penalizadores de Valoración Mágica para ocultar sortilegios al acumular Zeon. Además, quienes traten de detectar si el brujo posee habilidades sobrenaturales aplican un penalizador de -120 a su Valoración Mágica.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -488,7 +488,7 @@
     "visual_effect": "Al activar este principio, las personas que se encuentran alrededor del personaje perciben que el mundo entero se detiene y se oscurece, como si el tiempo mismo acabase de congelarse. Sólo el brujo sigue moviéndose, preparando los ensalmos del conjuro que se dispone a lanzar.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "El Bucle Existencial puede mantenerse hasta dos asaltos. Cada asalto consume 100 puntos de Zeon directamente de la reserva. Límite: este poder no tiene efectos sobre entidades cuyo Gnosis sea 40 o mayor, a menos que quien usa el bucle tenga a su vez un Gnosis superior.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 100,
@@ -496,7 +496,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "El Bucle Existencial puede mantenerse hasta cinco asaltos. Cada asalto consume 100 puntos de Zeon directamente de la reserva. Límite: este poder no tiene efectos sobre entidades cuyo Gnosis sea 40 o mayor, a menos que quien usa el bucle tenga a su vez un Gnosis superior.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 100,
@@ -512,7 +512,7 @@
     "visual_effect": "No hay una forma determinada de representar este principio, pues varía dependiendo del conjuro y de la voluntad del lanzador. Es posible que un inmenso meteoro se convierta en una selecta lluvia de rocas espaciales o una bola de fuego se torne en decenas de columnas ígneas que sólo abrasan aquello que elija el brujo.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite elegir qué blancos reciben el ataque dentro del área de efecto de los sortilegios ofensivos, incluso si el conjuro normalmente no lo permite. No puede excluir objetivos de los que el personaje no tenga constancia. Añade 10 puntos de Zeon al valor del conjuro lanzado.",
         "zeon_to_accumulate": 10,
         "zeon_reserve": 0,
@@ -528,7 +528,7 @@
     "visual_effect": "Las descargas o escudos suelen cambiar su color cuando su poder se incrementa para que dañen energía. Por ejemplo, es posible que las llamas de un conjuro de Bola de Fuego se tornen verdosas o azuladas, en contra del color que tuvieran originalmente.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite gastar 10 puntos de Zeon al lanzar un conjuro de Ataque para que pueda dañar energía, o 10 puntos de Zeon al lanzar un conjuro de defensa para que el escudo mágico pueda detener energía.",
         "zeon_to_accumulate": 10,
         "zeon_reserve": 0,
@@ -544,7 +544,7 @@
     "visual_effect": "Al recibir un ataque mágico que produzca daños al personaje, líneas sobrenaturales brillan en su cuerpo unos instantes, como si hubiera sido afectado tanto espiritual como físicamente.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite convertir la mitad del daño recibido por ataques mágicos en pérdida de Zeon en lugar de Puntos de Vida. Límite: esta habilidad no permite paliar el daño recibido por un ataque sobrenatural procedente de una entidad con 20 puntos de Gnosis por encima del que posee el personaje.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -560,7 +560,7 @@
     "visual_effect": "Generalmente, al usar este principio la energía mágica forma un vínculo de unión entre ambos personajes, aunque sólo es posible percibirlo por aquellos que ven magia.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite absorber o transmitir Zeon con otra persona sin contacto físico, siempre que no esté a más de su Presencia en metros.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -576,7 +576,7 @@
     "visual_effect": "Normalmente, en el momento en el que el personaje activa el sortilegio se dibujan en el aire símbolos similares a un reloj moviéndose a toda velocidad.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "El personaje puede gastar hasta 20 puntos de Zeon para obtener un bono equivalente a su Turno. Límite: este principio sólo puede hacerse valer si la primera acción que el personaje declara es un conjuro determinado. Una vez que ha hecho uso de ella, deberá lanzar el sortilegio declarado en el instante en el que le corresponda actuar.",
         "zeon_to_accumulate": 20,
         "zeon_reserve": 0,
@@ -584,7 +584,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Intermedio (Dos esferas)",
+        "name": "2",
         "description": "El personaje puede gastar hasta 40 puntos de Zeon para obtener un bono equivalente a su Turno. Límite: este principio sólo puede hacerse valer si la primera acción que el personaje declara es un conjuro determinado. Una vez que ha hecho uso de ella, deberá lanzar el sortilegio declarado en el instante en el que le corresponda actuar.",
         "zeon_to_accumulate": 40,
         "zeon_reserve": 0,
@@ -592,7 +592,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Tres esferas)",
+        "name": "3",
         "description": "El personaje puede gastar hasta 60 puntos de Zeon para obtener un bono equivalente a su Turno. Límite: este principio sólo puede hacerse valer si la primera acción que el personaje declara es un conjuro determinado. Una vez que ha hecho uso de ella, deberá lanzar el sortilegio declarado en el instante en el que le corresponda actuar.",
         "zeon_to_accumulate": 60,
         "zeon_reserve": 0,
@@ -608,7 +608,7 @@
     "visual_effect": "Cuando usa dos conjuros innatos, el hechicero pronuncia verbalmente los ensalmos de uno de ellos mientras gesticula para hacer el otro.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite lanzar dos conjuros innatos diferentes por asalto. Límite: esta habilidad no modifica el número de conjuros innatos que un personaje puede mantener sin tener que pagar su mantenimiento; sigue estando limitado a sólo uno.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -624,7 +624,7 @@
     "visual_effect": "No hay ningún efecto visual.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Los conjuros con mantenimiento pasan de pagarse cada asalto a pagarse cada 5 turnos, y los conjuros diarios pasan a mantenerse una vez cada siete días. Límite: esta habilidad está limitada a un conjuro por cada dos puntos de Poder del personaje.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -641,7 +641,7 @@
     "visual_effect": "No suele haber ningún efecto visual en este principio.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Reduce a la mitad la dificultad del control de Resistir el Dolor necesario para no perder completamente el Zeon acumulado al sufrir daño.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -673,7 +673,7 @@
     "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de esta esfera.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "El personaje incrementa la dificultad de la RM de sus conjuros Anímicos 5 puntos por cada 50% de daño obtenido. Límite: esta habilidad no tiene efectos especiales contra criaturas con acumulación de daño.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -681,7 +681,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "Como el anterior, salvo que la dificultad de las RM se incrementa en 10 puntos por cada 50% de daño obtenido. Límite: esta habilidad no tiene efectos especiales contra criaturas con acumulación de daño.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -697,7 +697,7 @@
     "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de este principio.",
     "levels": [
       {
-        "name": "Nivel Inicial (Una esfera)",
+        "name": "1",
         "description": "El alcance de un conjuro dobla lo que indique el valor obtenido por la Proyección Mágica del lanzador. Límite: este principio no tiene efecto sobre aquellos sortilegios que tengan distancias determinadas en su descripción en lugar de por su Proyección Mágica.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -705,7 +705,7 @@
         "connected_to": []
       },
       {
-        "name": "Nivel Arcano (Dos esferas)",
+        "name": "2",
         "description": "El alcance de los conjuros se cuadriplica. Límite: este principio no tiene efecto sobre aquellos sortilegios que tengan distancias determinadas en su descripción en lugar de por su Proyección Mágica.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -721,7 +721,7 @@
     "visual_effect": "No hay un efecto determinado, ya que la combinación de conjuros siempre da como resultado un sortilegio de aspecto diferente al de cualquiera de sus componentes por separado.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite enlazar dos conjuros, normalmente de Ataque o Anímicos, acumulando el Zeon necesario para ambos y realizando una única tirada de Proyección Mágica para ejecutarlos como una unidad.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -737,7 +737,7 @@
     "visual_effect": "Generalmente no hay ningún efecto visual en la ejecución de esta esfera.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Otorga +1 a Inteligencia a la hora de calcular el requisito de los conjuros.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -753,7 +753,7 @@
     "visual_effect": "El hechicero parece desdoblarse, entonando dos ensalmos a la vez y gesticulando a una velocidad indescriptible. Por lo general, en el momento de la ejecución de los conjuros cada una de sus manos se llena de crepitante energía de diferente color, en representación de los dos sortilegios que se prepara a lanzar.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite lanzar dos conjuros diferentes en el mismo asalto usando el doble de su ACT. Cada conjuro individual no puede superar el ACT base del personaje, y el coste total en Zeon se dobla. Límite: únicamente los conjuros que el personaje sea capaz de ejecutar con su ACT base, sin aplicar modificadores de ningún tipo, pueden ser lanzados con esta habilidad. Además, al activar esta esfera el brujo está limitado a lanzar como máximo dos conjuros, incluso si su ACT sobrante le permitiera ejecutar más.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -769,7 +769,7 @@
     "visual_effect": "El archimago ni siquiera parece emplear conjuros innatos; la magia meramente brota de él de manera natural adoptando la forma de conjuros mientras él sigue gesticulando y preparando su verdadero sortilegio.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite lanzar conjuros innatos mientras se acumula Zeon. Límite: aunque puede lanzar conjuros innatos mientras acumula magia, esta esfera no le permite hacerlo mientras está lanzando un conjuro de manera natural.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,
@@ -785,7 +785,7 @@
     "visual_effect": "Generalmente, al preparar un conjuro de Alta Magia gracias a esta esfera, el archimago comienza a rodearse de runas esféricas con simbología siempre cambiante.",
     "levels": [
       {
-        "name": "Nivel Único",
+        "name": "",
         "description": "Permite usar conjuros de Alta Magia sin Gnosis 25 o superior. Al lanzar un conjuro de Alta Magia, el brujo pierde una cantidad de Zeon equivalente al valor zeónico invertido, y el coste de mantenimiento se dobla. Límite: esta ventaja sólo funciona al lanzar un conjuro determinado, y no acumulando magia pura.",
         "zeon_to_accumulate": 0,
         "zeon_reserve": 0,

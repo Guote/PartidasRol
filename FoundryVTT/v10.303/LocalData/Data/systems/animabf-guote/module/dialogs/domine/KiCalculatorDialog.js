@@ -239,12 +239,13 @@ export class KiCalculatorDialog extends FormApplication {
     const showTechOptions = mode === 'specific' && !!techniqueId;
     const castThisRound = showTechOptions ? (this.modalData.castThisRound ?? true) : false;
     const holdTechnique = showTechOptions && !castThisRound ? (this.modalData.holdTechnique ?? false) : false;
-    const techAction = castThisRound ? 'cast' : holdTechnique ? 'hold' : 'cast';
+    const techAction = castThisRound ? 'cast' : holdTechnique ? 'hold' : 'none';
 
     // Pool
     const kiPoolValue = sys.domine?.kiAccumulation?.generic?.value ?? 0;
     const kiPoolMax = sys.domine?.kiAccumulation?.generic?.max ?? 0;
     const currentFatigue = sys.characteristics?.secondaries?.fatigue?.value ?? 0;
+    const maxFatigue = sys.characteristics?.secondaries?.fatigue?.max ?? 0;
 
     // Cast ki cost (pool preview): selected tech + released held techs
     let castKiCost = 0;
@@ -300,6 +301,7 @@ export class KiCalculatorDialog extends FormApplication {
       totalAccumulated, finalTotalAccumulated,
       footerInitial, footerFinal,
       heldRows, releaseTargets,
+      maxFatigue,
     };
   }
 
@@ -461,6 +463,8 @@ export class KiCalculatorDialog extends FormApplication {
       }
     }
 
+    this._sendGMWhisper(computed);
+
     // Casting: deactivate KI_MAINTENANCE for the selected technique
     if (computed.castThisRound && computed.castableThisRound && computed.techniqueId) {
       const maint = this.actor.items
@@ -505,5 +509,63 @@ export class KiCalculatorDialog extends FormApplication {
     }
 
     this.close();
+  }
+
+  _sendGMWhisper(computed) {
+    const tokenName = this.actor.getActiveTokens()[0]?.name ?? this.actor.name;
+
+    // black bold + colored shadow — works in Foundry chat (color:#000 is static, shadow uses CSS var)
+    const sv = (content, cssVar) =>
+      `<b style="color:#000;text-shadow:0 0 6px ${cssVar}">${content}</b>`;
+
+    const totalGained = KI_STATS.reduce((s, stat) => s + computed.statData[stat].thisRound, 0);
+    const kiPoolDelta = computed.finalKiPool - computed.kiPoolValue;
+
+    // --- Line 1: deltas + resource indicators (colored glow) ---
+    const summaryParts = [];
+    if (totalGained > 0) {
+      summaryParts.push(`<b>+${totalGained}</b> ${sv('<i class="fas fa-yin-yang"></i>ACUM', 'var(--abf-ki)')}`);
+    }
+    if (kiPoolDelta !== 0) {
+      const sign = kiPoolDelta >= 0 ? '+' : '';
+      summaryParts.push(`<b>${sign}${kiPoolDelta}</b> ${sv('<i class="fas fa-yin-yang"></i>', 'var(--abf-ki)')}`);
+    }
+    if (computed.fatigueUsed > 0) {
+      summaryParts.push(`<b>-${computed.fatigueUsed}</b> ${sv('<i class="fas fa-bolt"></i>', 'var(--abf-fatigue)')}`);
+    }
+    const headerLine = `${tokenName} acumula: ${summaryParts.join(' | ')}`;
+
+    // --- Line 2: technique action ---
+    let techLine = '';
+    if (computed.castThisRound && computed.castableThisRound && computed.techniqueId) {
+      techLine = `Lanza técnica: <b>${computed.targetTechName}</b>`;
+    }
+
+    // --- Details accordion (closed by default) ---
+    const detailLines = [];
+    const currentValParts = [
+      sv(`${computed.finalTotalAccumulated} <i class="fas fa-yin-yang"></i>`, 'var(--abf-ki)')
+    ];
+    if (kiPoolDelta !== 0) {
+      currentValParts.push(sv(`${computed.finalKiPool}/${computed.kiPoolMax} <i class="fas fa-yin-yang"></i>`, 'var(--abf-ki)'));
+    }
+    if (computed.fatigueUsed > 0) {
+      currentValParts.push(sv(`${computed.finalFatigue}/${computed.maxFatigue} <i class="fas fa-bolt"></i>`, 'var(--abf-fatigue)'));
+    }
+    detailLines.push(currentValParts.join(' | '));
+
+    const changedStats = KI_STATS.filter(s => computed.finalStats[s] !== computed.statData[s].accumulated);
+    if (changedStats.length > 0) {
+      detailLines.push(changedStats.map(s => `${STAT_LABELS[s]} ${computed.finalStats[s]}`).join(' | '));
+    }
+    if (computed.fullAccumulation) detailLines.push('Concentrado');
+
+    const detailsHtml = `<details><summary>Detalles</summary><small>${detailLines.join('<br>')}</small></details>`;
+    const content = [headerLine, techLine].filter(Boolean).join('<br>') + '<br>' + detailsHtml;
+    ChatMessage.create({
+      content,
+      whisper: ChatMessage.getWhisperRecipients('GM').map(u => u.id),
+      speaker: ChatMessage.getSpeaker({ actor: this.actor })
+    });
   }
 }

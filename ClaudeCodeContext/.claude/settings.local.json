@@ -25,7 +25,15 @@
       "Bash(findstr /I \"condition\\\\|estado\\\\|concentr\" module/actor/*.js)",
       "Bash(Select-Object Name)",
       "Bash(dir \"C:\\\\z - Git\\\\PartidasRol\\\\FoundryVTT\\\\v10.303\\\\LocalData\\\\Data\\\\systems\\\\animabf-guote\")",
-      "Bash(grep -E \"\\\\.mjs$|\\\\.json$\")"
+      "Bash(grep -E \"\\\\.mjs$|\\\\.json$\")",
+      "Bash(sed 's/class=\"//g')",
+      "Bash(sed 's/\"//g')",
+      "Bash(sed 's/^\\\\.//g')",
+      "Bash(grep -v '^$')",
+      "Bash(grep *)",
+      "Bash(awk '$1 > 1')",
+      "Bash(Remove-Item *)",
+      "PowerShell(Remove-Item *)"
     ]
   }
 }

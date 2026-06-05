@@ -11,9 +11,6 @@
   box-sizing: border-box !important;
   padding-right: 0 !important;
 }
-.message-content {
-  padding-right: 0 !important;
-}
 
 /* ─── Round reminder: single card ───────────────────────────────────────────── */
 
@@ -272,18 +269,50 @@
   font-size: 0.9em;
 }
 
-/* Legacy flat layout kept for backward compat */
-.gzr-actions {
+/* EnLLamas macro styles */
+.radio-toolbar-3 {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19);
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 5px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.radio-toolbar-3 label {
+  display: flex;
+  align-items: center;
   justify-content: center;
+  width: 100%;
+  padding: 0.3rem 0 0.3rem 0;
+  font-size: 1rem;
+  text-align: center;
 }
-.gzr-actions--2 {
-  justify-content: space-between;
+
+.radio-toolbar-3 label:hover {
+  background-color: #B4B4B4;
+  font-weight: 1000;
 }
-.gzr-actions--3,
-.gzr-actions--4 {
-  justify-content: flex-start;
+
+.radio-toolbar-3 input[type="radio"]:checked + label {
+  background-color: #782e22;
+  color: white;
 }
+
+input[type="radio"] {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Combate macro styles */
+.gzr-critical-color {
+  color: #ff1515;
+}
+
+/* AcumulacionKi macro styles */
+.radio-toolbar-3 input[id="fullAccumulate"] + label { color: #B22C2C; }
+.radio-toolbar-3 input[id="accumulate"] + label { color: #782e22; }
+.ki-full-accum-color { color: #B22C2C; }
+.ki-half-accum-color { color: #782e22; }
+.ki-has-value { background-color: rgba(120, 46, 34, 0.25); }
+

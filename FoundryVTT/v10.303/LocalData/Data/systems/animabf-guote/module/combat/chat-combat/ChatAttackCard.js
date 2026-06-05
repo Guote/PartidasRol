@@ -1,5 +1,5 @@
 import { Templates } from '../../utils/constants.js';
-import { calculateATReductionByQuality } from '../utils/calculateATReductionByQuality.js';
+import { calculateTAModifierByQuality } from '../utils/calculateATReductionByQuality.js';
 import { calculateShieldDamage } from '../utils/calculateShieldDamage.js';
 
 /**
@@ -25,11 +25,12 @@ export class ChatAttackCard {
         const sessionId = foundry.utils.randomID();
 
         // taReduction: signed modifier to enemy TA (negative = reduces TA).
-        // ignoredTA from the attack dialog is already signed (user enters -2 to reduce by 2).
-        // Weapon TA bonus is a positive reduction, so we subtract it.
+        // Both taModifier.final.value and calculateTAModifierByQuality use the same sign convention.
         const weaponTAMod = options.weapon?.system?.taModifier?.final?.value;
-        const weaponBonus = weaponTAMod !== undefined ? weaponTAMod : calculateATReductionByQuality({ weapon: options.weapon });
-        const taReduction = (attackResult.values.ignoredTA || 0) - weaponBonus;
+        const weaponATMod = weaponTAMod !== undefined
+          ? weaponTAMod
+          : calculateTAModifierByQuality(options.weapon?.system?.quality?.value ?? 0);
+        const taReduction = (attackResult.values.enemyTAModifier || 0) + weaponATMod;
 
         // Get localized damage type label
         const damageTypeKey = `anima.ui.combat.criticalType.${attackResult.values.critic || 'impact'}`;

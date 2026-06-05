@@ -4,6 +4,7 @@ import {
   NoneWeaponCritic,
   WeaponCritic,
 } from "../../types/combat/WeaponItemConfig.js";
+import { attachItemSheetHandler } from "./utils/attachItemSheetHandlers.js";
 import ABFFoundryRoll from "../../rolls/ABFFoundryRoll.js";
 import { ABFSettingsKeys } from "../../../utils/registerSettings.js";
 import { ABFConfig } from "../../ABFConfig.js";
@@ -56,7 +57,7 @@ const getInitialData = (attacker, defender, options = {}) => {
           special: hasPreset ? (presetData.combat?.damageBonus?.value ?? 0) : (macroCookies?.combat?.damage?.special ?? 0),
           final: macroCookies?.combat?.damage?.final ?? 0,
         },
-        ignoredTA: hasPreset ? (presetData.combat?.ignoredTA?.value ?? 0) : (macroCookies?.combat?.ignoredTA ?? 0),
+        enemyTAModifier: hasPreset ? (presetData.combat?.enemyTAModifier?.value ?? 0) : (macroCookies?.combat?.enemyTAModifier ?? 0),
       },
       mystic: {
         modifier: hasPreset ? (presetData.mystic?.modifier?.value ?? 0) : (macroCookies?.mystic?.modifier ?? 0),
@@ -65,7 +66,7 @@ const getInitialData = (attacker, defender, options = {}) => {
         spellGrade: hasPreset ? (presetData.mystic?.spellGrade?.value ?? "base") : (macroCookies?.mystic?.spellGrade ?? "base"),
         critic: hasPreset ? (presetData.mystic?.critic?.value ?? NoneWeaponCritic.NONE) : (macroCookies?.mystic?.critic ?? NoneWeaponCritic.NONE),
         damage: hasPreset ? (presetData.mystic?.damage?.value ?? 0) : (macroCookies?.mystic?.damage ?? 0),
-        ignoredTA: hasPreset ? (presetData.mystic?.ignoredTA?.value ?? 0) : (macroCookies?.mystic?.ignoredTA ?? 0),
+        enemyTAModifier: hasPreset ? (presetData.mystic?.enemyTAModifier?.value ?? 0) : (macroCookies?.mystic?.enemyTAModifier ?? 0),
         consumeZeon: hasPreset ? (presetData.mystic?.consumeZeon?.value ?? true) : (macroCookies?.mystic?.consumeZeon ?? true),
         zeonMod: hasPreset ? (presetData.mystic?.zeonMod?.value ?? 0) : (macroCookies?.mystic?.zeonMod ?? 0),
         addToActiveSpells: macroCookies?.mystic?.addToActiveSpells ?? false,
@@ -84,7 +85,7 @@ const getInitialData = (attacker, defender, options = {}) => {
         cvPotencial: hasPreset ? (presetData.psychic?.cvPotencial?.value ?? 0) : (macroCookies?.psychic?.cvPotencial ?? 0),
         critic: hasPreset ? (presetData.psychic?.critic?.value ?? WeaponCritic.ENERGY) : (macroCookies?.psychic?.critic ?? WeaponCritic.ENERGY),
         damage: hasPreset ? (presetData.psychic?.damage?.value ?? 0) : (macroCookies?.psychic?.damage ?? 0),
-        ignoredTA: hasPreset ? (presetData.psychic?.ignoredTA?.value ?? 0) : (macroCookies?.psychic?.ignoredTA ?? 0),
+        enemyTAModifier: hasPreset ? (presetData.psychic?.enemyTAModifier?.value ?? 0) : (macroCookies?.psychic?.enemyTAModifier ?? 0),
         potentialResult: null,
       },
       summon: {
@@ -100,7 +101,7 @@ const getInitialData = (attacker, defender, options = {}) => {
         summoningResult: null,
         critic: hasPreset ? (presetData.summon?.critic?.value ?? WeaponCritic.IMPACT) : (macroCookies?.summon?.critic ?? WeaponCritic.IMPACT),
         effectiveDamage: 0,
-        ignoredTA: hasPreset ? (presetData.summon?.ignoredTA?.value ?? 0) : (macroCookies?.summon?.ignoredTA ?? 0),
+        enemyTAModifier: hasPreset ? (presetData.summon?.enemyTAModifier?.value ?? 0) : (macroCookies?.summon?.enemyTAModifier ?? 0),
         consumeZeon: hasPreset ? (presetData.summon?.consumeZeon?.value ?? true) : (macroCookies?.summon?.consumeZeon ?? true),
       },
     },
@@ -115,12 +116,6 @@ const getInitialData = (attacker, defender, options = {}) => {
     presetId: options.presetId,
     selectedPresetId: "",
   };
-  console.log(
-    "initialData",
-    initialData.attacker,
-    initialData.attacker.combat, // {... weapon: { name: "2" ...}}
-    initialData.attacker.combat.weapon // { name: "asdasd" ...}
-  );
   return initialData;
 };
 export class CombatAttackDialog extends FormApplication {
@@ -144,7 +139,6 @@ export class CombatAttackDialog extends FormApplication {
   }
 
   static get defaultOptions() {
-    console.log("initialtab");
     return mergeObject(super.defaultOptions, {
       classes: ["abf-dialog", "combat-attack-dialog"],
       submitOnChange: true,
@@ -177,11 +171,8 @@ export class CombatAttackDialog extends FormApplication {
     super.activateListeners(html);
 
     // Open selected spell sheet
-    html.find(".open-spell-sheet").click(() => {
-      const spellId = html.find('[name="attacker.mystic.spellUsed"]').val();
-      if (!spellId) return;
-      this.attackerActor.items.get(spellId)?.sheet?.render(true);
-    });
+    attachItemSheetHandler(html, ".open-spell-sheet", this.attackerActor,
+      () => html.find('[name="attacker.mystic.spellUsed"]').val());
 
     // Open ACT calculator
     html.find(".open-act-calculator").click(() => {
@@ -189,25 +180,16 @@ export class CombatAttackDialog extends FormApplication {
     });
 
     // Open selected weapon sheet
-    html.find(".open-weapon-sheet").click(() => {
-      const weaponId = this.modalData.attacker.combat.weaponUsed;
-      if (!weaponId) return;
-      this.attackerActor.items.get(weaponId)?.sheet?.render(true);
-    });
+    attachItemSheetHandler(html, ".open-weapon-sheet", this.attackerActor,
+      () => this.modalData.attacker.combat.weaponUsed);
 
     // Open selected power sheet
-    html.find(".open-power-sheet").click(() => {
-      const powerId = html.find('[name="attacker.psychic.powerUsed"]').val();
-      if (!powerId) return;
-      this.attackerActor.items.get(powerId)?.sheet?.render(true);
-    });
+    attachItemSheetHandler(html, ".open-power-sheet", this.attackerActor,
+      () => html.find('[name="attacker.psychic.powerUsed"]').val());
 
     // Open selected summon sheet
-    html.find(".open-summon-sheet").click(() => {
-      const summonId = this.modalData.attacker.summon.summonUsed;
-      if (!summonId) return;
-      this.attackerActor.items.get(summonId)?.sheet?.render(true);
-    });
+    attachItemSheetHandler(html, ".open-summon-sheet", this.attackerActor,
+      () => this.modalData.attacker.summon.summonUsed);
 
     // Load preset selector handler
     html.find(".load-attack-preset").change((e) => {
@@ -253,7 +235,7 @@ export class CombatAttackDialog extends FormApplication {
       const isAttackAccumulation = (attackAccumulation ?? 1) > 1;
 
       if (activeTab === 'combat') {
-        const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed, ignoredTA } = this.modalData.attacker.combat;
+        const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed, enemyTAModifier } = this.modalData.attacker.combat;
         if (typeof damage !== "undefined") {
           const attack = weapon
             ? weapon.system.attack.final.value
@@ -283,7 +265,7 @@ export class CombatAttackDialog extends FormApplication {
             values: {
               unarmed,
               damage: Math.floor((isAttackAccumulation ? damage.final * 1.5 : damage.final) / 5) * 5,
-              ignoredTA, attack, weaponUsed, critic, modifier, fatigueUsed,
+              enemyTAModifier, attack, weaponUsed, critic, modifier, fatigueUsed,
               roll: rolled, total: roll.total, fumble: roll.fumbled,
             },
           };
@@ -293,7 +275,7 @@ export class CombatAttackDialog extends FormApplication {
           this.attackerActor.update({
             "system.macroCookies.combatAttackDialog": {
               initialTab: "combat",
-              combat: { modifier, unarmed, weaponUsed, criticSelected: critic, weapon, damage, ignoredTA },
+              combat: { modifier, unarmed, weaponUsed, criticSelected: critic, weapon, damage, enemyTAModifier },
             },
           });
           if (fatigueUsed > 0) {
@@ -305,7 +287,7 @@ export class CombatAttackDialog extends FormApplication {
         }
 
       } else if (activeTab === 'mystic') {
-        const { spellGrade, spellUsed, modifier, critic, damage, ignoredTA, magicProjectionType, consumeZeon, zeonMod, addToActiveSpells } = this.modalData.attacker.mystic;
+        const { spellGrade, spellUsed, modifier, critic, damage, enemyTAModifier, magicProjectionType, consumeZeon, zeonMod, addToActiveSpells } = this.modalData.attacker.mystic;
         if (spellUsed) {
           const magicProjection = this.attackerActor.system.mystic.magicProjection.imbalance.offensive.final.value;
           const baseMagicProjection = this.attackerActor.system.mystic.magicProjection.imbalance.offensive.base.value;
@@ -332,7 +314,7 @@ export class CombatAttackDialog extends FormApplication {
             values: {
               modifier, spellUsed, spellGrade, magicProjection, critic,
               damage: Math.floor((isAttackAccumulation ? damage * 1.5 : damage) / 5) * 5,
-              ignoredTA, roll: rolled, total: roll.total, fumble: roll.fumbled,
+              enemyTAModifier, roll: rolled, total: roll.total, fumble: roll.fumbled,
             },
           };
           this.hooks.onAttack(mysticAttackResult);
@@ -341,7 +323,7 @@ export class CombatAttackDialog extends FormApplication {
           this.attackerActor.update({
             "system.macroCookies.combatAttackDialog": {
               initialTab: "mystic",
-              mystic: { modifier, magicProjectionType, spellUsed, spellGrade, critic, damage, ignoredTA, consumeZeon, zeonMod, addToActiveSpells },
+              mystic: { modifier, magicProjectionType, spellUsed, spellGrade, critic, damage, enemyTAModifier, consumeZeon, zeonMod, addToActiveSpells },
             },
           });
           if (addToActiveSpells) {
@@ -367,7 +349,7 @@ export class CombatAttackDialog extends FormApplication {
         }
 
       } else if (activeTab === 'psychic') {
-        const { powerUsed, modifier, psychicPotential, baseProjection, cvProjectionBonus, basePotential, cvPotentialBonus, critic, damage, ignoredTA } = this.modalData.attacker.psychic;
+        const { powerUsed, modifier, psychicPotential, baseProjection, cvProjectionBonus, basePotential, cvPotentialBonus, critic, damage, enemyTAModifier } = this.modalData.attacker.psychic;
         if (powerUsed) {
           const massBonus = getMassAttackBonus(attackAccumulation);
           let formula = getFormula({
@@ -399,7 +381,7 @@ export class CombatAttackDialog extends FormApplication {
               psychicProjection: baseProjection + cvProjectionBonus,
               critic,
               damage: Math.floor((isAttackAccumulation ? damage * 1.5 : damage) / 5) * 5,
-              ignoredTA, roll: rolled, total: psychicProjectionRoll.total, fumble: psychicProjectionRoll.fumbled,
+              enemyTAModifier, roll: rolled, total: psychicProjectionRoll.total, fumble: psychicProjectionRoll.fumbled,
             },
           };
           this.hooks.onAttack(psychicAttackResult);
@@ -414,7 +396,7 @@ export class CombatAttackDialog extends FormApplication {
           this.attackerActor.update({
             "system.macroCookies.combatAttackDialog": {
               initialTab: "psychic",
-              psychic: { modifier, powerUsed, critic, damage, ignoredTA },
+              psychic: { modifier, powerUsed, critic, damage, enemyTAModifier },
             },
           });
           {
@@ -431,7 +413,7 @@ export class CombatAttackDialog extends FormApplication {
         }
 
       } else if (activeTab === 'summon') {
-        const { summonUsed, modifier, critic, ignoredTA, powerUsed, consumeZeon } = this.modalData.attacker.summon;
+        const { summonUsed, modifier, critic, enemyTAModifier, powerUsed, consumeZeon } = this.modalData.attacker.summon;
         if (!summonUsed) {
           ui.notifications.warn(game.i18n.localize('anima.chat.combat.defense.selectSummon'));
           return;
@@ -462,7 +444,7 @@ export class CombatAttackDialog extends FormApplication {
           values: {
             summonUsed,
             damage: Math.floor((isAttackAccumulation ? effectiveDamage * 1.5 : effectiveDamage) / 5) * 5,
-            ignoredTA, attack: effectiveHA, critic: summonCritic, modifier, roll: rolled, total: roll.total, fumble: roll.fumbled,
+            enemyTAModifier, attack: effectiveHA, critic: summonCritic, modifier, roll: rolled, total: roll.total, fumble: roll.fumbled,
           },
         };
         this.hooks.onAttack(attackResult);
@@ -471,7 +453,7 @@ export class CombatAttackDialog extends FormApplication {
         this.attackerActor.update({
           "system.macroCookies.combatAttackDialog": {
             initialTab: "summon",
-            summon: { modifier, summonUsed, critic: summonCritic, ignoredTA, consumeZeon },
+            summon: { modifier, summonUsed, critic: summonCritic, enemyTAModifier, consumeZeon },
           },
         });
         if (consumeZeon !== false) {
@@ -622,7 +604,6 @@ export class CombatAttackDialog extends FormApplication {
       psychic.psychicPotential.final = psychic.basePotential + psychic.cvPotentialBonus + (psychic.psychicPotential.special ?? 0);
     }
     const { weapons } = this.attackerActor.system.combat;
-    console.log(combat, weapons, combat.weaponUsed);
     const weapon =
       weapons.find((w) => w._id === combat.weaponUsed) ?? weapons[0];
     combat.unarmed = weapons.length === 0;
@@ -654,7 +635,7 @@ export class CombatAttackDialog extends FormApplication {
       combat.summary = {
         haFinal: attackValue + ((combat.fatigueUsed ?? 0) * 15) + (combat.modifier ?? 0) + (counterAttackBonus ?? 0) + massBonus + modTermSum,
         damage: Math.floor((isAccumulation ? combat.damage.final * 1.5 : combat.damage.final) / 5) * 5,
-        ignoredTA: (combat.ignoredTA ?? 0) - (combat.weapon?.system?.taModifier?.final?.value ?? 0),
+        enemyTAModifier: (combat.enemyTAModifier ?? 0) + (combat.weapon?.system?.taModifier?.final?.value ?? 0),
         criticSelected: (combat.criticSelected && combat.criticSelected !== NoneWeaponCritic.NONE && combat.criticSelected !== "-") ? combat.criticSelected : null,
       };
     }
@@ -669,7 +650,7 @@ export class CombatAttackDialog extends FormApplication {
       mystic.summary = {
         haFinal: magicProjection + mysticMassBonus + mysticModTermSum + (mystic.modifier ?? 0),
         damage: Math.floor((isMysticAccum ? (mystic.damage ?? 0) * 1.5 : (mystic.damage ?? 0)) / 5) * 5,
-        ignoredTA: mystic.ignoredTA ?? 0,
+        enemyTAModifier: mystic.enemyTAModifier ?? 0,
         criticSelected: (mystic.critic && mystic.critic !== NoneWeaponCritic.NONE && mystic.critic !== "-") ? mystic.critic : null,
       };
     }
@@ -691,7 +672,7 @@ export class CombatAttackDialog extends FormApplication {
       psychic.summary = {
         haFinal: psychic.projectionValue + (psychic.modifier ?? 0) + psychicMassBonus,
         damage: Math.floor((isPsychicAccum ? (psychic.damage ?? 0) * 1.5 : (psychic.damage ?? 0)) / 5) * 5,
-        ignoredTA: psychic.ignoredTA ?? 0,
+        enemyTAModifier: psychic.enemyTAModifier ?? 0,
         criticSelected: (psychic.critic && psychic.critic !== NoneWeaponCritic.NONE && psychic.critic !== "-") ? psychic.critic : null,
       };
     }
@@ -746,7 +727,7 @@ export class CombatAttackDialog extends FormApplication {
       summon.summary = {
         haFinal: effectiveHA + (summon.modifier ?? 0) + summonMassBonus,
         damage: Math.floor((isSummonAccum ? summon.effectiveDamage * 1.5 : summon.effectiveDamage) / 5) * 5,
-        ignoredTA: summon.ignoredTA ?? 0,
+        enemyTAModifier: summon.enemyTAModifier ?? 0,
         criticSelected: (summon.critic && summon.critic !== NoneWeaponCritic.NONE && summon.critic !== "-") ? summon.critic : null,
       };
     } else {
@@ -780,8 +761,8 @@ export class CombatAttackDialog extends FormApplication {
           criticInputName:   'attacker.combat.criticSelected',
           criticValue:       combat.criticSelected,
           useCriticWithNone: false,
-          ignoredTAInputName: 'attacker.combat.ignoredTA',
-          ignoredTAValue:    combat.ignoredTA ?? 0,
+          enemyTAModifierInputName: 'attacker.combat.enemyTAModifier',
+          enemyTAModifierValue:    combat.enemyTAModifier ?? 0,
           summary:           combat.summary,
         },
         mystic: {
@@ -793,8 +774,8 @@ export class CombatAttackDialog extends FormApplication {
           criticInputName:   'attacker.mystic.critic',
           criticValue:       mystic.critic,
           useCriticWithNone: true,
-          ignoredTAInputName: 'attacker.mystic.ignoredTA',
-          ignoredTAValue:    mystic.ignoredTA ?? 0,
+          enemyTAModifierInputName: 'attacker.mystic.enemyTAModifier',
+          enemyTAModifierValue:    mystic.enemyTAModifier ?? 0,
           summary:           mystic.summary,
         },
         psychic: {
@@ -806,8 +787,8 @@ export class CombatAttackDialog extends FormApplication {
           criticInputName:   'attacker.psychic.critic',
           criticValue:       psychic.critic,
           useCriticWithNone: false,
-          ignoredTAInputName: 'attacker.psychic.ignoredTA',
-          ignoredTAValue:    psychic.ignoredTA ?? 0,
+          enemyTAModifierInputName: 'attacker.psychic.enemyTAModifier',
+          enemyTAModifierValue:    psychic.enemyTAModifier ?? 0,
           summary:           psychic.summary,
         },
         summon: {
@@ -819,8 +800,8 @@ export class CombatAttackDialog extends FormApplication {
           criticInputName:   'attacker.summon.critic',
           criticValue:       summon.critic,
           useCriticWithNone: false,
-          ignoredTAInputName: 'attacker.summon.ignoredTA',
-          ignoredTAValue:    summon.ignoredTA ?? 0,
+          enemyTAModifierInputName: 'attacker.summon.enemyTAModifier',
+          enemyTAModifierValue:    summon.enemyTAModifier ?? 0,
           summary:           summon.summary,
         },
       };
@@ -878,7 +859,7 @@ export class CombatAttackDialog extends FormApplication {
         weaponUsed: { value: combat.weaponUsed || "" },
         criticSelected: { value: combat.criticSelected || "-" },
         damageBonus: { value: combat.damage?.special || 0 },
-        ignoredTA: { value: combat.ignoredTA || 0 },
+        enemyTAModifier: { value: combat.enemyTAModifier || 0 },
       },
       mystic: {
         modifier: { value: mystic.modifier || 0 },
@@ -887,7 +868,7 @@ export class CombatAttackDialog extends FormApplication {
         spellGrade: { value: mystic.spellGrade || "base" },
         critic: { value: mystic.critic || "-" },
         damage: { value: mystic.damage || 0 },
-        ignoredTA: { value: mystic.ignoredTA || 0 },
+        enemyTAModifier: { value: mystic.enemyTAModifier || 0 },
         consumeZeon: { value: mystic.consumeZeon ?? true },
         zeonMod: { value: mystic.zeonMod ?? 0 },
       },
@@ -897,13 +878,13 @@ export class CombatAttackDialog extends FormApplication {
         powerUsed: { value: psychic.powerUsed || "" },
         critic: { value: psychic.critic || "-" },
         damage: { value: psychic.damage || 0 },
-        ignoredTA: { value: psychic.ignoredTA || 0 },
+        enemyTAModifier: { value: psychic.enemyTAModifier || 0 },
       },
       summon: {
         modifier: { value: summon?.modifier || 0 },
         summonUsed: { value: summon?.summonUsed || "" },
         critic: { value: summon?.critic || "impact" },
-        ignoredTA: { value: summon?.ignoredTA || 0 },
+        enemyTAModifier: { value: summon?.enemyTAModifier || 0 },
         consumeZeon: { value: summon?.consumeZeon ?? true },
       },
     };
@@ -975,7 +956,7 @@ export class CombatAttackDialog extends FormApplication {
       attacker.combat.weaponUsed = presetData.combat.weaponUsed?.value || attacker.combat.weaponUsed;
       attacker.combat.criticSelected = presetData.combat.criticSelected?.value || undefined;
       attacker.combat.damage.special = Number(presetData.combat.damageBonus?.value) || 0;
-      attacker.combat.ignoredTA = Number(presetData.combat.ignoredTA?.value) || 0;
+      attacker.combat.enemyTAModifier = Number(presetData.combat.enemyTAModifier?.value) || 0;
     }
 
     // Load mystic data
@@ -986,7 +967,7 @@ export class CombatAttackDialog extends FormApplication {
       attacker.mystic.spellGrade = presetData.mystic.spellGrade?.value || "base";
       attacker.mystic.critic = presetData.mystic.critic?.value || "-";
       attacker.mystic.damage = Number(presetData.mystic.damage?.value) || 0;
-      attacker.mystic.ignoredTA = Number(presetData.mystic.ignoredTA?.value) || 0;
+      attacker.mystic.enemyTAModifier = Number(presetData.mystic.enemyTAModifier?.value) || 0;
       attacker.mystic.consumeZeon = presetData.mystic.consumeZeon?.value ?? true;
       attacker.mystic.zeonMod = Number(presetData.mystic.zeonMod?.value) || 0;
     }
@@ -998,7 +979,7 @@ export class CombatAttackDialog extends FormApplication {
       attacker.psychic.powerUsed = presetData.psychic.powerUsed?.value || attacker.psychic.powerUsed;
       attacker.psychic.critic = presetData.psychic.critic?.value || "-";
       attacker.psychic.damage = Number(presetData.psychic.damage?.value) || 0;
-      attacker.psychic.ignoredTA = Number(presetData.psychic.ignoredTA?.value) || 0;
+      attacker.psychic.enemyTAModifier = Number(presetData.psychic.enemyTAModifier?.value) || 0;
     }
 
     // Load summon data
@@ -1006,7 +987,7 @@ export class CombatAttackDialog extends FormApplication {
       attacker.summon.modifier = Number(presetData.summon.modifier?.value) || 0;
       attacker.summon.summonUsed = presetData.summon.summonUsed?.value || attacker.summon.summonUsed;
       attacker.summon.critic = presetData.summon.critic?.value || "impact";
-      attacker.summon.ignoredTA = Number(presetData.summon.ignoredTA?.value) || 0;
+      attacker.summon.enemyTAModifier = Number(presetData.summon.enemyTAModifier?.value) || 0;
       attacker.summon.consumeZeon = presetData.summon.consumeZeon?.value ?? true;
     }
 

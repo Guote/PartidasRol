@@ -64,7 +64,7 @@ descansa${restingDays > 1 ? `${restingDays} días` : ``}:
 | CV: ${newCv} (+${regCv})`);
 
   actor.update({
-    data: {
+    system: {
       characteristics: {
         secondaries: {
           lifePoints: { value: newHp },

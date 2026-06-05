@@ -1,3 +1,5 @@
+import { calculateTAModifierByQuality } from '../../../../../combat/utils/calculateATReductionByQuality.js';
+
 export const mutateWeaponTAModifier = (data) => {
-    data.taModifier.final.value = data.taModifier.base.value - Math.round(data.quality.value / 5);
+  data.taModifier.final.value = data.taModifier.base.value + calculateTAModifierByQuality(data.quality.value);
 };

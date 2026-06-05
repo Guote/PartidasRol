@@ -1,16 +1,8 @@
-import { WeaponShotType } from '../../types/combat/WeaponItemConfig.js';
-export const calculateATReductionByQuality = result => {
-    let quality = 0;
-    const { weapon } = result;
-    if (weapon) {
-        quality = weapon.system.quality.value;
-        if (weapon.system.isRanged.value &&
-            weapon.system.shotType.value === WeaponShotType.SHOT) {
-            quality = weapon.system.ammo?.system.quality.value ?? 0;
-        }
-    }
-    if (quality <= 0) {
-        return 0;
-    }
-    return Math.round(quality / 5);
-};
+/**
+ * Returns the TA modifier contributed by weapon quality (negative = reduces enemy TA).
+ * Quality 5 → -1, quality 10 → -2, etc.
+ * @param {number} quality
+ * @returns {number}
+ */
+export const calculateTAModifierByQuality = (quality) =>
+  -Math.max(0, Math.round(quality / 5));

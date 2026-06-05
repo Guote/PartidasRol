@@ -31,33 +31,37 @@ export default class ABFCombat extends Combat {
     }
     for (const id of ids) {
       const combatant = this.combatants.get(id);
-      const turnWeapons = (combatant?.actor?.system?.combat?.weapons || [])
-        .filter(w => w.system?.isShown?.value)
-        .slice(0, 2);
-      const weaponInitValues = [];
-      const weaponInitLabels = [];
-      if (turnWeapons.length === 1) {
-        weaponInitValues.push(turnWeapons[0].system?.initiative?.final?.value ?? 0);
-        weaponInitLabels.push(turnWeapons[0].name);
-      } else if (turnWeapons.length === 2) {
-        const w1 = turnWeapons[0];
-        const w2 = turnWeapons[1];
-        weaponInitValues.push(w1.system?.initiative?.final?.value ?? 0);
-        weaponInitLabels.push(w1.name);
-        weaponInitValues.push(w2.system?.initiative?.final?.value ?? 0);
-        weaponInitLabels.push(w2.name);
-        if (w1.system?.size?.value === w2.system?.size?.value) {
-          const minBase = Math.min(w1.system?.initiative?.base?.value ?? 0, w2.system?.initiative?.base?.value ?? 0);
-          weaponInitValues.push(minBase < 0 ? -20 : -10);
-          weaponInitLabels.push("Ambidiestro");
-        }
-      }
+      const allWeapons = combatant?.actor?.system?.combat?.weapons || [];
+      const desarmadoW = allWeapons.find(w => w.system?.isDefault?.value);
+      const unarmedMod = desarmadoW?.system?.initiative?.final?.value ?? 20;
 
       const naturalTurno = combatant?.actor?.system.characteristics.secondaries.initiative.base.value ?? 0;
+      const naturalBase = naturalTurno - 20;
+      const unarmedEff = naturalBase + unarmedMod;
+
+      const regularWeapons = allWeapons.filter(
+        w => w.system?.isShown?.value && !w.system?.isShield?.value && !w.system?.isDefault?.value
+      );
+
+      const wEff = w => naturalBase + (w.system?.initiative?.final?.value ?? 0);
+      const slowestWeaponEff = regularWeapons.length > 0
+        ? Math.min(...regularWeapons.map(wEff))
+        : Infinity;
+
+      const weaponInitValues = [];
+      const weaponInitLabels = [];
+      if (unarmedEff <= slowestWeaponEff) {
+        weaponInitValues.push(unarmedMod);
+        weaponInitLabels.push(desarmadoW?.name ?? "Natural");
+      } else {
+        const slowestW = regularWeapons.reduce((min, w) => wEff(w) <= wEff(min) ? w : min);
+        weaponInitValues.push(slowestW.system?.initiative?.final?.value ?? 0);
+        weaponInitLabels.push(slowestW.name);
+      }
       let formula = getFormula({
         dice: "1d100Initiative",
         values: [
-          naturalTurno - 20,
+          naturalBase,
           ...weaponInitValues,
           mod,
         ],

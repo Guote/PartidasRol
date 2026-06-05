@@ -1,8 +1,9 @@
 import { NoneWeaponCritic } from "../../types/combat/WeaponItemConfig.js";
 import { Templates } from "../../utils/constants.js";
 import { calculateCombatResult } from "../../combat/utils/calculateCombatResult.js";
-import { calculateATReductionByQuality } from "../../combat/utils/calculateATReductionByQuality.js";
+import { calculateTAModifierByQuality } from "../../combat/utils/calculateATReductionByQuality.js";
 import { ABFSystemName } from "../../../animabf-guote.name.js";
+import { getItemFromResult } from "./utils/getItemFromResult.js";
 const getInitialData = (attacker, defender, options = {}) => {
   const attackerActor = attacker.actor;
   const defenderActor = defender.actor;
@@ -59,7 +60,6 @@ export class GMCombatDialog extends FormApplication {
   }
   get isDamagingCombat() {
     const { attacker } = this.modalData;
-    console.log(attacker);
     const isPhysicalDamagingCombat = attacker.result?.type === "combat";
     const isMysticDamagingCombat =
       attacker.result?.type === "mystic" &&
@@ -142,41 +142,18 @@ export class GMCombatDialog extends FormApplication {
   }
   updateAttackerData(result) {
     this.modalData.attacker.result = result;
-    if (result.type === "combat") {
-      const { weapons } = this.attackerActor.system.combat;
-      this.modalData.attacker.result.weapon = weapons.find(
-        (w) => w._id === result.values.weaponUsed
-      );
-    }
-    if (result.type === "mystic") {
-      const { spells } = this.attackerActor.system.mystic;
-      this.modalData.attacker.result.spell = spells.find(
-        (w) => w._id === result.values.spellUsed
-      );
-    }
-    if (result.type === "psychic") {
-      const powers = this.attackerActor.system.psychic.psychicPowers;
-      this.modalData.attacker.result.power = powers.find(
-        (w) => w._id === result.values.powerUsed
-      );
-    }
+    const item = getItemFromResult(this.attackerActor, result);
+    if (result.type === "combat")  this.modalData.attacker.result.weapon = item;
+    if (result.type === "mystic")  this.modalData.attacker.result.spell  = item;
+    if (result.type === "psychic") this.modalData.attacker.result.power  = item;
     this.render();
   }
   updateDefenderData(result) {
     result.values.total = Math.max(0, result.values.total);
     this.modalData.defender.result = result;
-    if (result.type === "mystic") {
-      const { spells } = this.defenderActor.system.mystic;
-      this.modalData.defender.result.spell = spells.find(
-        (w) => w._id === result.values.spellUsed
-      );
-    }
-    if (result.type === "psychic") {
-      const powers = this.defenderActor.system.psychic.psychicPowers;
-      this.modalData.defender.result.power = powers.find(
-        (w) => w._id === result.values.powerUsed
-      );
-    }
+    const item = getItemFromResult(this.defenderActor, result);
+    if (result.type === "mystic")  this.modalData.defender.result.spell = item;
+    if (result.type === "psychic") this.modalData.defender.result.power = item;
     this.render();
   }
   getData() {
@@ -192,12 +169,14 @@ export class GMCombatDialog extends FormApplication {
         attacker.result.values.damage +
         this.modalData.attacker.customModifier_Damage;
       const weaponTAMod = attacker.result.weapon?.system?.taModifier?.final?.value;
+      const weaponATMod = weaponTAMod !== undefined
+        ? weaponTAMod
+        : calculateTAModifierByQuality(attacker.result.weapon?.system?.quality?.value ?? 0);
       const taTotal = Math.max(
         0,
-        defender.result.values.at -
-          (weaponTAMod !== undefined ? weaponTAMod : calculateATReductionByQuality(attacker.result)) +
-          this.modalData.defender.customModifier_TA -
-          attacker.result.values.ignoredTA
+        defender.result.values.at + weaponATMod +
+          this.modalData.defender.customModifier_TA +
+          attacker.result.values.enemyTAModifier
       );
 
       const winner =

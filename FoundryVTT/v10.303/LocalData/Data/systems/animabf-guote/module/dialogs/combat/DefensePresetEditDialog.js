@@ -1,4 +1,5 @@
 import { ABFSystemName } from '../../../animabf-guote.name.js';
+import { attachItemSheetHandler } from './utils/attachItemSheetHandlers.js';
 
 const TEMPLATE_PATH = `systems/${ABFSystemName}/templates/dialog/combat/defense-preset-edit/defense-preset-edit-dialog.hbs`;
 
@@ -89,11 +90,8 @@ export class DefensePresetEditDialog extends FormApplication {
         super.activateListeners(html);
 
         // Open selected spell sheet
-        html.find('.open-spell-sheet').click(() => {
-            const spellId = html.find('[name="preset.mystic.spellUsed"]').val();
-            if (!spellId) return;
-            this.actor.items.get(spellId)?.sheet?.render(true);
-        });
+        attachItemSheetHandler(html, '.open-spell-sheet', this.actor,
+            () => html.find('[name="preset.mystic.spellUsed"]').val());
 
         const presetInput = html.find('.preset-name-input');
         const saveButton = html.find('.save-defense-preset-edit');

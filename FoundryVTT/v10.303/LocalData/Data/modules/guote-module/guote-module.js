@@ -1,6 +1,12 @@
 // ─── Condition name — change here to rename in CUB ───────────────────────────
 const USANDO_ENERGIA = "Usando Energia";
 
+// ─── Named constants ──────────────────────────────────────────────────────────
+/** Initiative gap at which a combatant is considered surprised by the active turn. */
+const SURPRISE_INITIATIVE_THRESHOLD = 150;
+/** Divisor applied each round to free (un-locked) ki accumulation as a partial penalty. */
+const KI_ROUND_REDUCTION_DIVISOR = 2;
+
 const ROUND_REMINDER_TEMPLATE = "modules/guote-module/templates/round-reminder.hbs";
 const KI_STATS = ['strength', 'agility', 'dexterity', 'constitution', 'willPower', 'power'];
 const KI_STAT_LABELS = {
@@ -33,14 +39,6 @@ Hooks.on("ready", async () => {
     console.warn("[guote-module] Could not import ABFSpellbook:", e);
   }
 });
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-const getActorFromCombatant = (combatant) => {
-  return game.actors.get(combatant.actorId);
-};
 
 const getTokenFromCombatant = (combatant) => {
   return canvas.tokens.get(combatant.tokenId);
@@ -95,7 +93,7 @@ const applySurprise = (combat) => {
 
     combat.combatants.forEach((comb) => {
       const token = getTokenFromCombatant(comb);
-      const shouldBeSurprised = currentInitiative >= comb.initiative + 150;
+      const shouldBeSurprised = currentInitiative >= comb.initiative + SURPRISE_INITIATIVE_THRESHOLD;
 
       if (!shouldBeSurprised && game.cub.hasCondition(effectName, token)) {
         game.cub.removeCondition(effectName, token);
@@ -155,6 +153,14 @@ Hooks.on("updateCombatant", async function (combatant, data, options, userId) {
   }
 });
 
+function getNotificationRecipients(actor) {
+  const ownerIds = Object.entries(actor.ownership ?? {})
+    .filter(([uid, lvl]) => lvl >= 3 && uid !== 'default')
+    .map(([uid]) => uid);
+  const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
+  return { ownerIds, gmIds };
+}
+
 const cubHas = (name, token) => {
   try {
     return game.cub.hasCondition(name, token);
@@ -173,43 +179,43 @@ const cubRemove = (name, token) => {
   } catch {}
 };
 
-// Apply Fortalecimiento/Debilitamiento based on total modifier
+// ─── Actor update: Fortalecimiento/Debilitamiento + Usando Energía sync ──────
 // NOTE: modFinal.general.final.value is derived by the async prepareActor pipeline and is
 // not yet calculated when updateActor fires. Read raw bonus/malus directly instead.
-Hooks.on("updateActor", (actor, updateData, options, userId) => {
-  if (!game.user.isGM) return;
-  if (!updateData.system?.general?.modifiers) return;
-
-  const sob = actor.system.general.modifiers.modSobrenatural;
-  const fis = actor.system.general.modifiers.modFisico;
-  const modTotal =
-    (sob.bonus?.value ?? 0) +
-    (sob.malus?.value ?? 0) +
-    (fis.bonus?.value ?? 0) +
-    (fis.malus?.value ?? 0);
-  const token = actor.getActiveTokens()[0];
-  const condPlus = "Fortalecimiento";
-  const condMinus = "Debilitamiento";
-
-  if (!token) return;
-
-  if (modTotal > 0) {
-    if (!cubHas(condPlus, token)) cubAdd(condPlus, token);
-    if (cubHas(condMinus, token)) cubRemove(condMinus, token);
-  } else if (modTotal < 0) {
-    if (cubHas(condPlus, token)) cubRemove(condPlus, token);
-    if (!cubHas(condMinus, token)) cubAdd(condMinus, token);
-  } else {
-    if (cubHas(condPlus, token)) cubRemove(condPlus, token);
-    if (cubHas(condMinus, token)) cubRemove(condMinus, token);
-  }
-});
-
-// ─── Energy condition: sync when actor ki or zeon data changes ────────────────
 Hooks.on("updateActor", (actor, updateData) => {
   if (!game.user.isGM) return;
-  if (!updateData?.system?.mystic && !updateData?.system?.domine) return;
-  syncCondition(actor);
+
+  // Fortalecimiento/Debilitamiento — only when modifiers changed
+  if (updateData.system?.general?.modifiers) {
+    const sob = actor.system.general.modifiers.modSobrenatural;
+    const fis = actor.system.general.modifiers.modFisico;
+    const modTotal =
+      (sob.bonus?.value ?? 0) +
+      (sob.malus?.value ?? 0) +
+      (fis.bonus?.value ?? 0) +
+      (fis.malus?.value ?? 0);
+    const token = actor.getActiveTokens()[0];
+    const condPlus = "Fortalecimiento";
+    const condMinus = "Debilitamiento";
+
+    if (token) {
+      if (modTotal > 0) {
+        if (!cubHas(condPlus, token)) cubAdd(condPlus, token);
+        if (cubHas(condMinus, token)) cubRemove(condMinus, token);
+      } else if (modTotal < 0) {
+        if (cubHas(condPlus, token)) cubRemove(condPlus, token);
+        if (!cubHas(condMinus, token)) cubAdd(condMinus, token);
+      } else {
+        if (cubHas(condPlus, token)) cubRemove(condPlus, token);
+        if (cubHas(condMinus, token)) cubRemove(condMinus, token);
+      }
+    }
+  }
+
+  // Usando Energía sync — only when domine/mystic changed
+  if (updateData.system?.mystic || updateData.system?.domine) {
+    syncCondition(actor);
+  }
 });
 
 // ─── Energy condition: apply when a spell is cast from attack/defense dialog ──
@@ -265,10 +271,7 @@ async function applyUpkeepCosts(actor) {
   await actor.update({
     "system.mystic.zeon.value": Math.max(0, currentZeon - total),
   });
-  const ownerIds = Object.entries(actor.ownership ?? {})
-    .filter(([uid, lvl]) => lvl >= 3 && uid !== "default")
-    .map(([uid]) => uid);
-  const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
+  const { ownerIds, gmIds } = getNotificationRecipients(actor);
   ChatMessage.create({
     content: `<i class="fas fa-hat-wizard"></i> <b>${actor.name}</b>: Mantenimiento aplicado (−${total} reserva).`,
     whisper: [...new Set([...ownerIds, ...gmIds])],
@@ -303,10 +306,7 @@ async function applyZeonCleanup(actor) {
   if (pending)
     await actor.update({ "system.macroCookies.pendingZeonCleanup": null });
 
-  const ownerIds = Object.entries(actor.ownership ?? {})
-    .filter(([uid, lvl]) => lvl >= 3 && uid !== "default")
-    .map(([uid]) => uid);
-  const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
+  const { ownerIds, gmIds } = getNotificationRecipients(actor);
   const penaltyText =
     penalty < 0 ? ` Penalización: <b>${penalty}</b> reserva.` : "";
   ChatMessage.create({
@@ -342,10 +342,7 @@ async function applyKiUpkeep(actor) {
   if (total <= 0) return;
   const currentKi = actor.system?.domine?.kiAccumulation?.generic?.value ?? 0;
   await actor.update({ "system.domine.kiAccumulation.generic.value": Math.max(0, currentKi - total) });
-  const ownerIds = Object.entries(actor.ownership ?? {})
-    .filter(([uid, lvl]) => lvl >= 3 && uid !== "default")
-    .map(([uid]) => uid);
-  const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
+  const { ownerIds, gmIds } = getNotificationRecipients(actor);
   ChatMessage.create({
     content: `<i class="fas fa-yin-yang"></i> <b>${actor.name}</b>: Mantenimiento Ki aplicado (−${total} ki).`,
     whisper: [...new Set([...ownerIds, ...gmIds])],
@@ -362,10 +359,7 @@ async function applyKiCleanup(actor) {
   await actor.update(updateData);
   // syncCondition fires automatically via updateActor hook after the update above
 
-  const ownerIds = Object.entries(actor.ownership ?? {})
-    .filter(([uid, lvl]) => lvl >= 3 && uid !== "default")
-    .map(([uid]) => uid);
-  const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
+  const { ownerIds, gmIds } = getNotificationRecipients(actor);
   ChatMessage.create({
     content: `<i class="fas fa-yin-yang"></i> <b>${actor.name}</b>: Ki limpiado (−1 reserva ki).`,
     whisper: [...new Set([...ownerIds, ...gmIds])],
@@ -390,7 +384,7 @@ async function applyKiPartialPenalty(combat) {
       const accumulated = actor.system?.domine?.kiAccumulation?.[stat]?.accumulated?.value ?? 0;
       if (accumulated <= 0) continue;
       const accRate = actor.system?.domine?.kiAccumulation?.[stat]?.final?.value ?? 0;
-      const reduction = Math.floor(accRate / 2);
+      const reduction = Math.floor(accRate / KI_ROUND_REDUCTION_DIVISOR);
       if (reduction <= 0) continue;
       const lockedStat = locked[stat] ?? 0;
       const free = Math.max(0, accumulated - lockedStat);
@@ -411,104 +405,131 @@ async function applyKiPartialPenalty(combat) {
 }
 
 // ─── Unified round reminder ───────────────────────────────────────────────────
-async function sendRoundReminder(combat, kiLossMap = new Map()) {
-  if (!game.user.isGM) return;
 
-  const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
-  const playerActors = new Map(); // playerId → entries[]
-  const gmOnlyEntries = [];
-
+/**
+ * Collect all combatants that are using energy (USANDO_ENERGIA condition) and
+ * return the raw data needed to build their reminder entries.
+ * @param {Combat} combat
+ * @param {Map<string, {kiAccLost: number, kiAccLostStats: Array}>} kiLossMap
+ * @returns {Array<{actor, token, kiAccLost, kiAccLostStats}>}
+ */
+function _collectEnergyActors(combat, kiLossMap) {
+  const collected = [];
   for (const combatant of combat.combatants) {
     const token = getTokenFromCombatant(combatant);
     const actor = combatant.actor;
     if (!actor || !token) continue;
     if (!cubHas(USANDO_ENERGIA, token)) continue;
-
-    const zeonAcc = actor.system?.mystic?.zeonAccumulated?.value ?? 0;
-    const zeonUpkeep = getActorRoundUpkeep(actor);
-    const pureLeftoverWarn = !!(
-      actor.system?.macroCookies?.pendingZeonCleanup?.isPure &&
-      (actor.system?.macroCookies?.pendingZeonCleanup?.leftover ?? 0) > 0
-    );
-    const kiAcc = getTotalKiAccumulated(actor);
-    const kiUpkeep = getActorRoundKiUpkeep(actor);
-    const isConcentrado = cubHas("Concentrado", token);
-
-    const heldKiTechniques = (actor.system?.domine?.kiMaintenances ?? [])
-      .filter(m => m.system?.active?.value !== false && m.system?.techniqueId?.value)
-      .map(m => {
-        const tech = actor.items.find(i => i.id === m.system.techniqueId.value);
-        return { name: tech?.name ?? m.name, level: Number(tech?.system?.level?.value) || 0 };
-      });
-    const heldZeonSpells = (actor.system?.mystic?.spellMaintenances ?? [])
-      .filter(m => m.system?.active?.value !== false && m.name?.startsWith('Aguantando:'))
-      .map(m => {
-        const spellId = m.system?.spellId?.value;
-        const grade = m.system?.grade?.value ?? 'base';
-        const spell = spellId ? actor.items.find(i => i.id === spellId) : null;
-        const zeonCost = spell?.system?.grades?.[grade]?.zeon?.value ?? 0;
-        return { name: m.name.replace('Aguantando: ', ''), grade, zeonCost };
-      });
-
     const { kiAccLost = 0, kiAccLostStats = [] } = kiLossMap.get(actor.id) ?? {};
-    const hasKiAccLost = kiAccLost > 0;
+    collected.push({ actor, token, kiAccLost, kiAccLostStats });
+  }
+  return collected;
+}
 
-    const showGrimoire = !!(zeonAcc || zeonUpkeep);
-    const hasUpkeep = kiUpkeep > 0 || zeonUpkeep > 0;
-    const hasCleanup = kiAcc > 0 || zeonAcc > 0;
+/**
+ * Build the per-actor template entry object from a collected energy actor record.
+ * @param {{actor, token, kiAccLost: number, kiAccLostStats: Array}} record
+ * @returns {Object} entry — shape expected by round-reminder.hbs
+ */
+function _buildReminderEntry({ actor, token, kiAccLost, kiAccLostStats }) {
+  const zeonAcc = actor.system?.mystic?.zeonAccumulated?.value ?? 0;
+  const zeonUpkeep = getActorRoundUpkeep(actor);
+  const pureLeftoverWarn = !!(
+    actor.system?.macroCookies?.pendingZeonCleanup?.isPure &&
+    (actor.system?.macroCookies?.pendingZeonCleanup?.leftover ?? 0) > 0
+  );
+  const kiAcc = getTotalKiAccumulated(actor);
+  const kiUpkeep = getActorRoundKiUpkeep(actor);
+  const isConcentrado = cubHas("Concentrado", token);
 
-    // Button slots — ordered independently per column so row 1 always pairs
-    // the first available upkeep with the first available cleanup, regardless of resource type.
-    const upkeepSlots = [];
-    if (kiUpkeep > 0) upkeepSlots.push({
-      action: 'ki-apply-upkeep', iconClass: 'fas fa-yin-yang', colorClass: 'gzr-icon--ki',
-      value: kiUpkeep, tooltip: 'Pagar costes de mantenimiento',
+  const heldKiTechniques = (actor.system?.domine?.kiMaintenances ?? [])
+    .filter(m => m.system?.active?.value !== false && m.system?.techniqueId?.value)
+    .map(m => {
+      const tech = actor.items.find(i => i.id === m.system.techniqueId.value);
+      return { name: tech?.name ?? m.name, level: Number(tech?.system?.level?.value) || 0 };
     });
-    if (zeonUpkeep > 0) upkeepSlots.push({
-      action: 'apply-upkeep', iconClass: 'fas fa-hat-wizard', colorClass: 'gzr-icon--zeon',
-      value: zeonUpkeep, tooltip: 'Pagar costes de mantenimiento',
+  const heldZeonSpells = (actor.system?.mystic?.spellMaintenances ?? [])
+    .filter(m => m.system?.active?.value !== false && m.name?.startsWith('Aguantando:'))
+    .map(m => {
+      const spellId = m.system?.spellId?.value;
+      const grade = m.system?.grade?.value ?? 'base';
+      const spell = spellId ? actor.items.find(i => i.id === spellId) : null;
+      const zeonCost = spell?.system?.grades?.[grade]?.zeon?.value ?? 0;
+      return { name: m.name.replace('Aguantando: ', ''), grade, zeonCost };
     });
 
-    const cleanupSlots = [];
-    if (kiAcc > 0) cleanupSlots.push({
-      action: 'ki-cleanup', iconClass: 'fas fa-yin-yang', colorClass: 'gzr-icon--ki',
-      acc: kiAcc, hasPenalty: true, penalty: 1,
-      tooltip: 'Limpiar ki acumulado.\nSi el turno anterior hemos lanzado alguna técnica o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.\nPerdemos 1 ki de la reserva por tener ki sobrante al dejar de acumular.',
-    });
-    if (zeonAcc > 0) cleanupSlots.push({
-      action: 'zeon-cleanup', iconClass: 'fas fa-hat-wizard', colorClass: 'gzr-icon--zeon',
-      acc: zeonAcc, hasPenalty: pureLeftoverWarn, penalty: 10,
-      tooltip: `Limpiar zeon acumulado.\nSi el turno anterior hemos lanzado algún conjuro o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.${pureLeftoverWarn ? '\nPerdemos 10 zeon de la reserva por tener zeon sobrante al dejar de acumular.' : ''}`,
-    });
+  const hasKiAccLost = kiAccLost > 0;
+  const showGrimoire = !!(zeonAcc || zeonUpkeep);
+  const hasUpkeep = kiUpkeep > 0 || zeonUpkeep > 0;
+  const hasCleanup = kiAcc > 0 || zeonAcc > 0;
 
-    const buttonRows = Array.from(
-      { length: Math.max(upkeepSlots.length, cleanupSlots.length) },
-      (_, i) => ({ upkeep: upkeepSlots[i] ?? null, cleanup: cleanupSlots[i] ?? null }),
-    );
+  // Button slots — ordered independently per column so row 1 always pairs
+  // the first available upkeep with the first available cleanup, regardless of resource type.
+  const upkeepSlots = [];
+  if (kiUpkeep > 0) upkeepSlots.push({
+    action: 'ki-apply-upkeep', iconClass: 'fas fa-yin-yang', colorClass: 'gzr-icon--ki',
+    value: kiUpkeep, tooltip: 'Pagar costes de mantenimiento',
+  });
+  if (zeonUpkeep > 0) upkeepSlots.push({
+    action: 'apply-upkeep', iconClass: 'fas fa-hat-wizard', colorClass: 'gzr-icon--zeon',
+    value: zeonUpkeep, tooltip: 'Pagar costes de mantenimiento',
+  });
 
-    const entry = {
-      actorId: actor.id,
-      actorName: actor.name,
-      tokenSrc: token?.document?.texture?.src ?? actor.img,
-      zeonAcc,
-      zeonUpkeep,
-      pureLeftoverWarn,
-      kiAcc,
-      kiAccLost,
-      kiAccLostStats,
-      hasKiAccLost,
-      kiUpkeep,
-      isConcentrado,
-      heldKiTechniques,
-      heldZeonSpells,
-      showGrimoire,
-      hasUpkeep,
-      hasCleanup,
-      buttonRows,
-    };
+  const cleanupSlots = [];
+  if (kiAcc > 0) cleanupSlots.push({
+    action: 'ki-cleanup', iconClass: 'fas fa-yin-yang', colorClass: 'gzr-icon--ki',
+    acc: kiAcc, hasPenalty: true, penalty: 1,
+    tooltip: 'Limpiar ki acumulado.\nSi el turno anterior hemos lanzado alguna técnica o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.\nPerdemos 1 ki de la reserva por tener ki sobrante al dejar de acumular.',
+  });
+  if (zeonAcc > 0) cleanupSlots.push({
+    action: 'zeon-cleanup', iconClass: 'fas fa-hat-wizard', colorClass: 'gzr-icon--zeon',
+    acc: zeonAcc, hasPenalty: pureLeftoverWarn, penalty: 10,
+    tooltip: `Limpiar zeon acumulado.\nSi el turno anterior hemos lanzado algún conjuro o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.${pureLeftoverWarn ? '\nPerdemos 10 zeon de la reserva por tener zeon sobrante al dejar de acumular.' : ''}`,
+  });
 
+  const buttonRows = Array.from(
+    { length: Math.max(upkeepSlots.length, cleanupSlots.length) },
+    (_, i) => ({ upkeep: upkeepSlots[i] ?? null, cleanup: cleanupSlots[i] ?? null }),
+  );
+
+  return {
+    actorId: actor.id,
+    actorName: actor.name,
+    tokenSrc: token?.document?.texture?.src ?? actor.img,
+    zeonAcc,
+    zeonUpkeep,
+    pureLeftoverWarn,
+    kiAcc,
+    kiAccLost,
+    kiAccLostStats,
+    hasKiAccLost,
+    kiUpkeep,
+    isConcentrado,
+    heldKiTechniques,
+    heldZeonSpells,
+    showGrimoire,
+    hasUpkeep,
+    hasCleanup,
+    buttonRows,
+  };
+}
+
+/**
+ * Build the whisper routing maps: one entry list per online player-owner, plus a
+ * GM-only list for actors with no online player owner.
+ * @param {Array} collected — output of _collectEnergyActors
+ * @returns {{ playerActors: Map<string, Array>, gmOnlyEntries: Array }}
+ */
+function _buildReminderContext(collected) {
+  const playerActors = new Map(); // playerId → entries[]
+  const gmOnlyEntries = [];
+
+  for (const record of collected) {
+    const entry = _buildReminderEntry(record);
     // Ownership: use the player who has this actor as their default character, if online
-    const defaultPlayer = game.users.find(u => !u.isGM && u.active && u.character?.id === actor.id);
+    const defaultPlayer = game.users.find(
+      u => !u.isGM && u.active && u.character?.id === record.actor.id
+    );
     if (defaultPlayer) {
       if (!playerActors.has(defaultPlayer.id)) playerActors.set(defaultPlayer.id, []);
       playerActors.get(defaultPlayer.id).push(entry);
@@ -517,6 +538,20 @@ async function sendRoundReminder(combat, kiLossMap = new Map()) {
     }
   }
 
+  return { playerActors, gmOnlyEntries };
+}
+
+/**
+ * Orchestrate the round-end reminder: collect actors → build context → dispatch whispers.
+ * @param {Combat} combat
+ * @param {Map} [kiLossMap]
+ */
+async function sendRoundReminder(combat, kiLossMap = new Map()) {
+  if (!game.user.isGM) return;
+
+  const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
+  const collected = _collectEnergyActors(combat, kiLossMap);
+  const { playerActors, gmOnlyEntries } = _buildReminderContext(collected);
   const round = combat.round ?? 0;
 
   for (const [userId, entries] of playerActors) {

@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code when working in this workspace.
 
+## Session Start — Always Do This First
+
+At the start of every session in this project, read `TODO.md` (in this directory) and tell the user what open tasks are listed there. Do this before anything else.
+
 ## Workspace Overview
 
 This workspace provides Claude Code context for a FoundryVTT setup running **Anima Beyond Fantasy**.
@@ -76,10 +80,24 @@ When saving anything to the local auto-memory files (`~/.claude/projects/.../mem
 
 ---
 
+## Agent Teams Lite / SDD
+
+This project uses **Agent Teams Lite (ATL)** and **Spec-Driven Development (SDD)**.
+
+The orchestrator instructions live in `~/.claude/CLAUDE.md` (global, machine-local).
+Skill registry: `.atl/skill-registry.md` — defines project standards injected into sub-agents.
+
+**On a new machine**: copy the orchestrator instructions block from the primary machine's
+`~/.claude/CLAUDE.md` into the same path. Without it, `/sdd-new`, `/sdd-ff`, and
+`/sdd-continue` will not behave correctly.
+
+---
+
 ## Key File Paths (Quick Reference)
 
 | File | Purpose |
 |------|---------|
+| `TODO.md` | Open tasks — read at session start and surface to user |
 | `systems/animabf-guote/CLAUDE.md` | Full system architecture reference |
 | `modules/guote-module/CLAUDE.md` | Hook architecture, script patterns, known issues |
 | `modules/guote-module/module.json` | Module manifest — declares loaded scripts |

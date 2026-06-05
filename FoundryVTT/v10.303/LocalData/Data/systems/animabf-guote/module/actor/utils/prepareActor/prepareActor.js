@@ -16,12 +16,14 @@ import { mutateIncarnationOverride } from "./calculations/actor/mystic/mutateInc
 import { mutateInitiative } from "./calculations/actor/mutateInitiative.js";
 import { mutateRegenerationType } from "./calculations/actor/general/mutateRegenerationType.js";
 import { mutateMasaData } from "./calculations/actor/mutateMasaData.js";
+import { mutateWeightIndex } from "./calculations/actor/general/mutateWeightIndex.js";
 // Be careful with order of this functions, some derived data functions could be dependent of another
 const DERIVED_DATA_FUNCTIONS = [
   mutateMasaData,
   mutatePrimaryModifiers,
   mutateMovementType,
   mutateRegenerationType,
+  mutateWeightIndex,
   mutatePenalties,
   mutateCombatData,
   mutateArmorsData,

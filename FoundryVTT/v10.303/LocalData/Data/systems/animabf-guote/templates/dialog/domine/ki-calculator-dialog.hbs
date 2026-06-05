@@ -181,6 +181,10 @@
           <i class="fas fa-lock"></i> Aguantar{{#if holdTechniqueLevel}} ({{holdTechniqueLevel}}){{/if}}
         </label>
         {{/if}}
+        <label class="kc-tech-toggle__opt {{#if (is "eq" techAction "none")}}kc-tech-toggle__opt--active{{/if}}">
+          <input type="radio" name="techAction" value="none" {{#if (is "eq" techAction "none")}}checked{{/if}}>
+          <i class="fas fa-ban"></i> Solo acumular
+        </label>
       </div>
     </div>
 
