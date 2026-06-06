@@ -893,7 +893,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const basePotential = this.actor.system.psychic.psychicPotential.final.value || 0;
       const powerBonus = power.system.bonus?.value || 0;
       const mod = await openModDialog();
-      const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, 'general-negative');
+      const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, 'general-negative-half');
       const formula = getFormula({
         dice: '1d100xa',
         values: [basePotential, powerBonus, ...modValues, mod],
@@ -953,7 +953,9 @@ export default class ABFActorSheetV2 extends ActorSheet {
       if (!power) return;
 
       const summoningValue = this.actor.system.mystic.summoning.summon.final.value;
-      const formula = getFormula({ values: [summoningValue], labels: ['Convocación'] });
+      const mod = await openModDialog();
+      const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, 'general-negative');
+      const formula = getFormula({ values: [summoningValue, ...modValues, mod], labels: ['Convocación', ...modLabels, 'Mod.'] });
       const roll = new ABFFoundryRoll(formula, this.actor.system);
       await roll.roll();
       roll.toMessage({

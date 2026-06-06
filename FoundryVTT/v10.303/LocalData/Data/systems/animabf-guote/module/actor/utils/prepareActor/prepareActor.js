@@ -21,10 +21,11 @@ import { mutateWeightIndex } from "./calculations/actor/general/mutateWeightInde
 const DERIVED_DATA_FUNCTIONS = [
   mutateMasaData,
   mutatePrimaryModifiers,
-  mutateMovementType,
   mutateRegenerationType,
-  mutateWeightIndex,
   mutatePenalties,
+
+  mutateMovementType,
+  mutateWeightIndex,
   mutateCombatData,
   mutateArmorsData,
   mutateTotalArmor,
@@ -42,15 +43,15 @@ export const prepareActor = async (actor) => {
   await prepareItems(actor);
   actor.system.general.description.enriched = await TextEditor.enrichHTML(
     actor.system.general.description.value,
-    { async: true }
+    { async: true },
   );
   actor.system.general.notesText.enriched = await TextEditor.enrichHTML(
     actor.system.general.notesText.value ?? "",
-    { async: true }
+    { async: true },
   );
   actor.system.combat.notes.enriched = await TextEditor.enrichHTML(
     actor.system.combat.notes.value ?? "",
-    { async: true }
+    { async: true },
   );
   // We need to parse to boolean because Foundry saves booleans as string
   for (const key of Object.keys(actor.system.ui.contractibleItems)) {

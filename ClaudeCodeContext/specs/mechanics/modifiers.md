@@ -36,7 +36,7 @@ Example: if a character has físico maluses of -40 and -80, only the -80 counts 
 | Physical HA / HD | Full general + maniobras (both signs) | `general + maniobras` |
 | Magic projection (HA/HD) | Only if general < 0; maniobras only if < 0 | `min(0, general) + min(0, maniobras)` |
 | Psychic projection (HA/HD) | Only if general < 0; maniobras only if < 0 | `min(0, general) + min(0, maniobras)` |
-| Summon HA / HD | **Not applied** (neither general nor maniobras) | `0` |
+| Summon HA / HD | Only if general < 0; no maniobras | `min(0, general)` |
 | Ki accumulation per stat per turn | ÷ 20, only if general < 0; result minimum = 1 | `min(0, floor(general / 20))` |
 | Zeon ACT | ÷ 2, only if general < 0 | `min(0, floor(general / 10) * 5)` |
 | Summoning skills (convocar, atar, dominar, desconvocar) | Only if general < 0 | `min(0, general)` |
@@ -106,6 +106,8 @@ Defined in `module/rolls/utils/getModifierTerms.js`:
 | `"defense"` | modFinal.defense.fis, .sob, .maniobras | combat defense rolls |
 | `"general"` | modFisico.final, modSobrenatural.final (both signs) | general skill rolls |
 | `"general-negative"` | min(0, modFisico.final), min(0, modSobrenatural.final) | mystic/psychic/summon rolls |
+| `"general-negative-half"` | min(0, floor((modFis+modSob) / 10) × 5) | psychic potential |
+| `"none"` | [] | summon HA/HD (no character modifiers) — kept for discoverability |
 | `"initiative"` | floor(modFinal.general.final / 10) × 5 | initiative rolls |
 
 ---
@@ -118,10 +120,8 @@ Defined in `module/rolls/utils/getModifierTerms.js`:
 | Combat (defense) | `"defense"` | full, both signs |
 | Mystic | `"general-negative"` | penalties only |
 | Psychic projection | `"general-negative"` | penalties only |
-| Psychic potential | `"general-negative"` | penalties only |
-| Summon | `"general-negative"` | penalties only; NOT attack/defense-specific |
-
-**Known issue:** The Summon tab in combat dialogs applies `general-negative` to HA/HD, but per the motivation rules, summon HA/HD should receive **no modifiers at all**.
+| Psychic potential | `"general-negative-half"` | penalties only, halved |
+| Summon HA/HD (dialog) | `"general-negative"` | penalties only; no maniobras |
 
 **Known issue:** The current `attack` modifier type (`general + maniobras`) is only correct for physical HA. For magic and psychic projection, maniobras should only apply when < 0 — there is currently no modifier type for this distinction.
 

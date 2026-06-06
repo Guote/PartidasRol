@@ -244,9 +244,10 @@ export class ChatCombatDefenseDialog extends FormApplication {
             const power = powers.find(w => w._id === powerUsed);
             if (!power) return;
 
+            const { values: potModValues, labels: potModLabels } = getModifierTerms(this.defenderActor.system, "general-negative-half");
             const formula = getFormula({
-                values: [basePotential, cvPotentialBonus, psychicPotential.special],
-                labels: ['Potencial', 'CV', 'Mod'],
+                values: [basePotential, cvPotentialBonus, ...potModValues, psychicPotential.special],
+                labels: ['Potencial', 'CV', ...potModLabels, 'Mod'],
             });
 
             const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
@@ -280,7 +281,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
             const { summonUsed, summonBonus, summonConvValue, summonDificultad, powerUsed } = this.modalData.defender.summon;
             if (!summonUsed) return;
 
-            const formula = `1d100xa + ${summonConvValue}[Convocar] + ${summonBonus ?? 0}[Bonus]`;
+            const { values: sumModValues, labels: sumModLabels } = getModifierTerms(this.defenderActor.system, "general-negative");
+            const formula = getFormula({
+                values: [summonConvValue, summonBonus ?? 0, ...sumModValues],
+                labels: ['Convocar', 'Bonus', ...sumModLabels],
+            });
             const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
             await roll.roll();
 
@@ -648,7 +653,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
         const evalHD = (f) => { try { return f?.trim() ? Math.floor(Roll.safeEval(f.replace(/\[NE\]/gi, neHD))) : 0; } catch { return 0; } };
         const effectiveHD = evalHD(power?.defFormula?.value);
 
-        const { values: sumModTermValues, labels: sumModTermLabels } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const { values: sumModTermValues, labels: sumModTermLabels } = getModifierTerms(this.defenderActor.system, "none");
         const summonRollModifiers = [effectiveHD, ...sumModTermValues, modifier ?? 0];
         const formula = getFormula({
             dice: this.modalData.defender.withoutRoll ? '0' : '1d100xa',
@@ -876,7 +881,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             damageModifier
         };
 
-        const { values: summonDefModTermValues } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const { values: summonDefModTermValues } = getModifierTerms(this.defenderActor.system, "none");
         const summonDefModTermSum = summonDefModTermValues.reduce((a, b) => a + b, 0);
         this.modalData.defender.summon.summary = {
             hdFinal: (summonData.effectiveHD || 0) + (summonData.modifier || 0) + summonDefModTermSum,

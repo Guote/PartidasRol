@@ -80,16 +80,35 @@
                      title="Usar para turno">
             </td>
             <td>
-              <span class="rollable"
-                    data-roll="1d100xa"
-                    data-rollvalue="{{weapon.system.attack.final.value}}"
-                    data-label="{{weapon.name}}">
-                {{weapon.name}}
-              </span>
+              <span>{{weapon.name}}</span>
             </td>
             <td class="v2-text-center v2-text-muted" style="font-size:0.8rem;">{{#if (is 'neq' weapon.system.quality.value 0)}}{{weapon.system.quality.value}}{{/if}}</td>
-            <td class="v2-text-center">{{weapon.system.attack.final.value}}</td>
-            <td class="v2-text-center">{{weapon.system.block.final.value}}</td>
+            <td class="v2-text-center" style="white-space:nowrap;">
+              {{weapon.system.attack.final.value}}
+              <button type="button" class="rollable abf-button icon-button"
+                      data-roll="1d100xa"
+                      data-rollvalue="{{weapon.system.attack.final.value}}"
+                      data-label="{{weapon.name}} - Ataque"
+                      data-modifier-type="attack"
+                      onclick="event.stopPropagation()"
+                      title="Tirar ataque"
+                      style="width:auto !important; display:inline-flex; padding:1px 4px; margin-left:2px; font-size:0.75rem;">
+                <i class="fas fa-fist-raised"></i>
+              </button>
+            </td>
+            <td class="v2-text-center" style="white-space:nowrap;">
+              {{weapon.system.block.final.value}}
+              <button type="button" class="rollable abf-button icon-button"
+                      data-roll="1d100xa"
+                      data-rollvalue="{{weapon.system.block.final.value}}"
+                      data-label="{{weapon.name}} - Parada"
+                      data-modifier-type="defense"
+                      onclick="event.stopPropagation()"
+                      title="Tirar parada"
+                      style="width:auto !important; display:inline-flex; padding:1px 4px; margin-left:2px; font-size:0.75rem;">
+                <i class="fas fa-shield-alt"></i>
+              </button>
+            </td>
             <td class="v2-text-center">{{weapon.system.damage.final.value}}</td>
             <td class="v2-text-center">{{weapon.system.initiative.final.value}}</td>
             <td class="v2-text-center">{{weapon.system.critic.primary.value}}</td>

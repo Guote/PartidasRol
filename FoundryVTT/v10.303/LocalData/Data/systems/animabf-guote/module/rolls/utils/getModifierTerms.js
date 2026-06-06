@@ -1,7 +1,7 @@
 /**
  * Returns modifier values and labels for use in roll formulas, based on the modifier type.
  * @param {object} actorSystem - actor.system
- * @param {string} modifierType - "attack" | "defense" | "general" | "general-negative" | "initiative"
+ * @param {string} modifierType - "attack" | "defense" | "general" | "general-negative" | "general-negative-half" | "initiative" | "none"
  * @returns {{ values: number[], labels: string[] }}
  */
 export const getModifierTerms = (actorSystem, modifierType) => {
@@ -41,6 +41,14 @@ export const getModifierTerms = (actorSystem, modifierType) => {
         values: [Math.floor((mods.modFinal.general.final.value ?? 0) / 10) * 5],
         labels: ["Mod. Global"],
       };
+    // Summon HA/HD: modifiers never apply to summon combat rolls
+    case "none":
+      return { values: [], labels: [] };
+    // Psychic Potential: half the combined general penalty only (÷2, round down to multiple of 5)
+    case "general-negative-half": {
+      const general = (mods.modFisico.final.value ?? 0) + (mods.modSobrenatural.final.value ?? 0);
+      return { values: [Math.min(0, Math.floor(general / 10) * 5)], labels: ["Mod. Global"] };
+    }
     default:
       return { values: [], labels: [] };
   }

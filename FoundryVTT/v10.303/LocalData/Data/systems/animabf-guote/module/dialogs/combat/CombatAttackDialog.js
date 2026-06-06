@@ -353,6 +353,7 @@ export class CombatAttackDialog extends FormApplication {
         if (powerUsed) {
           const massBonus = getMassAttackBonus(attackAccumulation);
           const { values: psychicModTermValues, labels: psychicModTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
+          const { values: potentialModTermValues, labels: potentialModTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative-half");
           const projRollModifiers = [baseProjection, cvProjectionBonus, massBonus, ...psychicModTermValues, modifier];
           let formula = getFormula({
             dice: withoutRoll ? "0" : "1d100xa",
@@ -365,7 +366,7 @@ export class CombatAttackDialog extends FormApplication {
           const powers = this.attackerActor.system.psychic.psychicPowers;
           const power = powers.find((w) => w._id === powerUsed);
           const psychicPotentialRoll = new ABFFoundryRoll(
-            getFormula({ values: [basePotential, cvPotentialBonus, ...psychicModTermValues, psychicPotential.special], labels: ["Potencial", "CV", ...psychicModTermLabels, "Mod"] }),
+            getFormula({ values: [basePotential, cvPotentialBonus, ...potentialModTermValues, psychicPotential.special], labels: ["Potencial", "CV", ...potentialModTermLabels, "Mod"] }),
             this.modalData.attacker.actor.system
           );
           psychicPotentialRoll.roll();
@@ -430,7 +431,7 @@ export class CombatAttackDialog extends FormApplication {
         const effectiveHA = evalSummonFormula(power?.atkFormula?.value);
         const effectiveDamage = evalSummonFormula(power?.damageFormula?.value);
         const massBonus = getMassAttackBonus(attackAccumulation);
-        const { values: sumModTermValues, labels: sumModTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
+        const { values: sumModTermValues, labels: sumModTermLabels } = getModifierTerms(this.attackerActor.system, "none");
         const rollModifiers = [effectiveHA, massBonus, ...sumModTermValues, modifier];
         let formula = getFormula({ values: rollModifiers, labels: ["HA Invocación", "En masa", ...sumModTermLabels, "Mod."] });
         if (withoutRoll) { formula = formula.replace("1d100xa", "0"); }
@@ -486,10 +487,11 @@ export class CombatAttackDialog extends FormApplication {
       const power = powers.find((w) => w._id === powerUsed);
       if (!power) return;
 
+      const { values: potModValues, labels: potModLabels } = getModifierTerms(this.attackerActor.system, "general-negative-half");
       const psychicPotentialRoll = new ABFFoundryRoll(
         getFormula({
-          values: [basePotential, cvPotentialBonus, psychicPotential.special],
-          labels: ["Potencial", "CV", "Mod"],
+          values: [basePotential, cvPotentialBonus, ...potModValues, psychicPotential.special],
+          labels: ["Potencial", "CV", ...potModLabels, "Mod"],
         }),
         this.modalData.attacker.actor.system
       );
@@ -542,10 +544,11 @@ export class CombatAttackDialog extends FormApplication {
       if (!power) return;
 
       const summoningValue = this.attackerActor.system.mystic.summoning.summon.final.value;
-      const rollModifiers = [summoningValue, summoningBonus];
+      const { values: sumModValues, labels: sumModLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
+      const rollModifiers = [summoningValue, summoningBonus, ...sumModValues];
       const formula = getFormula({
         values: rollModifiers,
-        labels: ["Convocación", "Bonus"],
+        labels: ["Convocación", "Bonus", ...sumModLabels],
       });
 
       const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
@@ -729,7 +732,7 @@ export class CombatAttackDialog extends FormApplication {
       const { attackAccumulation: sAccum } = this.modalData.attacker;
       const summonMassBonus = getMassAttackBonus(sAccum ?? 0);
       const isSummonAccum = (sAccum ?? 1) > 1;
-      const { values: summonSumModTermValues } = getModifierTerms(this.attackerActor.system, "general-negative");
+      const { values: summonSumModTermValues } = getModifierTerms(this.attackerActor.system, "none");
       const summonModTermSum = summonSumModTermValues.reduce((a, b) => a + b, 0);
       summon.summary = {
         haFinal: effectiveHA + (summon.modifier ?? 0) + summonMassBonus + summonModTermSum,

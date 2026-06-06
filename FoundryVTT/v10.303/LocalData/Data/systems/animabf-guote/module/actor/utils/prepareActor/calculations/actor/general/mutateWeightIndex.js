@@ -6,7 +6,8 @@ export const mutateWeightIndex = (data) => {
   const cappedFue = humanidad === 'zen' ? rawFue : humanidad === 'inhumano' ? Math.min(rawFue, 13) : Math.min(rawFue, 10);
 
   const { weightIndex } = data.characteristics.secondaries;
-  weightIndex.final.value = Math.max(0, cappedFue + (weightIndex.mod?.value ?? 0));
+  const generalMod = Math.floor((data.general.modifiers.modFinal.general.final.value ?? 0) / 20);
+  weightIndex.final.value = Math.max(0, cappedFue + (weightIndex.mod?.value ?? 0) + generalMod);
   const maxWeight = calculateWeightFromWeightIndex(weightIndex.final.value);
   data.characteristics.secondaries.weightLoad.max.value = maxWeight;
   data.characteristics.secondaries.weightLoad.medium = { value: maxWeight * 2 };

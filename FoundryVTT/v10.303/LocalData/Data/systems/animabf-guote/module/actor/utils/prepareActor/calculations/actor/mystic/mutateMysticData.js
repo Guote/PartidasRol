@@ -6,7 +6,7 @@ export const mutateMysticData = (data) => {
     bulkMutateData(
       data,
       ["mystic.act.main", "mystic.act.alternative"],
-      Math.floor(data.general.modifiers.modFinal.general.final.value / 10) * 5,
+      Math.min(0, Math.floor(data.general.modifiers.modFinal.general.final.value / 10) * 5),
       0
     );
     bulkMutateData(
