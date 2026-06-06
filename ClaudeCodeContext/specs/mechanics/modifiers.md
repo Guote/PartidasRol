@@ -45,7 +45,7 @@ Example: if a character has físico maluses of -40 and -80, only the -80 counts 
 ### Other Modifier Types
 
 - **Instant modifiers** — ad-hoc per-roll modifiers entered via a quick dialog before/after pressing roll. These are already implemented.
-- **Temporal modifiers** — temporary stat adjustments (e.g. a +3 Destreza effect). Should be stored separately from base so the base is never lost. No clean implementation yet.
+- **Temporal modifiers** — temporary stat adjustments (e.g. a +3 Destreza effect). Stored separately from base so the base is never lost. ✅ Schema + pipeline implemented for all rollable stats and resistances. HBS inputs deferred.
 
 ---
 
@@ -65,7 +65,7 @@ An extra dialog is shown when clicking to roll anything in the sheet. That dialo
 
 ### Temporal Modifiers
 
-Not cleanly implemented yet. The goal is to store `temporal` separately from `base` so the base is never lost, and compute `final = base + temporal + general_mod`.
+✅ Schema + pipeline implemented. `temporal: { value: 0 }` exists on all rollable stats and resistances. `mutateData.js` computes `final = base + temporal + activeEffectMod + callerModifier` for all stats that go through the pipeline. Resistances use `mutateResistancesData.js` (`final = base + temporal`, no general mod). Old actors default to 0 via `mergeObject({ overwrite: false })` + `?? 0` guard. HBS inputs deferred to the "Input layout" task below.
 
 ---
 
@@ -147,7 +147,7 @@ What is displayed (base / temporal / final) and whether the roll has an instant 
 
 | Section | Display | Instant mod dialog |
 |---|---|---|
-| Resistances | final only | ✅ |
+| Resistances | final only (roll uses base — temporal in pipeline but not yet in roll) | ✅ |
 | Resources | current + final (no temporal) | — (not rollable) |
 | Combat — ataque, parada, turno natural | base only (no final shown) | ✅ |
 | Habilidades — primary stats | base + stat-level mod (not a general mod) | — |
@@ -167,12 +167,11 @@ What is displayed (base / temporal / final) and whether the roll has an instant 
 
 ## Future Tasks
 
-### FUTURE TASK — Modifier application audit
+### ~~FUTURE TASK — Temporal modifier support~~ DONE (schema + pipeline; HBS deferred)
 
-Examine the system to check how well the current implementation matches the application rules in the Motivation section. Come up with a concrete plan to:
-- Centralize the "which modifier applies to which roll" logic
-- Fix the known issues (summon HA/HD applying modifiers; magic/psychic projection not distinguishing bonus vs penalty for maniobras)
-- Add temporal modifier support
+`temporal: { value: 0 }` added to all rollable stats and resistances in `template.json` and `INITIAL_ACTOR_DATA`. `mutateData.js` computes `final = base + temporal + activeEffectMod + callerModifier` for all stats. Resistances use `mutateResistancesData.js` (`final = base + temporal`, no general mod applied). Old actors default to 0 via `mergeObject({ overwrite: false })` + `?? 0` guard. HBS inputs deferred to the layout task below.
+
+**Note on resistances:** the roll button in `header-v2.hbs` still binds to `base.value` — temporal is in `final` but won't affect resistance rolls until the HBS layout task.
 
 ### FUTURE TASK — Input layout for base/temporal/final
 
@@ -192,5 +191,8 @@ Options:
 ## Related files
 
 - `module/actor/utils/prepareActor/calculations/actor/modifiers/mutatePenalties.js`
+- `module/actor/utils/prepareActor/utils/mutateData.js` — central derive utility; computes `final = base + temporal + activeEffectMod + callerModifier`
+- `module/actor/utils/prepareActor/calculations/actor/general/mutateResistancesData.js` — derives resistance finals (`final = base + temporal`)
 - `module/rolls/utils/getModifierTerms.js`
 - `templates/actor-v2/parts/tabs/effects.hbs`
+- `templates/actor-v2/parts/header/resistances-compact.hbs` — displays `final.value` for resistances in header
