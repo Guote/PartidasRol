@@ -1,5 +1,7 @@
-// ─── Condition name — change here to rename in CUB ───────────────────────────
+// ─── Condition names — change here to rename in CUB ─────────────────────────
 const USANDO_ENERGIA = "Usando Energia";
+const HA_DEFENDIDO = "Ha defendido";
+const ACORRALADO = "Acorralado";
 
 // ─── Named constants ──────────────────────────────────────────────────────────
 /** Initiative gap at which a combatant is considered surprised by the active turn. */
@@ -178,6 +180,41 @@ const cubRemove = (name, token) => {
     game.cub.removeCondition(name, token);
   } catch {}
 };
+
+// ─── Combat conditions ────────────────────────────────────────────────────────
+
+// Defense counter: add "Ha defendido" or increment its SIC counter (max 3)
+Hooks.on('animabf.defenseSent', async (defenderToken, defenseResult) => {
+  if (!game.user.isGM) return;
+  if (!defenseResult.increaseDefenseCounter) return;
+  const token = defenderToken?.object ?? defenderToken;
+  if (!token) return;
+  const actor = token.actor;
+  if (!actor) return;
+
+  const effect = actor.effects.find(e => (e.name ?? e.label) === HA_DEFENDIDO);
+
+  if (!effect) {
+    // First defense this round — add via CUB (SIC counter auto-starts at 1)
+    cubAdd(HA_DEFENDIDO, token);
+  } else {
+    // Already defending this round — increment SIC counter up to 3
+    const ctr = window.ActiveEffectCounter?.getCounter(effect);
+    const currentCount = ctr ? (ctr.getValue(effect) ?? 1) : 1;
+    if (currentCount < 3) {
+      await ctr?.setValue(currentCount + 1, effect);
+    }
+  }
+});
+
+// Acorralado: add when attack beats defense
+Hooks.on('animabf.combatResolved', (defenderToken, result) => {
+  if (!game.user.isGM) return;
+  if (result.defenseSucceeded) return;
+  const token = defenderToken?.object ?? defenderToken;
+  if (!token) return;
+  cubAdd(ACORRALADO, token);
+});
 
 // ─── Actor update: Fortalecimiento/Debilitamiento + Usando Energía sync ──────
 // NOTE: modFinal.general.final.value is derived by the async prepareActor pipeline and is

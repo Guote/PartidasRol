@@ -33,7 +33,8 @@
       "Bash(grep *)",
       "Bash(awk '$1 > 1')",
       "Bash(Remove-Item *)",
-      "PowerShell(Remove-Item *)"
+      "PowerShell(Remove-Item *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\z - Git\\\\PartidasRol\\\\FoundryVTT\\\\v10.303\\\\LocalData\\\\Data\\\\systems\\\\animabf-guote\" -Directory | ForEach-Object { $_.FullName })"
     ]
   }
 }

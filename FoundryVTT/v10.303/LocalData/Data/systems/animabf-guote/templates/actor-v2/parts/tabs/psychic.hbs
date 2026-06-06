@@ -114,7 +114,7 @@
               {{localize "anima.ui.psychic.psychicPowers.power.footer.maintained.short"}}
             </th>
             <th class="v2-text-center" style="width: 48px;">CV Mant</th>
-            <th style="width: 28px;"></th>
+            <th style="width: 52px;"></th>
           </tr>
         </thead>
         <tbody>
@@ -148,7 +148,14 @@
                      name="system.dynamic.psychicPowers.{{power._id}}.system.maintainedCV.value"
                      value="{{power.system.maintainedCV.value}}">
             </td>
-            <td class="v2-text-center">
+            <td class="v2-text-center" style="white-space:nowrap;">
+              <button type="button" class="v2-btn-icon-sm"
+                      data-on-click="use-psychic-power"
+                      data-item-id="{{power._id}}"
+                      style="width:auto!important;display:inline-flex;"
+                      title="Usar poder psíquico">
+                <i class="fas fa-bolt"></i>
+              </button>
               <button type="button" class="v2-btn-icon-sm psychic-power-open-sheet"
                       data-item-id="{{power._id}}"
                       title="{{localize 'anima.ui.psychic.psychicPowers.power.openSheet'}}">

@@ -118,6 +118,14 @@
             </tr>
           </thead>
           <tbody id="level-context-menu-container">
+            <tr class="level-total-row">
+              <td><strong>Nivel total</strong></td>
+              <td>
+                <input type="number" class="v2-table__input v2-text-center"
+                       name="system.general.level.value"
+                       value="{{system.general.level.value}}">
+              </td>
+            </tr>
             {{#each system.general.levels as |level|}}
             <tr class="level-row" data-item-id="{{level._id}}">
               <td>

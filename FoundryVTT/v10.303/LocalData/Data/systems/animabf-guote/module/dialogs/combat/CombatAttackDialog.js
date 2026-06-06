@@ -352,10 +352,12 @@ export class CombatAttackDialog extends FormApplication {
         const { powerUsed, modifier, psychicPotential, baseProjection, cvProjectionBonus, basePotential, cvPotentialBonus, critic, damage, enemyTAModifier } = this.modalData.attacker.psychic;
         if (powerUsed) {
           const massBonus = getMassAttackBonus(attackAccumulation);
+          const { values: psychicModTermValues, labels: psychicModTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
+          const projRollModifiers = [baseProjection, cvProjectionBonus, massBonus, ...psychicModTermValues, modifier];
           let formula = getFormula({
             dice: withoutRoll ? "0" : "1d100xa",
-            values: [baseProjection, cvProjectionBonus, massBonus, modifier],
-            labels: ["Proy. Psi.", "CV", "En masa", "Mod."],
+            values: projRollModifiers,
+            labels: ["Proy. Psi.", "CV", "En masa", ...psychicModTermLabels, "Mod."],
           });
           formula = applyMasteryFormula(formula, this.attackerActor.system.psychic.psychicProjection.base.value);
           const psychicProjectionRoll = new ABFFoundryRoll(formula, this.attackerActor.system);
@@ -363,7 +365,7 @@ export class CombatAttackDialog extends FormApplication {
           const powers = this.attackerActor.system.psychic.psychicPowers;
           const power = powers.find((w) => w._id === powerUsed);
           const psychicPotentialRoll = new ABFFoundryRoll(
-            getFormula({ values: [basePotential, cvPotentialBonus, psychicPotential.special], labels: ["Potencial", "CV", "Mod"] }),
+            getFormula({ values: [basePotential, cvPotentialBonus, ...psychicModTermValues, psychicPotential.special], labels: ["Potencial", "CV", ...psychicModTermLabels, "Mod"] }),
             this.modalData.attacker.actor.system
           );
           psychicPotentialRoll.roll();
@@ -372,7 +374,7 @@ export class CombatAttackDialog extends FormApplication {
             psychicPotentialRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicPotential.title") });
             psychicProjectionRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicAttack.title", { power: power.name, target: this.modalData.defender.token.name, potential: psychicPotentialRoll.total }) });
           }
-          const rolled = psychicProjectionRoll.total - baseProjection - cvProjectionBonus - massBonus - (modifier ?? 0);
+          const rolled = psychicProjectionRoll.total - projRollModifiers.reduce((a, b) => a + b, 0);
           const psychicAttackResult = {
             type: "psychic",
             values: {
@@ -428,8 +430,9 @@ export class CombatAttackDialog extends FormApplication {
         const effectiveHA = evalSummonFormula(power?.atkFormula?.value);
         const effectiveDamage = evalSummonFormula(power?.damageFormula?.value);
         const massBonus = getMassAttackBonus(attackAccumulation);
-        const rollModifiers = [effectiveHA, massBonus, modifier];
-        let formula = getFormula({ values: rollModifiers, labels: ["HA Invocación", "En masa", "Mod."] });
+        const { values: sumModTermValues, labels: sumModTermLabels } = getModifierTerms(this.attackerActor.system, "general-negative");
+        const rollModifiers = [effectiveHA, massBonus, ...sumModTermValues, modifier];
+        let formula = getFormula({ values: rollModifiers, labels: ["HA Invocación", "En masa", ...sumModTermLabels, "Mod."] });
         if (withoutRoll) { formula = formula.replace("1d100xa", "0"); }
         const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
         roll.roll();
@@ -669,8 +672,10 @@ export class CombatAttackDialog extends FormApplication {
       const { attackAccumulation } = this.modalData.attacker;
       const psychicMassBonus = getMassAttackBonus(attackAccumulation ?? 0);
       const isPsychicAccum = (attackAccumulation ?? 1) > 1;
+      const { values: psychicSumModTermValues } = getModifierTerms(this.attackerActor.system, "general-negative");
+      const psychicModTermSum = psychicSumModTermValues.reduce((a, b) => a + b, 0);
       psychic.summary = {
-        haFinal: psychic.projectionValue + (psychic.modifier ?? 0) + psychicMassBonus,
+        haFinal: psychic.projectionValue + (psychic.modifier ?? 0) + psychicMassBonus + psychicModTermSum,
         damage: Math.floor((isPsychicAccum ? (psychic.damage ?? 0) * 1.5 : (psychic.damage ?? 0)) / 5) * 5,
         enemyTAModifier: psychic.enemyTAModifier ?? 0,
         criticSelected: (psychic.critic && psychic.critic !== NoneWeaponCritic.NONE && psychic.critic !== "-") ? psychic.critic : null,
@@ -724,8 +729,10 @@ export class CombatAttackDialog extends FormApplication {
       const { attackAccumulation: sAccum } = this.modalData.attacker;
       const summonMassBonus = getMassAttackBonus(sAccum ?? 0);
       const isSummonAccum = (sAccum ?? 1) > 1;
+      const { values: summonSumModTermValues } = getModifierTerms(this.attackerActor.system, "general-negative");
+      const summonModTermSum = summonSumModTermValues.reduce((a, b) => a + b, 0);
       summon.summary = {
-        haFinal: effectiveHA + (summon.modifier ?? 0) + summonMassBonus,
+        haFinal: effectiveHA + (summon.modifier ?? 0) + summonMassBonus + summonModTermSum,
         damage: Math.floor((isSummonAccum ? summon.effectiveDamage * 1.5 : summon.effectiveDamage) / 5) * 5,
         enemyTAModifier: summon.enemyTAModifier ?? 0,
         criticSelected: (summon.critic && summon.critic !== NoneWeaponCritic.NONE && summon.critic !== "-") ? summon.critic : null,

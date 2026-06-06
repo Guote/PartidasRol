@@ -7,6 +7,10 @@
   - stat: The characteristic object with .value and .mod
 --}}
 <div class="v2-characteristic">
+  <input type="checkbox" class="v2-skill-combine-checkbox"
+         data-rollvalue="{{math stat.value '*' 10}}"
+         data-label="{{localize (concat 'anima.ui.characteristics.' key)}}"
+         data-is-characteristic="true">
   <span class="v2-characteristic__name rollable"
         data-roll="1d100xa10TO100"
         data-rollvalue="{{math stat.value '*' 10}}"
@@ -18,10 +22,4 @@
            value="{{stat.value}}">
     <span class="v2-characteristic__mod">({{#if (gte stat.mod 0)}}+{{/if}}{{stat.mod}})</span>
   </div>
-  <button type="button" class="v2-combine-btn v2-characteristic__combine"
-          title="{{localize 'anima.ui.skills.combine'}}"
-          data-rollvalue="{{math stat.value '*' 10}}"
-          data-label="{{localize (concat 'anima.ui.characteristics.' key)}}">
-    <i class="fas fa-link"></i>
-  </button>
 </div>

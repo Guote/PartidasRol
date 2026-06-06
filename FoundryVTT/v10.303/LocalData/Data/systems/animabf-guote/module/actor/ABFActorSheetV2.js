@@ -177,11 +177,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       sheet.effectiveMaxHp = hp.max - (hp.sacrificed || 0);
     }
 
-    // Total level across all classes
-    sheet.totalLevel = (sheet.system?.general?.levels || []).reduce(
-      (sum, level) => sum + (level.system?.level || 0),
-      0
-    );
+    sheet.totalLevel = sheet.system?.general?.level?.value || 0;
 
     // Calculate total Ki accumulated (sum of all characteristic accumulated values)
     const kiAccumulation = sheet.system?.domine?.kiAccumulation;
@@ -441,9 +437,66 @@ export default class ABFActorSheetV2 extends ActorSheet {
       this._onRoll(e);
     });
 
-    // Combine roll buttons
-    html.find(".v2-combine-btn").click((e) => {
-      this._onCombineRoll(e);
+    // Combined roll — header button toggles checkbox mode, second click confirms
+    html.find('[data-on-click="toggle-combine-mode"]').on('click', async (e) => {
+      e.stopPropagation();
+      const tabEl = html.find('.v2-tab-skills')[0];
+      if (!tabEl) return;
+      const isActive = tabEl.classList.contains('v2-combine-active');
+      const labelEl = e.currentTarget.querySelector('.v2-combine-label');
+      if (!isActive) {
+        tabEl.classList.add('v2-combine-active');
+        if (labelEl) labelEl.textContent = 'Selecciona habilidades y confirma';
+        html.find('.v2-skill-combine-checkbox').prop('checked', false);
+        return;
+      }
+      const checked = html.find('.v2-skill-combine-checkbox:checked');
+      const N = checked.length;
+      tabEl.classList.remove('v2-combine-active');
+      if (labelEl) labelEl.textContent = 'Combinar';
+      if (N === 0) return;
+      const mod = await openModDialog();
+      const modifier = parseInt(mod) || 0;
+      const totalLevel = this.actor.system.general.level?.value || 0;
+      const humanidad = this.actor.system.flags?.humanidad ?? 'human';
+      const values = [];
+      const labels = [];
+      checked.each((_, el) => {
+        let raw = parseInt(el.dataset.rollvalue) || 0;
+        if (el.dataset.isCharacteristic === 'true') {
+          // Apply 10TO100: stat × 10 → effective bonus + level bonus + inhumanity/zen bonus
+          const statVal = raw / 10;
+          let effectiveBonus;
+          if (hasZen(humanidad)) {
+            effectiveBonus = raw;
+          } else if (hasInhumanity(humanidad)) {
+            effectiveBonus = Math.min(statVal, 13) * 10;
+          } else {
+            effectiveBonus = Math.min(statVal, 10) * 10;
+          }
+          let extra = 0;
+          if (statVal > 13 && hasZen(humanidad)) extra = 80;
+          else if (statVal > 10 && hasInhumanity(humanidad)) extra = 40;
+          raw = effectiveBonus + totalLevel * 10 + extra;
+        }
+        values.push(Math.floor(raw / N / 5) * 5);
+        labels.push(el.dataset.label || '?');
+      });
+      if (modifier !== 0) { values.push(modifier); labels.push('Mod'); }
+      const formula = getFormula({ dice: '1d100xa', values, labels });
+      const roll = new ABFFoundryRoll(formula, this.actor.system);
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: `Tirada combinada (${N} habilidades)`,
+      });
+    });
+
+    // Open capacidades físicas reference journal
+    html.find('[data-on-click="open-capacidades-journal"]').on('click', (e) => {
+      e.stopPropagation();
+      const journal = game.journal.find(j => j.name === 'Capacidades Físicas');
+      if (journal) journal.sheet.render(true);
+      else ui.notifications.warn('Crea el diario con: ABFMacros.createCapacidadesJournal()');
     });
 
     // Make rollable elements draggable to the macro hotbar
@@ -828,6 +881,31 @@ export default class ABFActorSheetV2 extends ActorSheet {
       if ((technique.system?.roundCost?.value ?? 0) > 0) {
         await technique.update({ 'system.active.value': true });
       }
+    });
+
+    // Use psychic power — rolls potential (same flow as _onRoll) then posts the power card
+    html.find('[data-on-click="use-psychic-power"]').on('click', async (e) => {
+      e.stopPropagation();
+      const powerId = e.currentTarget.dataset.itemId;
+      if (!powerId) return;
+      const power = this.actor.items.get(powerId);
+      if (!power) return;
+      const basePotential = this.actor.system.psychic.psychicPotential.final.value || 0;
+      const powerBonus = power.system.bonus?.value || 0;
+      const mod = await openModDialog();
+      const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, 'general-negative');
+      const formula = getFormula({
+        dice: '1d100xa',
+        values: [basePotential, powerBonus, ...modValues, mod],
+        labels: ['Potencial', 'Bonus', ...modLabels, 'Mod'],
+      });
+      const roll = new ABFFoundryRoll(formula, this.actor.system);
+      roll.roll();
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: `Rolling ${power.name}`,
+      });
+      window.ChatCombat._postPsychicPowerCard(this.actor, powerId, roll.total);
     });
 
     // Per-power active/mantenido checkbox toggle
@@ -1634,7 +1712,18 @@ export default class ABFActorSheetV2 extends ActorSheet {
         await this.actor.createEmbeddedDocuments('Item', [item.toObject()]);
         return;
       }
-      // Non-spell/summon items fall through to default handling
+      if (item?.type === ABFItems.PSYCHIC_POWER && item.parent?.id !== this.actor.id) {
+        const isDuplicate = this.actor.items.some(i => i.type === ABFItems.PSYCHIC_POWER && i.name === item.name);
+        if (isDuplicate) {
+          ui.notifications.warn(
+            game.i18n.format('anima.ui.psychic.psychicPowers.alreadyImported', { name: item.name })
+          );
+          return;
+        }
+        await this.actor.createEmbeddedDocuments('Item', [item.toObject()]);
+        return;
+      }
+      // Non-handled items fall through to default handling
       return super._onDrop(event);
     }
 
@@ -1829,7 +1918,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
         labels: [initiativeRollLabel, ...modLabels, ...weaponInitLabels, "Mod"],
       });
       if (formula.includes("10TO100")) {
-        const totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);
+        const totalLevel = this.actor.system.general.level?.value || 0;
         const humanidad = this.actor.system.flags?.humanidad ?? 'human';
         const statRaw = parseInt(dataset.rollvalue);
         const statVal = statRaw / 10;
@@ -1867,27 +1956,6 @@ export default class ABFActorSheetV2 extends ActorSheet {
         flavor: label,
       });
     }
-  }
-  async _onCombineRoll(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    const element = event.currentTarget;
-    const { dataset } = element;
-    const skillValue = parseInt(dataset.rollvalue) || 0;
-    const label = dataset.label || "";
-    const mod = await openModDialog();
-    const modifier = parseInt(mod) || 0;
-    const combinedValue = Math.floor((skillValue + modifier) / 2);
-    const formula = getFormula({
-      dice: "1d100xa",
-      values: [combinedValue],
-      labels: [label],
-    });
-    const roll = new ABFFoundryRoll(formula, this.actor.system);
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `${game.i18n.localize("anima.ui.skills.combine")}: ${label} (${combinedValue})`,
-    });
   }
   async _openLinkedActorSheet(uuid, errorLocKey) {
     if (!uuid) return;

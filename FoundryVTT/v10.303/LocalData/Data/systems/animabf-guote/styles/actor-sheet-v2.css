@@ -1362,31 +1362,15 @@
   border-bottom: none;
 }
 
-/* --- Combine Roll Button --- */
-.actor-sheet-v2 .v2-combine-btn {
+/* --- Combine checkboxes (hidden until combine mode is active) --- */
+.actor-sheet-v2 .v2-skill-combine-checkbox { display: none; }
+.actor-sheet-v2 .v2-combine-active .v2-skill-combine-checkbox {
+  display: inline-block;
   flex-shrink: 0;
   width: 14px;
   height: 14px;
-  padding: 0;
-  background: none;
-  border: none;
-  color: var(--abf-border-light);
   cursor: pointer;
-  font-size: 8px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color var(--transition-base);
-  border-radius: var(--radius-sm);
-}
-
-.actor-sheet-v2 .v2-combine-btn:hover {
-  color: var(--abf-primary);
-}
-
-.actor-sheet-v2 .v2-characteristic__combine {
-  margin-left: 0;
+  margin-right: 2px;
 }
 
 /* --------------------------------

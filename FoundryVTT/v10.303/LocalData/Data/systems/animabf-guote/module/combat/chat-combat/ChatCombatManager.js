@@ -3,6 +3,7 @@ import { calculateCombatResult } from '../utils/calculateCombatResult.js';
 import { calculateShieldDamage } from '../utils/calculateShieldDamage.js';
 import { ChatAttackCard } from './ChatAttackCard.js';
 import { CombatAttackDialog } from '../../dialogs/combat/CombatAttackDialog.js';
+import { getPsychichPowerEffect } from '../utils/getPsychichPowerEffect.js';
 
 /**
  * Main controller for the chat-based combat system.
@@ -295,6 +296,8 @@ export class ChatCombatManager {
             this._attachAttackCardListeners(message, html);
         } else if (flags.cardType === 'spell') {
             this._attachSpellCardListeners(message, html);
+        } else if (flags.cardType === 'psychicPower') {
+            this._attachPsychicPowerCardListeners(message, html);
         }
     }
 
@@ -445,6 +448,7 @@ export class ChatCombatManager {
             effectiveTA: effectiveTA,
             defenseSucceeded: Math.max(0, defenseResult.total) > Math.max(0, attackFlags.attackTotal)
         };
+        Hooks.callAll('animabf.combatResolved', defenderToken, result);
 
         // Check if we can update the card directly (GM or message owner)
         const attackMessage = game.messages.get(attackMessageId) ||
@@ -775,6 +779,103 @@ export class ChatCombatManager {
                 token,
                 { onDefense: () => {} },
                 { spellUsed: spellId, spellGrade }
+            );
+        }
+    }
+
+    /**
+     * Post a psychic power chat card with the potential roll result and effect.
+     * @param {ABFActor} actor
+     * @param {string} powerId
+     * @param {number} potentialTotal
+     */
+    async _postPsychicPowerCard(actor, powerId, potentialTotal) {
+        const power = actor.items.get(powerId);
+        if (!power) return;
+
+        const effect = getPsychichPowerEffect(power.system, potentialTotal);
+
+        const token = canvas.tokens.controlled.find(t => t.actor?.id === actor.id)
+            ?? canvas.tokens.placeables.find(t => t.actor?.id === actor.id);
+        const actorImg = token?.document?.texture?.src ?? actor.img;
+
+        const content = await renderTemplate(
+            'systems/animabf-guote/templates/chat/psychic-power-card.hbs',
+            { actorName: actor.name, actorImg, powerName: power.name, powerId, potentialTotal, effect }
+        );
+
+        await ChatMessage.create({
+            content,
+            speaker: ChatMessage.getSpeaker({ actor }),
+            flags: {
+                'animabf-guote': {
+                    chatCombat: {
+                        cardType: 'psychicPower',
+                        powerId,
+                        potentialTotal,
+                        actorId: actor.id,
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Attach click handlers to psychic power chat card buttons.
+     * Removes buttons for users who are not the message sender.
+     * @param {ChatMessage} message
+     * @param {jQuery} html
+     */
+    _attachPsychicPowerCardListeners(message, html) {
+        if (game.user.id !== message.user?.id) {
+            html.find('.set-as-psychic-attack').remove();
+            return;
+        }
+
+        html.find('.set-as-psychic-attack').click((ev) => {
+            ev.preventDefault();
+            this._onSetAsPsychicAttack(message);
+        });
+    }
+
+    /**
+     * Handle "Atacar" button click on a psychic power card.
+     * Opens CombatAttackDialog with the psychic tab and power preselected.
+     * @param {ChatMessage} message
+     */
+    async _onSetAsPsychicAttack(message) {
+        const token = this._resolveToken();
+        if (!token) return;
+
+        const flags = message.flags['animabf-guote'].chatCombat;
+        const { powerId } = flags;
+
+        const defenderTarget = game.user.targets.first() ?? null;
+        const defenderToken = defenderTarget ? defenderTarget.document : token;
+
+        const existingDialog = Object.values(ui.windows).find(
+            w => w instanceof CombatAttackDialog && w.modalData?.attacker?.token?.id === token.id
+        );
+
+        if (existingDialog) {
+            existingDialog.modalData.attacker.psychic.powerUsed = powerId;
+            existingDialog._tabs[0].active = 'psychic';
+            existingDialog.render(false);
+        } else {
+            new CombatAttackDialog(
+                token,
+                defenderToken,
+                { onAttack: async () => {} },
+                {
+                    allowed: true,
+                    closeOnSend: true,
+                    presetData: {
+                        attackType: { value: 'psychic' },
+                        psychic: {
+                            powerUsed: { value: powerId },
+                        }
+                    }
+                }
             );
         }
     }

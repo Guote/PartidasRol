@@ -9,14 +9,6 @@ const calculateLpPerMember = (baseLifePoints) => {
   return Math.floor(baseLifePoints / 50) * 50;
 };
 
-/**
- * Calculate number of living members based on current LP
- */
-const calculateLivingMembers = (currentLp, lpPerMember, totalMembers) => {
-  if (lpPerMember <= 0) return totalMembers;
-  return Math.ceil(currentLp / lpPerMember);
-};
-
 const openDialog = async (actorName) => {
   const typedGame = game;
 
@@ -131,6 +123,9 @@ export const createMasaMacro = async () => {
     const masaActor = await Actor.create(sourceData);
 
     if (masaActor) {
+      // Set initial name with living member count
+      await masaActor.update({ name: `${masaName} [${memberCount}]` });
+
       // Notify success
       ui.notifications.info(
         typedGame.i18n.format("anima.macros.createMasa.success", {

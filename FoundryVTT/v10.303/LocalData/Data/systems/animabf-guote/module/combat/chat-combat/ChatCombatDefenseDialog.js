@@ -416,10 +416,10 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         if (this.standalone) {
             await this._postStandaloneDefenseResult(defenseResult);
-            Hooks.callAll('animabf.defenseSent', this.defenderToken, defenseResult);
         } else {
             this.hooks.onDefense(defenseResult);
         }
+        Hooks.callAll('animabf.defenseSent', this.defenderToken, defenseResult);
 
         if (fatigue > 0) {
             const currentFatigue = this.defenderActor.system.characteristics.secondaries.fatigue.value;
@@ -449,12 +449,13 @@ export class ChatCombatDefenseDialog extends FormApplication {
         // Always use defensive projection for defense
         const magicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.final.value;
         const baseMagicProjection = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.base.value;
-
-        let formula = `1d100xa + ${magicProjection}[Proy. Mag.] + ${modifier ?? 0}[Mod.]`;
-
-        if (this.modalData.defender.withoutRoll) {
-            formula = formula.replace('1d100xa', '0');
-        }
+        const { values: mysticModTermValues, labels: mysticModTermLabels } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const mysticRollModifiers = [magicProjection, ...mysticModTermValues, modifier ?? 0];
+        let formula = getFormula({
+            dice: this.modalData.defender.withoutRoll ? "0" : "1d100xa",
+            values: mysticRollModifiers,
+            labels: ["Proy. Mag.", ...mysticModTermLabels, "Mod."],
+        });
         formula = applyMasteryFormula(formula, baseMagicProjection);
 
         const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
@@ -473,7 +474,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             });
         }
 
-        const rolled = roll.total - magicProjection - (modifier ?? 0);
+        const rolled = roll.total - mysticRollModifiers.reduce((a, b) => a + b, 0);
 
         const defenseResult = {
             type: 'mystic',
@@ -561,11 +562,13 @@ export class ChatCombatDefenseDialog extends FormApplication {
             return;
         }
 
-        let formula = `1d100xa + ${psychicProjection}[Proy. Psíquica] + ${modifier ?? 0}[Mod.]`;
-
-        if (this.modalData.defender.withoutRoll) {
-            formula = formula.replace('1d100xa', '0');
-        }
+        const { values: psychicModTermValues, labels: psychicModTermLabels } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const psychicRollModifiers = [psychicProjection, ...psychicModTermValues, modifier ?? 0];
+        let formula = getFormula({
+            dice: this.modalData.defender.withoutRoll ? "0" : "1d100xa",
+            values: psychicRollModifiers,
+            labels: ["Proy. Psíquica", ...psychicModTermLabels, "Mod."],
+        });
         formula = applyMasteryFormula(formula, this.defenderActor.system.psychic.psychicProjection.base.value);
 
         const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
@@ -585,7 +588,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             });
         }
 
-        const rolled = roll.total - psychicProjection - (modifier ?? 0);
+        const rolled = roll.total - psychicRollModifiers.reduce((a, b) => a + b, 0);
 
         const defenseResult = {
             type: 'psychic',
@@ -645,10 +648,12 @@ export class ChatCombatDefenseDialog extends FormApplication {
         const evalHD = (f) => { try { return f?.trim() ? Math.floor(Roll.safeEval(f.replace(/\[NE\]/gi, neHD))) : 0; } catch { return 0; } };
         const effectiveHD = evalHD(power?.defFormula?.value);
 
+        const { values: sumModTermValues, labels: sumModTermLabels } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const summonRollModifiers = [effectiveHD, ...sumModTermValues, modifier ?? 0];
         const formula = getFormula({
             dice: this.modalData.defender.withoutRoll ? '0' : '1d100xa',
-            values: [effectiveHD, modifier ?? 0],
-            labels: ['HD Invocación', 'Mod.'],
+            values: summonRollModifiers,
+            labels: ['HD Invocación', ...sumModTermLabels, 'Mod.'],
         });
 
         const roll = new ABFFoundryRoll(formula, this.defenderActor.system);
@@ -665,7 +670,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             });
         }
 
-        const rolled = roll.total - effectiveHD - (modifier ?? 0);
+        const rolled = roll.total - summonRollModifiers.reduce((a, b) => a + b, 0);
 
         const defenseResult = {
             type: 'summon',
@@ -834,15 +839,19 @@ export class ChatCombatDefenseDialog extends FormApplication {
             ? this.defenderActor.system.combat.dodge.final.value
             : (combatD.weapon?.system.block.final.value ?? this.defenderActor.system.combat.block.final.value);
 
+        const { values: defModTermValues } = getModifierTerms(this.defenderActor.system, "defense");
+        const defModTermSum = defModTermValues.reduce((a, b) => a + b, 0);
         combatD.summary = {
-            hdFinal: hdBase + (combatD.modifier || 0) + (combatD.fatigue || 0) * 15 + (combatD.multipleDefensesPenalty || 0),
+            hdFinal: hdBase + (combatD.modifier || 0) + (combatD.fatigue || 0) * 15 + (combatD.multipleDefensesPenalty || 0) + defModTermSum,
             taFinal: atFinal,
             damageModifier
         };
 
+        const { values: mysticDefModTermValues } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const mysticDefModTermSum = mysticDefModTermValues.reduce((a, b) => a + b, 0);
         const magicProj = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.final.value;
         this.modalData.defender.mystic.summary = {
-            hdFinal: magicProj + (this.modalData.defender.mystic.modifier || 0),
+            hdFinal: magicProj + (this.modalData.defender.mystic.modifier || 0) + mysticDefModTermSum,
             taFinal: atFinal,
             damageModifier
         };
@@ -859,14 +868,18 @@ export class ChatCombatDefenseDialog extends FormApplication {
             mystic.hasDailyMaintenance = selectedSpell?.system?.hasDailyMaintenance?.value ?? false;
         }
 
+        const { values: psychicDefModTermValues } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const psychicDefModTermSum = psychicDefModTermValues.reduce((a, b) => a + b, 0);
         this.modalData.defender.psychic.summary = {
-            hdFinal: this.modalData.defender.psychic.psychicProjection + (this.modalData.defender.psychic.modifier || 0),
+            hdFinal: this.modalData.defender.psychic.psychicProjection + (this.modalData.defender.psychic.modifier || 0) + psychicDefModTermSum,
             taFinal: atFinal,
             damageModifier
         };
 
+        const { values: summonDefModTermValues } = getModifierTerms(this.defenderActor.system, "general-negative");
+        const summonDefModTermSum = summonDefModTermValues.reduce((a, b) => a + b, 0);
         this.modalData.defender.summon.summary = {
-            hdFinal: (summonData.effectiveHD || 0) + (summonData.modifier || 0),
+            hdFinal: (summonData.effectiveHD || 0) + (summonData.modifier || 0) + summonDefModTermSum,
             taFinal: atFinal,
             damageModifier
         };

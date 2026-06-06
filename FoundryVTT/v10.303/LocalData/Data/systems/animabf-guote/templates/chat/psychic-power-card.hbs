@@ -1,0 +1,35 @@
+{{#> "systems/animabf-guote/templates/common/ui/group.hbs"
+  class="abf-chat-message abf-psychic-power-card"
+}}
+  {{> "systems/animabf-guote/templates/common/ui/group-header.hbs"
+    title=powerName
+  }}
+  {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+    <div class="chat-combat-body">
+      <div class="chat-combat-attacker-row">
+        <img src="{{actorImg}}" class="chat-combat-portrait" alt="{{actorName}}" />
+        <span class="chat-combat-name">{{actorName}}</span>
+      </div>
+      <div class="chat-combat-grade-row">
+        <span class="chat-combat-grade-label">Potencial:</span>
+        <span class="chat-combat-grade-value">{{potentialTotal}}</span>
+      </div>
+      {{#if effect}}
+      <details class="chat-combat-details" open>
+        <summary>Efecto</summary>
+        <div class="chat-combat-description">{{effect}}</div>
+      </details>
+      {{else}}
+      <div class="chat-combat-grade-row">
+        <span style="color: var(--color-text-light-7, #aaa); font-size: 0.8em;">Sin efecto a este potencial</span>
+      </div>
+      {{/if}}
+      <div class="abf-spell-card-actions">
+        <button type="button" class="set-as-psychic-attack" data-power-id="{{powerId}}">
+          <i class="fas fa-bolt"></i>
+          Atacar
+        </button>
+      </div>
+    </div>
+  {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
+{{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

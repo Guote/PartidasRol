@@ -12,7 +12,7 @@ const getMaxAndMin = (array) => {
 export const mutatePenalties = (data, actor) => {
   let modFisArray = [
     data.general.modifiers.modFisico.bonus.value,
-    data.general.modifiers.modFisico.malus.value,
+    -Math.abs(data.general.modifiers.modFisico.malus.value),
 
     game?.cub?.hasCondition("Cansancio", actor) ? calculateFatigue(data) : 0,
     ...Object.values(actor.system.general.modifiers?.modFisico)?.filter((num) =>
@@ -21,7 +21,7 @@ export const mutatePenalties = (data, actor) => {
   ];
   let modSobArray = [
     data.general.modifiers.modSobrenatural.bonus.value ?? 0,
-    data.general.modifiers.modSobrenatural.malus.value ?? 0,
+    -Math.abs(data.general.modifiers.modSobrenatural.malus.value ?? 0),
     ...Object.values(actor.system.general.modifiers?.modSobrenatural)?.filter(
       (num) => Number.isInteger(num)
     ),

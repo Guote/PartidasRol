@@ -1,5 +1,4 @@
 import { ABFItems } from '../../items/ABFItems.js';
-import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
 export const LEVEL_INITIAL_SYSTEM = { level: 0 };
 
@@ -14,10 +13,6 @@ export const LevelItemConfig = ABFItemConfigFactory({
         rowSelector: '.level-row'
     },
     onCreate: async (actor) => {
-        const { i18n } = game;
-        const name = await openSimpleInputDialog({
-            content: i18n.localize('anima.dialogs.items.level.content')
-        });
-        actor.createInnerItem({ type: ABFItems.LEVEL, name, system: LEVEL_INITIAL_SYSTEM });
+        actor.createInnerItem({ type: ABFItems.LEVEL, name: '', system: LEVEL_INITIAL_SYSTEM });
     }
 });

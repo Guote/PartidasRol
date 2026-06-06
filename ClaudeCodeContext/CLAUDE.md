@@ -6,6 +6,20 @@ This file provides guidance to Claude Code when working in this workspace.
 
 At the start of every session in this project, read `TODO.md` (in this directory) and tell the user what open tasks are listed there. Do this before anything else.
 
+---
+
+## Specs (Game Mechanics & UI Design)
+
+`specs/INDEX.md` is the gateway — scan it to find which spec file(s) to load before implementing or fixing anything. Each file is small and focused; never load more than 2-3 at once.
+
+**When to read specs**: before implementing any feature or fixing any bug — scan the index, load relevant files.
+**When to update specs**: after any session that clarifies a rule, fixes a design inconsistency, or adds a new UI pattern — update the relevant spec file as part of the same work.
+
+| Directory | Contents |
+|-----------|---------|
+| `specs/mechanics/` | Game rules: modifiers, combat, stats, skills, level, psychic, mystic, summoning, ki, masa |
+| `specs/ui/` | Design patterns: resources, skills tab, combat dialog, chat cards, conditions |
+
 ## Workspace Overview
 
 This workspace provides Claude Code context for a FoundryVTT setup running **Anima Beyond Fantasy**.

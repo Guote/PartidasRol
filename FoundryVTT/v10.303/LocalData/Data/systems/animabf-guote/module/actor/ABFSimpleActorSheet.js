@@ -200,8 +200,7 @@ export default class ABFActorSheet extends ActorSheet {
         labels: [`${dataset.label}`, "Mod"],
       });
       if (formula.includes("10TO100")) {
-        let totalLevel = this.actor.system.general.levels.reduce((sum, item) => sum + (item.system.level || 0), 0);
-        console.log("entramos", {totalLevel})
+        let totalLevel = this.actor.system.general.level?.value || 0;
         formula = getFormula({
           dice: dataset.roll,
           values: [dataset.rollvalue, totalLevel*10, mod],

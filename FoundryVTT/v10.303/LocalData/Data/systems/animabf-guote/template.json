@@ -140,6 +140,7 @@
         "elan": [],
         "experience": { "current": { "value": 0 }, "next": { "value": 0 } },
         "languages": { "base": { "value": "" }, "others": [] },
+        "level": { "value": 0 },
         "levels": [],
         "notes": [],
         "titles": []

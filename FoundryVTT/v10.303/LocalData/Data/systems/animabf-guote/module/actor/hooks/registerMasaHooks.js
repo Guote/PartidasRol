@@ -1,11 +1,10 @@
 /**
  * Register hooks for masa (group) functionality.
- * Updates token name to show living members count.
+ * Keeps both actor name and token names in sync with living member count.
  */
 export const registerMasaHooks = () => {
-  // Hook into actor updates to refresh token display for masas
+  // Hook into actor updates to refresh name display for masas
   Hooks.on("updateActor", async (actor, changes, options, userId) => {
-    // Only process if this is a masa and LP changed
     const masaFlags = actor.flags?.animabf?.masa;
     if (!masaFlags?.isMasa) return;
 
@@ -14,14 +13,14 @@ export const registerMasaHooks = () => {
       undefined;
     if (!lpChanged) return;
 
-    // Get the updated masa data (calculated in prepareActor)
     const masaData = actor.system.masa;
     if (!masaData) return;
 
-    // Update all tokens linked to this actor
+    await updateMasaNames(null, actor, masaData);
+
     const tokens = actor.getActiveTokens();
     for (const token of tokens) {
-      await updateMasaTokenName(token, actor, masaData);
+      await updateMasaNames(token, actor, masaData);
     }
   });
 
@@ -36,27 +35,31 @@ export const registerMasaHooks = () => {
     const masaData = actor.system.masa;
     if (!masaData) return;
 
-    await updateMasaTokenName(tokenDoc, actor, masaData);
+    await updateMasaNames(tokenDoc, actor, masaData);
   });
 };
 
 /**
- * Update a token's name to show living members count.
- * Format: "Base Name x5 [3]" where 3 is living members
+ * Build the canonical masa name from the actor's base name and living count.
  */
-const updateMasaTokenName = async (token, actor, masaData) => {
-  const { totalMembers, livingMembers } = masaData;
+const buildMasaName = (actor, masaData) => {
+  const { livingMembers } = masaData;
+  const baseName = actor.name.replace(/\s*\[\d+\]\s*$/, "");
+  return `${baseName} [${livingMembers}]`;
+};
 
-  // Extract base name (remove any existing member count suffix)
-  let baseName = actor.name;
-  // Remove existing [X] suffix if present
-  baseName = baseName.replace(/\s*\[\d+\]\s*$/, "");
+/**
+ * Update actor name and/or token name to reflect the current living member count.
+ * Pass token=null to skip the token update (actor-only sync).
+ */
+const updateMasaNames = async (token, actor, masaData) => {
+  const newName = buildMasaName(actor, masaData);
 
-  // Build new name with living members count
-  const newName = `${baseName} [${livingMembers}]`;
+  if (actor.name !== newName) {
+    await actor.update({ name: newName });
+  }
 
-  // Only update if name actually changed
-  if (token.name !== newName) {
+  if (token && token.name !== newName) {
     await token.update({ name: newName });
   }
 };

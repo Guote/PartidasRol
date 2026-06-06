@@ -7,6 +7,9 @@
   - key: The skill key (e.g., "acrobacias")
 --}}
 <div class="v2-skill-row">
+  <input type="checkbox" class="v2-skill-combine-checkbox"
+         data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
+         data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}">
   <span class="v2-skill-row__name rollable"
         data-roll="1d100xa"
         data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
@@ -18,10 +21,4 @@
          name="system.secondaries.{{group}}.{{key}}.base.value"
          value="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'base') 'value'}}">
   <span class="v2-skill-row__final">{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}</span>
-  <button type="button" class="v2-combine-btn"
-          title="{{localize 'anima.ui.skills.combine'}}"
-          data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
-          data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}">
-    <i class="fas fa-link"></i>
-  </button>
 </div>

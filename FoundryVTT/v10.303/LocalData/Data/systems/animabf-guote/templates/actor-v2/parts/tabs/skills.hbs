@@ -17,7 +17,18 @@
   {{!-- Secondary Skills --}}
   <div class="v2-card v2-card--skills">
     <div class="v2-card__header">
-      <span>{{localize "anima.ui.skills.secondaries"}}</span>
+      <div class="v2-card__header-title">
+        <span>{{localize "anima.ui.skills.secondaries"}}</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn v2-combine-header-btn"
+                data-on-click="toggle-combine-mode"
+                title="Tirada combinada"
+                style="width:auto!important;display:inline-flex;gap:4px;">
+          <i class="fas fa-link"></i>
+          <span class="v2-combine-label">Combinar</span>
+        </button>
+      </div>
     </div>
     <div class="v2-card__body">
       <div class="v2-skills-grid">
@@ -46,6 +57,9 @@
     <div class="v2-special-skills-grid" id="secondary-special-skills-context-menu-container">
       {{#each system.secondaries.secondarySpecialSkills as |skill|}}
       <div class="v2-skill-row secondary-special-skill-row" data-item-id="{{skill._id}}">
+        <input type="checkbox" class="v2-skill-combine-checkbox"
+               data-rollvalue="{{skill.system.level.value}}"
+               data-label="{{skill.name}}">
         <span class="v2-skill-row__name rollable"
               data-roll="1d100xa"
               data-rollvalue="{{skill.system.level.value}}"
@@ -54,12 +68,6 @@
                name="system.dynamic.secondarySpecialSkills.{{skill._id}}.system.level.value"
                value="{{skill.system.level.value}}">
         <span class="v2-skill-row__final">{{skill.system.level.value}}</span>
-        <button type="button" class="v2-combine-btn"
-                title="{{localize 'anima.ui.skills.combine'}}"
-                data-rollvalue="{{skill.system.level.value}}"
-                data-label="{{skill.name}}">
-          <i class="fas fa-link"></i>
-        </button>
       </div>
       {{else}}
       <div class="v2-text-center v2-text-muted" style="padding: var(--space-3); grid-column: 1 / -1;">-</div>
@@ -72,6 +80,11 @@
     <div class="v2-card__header">
       <div class="v2-card__header-title">
         <span>Capacidades Físicas</span>
+        <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal"
+                title="Tablas de referencia (TM · IP · Regeneración)"
+                style="width:auto!important;display:inline-flex;margin-left:6px;">
+          <i class="fas fa-book-open"></i>
+        </button>
       </div>
       <div class="v2-card__header-actions v2-humanidad-toggle">
         <label class="v2-humanidad-toggle__opt {{#if (eq system.flags.humanidad 'human')}}active{{/if}}">

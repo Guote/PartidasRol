@@ -503,6 +503,7 @@
   "anima.ui.psychic.psychicPowers.power.header.name.title": "Nombre",
   "anima.ui.psychic.psychicPowers.power.openSheet": "Ver detalles",
   "anima.ui.psychic.psychicPowers.title": "Poderes Psíquicos",
+  "anima.ui.psychic.psychicPowers.alreadyImported": "{name} ya está en los poderes psíquicos",
   "anima.ui.psychic.psychicProjection.projection.title": "Proyección",
   "anima.ui.psychic.psychicProjection.title": "Projecc. Psíquica",
   "anima.ui.psychic.psychicProjection.defensive.rollMessage": "proyección psíquica defensiva",

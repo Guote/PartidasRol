@@ -3,10 +3,12 @@ import { createCharacterFromTemplateMacro } from './functions/createCharacterFro
 import { createMasaMacro } from './functions/createMasaMacro.js';
 import { importFromPdfMacro } from './functions/importFromPdf/importFromPdfMacro.js';
 import { addDesarmadoMacro } from './functions/addDesarmadoMacro.js';
+import { createCapacidadesJournalMacro } from './functions/createCapacidadesJournalMacro.js';
 export const ABFMacros = {
     damageCalculator: damageCalculatorMacro,
     createCharacterFromTemplate: createCharacterFromTemplateMacro,
     createMasa: createMasaMacro,
     importFromPdf: importFromPdfMacro,
-    addDesarmado: addDesarmadoMacro
+    addDesarmado: addDesarmadoMacro,
+    createCapacidadesJournal: createCapacidadesJournalMacro,
 };

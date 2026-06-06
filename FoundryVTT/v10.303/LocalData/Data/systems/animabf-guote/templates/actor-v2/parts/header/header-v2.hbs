@@ -7,7 +7,7 @@
       <img class="v2-header__portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}">
       <div class="v2-header__info">
         <input class="v2-header__name" type="text" name="name" value="{{actor.name}}" title="{{actor.name}}">
-        <span class="v2-header__level">Nv. {{system.general.levels.length}}</span>
+        <span class="v2-header__level">Nv. {{system.general.level.value}}</span>
       </div>
     </div>
 
@@ -110,6 +110,17 @@
   <div class="v2-header__row v2-header__row--resources">
     <div class="v2-header__resources">
       {{!-- HP Group (HP + Sacrificed Life) --}}
+      {{#if system.masa.isMasa}}
+      <div class="v2-res v2-res--masa v2-res--compact" title="Miembros vivos / total">
+        <span class="v2-res__label"><i class="fas fa-users"></i> Nº</span>
+        <div class="v2-res__values">
+          <span class="v2-res__readonly">{{system.masa.livingMembers}}</span>
+          <span class="v2-res__sep">/</span>
+          <span class="v2-res__readonly">{{system.masa.totalMembers}}</span>
+        </div>
+      </div>
+      {{/if}}
+
       {{#if system.ui.resourceVisibility.hp.value}}
       <div class="v2-res-group">
         <div class="v2-res v2-res--hp v2-res--compact" title="{{localize 'anima.ui.general.life.current.title'}}">
