@@ -15,8 +15,8 @@
   - compact: Use compact styling (default false)
   - baseOnly: Show only the base input, hide the final value (default false)
   - rollableDiv: Make the whole div rollable instead of just the final span (hides final span)
-  - tmpModName: Name for an optional temporary modifier input (shown between base and final)
-  - tmpModValue: Value for the temporary modifier input
+  - temporalName: Name for the temporal modifier input (dims when value is 0, amber when non-zero)
+  - temporalValue: Value for the temporal modifier input
 --}}
 <div class="v2-combat-value {{#if compact}}v2-combat-value--compact{{/if}} {{#if rollableDiv}}rollable{{/if}}"
      {{#if rollableDiv}}
@@ -30,11 +30,13 @@
     <input type="number" class="v2-combat-value__input"
            name="{{baseName}}"
            value="{{baseValue}}">
-    {{#if tmpModName}}
-    <span class="v2-combat-value__sep">+</span>
-    <input type="number" class="v2-combat-value__input v2-combat-value__input--mod"
-           name="{{tmpModName}}"
-           value="{{tmpModValue}}">
+    {{#if temporalName}}
+    <span class="v2-combat-value__sep {{#unless temporalValue}}btf-temporal--zero{{/unless}}">+</span>
+    <input type="number" class="v2-combat-value__input v2-combat-value__input--mod btf-temporal {{#unless temporalValue}}btf-temporal--zero{{/unless}}"
+           name="{{temporalName}}"
+           value="{{temporalValue}}"
+           placeholder="·"
+           title="Temporal">
     {{/if}}
     {{#unless baseOnly}}{{#unless rollableDiv}}
     {{#if rollable}}

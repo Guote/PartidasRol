@@ -7,8 +7,8 @@
       <span>{{localize "anima.ui.psychic.title"}}</span>
     </div>
     <div class="v2-card__body">
-      <div class="v2-combat-values">
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+      <div class="v2-btfl-group">
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.psychic.psychicProjection.offensive.title")
             baseName="system.psychic.psychicProjection.imbalance.offensive.base.value"
             baseValue=system.psychic.psychicProjection.imbalance.offensive.base.value
@@ -16,9 +16,11 @@
             rollable=true
             rollLabel=(localize "anima.ui.psychic.psychicProjection.offensive.rollMessage")
             modifierType="general-negative"
-            rollableDiv=true}}
+            rollableDiv=true
+            temporalName="system.psychic.psychicProjection.imbalance.offensive.temporal.value"
+            temporalValue=system.psychic.psychicProjection.imbalance.offensive.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.psychic.psychicProjection.defensive.title")
             baseName="system.psychic.psychicProjection.imbalance.defensive.base.value"
             baseValue=system.psychic.psychicProjection.imbalance.defensive.base.value
@@ -26,9 +28,11 @@
             rollable=true
             rollLabel=(localize "anima.ui.psychic.psychicProjection.defensive.rollMessage")
             modifierType="general-negative"
-            rollableDiv=true}}
+            rollableDiv=true
+            temporalName="system.psychic.psychicProjection.imbalance.defensive.temporal.value"
+            temporalValue=system.psychic.psychicProjection.imbalance.defensive.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.psychic.psychicPotential.title")
             baseName="system.psychic.psychicPotential.base.value"
             baseValue=system.psychic.psychicPotential.base.value
@@ -36,19 +40,29 @@
             rollable=true
             rollLabel=(localize "anima.ui.psychic.psychicPotential.title")
             modifierType="general-negative-half"
-            rollableDiv=true}}
+            rollableDiv=true
+            temporalName="system.psychic.psychicPotential.temporal.value"
+            temporalValue=system.psychic.psychicPotential.temporal.value}}
 
         {{!-- Psychic Points --}}
-        <div class="v2-combat-value">
-          <span class="v2-combat-value__label">{{localize "anima.ui.psychic.psychicPoints.title"}}</span>
-          <div class="v2-combat-value__inputs">
-            <input type="number" class="v2-combat-value__input"
-                   name="system.psychic.psychicPoints.value"
-                   value="{{system.psychic.psychicPoints.value}}">
-            <span class="v2-text-muted" style="font-size:0.85rem;">/</span>
-            <input type="number" class="v2-combat-value__input"
-                   name="system.psychic.psychicPoints.max"
-                   value="{{system.psychic.psychicPoints.max}}">
+        <div class="v2-btfl">
+          <div class="v2-btfl__header">
+            <span class="v2-btfl__label">{{localize "anima.ui.psychic.psychicPoints.title"}}</span>
+          </div>
+          <div class="v2-btfl__body">
+            <div class="v2-btfl__inputs-container">
+              <div class="v2-btfl__field">
+                <input type="number" class="v2-btfl__input v2-btfl__input--base"
+                       name="system.psychic.psychicPoints.value"
+                       value="{{system.psychic.psychicPoints.value}}">
+              </div>
+              <span class="v2-text-muted" style="font-size:0.85rem;">/</span>
+              <div class="v2-btfl__field">
+                <input type="number" class="v2-btfl__input v2-btfl__input--base"
+                       name="system.psychic.psychicPoints.max"
+                       value="{{system.psychic.psychicPoints.max}}">
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,0 +1,66 @@
+{{!--
+  Base → Temporal → Final Large Input Component
+  Shows a labelled card with a base input, optional temporal input, and final value.
+  Replaces combat-value.hbs.
+
+  Parameters:
+  - label: The localized label text (rendered uppercase via CSS)
+  - baseName: The input name for the base value
+  - baseValue: The base value
+  - finalValue: The final calculated value (always shown unless baseOnly)
+  - rollable: Whether the final container is the roll target (click final to roll)
+  - rollLabel: Label to show in roll message
+  - rollFormula: Custom roll formula (default "1d100xa")
+  - modifierType: Modifier type for _onRoll
+  - compact: Use compact styling (default false)
+  - baseOnly: Show only the base input, hide the final value (default false)
+  - rollableDiv: Make the whole card rollable on click
+  - temporalName: Name for the temporal modifier input
+  - temporalValue: Value for the temporal modifier input (dims when 0)
+--}}
+<div class="v2-btfl {{#if compact}}v2-btfl--compact{{/if}} {{#if rollableDiv}}rollable{{/if}}"
+     {{#if rollableDiv}}
+     data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
+     data-rollvalue="{{finalValue}}"
+     data-label="{{rollLabel}}"
+     {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
+     {{/if}}>
+
+  <div class="v2-btfl__header">
+    <span class="v2-btfl__label">{{label}}</span>
+  </div>
+
+  <div class="v2-btfl__body">
+    <div class="v2-btfl__inputs-container">
+      <div class="v2-btfl__field">
+        <input type="number" class="v2-btfl__input v2-btfl__input--base"
+               name="{{baseName}}"
+               value="{{baseValue}}"
+               title="Base">
+      </div>
+
+      {{#if temporalName}}
+      <div class="v2-btfl__field v2-btfl__field--temporal {{#unless temporalValue}}v2-btfl__field--zero{{/unless}}">
+        <span class="v2-btfl__operator">+</span>
+        <input type="number" class="v2-btfl__input v2-btfl__input--temporal"
+               name="{{temporalName}}"
+               value="{{temporalValue}}"
+               placeholder="0"
+               title="Temporal">
+      </div>
+      {{/if}}
+    </div>
+
+    {{#unless baseOnly}}
+    <div class="v2-btfl__final-container{{#unless rollableDiv}}{{#if rollable}} rollable{{/if}}{{/unless}}"
+      {{#unless rollableDiv}}{{#if rollable}}
+      data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
+      data-rollvalue="{{finalValue}}"
+      data-label="{{rollLabel}}"
+      {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
+      {{/if}}{{/unless}}>
+      <span class="v2-btfl__final-value">{{finalValue}}</span>
+    </div>
+    {{/unless}}
+  </div>
+</div>

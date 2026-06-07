@@ -463,6 +463,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const labels = [];
       checked.each((_, el) => {
         let raw = parseInt(el.dataset.rollvalue) || 0;
+        const temporal = parseInt(el.dataset.temporalvalue) || 0;
         if (el.dataset.isCharacteristic === 'true') {
           // Apply 10TO100: stat × 10 → effective bonus + level bonus + inhumanity/zen bonus
           const statVal = raw / 10;
@@ -477,11 +478,14 @@ export default class ABFActorSheetV2 extends ActorSheet {
           let extra = 0;
           if (statVal > 13 && hasZen(humanidad)) extra = 80;
           else if (statVal > 10 && hasInhumanity(humanidad)) extra = 40;
-          raw = effectiveBonus + totalLevel * 10 + extra;
+          raw = effectiveBonus + totalLevel * 10 + extra + temporal;
         }
         values.push(Math.floor(raw / N / 5) * 5);
-        labels.push(el.dataset.label || '?');
+        labels.push((el.dataset.label || '?') + (temporal !== 0 ? ' Temp' : ''));
       });
+      const { values: genModValues, labels: genModLabels } = getModifierTerms(this.actor.system, 'general');
+      values.push(...genModValues);
+      labels.push(...genModLabels);
       if (modifier !== 0) { values.push(modifier); labels.push('Mod'); }
       const formula = getFormula({ dice: '1d100xa', values, labels });
       const roll = new ABFFoundryRoll(formula, this.actor.system);
@@ -1914,10 +1918,11 @@ export default class ABFActorSheetV2 extends ActorSheet {
         }
       }
 
+      const temporalBonus = parseInt(dataset.temporalvalue) || 0;
       let formula = getFormula({
         dice: dataset.roll,
-        values: [initiativeRollValue, ...modValues, ...weaponInitValues, mod],
-        labels: [initiativeRollLabel, ...modLabels, ...weaponInitLabels, "Mod"],
+        values: [initiativeRollValue, temporalBonus, ...modValues, ...weaponInitValues, mod],
+        labels: [initiativeRollLabel, 'Temporal', ...modLabels, ...weaponInitLabels, "Mod"],
       });
       if (formula.includes("10TO100")) {
         const totalLevel = this.actor.system.general.level?.value || 0;
@@ -1946,8 +1951,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
         formula = getFormula({
           dice: dataset.roll,
-          values: [effectiveStatBonus, totalLevel * 10, ...extraValues, ...modValues, mod],
-          labels: [dataset.label, "Nivel", ...extraLabels, ...modLabels, "Mod"],
+          values: [effectiveStatBonus, totalLevel * 10, temporalBonus, ...extraValues, ...modValues, mod],
+          labels: [dataset.label, "Nivel", 'Temporal', ...extraLabels, ...modLabels, "Mod"],
         }).replace("10TO100", "");
       }
       if (parseInt(dataset.extra) >= 200)

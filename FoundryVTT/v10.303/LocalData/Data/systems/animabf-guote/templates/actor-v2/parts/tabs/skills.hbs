@@ -4,6 +4,10 @@
   <div class="v2-card v2-card--stats">
     <div class="v2-card__header">
       <span>{{localize "anima.ui.characteristics.title"}}</span>
+      <div class="v2-btf-col-labels" style="margin-left:auto;">
+        <span title="Base">B</span>
+        <span title="Temporal">+T</span>
+      </div>
     </div>
     <div class="v2-card__body">
       <div class="v2-characteristics">
@@ -21,6 +25,11 @@
         <span>{{localize "anima.ui.skills.secondaries"}}</span>
       </div>
       <div class="v2-card__header-actions">
+        <div class="v2-btf-col-labels" style="margin-right:4px;">
+          <span title="Base">B</span>
+          <span title="Temporal">+T</span>
+          <span title="Final">=</span>
+        </div>
         <button type="button" class="v2-card__header-btn v2-combine-header-btn"
                 data-on-click="toggle-combine-mode"
                 title="Tirada combinada"
@@ -49,6 +58,11 @@
         <span>{{localize "anima.ui.secondaries.secondarySpecialSkills.title"}}</span>
       </div>
       <div class="v2-card__header-actions">
+        <div class="v2-btf-col-labels" style="margin-right:4px;">
+          <span title="Base">B</span>
+          <span title="Temporal">+T</span>
+          <span title="Final">=</span>
+        </div>
         <button type="button" class="v2-card__header-btn" data-on-click="add-secondary-special-skill" title="{{localize 'anima.dialogs.items.secondarySkill.content'}}">
           <i class="fas fa-plus"></i>
         </button>

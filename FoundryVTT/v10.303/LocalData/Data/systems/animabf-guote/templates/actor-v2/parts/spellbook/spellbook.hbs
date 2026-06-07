@@ -92,7 +92,7 @@
         {{!-- Combat Stats Row: Projections + ACT + Innate Magic --}}
         <div class="spellbook-combat-row">
           {{!-- Magic Projection Offensive --}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+          {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
               label=(localize "anima.ui.mystic.magicProjection.offensive.title")
               baseName="system.mystic.magicProjection.imbalance.offensive.base.value"
               baseValue=mystic.magicProjection.imbalance.offensive.base.value
@@ -100,10 +100,12 @@
               rollLabel=(localize "anima.ui.mystic.magicProjection.offensive.title")
               modifierType="general-negative"
               rollableDiv=true
+              temporalName="system.mystic.magicProjection.imbalance.offensive.temporal.value"
+              temporalValue=mystic.magicProjection.imbalance.offensive.temporal.value
           }}
 
           {{!-- Magic Projection Defensive --}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+          {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
               label=(localize "anima.ui.mystic.magicProjection.defensive.title")
               baseName="system.mystic.magicProjection.imbalance.defensive.base.value"
               baseValue=mystic.magicProjection.imbalance.defensive.base.value
@@ -111,23 +113,29 @@
               rollLabel=(localize "anima.ui.mystic.magicProjection.defensive.title")
               modifierType="general-negative"
               rollableDiv=true
+              temporalName="system.mystic.magicProjection.imbalance.defensive.temporal.value"
+              temporalValue=mystic.magicProjection.imbalance.defensive.temporal.value
           }}
 
           {{!-- ACT (editable) --}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+          {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
               label=(localize "anima.ui.mystic.act.title")
               baseName="system.mystic.act.main.base.value"
               baseValue=mystic.act.main.base.value
               finalValue=mystic.act.main.final.value
+              temporalName="system.mystic.act.main.temporal.value"
+              temporalValue=mystic.act.main.temporal.value
           }}
 
           {{!-- Alternative ACT (only if set) --}}
           {{#if mystic.act.alternative.base.value}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+          {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
               label=(localize "anima.ui.mystic.act.alternative.title")
               baseName="system.mystic.act.alternative.base.value"
               baseValue=mystic.act.alternative.base.value
               finalValue=mystic.act.alternative.final.value
+              temporalName="system.mystic.act.alternative.temporal.value"
+              temporalValue=mystic.act.alternative.temporal.value
           }}
           {{/if}}
 

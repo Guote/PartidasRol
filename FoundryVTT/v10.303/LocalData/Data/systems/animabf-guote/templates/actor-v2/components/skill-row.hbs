@@ -1,6 +1,6 @@
 {{!--
   Skill Row Component
-  Renders a single secondary skill row with rollable name, base input, and final value.
+  Renders a single secondary skill row with rollable name and base-to-final inputs.
 
   Parameters:
   - group: The skill group key (e.g., "guotecundariasuno")
@@ -9,16 +9,26 @@
 <div class="v2-skill-row">
   <input type="checkbox" class="v2-skill-combine-checkbox"
          data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
+         data-temporalvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'temporal') 'value'}}"
          data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}">
   <span class="v2-skill-row__name rollable"
         data-roll="1d100xa"
-        data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
+        data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'base') 'value'}}"
+        data-temporalvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'temporal') 'value'}}"
         data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}"
         data-modifier-type="general">
     {{localize (concat 'anima.ui.secondaries.' key '.title')}}
   </span>
-  <input type="number" class="v2-skill-row__base"
-         name="system.secondaries.{{group}}.{{key}}.base.value"
-         value="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'base') 'value'}}">
-  <span class="v2-skill-row__final">{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}</span>
+  {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+      baseName=(concat "system.secondaries." group "." key ".base.value")
+      baseValue=(lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'base') 'value')
+      temporalName=(concat "system.secondaries." group "." key ".temporal.value")
+      temporalValue=(lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'temporal') 'value')
+      finalValue=(lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value')
+      rollable=true
+      rollLabel=(localize (concat 'anima.ui.secondaries.' key '.title'))
+      rollFormula="1d100xa"
+      modifierType="general"
+      width=90
+  }}
 </div>

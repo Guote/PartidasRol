@@ -804,7 +804,7 @@
   align-items: flex-start;
 }
 
-.spellbook .spellbook-combat-row .v2-combat-value {
+.spellbook .spellbook-combat-row .v2-btfl {
   flex: 1;
   min-width: 120px;
 }
@@ -1157,4 +1157,4 @@
   color: #7b1fa2;
 }
 
-/* v2-combat-value base styles are defined in actor-sheet-v2.css (shared selectors) */
+/* v2-btfl base styles are defined in actor-sheet-v2.css (shared selectors) */

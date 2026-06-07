@@ -25,22 +25,22 @@ Example: if a character has físico maluses of -40 and -80, only the -80 counts 
 
 ### How General Modifiers Apply
 
-| Stat / Roll | Application | Formula |
-|---|---|---|
-| Skill and stat rolls | Full general modifier | `general` |
-| Tipo de Movimiento | ÷ 20, both signs | `floor(general / 20)` |
-| Índice de Peso | ÷ 20, both signs | `floor(general / 20)` |
-| Turno | ÷ 2, both signs | `floor(general / 10) * 5` |
-| Regeneración | Not applied | — |
-| Resistances | Not applied | — |
-| Physical HA / HD | Full general + maniobras (both signs) | `general + maniobras` |
-| Magic projection (HA/HD) | Only if general < 0; maniobras only if < 0 | `min(0, general) + min(0, maniobras)` |
-| Psychic projection (HA/HD) | Only if general < 0; maniobras only if < 0 | `min(0, general) + min(0, maniobras)` |
-| Summon HA / HD | Only if general < 0; no maniobras | `min(0, general)` |
-| Ki accumulation per stat per turn | ÷ 20, only if general < 0; result minimum = 1 | `min(0, floor(general / 20))` |
-| Zeon ACT | ÷ 2, only if general < 0 | `min(0, floor(general / 10) * 5)` |
-| Summoning skills (convocar, atar, dominar, desconvocar) | Only if general < 0 | `min(0, general)` |
-| Psychic Potential | ÷ 2, only if general < 0 | `min(0, floor(general / 10) * 5)` |
+| Stat / Roll                                             | Application                                   | Formula                               |
+| ------------------------------------------------------- | --------------------------------------------- | ------------------------------------- |
+| Skill and stat rolls                                    | Full general modifier                         | `general`                             |
+| Tipo de Movimiento                                      | ÷ 20, both signs                              | `floor(general / 20)`                 |
+| Índice de Peso                                          | ÷ 20, both signs                              | `floor(general / 20)`                 |
+| Turno                                                   | ÷ 2, both signs                               | `floor(general / 10) * 5`             |
+| Regeneración                                            | Not applied                                   | —                                     |
+| Resistances                                             | Not applied                                   | —                                     |
+| Physical HA / HD                                        | Full general + maniobras (both signs)         | `general + maniobras`                 |
+| Magic projection (HA/HD)                                | Only if general < 0; maniobras only if < 0    | `min(0, general) + min(0, maniobras)` |
+| Psychic projection (HA/HD)                              | Only if general < 0; maniobras only if < 0    | `min(0, general) + min(0, maniobras)` |
+| Summon HA / HD                                          | Only if general < 0; no maniobras             | `min(0, general)`                     |
+| Ki accumulation per stat per turn                       | ÷ 20, only if general < 0; result minimum = 1 | `min(0, floor(general / 20))`         |
+| Zeon ACT                                                | ÷ 2, only if general < 0                      | `min(0, floor(general / 10) * 5)`     |
+| Summoning skills (convocar, atar, dominar, desconvocar) | Only if general < 0                           | `min(0, general)`                     |
+| Psychic Potential                                       | ÷ 2, only if general < 0                      | `min(0, floor(general / 10) * 5)`     |
 
 ### Other Modifier Types
 
@@ -100,28 +100,28 @@ system.general.modifiers
 
 Defined in `module/rolls/utils/getModifierTerms.js`:
 
-| Type | What it returns | Used for |
-|---|---|---|
-| `"attack"` | modFinal.attack.fis, .sob, .maniobras | combat attack rolls |
-| `"defense"` | modFinal.defense.fis, .sob, .maniobras | combat defense rolls |
-| `"general"` | modFisico.final, modSobrenatural.final (both signs) | general skill rolls |
-| `"general-negative"` | min(0, modFisico.final), min(0, modSobrenatural.final) | mystic/psychic/summon rolls |
-| `"general-negative-half"` | min(0, floor((modFis+modSob) / 10) × 5) | psychic potential |
-| `"none"` | [] | summon HA/HD (no character modifiers) — kept for discoverability |
-| `"initiative"` | floor(modFinal.general.final / 10) × 5 | initiative rolls |
+| Type                      | What it returns                                        | Used for                                                         |
+| ------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------- |
+| `"attack"`                | modFinal.attack.fis, .sob, .maniobras                  | combat attack rolls                                              |
+| `"defense"`               | modFinal.defense.fis, .sob, .maniobras                 | combat defense rolls                                             |
+| `"general"`               | modFisico.final, modSobrenatural.final (both signs)    | general skill rolls                                              |
+| `"general-negative"`      | min(0, modFisico.final), min(0, modSobrenatural.final) | mystic/psychic/summon rolls                                      |
+| `"general-negative-half"` | min(0, floor((modFis+modSob) / 10) × 5)                | psychic potential                                                |
+| `"none"`                  | []                                                     | summon HA/HD (no character modifiers) — kept for discoverability |
+| `"initiative"`            | floor(modFinal.general.final / 10) × 5                 | initiative rolls                                                 |
 
 ---
 
 ## Per-tab modifier rules (combat dialogs)
 
-| Tab | Modifier type | Note |
-|---|---|---|
-| Combat (attack) | `"attack"` | full, both signs |
-| Combat (defense) | `"defense"` | full, both signs |
-| Mystic | `"general-negative"` | penalties only |
-| Psychic projection | `"general-negative"` | penalties only |
-| Psychic potential | `"general-negative-half"` | penalties only, halved |
-| Summon HA/HD (dialog) | `"general-negative"` | penalties only; no maniobras |
+| Tab                   | Modifier type             | Note                         |
+| --------------------- | ------------------------- | ---------------------------- |
+| Combat (attack)       | `"attack"`                | full, both signs             |
+| Combat (defense)      | `"defense"`               | full, both signs             |
+| Mystic                | `"general-negative"`      | penalties only               |
+| Psychic projection    | `"general-negative"`      | penalties only               |
+| Psychic potential     | `"general-negative-half"` | penalties only, halved       |
+| Summon HA/HD (dialog) | `"general-negative"`      | penalties only; no maniobras |
 
 **Known issue:** The current `attack` modifier type (`general + maniobras`) is only correct for physical HA. For magic and psychic projection, maniobras should only apply when < 0 — there is currently no modifier type for this distinction.
 
@@ -145,46 +145,23 @@ This flows into `modFinal.defense.final.value` automatically — no manual term 
 
 What is displayed (base / temporal / final) and whether the roll has an instant modifier dialog:
 
-| Section | Display | Instant mod dialog |
-|---|---|---|
-| Resistances | final only (roll uses base — temporal in pipeline but not yet in roll) | ✅ |
-| Resources | current + final (no temporal) | — (not rollable) |
-| Combat — ataque, parada, turno natural | base only (no final shown) | ✅ |
-| Habilidades — primary stats | base + stat-level mod (not a general mod) | — |
-| Habilidades — secundarias | base + final | ✅ |
-| Habilidades — special skills | base + final | ✅ |
-| Habilidades — capacidades físicas | temporal + final | — (not rollable) |
-| Summoning — convocar/atar/dominar/desconvocar | base + final (no temporal) | ✅ |
-| Domine — ki acum per stat | base + final; total shows final only | ✅ |
-| Psychic — proy ofensiva/defensiva/potencial | base only | ✅ |
-| Grimorio — proy ofensiva/defensiva | base only | ✅ |
-| Grimorio — ACT | base + final | ✅ |
-| Attack/defense dialogs | final values + inline instant mod options | ✅ |
+| Section                                       | Display                                                                | Instant mod dialog |
+| --------------------------------------------- | ---------------------------------------------------------------------- | ------------------ |
+| Resistances                                   | final only (roll uses base — temporal in pipeline but not yet in roll) | ✅                 |
+| Resources                                     | current + final (no temporal)                                          | — (not rollable)   |
+| Combat — ataque, parada, turno natural        | base + temporal + final                                                | ✅                 |
+| Habilidades — primary stats                   | base + temporal + final + stat-level mod                               | —                  |
+| Habilidades — secundarias                     | base + temporal + final                                                | ✅                 |
+| Habilidades — special skills                  | base + temporal + final                                                | ✅                 |
+| Habilidades — capacidades físicas             | temporal + final                                                       | — (not rollable)   |
+| Summoning — convocar/atar/dominar/desconvocar | base + temporal + final                                                | ✅                 |
+| Domine — ki acum per stat                     | base + temporal + final                                                | ✅                 |
+| Psychic — proy ofensiva/defensiva/potencial   | base + temporal + final                                                | ✅                 |
+| Grimorio — proy ofensiva/defensiva            | base only (mystic tab wraps v1; temporal deferred)                     | ✅                 |
+| Grimorio — ACT                                | base + final (mystic tab wraps v1; temporal deferred)                  | ✅                 |
+| Attack/defense dialogs                        | final values + inline instant mod options                              | ✅                 |
 
 **Roll formula principle (desired):** `base + temporal + applicable_general_mod + instant_mod`. The correct general mod depends on the roll type (see the application table above).
-
----
-
-## Future Tasks
-
-### ~~FUTURE TASK — Temporal modifier support~~ DONE (schema + pipeline; HBS deferred)
-
-`temporal: { value: 0 }` added to all rollable stats and resistances in `template.json` and `INITIAL_ACTOR_DATA`. `mutateData.js` computes `final = base + temporal + activeEffectMod + callerModifier` for all stats. Resistances use `mutateResistancesData.js` (`final = base + temporal`, no general mod applied). Old actors default to 0 via `mergeObject({ overwrite: false })` + `?? 0` guard. HBS inputs deferred to the layout task below.
-
-**Note on resistances:** the roll button in `header-v2.hbs` still binds to `base.value` — temporal is in `final` but won't affect resistance rolls until the HBS layout task.
-
-### FUTURE TASK — Input layout for base/temporal/final
-
-The character sheet (v2) displays data susceptible to base/temporal/final breakdowns inconsistently. Decide on a layout. There are two scales of data:
-- **Big inputs** — HA, HD, Potential, ACT, etc.
-- **Small inputs** — primary stats, habilidades secundarias, ki accumulation per stat, etc.
-- **Header data** — small and meant to be quickly accessible; not changing for now.
-
-Options:
-
-- **Path A:** Always show all 3 inputs (base editable, temporal editable, final read-only). Design two variants — one for big data, one for small. Challenge: small data is ~60×20 px and must clearly label which is base, temp, final.
-- **Path B:** Add a global "Edit sheet" toggle in the header. When active → Path A layout. When inactive → show only base and final. Reduces visual clutter in play mode.
-- **Path C:** User to decide after seeing a suggestion.
 
 ---
 

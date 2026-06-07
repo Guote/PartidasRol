@@ -514,7 +514,7 @@ export default class ABFSpellbook extends Application {
     });
 
     // Rollable clicks (rollableDiv divs — e.g. magic projections)
-    html.find('.v2-combat-value.rollable').click(async ev => {
+    html.find('.v2-btfl.rollable').click(async ev => {
       if (ev.target.tagName === 'INPUT') return;
       const element = ev.currentTarget;
       const { dataset } = element;

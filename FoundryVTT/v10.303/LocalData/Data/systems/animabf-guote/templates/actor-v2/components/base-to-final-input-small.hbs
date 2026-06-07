@@ -1,0 +1,41 @@
+{{!--
+  Base → Temporal → Final Small Input Component
+  Horizontal strip: [base input] [temporal input?] [final value]
+  Mirrors the visual language of base-to-final-input-large.hbs for row contexts.
+
+  Parameters:
+  - baseName: Input name attribute for base value
+  - baseValue: Base value
+  - temporalName: Optional temporal input name (section hidden when omitted)
+  - temporalValue: Temporal modifier value (dims/dashes when 0 or empty)
+  - finalValue: Final computed value (read-only, red, slightly larger)
+  - width: Total component width in px — 70 (ki acc), 80 (stats), 90 (skills). Default 90.
+  - rollable: Whether the final span triggers a roll on click
+  - rollLabel: Roll dialog label
+  - rollFormula: Custom roll formula (default "1d100xa")
+  - modifierType: data-modifier-type for _onRoll
+--}}
+<div class="v2-btfs" style="--btfs-w:{{#if width}}{{width}}{{else}}90{{/if}}px">
+  <input type="number" class="v2-btfs__input v2-btfs__input--base"
+         name="{{baseName}}"
+         value="{{baseValue}}"
+         title="Base">
+
+  {{#if temporalName}}
+  <input type="number"
+         class="v2-btfs__input v2-btfs__input--temporal {{#unless temporalValue}}v2-btfs__input--zero{{/unless}}"
+         name="{{temporalName}}"
+         value="{{temporalValue}}"
+         placeholder="·"
+         title="Temporal">
+  {{/if}}
+
+  <span class="v2-btfs__final{{#if rollable}} rollable{{/if}}"
+    {{#if rollable}}
+    data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
+    data-rollvalue="{{baseValue}}"
+    data-temporalvalue="{{temporalValue}}"
+    data-label="{{rollLabel}}"
+    {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
+    {{/if}}>{{finalValue}}</span>
+</div>

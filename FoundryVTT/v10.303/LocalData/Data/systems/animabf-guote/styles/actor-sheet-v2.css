@@ -34,6 +34,7 @@
   --abf-success: #2e7d32;
   --abf-warning: #ed6c02;
   --abf-error: #d32f2f;
+  --abf-temporal: goldenrod;
 
   /* Resource Colors */
   --abf-hp: #80FF00;
@@ -1032,118 +1033,275 @@
 /* --------------------------------
    Compact Combat Values
    -------------------------------- */
-.actor-sheet-v2 .v2-combat-values {
+.actor-sheet-v2 .v2-btfl-group {
   display: flex;
   gap: var(--space-3);
   flex-wrap: wrap;
 }
 
-/* Shared base — applies in both actor sheet and spellbook */
-.actor-sheet-v2 .v2-combat-value,
-.spellbook .v2-combat-value {
+/* Base Component Container */
+.v2-btfl {
+  background: #fdfaf4;
+  border: 1px solid #bba38a;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  max-width: 90px;
+}
+
+/* Header / Label Styling */
+.v2-btfl__header {
+  background: #f0e6d2;
+  border-bottom: 1px solid #d9cbbe;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.v2-btfl__label {
+  font-family: "Signika", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  color: #5c4a3c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Card Body Layout */
+.v2-btfl__body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-2) var(--space-3);
-  background: var(--abf-secondary-light);
-  border: 1px solid var(--abf-primary);
-  border-radius: var(--radius-md);
-  min-width: 70px;
+  justify-content: space-between;
+  padding: 8px;
+  flex-grow: 1;
 }
 
-.actor-sheet-v2 .v2-combat-value__label,
-.spellbook .v2-combat-value__label {
-  font-size: var(--font-size-2xs);
-  text-transform: uppercase;
-  color: var(--abf-text-muted);
-}
-
-.actor-sheet-v2 .v2-combat-value__inputs,
-.spellbook .v2-combat-value__inputs {
+/* Input Group Alignment */
+.v2-btfl__inputs-container {
   display: flex;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 6px;
 }
 
-.actor-sheet-v2 .v2-combat-value__input,
-.spellbook .v2-combat-value__input {
-  width: 35px;
+/* Individual Fields */
+.v2-btfl__field {
+  display: flex;
+  align-items: center;
+}
+
+.v2-btfl__input {
+  font-weight: 600;
+  height: 26px;
+  border: 1px solid #c8b9a6;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #333;
+  transition: border-color 0.2s;
+}
+
+/* Scoped to beat Foundry's input[type="number"] { width: 100% } (specificity 0,1,1) */
+.actor-sheet-v2 .v2-btfl__input,
+.spellbook .v2-btfl__input {
+  width: 30px;
   text-align: center;
-  font-size: var(--font-size-sm);
+}
+
+.v2-btfl__input:focus {
+  border-color: #702619;
+  box-shadow: 0 0 3px rgba(112, 38, 25, 0.3);
+}
+
+/* Temporal Input & Operator */
+.v2-btfl__operator {
   font-weight: bold;
-  padding: 1px;
-  border: 1px solid var(--abf-border-light);
-  border-radius: var(--radius-sm);
+  color: #8c7662;
+  margin-right: 6px;
+  font-size: 14px;
 }
 
-.actor-sheet-v2 .v2-combat-value__sep,
-.spellbook .v2-combat-value__sep {
-  font-size: var(--font-size-2xs);
-  color: var(--abf-text-muted);
-  padding: 0 1px;
+.v2-btfl__input--temporal {
+  border: 1px solid #dca842;
+  background: #fffdf3;
+  color: #a0711a;
 }
 
-.actor-sheet-v2 .v2-combat-value__input--mod,
-.spellbook .v2-combat-value__input--mod {
-  width: 28px;
-  font-size: var(--font-size-xs);
+/* Temporal field when value is 0 or empty */
+.v2-btfl__field--zero .v2-btfl__operator {
+  color: #ccc;
 }
 
-.actor-sheet-v2 .v2-combat-value__final,
-.spellbook .v2-combat-value__final {
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  color: var(--abf-primary);
+.v2-btfl__field--zero .v2-btfl__input--temporal {
+  border: 1px dashed #d1c7bd;
+  background: #faf6f0;
+  color: #b0a59a;
 }
 
-.actor-sheet-v2 .v2-combat-value.rollable,
-.spellbook .v2-combat-value.rollable {
+/* Final Result */
+.v2-btfl__final-container {
+  width: 100%;
+  text-align: center;
+  padding: 2px 0;
+  border-top: 1px dashed #e2d7cb;
+  margin-top: 4px;
+}
+
+.v2-btfl__final-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #702619;
+  font-family: "Signika", Arial, sans-serif;
+}
+
+/* Rollable Interactive States */
+.v2-btfl.rollable,
+.v2-btfl__final-container.rollable {
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.actor-sheet-v2 .v2-combat-value.rollable:hover,
-.spellbook .v2-combat-value.rollable:hover {
-  background: var(--abf-secondary);
-  border-color: var(--abf-primary-dark);
+.v2-btfl.rollable:hover {
+  border-color: #702619;
+  box-shadow: 0 2px 6px rgba(112, 38, 25, 0.15);
+  transform: translateY(-1px);
 }
 
-.actor-sheet-v2 .v2-combat-value__final.rollable,
-.spellbook .v2-combat-value__final.rollable {
-  cursor: pointer;
-  transition: all 0.15s ease;
-  padding: 1px 4px;
-  border-radius: var(--radius-sm);
+.v2-btfl.rollable:hover .v2-btfl__header {
+  background: #702619;
+  border-bottom-color: #702619;
 }
 
-.actor-sheet-v2 .v2-combat-value__final.rollable:hover,
-.spellbook .v2-combat-value__final.rollable:hover {
-  background: var(--abf-primary);
-  color: var(--abf-text-light);
+.v2-btfl.rollable:hover .v2-btfl__label {
+  color: #ffffff;
+}
+
+/* Compact Variation */
+.v2-btfl--compact .v2-btfl__body {
+  padding: 4px;
+}
+
+.v2-btfl--compact .v2-btfl__final-value {
+  font-size: 15px;
 }
 
 /* Combat tab: 5-column equal grid, no final value shown */
-.actor-sheet-v2 .v2-tab-combat .v2-combat-values {
+.actor-sheet-v2 .v2-tab-combat .v2-btfl-group {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: var(--space-2);
 }
 
-.actor-sheet-v2 .v2-tab-combat .v2-combat-value {
+.actor-sheet-v2 .v2-tab-combat .v2-btfl {
   min-width: 0;
   overflow: hidden;
 }
 
-.actor-sheet-v2 .v2-tab-combat .v2-combat-value__label {
+.actor-sheet-v2 .v2-tab-combat .v2-btfl__label {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
 }
 
-.actor-sheet-v2 .v2-tab-combat .v2-combat-value__input {
-  width: 52px;
-  font-size: var(--font-size-base);
+
+/* --------------------------------
+   BTF (Base / Temporal / Final) inputs
+   -------------------------------- */
+
+.actor-sheet-v2 .btf-temporal,
+.spellbook .btf-temporal {
+  border-color: var(--abf-temporal);
+  color: var(--abf-temporal);
+}
+
+.actor-sheet-v2 .btf-temporal--zero,
+.spellbook .btf-temporal--zero {
+  opacity: 0.2;
+  border-color: transparent !important;
+  background: transparent !important;
+  color: inherit !important;
+}
+
+
+/* BTF column header labels */
+.actor-sheet-v2 .v2-btf-col-labels {
+  display: flex;
+  gap: 0;
+  font-size: var(--font-size-2xs);
+  color: var(--abf-text-muted);
+  text-transform: uppercase;
+  margin-left: auto;
+  align-items: center;
+}
+
+.actor-sheet-v2 .v2-btf-col-labels span {
+  width: 28px;
+  text-align: center;
+}
+
+/* --------------------------------
+   Small Base → Temporal → Final (v2-btfs)
+   Horizontal strip for skill rows, characteristic rows, ki accumulation, etc.
+   -------------------------------- */
+.v2-btfs {
+  --btfs-w: 90px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  width: var(--btfs-w);
+  flex-shrink: 0;
+}
+
+/* Override Foundry's input[type="number"] { width: 100% } */
+.actor-sheet-v2 .v2-btfs__input,
+.spellbook .v2-btfs__input {
+  flex: 1;
+  min-width: 0;
+  width: auto !important;
+  text-align: center;
+  height: 18px;
+  padding: 0 1px;
+  border: 1px solid #333;
+  border-radius: 2px;
+  background: white;
+  color: #333;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.v2-btfs__input:focus {
+  outline: none;
+  border-color: #702619;
+  box-shadow: 0 0 2px rgba(112, 38, 25, 0.3);
+}
+
+/* Temporal when zero or empty: dim + dashed */
+.v2-btfs__input--zero {
+  border: 1px dashed #bbb !important;
+  opacity: 0.35;
+  font-weight: 400;
+}
+
+.v2-btfs__final {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #702619;
+  white-space: nowrap;
+}
+
+.v2-btfs__final.rollable {
+  cursor: pointer;
+}
+
+.v2-btfs__final.rollable:hover {
+  text-decoration: underline;
 }
 
 /* --------------------------------
@@ -1247,15 +1405,6 @@
   flex-shrink: 0;
 }
 
-.actor-sheet-v2 .v2-characteristic__value-input {
-  width: 26px;
-  text-align: center;
-  font-size: var(--font-size-xs);
-  font-weight: bold;
-  padding: 1px;
-  border: 1px solid var(--abf-border-light);
-  border-radius: var(--radius-sm);
-}
 
 .actor-sheet-v2 .v2-characteristic__mod {
   font-size: var(--font-size-2xs);
@@ -1302,6 +1451,7 @@
   text-overflow: ellipsis;
 }
 
+/* Used by rollable-stat.hbs and special skills in skills.hbs */
 .actor-sheet-v2 .v2-skill-row__base {
   width: 26px;
   flex-shrink: 0;
@@ -1624,25 +1774,15 @@
    Summoning/Convocatoria Tab Styles
    ================================ */
 
-.actor-sheet-v2 .v2-summoning-stats .v2-combat-value {
-  min-width: 100px;
+.actor-sheet-v2 .v2-summoning-stats .v2-btfl {
   flex: 1;
 }
 
-.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__label {
-  margin-bottom: var(--space-1);
-}
-
-.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__inputs {
+.actor-sheet-v2 .v2-summoning-stats .v2-btfl__inputs-container {
   gap: 4px;
 }
 
-.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__input {
-  width: 45px;
-  padding: 2px;
-}
-
-.actor-sheet-v2 .v2-summoning-stats .v2-combat-value__final {
+.actor-sheet-v2 .v2-summoning-stats .v2-btfl__final-value {
   min-width: 40px;
   text-align: center;
 }

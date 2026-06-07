@@ -38,56 +38,68 @@
           </tr>
         </thead>
         <tbody>
-          {{!-- Accumulation rate row: base input + (final) per stat + total --}}
+          {{!-- Accumulation rate row: base input + temporal + final per stat + total --}}
           <tr>
             <td class="v2-text-muted" style="font-size:0.75rem;">Acumulación por turno</td>
             <td class="v2-text-center">
-              <div style="display:flex;align-items:center;justify-content:center;gap:2px;">
-                <input type="number" class="v2-table__input" style="width:36px;text-align:center;"
-                       name="system.domine.kiAccumulation.agility.base.value"
-                       value="{{system.domine.kiAccumulation.agility.base.value}}">
-                <span class="v2-text-muted" style="font-size:0.7rem;">({{system.domine.kiAccumulation.agility.final.value}})</span>
-              </div>
+              {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                  baseName="system.domine.kiAccumulation.agility.base.value"
+                  baseValue=system.domine.kiAccumulation.agility.base.value
+                  temporalName="system.domine.kiAccumulation.agility.temporal.value"
+                  temporalValue=system.domine.kiAccumulation.agility.temporal.value
+                  finalValue=system.domine.kiAccumulation.agility.final.value
+                  width=70
+              }}
             </td>
             <td class="v2-text-center">
-              <div style="display:flex;align-items:center;justify-content:center;gap:2px;">
-                <input type="number" class="v2-table__input" style="width:36px;text-align:center;"
-                       name="system.domine.kiAccumulation.constitution.base.value"
-                       value="{{system.domine.kiAccumulation.constitution.base.value}}">
-                <span class="v2-text-muted" style="font-size:0.7rem;">({{system.domine.kiAccumulation.constitution.final.value}})</span>
-              </div>
+              {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                  baseName="system.domine.kiAccumulation.constitution.base.value"
+                  baseValue=system.domine.kiAccumulation.constitution.base.value
+                  temporalName="system.domine.kiAccumulation.constitution.temporal.value"
+                  temporalValue=system.domine.kiAccumulation.constitution.temporal.value
+                  finalValue=system.domine.kiAccumulation.constitution.final.value
+                  width=70
+              }}
             </td>
             <td class="v2-text-center">
-              <div style="display:flex;align-items:center;justify-content:center;gap:2px;">
-                <input type="number" class="v2-table__input" style="width:36px;text-align:center;"
-                       name="system.domine.kiAccumulation.dexterity.base.value"
-                       value="{{system.domine.kiAccumulation.dexterity.base.value}}">
-                <span class="v2-text-muted" style="font-size:0.7rem;">({{system.domine.kiAccumulation.dexterity.final.value}})</span>
-              </div>
+              {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                  baseName="system.domine.kiAccumulation.dexterity.base.value"
+                  baseValue=system.domine.kiAccumulation.dexterity.base.value
+                  temporalName="system.domine.kiAccumulation.dexterity.temporal.value"
+                  temporalValue=system.domine.kiAccumulation.dexterity.temporal.value
+                  finalValue=system.domine.kiAccumulation.dexterity.final.value
+                  width=70
+              }}
             </td>
             <td class="v2-text-center">
-              <div style="display:flex;align-items:center;justify-content:center;gap:2px;">
-                <input type="number" class="v2-table__input" style="width:36px;text-align:center;"
-                       name="system.domine.kiAccumulation.strength.base.value"
-                       value="{{system.domine.kiAccumulation.strength.base.value}}">
-                <span class="v2-text-muted" style="font-size:0.7rem;">({{system.domine.kiAccumulation.strength.final.value}})</span>
-              </div>
+              {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                  baseName="system.domine.kiAccumulation.strength.base.value"
+                  baseValue=system.domine.kiAccumulation.strength.base.value
+                  temporalName="system.domine.kiAccumulation.strength.temporal.value"
+                  temporalValue=system.domine.kiAccumulation.strength.temporal.value
+                  finalValue=system.domine.kiAccumulation.strength.final.value
+                  width=70
+              }}
             </td>
             <td class="v2-text-center">
-              <div style="display:flex;align-items:center;justify-content:center;gap:2px;">
-                <input type="number" class="v2-table__input" style="width:36px;text-align:center;"
-                       name="system.domine.kiAccumulation.power.base.value"
-                       value="{{system.domine.kiAccumulation.power.base.value}}">
-                <span class="v2-text-muted" style="font-size:0.7rem;">({{system.domine.kiAccumulation.power.final.value}})</span>
-              </div>
+              {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                  baseName="system.domine.kiAccumulation.power.base.value"
+                  baseValue=system.domine.kiAccumulation.power.base.value
+                  temporalName="system.domine.kiAccumulation.power.temporal.value"
+                  temporalValue=system.domine.kiAccumulation.power.temporal.value
+                  finalValue=system.domine.kiAccumulation.power.final.value
+                  width=70
+              }}
             </td>
             <td class="v2-text-center">
-              <div style="display:flex;align-items:center;justify-content:center;gap:2px;">
-                <input type="number" class="v2-table__input" style="width:36px;text-align:center;"
-                       name="system.domine.kiAccumulation.willPower.base.value"
-                       value="{{system.domine.kiAccumulation.willPower.base.value}}">
-                <span class="v2-text-muted" style="font-size:0.7rem;">({{system.domine.kiAccumulation.willPower.final.value}})</span>
-              </div>
+              {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                  baseName="system.domine.kiAccumulation.willPower.base.value"
+                  baseValue=system.domine.kiAccumulation.willPower.base.value
+                  temporalName="system.domine.kiAccumulation.willPower.temporal.value"
+                  temporalValue=system.domine.kiAccumulation.willPower.temporal.value
+                  finalValue=system.domine.kiAccumulation.willPower.final.value
+                  width=70
+              }}
             </td>
             <td class="v2-text-center v2-text-muted" style="font-size:0.85rem;">{{totalKiAccRate}}</td>
           </tr>

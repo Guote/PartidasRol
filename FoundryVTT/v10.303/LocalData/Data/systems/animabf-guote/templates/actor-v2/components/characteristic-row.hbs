@@ -4,22 +4,29 @@
 
   Parameters (via context):
   - key: The characteristic key (e.g., "agility", "strength")
-  - stat: The characteristic object with .value and .mod
+  - stat: The characteristic object with .value, .temporal.value, and .mod
 --}}
 <div class="v2-characteristic">
   <input type="checkbox" class="v2-skill-combine-checkbox"
          data-rollvalue="{{math stat.value '*' 10}}"
+         data-temporalvalue="{{math stat.temporal.value '*' 10}}"
          data-label="{{localize (concat 'anima.ui.characteristics.' key)}}"
          data-is-characteristic="true">
   <span class="v2-characteristic__name rollable"
         data-roll="1d100xa10TO100"
         data-rollvalue="{{math stat.value '*' 10}}"
+        data-temporalvalue="{{math stat.temporal.value '*' 10}}"
         data-modifier-type="general"
         data-label="{{localize (concat 'anima.ui.characteristics.' key)}}">{{localize (concat "anima.ui.characteristics." key)}}</span>
   <div class="v2-characteristic__values">
-    <input type="number" class="v2-characteristic__value-input"
-           name="system.characteristics.primaries.{{key}}.value"
-           value="{{stat.value}}">
+    {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+        baseName=(concat "system.characteristics.primaries." key ".value")
+        baseValue=stat.value
+        temporalName=(concat "system.characteristics.primaries." key ".temporal.value")
+        temporalValue=stat.temporal.value
+        finalValue=stat.final.value
+        width=80
+    }}
     <span class="v2-characteristic__mod">({{#if (gte stat.mod 0)}}+{{/if}}{{stat.mod}})</span>
   </div>
 </div>

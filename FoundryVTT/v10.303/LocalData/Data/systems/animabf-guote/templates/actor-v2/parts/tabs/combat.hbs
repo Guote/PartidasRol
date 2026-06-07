@@ -6,8 +6,8 @@
       <span>{{localize "anima.ui.combat.baseValues.title"}}</span>
     </div>
     <div class="v2-card__body">
-      <div class="v2-combat-values">
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+      <div class="v2-btfl-group">
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.combat.baseValues.attack.title")
             baseName="system.combat.attack.base.value"
             baseValue=system.combat.attack.base.value
@@ -15,10 +15,10 @@
             rollLabel=(localize "anima.ui.combat.baseValues.attack.title")
             modifierType="attack"
             rollableDiv=true
-            tmpModName="system.combat.attack.special.value"
-            tmpModValue=system.combat.attack.special.value}}
+            temporalName="system.combat.attack.temporal.value"
+            temporalValue=system.combat.attack.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.combat.baseValues.block.title")
             baseName="system.combat.block.base.value"
             baseValue=system.combat.block.base.value
@@ -26,25 +26,27 @@
             rollLabel=(localize "anima.ui.combat.baseValues.block.title")
             modifierType="defense"
             rollableDiv=true
-            tmpModName="system.combat.block.special.value"
-            tmpModValue=system.combat.block.special.value}}
+            temporalName="system.combat.block.temporal.value"
+            temporalValue=system.combat.block.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.combat.baseValues.dodge.title")
             baseName="system.combat.dodge.base.value"
             baseValue=system.combat.dodge.base.value
             finalValue=system.combat.dodge.final.value
             rollLabel=(localize "anima.ui.combat.baseValues.dodge.title")
             modifierType="defense"
-            rollableDiv=true}}
+            rollableDiv=true
+            temporalName="system.combat.dodge.temporal.value"
+            temporalValue=system.combat.dodge.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.combat.baseValues.wearArmor.title")
             baseName="system.combat.wearArmor.value"
             baseValue=system.combat.wearArmor.value
             baseOnly=true}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label="Turno Natural"
             baseName="system.characteristics.secondaries.initiative.base.value"
             baseValue=system.characteristics.secondaries.initiative.base.value
@@ -53,8 +55,8 @@
             rollLabel="Turno Natural"
             modifierType="initiative"
             rollableDiv=true
-            tmpModName="system.characteristics.secondaries.initiative.special.value"
-            tmpModValue=system.characteristics.secondaries.initiative.special.value}}
+            temporalName="system.characteristics.secondaries.initiative.temporal.value"
+            temporalValue=system.characteristics.secondaries.initiative.temporal.value}}
       </div>
     </div>
   </div>

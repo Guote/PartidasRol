@@ -158,6 +158,8 @@ export const preloadTemplates = () => {
     `systems/${ABFSystemName}/templates/actor-v2/components/data-table.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/weapon-dropdown.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/combat-value.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/base-to-final-input-large.hbs`,
+    `systems/${ABFSystemName}/templates/actor-v2/components/base-to-final-input-small.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/resource-pool.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/characteristic-row.hbs`,
     `systems/${ABFSystemName}/templates/actor-v2/components/skill-row.hbs`,

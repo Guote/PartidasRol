@@ -14,42 +14,50 @@
       </div>
     </div>
     <div class="v2-card__body">
-      <div class="v2-combat-values v2-summoning-stats">
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+      <div class="v2-btfl-group v2-summoning-stats">
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.mystic.summoning.summon.title")
             baseName="system.mystic.summoning.summon.base.value"
             baseValue=system.mystic.summoning.summon.base.value
             finalValue=system.mystic.summoning.summon.final.value
-            rollable=true
+            rollableDiv=true
             rollLabel=(localize "anima.ui.mystic.summoning.summon.title")
-            modifierType="general-negative"}}
+            modifierType="general-negative"
+            temporalName="system.mystic.summoning.summon.temporal.value"
+            temporalValue=system.mystic.summoning.summon.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.mystic.summoning.bind.title")
             baseName="system.mystic.summoning.bind.base.value"
             baseValue=system.mystic.summoning.bind.base.value
             finalValue=system.mystic.summoning.bind.final.value
-            rollable=true
+            rollableDiv=true
             rollLabel=(localize "anima.ui.mystic.summoning.bind.title")
-            modifierType="general-negative"}}
+            modifierType="general-negative"
+            temporalName="system.mystic.summoning.bind.temporal.value"
+            temporalValue=system.mystic.summoning.bind.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.mystic.summoning.control.title")
             baseName="system.mystic.summoning.control.base.value"
             baseValue=system.mystic.summoning.control.base.value
             finalValue=system.mystic.summoning.control.final.value
-            rollable=true
+            rollableDiv=true
             rollLabel=(localize "anima.ui.mystic.summoning.control.title")
-            modifierType="general-negative"}}
+            modifierType="general-negative"
+            temporalName="system.mystic.summoning.control.temporal.value"
+            temporalValue=system.mystic.summoning.control.temporal.value}}
 
-        {{> "systems/animabf-guote/templates/actor-v2/components/combat-value.hbs"
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-large.hbs"
             label=(localize "anima.ui.mystic.summoning.banish.title")
             baseName="system.mystic.summoning.banish.base.value"
             baseValue=system.mystic.summoning.banish.base.value
             finalValue=system.mystic.summoning.banish.final.value
-            rollable=true
+            rollableDiv=true
             rollLabel=(localize "anima.ui.mystic.summoning.banish.title")
-            modifierType="general-negative"}}
+            modifierType="general-negative"
+            temporalName="system.mystic.summoning.banish.temporal.value"
+            temporalValue=system.mystic.summoning.banish.temporal.value}}
       </div>
     </div>
   </div>

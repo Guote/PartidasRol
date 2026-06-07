@@ -106,14 +106,14 @@ export const INITIAL_ACTOR_DATA = {
   },
   characteristics: {
     primaries: {
-      agility: { value: 5, mod: 0 },
-      constitution: { value: 5, mod: 0 },
-      dexterity: { value: 5, mod: 0 },
-      strength: { value: 5, mod: 0 },
-      intelligence: { value: 5, mod: 0 },
-      perception: { value: 5, mod: 0 },
-      power: { value: 5, mod: 0 },
-      willPower: { value: 5, mod: 0 },
+      agility:      { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
+      constitution: { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
+      dexterity:    { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
+      strength:     { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
+      intelligence: { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
+      perception:   { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
+      power:        { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
+      willPower:    { value: 5, mod: 0, temporal: { value: 0 }, final: { value: 0 } },
     },
     secondaries: {
       lifePoints: { value: 100, max: 100 },
