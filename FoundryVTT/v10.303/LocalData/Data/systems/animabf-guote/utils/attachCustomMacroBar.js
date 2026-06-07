@@ -12,25 +12,15 @@ const DEFAULT_GM_MACROS = [
         fn: () => ABFMacros.damageCalculator()
     },
     {
-        macroSelectorId: '#custom-hotbar-send-attack',
-        hotkey: e => e.ctrlKey && e.key === '2',
-        fn: () => window.Websocket.sendAttack?.()
-    },
-    {
         macroSelectorId: '#custom-hotbar-send-chat-attack',
-        hotkey: e => e.ctrlKey && e.key === '3',
+        hotkey: e => e.ctrlKey && e.key === '2',
         fn: () => window.ChatCombat?.sendAttack?.()
     }
 ];
 const DEFAULT_USER_MACROS = [
     {
-        macroSelectorId: '#custom-hotbar-send-attack-request',
-        hotkey: e => e.ctrlKey && e.key === '1',
-        fn: () => window.Websocket.sendAttackRequest?.()
-    },
-    {
         macroSelectorId: '#custom-hotbar-send-chat-attack',
-        hotkey: e => e.ctrlKey && e.key === '2',
+        hotkey: e => e.ctrlKey && e.key === '1',
         fn: () => window.ChatCombat?.sendAttack?.()
     }
 ];

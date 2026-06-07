@@ -421,10 +421,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         if (this.standalone) {
             await this._postStandaloneDefenseResult(defenseResult);
+            Hooks.callAll('animabf.defenseSent', this.defenderToken, defenseResult);
         } else {
             this.hooks.onDefense(defenseResult);
+            // ChatCombatManager._processDefense fires animabf.defenseSent after processing
         }
-        Hooks.callAll('animabf.defenseSent', this.defenderToken, defenseResult);
 
         if (fatigue > 0) {
             const currentFatigue = this.defenderActor.system.characteristics.secondaries.fatigue.value;

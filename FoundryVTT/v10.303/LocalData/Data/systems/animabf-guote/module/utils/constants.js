@@ -24,8 +24,6 @@ export const Templates = {
                     psychic: `systems/${ABFSystemName}/templates/dialog/combat/combat-defense/parts/psychic.hbs`
                 }
             },
-            CombatRequestDialog: `systems/${ABFSystemName}/templates/dialog/combat/combat-request-dialog.hbs`,
-            GMCombatDialog: `systems/${ABFSystemName}/templates/dialog/combat/gm-combat-dialog.hbs`
         },
         GenericDialog: `systems/${ABFSystemName}/templates/dialog/generic-dialog/generic-dialog.hbs`,
         Icons: {

@@ -10,7 +10,6 @@ import { registerHelpers } from './utils/handlebars-helpers/registerHelpers.js';
 import ABFItemSheet from './module/items/ABFItemSheet.js';
 import { ABFConfig } from './module/ABFConfig.js';
 import ABFItem from './module/items/ABFItem.js';
-import { registerCombatWebsocketRoutes } from './module/combat/websocket/registerCombatWebsocketRoutes.js';
 import { attachCustomMacroBar } from './utils/attachCustomMacroBar.js';
 import { ChatCombatManager } from './module/combat/chat-combat/ChatCombatManager.js';
 import { ABFMacros } from './module/macros/ABFMacros.js';
@@ -60,7 +59,6 @@ Hooks.once('setup', () => {
 /* When ready */
 /* ------------------------------------ */
 Hooks.once('ready', async () => {
-    registerCombatWebsocketRoutes();
     attachCustomMacroBar();
     registerMasaHooks();
 

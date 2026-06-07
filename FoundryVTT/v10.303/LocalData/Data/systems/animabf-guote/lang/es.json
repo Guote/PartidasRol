@@ -1,7 +1,6 @@
 {
   "anima.customHotbar.damageCalculator": "Calculadora de Daño",
-  "anima.customHotbar.sendAttack": "Enviar Ataque (WebSocket)",
-  "anima.customHotbar.sendChatAttack": "Enviar Ataque (Chat)",
+"anima.customHotbar.sendChatAttack": "Enviar Ataque (Chat)",
   "anima.ui.advantageSection.title": "Ventajas",
   "anima.ui.aspectSection.age.title": "Edad",
   "anima.ui.aspectSection.appearance.title": "Apariencia",
