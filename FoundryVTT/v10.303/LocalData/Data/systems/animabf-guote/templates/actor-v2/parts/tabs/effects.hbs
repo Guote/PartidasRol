@@ -7,82 +7,202 @@
     </div>
     <div class="v2-card__body">
       <div class="v2-modifiers-table">
+
         {{!-- Header row --}}
         <div class="v2-modifiers-table__row v2-modifiers-table__row--header">
           <span class="v2-modifiers-table__cell"></span>
           <span class="v2-modifiers-table__cell">{{localize "anima.ui.general.modifiers.physicalActions.title"}}</span>
-          <span class="v2-modifiers-table__cell">{{localize "anima.ui.general.modifiers.supernaturalActions.title"}}</span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--sep"></span>
-          <span class="v2-modifiers-table__cell">General</span>
-          <span class="v2-modifiers-table__cell">{{localize "anima.ui.combat.baseValues.attack.title"}}</span>
-          <span class="v2-modifiers-table__cell">{{localize "anima.macros.combat.dialog.defense.title"}}</span>
+          <span class="v2-modifiers-table__cell">{{localize
+            "anima.ui.general.modifiers.supernaturalActions.title"}}</span>
         </div>
+
         {{!-- Bonus row --}}
         <div class="v2-modifiers-table__row">
           <span class="v2-modifiers-table__cell v2-modifiers-table__cell--label v2-mod--bonus">Bonus (+)</span>
-          <span class="v2-modifiers-table__cell">
-            <input type="number" class="v2-modifiers-table__input v2-mod--bonus" name="system.general.modifiers.modFisico.bonus.value" value="{{system.general.modifiers.modFisico.bonus.value}}">
+
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--content">
+            <input type="number" class="v2-modifiers-table__input v2-mod--bonus"
+              name="system.general.modifiers.modFisico.bonus.value"
+              value="{{system.general.modifiers.modFisico.bonus.value}}">
+            {{#each system.general.modifiers.modFisico.breakdown as |row|}}
+            {{#if (gt row.value 0)}}
+            <div class="v2-mod-entry v2-mod--positive">
+              <span class="v2-mod-entry__label">↳ {{row.label}}</span>
+              <span class="v2-mod-entry__value">{{row.value}}</span>
+            </div>
+            {{/if}}
+            {{/each}}
           </span>
-          <span class="v2-modifiers-table__cell">
-            <input type="number" class="v2-modifiers-table__input v2-mod--bonus" name="system.general.modifiers.modSobrenatural.bonus.value" value="{{system.general.modifiers.modSobrenatural.bonus.value}}">
+
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--content">
+            <input type="number" class="v2-modifiers-table__input v2-mod--bonus"
+              name="system.general.modifiers.modSobrenatural.bonus.value"
+              value="{{system.general.modifiers.modSobrenatural.bonus.value}}">
+            {{#each system.general.modifiers.modSobrenatural.breakdown as |row|}}
+            {{#if (gt row.value 0)}}
+            <div class="v2-mod-entry v2-mod--positive">
+              <span class="v2-mod-entry__label">↳ {{row.label}}</span>
+              <span class="v2-mod-entry__value">{{row.value}}</span>
+            </div>
+            {{/if}}
+            {{/each}}
           </span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--sep"></span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--final {{#if (gt system.general.modifiers.modFinal.general.final.value 0)}}v2-mod--positive{{/if}} {{#if (lt system.general.modifiers.modFinal.general.final.value 0)}}v2-mod--negative{{/if}}">
+        </div>
+
+        {{!-- Malus row --}}
+        <div class="v2-modifiers-table__row">
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--label v2-mod--malus">Malus (−)</span>
+
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--content">
+            <input type="number" class="v2-modifiers-table__input v2-mod--malus"
+              name="system.general.modifiers.modFisico.malus.value"
+              value="{{system.general.modifiers.modFisico.malus.value}}">
+            {{#each system.general.modifiers.modFisico.breakdown as |row|}}
+            {{#if (lt row.value 0)}}
+            <div class="v2-mod-entry v2-mod--negative">
+              <span class="v2-mod-entry__label">↳ {{row.label}}</span>
+              <span class="v2-mod-entry__value">{{row.value}}</span>
+            </div>
+            {{/if}}
+            {{/each}}
+          </span>
+
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--content">
+            <input type="number" class="v2-modifiers-table__input v2-mod--malus"
+              name="system.general.modifiers.modSobrenatural.malus.value"
+              value="{{system.general.modifiers.modSobrenatural.malus.value}}">
+            {{#each system.general.modifiers.modSobrenatural.breakdown as |row|}}
+            {{#if (lt row.value 0)}}
+            <div class="v2-mod-entry v2-mod--negative">
+              <span class="v2-mod-entry__label">↳ {{row.label}}</span>
+              <span class="v2-mod-entry__value">{{row.value}}</span>
+            </div>
+            {{/if}}
+            {{/each}}
+          </span>
+        </div>
+
+        {{!-- Custom entries row (editable only) --}}
+        {{#if editable}}
+        <div class="v2-modifiers-table__row">
+          <span
+            class="v2-modifiers-table__cell v2-modifiers-table__cell--label v2-modifiers-table__cell--custom-label">+
+            propias</span>
+
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--content">
+            {{#each system.general.modifiers.modFisico.customEntries as |entry i|}}
+            <div class="v2-mod-custom-entry">
+              <input type="text" class="v2-mod-custom-entry__label-input"
+                name="system.general.modifiers.modFisico.customEntries.{{i}}.label" value="{{entry.label}}"
+                placeholder="Etiqueta">
+              <input type="number" class="v2-mod-custom-entry__value-input"
+                name="system.general.modifiers.modFisico.customEntries.{{i}}.value" value="{{entry.value}}">
+              <button type="button" class="v2-mod-custom-entry__del" data-action="remove-custom-mod"
+                data-mod-key="modFisico" data-index="{{i}}" title="Eliminar">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            {{/each}}
+            <button type="button" class="v2-add-btn" data-action="add-custom-mod" data-mod-key="modFisico">
+              <i class="fas fa-plus"></i> Añadir
+            </button>
+          </span>
+
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--content">
+            {{#each system.general.modifiers.modSobrenatural.customEntries as |entry i|}}
+            <div class="v2-mod-custom-entry">
+              <input type="text" class="v2-mod-custom-entry__label-input"
+                name="system.general.modifiers.modSobrenatural.customEntries.{{i}}.label" value="{{entry.label}}"
+                placeholder="Etiqueta">
+              <input type="number" class="v2-mod-custom-entry__value-input"
+                name="system.general.modifiers.modSobrenatural.customEntries.{{i}}.value" value="{{entry.value}}">
+              <button type="button" class="v2-mod-custom-entry__del" data-action="remove-custom-mod"
+                data-mod-key="modSobrenatural" data-index="{{i}}" title="Eliminar">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            {{/each}}
+            <button type="button" class="v2-add-btn" data-action="add-custom-mod" data-mod-key="modSobrenatural">
+              <i class="fas fa-plus"></i> Añadir
+            </button>
+          </span>
+        </div>
+        {{/if}}
+
+        {{!-- Total row --}}
+        <div class="v2-modifiers-table__row v2-modifiers-table__row--final">
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--label">Total</span>
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--result
+            {{#if (gt system.general.modifiers.modFisico.final.value 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFisico.final.value 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modFisico.final.value}}
+          </span>
+          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--result
+            {{#if (gt system.general.modifiers.modSobrenatural.final.value 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modSobrenatural.final.value 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modSobrenatural.final.value}}
+          </span>
+        </div>
+
+      </div>
+
+      {{!-- Modifier type reference: shows which computed value applies to each roll type --}}
+      <div class="v2-mod-type-grid">
+        <div class="v2-mod-type-cell" title="Rolls de habilidades secundarias y primarias">
+          <span class="v2-mod-type__name">General <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.general.final.value 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.general.final.value 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modFinal.general.final.value}}
           </span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--final {{#if (gt system.general.modifiers.modFinal.attack.final.value 0)}}v2-mod--positive{{/if}} {{#if (lt system.general.modifiers.modFinal.attack.final.value 0)}}v2-mod--negative{{/if}}">
+        </div>
+        <div class="v2-mod-type-cell" title="Ataques con armas">
+          <span class="v2-mod-type__name">Ataque <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.attack.final.value 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.attack.final.value 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modFinal.attack.final.value}}
           </span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--final {{#if (gt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--positive{{/if}} {{#if (lt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--negative{{/if}}">
+        </div>
+        <div class="v2-mod-type-cell" title="Defensas con armas">
+          <span class="v2-mod-type__name">Defensa <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modFinal.defense.final.value}}
           </span>
         </div>
-        {{!-- Malus row --}}
-        <div class="v2-modifiers-table__row">
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--label v2-mod--malus">Malus (-)</span>
-          <span class="v2-modifiers-table__cell">
-            <input type="number" class="v2-modifiers-table__input v2-mod--malus" name="system.general.modifiers.modFisico.malus.value" value="{{system.general.modifiers.modFisico.malus.value}}">
+        <div class="v2-mod-type-cell" title="Proyección mágica y psíquica, habilidades de convocatoria">
+          <span class="v2-mod-type__name">Mag/Psí <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.generalNegative 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.generalNegative 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modFinal.generalNegative}}
           </span>
-          <span class="v2-modifiers-table__cell">
-            <input type="number" class="v2-modifiers-table__input v2-mod--malus" name="system.general.modifiers.modSobrenatural.malus.value" value="{{system.general.modifiers.modSobrenatural.malus.value}}">
-          </span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--sep"></span>
-          <span class="v2-modifiers-table__cell"></span>
-          <span class="v2-modifiers-table__cell"></span>
-          <span class="v2-modifiers-table__cell"></span>
         </div>
-        {{!-- Final row --}}
-        <div class="v2-modifiers-table__row v2-modifiers-table__row--final">
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--label">Total</span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--result {{#if (gt system.general.modifiers.modFisico.final.value 0)}}v2-mod--positive{{/if}} {{#if (lt system.general.modifiers.modFisico.final.value 0)}}v2-mod--negative{{/if}}">
-            {{system.general.modifiers.modFisico.final.value}}
+        <div class="v2-mod-type-cell" title="ACT de zeon y potencial psíquica">
+          <span class="v2-mod-type__name">ACT/Pot <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.generalNegativeHalf 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.generalNegativeHalf 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modFinal.generalNegativeHalf}}
           </span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--result {{#if (gt system.general.modifiers.modSobrenatural.final.value 0)}}v2-mod--positive{{/if}} {{#if (lt system.general.modifiers.modSobrenatural.final.value 0)}}v2-mod--negative{{/if}}">
-            {{system.general.modifiers.modSobrenatural.final.value}}
+        </div>
+        <div class="v2-mod-type-cell" title="Turno (iniciativa)">
+          <span class="v2-mod-type__name">Turno <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.initiative 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.initiative 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modFinal.initiative}}
           </span>
-          <span class="v2-modifiers-table__cell v2-modifiers-table__cell--sep"></span>
-          <span class="v2-modifiers-table__cell"></span>
-          <span class="v2-modifiers-table__cell"></span>
-          <span class="v2-modifiers-table__cell"></span>
         </div>
       </div>
+
     </div>
   </div>
-
-  {{!-- Active Effects --}}
   <div class="v2-card">
     <div class="v2-card__header">
-      <span class="v2-card__header-title">
-        <i class="fas fa-magic"></i>
-        Active Effects
-      </span>
-      {{#if editable}}
-      <div class="v2-card__header-actions">
-        <button type="button" class="v2-add-btn" data-action="create-effect">
-          <i class="fas fa-plus"></i> Add Effect
-        </button>
-      </div>
-      {{/if}}
+      <span>Efectos activos</span>
     </div>
     <div class="v2-card__body">
       {{#if effects}}
@@ -103,18 +223,21 @@
           {{#if section.effects.length}}
           <ol class="v2-effects-items">
             {{#each section.effects as |effect|}}
-            <li class="v2-effect-item {{#if effect.disabled}}v2-effect-item--disabled{{/if}}" data-effect-id="{{effect.id}}">
+            <li class="v2-effect-item {{#if effect.disabled}}v2-effect-item--disabled{{/if}}"
+              data-effect-id="{{effect.id}}">
               <img class="v2-effect-item__icon" src="{{effect.icon}}" alt="{{effect.label}}" />
               <div class="v2-effect-item__info">
                 <span class="v2-effect-item__name">{{effect.label}}</span>
                 <span class="v2-effect-item__meta">
                   {{#if effect.sourceName}}<span class="v2-effect-item__source">{{effect.sourceName}}</span>{{/if}}
-                  {{#if effect.duration.label}}<span class="v2-effect-item__duration">{{effect.duration.label}}</span>{{/if}}
+                  {{#if effect.duration.label}}<span
+                    class="v2-effect-item__duration">{{effect.duration.label}}</span>{{/if}}
                 </span>
               </div>
               {{#if @root.editable}}
               <div class="v2-effect-item__controls">
-                <a class="effect-control v2-effect-btn" data-action="toggle" title="{{#if effect.disabled}}Enable{{else}}Disable{{/if}}">
+                <a class="effect-control v2-effect-btn" data-action="toggle"
+                  title="{{#if effect.disabled}}Enable{{else}}Disable{{/if}}">
                   <i class="fas {{#if effect.disabled}}fa-toggle-off{{else}}fa-toggle-on{{/if}}"></i>
                 </a>
                 <a class="effect-control v2-effect-btn" data-action="edit" title="Edit">
@@ -128,8 +251,6 @@
             </li>
             {{/each}}
           </ol>
-          {{else}}
-          <p class="v2-effects-empty">No effects in this category</p>
           {{/if}}
         </li>
         {{/unless}}

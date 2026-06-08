@@ -32,7 +32,7 @@ export const mutateMovementType = (data) => {
     Math.floor(data.general.modifiers.modFinal.general.final.value / 20) +
     armorsMovementRestrictions +
     activeEffectMod;
-  movementType.final.value = Math.max(0, movementType.final.value);
+  movementType.final.value = Math.max(1, movementType.final.value);
 
   const baseMeters = calculateMovementInMetersFromMovementType(movementType.final.value);
   data.characteristics.secondaries.movement.maximum.value = baseMeters;

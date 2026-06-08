@@ -1125,6 +1125,30 @@ export default class ABFActorSheetV2 extends ActorSheet {
       await this.actor.update({ 'system.flags.tmModes': modes });
     });
 
+    // Add custom modifier entry
+    html.find('[data-action="add-custom-mod"]').on('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const key = e.currentTarget.dataset.modKey;
+      const path = `system.general.modifiers.${key}.customEntries`;
+      const raw = foundry.utils.getProperty(this.actor, path);
+      // Foundry mergeObject can convert arrays to plain objects {0:{...}} — normalize
+      const current = Array.isArray(raw) ? raw : (raw != null ? Object.values(raw) : []);
+      await this.actor.update({ [path]: [...current, { label: '', value: 0 }] });
+    });
+
+    // Remove custom modifier entry
+    html.find('[data-action="remove-custom-mod"]').on('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const key = e.currentTarget.dataset.modKey;
+      const index = Number(e.currentTarget.dataset.index);
+      const path = `system.general.modifiers.${key}.customEntries`;
+      const raw = foundry.utils.getProperty(this.actor, path);
+      const current = Array.isArray(raw) ? raw : (raw != null ? Object.values(raw) : []);
+      await this.actor.update({ [path]: current.filter((_, i) => i !== index) });
+    });
+
     // Grade selector in spell-maintenances table: auto-fill base costs from the linked spell
     html.on('change', 'select.sm-grade-select[data-spell-id]', async ev => {
       const spellId = ev.currentTarget.dataset.spellId;

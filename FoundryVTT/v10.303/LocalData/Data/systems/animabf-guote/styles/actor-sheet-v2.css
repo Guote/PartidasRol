@@ -1629,6 +1629,7 @@
    Add Item Button
    -------------------------------- */
 .actor-sheet-v2 .v2-add-btn {
+  width: auto !important;
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -1928,77 +1929,6 @@
    Effects Tab Styles
    ================================ */
 
-/* Modifiers Table */
-.actor-sheet-v2 .v2-modifiers-table {
-  display: table;
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--font-size-sm);
-}
-
-.actor-sheet-v2 .v2-modifiers-table__row {
-  display: table-row;
-}
-
-.actor-sheet-v2 .v2-modifiers-table__row--header {
-  background: var(--abf-secondary);
-  font-weight: bold;
-}
-
-.actor-sheet-v2 .v2-modifiers-table__row--header .v2-modifiers-table__cell {
-  padding: var(--space-2) var(--space-3);
-  border-bottom: 2px solid var(--abf-primary);
-}
-
-.actor-sheet-v2 .v2-modifiers-table__row--final {
-  background: var(--abf-secondary-light);
-  font-weight: bold;
-}
-
-.actor-sheet-v2 .v2-modifiers-table__cell {
-  display: table-cell;
-  padding: var(--space-2) var(--space-3);
-  text-align: center;
-  vertical-align: middle;
-  border-bottom: 1px solid var(--abf-border-light);
-}
-
-.actor-sheet-v2 .v2-modifiers-table__cell--label {
-  text-align: left;
-  font-weight: 600;
-  width: 80px;
-}
-
-.actor-sheet-v2 .v2-modifiers-table__cell--sep {
-  width: 20px;
-  border-left: 2px solid var(--abf-primary);
-  background: var(--abf-secondary-light);
-}
-
-.actor-sheet-v2 .v2-modifiers-table__cell--result {
-  font-weight: bold;
-  font-size: var(--font-size-base);
-}
-
-.actor-sheet-v2 .v2-modifiers-table__cell--final {
-  font-weight: bold;
-  font-size: var(--font-size-base);
-}
-
-.actor-sheet-v2 .v2-modifiers-table__input {
-  width: 50px;
-  padding: var(--space-1) var(--space-2);
-  text-align: center;
-  font-size: var(--font-size-sm);
-  border: 1px solid var(--abf-border-light);
-  border-radius: var(--radius-sm);
-}
-
-.actor-sheet-v2 .v2-modifiers-table__input:focus {
-  border-color: var(--abf-primary);
-  outline: none;
-}
-
 /* Modifier colors */
 .actor-sheet-v2 .v2-mod--bonus {
   color: var(--abf-success);
@@ -2011,6 +1941,191 @@
 }
 .actor-sheet-v2 .v2-mod--negative {
   color: var(--abf-error);
+}
+
+/* Modifiers Table */
+.actor-sheet-v2 .v2-modifiers-table {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row {
+  display: table-row;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row--header .v2-modifiers-table__cell {
+  font-weight: bold;
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 2px solid var(--abf-primary);
+  color: var(--abf-primary);
+  letter-spacing: 0.02em;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row--header .v2-modifiers-table__cell:first-child {
+  text-align: left;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell {
+  display: table-cell;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid rgba(110, 41, 23, 0.15);
+  vertical-align: top;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--label {
+  font-weight: 600;
+  white-space: nowrap;
+  width: 6em;
+  vertical-align: middle;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--custom-label {
+  font-style: italic;
+  font-weight: normal;
+  opacity: 0.8;
+  vertical-align: top;
+  padding-top: var(--space-3);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--content {
+  vertical-align: top;
+  text-align: center;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__cell--result {
+  text-align: center;
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--font-size-base);
+  vertical-align: middle;
+}
+
+.actor-sheet-v2 .v2-modifiers-table__row--final .v2-modifiers-table__cell {
+  border-top: 2px solid var(--abf-primary);
+  border-bottom: none;
+  padding-top: var(--space-3);
+}
+
+.actor-sheet-v2 .v2-modifiers-table__input {
+  display: block;
+  width: 70px;
+  padding: var(--space-1) var(--space-2);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  margin: 0 auto var(--space-1);
+}
+
+/* Breakdown entries (auto-computed, shown inline under input) */
+.actor-sheet-v2 .v2-mod-entry {
+  display: inline-flex;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  opacity: 0.85;
+  padding: 1px 0;
+}
+
+.actor-sheet-v2 .v2-mod-entry__label {
+  min-width: 5em;
+  flex: 0 0 5em;
+  text-align: left;
+}
+
+.actor-sheet-v2 .v2-mod-entry__value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  min-width: 2.5em;
+  text-align: right;
+}
+
+/* Custom (user-defined) entries */
+.actor-sheet-v2 .v2-mod-custom-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.actor-sheet-v2 .v2-mod-custom-entry__label-input {
+  flex: 1;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+  text-align: left;
+}
+
+.actor-sheet-v2 .v2-mod-custom-entry__value-input {
+  width: 4em;
+  text-align: right;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--abf-border-light);
+  border-radius: var(--radius-sm);
+}
+
+.actor-sheet-v2 .v2-mod-custom-entry__del {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: var(--space-1);
+  border: none;
+  background: transparent;
+  color: var(--abf-error);
+  cursor: pointer;
+  opacity: 0.7;
+}
+.actor-sheet-v2 .v2-mod-custom-entry__del:hover {
+  opacity: 1;
+}
+
+/* Modifier type reference grid (6 cells) */
+.actor-sheet-v2 .v2-mod-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.actor-sheet-v2 .v2-mod-type-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid rgba(110, 41, 23, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(110, 41, 23, 0.04);
+  text-align: center;
+  cursor: default;
+}
+
+.actor-sheet-v2 .v2-mod-type__name {
+  font-size: var(--font-size-xs);
+  opacity: 0.8;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.actor-sheet-v2 .v2-mod-type__name .fa-info-circle {
+  font-size: 0.7em;
+  opacity: 0.6;
+}
+
+.actor-sheet-v2 .v2-mod-type__value {
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--font-size-base);
 }
 
 /* === Resource text glow utilities ===

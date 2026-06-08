@@ -1,6 +1,6 @@
 // ─── Condition names — change here to rename in CUB ─────────────────────────
 const USANDO_ENERGIA = "Usando Energia";
-const HA_DEFENDIDO = "Ha defendido";
+const HA_DEFENDIDO = "Contador Defensas";
 const ACORRALADO = "Acorralado";
 
 // ─── Named constants ──────────────────────────────────────────────────────────

@@ -3,10 +3,16 @@ const JOURNAL_NAME = 'Capacidades Físicas';
 const periodLabel = p => ({ d: 'día', h: 'hora', m: 'min' }[p] ?? p);
 
 const tmRows = (() => {
-  const meters = [0.5,1,4,8,15,20,22,25,28,32,35,40,50,80,150,250,500,1000,5000,25000];
-  return meters.map((m, tm) =>
-    `<tr><td>${tm}</td><td>${m} m</td><td>${m*2} m</td><td>${m*3} m</td></tr>`
-  ).join('') + '<tr><td>20+</td><td>—</td><td>—</td><td>—</td></tr>';
+  const zenTable = [50, 100, 200, 500, 1000, 2000, 5000]; // TM 14–20
+  const metersForTm = tm => {
+    if (tm <= 10) return tm;
+    if (tm <= 13) return 10 + (tm - 10) * 5;
+    return zenTable[Math.min(tm - 14, zenTable.length - 1)];
+  };
+  return Array.from({ length: 20 }, (_, i) => i + 1).map(tm => {
+    const m = metersForTm(tm);
+    return `<tr><td>${tm}</td><td>${m} m</td><td>${m * 2} m</td><td>${m * 3} m</td></tr>`;
+  }).join('');
 })();
 
 const ipRows = (() => {
@@ -57,7 +63,7 @@ const html = `
 <h2>TM — Tipo de Movimiento</h2>
 <p><em>TM final = AGI + modificadores (humano: AGI máx. 10; inhumano: máx. 13; zen: sin límite)</em></p>
 <table>
-<thead><tr><th>TM</th><th>Normal</th><th>Activo (×2)</th><th>Sprint (×3)</th></tr></thead>
+<thead><tr><th>AGI / TM</th><th>Pasiva (×1)</th><th>Activa (×2)</th><th>Sprint (×3)</th></tr></thead>
 <tbody>${tmRows}</tbody>
 </table>
 <p><em>Correr = mov. del TM−2. Nadar = mov. cuesta ×2. Sprint requiere Atletismo.</em></p>

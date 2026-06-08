@@ -82,7 +82,8 @@
               "conditionPBon": 0
             },
             "conditionPen": 0,
-            "conditionPBon": 0
+            "conditionPBon": 0,
+            "customEntries": []
           },
           "modSobrenatural": {
             "bonus": { "value": 0 },
@@ -97,7 +98,8 @@
               "conditionPBon": 0
             },
             "conditionPen": 0,
-            "conditionPBon": 0
+            "conditionPBon": 0,
+            "customEntries": []
           },
           "modManiobras": {
             "ha": 0,
