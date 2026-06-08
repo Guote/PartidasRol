@@ -22,17 +22,20 @@ export const mutateMovementType = (data) => {
   const armorsMovementRestrictions = calculateArmorsMovementTypeModifier(data);
 
   const humanidad = data.flags.humanidad ?? 'human';
-  const rawAgi = data.characteristics.primaries.agility.value;
+  const rawAgi = data.characteristics.primaries.agility.final.value;
   const cappedAgi = humanidad === 'zen' ? rawAgi : humanidad === 'inhumano' ? Math.min(rawAgi, 13) : Math.min(rawAgi, 10);
 
+  const generalMod = Math.min(0, Math.floor(data.general.modifiers.modFinal.general.final.value / 20));
+
   const { movementType } = data.characteristics.secondaries;
-  movementType.final.value =
-    movementType.mod.value +
+  movementType.base = { value: cappedAgi };
+  movementType.final.value = Math.max(1,
     cappedAgi +
-    Math.floor(data.general.modifiers.modFinal.general.final.value / 20) +
+    movementType.mod.value +
+    generalMod +
     armorsMovementRestrictions +
-    activeEffectMod;
-  movementType.final.value = Math.max(1, movementType.final.value);
+    activeEffectMod
+  );
 
   const baseMeters = calculateMovementInMetersFromMovementType(movementType.final.value);
   data.characteristics.secondaries.movement.maximum.value = baseMeters;
@@ -43,19 +46,16 @@ export const mutateMovementType = (data) => {
       Math.max(0, movementType.final.value - 2)
     );
 
-  // Compute per-mode TM (same base without movementType.mod, different mod per mode)
-  const tmBase =
-    cappedAgi +
-    Math.floor(data.general.modifiers.modFinal.general.final.value / 20) +
-    armorsMovementRestrictions +
-    activeEffectMod;
+  // Custom modes: user-defined base + mod + shared hidden modifiers (armor, effects, general)
+  const hiddenMods = generalMod + armorsMovementRestrictions + activeEffectMod;
   const tmModes = data.flags.tmModes ?? [];
   data.characteristics.secondaries.preparedTmModes = tmModes.map(mode => {
-    const finalTm = Math.max(0, tmBase + (mode.mod ?? 0));
+    const finalTm = Math.max(0, (mode.base ?? 0) + (mode.mod ?? 0) + hiddenMods);
     const meters = calculateMovementInMetersFromMovementType(finalTm);
     return {
       _id: mode._id,
       label: mode.label ?? '',
+      base: mode.base ?? 0,
       mod: mode.mod ?? 0,
       tm: finalTm,
       meters,

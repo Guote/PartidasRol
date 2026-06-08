@@ -2,11 +2,12 @@ import { calculateWeightFromWeightIndex } from './calculations/calculateWeightFr
 
 export const mutateWeightIndex = (data) => {
   const humanidad = data.flags.humanidad ?? 'human';
-  const rawFue = data.characteristics.primaries.strength.value;
+  const rawFue = data.characteristics.primaries.strength.final.value;
   const cappedFue = humanidad === 'zen' ? rawFue : humanidad === 'inhumano' ? Math.min(rawFue, 13) : Math.min(rawFue, 10);
 
   const { weightIndex } = data.characteristics.secondaries;
-  const generalMod = Math.floor((data.general.modifiers.modFinal.general.final.value ?? 0) / 20);
+  const generalMod = Math.min(0, Math.floor((data.general.modifiers.modFinal.general.final.value ?? 0) / 20));
+  weightIndex.base = { value: cappedFue };
   weightIndex.final.value = Math.max(0, cappedFue + (weightIndex.mod?.value ?? 0) + generalMod);
   const maxWeight = calculateWeightFromWeightIndex(weightIndex.final.value);
   data.characteristics.secondaries.weightLoad.max.value = maxWeight;

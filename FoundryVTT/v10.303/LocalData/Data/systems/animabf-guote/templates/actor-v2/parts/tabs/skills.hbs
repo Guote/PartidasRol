@@ -94,11 +94,6 @@
     <div class="v2-card__header">
       <div class="v2-card__header-title">
         <span>Capacidades Físicas</span>
-        <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal"
-                title="Tablas de referencia (TM · IP · Regeneración)"
-                style="width:auto!important;display:inline-flex;margin-left:6px;">
-          <i class="fas fa-book-open"></i>
-        </button>
       </div>
       <div class="v2-card__header-actions v2-humanidad-toggle">
         <label class="v2-humanidad-toggle__opt {{#if (eq system.flags.humanidad 'human')}}active{{/if}}">
@@ -121,74 +116,79 @@
       <div class="v2-capacidad-group">
         <div class="v2-capacidad-group__header">
           <span class="v2-capacidad-group__title">TM (Tipo de movimiento)</span>
-          <button type="button" class="v2-icon-btn" data-on-click="add-tm-mode" title="Añadir modo de movimiento" style="width:auto!important;display:inline-flex;">
-            <i class="fas fa-plus"></i>
-          </button>
-        </div>
-        <div class="v2-tm-modes">
-          {{!-- Base (terrestrial) mode — always present, non-deletable --}}
-          <div class="v2-tm-mode-row v2-tm-mode-row--base">
-            <div class="v2-tm-mode-row__left">
-              <input type="text" class="v2-tm-mode-row__name" value="Terrestre" disabled>
-              <input type="number" class="v2-tm-mode-row__mod" name="system.characteristics.secondaries.movementType.mod.value" value="{{system.characteristics.secondaries.movementType.mod.value}}">
-              <span class="v2-tm-mode-row__tm">TM {{system.characteristics.secondaries.movementType.final.value}}</span>
-            </div>
-            <div class="v2-tm-mode-row__right">
-              <span class="v2-tm-mode-row__mov-val">{{system.characteristics.secondaries.movement.maximum.value}} m</span>
-              <span class="v2-tm-mode-row__mov-val">{{system.characteristics.secondaries.movement.active.value}} m ×2</span>
-              <span class="v2-tm-mode-row__mov-val">{{system.characteristics.secondaries.movement.sprint.value}} m ×3</span>
-            </div>
-          </div>
-          {{!-- Additional user-defined modes --}}
-          {{#each system.flags.tmModes as |mode|}}
-          <div class="v2-tm-mode-row" data-mode-id="{{mode._id}}">
-            {{#with (lookup ../system.characteristics.secondaries.preparedTmModes @index) as |p|}}
-            <div class="v2-tm-mode-row__left">
-              <input type="text" class="v2-tm-mode-row__name tm-mode-label-input" value="{{mode.label}}" placeholder="Modo">
-              <input type="number" class="v2-tm-mode-row__mod tm-mode-mod-input" value="{{mode.mod}}">
-              <span class="v2-tm-mode-row__tm">TM {{p.tm}}</span>
-            </div>
-            <div class="v2-tm-mode-row__right">
-              <span class="v2-tm-mode-row__mov-val">{{p.meters}} m</span>
-              <span class="v2-tm-mode-row__mov-val">{{p.meters2}} m ×2</span>
-              <span class="v2-tm-mode-row__mov-val">{{p.meters3}} m ×3</span>
-            </div>
-            {{/with}}
-            <button type="button" class="v2-icon-btn v2-icon-btn--danger delete-tm-mode" data-mode-id="{{mode._id}}" title="Eliminar" style="width:auto!important;display:inline-flex;">
-              <i class="fas fa-times"></i>
+          <div class="v2-capacidad-group__actions">
+            <button type="button" class="v2-icon-btn" data-on-click="add-tm-mode" title="Añadir modo de movimiento" style="width:auto!important;display:inline-flex;">
+              <i class="fas fa-plus"></i>
+            </button>
+            <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal" data-journal-page="TM"
+                    title="Ver tablas TM" style="width:auto!important;display:inline-flex;">
+              <i class="fas fa-book-open"></i>
             </button>
           </div>
-          {{/each}}
         </div>
-        <div class="v2-tm-extra-rules">
-          <p>±1 TM por categoría de tamaño diferente de Medio | Sprint requiere Atletismo</p>
-          <p>Nadando: Movimiento cuesta x2 | Salto: Puedes usar FUE en lugar de AGI para calcular el TM | Salto horizontal/vertical: Movimiento cuesta x5 / x10</p>
+        {{!-- Base (terrestrial) mode — always present, non-deletable --}}
+        <div class="v2-cap-row">
+          <div class="v2-cap-row__input">
+            {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                baseReadonly=true
+                baseValue=system.characteristics.secondaries.movementType.base.value
+                temporalName="system.characteristics.secondaries.movementType.mod.value"
+                temporalValue=system.characteristics.secondaries.movementType.mod.value
+                finalValue=system.characteristics.secondaries.movementType.final.value
+                width=70
+            }}
+            <span class="v2-cap-row__label">Terrestre</span>
+          </div>
+          <span class="v2-cap-row__desc"><strong>{{system.characteristics.secondaries.movement.maximum.value}}</strong>m movimiento pasivo</span>
         </div>
+        {{!-- Additional user-defined modes --}}
+        {{#each system.flags.tmModes as |mode|}}
+        {{#with (lookup ../system.characteristics.secondaries.preparedTmModes @index) as |p|}}
+        <div class="v2-cap-row" data-mode-id="{{mode._id}}">
+          <div class="v2-cap-row__input">
+            {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                baseValue=p.base
+                showTemporal=true
+                temporalValue=p.mod
+                finalValue=p.tm
+                width=70
+            }}
+            <input type="text" class="v2-cap-row__label-input tm-mode-label-input" value="{{mode.label}}" placeholder="Modo">
+          </div>
+          <span class="v2-cap-row__desc"><strong>{{p.meters}}</strong>m movimiento pasivo</span>
+          <button type="button" class="v2-icon-btn v2-icon-btn--danger delete-tm-mode" data-mode-id="{{mode._id}}" title="Eliminar" style="width:auto!important;display:inline-flex;">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        {{/with}}
+        {{/each}}
+        <p class="v2-cap-notas"><strong>Correr (acción activa)</strong>: Puedes moverte una segunda vez. Si además gastas 1 cansancio, te puedes mover una tercera vez.</p>
       </div>
 
       {{!-- IP Section --}}
       <div class="v2-capacidad-group">
         <div class="v2-capacidad-group__header">
           <span class="v2-capacidad-group__title">IP (Índice de peso)</span>
-        </div>
-        <div class="v2-ip-row">
-          <div class="v2-ip-row__left">
-            <span class="v2-ip-row__load-label">Pasiva</span>
-            <span class="v2-ip-row__load-val">{{system.characteristics.secondaries.weightLoad.max.value}} kg</span>
-            <span class="v2-ip-row__load-label">Media</span>
-            <span class="v2-ip-row__load-val">{{system.characteristics.secondaries.weightLoad.medium.value}} kg</span>
-            <span class="v2-ip-row__load-label">Pesada</span>
-            <span class="v2-ip-row__load-val">{{system.characteristics.secondaries.weightLoad.heavy.value}} kg</span>
-          </div>
-          <div class="v2-ip-row__right">
-            <input type="number" class="v2-ip-row__mod" name="system.characteristics.secondaries.weightIndex.mod.value" value="{{system.characteristics.secondaries.weightIndex.mod.value}}">
-            <span class="v2-ip-row__label">IP</span>
-            <span class="v2-ip-row__val">{{system.characteristics.secondaries.weightIndex.final.value}}</span>
+          <div class="v2-capacidad-group__actions">
+            <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal" data-journal-page="IP"
+                    title="Ver tablas IP" style="width:auto!important;display:inline-flex;">
+              <i class="fas fa-book-open"></i>
+            </button>
           </div>
         </div>
-        <div class="v2-tm-extra-rules">
-          <p>±1 IP por categoría de tamaño diferente de Medio</p>
-          <p>"Carga media": Movimiento cuesta doble, sufres parálisis -20 | "Carga pesada": Movimiento cuesta x10, sufres parálisis -80.</p>
+        <div class="v2-cap-row">
+          <div class="v2-cap-row__input">
+            {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                baseReadonly=true
+                baseValue=system.characteristics.secondaries.weightIndex.base.value
+                temporalName="system.characteristics.secondaries.weightIndex.mod.value"
+                temporalValue=system.characteristics.secondaries.weightIndex.mod.value
+                finalValue=system.characteristics.secondaries.weightIndex.final.value
+                width=70
+            }}
+            <span class="v2-cap-row__label"></span>
+          </div>
+          <span class="v2-cap-row__desc"><strong>{{system.characteristics.secondaries.weightLoad.max.value}}</strong> kg carga pasiva · <strong>{{system.characteristics.secondaries.weightLoad.medium.value}}</strong> kg carga media · <strong>{{system.characteristics.secondaries.weightLoad.heavy.value}}</strong> kg carga pesada</span>
         </div>
       </div>
 
@@ -196,29 +196,28 @@
       <div class="v2-capacidad-group">
         <div class="v2-capacidad-group__header">
           <span class="v2-capacidad-group__title">Regeneración</span>
-        </div>
-        <div class="v2-regen-row">
-          <div class="v2-regen-row__left">
-            <span class="v2-regen-row__label">PV</span>
-            <span class="v2-regen-row__val">{{system.characteristics.secondaries.regeneration.resting.value}}/{{system.characteristics.secondaries.regeneration.resting.period}}</span>
-            <span class="v2-regen-row__label">Neg.</span>
-            <span class="v2-regen-row__val">{{system.characteristics.secondaries.regeneration.recovery.value}}/{{system.characteristics.secondaries.regeneration.recovery.period}}</span>
-          </div>
-          <div class="v2-regen-row__right">
-            <input type="number" class="v2-regen-row__mod" name="system.characteristics.secondaries.regenerationType.mod.value" value="{{system.characteristics.secondaries.regenerationType.mod.value}}">
-            <span class="v2-regen-row__label">Regen</span>
-            <span class="v2-regen-row__val">{{system.characteristics.secondaries.regenerationType.final.value}}</span>
+          <div class="v2-capacidad-group__actions">
+            <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal" data-journal-page="Regeneración"
+                    title="Ver tablas Regeneración" style="width:auto!important;display:inline-flex;">
+              <i class="fas fa-book-open"></i>
+            </button>
           </div>
         </div>
-        {{#if system.characteristics.secondaries.regenerationType.especial}}
-        <div class="v2-tm-extra-rules v2-regen-especial">
-          <p>{{system.characteristics.secondaries.regenerationType.especial}}</p>
+        <div class="v2-cap-row">
+          <div class="v2-cap-row__input">
+            {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+                baseReadonly=true
+                baseValue=system.characteristics.secondaries.regenerationType.base.value
+                temporalName="system.characteristics.secondaries.regenerationType.mod.value"
+                temporalValue=system.characteristics.secondaries.regenerationType.mod.value
+                finalValue=system.characteristics.secondaries.regenerationType.final.value
+                width=70
+            }}
+            <span class="v2-cap-row__label"></span>
+          </div>
+          <span class="v2-cap-row__desc">+<strong>{{system.characteristics.secondaries.regeneration.resting.value}}</strong> PV/{{system.characteristics.secondaries.regeneration.resting.period}} · <strong>{{system.characteristics.secondaries.regeneration.recovery.value}}</strong> penalizador/{{system.characteristics.secondaries.regeneration.recovery.period}}{{#if system.characteristics.secondaries.regenerationType.especial}}. {{system.characteristics.secondaries.regenerationType.especial}}{{/if}}</span>
         </div>
-        {{/if}}
-        <div class="v2-tm-extra-rules">
-          <p>Multiplicar por múltiplo acumulación de la criatura</p>
-          <p>· Los efectos mágicos que dan regeneración aumentan el ritmo: día → hora → minuto → asalto</p>
-        </div>
+        <p class="v2-cap-notas">Los efectos mágicos que alteran la regeneración también alteran el ritmo: día → hora → minuto → asalto</p>
       </div>
 
     </div>

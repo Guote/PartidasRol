@@ -15,9 +15,10 @@ const computeEspecial = (rt) => {
 export const mutateRegenerationType = data => {
     const { regenerationType } = data.characteristics.secondaries;
     const humanidad = data.flags.humanidad ?? 'human';
-    const rawCon = data.characteristics.primaries.constitution.value;
+    const rawCon = data.characteristics.primaries.constitution.final.value;
     const cappedCon = humanidad === 'zen' ? rawCon : humanidad === 'inhumano' ? Math.min(rawCon, 13) : Math.min(rawCon, 10);
     const baseRegen = calculateRegenerationTypeFromConstitution(cappedCon);
+    regenerationType.base = { value: baseRegen };
     regenerationType.final.value = Math.max(0, regenerationType.mod.value + baseRegen);
     // eslint-disable-next-line prefer-const
     let [resting, normal, recovery] = calculateRegenerationFromRegenerationType(regenerationType.final.value);

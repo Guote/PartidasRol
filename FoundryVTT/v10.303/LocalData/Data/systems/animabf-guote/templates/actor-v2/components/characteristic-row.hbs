@@ -1,32 +1,30 @@
 {{!--
-  Characteristic Row Component
-  Used inside {{#each system.characteristics.primaries as |stat key|}} loop.
+Characteristic Row Component
+Used inside {{#each system.characteristics.primaries as |stat key|}} loop.
 
-  Parameters (via context):
-  - key: The characteristic key (e.g., "agility", "strength")
-  - stat: The characteristic object with .value, .temporal.value, and .mod
+Parameters (via context):
+- key: The characteristic key (e.g., "agility", "strength")
+- stat: The characteristic object with .value, .temporal.value, and .mod
 --}}
 <div class="v2-characteristic">
-  <input type="checkbox" class="v2-skill-combine-checkbox"
-         data-rollvalue="{{math stat.value '*' 10}}"
-         data-temporalvalue="{{math stat.temporal.value '*' 10}}"
-         data-label="{{localize (concat 'anima.ui.characteristics.' key)}}"
-         data-is-characteristic="true">
-  <span class="v2-characteristic__name rollable"
-        data-roll="1d100xa10TO100"
-        data-rollvalue="{{math stat.value '*' 10}}"
-        data-temporalvalue="{{math stat.temporal.value '*' 10}}"
-        data-modifier-type="general"
-        data-label="{{localize (concat 'anima.ui.characteristics.' key)}}">{{localize (concat "anima.ui.characteristics." key)}}</span>
+  <input type="checkbox" class="v2-skill-combine-checkbox" data-rollvalue="{{math stat.value '*' 10}}"
+    data-temporalvalue="{{math stat.temporal.value '*' 10}}"
+    data-label="{{localize (concat 'anima.ui.characteristics.' key)}}" data-is-characteristic="true">
+  <span class="v2-characteristic__name rollable" data-roll="1d100xa10TO100" data-rollvalue="{{math stat.value '*' 10}}"
+    data-temporalvalue="{{math stat.temporal.value '*' 10}}" data-modifier-type="general"
+    data-label="{{localize (concat 'anima.ui.characteristics.' key)}}">{{localize (concat "anima.ui.characteristics."
+    key)}}</span>
   <div class="v2-characteristic__values">
     {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
-        baseName=(concat "system.characteristics.primaries." key ".value")
-        baseValue=stat.value
-        temporalName=(concat "system.characteristics.primaries." key ".temporal.value")
-        temporalValue=stat.temporal.value
-        finalValue=stat.final.value
-        width=80
+    baseName=(concat "system.characteristics.primaries." key ".value")
+    baseValue=stat.value
+    temporalName=(concat "system.characteristics.primaries." key ".temporal.value")
+    temporalValue=stat.temporal.value
+    finalValue=stat.final.value
+    width=80
     }}
     <span class="v2-characteristic__mod">({{#if (gte stat.mod 0)}}+{{/if}}{{stat.mod}})</span>
   </div>
+  <span class="v2-characteristic__to100-arrow">⟶</span>
+  <span  title="d100" class="v2-characteristic__rollbase">{{stat.rollBase.value}}</span>
 </div>

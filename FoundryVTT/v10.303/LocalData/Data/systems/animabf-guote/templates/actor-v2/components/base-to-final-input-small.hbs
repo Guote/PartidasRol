@@ -4,10 +4,12 @@
   Mirrors the visual language of base-to-final-input-large.hbs for row contexts.
 
   Parameters:
-  - baseName: Input name attribute for base value
+  - baseName: Input name attribute for base value (omit when JS-handled or baseReadonly)
   - baseValue: Base value
-  - temporalName: Optional temporal input name (section hidden when omitted)
+  - baseReadonly: When true, renders base as a read-only span (derived/computed values)
+  - temporalName: Optional temporal input name (section hidden when omitted and showTemporal is false)
   - temporalValue: Temporal modifier value (dims/dashes when 0 or empty)
+  - showTemporal: Show temporal input even without temporalName (for JS-handled inputs)
   - finalValue: Final computed value (read-only, red, slightly larger)
   - width: Total component width in px — 70 (ki acc), 80 (stats), 90 (skills). Default 90.
   - rollable: Whether the final span triggers a roll on click
@@ -16,10 +18,14 @@
   - modifierType: data-modifier-type for _onRoll
 --}}
 <div class="v2-btfs" style="--btfs-w:{{#if width}}{{width}}{{else}}90{{/if}}px">
+  {{#if baseReadonly}}
+  <span class="v2-btfs__display v2-btfs__display--base" title="Base">{{baseValue}}</span>
+  {{else}}
   <input type="number" class="v2-btfs__input v2-btfs__input--base"
-         name="{{baseName}}"
+         {{#if baseName}}name="{{baseName}}"{{/if}}
          value="{{baseValue}}"
          title="Base">
+  {{/if}}
 
   {{#if temporalName}}
   <input type="number"
@@ -28,9 +34,17 @@
          value="{{temporalValue}}"
          placeholder="·"
          title="Temporal">
+  {{else}}
+  {{#if showTemporal}}
+  <input type="number"
+         class="v2-btfs__input v2-btfs__input--temporal {{#unless temporalValue}}v2-btfs__input--zero{{/unless}}"
+         value="{{temporalValue}}"
+         placeholder="·"
+         title="Temporal">
+  {{/if}}
   {{/if}}
 
-  <span class="v2-btfs__final{{#if rollable}} rollable{{/if}}"
+  <span title="Final" class="v2-btfs__final{{#if rollable}} rollable{{/if}}"
     {{#if rollable}}
     data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
     data-rollvalue="{{baseValue}}"

@@ -495,12 +495,14 @@ export default class ABFActorSheetV2 extends ActorSheet {
       });
     });
 
-    // Open capacidades físicas reference journal
+    // Open capacidades físicas reference journal (optionally to a specific page)
     html.find('[data-on-click="open-capacidades-journal"]').on('click', (e) => {
       e.stopPropagation();
       const journal = game.journal.find(j => j.name === 'Capacidades Físicas');
-      if (journal) journal.sheet.render(true);
-      else ui.notifications.warn('Crea el diario con: ABFMacros.createCapacidadesJournal()');
+      if (!journal) { ui.notifications.warn('Crea el diario con: ABFMacros.createCapacidadesJournal()'); return; }
+      const pageName = e.currentTarget.dataset.journalPage;
+      const page = pageName ? journal.pages.find(p => p.name === pageName) : null;
+      journal.sheet.render(true, page ? { pageId: page._id } : {});
     });
 
     // Make rollable elements draggable to the macro hotbar
@@ -1095,7 +1097,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
     // Capacidades físicas: TM modes
     html.find('[data-on-click="add-tm-mode"]').on('click', async () => {
       const modes = [...(this.actor.system.flags.tmModes ?? [])];
-      modes.push({ _id: foundry.utils.randomID(), label: 'Nuevo modo', mod: 0 });
+      modes.push({ _id: foundry.utils.randomID(), label: 'Nuevo modo', base: 0, mod: 0 });
       await this.actor.update({ 'system.flags.tmModes': modes });
     });
 
@@ -1108,7 +1110,16 @@ export default class ABFActorSheetV2 extends ActorSheet {
       await this.actor.update({ 'system.flags.tmModes': modes });
     });
 
-    html.find('.tm-mode-mod-input').on('change', async (e) => {
+    html.find('.v2-tm-mode-row:not(.v2-tm-mode-row--base) .v2-btfs__input--base').on('change', async (e) => {
+      const modeId = e.currentTarget.closest('[data-mode-id]')?.dataset.modeId;
+      if (!modeId) return;
+      const modes = (this.actor.system.flags.tmModes ?? []).map(m =>
+        m._id === modeId ? { ...m, base: Number(e.currentTarget.value) || 0 } : m
+      );
+      await this.actor.update({ 'system.flags.tmModes': modes });
+    });
+
+    html.find('.v2-tm-mode-row:not(.v2-tm-mode-row--base) .v2-btfs__input--temporal').on('change', async (e) => {
       const modeId = e.currentTarget.closest('[data-mode-id]')?.dataset.modeId;
       if (!modeId) return;
       const modes = (this.actor.system.flags.tmModes ?? []).map(m =>

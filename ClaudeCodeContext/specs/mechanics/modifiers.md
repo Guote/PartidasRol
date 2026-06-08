@@ -20,7 +20,7 @@ Example: if a character has físico maluses of -40 and -80, only the -80 counts 
 
 ### Rounding Rules
 
-- **÷ 20** (capacidades físicas, TM, Índice de Peso, Ki acum): `Math.floor(general / 20)` — integer, rounded down.
+- **÷ 20, negative only** (TM, Índice de Peso, Ki acum): `min(0, Math.floor(general / 20))` — positive general modifier is NOT applied to these stats.
 - **÷ 2** (Turno, ACT, Psychic Potential): `Math.floor(general / 10) * 5` — rounded down to nearest multiple of 5. Example: general = -47 → floor(-4.7) × 5 = **-25**.
 
 ### How General Modifiers Apply
@@ -28,8 +28,8 @@ Example: if a character has físico maluses of -40 and -80, only the -80 counts 
 | Stat / Roll                                             | Application                                   | Formula                               |
 | ------------------------------------------------------- | --------------------------------------------- | ------------------------------------- |
 | Skill and stat rolls                                    | Full general modifier                         | `general`                             |
-| Tipo de Movimiento                                      | ÷ 20, both signs                              | `floor(general / 20)`                 |
-| Índice de Peso                                          | ÷ 20, both signs                              | `floor(general / 20)`                 |
+| Tipo de Movimiento                                      | ÷ 20, only if general < 0                     | `min(0, floor(general / 20))`         |
+| Índice de Peso                                          | ÷ 20, only if general < 0                     | `min(0, floor(general / 20))`         |
 | Turno                                                   | ÷ 2, both signs                               | `floor(general / 10) * 5`             |
 | Regeneración                                            | Not applied                                   | —                                     |
 | Resistances                                             | Not applied                                   | —                                     |
@@ -109,6 +109,22 @@ Defined in `module/rolls/utils/getModifierTerms.js`:
 | `"general-negative-half"` | min(0, floor((modFis+modSob) / 10) × 5)                | psychic potential                                                |
 | `"none"`                  | []                                                     | summon HA/HD (no character modifiers) — kept for discoverability |
 | `"initiative"`            | floor(modFinal.general.final / 10) × 5                 | initiative rolls                                                 |
+| `"general-negative-floor-20"` | min(0, floor(modFinal.general.final / 20))      | TM, IP, Ki accumulation per stat — **not a roll type**; applied directly in mutators, not via `getModifierTerms` |
+
+---
+
+## Capacidades Físicas — Derived Base Sources
+
+These stats display a read-only **derived base** in the UI, computed from a primary stat, plus a user-editable **temporal** (stored as `mod.value` in the DB):
+
+| Stat | Base (read-only) | Temporal (editable, DB field) | General mod applied |
+|------|-----------------|-------------------------------|---------------------|
+| Tipo de Movimiento (terrestrial) | **final AGI** (base + temporal), capped by humanidad | `movementType.mod.value` | `min(0, floor(general / 20))` |
+| Tipo de Movimiento (custom modes) | user-defined `mode.base` (editable, stored in `flags.tmModes[].base`, default 0) | `mode.mod` | `min(0, floor(general / 20))` |
+| Índice de Peso | **base FUE**, capped by humanidad | `weightIndex.mod.value` | `min(0, floor(general / 20))` |
+| Regeneración | **final CON** → lookup table → base regen index | `regenerationType.mod.value` | not applied |
+
+Formula: `final = base + temporal + generalMod` (except Regen which has no general mod).
 
 ---
 
@@ -153,7 +169,7 @@ What is displayed (base / temporal / final) and whether the roll has an instant 
 | Habilidades — primary stats                   | base + temporal + final + stat-level mod                               | —                  |
 | Habilidades — secundarias                     | base + temporal + final                                                | ✅                 |
 | Habilidades — special skills                  | base + temporal + final                                                | ✅                 |
-| Habilidades — capacidades físicas             | temporal + final                                                       | — (not rollable)   |
+| Habilidades — capacidades físicas             | base (read-only, derived) + temporal + final                           | — (not rollable)   |
 | Summoning — convocar/atar/dominar/desconvocar | base + temporal + final                                                | ✅                 |
 | Domine — ki acum per stat                     | base + temporal + final                                                | ✅                 |
 | Psychic — proy ofensiva/defensiva/potencial   | base + temporal + final                                                | ✅                 |
