@@ -41,6 +41,38 @@ Hooks.once("renderSomeApplication", (app, html, data) => { /* one-shot */ });
 - `_updateObject(event, formData)` — called on form submit. Transform data here before saving.
 - `render(true)` — opens the sheet. `render(false)` re-renders an already-open sheet.
 
+## Performance Patterns
+
+### Async prepareDerivedData and Foundry's sync lifecycle
+
+Foundry's document lifecycle calls `prepareDerivedData()` synchronously and does **not** await the returned Promise. Because `ABFActor.prepareDerivedData()` is `async` (it calls `prepareActor` which does async work), Foundry fires it and moves on — the derived data is not guaranteed complete until the next microtask boundary.
+
+This is why every actor/item sheet calls `await actor.prepareDerivedData()` explicitly inside `getData()` — `getData()` is itself `async` and can properly await the result. **Do not remove these calls.**
+
+### Enriched HTML — always use enrichCached
+
+`TextEditor.enrichHTML` parses HTML and resolves UUID links. It is non-trivial async work. Because `prepareDerivedData` runs on every render, calling it directly multiplies the cost by the number of open sheets × renders per action.
+
+**Rule: never call `TextEditor.enrichHTML` directly in `prepareActor.js` or `prepareItem.js`. Always use `enrichCached`.**
+
+The helper (already defined at the top of `prepareActor.js`) re-enriches only when the source text has changed; otherwise it returns the cached result instantly:
+
+```js
+const enrichCached = async (doc, key, source) => {
+  if (!doc._enrichCache) doc._enrichCache = {};
+  const entry = doc._enrichCache[key];
+  if (entry?.src === source) return entry.html;
+  const html = await TextEditor.enrichHTML(source ?? '', { async: true });
+  doc._enrichCache[key] = { src: source, html };
+  return html;
+};
+
+// Usage — pick a unique string key per field:
+doc.system.someField.enriched = await enrichCached(doc, 'someField', doc.system.someField.value ?? '');
+```
+
+The cache lives on the document instance in memory (not persisted to DB). It survives across renders and is cleared on page reload. Copy the helper into `prepareItem.js` if item-level enrichable fields are ever needed.
+
 ## Localization
 
 ```js

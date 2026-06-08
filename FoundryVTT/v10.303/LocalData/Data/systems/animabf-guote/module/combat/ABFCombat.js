@@ -17,12 +17,6 @@ export default class ABFCombat extends Combat {
     this.setFlag("world", "newRound", true);
     return super.nextRound();
   }
-  prepareDerivedData() {
-    super.prepareDerivedData();
-    this.combatants.forEach((combatant) => {
-      combatant.actor?.prepareDerivedData();
-    });
-  }
   // Modify rollInitiative so that it asks for modifiers
   async rollInitiative(ids, { updateTurn = false, messageOptions } = {}) {
     const mod = await openModDialog();

@@ -18,6 +18,17 @@ import { mutateRegenerationType } from "./calculations/actor/general/mutateRegen
 import { mutateMasaData } from "./calculations/actor/mutateMasaData.js";
 import { mutateWeightIndex } from "./calculations/actor/general/mutateWeightIndex.js";
 import { mutateResistancesData } from "./calculations/actor/general/mutateResistancesData.js";
+// Cache TextEditor.enrichHTML results on the actor instance. Re-enriches only when source text changes.
+// ALWAYS use this instead of calling TextEditor.enrichHTML directly — prepareActor runs on every render.
+const enrichCached = async (actor, key, source) => {
+  if (!actor._enrichCache) actor._enrichCache = {};
+  const entry = actor._enrichCache[key];
+  if (entry?.src === source) return entry.html;
+  const html = await TextEditor.enrichHTML(source ?? '', { async: true });
+  actor._enrichCache[key] = { src: source, html };
+  return html;
+};
+
 // Be careful with order of this functions, some derived data functions could be dependent of another
 const DERIVED_DATA_FUNCTIONS = [
   mutateMasaData,
@@ -43,18 +54,9 @@ const DERIVED_DATA_FUNCTIONS = [
 ];
 export const prepareActor = async (actor) => {
   await prepareItems(actor);
-  actor.system.general.description.enriched = await TextEditor.enrichHTML(
-    actor.system.general.description.value,
-    { async: true },
-  );
-  actor.system.general.notesText.enriched = await TextEditor.enrichHTML(
-    actor.system.general.notesText.value ?? "",
-    { async: true },
-  );
-  actor.system.combat.notes.enriched = await TextEditor.enrichHTML(
-    actor.system.combat.notes.value ?? "",
-    { async: true },
-  );
+  actor.system.general.description.enriched = await enrichCached(actor, 'description', actor.system.general.description.value ?? '');
+  actor.system.general.notesText.enriched = await enrichCached(actor, 'notesText', actor.system.general.notesText.value ?? '');
+  actor.system.combat.notes.enriched = await enrichCached(actor, 'combatNotes', actor.system.combat.notes.value ?? '');
   // We need to parse to boolean because Foundry saves booleans as string
   for (const key of Object.keys(actor.system.ui.contractibleItems)) {
     if (typeof actor.system.ui.contractibleItems[key] === "string") {
