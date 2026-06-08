@@ -169,6 +169,7 @@ export class CombatAttackDialog extends FormApplication {
   }
   activateListeners(html) {
     super.activateListeners(html);
+    html.find('input, textarea').on('focus', function () { this.select(); });
 
     // Open selected spell sheet
     attachItemSheetHandler(html, ".open-spell-sheet", this.attackerActor,

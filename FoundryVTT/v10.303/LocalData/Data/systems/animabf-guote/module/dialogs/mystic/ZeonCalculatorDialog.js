@@ -276,6 +276,7 @@ export class ZeonCalculatorDialog extends FormApplication {
 
   activateListeners(html) {
     super.activateListeners(html);
+    html.find('input, textarea').on('focus', function () { this.select(); });
 
     // Restore open state of perk accordions after each re-render
     html.find('.zc-perks-details').each((_, el) => {

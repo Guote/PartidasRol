@@ -10,7 +10,7 @@ export default class ABFItemSheet extends ItemSheet {
     }
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['sheet', 'item'],
+            classes: ['abf', 'sheet', 'item'],
             resizable: true,
             submitOnChange: true
         });
@@ -153,6 +153,7 @@ export default class ABFItemSheet extends ItemSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
+        html.find('input, textarea').on('focus', function () { this.select(); });
 
         if (this.item.type === 'weapon') {
             const $desc = html.find('.ws-description-accordion');

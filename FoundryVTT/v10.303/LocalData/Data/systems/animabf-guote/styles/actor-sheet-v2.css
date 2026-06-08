@@ -2119,12 +2119,16 @@
   opacity: 1;
 }
 
-/* Modifier type reference grid (6 cells) */
+/* Modifier type reference grid (General full-width + 6 cells in 2×3) */
 .actor-sheet-v2 .v2-mod-type-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-2);
   margin-top: var(--space-3);
+}
+
+.actor-sheet-v2 .v2-mod-type-cell--wide {
+  grid-column: 1 / -1;
 }
 
 .actor-sheet-v2 .v2-mod-type-cell {
@@ -2156,6 +2160,7 @@
   font-weight: bold;
   font-variant-numeric: tabular-nums;
   font-size: var(--font-size-base);
+  margin-top: auto;
 }
 
 /* === Resource text glow utilities ===

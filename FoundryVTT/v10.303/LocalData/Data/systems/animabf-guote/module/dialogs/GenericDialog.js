@@ -19,6 +19,7 @@ export class GenericDialog extends FormApplication {
     }
     activateListeners(html) {
         super.activateListeners(html);
+        html.find('input, textarea').on('focus', function () { this.select(); });
         for (const button of this.modalData.buttons) {
             html.find(`#${button.id}`).click(e => {
                 button.fn?.(e);

@@ -130,7 +130,7 @@
         {{/if}}
 
         {{!-- Total row --}}
-        <div class="v2-modifiers-table__row v2-modifiers-table__row--final">
+        {{!-- <div class="v2-modifiers-table__row v2-modifiers-table__row--final">
           <span class="v2-modifiers-table__cell v2-modifiers-table__cell--label">Total</span>
           <span class="v2-modifiers-table__cell v2-modifiers-table__cell--result
             {{#if (gt system.general.modifiers.modFisico.final.value 0)}}v2-mod--positive{{/if}}
@@ -142,58 +142,73 @@
             {{#if (lt system.general.modifiers.modSobrenatural.final.value 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modSobrenatural.final.value}}
           </span>
-        </div>
+        </div> --}}
 
       </div>
 
       {{!-- Modifier type reference: shows which computed value applies to each roll type --}}
       <div class="v2-mod-type-grid">
-        <div class="v2-mod-type-cell" title="Rolls de habilidades secundarias y primarias">
-          <span class="v2-mod-type__name">General <i class="fas fa-info-circle"></i></span>
+        <div class="v2-mod-type-cell v2-mod-type-cell--wide"
+          title="Se aplica a: Habilidades secundarias y primarias&#10;Qué se aplica: Modificador completo (físico y sobrenatural, positivo y negativo)">
+          <span class="v2-mod-type__name">Modificador general <i class="fas fa-info-circle"></i></span>
           <span class="v2-mod-type__value
             {{#if (gt system.general.modifiers.modFinal.general.final.value 0)}}v2-mod--positive{{/if}}
             {{#if (lt system.general.modifiers.modFinal.general.final.value 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modFinal.general.final.value}}
           </span>
         </div>
-        <div class="v2-mod-type-cell" title="Ataques con armas">
-          <span class="v2-mod-type__name">Ataque <i class="fas fa-info-circle"></i></span>
+        <div class="v2-mod-type-cell"
+          title="Se aplica a: Iniciativa (turno)&#10;Qué se aplica: Mitad del modificador general, positivo y negativo">
+          <span class="v2-mod-type__name">Turno <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.initiative 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.initiative 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modFinal.initiative}}
+          </span>
+        </div>
+        <div class="v2-mod-type-cell"
+          title="Se aplica a: Ataques con armas&#10;Qué se aplica: Modificador completo + extras por maniobras o posturas de combate">
+          <span class="v2-mod-type__name">Ataques con armas <i class="fas fa-info-circle"></i></span>
           <span class="v2-mod-type__value
             {{#if (gt system.general.modifiers.modFinal.attack.final.value 0)}}v2-mod--positive{{/if}}
             {{#if (lt system.general.modifiers.modFinal.attack.final.value 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modFinal.attack.final.value}}
           </span>
         </div>
-        <div class="v2-mod-type-cell" title="Defensas con armas">
-          <span class="v2-mod-type__name">Defensa <i class="fas fa-info-circle"></i></span>
-          <span class="v2-mod-type__value
-            {{#if (gt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--positive{{/if}}
-            {{#if (lt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--negative{{/if}}">
-            {{system.general.modifiers.modFinal.defense.final.value}}
-          </span>
-        </div>
-        <div class="v2-mod-type-cell" title="Proyección mágica y psíquica, habilidades de convocatoria">
-          <span class="v2-mod-type__name">Mag/Psí <i class="fas fa-info-circle"></i></span>
+        <div class="v2-mod-type-cell"
+          title="Se aplica a: Proyección Mágica y Psíquica, Habilidades de Convocatoria&#10;Qué se aplica: Modificador general completo, solo si es negativo">
+          <span class="v2-mod-type__name">Proy. Mágica, Proy. Psíquica, Convocatoria <i class="fas fa-info-circle"></i></span>
           <span class="v2-mod-type__value
             {{#if (gt system.general.modifiers.modFinal.generalNegative 0)}}v2-mod--positive{{/if}}
             {{#if (lt system.general.modifiers.modFinal.generalNegative 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modFinal.generalNegative}}
           </span>
         </div>
-        <div class="v2-mod-type-cell" title="ACT de zeon y potencial psíquica">
-          <span class="v2-mod-type__name">ACT/Pot <i class="fas fa-info-circle"></i></span>
+        <div class="v2-mod-type-cell"
+          title="Se aplica a: Tipo de Movimiento, Índice de Peso, Acumulaciones de Ki&#10;Qué se aplica: -1 por cada -20 de modificador general, solo si es negativo">
+          <span class="v2-mod-type__name">Capacidades físicas, Ki ACT <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.generalNegativeFloor20 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.generalNegativeFloor20 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modFinal.generalNegativeFloor20}}
+          </span>
+        </div>
+        <div class="v2-mod-type-cell"
+          title="Se aplica a: Defensas con armas&#10;Qué se aplica: Modificador completo + extras por maniobras o posturas de combate">
+          <span class="v2-mod-type__name">Defensas con armas <i class="fas fa-info-circle"></i></span>
+          <span class="v2-mod-type__value
+            {{#if (gt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--positive{{/if}}
+            {{#if (lt system.general.modifiers.modFinal.defense.final.value 0)}}v2-mod--negative{{/if}}">
+            {{system.general.modifiers.modFinal.defense.final.value}}
+          </span>
+        </div>
+        <div class="v2-mod-type-cell"
+          title="Se aplica a: Zeon ACT, Potencial Psíquico&#10;Qué se aplica: Mitad del modificador general, solo si es negativo">
+          <span class="v2-mod-type__name">Zeon ACT, Potencial Psíquico <i class="fas fa-info-circle"></i></span>
           <span class="v2-mod-type__value
             {{#if (gt system.general.modifiers.modFinal.generalNegativeHalf 0)}}v2-mod--positive{{/if}}
             {{#if (lt system.general.modifiers.modFinal.generalNegativeHalf 0)}}v2-mod--negative{{/if}}">
             {{system.general.modifiers.modFinal.generalNegativeHalf}}
-          </span>
-        </div>
-        <div class="v2-mod-type-cell" title="Turno (iniciativa)">
-          <span class="v2-mod-type__name">Turno <i class="fas fa-info-circle"></i></span>
-          <span class="v2-mod-type__value
-            {{#if (gt system.general.modifiers.modFinal.initiative 0)}}v2-mod--positive{{/if}}
-            {{#if (lt system.general.modifiers.modFinal.initiative 0)}}v2-mod--negative{{/if}}">
-            {{system.general.modifiers.modFinal.initiative}}
           </span>
         </div>
       </div>

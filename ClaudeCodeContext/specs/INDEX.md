@@ -21,6 +21,7 @@ Scan this file first to find the right spec to load. Each entry is one line.
 
 | File                  | Covers                                                                        |
 | --------------------- | ----------------------------------------------------------------------------- |
+| `ui/inputs.md`        | select-all on focus convention, global hook, rule for new dialogs/sheets       |
 | `ui/resources.md`     | header resource bar: all resources, visibility toggle, masa Nº resource       |
 | `ui/skills-tab.md`    | stats display, secondary skills, combined roll UX (checkboxes, header button) |
 | `ui/combat-dialog.md` | attack/defense dialog tabs, summary bar formula, modifier type per tab        |

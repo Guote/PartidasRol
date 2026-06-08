@@ -307,6 +307,7 @@ export class KiCalculatorDialog extends FormApplication {
 
   activateListeners(html) {
     super.activateListeners(html);
+    html.find('input, textarea').on('focus', function () { this.select(); });
 
     html.on('change', 'input:not([data-actor-update]), select', () => {
       this._syncFromForm(html);

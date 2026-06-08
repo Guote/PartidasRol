@@ -138,4 +138,5 @@ export const mutatePenalties = (data, actor) => {
   data.general.modifiers.modFinal.generalNegative = generalNegative;
   data.general.modifiers.modFinal.generalNegativeHalf = Math.min(0, Math.floor(penalties.general / 10) * 5);
   data.general.modifiers.modFinal.initiative = Math.floor(penalties.general / 10) * 5;
+  data.general.modifiers.modFinal.generalNegativeFloor20 = Math.min(0, Math.floor(penalties.general / 20));
 };

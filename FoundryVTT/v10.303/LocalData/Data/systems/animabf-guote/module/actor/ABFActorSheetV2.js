@@ -416,6 +416,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
   }
   activateListeners(html) {
     super.activateListeners(html);
+    html.find('input, textarea').on('focus', function () { this.select(); });
 
     // Inline-style the active humanidad toggle pill so it wins over Foundry's global label resets.
     html.find('.v2-humanidad-toggle__opt').each((_, el) => {
@@ -576,10 +577,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
     updateZeonLong();
     zeonInputs.on('change', updateZeonLong);
 
-    // Resource inputs: select-all on focus, delta notation (+3 / -2) on change
-    html.find('.v2-res__input').on('focus', function () {
-      this.select();
-    }).on('keydown', function (e) {
+    // Resource inputs: Enter to confirm, delta notation (+3 / -2) on change
+    html.find('.v2-res__input').on('keydown', function (e) {
       if (e.key === 'Enter') {
         e.preventDefault();
         this.blur();
