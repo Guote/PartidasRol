@@ -38,6 +38,7 @@ if (!effect) {
 | **Debilitamiento** | total modifiers < 0 | manual | when mods ≥ 0 | CUB |
 | **Concentrado** | manual | manual | manual | prevents ki partial penalty on round start |
 | **En Llamas** | burn counter ≥ 100 (EnLlamas.js macro) | macro-managed | burn counter < 100 | macro |
+| **Sin reservas** | ki reserve ≤ 10 (if max > 10) OR zeon ≤ 50 (if max > 50) | auto | neither threshold true | CUB; SIC counter +1 per resource at exactly 0 (max 3) |
 
 ## Ha Defendido — SIC max stacks
 

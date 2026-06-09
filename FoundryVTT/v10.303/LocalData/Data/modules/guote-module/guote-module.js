@@ -3,6 +3,7 @@ const USANDO_ENERGIA = "Usando Energia";
 const CONT_DEFENSAS = "Cont. Defensas";
 const CONT_ATAQUES = "Cont. Ataques";
 const ACORRALADO = "Acorralado";
+const SIN_RESERVAS = "Sin reservas";
 
 // ─── Named constants ──────────────────────────────────────────────────────────
 /** Initiative gap at which a combatant is considered surprised by the active turn. */
@@ -293,9 +294,10 @@ Hooks.on("updateActor", (actor, updateData) => {
     }
   }
 
-  // Usando Energía sync — only when domine/mystic changed
+  // Usando Energía + Sin reservas sync — only when domine/mystic changed
   if (updateData.system?.mystic || updateData.system?.domine) {
     syncCondition(actor);
+    syncSinReservas(actor);
   }
 });
 
@@ -329,6 +331,46 @@ function syncCondition(actor) {
     if (!cubHas(USANDO_ENERGIA, token)) cubAdd(USANDO_ENERGIA, token);
   } else {
     if (cubHas(USANDO_ENERGIA, token)) cubRemove(USANDO_ENERGIA, token);
+  }
+}
+
+// ─── Sin reservas condition sync ──────────────────────────────────────────────
+// Applied when ki <= 10 (if max > 10) OR zeon <= 50 (if max > 50).
+// SIC counter increments by 1 for each resource that hits exactly 0.
+function syncSinReservas(actor) {
+  const token = actor.getActiveTokens()[0];
+  if (!token) return;
+
+  const kiCurrent = actor.system?.domine?.kiAccumulation?.generic?.value ?? 0;
+  const kiMax = actor.system?.domine?.kiAccumulation?.generic?.max ?? 0;
+  const zeonCurrent = actor.system?.mystic?.zeon?.value ?? 0;
+  const zeonMax = actor.system?.mystic?.zeon?.max ?? 0;
+
+  const kiCondition = kiMax > 10 && kiCurrent <= 10;
+  const zeonCondition = zeonMax > 50 && zeonCurrent <= 50;
+
+  if (!kiCondition && !zeonCondition) {
+    if (cubHas(SIN_RESERVAS, token)) cubRemove(SIN_RESERVAS, token);
+    return;
+  }
+
+  const desiredCount = 1 + (kiCondition && kiCurrent === 0 ? 1 : 0) + (zeonCondition && zeonCurrent === 0 ? 1 : 0);
+  const effect = actor.effects.find(e => (e.name ?? e.label) === SIN_RESERVAS);
+
+  if (!effect) {
+    cubAdd(SIN_RESERVAS, token);
+    if (desiredCount > 1) {
+      setTimeout(async () => {
+        const addedEffect = actor.effects.find(e => (e.name ?? e.label) === SIN_RESERVAS);
+        if (!addedEffect) return;
+        const ctr = window.ActiveEffectCounter?.getCounter(addedEffect);
+        if (ctr) await ctr.setValue(desiredCount, addedEffect);
+      }, 500);
+    }
+  } else {
+    const ctr = window.ActiveEffectCounter?.getCounter(effect);
+    const currentCount = ctr ? (ctr.getValue(effect) ?? 1) : 1;
+    if (currentCount !== desiredCount) ctr?.setValue(desiredCount, effect);
   }
 }
 

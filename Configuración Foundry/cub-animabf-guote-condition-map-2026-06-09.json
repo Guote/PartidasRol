@@ -893,10 +893,10 @@
     },
     {
       "id": "nhhSiUvK80PjB2sF",
-      "name": "Sin reservas (ki)",
-      "icon": "_Recursos/Iconos/sinReservasKi.png",
+      "name": "Sin reservas",
+      "icon": "_Recursos/Iconos/sinReservas.png",
       "referenceId": "",
-      "applyTrigger": "ueJSRcVUAe72cg6d",
+      "applyTrigger": "",
       "removeTrigger": "",
       "activeEffect": {
         "label": "Sin reservas",
@@ -916,7 +916,8 @@
           {
             "key": "system.characteristics.secondaries.fatigue.value",
             "mode": 2,
-            "value": "-2"
+            "value": "-2",
+            "priority": null
           }
         ],
         "flags": {
@@ -927,43 +928,6 @@
         "_id": null,
         "origin": null,
         "transfer": true
-      },
-      "macros": [],
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
-      "id": "N2zbD2vrFxKamfTO",
-      "name": "Sin Reservas (Zeon)",
-      "icon": "_Recursos/Iconos/sinReservasZeon.png",
-      "referenceId": "",
-      "applyTrigger": "zYtejhmr5JkySOB0",
-      "removeTrigger": "",
-      "activeEffect": {
-        "label": "Sin Reservas (Zeon)",
-        "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/bleeding-eye.svg",
-        "tint": "",
-        "disabled": false,
-        "duration": {
-          "seconds": null,
-          "startTime": null,
-          "rounds": null,
-          "turns": null,
-          "startRound": null,
-          "startTurn": null
-        },
-        "changes": [
-          {
-            "key": "system.characteristics.secondaries.fatigue.value",
-            "mode": 2,
-            "value": "-2"
-          }
-        ]
       },
       "macros": [],
       "options": {
