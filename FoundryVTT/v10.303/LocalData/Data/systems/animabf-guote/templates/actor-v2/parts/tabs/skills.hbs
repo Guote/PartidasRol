@@ -4,10 +4,6 @@
   <div class="v2-card v2-card--stats">
     <div class="v2-card__header">
       <span>{{localize "anima.ui.characteristics.title"}}</span>
-      <div class="v2-btf-col-labels" style="margin-left:auto;">
-        <span title="Base">B</span>
-        <span title="Temporal">+T</span>
-      </div>
     </div>
     <div class="v2-card__body">
       <div class="v2-characteristics">
@@ -25,45 +21,64 @@
         <span>{{localize "anima.ui.skills.secondaries"}}</span>
       </div>
       <div class="v2-card__header-actions">
-        <div class="v2-btf-col-labels" style="margin-right:4px;">
-          <span title="Base">B</span>
-          <span title="Temporal">+T</span>
-          <span title="Final">=</span>
-        </div>
-        <button type="button" class="v2-card__header-btn v2-combine-header-btn"
-                data-on-click="toggle-combine-mode"
-                title="Tirada combinada"
-                style="width:auto!important;display:inline-flex;gap:4px;">
-          <i class="fas fa-link"></i>
-          <span class="v2-combine-label">Combinar</span>
-        </button>
       </div>
     </div>
     <div class="v2-card__body">
       <div class="v2-skills-grid">
         {{#each system.secondaries.guotecundariasuno as |skill key|}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/skill-row.hbs" group="guotecundariasuno" key=key}}
+        {{> "systems/animabf-guote/templates/actor-v2/components/skill-row.hbs" group="guotecundariasuno" key=key}}
         {{/each}}
         {{#each system.secondaries.guotecundariasdos as |skill key|}}
-          {{> "systems/animabf-guote/templates/actor-v2/components/skill-row.hbs" group="guotecundariasdos" key=key}}
+        {{> "systems/animabf-guote/templates/actor-v2/components/skill-row.hbs" group="guotecundariasdos" key=key}}
         {{/each}}
       </div>
     </div>
   </div>
 
-  {{!-- Special Skills --}}
+  {{!-- Combinaciones --}}
+  <div class="v2-card v2-card--combinaciones" style="margin-top: var(--space-3);">
+    <div class="v2-card__header">
+      <div class="v2-card__header-title">
+        <span>Combinaciones</span>
+      </div>
+      <div class="v2-card__header-actions">
+        <button type="button" class="v2-card__header-btn v2-combine-header-btn v2-guardar-combo-btn"
+          data-on-click="guardar-combinacion" title="Guardar combinación"
+          style="width:auto!important;display:none;gap:4px;">
+          <i class="fas fa-save"></i>
+          <span>Guardar combinación</span>
+        </button>
+        <button type="button" class="v2-card__header-btn v2-combine-header-btn" data-on-click="toggle-combine-mode"
+          title="Tirada combinada" style="width:auto!important;display:inline-flex;gap:4px;">
+          <i class="fas fa-link"></i>
+          <span class="v2-combine-label">Combinar</span>
+        </button>
+      </div>
+    </div>
+    <div class="v2-card__body" id="saved-combinations-list">
+      {{#each system.flags.savedCombinations as |combo|}}
+      <div class="v2-saved-combo-row" data-combination-id="{{combo._id}}">
+        <input type="text" class="v2-saved-combo-label" value="{{combo.label}}" placeholder="Combinación">
+        <span class="v2-saved-combo-final">{{lookup (lookup @root.preparedSavedCombinations combo._id)
+          "combinedFinal"}}</span>
+      </div>
+      {{else}}
+      <div class="v2-text-center v2-text-muted v2-combo-empty-msg" style="padding: var(--space-2); font-size: 0.85em;">
+        Guarda combinaciones favoritas con el botón Combinar</div>
+      {{/each}}
+    </div>
+  </div>
+
+  {{!-- Rasgos --}}
   <div class="v2-card" style="margin-top: var(--space-3);">
     <div class="v2-card__header">
       <div class="v2-card__header-title">
-        <span>{{localize "anima.ui.secondaries.secondarySpecialSkills.title"}}</span>
+        <span>Rasgos</span>
       </div>
       <div class="v2-card__header-actions">
-        <div class="v2-btf-col-labels" style="margin-right:4px;">
-          <span title="Base">B</span>
-          <span title="Temporal">+T</span>
-          <span title="Final">=</span>
-        </div>
-        <button type="button" class="v2-card__header-btn" data-on-click="add-secondary-special-skill" title="{{localize 'anima.dialogs.items.secondarySkill.content'}}">
+        <button type="button" class="v2-card__header-btn" data-on-click="add-secondary-special-skill"
+          title="{{localize 'anima.dialogs.items.secondarySkill.content'}}"
+          style="width:auto!important;display:inline-flex;">
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -71,17 +86,18 @@
     <div class="v2-special-skills-grid" id="secondary-special-skills-context-menu-container">
       {{#each system.secondaries.secondarySpecialSkills as |skill|}}
       <div class="v2-skill-row secondary-special-skill-row" data-item-id="{{skill._id}}">
-        <input type="checkbox" class="v2-skill-combine-checkbox"
-               data-rollvalue="{{skill.system.level.value}}"
-               data-label="{{skill.name}}">
-        <span class="v2-skill-row__name rollable"
-              data-roll="1d100xa"
-              data-rollvalue="{{skill.system.level.value}}"
-              data-label="{{skill.name}}">{{skill.name}}</span>
-        <input type="number" class="v2-skill-row__base"
-               name="system.dynamic.secondarySpecialSkills.{{skill._id}}.system.level.value"
-               value="{{skill.system.level.value}}">
-        <span class="v2-skill-row__final">{{skill.system.level.value}}</span>
+        <input type="checkbox" class="v2-rasgo-checkbox" data-finalvalue="{{skill.system.final.value}}"
+          data-label="{{skill.name}}">
+        <span class="v2-skill-row__name rollable" data-roll="1d100xa" data-rollvalue="{{skill.system.final.value}}"
+          data-label="{{skill.name}}" data-modifier-type="general">{{skill.name}}</span>
+        {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
+        baseReadonly=true
+        baseValue=skill.system.base.value
+        temporalName=(concat "system.dynamic.secondarySpecialSkills." skill._id ".system.temporal.value")
+        temporalValue=skill.system.temporal.value
+        finalValue=skill.system.final.value
+        width=90
+        }}
       </div>
       {{else}}
       <div class="v2-text-center v2-text-muted" style="padding: var(--space-3); grid-column: 1 / -1;">-</div>
@@ -97,15 +113,18 @@
       </div>
       <div class="v2-card__header-actions v2-humanidad-toggle">
         <label class="v2-humanidad-toggle__opt {{#if (eq system.flags.humanidad 'human')}}active{{/if}}">
-          <input type="radio" name="system.flags.humanidad" value="human" {{#if (eq system.flags.humanidad 'human')}}checked{{/if}}>
+          <input type="radio" name="system.flags.humanidad" value="human" {{#if (eq system.flags.humanidad 'human'
+            )}}checked{{/if}}>
           <span>Humano</span>
         </label>
         <label class="v2-humanidad-toggle__opt {{#if (eq system.flags.humanidad 'inhumano')}}active{{/if}}">
-          <input type="radio" name="system.flags.humanidad" value="inhumano" {{#if (eq system.flags.humanidad 'inhumano')}}checked{{/if}}>
+          <input type="radio" name="system.flags.humanidad" value="inhumano" {{#if (eq system.flags.humanidad 'inhumano'
+            )}}checked{{/if}}>
           <span>Inhumano</span>
         </label>
         <label class="v2-humanidad-toggle__opt {{#if (eq system.flags.humanidad 'zen')}}active{{/if}}">
-          <input type="radio" name="system.flags.humanidad" value="zen" {{#if (eq system.flags.humanidad 'zen')}}checked{{/if}}>
+          <input type="radio" name="system.flags.humanidad" value="zen" {{#if (eq system.flags.humanidad 'zen'
+            )}}checked{{/if}}>
           <span>Zen</span>
         </label>
       </div>
@@ -117,11 +136,12 @@
         <div class="v2-capacidad-group__header">
           <span class="v2-capacidad-group__title">TM (Tipo de movimiento)</span>
           <div class="v2-capacidad-group__actions">
-            <button type="button" class="v2-icon-btn" data-on-click="add-tm-mode" title="Añadir modo de movimiento" style="width:auto!important;display:inline-flex;">
+            <button type="button" class="v2-icon-btn" data-on-click="add-tm-mode" title="Añadir modo de movimiento"
+              style="width:auto!important;display:inline-flex;">
               <i class="fas fa-plus"></i>
             </button>
             <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal" data-journal-page="TM"
-                    title="Ver tablas TM" style="width:auto!important;display:inline-flex;">
+              title="Ver tablas TM" style="width:auto!important;display:inline-flex;">
               <i class="fas fa-book-open"></i>
             </button>
           </div>
@@ -130,16 +150,17 @@
         <div class="v2-cap-row">
           <div class="v2-cap-row__input">
             {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
-                baseReadonly=true
-                baseValue=system.characteristics.secondaries.movementType.base.value
-                temporalName="system.characteristics.secondaries.movementType.mod.value"
-                temporalValue=system.characteristics.secondaries.movementType.mod.value
-                finalValue=system.characteristics.secondaries.movementType.final.value
-                width=70
+            baseReadonly=true
+            baseValue=system.characteristics.secondaries.movementType.base.value
+            temporalName="system.characteristics.secondaries.movementType.mod.value"
+            temporalValue=system.characteristics.secondaries.movementType.mod.value
+            finalValue=system.characteristics.secondaries.movementType.final.value
+            width=70
             }}
             <span class="v2-cap-row__label">Terrestre</span>
           </div>
-          <span class="v2-cap-row__desc"><strong>{{system.characteristics.secondaries.movement.maximum.value}}</strong>m movimiento pasivo</span>
+          <span class="v2-cap-row__desc"><strong>{{system.characteristics.secondaries.movement.maximum.value}}</strong>m
+            movimiento pasivo</span>
         </div>
         {{!-- Additional user-defined modes --}}
         {{#each system.flags.tmModes as |mode|}}
@@ -147,22 +168,25 @@
         <div class="v2-cap-row" data-mode-id="{{mode._id}}">
           <div class="v2-cap-row__input">
             {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
-                baseValue=p.base
-                showTemporal=true
-                temporalValue=p.mod
-                finalValue=p.tm
-                width=70
+            baseValue=p.base
+            showTemporal=true
+            temporalValue=p.mod
+            finalValue=p.tm
+            width=70
             }}
-            <input type="text" class="v2-cap-row__label-input tm-mode-label-input" value="{{mode.label}}" placeholder="Modo">
+            <input type="text" class="v2-cap-row__label-input tm-mode-label-input" value="{{mode.label}}"
+              placeholder="Modo">
           </div>
           <span class="v2-cap-row__desc"><strong>{{p.meters}}</strong>m movimiento pasivo</span>
-          <button type="button" class="v2-icon-btn v2-icon-btn--danger delete-tm-mode" data-mode-id="{{mode._id}}" title="Eliminar" style="width:auto!important;display:inline-flex;">
+          <button type="button" class="v2-icon-btn v2-icon-btn--danger delete-tm-mode" data-mode-id="{{mode._id}}"
+            title="Eliminar" style="width:auto!important;display:inline-flex;">
             <i class="fas fa-times"></i>
           </button>
         </div>
         {{/with}}
         {{/each}}
-        <p class="v2-cap-notas"><strong>Correr (acción activa)</strong>: Puedes moverte una segunda vez. Si además gastas 1 cansancio, te puedes mover una tercera vez.</p>
+        <p class="v2-cap-notas"><strong>Correr (acción activa)</strong>: Puedes moverte una segunda vez. Si además
+          gastas 1 cansancio, te puedes mover una tercera vez.</p>
       </div>
 
       {{!-- IP Section --}}
@@ -171,7 +195,7 @@
           <span class="v2-capacidad-group__title">IP (Índice de peso)</span>
           <div class="v2-capacidad-group__actions">
             <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal" data-journal-page="IP"
-                    title="Ver tablas IP" style="width:auto!important;display:inline-flex;">
+              title="Ver tablas IP" style="width:auto!important;display:inline-flex;">
               <i class="fas fa-book-open"></i>
             </button>
           </div>
@@ -179,16 +203,19 @@
         <div class="v2-cap-row">
           <div class="v2-cap-row__input">
             {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
-                baseReadonly=true
-                baseValue=system.characteristics.secondaries.weightIndex.base.value
-                temporalName="system.characteristics.secondaries.weightIndex.mod.value"
-                temporalValue=system.characteristics.secondaries.weightIndex.mod.value
-                finalValue=system.characteristics.secondaries.weightIndex.final.value
-                width=70
+            baseReadonly=true
+            baseValue=system.characteristics.secondaries.weightIndex.base.value
+            temporalName="system.characteristics.secondaries.weightIndex.mod.value"
+            temporalValue=system.characteristics.secondaries.weightIndex.mod.value
+            finalValue=system.characteristics.secondaries.weightIndex.final.value
+            width=70
             }}
             <span class="v2-cap-row__label"></span>
           </div>
-          <span class="v2-cap-row__desc"><strong>{{system.characteristics.secondaries.weightLoad.max.value}}</strong> kg carga pasiva · <strong>{{system.characteristics.secondaries.weightLoad.medium.value}}</strong> kg carga media · <strong>{{system.characteristics.secondaries.weightLoad.heavy.value}}</strong> kg carga pesada</span>
+          <span class="v2-cap-row__desc"><strong>{{system.characteristics.secondaries.weightLoad.max.value}}</strong> kg
+            carga pasiva · <strong>{{system.characteristics.secondaries.weightLoad.medium.value}}</strong> kg carga
+            media · <strong>{{system.characteristics.secondaries.weightLoad.heavy.value}}</strong> kg carga
+            pesada</span>
         </div>
       </div>
 
@@ -197,8 +224,9 @@
         <div class="v2-capacidad-group__header">
           <span class="v2-capacidad-group__title">Regeneración</span>
           <div class="v2-capacidad-group__actions">
-            <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal" data-journal-page="Regeneración"
-                    title="Ver tablas Regeneración" style="width:auto!important;display:inline-flex;">
+            <button type="button" class="v2-icon-btn" data-on-click="open-capacidades-journal"
+              data-journal-page="Regeneración" title="Ver tablas Regeneración"
+              style="width:auto!important;display:inline-flex;">
               <i class="fas fa-book-open"></i>
             </button>
           </div>
@@ -206,18 +234,25 @@
         <div class="v2-cap-row">
           <div class="v2-cap-row__input">
             {{> "systems/animabf-guote/templates/actor-v2/components/base-to-final-input-small.hbs"
-                baseReadonly=true
-                baseValue=system.characteristics.secondaries.regenerationType.base.value
-                temporalName="system.characteristics.secondaries.regenerationType.mod.value"
-                temporalValue=system.characteristics.secondaries.regenerationType.mod.value
-                finalValue=system.characteristics.secondaries.regenerationType.final.value
-                width=70
+            baseReadonly=true
+            baseValue=system.characteristics.secondaries.regenerationType.base.value
+            temporalName="system.characteristics.secondaries.regenerationType.mod.value"
+            temporalValue=system.characteristics.secondaries.regenerationType.mod.value
+            finalValue=system.characteristics.secondaries.regenerationType.final.value
+            width=70
             }}
             <span class="v2-cap-row__label"></span>
           </div>
-          <span class="v2-cap-row__desc">+<strong>{{system.characteristics.secondaries.regeneration.resting.value}}</strong> PV/{{system.characteristics.secondaries.regeneration.resting.period}} · <strong>{{system.characteristics.secondaries.regeneration.recovery.value}}</strong> penalizador/{{system.characteristics.secondaries.regeneration.recovery.period}}{{#if system.characteristics.secondaries.regenerationType.especial}}. {{system.characteristics.secondaries.regenerationType.especial}}{{/if}}</span>
+          <span
+            class="v2-cap-row__desc">+<strong>{{system.characteristics.secondaries.regeneration.resting.value}}</strong>
+            PV/{{system.characteristics.secondaries.regeneration.resting.period}} ·
+            <strong>{{system.characteristics.secondaries.regeneration.recovery.value}}</strong>
+            penalizador/{{system.characteristics.secondaries.regeneration.recovery.period}}{{#if
+            system.characteristics.secondaries.regenerationType.especial}}.
+            {{system.characteristics.secondaries.regenerationType.especial}}{{/if}}</span>
         </div>
-        <p class="v2-cap-notas">Los efectos mágicos que alteran la regeneración también alteran el ritmo: día → hora → minuto → asalto</p>
+        <p class="v2-cap-notas">Los efectos mágicos que alteran la regeneración también alteran el ritmo: día → hora →
+          minuto → asalto</p>
       </div>
 
     </div>

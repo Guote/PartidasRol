@@ -111,6 +111,21 @@ Defined in `module/rolls/utils/getModifierTerms.js`:
 | `"initiative"`            | floor(modFinal.general.final / 10) × 5                 | initiative rolls                                                 |
 | `"general-negative-floor-20"` | min(0, floor(modFinal.general.final / 20))      | TM, IP, Ki accumulation per stat — **not a roll type**; applied directly in mutators, not via `getModifierTerms` |
 
+### Double-count gotcha — final.value already embeds generalMod
+
+`secondary.final.value` is computed by `mutateData` as `base + temporal + generalMod`. Similarly, `characteristic.rollBase.value` is computed with `generalMod` baked in by `mutatePrimaryRollBases`.
+
+**Rule**: If a roll handler reads `final.value` (secondaries) or `rollBase.value` (characteristics) as the base value AND also calls `getModifierTerms('general')`, generalMod is counted twice.
+
+**Correct pattern for combined/saved-combo rolls**:
+- Secondary entries: start from `base.value + temporal.value` (no embedded generalMod).
+- Characteristic entries: recompute 10TO100 from `final.value` (= base + temporal) — do NOT use `rollBase.value`.
+- Then append `getModifierTerms('general')` once as a flat post-average term.
+
+**Correct pattern for single-skill rolls** (e.g. rollable span in `skill-row.hbs`):
+- `data-rollvalue = base.value` (the span, not the combine checkbox).
+- Add `temporalBonus` + `getModifierTerms('general')` separately. This matches `base + temporal + generalMod` ✓.
+
 ### getModifierTerms() display labels (single-term contract)
 
 | modifierType | es.json key | Display label |

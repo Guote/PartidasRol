@@ -1,7 +1,7 @@
 import { ABFItems } from '../../items/ABFItems.js';
 import { openSimpleInputDialog } from '../../utils/dialogs/openSimpleInputDialog.js';
 import { ABFItemConfigFactory } from '../ABFItemConfig.js';
-export const SECONDARY_SPECIAL_SKILL_INITIAL_SYSTEM = { level: { value: 0 } };
+export const SECONDARY_SPECIAL_SKILL_INITIAL_SYSTEM = { level: { value: 0 }, temporal: { value: 0 } };
 
 /** @type {import("../Items").SecondarySpecialSkillItemConfig} */
 export const SecondarySpecialSkillItemConfig = ABFItemConfigFactory({

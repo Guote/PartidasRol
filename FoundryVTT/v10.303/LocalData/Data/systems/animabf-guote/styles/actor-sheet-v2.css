@@ -1552,6 +1552,71 @@
   margin-right: 2px;
 }
 
+/* --- Rasgo checkboxes (always visible) --- */
+.actor-sheet-v2 .v2-rasgo-checkbox {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  margin-right: 2px;
+}
+
+/* --- Saved combinations card --- */
+.actor-sheet-v2 #saved-combinations-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  padding: 0;
+}
+.actor-sheet-v2 .v2-combo-empty-msg {
+  grid-column: 1 / -1;
+}
+.actor-sheet-v2 .v2-saved-combo-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-1);
+  border-bottom: 1px solid var(--abf-border-light);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  overflow: hidden;
+}
+.actor-sheet-v2 .v2-saved-combo-row:hover {
+  background: var(--abf-secondary-light);
+}
+.actor-sheet-v2 #saved-combinations-list .v2-saved-combo-row:not(:nth-child(2n)) {
+  border-right: 1px solid var(--abf-border-light);
+}
+.actor-sheet-v2 #saved-combinations-list .v2-saved-combo-row:nth-last-child(-n + 2) {
+  border-bottom: none;
+}
+.actor-sheet-v2 .v2-saved-combo-label {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-xs);
+  color: inherit;
+  padding: 0;
+  cursor: text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.actor-sheet-v2 .v2-saved-combo-label:focus {
+  outline: 1px solid var(--abf-primary);
+  background: var(--abf-bg-light, #f9f5ee);
+}
+.actor-sheet-v2 .v2-saved-combo-final {
+  width: 28px;
+  font-weight: bold;
+  text-align: center;
+  color: var(--abf-primary);
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+}
+
 /* --------------------------------
    Grid Layouts (Compact)
    -------------------------------- */

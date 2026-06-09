@@ -19,4 +19,9 @@ export const mutateSecondariesData = (data) => {
       );
     }
   }
+  const actorLevel = data.general.level?.value ?? 0;
+  for (const skill of (secondaries.secondarySpecialSkills ?? [])) {
+    skill.system.base = { value: actorLevel * 10 };
+    skill.system.final = { value: actorLevel * 10 + (skill.system.temporal?.value ?? 0) };
+  }
 };

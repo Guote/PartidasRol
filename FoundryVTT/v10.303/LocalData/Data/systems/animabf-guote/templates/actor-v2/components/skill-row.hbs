@@ -8,9 +8,11 @@
 --}}
 <div class="v2-skill-row">
   <input type="checkbox" class="v2-skill-combine-checkbox"
-         data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'final') 'value'}}"
+         data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'base') 'value'}}"
          data-temporalvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'temporal') 'value'}}"
-         data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}">
+         data-label="{{localize (concat 'anima.ui.secondaries.' key '.title')}}"
+         data-group="{{group}}"
+         data-skillkey="{{key}}">
   <span class="v2-skill-row__name rollable"
         data-roll="1d100xa"
         data-rollvalue="{{lookup (lookup (lookup (lookup @root.system.secondaries group) key) 'base') 'value'}}"

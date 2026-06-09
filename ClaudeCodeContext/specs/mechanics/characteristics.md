@@ -8,29 +8,42 @@ Primary characteristics (AGI, CON, DES, FUE, INT, PER, POD, VOL) are stored as r
 Applied whenever `dataset.roll` includes `"10TO100"`:
 
 ```js
-statVal = stat.value           // 13
-statRaw = stat.value * 10        // e.g. VOL 13 → 130
+// Always use stat.final.value (= base + temporal), NOT stat.value (= base only).
+// Threshold checks and caps must see the full combined value.
+statVal = stat.final.value          // e.g. base 12 + temporal 1 = 13
+statRaw = stat.final.value * 10     // e.g. VOL 13 → 130
 
 // Effective bonus (humanidad-capped):
 human:   Math.min(statVal, 10) * 10     // cap at 10 → max 100
 inhumano: Math.min(statVal, 13) * 10    // cap at 13 → max 130
 zen:     statRaw (uncapped)
 
-// Extra bonus:
+// Extra bonus (checked against final, not base):
 inhumano AND statVal > 10  → +40 (Inhumanidad)
 zen      AND statVal > 13  → +80 (Zen)
 
 // Level bonus:
 + level * 10 (where level = system.general.level.value)
 
-// Total: effectiveBonus + level*10 + extra
+// Total: effectiveBonus + level*10 + extra  (temporal already embedded in effectiveBonus)
 ```
 
-Example: VOL 13, inhumano, level 8
-- effectiveBonus = min(13,13)*10 = 130
+Example: VOL 13, inhumano, level 8 (base 12 + temporal +1)
+- statVal = 13 (final), effectiveBonus = min(13,13)*10 = 130
 - extra = +40 (inhumanidad, statVal > 10)
 - level bonus = 8*10 = 80
 - Total = 130 + 40 + 80 = **250**
+
+> **Why final and not base?** If a character has base VOL = 10 and temporal +1 (final = 11), they qualify for the inhumano +40 extra. Using base alone would miss this.
+
+## Data attributes in characteristic-row.hbs
+
+```
+data-rollvalue     = stat.final.value * 10   // (base + temporal) × 10 — feeds threshold checks
+data-temporalvalue = stat.temporal.value * 10 // kept for combine-mode label display only
+```
+
+`data-rollvalue` must use `stat.final.value`, not `stat.value`. Since temporal is embedded in `final`, the `_onRoll` 10TO100 path must NOT add temporal as a separate formula term.
 
 ## Data Paths
 
@@ -45,10 +58,14 @@ system.characteristics.primaries
   .power.value       (POD)
   .willPower.value   (VOL)
 
-  Each stat also exposes (set by mutatePrimaryModifiers):
-  .X.final.value    → base + temporal (stat used for rolls and caps)
+  Each stat also exposes (set by mutatePrimaryModifiers + mutatePrimaryRollBases):
+  .X.final.value    → base + temporal (use this for roll threshold checks and caps)
   .X.mod            → attribute modifier (for secondary skill derivation)
-  .X.rollBase.value → 10TO100 result excluding the d100 (shown in sheet UI)
+  .X.rollBase.value → 10TO100 result shown in the sheet UI
+                      = effectiveBonus(final) + extra(final) + level×10 + generalMod
+                      NOTE: rollBase.value includes generalMod (added by mutatePrimaryRollBases).
+                      Do NOT use rollBase.value as the roll input and also add getModifierTerms —
+                      that double-counts the modifier. For roll computation use final.value instead.
 
 system.flags.humanidad    → "human" | "inhumano" | "zen"
 system.general.level.value → total level (direct field, NOT sum of categories)

@@ -326,6 +326,24 @@ export default class ABFActorSheetV2 extends ActorSheet {
       psychicPowers:_sortHeaders('psychicPowers',['discipline','level','name','bonus']),
     };
 
+    // Pre-compute combined final values for saved combinations
+    const savedCombinations = sheet.system?.flags?.savedCombinations ?? [];
+    sheet.preparedSavedCombinations = {};
+    for (const combo of savedCombinations) {
+      const entries = combo.entries ?? [];
+      const N = entries.length;
+      if (N === 0) { sheet.preparedSavedCombinations[combo._id] = { combinedFinal: 0 }; continue; }
+      let sum = 0;
+      for (const entry of entries) {
+        if (entry.type === 'secondary') {
+          sum += sheet.system?.secondaries?.[entry.group]?.[entry.key]?.final?.value ?? 0;
+        } else if (entry.type === 'characteristic') {
+          sum += sheet.system?.characteristics?.primaries?.[entry.key]?.rollBase?.value ?? 0;
+        }
+      }
+      sheet.preparedSavedCombinations[combo._id] = { combinedFinal: Math.floor(sum / N / 5) * 5 };
+    }
+
     return sheet;
   }
   _buildCommonContextualMenu(itemConfig, html) {
@@ -438,16 +456,18 @@ export default class ABFActorSheetV2 extends ActorSheet {
       this._onRoll(e);
     });
 
-    // Combined roll — header button toggles checkbox mode, second click confirms
+    // Combined roll — Combinaciones card button toggles checkbox mode, second click confirms
     html.find('[data-on-click="toggle-combine-mode"]').on('click', async (e) => {
       e.stopPropagation();
       const tabEl = html.find('.v2-tab-skills')[0];
       if (!tabEl) return;
       const isActive = tabEl.classList.contains('v2-combine-active');
       const labelEl = e.currentTarget.querySelector('.v2-combine-label');
+      const guardarBtn = html.find('.v2-guardar-combo-btn');
       if (!isActive) {
         tabEl.classList.add('v2-combine-active');
-        if (labelEl) labelEl.textContent = 'Selecciona habilidades y confirma';
+        if (labelEl) labelEl.textContent = 'Confirmar';
+        guardarBtn.css('display', 'inline-flex');
         html.find('.v2-skill-combine-checkbox').prop('checked', false);
         return;
       }
@@ -455,6 +475,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const N = checked.length;
       tabEl.classList.remove('v2-combine-active');
       if (labelEl) labelEl.textContent = 'Combinar';
+      guardarBtn.css('display', 'none');
       if (N === 0) return;
       const mod = await openModDialog();
       const modifier = parseInt(mod) || 0;
@@ -479,7 +500,7 @@ export default class ABFActorSheetV2 extends ActorSheet {
           let extra = 0;
           if (statVal > 13 && hasZen(humanidad)) extra = 80;
           else if (statVal > 10 && hasInhumanity(humanidad)) extra = 40;
-          raw = effectiveBonus + totalLevel * 10 + extra + temporal;
+          raw = effectiveBonus + totalLevel * 10 + extra;
         }
         values.push(Math.floor(raw / N / 5) * 5);
         labels.push((el.dataset.label || '?') + (temporal !== 0 ? ' Temp' : ''));
@@ -487,6 +508,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const { values: genModValues, labels: genModLabels } = getModifierTerms(this.actor.system, 'general');
       values.push(...genModValues);
       labels.push(...genModLabels);
+      const rasgoBonuses = this._collectRasgoBonuses(html);
+      rasgoBonuses.forEach(r => { values.push(r.value); labels.push(r.label); });
       if (modifier !== 0) { values.push(modifier); labels.push('Mod'); }
       const formula = getFormula({ dice: '1d100xa', values, labels });
       const roll = new ABFFoundryRoll(formula, this.actor.system);
@@ -495,6 +518,100 @@ export default class ABFActorSheetV2 extends ActorSheet {
         flavor: `Tirada combinada (${N} habilidades)`,
       });
     });
+
+    // Guardar combinación — immediately save with auto-generated label; user can rename inline
+    html.find('[data-on-click="guardar-combinacion"]').on('click', async (e) => {
+      e.stopPropagation();
+      const checked = html.find('.v2-skill-combine-checkbox:checked');
+      if (checked.length === 0) return;
+      const entries = [];
+      const labelParts = [];
+      checked.each((_, el) => {
+        labelParts.push(el.dataset.label || '?');
+        if (el.dataset.isCharacteristic === 'true') {
+          entries.push({ type: 'characteristic', key: el.dataset.statkey || '' });
+        } else {
+          entries.push({ type: 'secondary', group: el.dataset.group || '', key: el.dataset.skillkey || '' });
+        }
+      });
+      const label = labelParts.join(' + ');
+      const combos = [...(this.actor.system.flags?.savedCombinations ?? [])];
+      combos.push({ _id: foundry.utils.randomID(), label, entries });
+      await this.actor.update({ 'system.flags.savedCombinations': combos });
+      this._exitCombineMode(html);
+    });
+
+    // Roll saved combination — click on row (excluding label input)
+    html.find('#saved-combinations-list').on('click', '.v2-saved-combo-row', async (e) => {
+      if ($(e.target).hasClass('v2-saved-combo-label')) return;
+      e.stopPropagation();
+      const comboId = e.currentTarget.dataset.combinationId;
+      const combo = (this.actor.system.flags?.savedCombinations ?? []).find(c => c._id === comboId);
+      if (!combo || !combo.entries?.length) return;
+      const N = combo.entries.length;
+      const totalLevel = this.actor.system.general.level?.value || 0;
+      const humanidad = this.actor.system.flags?.humanidad ?? 'human';
+      const values = [];
+      const labels = [];
+      for (const entry of combo.entries) {
+        let raw = 0;
+        if (entry.type === 'secondary') {
+          const skill = this.actor.system?.secondaries?.[entry.group]?.[entry.key];
+          raw = (skill?.base?.value ?? 0) + (skill?.temporal?.value ?? 0);
+        } else if (entry.type === 'characteristic') {
+          const prim = this.actor.system?.characteristics?.primaries?.[entry.key];
+          const statFinal = prim?.final?.value ?? 0;
+          let effectiveBonus;
+          if (hasZen(humanidad)) effectiveBonus = statFinal * 10;
+          else if (hasInhumanity(humanidad)) effectiveBonus = Math.min(statFinal, 13) * 10;
+          else effectiveBonus = Math.min(statFinal, 10) * 10;
+          let extra = 0;
+          if (statFinal > 13 && hasZen(humanidad)) extra = 80;
+          else if (statFinal > 10 && hasInhumanity(humanidad)) extra = 40;
+          raw = effectiveBonus + totalLevel * 10 + extra;
+        }
+        values.push(Math.floor(raw / N / 5) * 5);
+        labels.push(entry.key || '?');
+      }
+      const { values: genModValues, labels: genModLabels } = getModifierTerms(this.actor.system, 'general');
+      values.push(...genModValues);
+      labels.push(...genModLabels);
+      const rasgoBonuses = this._collectRasgoBonuses(html);
+      rasgoBonuses.forEach(r => { values.push(r.value); labels.push(r.label); });
+      const mod = await openModDialog();
+      if (parseInt(mod) !== 0) { values.push(parseInt(mod)); labels.push('Mod'); }
+      const formula = getFormula({ dice: '1d100xa', values, labels });
+      const roll = new ABFFoundryRoll(formula, this.actor.system);
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: `${combo.label} (${N} habilidades)`,
+      });
+    });
+
+    // Rename saved combination label on blur/Enter
+    html.find('#saved-combinations-list').on('change', '.v2-saved-combo-label', async (e) => {
+      const comboId = e.currentTarget.closest('.v2-saved-combo-row')?.dataset?.combinationId;
+      if (!comboId) return;
+      const combos = [...(this.actor.system.flags?.savedCombinations ?? [])];
+      const idx = combos.findIndex(c => c._id === comboId);
+      if (idx === -1) return;
+      combos[idx] = { ...combos[idx], label: e.currentTarget.value };
+      await this.actor.update({ 'system.flags.savedCombinations': combos });
+    });
+
+    // Context menu for saved combinations — Eliminar
+    new ContextMenu(html.find('#saved-combinations-list'), '.v2-saved-combo-row', [
+      {
+        name: 'Eliminar',
+        icon: '<i class="fas fa-trash fa-fw"></i>',
+        callback: async (el) => {
+          const comboId = el[0]?.dataset?.combinationId;
+          if (!comboId) return;
+          const combos = (this.actor.system.flags?.savedCombinations ?? []).filter(c => c._id !== comboId);
+          await this.actor.update({ 'system.flags.savedCombinations': combos });
+        },
+      },
+    ]);
 
     // Open capacidades físicas reference journal (optionally to a specific page)
     html.find('[data-on-click="open-capacidades-journal"]').on('click', (e) => {
@@ -1917,6 +2034,12 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
       const { values: modValues, labels: modLabels } = getModifierTerms(this.actor.system, dataset.modifierType);
 
+      // Rasgo bonuses: each checked rasgo adds its own named flat term (skills tab only)
+      const isSkillTabRoll = !!element.closest('.v2-tab-skills');
+      const rasgoBonuses = isSkillTabRoll ? this._collectRasgoBonuses(this.element) : [];
+      const rasgoValues = rasgoBonuses.map(r => r.value);
+      const rasgoLabels = rasgoBonuses.map(r => r.label);
+
       // For initiative rolls: base-20 as "Turno", plus the modifier of the slowest option
       // (Natural +20, or slowest weapon modifier). Mirrors the highlighted entry in the combat tab.
       const weaponInitValues = [];
@@ -1955,8 +2078,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
       const temporalBonus = parseInt(dataset.temporalvalue) || 0;
       let formula = getFormula({
         dice: dataset.roll,
-        values: [initiativeRollValue, temporalBonus, ...modValues, ...weaponInitValues, mod],
-        labels: [initiativeRollLabel, 'Temporal', ...modLabels, ...weaponInitLabels, "Mod"],
+        values: [initiativeRollValue, temporalBonus, ...modValues, ...weaponInitValues, ...rasgoValues, mod],
+        labels: [initiativeRollLabel, 'Temporal', ...modLabels, ...weaponInitLabels, ...rasgoLabels, "Mod"],
       });
       if (formula.includes("10TO100")) {
         const totalLevel = this.actor.system.general.level?.value || 0;
@@ -1985,8 +2108,8 @@ export default class ABFActorSheetV2 extends ActorSheet {
 
         formula = getFormula({
           dice: dataset.roll,
-          values: [effectiveStatBonus, totalLevel * 10, temporalBonus, ...extraValues, ...modValues, mod],
-          labels: [dataset.label, "Nivel", 'Temporal', ...extraLabels, ...modLabels, "Mod"],
+          values: [effectiveStatBonus, totalLevel * 10, ...extraValues, ...modValues, ...rasgoValues, mod],
+          labels: [dataset.label, "Nivel", ...extraLabels, ...modLabels, ...rasgoLabels, "Mod"],
         }).replace("10TO100", "");
       }
       if (parseInt(dataset.extra) >= 200)
@@ -1998,6 +2121,23 @@ export default class ABFActorSheetV2 extends ActorSheet {
       });
     }
   }
+  _exitCombineMode(html) {
+    const tabEl = html.find('.v2-tab-skills')[0];
+    if (tabEl) tabEl.classList.remove('v2-combine-active');
+    html.find('.v2-combine-label').text('Combinar');
+    html.find('.v2-guardar-combo-btn').css('display', 'none');
+  }
+
+  _collectRasgoBonuses(html) {
+    const bonuses = [];
+    html.find('.v2-rasgo-checkbox:checked').each((_, el) => {
+      const value = parseInt(el.dataset.finalvalue) || 0;
+      const label = el.dataset.label || 'Rasgo';
+      if (value !== 0) bonuses.push({ value, label });
+    });
+    return bonuses;
+  }
+
   async _openLinkedActorSheet(uuid, errorLocKey) {
     if (!uuid) return;
     const actor = await fromUuid(uuid);

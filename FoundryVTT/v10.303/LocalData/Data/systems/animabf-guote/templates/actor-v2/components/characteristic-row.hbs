@@ -7,10 +7,11 @@ Parameters (via context):
 - stat: The characteristic object with .value, .temporal.value, and .mod
 --}}
 <div class="v2-characteristic">
-  <input type="checkbox" class="v2-skill-combine-checkbox" data-rollvalue="{{math stat.value '*' 10}}"
+  <input type="checkbox" class="v2-skill-combine-checkbox" data-rollvalue="{{math stat.final.value '*' 10}}"
     data-temporalvalue="{{math stat.temporal.value '*' 10}}"
-    data-label="{{localize (concat 'anima.ui.characteristics.' key)}}" data-is-characteristic="true">
-  <span class="v2-characteristic__name rollable" data-roll="1d100xa10TO100" data-rollvalue="{{math stat.value '*' 10}}"
+    data-label="{{localize (concat 'anima.ui.characteristics.' key)}}" data-is-characteristic="true"
+    data-statkey="{{key}}">
+  <span class="v2-characteristic__name rollable" data-roll="1d100xa10TO100" data-rollvalue="{{math stat.final.value '*' 10}}"
     data-temporalvalue="{{math stat.temporal.value '*' 10}}" data-modifier-type="general"
     data-label="{{localize (concat 'anima.ui.characteristics.' key)}}">{{localize (concat "anima.ui.characteristics."
     key)}}</span>

@@ -59,11 +59,13 @@ combinedValue = sum over each skill i of: floor( effectiveValue_i / N / 5 ) × 5
 ```
 
 Where `effectiveValue_i`:
-- **Secondary skill**: `final.value` (already includes temporal + modifiers). At roll time the formula uses `floor(raw / N / 5) * 5` where `raw` is the skill's final.
-- **Characteristic**: full 10TO100 value (effectiveBonus + level×10 + zen/inhumanidad extra + temporal×10). See `characteristics.md` for caps.
+- **Secondary skill**: `base.value + temporal.value`. Do NOT use `final.value` here — `final.value` already includes `generalMod`, which would be double-counted when `getModifierTerms('general')` is appended after the sum.
+- **Characteristic**: 10TO100 computed from `stat.final.value` (= base + temporal). Apply humanidad caps and extra bonus to `final`, add `level×10`. Do NOT use `rollBase.value` (it includes generalMod). See `characteristics.md` for the full formula.
+
+**Combine roll source invariant**: All inputs to the averaging step must be `base + temporal` only — no embedded flat modifiers. Modifiers that apply to the entire roll (generalMod, rasgo bonuses, instant mod) are appended AFTER the average as flat terms. Violating this causes modifiers to be diluted by averaging and/or double-counted.
 
 After the averaged sum, append (in order, if non-zero):
-1. `getModifierTerms(actorSystem, 'general')` — standard general modifiers
+1. `getModifierTerms(actorSystem, 'general')` — added once as a flat post-average term (precondition: none of the per-skill values above already contain generalMod)
 2. Active rasgo terms (one term per checked rasgo, flat bonus, own label)
 3. Manual modifier from `openModDialog()`
 
@@ -97,8 +99,8 @@ Shown on the card row at all times, updated whenever the sheet re-renders:
 combinedFinal = floor( sum(effectiveValues) / N / 5 ) × 5
 ```
 
-- Secondary entry: `system.secondaries[group][key].final.value`
-- Characteristic entry: `system.characteristics.primaries[key].rollBase.value`
+- Secondary entry: `system.secondaries[group][key].base.value + temporal.value` (not `final.value` — avoids double-counting generalMod)
+- Characteristic entry: `system.characteristics.primaries[key].rollBase.value` (used for display only — this value includes generalMod, which is correct for the visual indicator)
 
 Null-safe: if a referenced skill no longer exists, treat its value as 0 and show the result without crashing.
 

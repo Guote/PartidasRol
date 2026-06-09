@@ -46,7 +46,8 @@
           "dolor": 0
         },
         "humanidad": "human",
-        "tmModes": []
+        "tmModes": [],
+        "savedCombinations": []
       },
       "masa": {
         "isMasa": false,
