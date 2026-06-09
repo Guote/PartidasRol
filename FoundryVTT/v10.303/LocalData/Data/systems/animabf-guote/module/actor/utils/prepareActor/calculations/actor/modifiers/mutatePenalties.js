@@ -134,7 +134,7 @@ export const mutatePenalties = (data, actor) => {
   // Pre-computed getModifierTerms type values for the Effects tab reference row.
   const fisFinal = data.general.modifiers.modFisico.final.value;
   const sobFinal = data.general.modifiers.modSobrenatural.final.value;
-  const generalNegative = Math.min(0, fisFinal) + Math.min(0, sobFinal);
+  const generalNegative = Math.min(0, penalties.general);
   data.general.modifiers.modFinal.generalNegative = generalNegative;
   data.general.modifiers.modFinal.generalNegativeHalf = Math.min(0, Math.floor(penalties.general / 10) * 5);
   data.general.modifiers.modFinal.initiative = Math.floor(penalties.general / 10) * 5;

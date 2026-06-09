@@ -32,3 +32,14 @@ export const mutatePrimaryModifiers = (data) => {
         };
     }
 };
+
+export const mutatePrimaryRollBases = (data) => {
+  const generalMod = data.general.modifiers.modFinal.general.final.value ?? 0;
+  if (generalMod === 0) return;
+  const { primaries } = data.characteristics;
+  for (const primaryKey of Object.keys(primaries)) {
+    if (primaries[primaryKey]?.rollBase?.value !== undefined) {
+      primaries[primaryKey].rollBase.value += generalMod;
+    }
+  }
+};

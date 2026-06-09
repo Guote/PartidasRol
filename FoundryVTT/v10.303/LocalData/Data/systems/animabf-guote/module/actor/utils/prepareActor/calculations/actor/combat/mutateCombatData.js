@@ -11,4 +11,15 @@ export const mutateCombatData = async (data) => {
   mutateData(data, "combat.attack");
   mutateData(data, "combat.block");
   mutateData(data, "combat.dodge");
+
+  const modFinal = data.general.modifiers.modFinal;
+  data.combat.attack.withMod = {
+    value: (data.combat.attack.final.value ?? 0) + (modFinal.attack.final.value ?? 0),
+  };
+  data.combat.block.withMod = {
+    value: (data.combat.block.final.value ?? 0) + (modFinal.defense.final.value ?? 0),
+  };
+  data.combat.dodge.withMod = {
+    value: (data.combat.dodge.final.value ?? 0) + (modFinal.defense.final.value ?? 0),
+  };
 };

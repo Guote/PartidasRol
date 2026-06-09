@@ -111,6 +111,18 @@ Defined in `module/rolls/utils/getModifierTerms.js`:
 | `"initiative"`            | floor(modFinal.general.final / 10) × 5                 | initiative rolls                                                 |
 | `"general-negative-floor-20"` | min(0, floor(modFinal.general.final / 20))      | TM, IP, Ki accumulation per stat — **not a roll type**; applied directly in mutators, not via `getModifierTerms` |
 
+### getModifierTerms() display labels (single-term contract)
+
+| modifierType | es.json key | Display label |
+|---|---|---|
+| `"general"` | `anima.ui.modifiers.types.general` | Mod. General |
+| `"attack"` | `anima.ui.modifiers.types.attack` | Mod. Ataque |
+| `"defense"` | `anima.ui.modifiers.types.defense` | Mod. Defensa |
+| `"initiative"` | `anima.ui.modifiers.types.initiative` | Mod. Turno |
+| `"general-negative"` | `anima.ui.modifiers.types.generalNegative` | Mod. Proyección |
+| `"general-negative-half"` | `anima.ui.modifiers.types.generalNegativeHalf` | Mod. Potencial |
+| `"none"` | *(no key)* | *(no term emitted)* |
+
 ---
 
 ## Capacidades Físicas — Derived Base Sources

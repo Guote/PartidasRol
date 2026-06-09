@@ -7,13 +7,15 @@ import { mutateData } from "../../../utils/mutateData.js";
 
 export const mutateSecondariesData = (data) => {
   const { secondaries } = data;
+  const generalMod = data.general.modifiers.modFinal.general.final.value ?? 0;
   for (const rawSecondaryKey of Object.keys(secondaries)) {
     const secondaryKey = rawSecondaryKey;
     if (secondaryKey === "secondarySpecialSkills") continue;
     for (const key of Object.keys(secondaries[secondaryKey])) {
       mutateData(
         data,
-        `secondaries.${secondaryKey}.${key}`
+        `secondaries.${secondaryKey}.${key}`,
+        generalMod
       );
     }
   }

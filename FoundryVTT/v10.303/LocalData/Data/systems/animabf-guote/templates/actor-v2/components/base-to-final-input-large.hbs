@@ -21,7 +21,8 @@
 <div class="v2-btfl {{#if compact}}v2-btfl--compact{{/if}} {{#if rollableDiv}}rollable{{/if}}"
      {{#if rollableDiv}}
      data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
-     data-rollvalue="{{finalValue}}"
+     data-rollvalue="{{baseValue}}"
+     data-temporalvalue="{{temporalValue}}"
      data-label="{{rollLabel}}"
      {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
      {{/if}}>
@@ -55,7 +56,8 @@
     <div class="v2-btfl__final-container{{#unless rollableDiv}}{{#if rollable}} rollable{{/if}}{{/unless}}"
       {{#unless rollableDiv}}{{#if rollable}}
       data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
-      data-rollvalue="{{finalValue}}"
+      data-rollvalue="{{baseValue}}"
+      data-temporalvalue="{{temporalValue}}"
       data-label="{{rollLabel}}"
       {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
       {{/if}}{{/unless}}>

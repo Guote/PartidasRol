@@ -24,6 +24,13 @@ export const mutateMysticData = (data) => {
       0
     );
 
+    const generalNeg = data.general.modifiers.modFinal.generalNegative ?? 0;
+    for (const skill of ['summon', 'banish', 'bind', 'control']) {
+      data.mystic.summoning[skill].withMod = {
+        value: (data.mystic.summoning[skill].final.value ?? 0) + generalNeg,
+      };
+    }
+
     const dailyZeon = mystic.spellMaintenances
       .filter(m => m.system?.active?.value !== false)
       .reduce((acc, m) => acc + (m.system?.cost?.value ?? 0) + (m.system?.dayCostMod?.value ?? 0), 0);

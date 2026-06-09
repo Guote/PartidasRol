@@ -40,4 +40,5 @@ export const mutateInitiative = (data) => {
         const minWeaponInit = Math.min(...equippedNonShieldWeapons.map(w => w.system.initiative.final.value));
         initiative.final.value += minWeaponInit;
     }
+    initiative.final.value += data.general.modifiers.modFinal.initiative ?? 0;
 };

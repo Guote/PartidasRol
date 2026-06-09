@@ -1,6 +1,6 @@
 import { prepareItems } from "../prepareItems/prepareItems.js";
 import { mutateWeaponsData } from "./calculations/items/weapon/mutateWeaponsData.js";
-import { mutatePrimaryModifiers } from "./calculations/actor/mutatePrimaryModifiers.js";
+import { mutatePrimaryModifiers, mutatePrimaryRollBases } from "./calculations/actor/mutatePrimaryModifiers.js";
 import { mutateTotalArmor } from "./calculations/actor/mutateTotalArmor.js";
 import { mutateAmmoData } from "./calculations/items/ammo/mutateAmmoData.js";
 import { mutateArmorsData } from "./calculations/items/armor/mutateArmorsData.js";
@@ -35,6 +35,7 @@ const DERIVED_DATA_FUNCTIONS = [
   mutatePrimaryModifiers,
   mutateRegenerationType,
   mutatePenalties,
+  mutatePrimaryRollBases,
 
   mutateMovementType,
   mutateWeightIndex,
