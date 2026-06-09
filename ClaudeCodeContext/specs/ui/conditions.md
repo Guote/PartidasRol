@@ -29,7 +29,8 @@ if (!effect) {
 
 | Condition | Trigger | Duration | Clears | Penalty source |
 |-----------|---------|----------|--------|---------------|
-| **Ha defendido** | combat defense sent with increaseDefenseCounter=true | 1 round | Foundry auto | CUB change: `modFisico.defense.conditionPen` ADD -25 (SIC multiplies per stack) |
+| **Cont. Defensas** | combat defense sent with increaseDefenseCounter=true | 1 round | Foundry auto | CUB change: `modFisico.defense.conditionPen` ADD -25 (SIC multiplies per stack) |
+| **Cont. Ataques** | combat attack sent with ataquePrincipal+maniobras > 1 | 1 round | Foundry auto | none — purely informational counter |
 | **Acorralado** | attack beats defense (`!defenseSucceeded`) | 1 round | Foundry auto | configurable in CUB |
 | **Sorpresa** | initiative gap ≥ 150 vs active combatant | turn-based | next turn re-check | CUB |
 | **Usando Energia** | ki or zeon accumulated / upkeep active | manual | ki/zeon fully cleared | CUB, synced via updateActor + updateItem hooks |

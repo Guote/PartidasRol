@@ -58,6 +58,9 @@ const getInitialData = (attacker, defender, options = {}) => {
           final: macroCookies?.combat?.damage?.final ?? 0,
         },
         enemyTAModifier: hasPreset ? (presetData.combat?.enemyTAModifier?.value ?? 0) : (macroCookies?.combat?.enemyTAModifier ?? 0),
+        multipleAttackMode: macroCookies?.combat?.multipleAttackMode ?? "normal",
+        ataquePrincipal: macroCookies?.combat?.ataquePrincipal ?? 1,
+        maniobras: macroCookies?.combat?.maniobras ?? 0,
       },
       mystic: {
         modifier: hasPreset ? (presetData.mystic?.modifier?.value ?? 0) : (macroCookies?.mystic?.modifier ?? 0),
@@ -236,18 +239,20 @@ export class CombatAttackDialog extends FormApplication {
       const isAttackAccumulation = (attackAccumulation ?? 1) > 1;
 
       if (activeTab === 'combat') {
-        const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed, enemyTAModifier } = this.modalData.attacker.combat;
+        const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed, enemyTAModifier, multipleAttackMode, ataquePrincipal, maniobras } = this.modalData.attacker.combat;
         if (typeof damage !== "undefined") {
           const attack = weapon
             ? weapon.system.attack.final.value
             : this.attackerActor.system.combat.attack.final.value;
           const counterAttackBonus = this.modalData.attacker.counterAttackBonus ?? 0;
           const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "attack");
-          let rollModifiers = [attack, getMassAttackBonus(attackAccumulation), counterAttackBonus, fatigueUsed * 15, ...modTermValues, modifier];
+          const penaltyPerManiobra = multipleAttackMode === 'cadencia' ? -10 : -20;
+          const multipleAttackPenalty = (maniobras ?? 0) * penaltyPerManiobra;
+          let rollModifiers = [attack, getMassAttackBonus(attackAccumulation), counterAttackBonus, fatigueUsed * 15, ...modTermValues, modifier, multipleAttackPenalty];
           let formula = getFormula({
             dice: withoutRoll ? "0" : "1d100xa",
             values: rollModifiers,
-            labels: ["HA", `${attackAccumulation} at. en masa`, "Contraataque", "Cansancio", ...modTermLabels, "Mod"],
+            labels: ["HA", `${attackAccumulation} at. en masa`, "Contraataque", "Cansancio", ...modTermLabels, "Mod", "Maniobra (ataques múltiples)"],
           });
           formula = applyMasteryFormula(formula, this.attackerActor.system.combat.attack.base.value);
           const roll = new ABFFoundryRoll(formula, this.attackerActor.system);
@@ -272,11 +277,16 @@ export class CombatAttackDialog extends FormApplication {
           };
           this.hooks.onAttack(attackResult);
           ChatAttackCard.create(this.modalData.attacker.token, attackResult, { weapon });
+          Hooks.callAll('animabf.combatAttackSent', this.modalData.attacker.token, attackResult, {
+            multipleAttackMode: multipleAttackMode ?? "normal",
+            ataquePrincipal: ataquePrincipal ?? 1,
+            maniobras: maniobras ?? 0,
+          });
           if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
           this.attackerActor.update({
             "system.macroCookies.combatAttackDialog": {
               initialTab: "combat",
-              combat: { modifier, unarmed, weaponUsed, criticSelected: critic, weapon, damage, enemyTAModifier },
+              combat: { modifier, unarmed, weaponUsed, criticSelected: critic, weapon, damage, enemyTAModifier, multipleAttackMode: multipleAttackMode ?? "normal", ataquePrincipal: ataquePrincipal ?? 1, maniobras: maniobras ?? 0 },
             },
           });
           if (fatigueUsed > 0) {
@@ -615,12 +625,14 @@ export class CombatAttackDialog extends FormApplication {
       weapons.find((w) => w._id === combat.weaponUsed) ?? weapons[0];
     combat.unarmed = weapons.length === 0;
     if (combat.unarmed) {
+      combat.cadenceLabel = "120";
       combat.damage.final =
         combat.damage.special +
         10 +
         this.attackerActor.system.characteristics.primaries.strength.mod;
     } else {
       combat.weapon = weapon;
+      combat.cadenceLabel = weapon.system.cadence?.value || "120";
       if (!combat.criticSelected) {
         combat.criticSelected = weapon.system.critic.primary.value;
       }
@@ -639,8 +651,12 @@ export class CombatAttackDialog extends FormApplication {
       const { values: summaryModTermValues } = getModifierTerms(this.attackerActor.system, "attack");
       const modTermSum = summaryModTermValues.reduce((a, b) => a + b, 0);
       const massBonus = getMassAttackBonus(attackAccumulation ?? 0);
+      combat.totalDeclaredAttacks = (combat.ataquePrincipal ?? 1) + (combat.maniobras ?? 0);
+      const summaryManiobras = combat.maniobras ?? 0;
+      const summaryPenaltyPerManiobra = combat.multipleAttackMode === 'cadencia' ? -10 : -20;
+      const summaryMultiAttackPenalty = summaryManiobras * summaryPenaltyPerManiobra;
       combat.summary = {
-        haFinal: attackValue + ((combat.fatigueUsed ?? 0) * 15) + (combat.modifier ?? 0) + (counterAttackBonus ?? 0) + massBonus + modTermSum,
+        haFinal: attackValue + ((combat.fatigueUsed ?? 0) * 15) + (combat.modifier ?? 0) + (counterAttackBonus ?? 0) + massBonus + modTermSum + summaryMultiAttackPenalty,
         damage: Math.floor((isAccumulation ? combat.damage.final * 1.5 : combat.damage.final) / 5) * 5,
         enemyTAModifier: (combat.enemyTAModifier ?? 0) + (combat.weapon?.system?.taModifier?.final?.value ?? 0),
         criticSelected: (combat.criticSelected && combat.criticSelected !== NoneWeaponCritic.NONE && combat.criticSelected !== "-") ? combat.criticSelected : null,
@@ -839,6 +855,14 @@ export class CombatAttackDialog extends FormApplication {
       formData.attacker.attackAccumulation =
         Math.max(1, parseInt(formData.attacker.attackAccumulation) || 1);
     }
+    if (formData.attacker?.combat?.ataquePrincipal !== undefined) {
+      formData.attacker.combat.ataquePrincipal =
+        Math.max(1, parseInt(formData.attacker.combat.ataquePrincipal) || 1);
+    }
+    if (formData.attacker?.combat?.maniobras !== undefined) {
+      formData.attacker.combat.maniobras =
+        Math.max(0, parseInt(formData.attacker.combat.maniobras) || 0);
+    }
 
     const prevWeapon = this.modalData.attacker.combat.weaponUsed;
     this.modalData = mergeObject(this.modalData, formData);
@@ -912,9 +936,9 @@ export class CombatAttackDialog extends FormApplication {
 
   _applyModifiedShading(html) {
     // Number inputs: shade when value differs from default
-    html.find('input[type="number"].input').each((_, el) => {
+    html.find('input[type="number"].input, input[type="number"].da-input').each((_, el) => {
       if (!el.name) return;
-      const defVal = el.name === 'attacker.attackAccumulation' ? 1 : 0;
+      const defVal = (el.name === 'attacker.attackAccumulation' || el.name === 'attacker.combat.ataquePrincipal') ? 1 : 0;
       el.classList.toggle('abf-input-modified', (parseFloat(el.value) || 0) !== defVal);
     });
 

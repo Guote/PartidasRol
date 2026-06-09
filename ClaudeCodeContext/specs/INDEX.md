@@ -16,6 +16,7 @@ Scan this file first to find the right spec to load. Each entry is one line.
 | `mechanics/summoning.md`        | summoning roll, HA/HD in invocations, general-negative (not attack/defense) modifiers        |
 | `mechanics/ki.md`               | ki accumulation, maintenance, round penalty, locked vs free ki                               |
 | `mechanics/masa.md`             | masa actors, HP→living members formula, name format, round clearing                          |
+| `mechanics/weapons.md`          | weapon data model, multiple attacks declaration, HA penalty, Cont. Ataques condition         |
 
 ## UI
 

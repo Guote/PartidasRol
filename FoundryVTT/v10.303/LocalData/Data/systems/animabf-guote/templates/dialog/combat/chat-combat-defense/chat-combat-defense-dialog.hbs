@@ -29,16 +29,16 @@
         {{#if (is 'eq' this.defender.actor.system.general.settings.defenseType.value 'resistance')}}
           <a class="item" data-tab="damageResistance">{{localize "anima.ui.tabs.damageResistance"}}</a>
         {{else}}
-          <a class="item" data-tab="combat">{{localize "anima.ui.tabs.combat"}}</a>
+          <a class="item" data-tab="combat">Armas</a>
         {{/if}}
         {{#if this.ui.hasMysticSpells}}
-          <a class="item" data-tab="mystic">{{localize "anima.ui.tabs.mystic"}}</a>
+          <a class="item" data-tab="mystic">Hechizos</a>
         {{/if}}
         {{#if this.ui.hasPsychicPowers}}
-          <a class="item" data-tab="psychic">{{localize "anima.ui.tabs.psychic"}}</a>
+          <a class="item" data-tab="psychic">Poderes Psí.</a>
         {{/if}}
         {{#if this.ui.hasSummons}}
-          <a class="item" data-tab="summon">{{localize "anima.ui.tabs.summon"}}</a>
+          <a class="item" data-tab="summon">Invocaciones</a>
         {{/if}}
       </nav>
 

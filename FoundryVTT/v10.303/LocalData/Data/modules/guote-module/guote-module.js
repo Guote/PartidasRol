@@ -1,6 +1,7 @@
 // ─── Condition names — change here to rename in CUB ─────────────────────────
 const USANDO_ENERGIA = "Usando Energia";
-const HA_DEFENDIDO = "Contador Defensas";
+const CONT_DEFENSAS = "Cont. Defensas";
+const CONT_ATAQUES = "Cont. Ataques";
 const ACORRALADO = "Acorralado";
 
 // ─── Named constants ──────────────────────────────────────────────────────────
@@ -192,17 +193,60 @@ Hooks.on('animabf.defenseSent', async (defenderToken, defenseResult) => {
   const actor = token.actor;
   if (!actor) return;
 
-  const effect = actor.effects.find(e => (e.name ?? e.label) === HA_DEFENDIDO);
+  const effect = actor.effects.find(e => (e.name ?? e.label) === CONT_DEFENSAS);
 
   if (!effect) {
     // First defense this round — add via CUB (SIC counter auto-starts at 1)
-    cubAdd(HA_DEFENDIDO, token);
+    cubAdd(CONT_DEFENSAS, token);
   } else {
-    // Already defending this round — increment SIC counter up to 3
+    // Already defending this round — increment SIC counter up to 4
     const ctr = window.ActiveEffectCounter?.getCounter(effect);
     const currentCount = ctr ? (ctr.getValue(effect) ?? 1) : 1;
-    if (currentCount < 3) {
+    if (currentCount < 4) {
       await ctr?.setValue(currentCount + 1, effect);
+    }
+  }
+});
+
+// Guard: prevent double-add from rapid re-entrant calls (e.g. dev hot-reload with two listeners)
+const _contAtaquesGuard = new Set();
+
+// Attack counter: add "Cont. Ataques" or decrement its SIC counter
+Hooks.on('animabf.combatAttackSent', async (attackerToken, _attackResult, { ataquePrincipal = 1, maniobras = 0 } = {}) => {
+  if (!game.user.isGM) return;
+  const token = attackerToken?.object ?? attackerToken;
+  if (!token) return;
+  const actor = token.actor;
+  if (!actor) return;
+
+  const total = ataquePrincipal + maniobras;
+  if (total <= 1) return;
+
+  // Deduplicate: ignore a second call for the same token within 300ms
+  if (_contAtaquesGuard.has(token.id)) return;
+  _contAtaquesGuard.add(token.id);
+  setTimeout(() => _contAtaquesGuard.delete(token.id), 300);
+
+  const effect = actor.effects.find(e => (e.name ?? e.label) === CONT_ATAQUES);
+
+  if (!effect) {
+    cubAdd(CONT_ATAQUES, token);
+    const initialCount = total - 1;
+    if (initialCount > 1) {
+      setTimeout(async () => {
+        const addedEffect = actor.effects.find(e => (e.name ?? e.label) === CONT_ATAQUES);
+        if (!addedEffect) return;
+        const ctr = window.ActiveEffectCounter?.getCounter(addedEffect);
+        if (ctr) await ctr.setValue(initialCount, addedEffect);
+      }, 500);
+    }
+  } else {
+    const ctr = window.ActiveEffectCounter?.getCounter(effect);
+    const currentCount = ctr ? (ctr.getValue(effect) ?? 1) : 1;
+    if (currentCount > 1) {
+      await ctr?.setValue(currentCount - 1, effect);
+    } else {
+      cubRemove(CONT_ATAQUES, token);
     }
   }
 });

@@ -20,12 +20,13 @@
         }}
         {{#each this.attacker.actor.system.combat.weapons}}
         <option {{#if (is "eq" this._id ../this.attacker.combat.weaponUsed)}}selected{{/if}} value='{{this._id}}'>
-          {{localize 'anima.macros.combat.dialog.weaponRow.attack.title' name=this.name value=this.system.attack.final.value}}
+          {{localize 'anima.macros.combat.dialog.weaponRow.attack.title' name=this.name
+          value=this.system.attack.final.value}}
         </option>
         {{/each}}
         {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}
-        <button type="button" class="abf-button icon-button open-weapon-sheet" title="Abrir ficha del arma"
-          {{#if this.attackSent}}disabled{{/if}}>
+        <button type="button" class="abf-button icon-button open-weapon-sheet" title="Abrir ficha del arma" {{#if
+          this.attackSent}}disabled{{/if}}>
           <i class="fas fa-external-link-alt"></i>
         </button>
         {{/if}}
@@ -51,7 +52,5 @@
       <p class='label no-fatigue'>{{localize 'anima.macros.combat.dialog.notEnoughFatigue.title'}}</p>
       {{/if}}
     </div>
-
   </div>
 </div>
-

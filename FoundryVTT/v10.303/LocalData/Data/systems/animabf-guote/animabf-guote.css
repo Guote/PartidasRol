@@ -3098,6 +3098,49 @@ img {
   margin: 0;
 }
 
+/* ─── Declared attacks row ─────────────────────────────────────────────────── */
+.dialog-section.declared-attacks-section {
+  margin-top: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.declared-attacks-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: nowrap;
+}
+.declared-attacks-row .da-label {
+  font-weight: bold;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  margin: 0;
+}
+.declared-attacks-row .da-input {
+  border-radius: 10px;
+  background: #e7e5da;
+  font-weight: bold;
+  padding: 0.25rem 0.4rem;
+  width: 3rem;
+  text-align: center;
+  flex-shrink: 0;
+  height: 1.5rem;
+  border: none;
+}
+.declared-attacks-row .da-total {
+  background-color: #6e2917;
+  color: white;
+}
+.declared-attacks-row select.da-input {
+  width: auto;
+  flex: 0 0 auto;
+  text-align: left;
+  padding: 0.2rem 0.3rem;
+  cursor: pointer;
+}
+.declared-attacks-row .da-input.abf-input-modified {
+  background: rgba(120, 46, 34, 0.25) !important;
+}
+
 /* 3-column grid for attack details rows (default) */
 .attack-details-grid {
   display: grid;
