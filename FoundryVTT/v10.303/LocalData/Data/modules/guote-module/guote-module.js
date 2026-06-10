@@ -132,6 +132,16 @@ Hooks.on("updateCombat", async (combat, delta) => {
   if (delta?.round) {
     const kiLossMap = await applyKiPartialPenalty(combat);
     await sendRoundReminder(combat, kiLossMap);
+    if (game.user.isGM) {
+      const clears = [...combat.combatants]
+        .map(c => c.actor)
+        .filter(a => a && (a.system.macroCookies?.combatAttackDialog?.combat?.committedManiobrasHA ?? 0) !== 0)
+        .map(a => a.update({
+          "system.general.modifiers.modManiobras.ha": 0,
+          "system.macroCookies.combatAttackDialog.combat.committedManiobrasHA": 0,
+        }));
+      if (clears.length) await Promise.all(clears);
+    }
   }
 
   // Trigger macro on turn start for current actor

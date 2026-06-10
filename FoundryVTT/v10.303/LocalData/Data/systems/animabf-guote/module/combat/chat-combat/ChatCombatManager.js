@@ -4,6 +4,7 @@ import { calculateShieldDamage } from '../utils/calculateShieldDamage.js';
 import { ChatAttackCard } from './ChatAttackCard.js';
 import { CombatAttackDialog } from '../../dialogs/combat/CombatAttackDialog.js';
 import { getPsychichPowerEffect } from '../utils/getPsychichPowerEffect.js';
+import { waitForDice } from '../utils/waitForDice.js';
 
 /**
  * Main controller for the chat-based combat system.
@@ -33,39 +34,25 @@ export class ChatCombatManager {
     }
 
     /**
-     * Handle chat message creation - check for attack cards with pending targets
+     * Handle chat message creation - prompt defenders for targeted tokens
      * @param {ChatMessage} message
      * @param {Object} options
      * @param {string} userId
      */
-    _onCreateChatMessage(message, options, userId) {
+    async _onCreateChatMessage(message, options, userId) {
         // Only process our own messages
         if (userId !== game.user.id) return;
 
         const flags = message.flags?.['animabf-guote']?.chatCombat;
         if (!flags || flags.cardType !== 'attack') return;
 
-        // Check if we have pending targets for this attacker
-        if (this._pendingTargets && this._pendingTargets.length > 0 &&
-            this._pendingAttackerTokenId === flags.attackerTokenId) {
+        const targetInfos = flags.targetInfos || [];
+        if (targetInfos.length === 0) return;
 
-            const targetedTokenIds = this._pendingTargets;
-            this._pendingTargets = null;
-            this._pendingAttackerTokenId = null;
+        // Wait for Dice So Nice 3D animations before prompting defenders
+        await waitForDice();
 
-            // Build target info for card display
-            const targetInfos = targetedTokenIds.flatMap(id => {
-                const token = canvas.tokens.get(id);
-                if (!token) return [];
-                return [{ tokenId: id, name: token.name, img: token.document?.texture?.src || token.actor?.img || 'icons/svg/mystery-man.svg' }];
-            });
-
-            // Update the card to show pending targets (fire and forget)
-            this._updateCardWithTargets(message, flags, targetInfos);
-
-            // Prompt defenders
-            this._promptTargetedDefenders(message.id, flags, targetedTokenIds);
-        }
+        this._promptTargetedDefenders(message.id, flags, targetInfos.map(t => t.tokenId));
     }
 
     /**
@@ -118,7 +105,7 @@ export class ChatCombatManager {
                 this._handleShieldApplied(msg.payload);
             }
             if (msg.type === 'chatCombat.shieldUndone') {
-                ui.chat.render();
+                this._rerenderMessage(msg.payload?.attackMessageId);
             }
             if (msg.type === 'chatCombat.promptDefense') {
                 this._handlePromptDefense(msg.payload);
@@ -173,6 +160,20 @@ export class ChatCombatManager {
     }
 
     /**
+     * Resolve which online user should handle defense for an actor.
+     * Priority: player with actor as default character > player with OWNER permission > active GM.
+     * @param {Actor} actor
+     * @returns {User|null}
+     */
+    _resolveDefenseTarget(actor) {
+        const byDefault = game.users.find(u => !u.isGM && u.active && u.character?.id === actor.id);
+        if (byDefault) return byDefault;
+        const byOwner = game.users.find(u => !u.isGM && u.active && actor.testUserPermission(u, 'OWNER'));
+        if (byOwner) return byOwner;
+        return game.users.find(u => u.isGM && u.active) ?? null;
+    }
+
+    /**
      * Prompt targeted token owners with defense dialogs
      * @param {string} attackMessageId
      * @param {Object} attackFlags
@@ -182,18 +183,15 @@ export class ChatCombatManager {
         for (const tokenId of targetedTokenIds) {
             const token = canvas.tokens.get(tokenId);
             if (!token) continue;
-
-            // Find the user who owns this token
             const actor = token.actor;
             if (!actor) continue;
 
-            // Get the owner(s) of this actor
-            const owners = game.users.filter(u =>
-                !u.isGM && actor.testUserPermission(u, 'OWNER')
-            );
+            const targetUser = this._resolveDefenseTarget(actor);
+            if (!targetUser) continue;
 
-            if (owners.length > 0) {
-                // Send to first owner
+            if (targetUser.id === game.user.id) {
+                this._openDefenseDialogForToken(attackMessageId, attackFlags, tokenId);
+            } else {
                 game.socket.emit('system.animabf-guote', {
                     type: 'chatCombat.promptDefense',
                     payload: {
@@ -201,27 +199,9 @@ export class ChatCombatManager {
                         sessionId: attackFlags.sessionId,
                         attackFlags,
                         defenderTokenId: tokenId,
-                        targetUserId: owners[0].id
+                        targetUserId: targetUser.id
                     }
                 });
-            } else if (game.user.isGM) {
-                // GM controls this token, open defense dialog directly
-                this._openDefenseDialogForToken(attackMessageId, attackFlags, tokenId);
-            } else {
-                // Player attacking a GM-controlled token — route to active GM
-                const activeGM = game.users.find(u => u.isGM && u.active);
-                if (activeGM) {
-                    game.socket.emit('system.animabf-guote', {
-                        type: 'chatCombat.promptDefense',
-                        payload: {
-                            attackMessageId,
-                            sessionId: attackFlags.sessionId,
-                            attackFlags,
-                            defenderTokenId: tokenId,
-                            targetUserId: activeGM.id
-                        }
-                    });
-                }
             }
         }
     }
@@ -307,6 +287,26 @@ export class ChatCombatManager {
      * @param {jQuery} html
      */
     _attachAttackCardListeners(message, html) {
+        // Hide GM-only action buttons from non-GM users
+        if (!game.user.isGM) {
+            html.find('.chat-combat-apply-damage, .chat-combat-undo-damage, .chat-combat-apply-shield, .chat-combat-undo-shield').remove();
+        }
+
+        // Per-target defend buttons — hide for users who don't own the token
+        html.find('.chat-combat-pending-defend').each((_, btn) => {
+            const token = canvas.tokens.get(btn.dataset.defenderId);
+            const isOwner = game.user.isGM || token?.actor?.id === game.user.character?.id;
+            if (!isOwner) btn.remove();
+        });
+
+        // Per-target defend button click
+        html.find('.chat-combat-pending-defend').click(async (ev) => {
+            ev.preventDefault();
+            const defenderTokenId = ev.currentTarget.dataset.defenderId;
+            const flags = message.flags['animabf-guote'].chatCombat;
+            await this._openDefenseDialogForToken(message.id, flags, defenderTokenId);
+        });
+
         // Defend button
         html.find('.chat-combat-defend-button').click((ev) => {
             ev.preventDefault();
@@ -448,6 +448,7 @@ export class ChatCombatManager {
             effectiveTA: effectiveTA,
             defenseSucceeded: Math.max(0, defenseResult.total) > Math.max(0, attackFlags.attackTotal)
         };
+
         Hooks.callAll('animabf.combatResolved', defenderToken, result);
 
         // Check if we can update the card directly (GM or message owner)
@@ -585,7 +586,7 @@ export class ChatCombatManager {
      * @param {Object} payload
      */
     _handleShieldApplied(payload) {
-        ui.chat.render();
+        this._rerenderMessage(payload.attackMessageId);
     }
 
     /**
@@ -593,8 +594,7 @@ export class ChatCombatManager {
      * @param {Object} payload
      */
     _handleDefenseAdded(payload) {
-        // Re-render chat to update button states
-        ui.chat.render();
+        this._rerenderMessage(payload.attackMessageId);
     }
 
     /**
@@ -602,8 +602,7 @@ export class ChatCombatManager {
      * @param {Object} payload
      */
     _handleDamageApplied(payload) {
-        // Re-render chat to update button states
-        ui.chat.render();
+        this._rerenderMessage(payload.attackMessageId);
     }
 
     /**
@@ -611,8 +610,17 @@ export class ChatCombatManager {
      * @param {Object} payload
      */
     _handleDamageUndone(payload) {
-        // Re-render chat to update button states
-        ui.chat.render();
+        this._rerenderMessage(payload.attackMessageId);
+    }
+
+    /**
+     * Re-render a single chat message by ID without re-rendering the whole log.
+     * @param {string} messageId
+     */
+    _rerenderMessage(messageId) {
+        if (!messageId) return;
+        const message = game.messages.get(messageId);
+        if (message) ui.chat.updateMessage(message);
     }
 
     /**
@@ -898,6 +906,9 @@ export class ChatCombatManager {
             texture: { src: defenderTokenImg },
             actor: { img: defenderTokenImg }
         };
+
+        // Wait for any in-progress 3D dice animation before updating the card
+        await waitForDice();
 
         // Update the card
         const newMessageId = await ChatAttackCard.addDefenderResult(

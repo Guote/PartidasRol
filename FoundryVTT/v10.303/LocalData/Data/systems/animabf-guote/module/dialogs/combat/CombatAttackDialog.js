@@ -15,6 +15,7 @@ import { applyMasteryFormula } from "../../rolls/utils/applyMasteryFormula.js";
 import { normalizePowers } from "../../combat/utils/normalizePowers.js";
 import { getPsychichPowerEffect } from "../../combat/utils/getPsychichPowerEffect.js";
 import { ChatAttackCard } from "../../combat/chat-combat/ChatAttackCard.js";
+import { waitForDice } from "../../combat/utils/waitForDice.js";
 
 const PSYCHIC_CV_BONUS_PER_POINT = 10;
 
@@ -61,6 +62,7 @@ const getInitialData = (attacker, defender, options = {}) => {
         multipleAttackMode: macroCookies?.combat?.multipleAttackMode ?? "normal",
         ataquePrincipal: macroCookies?.combat?.ataquePrincipal ?? 1,
         maniobras: macroCookies?.combat?.maniobras ?? 0,
+        committedManiobrasHA: macroCookies?.combat?.committedManiobrasHA ?? 0,
       },
       mystic: {
         modifier: hasPreset ? (presetData.mystic?.modifier?.value ?? 0) : (macroCookies?.mystic?.modifier ?? 0),
@@ -233,13 +235,34 @@ export class CombatAttackDialog extends FormApplication {
       }).render(true);
     });
 
+    html.find(".clear-maniobra-multiple").click(() => {
+      this.modalData.attacker.combat.committedManiobrasHA = 0;
+      this.modalData.attacker.combat.ataquePrincipal = 1;
+      this.modalData.attacker.combat.maniobras = 0;
+      this.attackerActor.update({
+        "system.general.modifiers.modManiobras.ha": 0,
+        "system.macroCookies.combatAttackDialog.combat.committedManiobrasHA": 0,
+        "system.macroCookies.combatAttackDialog.combat.ataquePrincipal": 1,
+        "system.macroCookies.combatAttackDialog.combat.maniobras": 0,
+      });
+      this.render();
+    });
+
     html.find(".send-attack").click(async () => {
+      if (this._sending) return;
+      this._sending = true;
       const activeTab = this._tabs[0]?.active ?? 'combat';
       const { withoutRoll, attackAccumulation } = this.modalData.attacker;
       const isAttackAccumulation = (attackAccumulation ?? 1) > 1;
+      const targetInfos = Array.from(game.user.targets).map(t => ({
+        tokenId: t.id,
+        name: t.name,
+        img: t.document?.texture?.src || t.actor?.img || 'icons/svg/mystery-man.svg'
+      }));
+      if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
 
       if (activeTab === 'combat') {
-        const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed, enemyTAModifier, multipleAttackMode, ataquePrincipal, maniobras } = this.modalData.attacker.combat;
+        const { weapon, criticSelected, modifier, fatigueUsed, damage, weaponUsed, unarmed, enemyTAModifier, multipleAttackMode, ataquePrincipal, maniobras, committedManiobrasHA } = this.modalData.attacker.combat;
         if (typeof damage !== "undefined") {
           const attack = weapon
             ? weapon.system.attack.final.value
@@ -247,7 +270,9 @@ export class CombatAttackDialog extends FormApplication {
           const counterAttackBonus = this.modalData.attacker.counterAttackBonus ?? 0;
           const { values: modTermValues, labels: modTermLabels } = getModifierTerms(this.attackerActor.system, "attack");
           const penaltyPerManiobra = multipleAttackMode === 'cadencia' ? -10 : -20;
-          const multipleAttackPenalty = (maniobras ?? 0) * penaltyPerManiobra;
+          // When penalty is already committed to the sheet it's included in modTermValues — don't add it again.
+          const isAlreadyCommitted = (committedManiobrasHA ?? 0) !== 0;
+          const multipleAttackPenalty = isAlreadyCommitted ? 0 : (maniobras ?? 0) * penaltyPerManiobra;
           let rollModifiers = [attack, getMassAttackBonus(attackAccumulation), counterAttackBonus, fatigueUsed * 15, ...modTermValues, modifier, multipleAttackPenalty];
           let formula = getFormula({
             dice: withoutRoll ? "0" : "1d100xa",
@@ -262,7 +287,8 @@ export class CombatAttackDialog extends FormApplication {
             const flavor = weapon
               ? i18n.format("anima.macros.combat.dialog.physicalAttack.title", { weapon: weapon?.name, target: this.modalData.defender.token.name })
               : i18n.format("anima.macros.combat.dialog.physicalAttack.unarmed.title", { target: this.modalData.defender.token.name });
-            roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor });
+            await roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor });
+            await waitForDice();
           }
           const critic = criticSelected ?? WeaponCritic.IMPACT;
           const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
@@ -276,19 +302,26 @@ export class CombatAttackDialog extends FormApplication {
             },
           };
           this.hooks.onAttack(attackResult);
-          ChatAttackCard.create(this.modalData.attacker.token, attackResult, { weapon });
+          ChatAttackCard.create(this.modalData.attacker.token, attackResult, { weapon, targetInfos });
           Hooks.callAll('animabf.combatAttackSent', this.modalData.attacker.token, attackResult, {
             multipleAttackMode: multipleAttackMode ?? "normal",
             ataquePrincipal: ataquePrincipal ?? 1,
             maniobras: maniobras ?? 0,
           });
-          if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
-          this.attackerActor.update({
+          const maniobrasCount = maniobras ?? 0;
+          const newCommittedPenalty = (!isAlreadyCommitted && maniobrasCount > 0)
+            ? maniobrasCount * penaltyPerManiobra
+            : (committedManiobrasHA ?? 0);
+          const attackUpdateData = {
             "system.macroCookies.combatAttackDialog": {
               initialTab: "combat",
-              combat: { modifier, unarmed, weaponUsed, criticSelected: critic, weapon, damage, enemyTAModifier, multipleAttackMode: multipleAttackMode ?? "normal", ataquePrincipal: ataquePrincipal ?? 1, maniobras: maniobras ?? 0 },
+              combat: { modifier, unarmed, weaponUsed, criticSelected: critic, weapon, damage, enemyTAModifier, multipleAttackMode: multipleAttackMode ?? "normal", ataquePrincipal: ataquePrincipal ?? 1, maniobras: maniobrasCount, committedManiobrasHA: newCommittedPenalty },
             },
-          });
+          };
+          if (!isAlreadyCommitted && maniobrasCount > 0) {
+            attackUpdateData["system.general.modifiers.modManiobras.ha"] = newCommittedPenalty;
+          }
+          this.attackerActor.update(attackUpdateData);
           if (fatigueUsed > 0) {
             const currentFatigue = this.attackerActor.system.characteristics.secondaries.fatigue.value;
             await this.attackerActor.update({
@@ -317,7 +350,8 @@ export class CombatAttackDialog extends FormApplication {
             const { spells } = this.attackerActor.system.mystic;
             const spell = spells.find((w) => w._id === spellUsed);
             const flavor = i18n.format("anima.macros.combat.dialog.magicAttack.title", { spell: spell.name, target: this.modalData.defender.token.name });
-            roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor });
+            await roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor });
+            await waitForDice();
           }
           const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
           const mysticAttackResult = {
@@ -329,8 +363,7 @@ export class CombatAttackDialog extends FormApplication {
             },
           };
           this.hooks.onAttack(mysticAttackResult);
-          ChatAttackCard.create(this.modalData.attacker.token, mysticAttackResult);
-          if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
+          ChatAttackCard.create(this.modalData.attacker.token, mysticAttackResult, { targetInfos });
           this.attackerActor.update({
             "system.macroCookies.combatAttackDialog": {
               initialTab: "mystic",
@@ -383,8 +416,9 @@ export class CombatAttackDialog extends FormApplication {
           psychicPotentialRoll.roll();
           if (this.modalData.attacker.showRoll) {
             const { i18n } = game;
-            psychicPotentialRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicPotential.title") });
-            psychicProjectionRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicAttack.title", { power: power.name, target: this.modalData.defender.token.name, potential: psychicPotentialRoll.total }) });
+            await psychicPotentialRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicPotential.title") });
+            await psychicProjectionRoll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.psychicAttack.title", { power: power.name, target: this.modalData.defender.token.name, potential: psychicPotentialRoll.total }) });
+            await waitForDice(2);
           }
           const rolled = psychicProjectionRoll.total - projRollModifiers.reduce((a, b) => a + b, 0);
           const psychicAttackResult = {
@@ -399,8 +433,7 @@ export class CombatAttackDialog extends FormApplication {
             },
           };
           this.hooks.onAttack(psychicAttackResult);
-          ChatAttackCard.create(this.modalData.attacker.token, psychicAttackResult);
-          if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
+          ChatAttackCard.create(this.modalData.attacker.token, psychicAttackResult, { targetInfos });
           ChatMessage.create({
             speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }),
             flavor: `Poder usado: ${power.name} con potencial ${psychicPotentialRoll.total}`,
@@ -450,7 +483,8 @@ export class CombatAttackDialog extends FormApplication {
         roll.roll();
         if (this.modalData.attacker.showRoll) {
           const { i18n } = game;
-          roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.summonAttack.title", { summon: summon.name, target: this.modalData.defender.token.name }) });
+          await roll.toMessage({ speaker: ChatMessage.getSpeaker({ token: this.modalData.attacker.token }), flavor: i18n.format("anima.macros.combat.dialog.summonAttack.title", { summon: summon.name, target: this.modalData.defender.token.name }) });
+          await waitForDice();
         }
         const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
         const summonCritic = critic || power?.critic?.value || WeaponCritic.IMPACT;
@@ -463,8 +497,7 @@ export class CombatAttackDialog extends FormApplication {
           },
         };
         this.hooks.onAttack(attackResult);
-        ChatAttackCard.create(this.modalData.attacker.token, attackResult);
-        if (this.closeOnSend) { this.close(); } else { this.modalData.attackSent = true; this.render(); }
+        ChatAttackCard.create(this.modalData.attacker.token, attackResult, { targetInfos });
         this.attackerActor.update({
           "system.macroCookies.combatAttackDialog": {
             initialTab: "summon",
@@ -652,7 +685,10 @@ export class CombatAttackDialog extends FormApplication {
       const modTermSum = summaryModTermValues.reduce((a, b) => a + b, 0);
       const massBonus = getMassAttackBonus(attackAccumulation ?? 0);
       combat.totalDeclaredAttacks = (combat.ataquePrincipal ?? 1) + (combat.maniobras ?? 0);
-      const summaryManiobras = combat.maniobras ?? 0;
+      combat.hasCommittedMultipleAttackPenalty = (combat.committedManiobrasHA ?? 0) !== 0;
+      combat.attacksLocked = this.modalData.attackSent || combat.hasCommittedMultipleAttackPenalty;
+      // When committed, penalty is already in modTermSum via modFinal.attack.final.value — don't add it again.
+      const summaryManiobras = combat.hasCommittedMultipleAttackPenalty ? 0 : (combat.maniobras ?? 0);
       const summaryPenaltyPerManiobra = combat.multipleAttackMode === 'cadencia' ? -10 : -20;
       const summaryMultiAttackPenalty = summaryManiobras * summaryPenaltyPerManiobra;
       combat.summary = {

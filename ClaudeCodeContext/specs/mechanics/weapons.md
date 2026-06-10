@@ -40,9 +40,15 @@ Penalty is computed from **Maniobras only**. Applies to every attack in the decl
 
 When `maniobras = 0`, penalty = 0 regardless of ataquePrincipal.
 
-The penalty is **dialog-local only** — it is NOT written to the actor's modifiers. It is added as a term in the roll formula (label: `"Maniobra (ataques múltiples)"`) and in `combat.summary.haFinal`.
+On the **first confirmed attack** with `maniobras > 0`, the penalty is written to the actor:
+- `system.general.modifiers.modManiobras.ha` (base value) = penalty amount (e.g. `-40` for 2 maniobras normal)
+- `system.macroCookies.combatAttackDialog.combat.committedManiobrasHA` = same value (committed-state flag)
 
-The character sheet HA does **not** reflect this penalty. This is intentional: writing a persistent modifier would require knowing when to clear it (round end), adding complexity that isn't worth it now. The macroCookies persistence (see below) handles the "remember across dialog openings" UX problem instead.
+This makes the penalty visible in the effects tab under "Ataques con armas" (`modFinal.attack.final.value`). It composes additively with CUB posture conditions (which add to `modManiobras.ha` via ActiveEffects).
+
+On subsequent dialog opens in the same round, the "ataques declarados" section is greyed out and locked. A trash button clears both fields immediately. On round start (via `updateCombat` hook in guote-module), both fields are cleared for all combatants.
+
+**Double-count prevention**: when `committedManiobrasHA !== 0`, `getData()` zeroes out `summaryMultiAttackPenalty` in the summary (penalty already present in `modTermSum` via `modFinal.attack.final.value`), and the roll formula also uses `multipleAttackPenalty = 0`.
 
 > **Future**: for "normal" mode, the -20 per maneuver will eventually depend on weapon size. For now it is always -20.
 

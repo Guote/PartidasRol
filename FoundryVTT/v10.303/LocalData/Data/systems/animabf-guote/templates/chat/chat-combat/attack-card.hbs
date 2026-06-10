@@ -10,19 +10,23 @@
       <div class="chat-combat-attacker-row">
         <img src="{{attacker.img}}" class="chat-combat-portrait" alt="{{attacker.name}}" />
         <span class="chat-combat-name">{{attacker.name}}</span>
-        {{#if roll}}
-        <span class="chat-combat-ha">HA: {{attackBase}} (+{{roll}}) = {{attackTotal}}</span>
-        {{else}}
         <span class="chat-combat-ha">HA: {{attackTotal}}</span>
-        {{/if}}
       </div>
 
       {{!-- Pending targets row (awaiting defense) --}}
       {{#if pendingTargets.length}}
       <div class="chat-combat-pending-row">
-        <span class="chat-combat-pending-label">{{localize "anima.chat.combat.pendingDefenders"}}</span>
         {{#each pendingTargets}}
-        <img src="{{img}}" class="chat-combat-portrait-tiny" title="{{name}}" />
+        <div class="chat-combat-pending-target">
+          <div class="chat-combat-portrait-wrap">
+            <img src="{{img}}" class="chat-combat-portrait-tiny" title="{{name}}" />
+            <div class="chat-combat-portrait-spinner"></div>
+          </div>
+          <span class="chat-combat-pending-name">{{name}}</span>
+          <button type="button" class="chat-combat-pending-defend" data-defender-id="{{tokenId}}" title="{{localize 'anima.chat.combat.defend'}}">
+            <i class="fas fa-shield-alt"></i>
+          </button>
+        </div>
         {{/each}}
       </div>
       {{/if}}

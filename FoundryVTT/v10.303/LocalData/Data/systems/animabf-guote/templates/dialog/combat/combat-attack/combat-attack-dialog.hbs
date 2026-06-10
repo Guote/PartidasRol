@@ -51,18 +51,22 @@
     <div class="dialog-section-label">
       <span class="section-label-text">Ataques declarados este asalto</span>
       <span class="section-label-line"></span>
+      {{#if this.attacker.combat.hasCommittedMultipleAttackPenalty}}
+      <button type="button" class="abf-button icon-button clear-maniobra-multiple" title="Limpiar maniobra de ataques múltiples" style="width:auto !important;display:inline-flex">
+        <i class="fas fa-trash"></i>
+      </button>
+      {{/if}}
     </div>
-    <div class="declared-attacks-row">
+    <div class="declared-attacks-row {{#if this.attacker.combat.hasCommittedMultipleAttackPenalty}}da-committed{{/if}}">
       <span class="da-label">Principal</span>
       <input type="number" name="attacker.combat.ataquePrincipal" class="da-input"
-        value="{{this.attacker.combat.ataquePrincipal}}" min="1" {{#if this.attackSent}}disabled{{/if}} />
+        value="{{this.attacker.combat.ataquePrincipal}}" min="1" {{#if this.attacker.combat.attacksLocked}}disabled{{/if}} />
       <span class="da-label">Adicionales</span>
       <input type="number" name="attacker.combat.maniobras" class="da-input" value="{{this.attacker.combat.maniobras}}"
-        min="0" {{#if this.attackSent}}disabled{{/if}} />
+        min="0" {{#if this.attacker.combat.attacksLocked}}disabled{{/if}} />
       <input type="number" class="da-input da-total" disabled value="{{this.attacker.combat.totalDeclaredAttacks}}" />
       <span class="da-label">Modo</span>
-      <select class="da-input da-select" name="attacker.combat.multipleAttackMode" {{#if
-        this.attackSent}}disabled{{/if}}>
+      <select class="da-input da-select" name="attacker.combat.multipleAttackMode" {{#if this.attacker.combat.attacksLocked}}disabled{{/if}}>
         <option value="normal" {{#if (is 'eq' this.attacker.combat.multipleAttackMode 'normal' )}}selected{{/if}}>Normal
         </option>
         <option value="cadencia" {{#if (is 'eq' this.attacker.combat.multipleAttackMode 'cadencia' )}}selected{{/if}}>

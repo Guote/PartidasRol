@@ -3140,6 +3140,10 @@ img {
 .declared-attacks-row .da-input.abf-input-modified {
   background: rgba(120, 46, 34, 0.25) !important;
 }
+.declared-attacks-row.da-committed {
+  opacity: 0.45;
+  pointer-events: none;
+}
 
 /* 3-column grid for attack details rows (default) */
 .attack-details-grid {
@@ -3578,10 +3582,71 @@ img {
   flex-wrap: wrap;
 }
 
-.chat-combat-pending-label {
+/* Per-target chip inside pending row */
+.chat-combat-pending-target {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(110, 41, 23, 0.2);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.chat-combat-portrait-wrap {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.chat-combat-portrait-wrap .chat-combat-portrait-tiny {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chat-combat-portrait-spinner {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  border: 2px solid transparent;
+  border-top-color: #6e2917;
+  animation: chat-combat-spin 1.1s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes chat-combat-spin {
+  to { transform: rotate(360deg); }
+}
+
+.chat-combat-pending-name {
   font-size: 0.8em;
-  color: #666;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+.chat-combat-pending-defend {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 5px;
+  font-size: 0.75em;
+  background: rgba(110, 41, 23, 0.1);
+  border: 1px solid #6e2917;
+  border-radius: 3px;
+  color: #6e2917;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.chat-combat-pending-defend:hover {
+  background: #6e2917;
+  color: white;
 }
 
 /* Portrait styles */

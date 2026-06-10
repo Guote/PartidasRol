@@ -11,7 +11,7 @@ Items here must be surfaced at the start of every Claude session in this project
 - [ ] **Multiple attacks + dialog tab rename** — See `specs/mechanics/weapons.md` for full spec.
   - Rename tabs in attack and defense dialogs: "Armas", "Hechizos", "Poderes Psí.", "Invocaciones"
   - Add "Ataque principal" + "Maniobras" inputs to the attack dialog combat tab (next to fatigue selector)
-  - Penalty: `maniobras × 20` (normal) or `maniobras × 10` (cadencia) — dialog-local only, not on character sheet
+  - Penalty: `maniobras × 20` (normal) or `maniobras × 10` (cadencia) — committed to `modManiobras.ha` on first attack, section locks; trash button clears; cleared at round start
   - SIC condition "Cont. Ataques" counter = `(ataquePrincipal + maniobras) - 1`, managed via `animabf.combatAttackSent` hook in guote-module
   - Configure "Cont. Ataques" in CUB manually: 1-round duration, no modifier changes, SIC counter type
   - **Note**: penalty not shown on character sheet by design; macroCookies persistence handles round-reminder UX

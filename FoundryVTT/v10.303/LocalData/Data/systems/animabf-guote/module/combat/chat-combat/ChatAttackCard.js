@@ -38,6 +38,7 @@ export class ChatAttackCard {
 
         const attackRoll = attackResult.values.roll || 0;
         const attackTotal = attackResult.values.total || 0;
+        const targetInfos = options.targetInfos || [];
 
         // Prepare display data
         const displayData = {
@@ -55,7 +56,10 @@ export class ChatAttackCard {
             taReduction: taReduction,
             roll: attackRoll,
             fumbled: attackResult.values.fumble,
-            results: [] // Empty initially, populated when defenders respond
+            results: [],
+            targetInfos,
+            pendingTargets: targetInfos,
+            isGM: game.user.isGM
         };
 
         const content = await renderTemplate(templatePath, displayData);
@@ -78,6 +82,7 @@ export class ChatAttackCard {
                     roll: attackRoll,
                     fumbled: attackResult.values.fumble,
                     results: [],
+                    targetInfos,
                     attackerInfo: {
                         name: attackerToken.name,
                         img: attackerToken.texture?.src || attackerToken.actor?.img
@@ -141,51 +146,9 @@ export class ChatAttackCard {
             updatedResults = [...flags.results, newEntry];
         }
 
-        // Prepare display data
-        const targetInfos = flags.targetInfos || [];
-        const displayData = {
-            attacker: flags.attackerInfo,
-            attackTotal: flags.attackTotal,
-            attackBase: flags.attackBase ?? flags.attackTotal,
-            roll: flags.roll,
-            baseDamage: flags.baseDamage,
-            damageType: flags.damageType,
-            damageTypeLabel: flags.damageTypeLabel,
-            taReduction: flags.taReduction,
-            results: updatedResults,
-            targetInfos,
-            pendingTargets: targetInfos.filter(t => !updatedResults.some(r => r.defenderTokenId === t.tokenId)),
-            isGM: game.user.isGM
-        };
+        await this._updateCard(attackMessage, flags, updatedResults);
 
-        const content = await renderTemplate(Templates.Chat.ChatCombat.AttackCard, displayData);
-
-        // Prepare updated flags
-        const updatedFlags = {
-            'animabf-guote': {
-                chatCombat: {
-                    ...flags,
-                    results: updatedResults
-                }
-            }
-        };
-
-        // Delete old message and create new one at bottom
-        const speaker = attackMessage.speaker;
-        await attackMessage.delete();
-
-        const newMessage = await ChatMessage.create({
-            speaker,
-            content,
-            flags: updatedFlags
-        });
-
-        // Update session tracking
-        if (flags.sessionId) {
-            this._sessionMap.set(flags.sessionId, newMessage.id);
-        }
-
-        return newMessage.id;
+        return attackMessage.id;
     }
 
     /**

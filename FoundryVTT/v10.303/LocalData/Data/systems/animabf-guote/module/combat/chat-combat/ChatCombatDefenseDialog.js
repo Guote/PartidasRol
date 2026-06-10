@@ -8,6 +8,7 @@ import { NoneWeaponCritic, WeaponCritic } from '../../types/combat/WeaponItemCon
 import { ABFSystemName } from '../../../animabf-guote.name.js';
 import { ABFConfig } from '../../ABFConfig.js';
 import { normalizePowers } from '../utils/normalizePowers.js';
+import { waitForDice } from '../utils/waitForDice.js';
 
 const TEMPLATE_PATH = `systems/${ABFSystemName}/templates/dialog/combat/chat-combat-defense/chat-combat-defense-dialog.hbs`;
 
@@ -225,6 +226,9 @@ export class ChatCombatDefenseDialog extends FormApplication {
         // Unified defense send button — dispatches by active tab
         html.find('.send-defense').click((e) => {
             e.preventDefault();
+            if (this._sending) return;
+            this._sending = true;
+            this.close({ force: true });
             const tab = this.modalData.ui.activeTab;
             if (tab === 'combat') this._sendCombatDefense();
             else if (tab === 'mystic') this._sendMysticDefense();
@@ -318,6 +322,9 @@ export class ChatCombatDefenseDialog extends FormApplication {
         // Damage resistance defense
         html.find('.send-defense-damage-resistance').click((e) => {
             e.preventDefault();
+            if (this._sending) return;
+            this._sending = true;
+            this.close({ force: true });
             this._sendDamageResistanceDefense();
         });
 
@@ -397,10 +404,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
             const flavor = game.i18n.format(`anima.macros.combat.dialog.physicalDefense.${type}.title`, {
                 target: this._targetLabel
             });
-            roll.toMessage({
+            await roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
+            await waitForDice();
         }
 
         const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
@@ -434,10 +442,6 @@ export class ChatCombatDefenseDialog extends FormApplication {
             });
         }
 
-        this.modalData.defenseSent = true;
-        this.render();
-
-        setTimeout(() => this.close({ force: true }), 500);
     }
 
     /**
@@ -474,10 +478,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 spell: spell?.name || 'Unknown',
                 target: this._targetLabel
             });
-            roll.toMessage({
+            await roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
+            await waitForDice();
         }
 
         const rolled = roll.total - mysticRollModifiers.reduce((a, b) => a + b, 0);
@@ -523,10 +528,6 @@ export class ChatCombatDefenseDialog extends FormApplication {
             Hooks.callAll('animabf.mysticSpellCast', this.defenderActor);
         }
 
-        this.modalData.defenseSent = true;
-        this.render();
-
-        setTimeout(() => this.close({ force: true }), 500);
     }
 
     /**
@@ -550,10 +551,6 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.hooks.onDefense(defenseResult);
         }
 
-        this.modalData.defenseSent = true;
-        this.render();
-
-        setTimeout(() => this.close({ force: true }), 500);
     }
 
     /**
@@ -588,10 +585,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 power: power?.name || 'Unknown',
                 target: this._targetLabel
             });
-            roll.toMessage({
+            await roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
+            await waitForDice();
         }
 
         const rolled = roll.total - psychicRollModifiers.reduce((a, b) => a + b, 0);
@@ -626,10 +624,6 @@ export class ChatCombatDefenseDialog extends FormApplication {
             }
         }
 
-        this.modalData.defenseSent = true;
-        this.render();
-
-        setTimeout(() => this.close({ force: true }), 500);
     }
 
     /**
@@ -670,10 +664,11 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 summon: summon.name,
                 target: this._targetLabel
             });
-            roll.toMessage({
+            await roll.toMessage({
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
+            await waitForDice();
         }
 
         const rolled = roll.total - summonRollModifiers.reduce((a, b) => a + b, 0);
@@ -706,10 +701,6 @@ export class ChatCombatDefenseDialog extends FormApplication {
             Hooks.callAll('animabf.mysticSpellCast', this.defenderActor);
         }
 
-        this.modalData.defenseSent = true;
-        this.render();
-
-        setTimeout(() => this.close({ force: true }), 500);
     }
 
     async _postStandaloneDefenseResult(result) {
