@@ -46,6 +46,7 @@ export class ChatAttackCard {
                 name: attackerToken.name,
                 img: attackerToken.texture?.src || attackerToken.actor?.img
             },
+            attackerTokenId: attackerToken.id,
             attackType: attackResult.type,
             attackTypeLabel: game.i18n.localize(`anima.chat.combat.attackType.${attackResult.type}`),
             attackTotal,
@@ -131,7 +132,7 @@ export class ChatAttackCard {
         }
 
         const flags = attackMessage.flags['animabf-guote'].chatCombat;
-        const newEntry = this._createResultEntry(defenderToken, result);
+        const newEntry = this._createResultEntry(defenderToken, result, flags.attackerTokenId, flags.baseDamage);
 
         // Check if defender already exists (update instead of add)
         const existingIndex = flags.results.findIndex(
@@ -339,6 +340,7 @@ export class ChatAttackCard {
         const targetInfos = flags.targetInfos || [];
         const displayData = {
             attacker: flags.attackerInfo,
+            attackerTokenId: flags.attackerTokenId,
             attackTotal: flags.attackTotal,
             attackBase: flags.attackBase ?? flags.attackTotal,
             roll: flags.roll,
@@ -366,7 +368,8 @@ export class ChatAttackCard {
      * @param {Object} result - Combat result with defense data
      * @returns {Object}
      */
-    static _createResultEntry(defenderToken, result) {
+    static _createResultEntry(defenderToken, result, attackerTokenId = null, baseDamage = 0) {
+        const damage = result.damage || 0;
         return {
             defenderTokenId: defenderToken.id,
             defenderName: defenderToken.name,
@@ -376,10 +379,12 @@ export class ChatAttackCard {
             effectiveTA: result.effectiveTA || 0,
             canCounter: result.canCounterAttack,
             counterBonus: result.counterAttackBonus || 0,
-            damage: result.damage || 0,
+            damage,
+            taReductionDisplay: Math.max(0, baseDamage - damage),
             defenseSucceeded: result.defenseSucceeded ?? false,
             damageApplied: false,
-            shieldApplied: false
+            shieldApplied: false,
+            attackerTokenId
         };
     }
 }

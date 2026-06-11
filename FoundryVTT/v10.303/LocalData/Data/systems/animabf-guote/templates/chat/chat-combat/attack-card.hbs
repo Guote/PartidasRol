@@ -6,11 +6,35 @@
   }}
   {{#> "systems/animabf-guote/templates/common/ui/group-body.hbs"}}
     <div class="chat-combat-body">
-      {{!-- Attacker info row --}}
-      <div class="chat-combat-attacker-row">
-        <img src="{{attacker.img}}" class="chat-combat-portrait" alt="{{attacker.name}}" />
-        <span class="chat-combat-name">{{attacker.name}}</span>
-        <span class="chat-combat-ha">HA: {{attackTotal}}</span>
+
+      {{!-- Attacker section: row + details share the dark background --}}
+      <div class="chat-combat-attacker-section">
+        <div class="chat-combat-attacker-row">
+          <img src="{{attacker.img}}" class="chat-combat-portrait" alt="{{attacker.name}}" />
+          <span class="chat-combat-name chat-combat-attacker-name-display" data-token-id="{{attackerTokenId}}">{{attacker.name}}</span>
+          <span class="chat-combat-ha">HA: {{attackTotal}}</span>
+        </div>
+
+        {{!-- Attacker details accordion (owner-only, shown by JS) --}}
+        <details class="chat-combat-details chat-combat-owner-details" data-attacker-token-id="{{attackerTokenId}}" style="display:none">
+          <summary>{{localize "anima.chat.combat.details"}}</summary>
+          <div class="chat-combat-values">
+            <div class="chat-combat-value-row">
+              <span class="chat-combat-label">{{localize "anima.chat.combat.baseDamage"}}</span>
+              <span class="chat-combat-value">{{baseDamage}}</span>
+            </div>
+            <div class="chat-combat-value-row">
+              <span class="chat-combat-label">{{localize "anima.chat.combat.damageType"}}</span>
+              <span class="chat-combat-value">{{damageTypeLabel}}</span>
+            </div>
+            {{#if taReduction}}
+            <div class="chat-combat-value-row">
+              <span class="chat-combat-label">{{localize "anima.chat.combat.taReduction"}}</span>
+              <span class="chat-combat-value">{{taReduction}}</span>
+            </div>
+            {{/if}}
+          </div>
+        </details>
       </div>
 
       {{!-- Pending targets row (awaiting defense) --}}
@@ -22,7 +46,7 @@
             <img src="{{img}}" class="chat-combat-portrait-tiny" title="{{name}}" />
             <div class="chat-combat-portrait-spinner"></div>
           </div>
-          <span class="chat-combat-pending-name">{{name}}</span>
+          <span class="chat-combat-pending-name chat-combat-pending-name-display" data-token-id="{{tokenId}}">{{name}}</span>
           <button type="button" class="chat-combat-pending-defend" data-defender-id="{{tokenId}}" title="{{localize 'anima.chat.combat.defend'}}">
             <i class="fas fa-shield-alt"></i>
           </button>
@@ -31,84 +55,84 @@
       </div>
       {{/if}}
 
-      {{!-- Collapsible attack details --}}
-      <details class="chat-combat-details">
-        <summary>{{localize "anima.chat.combat.details"}}</summary>
-        <div class="chat-combat-values">
-          <div class="chat-combat-value-row">
-            <span class="chat-combat-label">{{localize "anima.chat.combat.baseDamage"}}</span>
-            <span class="chat-combat-value">{{baseDamage}}</span>
-          </div>
-          <div class="chat-combat-value-row">
-            <span class="chat-combat-label">{{localize "anima.chat.combat.damageType"}}</span>
-            <span class="chat-combat-value">{{damageTypeLabel}}</span>
-          </div>
-          {{#if taReduction}}
-          <div class="chat-combat-value-row">
-            <span class="chat-combat-label">{{localize "anima.chat.combat.taReduction"}}</span>
-            <span class="chat-combat-value">{{taReduction}}</span>
-          </div>
-          {{/if}}
-        </div>
-      </details>
-
-      {{!-- Results table (shown when there are defenders) --}}
+      {{!-- Results list (shown when there are defenders) --}}
       {{#if results.length}}
       <div class="chat-combat-results">
-        <table class="chat-combat-results-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>HD</th>
-              <th>TA</th>
-              <th>{{localize "anima.chat.combat.result.outcome"}}</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each results}}
-            <tr data-defender-id="{{defenderTokenId}}">
-              <td class="chat-combat-defender-cell">
-                <img src="{{defenderImg}}" class="chat-combat-portrait-tiny" title="{{defenderName}}" />
-              </td>
-              <td class="chat-combat-hd-cell">{{defenseTotal}}</td>
-              <td class="chat-combat-ta-cell">{{effectiveTA}}</td>
-              <td class="chat-combat-outcome-cell">
-                {{#if canCounter}}
-                <span class="chat-combat-counter-result">⚔️ +{{counterBonus}}</span>
-                {{else if (is "gt" damage 0)}}
-                <span class="chat-combat-damage-result">💔 {{damage}}</span>
-                {{else}}
-                <span class="chat-combat-miss-result">—</span>
-                {{/if}}
-              </td>
-              <td class="chat-combat-action-cell">
-                {{#if defenseSucceeded}}
-                  {{#if shieldApplied}}
-                  <button type="button" class="chat-combat-undo-shield" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.undoShield'}}">
-                    <i class="fas fa-undo"></i>
-                  </button>
+        <div class="chat-combat-results-header">
+          <div class="chat-combat-col chat-combat-col-defender"></div>
+          <div class="chat-combat-col chat-combat-col-hd">HD</div>
+          <div class="chat-combat-col chat-combat-col-outcome">{{localize "anima.chat.combat.result.outcome"}}</div>
+        </div>
+        <div class="chat-combat-result-list">
+          {{#each results}}
+          <div class="chat-combat-result-entry" data-defender-id="{{defenderTokenId}}">
+            <div class="chat-combat-result-main">
+              <div class="chat-combat-col chat-combat-col-defender">
+                <div class="chat-combat-defender-cell-inner">
+                  <img src="{{defenderImg}}" class="chat-combat-portrait-tiny" />
+                  <span class="chat-combat-defender-name-display" data-token-id="{{defenderTokenId}}">{{defenderName}}</span>
+                </div>
+              </div>
+              <div class="chat-combat-col chat-combat-col-hd">{{defenseTotal}}</div>
+              <div class="chat-combat-col chat-combat-col-outcome">
+                <div class="chat-combat-outcome-inner">
+                  {{!-- Counter outcome --}}
+                  {{#if canCounter}}
+                    <span class="chat-combat-counter-result chat-combat-outcome-span">⚔️ +{{counterBonus}}</span>
+                    <button type="button" class="chat-combat-counter-btn chat-combat-outcome-btn"
+                      data-defender-id="{{defenderTokenId}}"
+                      data-attacker-token-id="{{../attackerTokenId}}"
+                      data-counter-bonus="{{counterBonus}}"
+                      style="display:none">⚔️ +{{counterBonus}}</button>
+
+                  {{!-- Damage outcome --}}
+                  {{else if (is "gt" damage 0)}}
+                    <span class="chat-combat-damage-result chat-combat-outcome-span">💔 {{damage}}</span>
+                    <button type="button"
+                      class="chat-combat-damage-btn chat-combat-outcome-btn {{#if damageApplied}}chat-combat-applied{{/if}}"
+                      data-defender-id="{{defenderTokenId}}"
+                      style="display:none">{{#if damageApplied}}<i class="fas fa-undo"></i> {{/if}}💔 {{damage}}</button>
+
+                  {{!-- Miss / cornered --}}
                   {{else}}
-                  <button type="button" class="chat-combat-apply-shield" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.applyShield'}}">
-                    <i class="fas fa-shield-alt"></i>
-                  </button>
+                    <span class="chat-combat-miss-result"><small>Acorralado</small></span>
                   {{/if}}
-                {{else if (is "gt" damage 0)}}
-                  {{#if damageApplied}}
-                  <button type="button" class="chat-combat-undo-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.undoDamage'}}">
-                    <i class="fas fa-undo"></i>
-                  </button>
-                  {{else}}
-                  <button type="button" class="chat-combat-apply-damage" data-defender-id="{{defenderTokenId}}" title="{{localize 'anima.chat.combat.result.applyDamage'}}">
-                    <i class="fas fa-heart-broken"></i>
-                  </button>
+
+                  {{!-- Shield button: content filled and shown by JS when shieldValue > 0 --}}
+                  {{#if defenseSucceeded}}
+                    {{#if shieldApplied}}
+                      <button type="button" class="chat-combat-shield-btn chat-combat-undo-shield-btn"
+                        data-defender-id="{{defenderTokenId}}" style="display:none">
+                        <i class="fas fa-undo"></i>
+                      </button>
+                    {{else}}
+                      <button type="button" class="chat-combat-shield-btn chat-combat-apply-shield-btn"
+                        data-defender-id="{{defenderTokenId}}" style="display:none">
+                      </button>
+                    {{/if}}
                   {{/if}}
+                </div>
+              </div>
+            </div>
+            {{!-- Defender details accordion (owner-only, shown by JS) --}}
+            <details class="chat-combat-defender-details" style="display:none">
+              <summary>{{localize "anima.chat.combat.details"}}</summary>
+              <div class="chat-combat-values">
+                <div class="chat-combat-value-row">
+                  <span class="chat-combat-label">TA efectiva</span>
+                  <span class="chat-combat-value">{{effectiveTA}}</span>
+                </div>
+                {{#if (is "gt" taReductionDisplay 0)}}
+                <div class="chat-combat-value-row">
+                  <span class="chat-combat-label">Reducción de daño</span>
+                  <span class="chat-combat-value">{{taReductionDisplay}}</span>
+                </div>
                 {{/if}}
-              </td>
-            </tr>
-            {{/each}}
-          </tbody>
-        </table>
+              </div>
+            </details>
+          </div>
+          {{/each}}
+        </div>
       </div>
       {{/if}}
 
@@ -117,6 +141,7 @@
         <i class="fas fa-shield-alt"></i>
         {{localize "anima.chat.combat.defend"}}
       </button>
+
     </div>
   {{/"systems/animabf-guote/templates/common/ui/group-body.hbs"}}
 {{/"systems/animabf-guote/templates/common/ui/group.hbs"}}

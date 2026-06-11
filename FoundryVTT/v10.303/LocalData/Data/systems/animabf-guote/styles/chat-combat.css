@@ -162,3 +162,179 @@ select.input.abf-input-modified {
 .consume-zeon-inline input[type="checkbox"] {
   cursor: pointer;
 }
+
+/* ================================
+   Chat-Combat Card — New UI (owner buttons, details, names)
+   ================================ */
+
+/* Hide any portrait injected by third-party modules (e.g. Chat Portrait) into the group header */
+.chat-combat-card .group-header img {
+  display: none !important;
+}
+
+/* Attacker details: indent inside the section dark background */
+.chat-combat-owner-details {
+  padding: 0 6px 4px 14px;
+}
+
+.chat-combat-defender-cell-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chat-combat-defender-name-display {
+  font-size: 0.82em;
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-combat-outcome-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Outcome buttons — base styles (owner-only, shown by JS; replaces plain spans) */
+.chat-combat-outcome-btn {
+  width: auto !important;
+  display: inline-flex;   /* no !important — must not override style="display:none" */
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 1.4;
+  background: rgba(110, 41, 23, 0.1);
+  border: 1px solid rgba(110, 41, 23, 0.4) !important;
+}
+
+/* Apply-damage button: resource style — dark text + HP glow */
+.chat-combat-damage-btn {
+  color: #111;
+  text-shadow: 0 0 6px #80ff00;
+}
+
+.chat-combat-damage-btn:hover {
+  background: rgba(110, 41, 23, 0.2);
+}
+
+/* Damage applied/undo state: grey out */
+.chat-combat-damage-btn.chat-combat-applied {
+  background: rgba(0, 0, 0, 0.08);
+  color: #888;
+  text-shadow: none;
+  border-color: #bbb !important;
+  opacity: 0.75;
+}
+
+.chat-combat-damage-btn.chat-combat-applied:hover {
+  opacity: 1;
+}
+
+/* Counterattack button: blue styling */
+.chat-combat-counter-btn {
+  background: rgba(21, 101, 192, 0.1);
+  color: #1565c0;
+  text-shadow: 0 0 6px #1565c0;
+  border: 1px solid rgba(21, 101, 192, 0.4) !important;
+}
+
+.chat-combat-counter-btn:hover {
+  background: rgba(21, 101, 192, 0.2);
+}
+
+/* Shield button: wider, flex-column for multi-row content */
+.chat-combat-shield-btn {
+  display: inline-flex;   /* no !important — must not override style="display:none" */
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: auto !important;
+  min-width: 54px;
+  padding: 3px 6px;
+  margin-top: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  background: rgba(110, 41, 23, 0.1);
+  border: 1px solid rgba(110, 41, 23, 0.4) !important;
+  line-height: 1.3;
+}
+
+.chat-combat-shield-btn:hover {
+  background: rgba(110, 41, 23, 0.2);
+}
+
+.chat-combat-undo-shield-btn {
+  background: rgba(0, 0, 0, 0.08);
+  color: #888;
+  border-color: #bbb !important;
+  opacity: 0.75;
+}
+
+.chat-combat-shield-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+/* Shield row colors: shield = purple glow, HP damage = green glow */
+.chat-combat-shield-btn .chat-combat-shield-row:first-child {
+  color: #111;
+  text-shadow: 0 0 5px #d508d9;
+}
+
+.chat-combat-shield-btn .chat-combat-shield-row:nth-child(2) {
+  color: #111;
+  text-shadow: 0 0 5px #80ff00;
+}
+
+/* First row strikethrough when shield breaks */
+.chat-combat-shield-broken {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.chat-combat-defender-details {
+  padding-left: 12px;
+}
+
+.chat-combat-defender-details summary {
+  cursor: pointer;
+  color: #777;
+  font-size: 0.82em;
+  padding: 2px 0;
+  list-style: disclosure-closed inside;
+  text-align: left;
+}
+
+.chat-combat-defender-details[open] summary {
+  list-style: disclosure-open inside;
+}
+
+.chat-combat-defender-details summary:hover {
+  color: #6e2917;
+}
+
+.chat-combat-defender-details .chat-combat-values {
+  padding: 3px 0;
+  gap: 2px;
+}
+
+.chat-combat-defender-details .chat-combat-value-row {
+  font-size: 0.85em;
+  padding: 2px 6px;
+}
+
+/* Attack dialog: HA value highlighted when counterattack bonus is active */
+.combat-summary-bar .summary-ha--counter {
+  color: #1565c0;
+  font-weight: bold;
+}

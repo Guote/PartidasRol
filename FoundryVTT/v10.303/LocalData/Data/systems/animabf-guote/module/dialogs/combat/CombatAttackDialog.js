@@ -116,6 +116,7 @@ const getInitialData = (attacker, defender, options = {}) => {
     },
     attackSent: false,
     allowed: false,
+    counterAttackOnly: options.counterAttackOnly ?? false,
     config: ABFConfig,
     initialTab: hasPreset ? (presetData.attackType?.value ?? "combat") : (macroCookies?.initialTab ?? "combat"),
     presetId: options.presetId,

@@ -7,8 +7,8 @@
       "icon": "icons/svg/combat.svg",
       "referenceId": "",
       "activeEffect": {
-        "label": "Ha defendido",
-        "icon": "icons/svg/d20-black.svg",
+        "label": "Acorralado",
+        "icon": "icons/svg/combat.svg",
         "tint": null,
         "disabled": false,
         "duration": {
@@ -20,14 +20,7 @@
           "startTurn": null,
           "combat": null
         },
-        "changes": [
-          {
-            "key": "system.general.modifiers.modFisico.defense.conditionPen",
-            "mode": 2,
-            "value": "-25",
-            "priority": null
-          }
-        ],
+        "changes": [],
         "flags": {
           "combat-utility-belt": {
             "conditionId": "BH0qMN4uOCjMt7Nu"
@@ -47,7 +40,7 @@
     },
     {
       "id": "qYLkvOZzwt8gVdmx",
-      "name": "Cansancio",
+      "name": "DefensaTotal",
       "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/semi-closed-eye.svg",
       "referenceId": "",
       "activeEffect": {
@@ -95,7 +88,7 @@
     },
     {
       "id": "QWPrS3NAufvw7dgC",
-      "name": "Ceguera",
+      "name": "Concentrado",
       "icon": "icons/svg/blind.svg",
       "referenceId": "",
       "options": {
@@ -108,8 +101,8 @@
     },
     {
       "id": "SwRFVnWyI16YeBSD",
-      "name": "Concentrado",
-      "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/brain.svg",
+      "name": "Dolor",
+      "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/back-pain.svg",
       "referenceId": "",
       "activeEffect": {
         "label": "Dolor",
@@ -151,19 +144,6 @@
       "hidden": false
     },
     {
-      "id": "EPgzMe6DBvA4JTjo",
-      "name": "Cont. Acciones",
-      "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/backup.svg",
-      "referenceId": "",
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
       "id": "GAkNP7Rhd1UJfL7f",
       "name": "Cont. Ataques",
       "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/sword-array.svg",
@@ -196,7 +176,7 @@
     },
     {
       "id": "SCoBFjBh3ATaodtx",
-      "name": "Cont. Defensas",
+      "name": "Herida crítica (grave)",
       "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/broken-shield.svg",
       "referenceId": "",
       "activeEffect": {
@@ -239,11 +219,11 @@
     },
     {
       "id": "G0m2c1tNTSGWZdfP",
-      "name": "Debilitamiento",
+      "name": "P. Defensiva",
       "icon": "icons/svg/downgrade.svg",
       "referenceId": "",
       "activeEffect": {
-        "label": "Mov. a la defensiva",
+        "label": "P. Defensiva",
         "icon": "icons/svg/shield.svg",
         "tint": null,
         "disabled": false,
@@ -286,25 +266,12 @@
       "hidden": false
     },
     {
-      "id": "Rt577gqgBKMb07xC",
-      "name": "Desangrado",
-      "icon": "icons/svg/blood.svg",
-      "referenceId": "",
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
       "id": "u5uRD1zDDxL4naCM",
-      "name": "Dolor",
+      "name": "P. Ofensiva",
       "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/back-pain.svg",
       "referenceId": "",
       "activeEffect": {
-        "label": "Mov. a la ofensiva",
+        "label": "P. Ofensiva",
         "icon": "icons/svg/sword.svg",
         "tint": null,
         "disabled": false,
@@ -348,7 +315,7 @@
     },
     {
       "id": "64HgtRGhglitcFxY",
-      "name": "En Llamas",
+      "name": "Cansancio",
       "icon": "icons/magic/fire/flame-burning-creature-skeleton.webp",
       "referenceId": "",
       "applyTrigger": "TcIujj7qhekAVPz9",
@@ -387,43 +354,6 @@
       "hidden": false
     },
     {
-      "id": "KBwuo1hQhTJl20iN",
-      "name": "Encarnado",
-      "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/body-swapping.svg",
-      "referenceId": "",
-      "activeEffect": {
-        "label": "Acorralado (sin a. activas)",
-        "icon": "icons/svg/combat.svg",
-        "tint": null,
-        "disabled": false,
-        "duration": {
-          "seconds": 3,
-          "startTime": null,
-          "rounds": null,
-          "turns": null,
-          "startRound": null,
-          "startTurn": null,
-          "combat": null
-        },
-        "changes": [],
-        "flags": {
-          "combat-utility-belt": {
-            "conditionId": "KBwuo1hQhTJl20iN"
-          }
-        },
-        "_id": null,
-        "origin": null,
-        "transfer": true
-      },
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
       "id": "OVQiddkIzUebt6m9",
       "name": "Fortalecimiento",
       "icon": "icons/svg/upgrade.svg",
@@ -438,11 +368,11 @@
     },
     {
       "id": "qQNUMnKeqCbH14jJ",
-      "name": "Herida crítica",
-      "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/scar-wound.svg",
+      "name": "P. Ataque Total",
+      "icon": "_Recursos/Iconos/ataqueTotal.png",
       "referenceId": "",
       "activeEffect": {
-        "label": "Mov. ataque total",
+        "label": "P. Ataque Total",
         "icon": "_Recursos/Iconos/ataqueTotal.png",
         "tint": null,
         "disabled": false,
@@ -485,34 +415,8 @@
       "hidden": false
     },
     {
-      "id": "XGYeqVZEHnT5NliG",
-      "name": "Herida crítica (grave)",
-      "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/ragged-wound.svg",
-      "referenceId": "",
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
-      "id": "HukmbLJAzFCmwQZ3",
-      "name": "Miedo",
-      "icon": "icons/svg/terror.svg",
-      "referenceId": "",
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
       "id": "VOUKmKTLc760UIaF",
-      "name": "Muerto",
+      "name": "Ceguera",
       "icon": "icons/svg/skull.svg",
       "referenceId": "",
       "activeEffect": {
@@ -555,11 +459,11 @@
     },
     {
       "id": "FQ1K9qpJvVmJoxaH",
-      "name": "P: Ofensiva",
+      "name": "Cont. Acciones",
       "icon": "icons/svg/sword.svg",
       "referenceId": "",
       "activeEffect": {
-        "label": "Contador Acciones",
+        "label": "Cont. Acciones",
         "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/backup.svg",
         "tint": null,
         "disabled": false,
@@ -597,25 +501,9 @@
       "hidden": false
     },
     {
-      "id": "BmQjLXF8mFE3Nfvh",
-      "name": "P: Ataque total",
-      "icon": "_Recursos/Iconos/ataqueTotal.png",
-      "referenceId": "",
-      "applyTrigger": "",
-      "removeTrigger": "",
-      "macros": [],
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
       "id": "mvvhko9ej6zekW2H",
-      "name": "P: Defensiva",
-      "icon": "icons/svg/shield.svg",
+      "name": "Herida crítica",
+      "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/scar-wound.svg",
       "referenceId": "",
       "activeEffect": {
         "label": "Herida crítica",
@@ -658,8 +546,8 @@
     },
     {
       "id": "rYcsupazIsmiXnHU",
-      "name": "P: Defensa Total",
-      "icon": "_Recursos/Iconos/DefensaTotal.png",
+      "name": "Miedo",
+      "icon": "icons/svg/terror.svg",
       "referenceId": "",
       "activeEffect": {
         "label": "Miedo",
@@ -706,8 +594,8 @@
       "icon": "icons/svg/net.svg",
       "referenceId": "",
       "activeEffect": {
-        "label": "Apresado",
-        "icon": "icons/svg/d20-black.svg",
+        "label": "Presa",
+        "icon": "icons/svg/net.svg",
         "tint": null,
         "disabled": false,
         "duration": {
@@ -729,49 +617,6 @@
         "flags": {
           "combat-utility-belt": {
             "conditionId": "jbveMZucX7bBDovK"
-          }
-        },
-        "_id": null,
-        "origin": null,
-        "transfer": true
-      },
-      "options": {
-        "outputChat": true
-      },
-      "isNew": false,
-      "isChanged": false,
-      "enrichedReference": "",
-      "hidden": false
-    },
-    {
-      "id": "NOgbN8cS7gVpIru2",
-      "name": "Preveer Sorpresa",
-      "icon": "_Recursos/Iconos/preveersorpr.png",
-      "referenceId": "",
-      "activeEffect": {
-        "label": "Preveer Sorpresa",
-        "icon": "_Recursos/Iconos/preveersorpr.png",
-        "tint": null,
-        "disabled": false,
-        "duration": {
-          "seconds": null,
-          "startTime": null,
-          "rounds": null,
-          "turns": null,
-          "startRound": null,
-          "startTurn": null,
-          "combat": null
-        },
-        "changes": [
-          {
-            "key": "system.general.modifiers.modFisico.conditionPen",
-            "mode": 3,
-            "value": "-40"
-          }
-        ],
-        "flags": {
-          "combat-utility-belt": {
-            "conditionId": "NOgbN8cS7gVpIru2"
           }
         },
         "_id": null,
@@ -900,7 +745,7 @@
       "removeTrigger": "",
       "activeEffect": {
         "label": "Sin reservas",
-        "icon": "systems/animabf-guote/assets/icons/game-icons.net/ffffff/lorc/semi-closed-eye.svg",
+        "icon": "_Recursos/Iconos/sinReservas.png",
         "tint": null,
         "disabled": false,
         "duration": {
@@ -987,13 +832,56 @@
       "hidden": false
     },
     {
+      "id": "NOgbN8cS7gVpIru2",
+      "name": "Preveer Sorpresa",
+      "icon": "_Recursos/Iconos/preveersorpr.png",
+      "referenceId": "",
+      "activeEffect": {
+        "label": "Preveer Sorpresa",
+        "icon": "_Recursos/Iconos/preveersorpr.png",
+        "tint": null,
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null,
+          "combat": null
+        },
+        "changes": [
+          {
+            "key": "system.general.modifiers.modFisico.conditionPen",
+            "mode": 3,
+            "value": "-40"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "NOgbN8cS7gVpIru2"
+          }
+        },
+        "_id": null,
+        "origin": null,
+        "transfer": true
+      },
+      "options": {
+        "outputChat": true
+      },
+      "isNew": false,
+      "isChanged": false,
+      "enrichedReference": "",
+      "hidden": false
+    },
+    {
       "id": "hxj26Vbbxck2wmze",
       "name": "Usando Energia",
       "icon": "_Recursos/Iconos/auraKiZeon.png",
       "referenceId": "",
       "activeEffect": {
-        "label": "Usando Ki",
-        "icon": "_Recursos/Iconos/auraKi.png",
+        "label": "Usando Energia",
+        "icon": "_Recursos/Iconos/auraKiZeon.png",
         "tint": null,
         "disabled": false,
         "duration": {

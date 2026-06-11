@@ -3559,15 +3559,19 @@ img {
   padding: 8px;
 }
 
+/* Attacker section: contains the row + owner details, shares the dark background */
+.chat-combat-attacker-section {
+  background: rgba(110, 41, 23, 0.1);
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
 /* Attacker row - horizontal layout */
 .chat-combat-attacker-row {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px;
-  background: rgba(110, 41, 23, 0.1);
-  border-radius: 4px;
-  margin-bottom: 8px;
 }
 
 /* Pending targets row */
@@ -3685,7 +3689,7 @@ img {
 
 /* Collapsible details accordion */
 .chat-combat-details {
-  margin: 8px 0;
+  margin: 0;
 }
 
 .chat-combat-details summary {
@@ -3801,54 +3805,64 @@ img {
   color: #555;
 }
 
-/* Results table */
+/* Results list (flex-based, replaces table) */
 .chat-combat-results {
-  margin-top: 8px;
   border-top: 1px solid #ddd;
   padding-top: 8px;
 }
 
-.chat-combat-results-table {
-  width: 100%;
-  border-collapse: collapse;
+.chat-combat-results-header {
+  display: flex;
+  align-items: center;
+  background: rgba(110, 41, 23, 0.65);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85em;
+  letter-spacing: 0.03em;
 }
 
-.chat-combat-results-table th,
-.chat-combat-results-table td {
-  padding: 4px 6px;
-  text-align: center;
+.chat-combat-result-list {
+  width: 100%;
+}
+
+.chat-combat-result-entry {
   border-bottom: 1px solid #eee;
 }
 
-.chat-combat-results-table th {
-  background: rgba(110, 41, 23, 0.15);
-  font-weight: 600;
-  color: #6e2917;
-  font-size: 0.9em;
+.chat-combat-result-entry:nth-child(even) {
+  background: rgba(0, 0, 0, 0.04);
 }
 
-.chat-combat-results-table tr:hover {
+.chat-combat-result-entry:hover {
   background: rgba(110, 41, 23, 0.05);
 }
 
-.chat-combat-defender-cell {
-  width: 30px;
-  text-align: center;
+.chat-combat-result-main {
+  display: flex;
+  align-items: center;
 }
 
-/* HD and TA cells */
-.chat-combat-hd-cell,
-.chat-combat-ta-cell {
+.chat-combat-col {
+  padding: 4px 6px;
+}
+
+.chat-combat-col-defender {
+  flex: 0 0 100px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.chat-combat-col-hd {
+  flex: 0 0 45px;
+  text-align: center;
   font-weight: 600;
   color: #555;
   white-space: nowrap;
 }
 
-/* Outcome styles */
-.chat-combat-outcome-cell {
+.chat-combat-col-outcome {
+  flex: 1 1 auto;
   text-align: center;
-  font-weight: bold;
-  white-space: nowrap;
 }
 
 .chat-combat-counter-result {

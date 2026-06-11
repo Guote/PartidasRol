@@ -3821,10 +3821,11 @@ img {
 }
 
 .chat-combat-results-table th {
-  background: rgba(110, 41, 23, 0.15);
+  background: rgba(110, 41, 23, 0.65);
   font-weight: 600;
-  color: #6e2917;
-  font-size: 0.9em;
+  color: #fff;
+  font-size: 0.85em;
+  letter-spacing: 0.03em;
 }
 
 .chat-combat-results-table tr:hover {

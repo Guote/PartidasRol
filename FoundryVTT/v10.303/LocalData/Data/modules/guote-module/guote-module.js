@@ -4,6 +4,7 @@ const CONT_DEFENSAS = "Cont. Defensas";
 const CONT_ATAQUES = "Cont. Ataques";
 const ACORRALADO = "Acorralado";
 const SIN_RESERVAS = "Sin reservas";
+const EN_LLAMAS = "En Llamas";
 
 // ─── Named constants ──────────────────────────────────────────────────────────
 /** Initiative gap at which a combatant is considered surprised by the active turn. */
@@ -11,19 +12,36 @@ const SURPRISE_INITIATIVE_THRESHOLD = 150;
 /** Divisor applied each round to free (un-locked) ki accumulation as a partial penalty. */
 const KI_ROUND_REDUCTION_DIVISOR = 2;
 
-const ROUND_REMINDER_TEMPLATE = "modules/guote-module/templates/round-reminder.hbs";
-const KI_STATS = ['strength', 'agility', 'dexterity', 'constitution', 'willPower', 'power'];
+const ROUND_REMINDER_TEMPLATE =
+  "modules/guote-module/templates/round-reminder.hbs";
+const KI_STATS = [
+  "strength",
+  "agility",
+  "dexterity",
+  "constitution",
+  "willPower",
+  "power",
+];
 const KI_STAT_LABELS = {
-  strength: 'Fue', agility: 'Agi', dexterity: 'Des',
-  constitution: 'Con', willPower: 'Vol', power: 'Pod'
+  strength: "Fue",
+  agility: "Agi",
+  dexterity: "Des",
+  constitution: "Con",
+  willPower: "Vol",
+  power: "Pod",
 };
 
 function getHeldKiPerStat(actor) {
   return KI_STATS.reduce((acc, s) => {
     acc[s] = (actor.system?.domine?.kiMaintenances ?? [])
-      .filter(m => m.system?.active?.value !== false && m.system?.techniqueId?.value)
+      .filter(
+        (m) =>
+          m.system?.active?.value !== false && m.system?.techniqueId?.value,
+      )
       .reduce((sum, m) => {
-        const tech = actor.items.find(i => i.id === m.system.techniqueId.value);
+        const tech = actor.items.find(
+          (i) => i.id === m.system.techniqueId.value,
+        );
         return sum + (Number(tech?.system?.[s]?.value) || 0);
       }, 0);
     return acc;
@@ -37,7 +55,8 @@ Hooks.on("init", () => {
 let _ABFSpellbook = null;
 Hooks.on("ready", async () => {
   try {
-    const mod = await import("/systems/animabf-guote/module/actor/ABFSpellbook.js");
+    const mod =
+      await import("/systems/animabf-guote/module/actor/ABFSpellbook.js");
     _ABFSpellbook = mod.default;
   } catch (e) {
     console.warn("[guote-module] Could not import ABFSpellbook:", e);
@@ -97,7 +116,8 @@ const applySurprise = (combat) => {
 
     combat.combatants.forEach((comb) => {
       const token = getTokenFromCombatant(comb);
-      const shouldBeSurprised = currentInitiative >= comb.initiative + SURPRISE_INITIATIVE_THRESHOLD;
+      const shouldBeSurprised =
+        currentInitiative >= comb.initiative + SURPRISE_INITIATIVE_THRESHOLD;
 
       if (!shouldBeSurprised && game.cub.hasCondition(effectName, token)) {
         game.cub.removeCondition(effectName, token);
@@ -134,23 +154,29 @@ Hooks.on("updateCombat", async (combat, delta) => {
     await sendRoundReminder(combat, kiLossMap);
     if (game.user.isGM) {
       const clears = [...combat.combatants]
-        .map(c => c.actor)
-        .filter(a => a && (a.system.macroCookies?.combatAttackDialog?.combat?.committedManiobrasHA ?? 0) !== 0)
-        .map(a => a.update({
-          "system.general.modifiers.modManiobras.ha": 0,
-          "system.macroCookies.combatAttackDialog.combat.committedManiobrasHA": 0,
-        }));
+        .map((c) => c.actor)
+        .filter(
+          (a) =>
+            a &&
+            (a.system.macroCookies?.combatAttackDialog?.combat
+              ?.committedManiobrasHA ?? 0) !== 0,
+        )
+        .map((a) =>
+          a.update({
+            "system.general.modifiers.modManiobras.ha": 0,
+            "system.macroCookies.combatAttackDialog.combat.committedManiobrasHA": 0,
+          }),
+        );
       if (clears.length) await Promise.all(clears);
     }
   }
 
   // Trigger macro on turn start for current actor
-  const conditionEnLlamas = "En Llamas";
   const { activeOwnersId } = getMainOwner(currToken);
   triggerMacroIfActiveEffect({
     token: currToken,
-    effectName: conditionEnLlamas,
-    macroName: conditionEnLlamas,
+    effectName: EN_LLAMAS,
+    macroName: EN_LLAMAS,
     extraCondition:
       currToken.isOwner && (activeOwnersId.length === 1 || !game.user.isGM),
   });
@@ -169,7 +195,7 @@ Hooks.on("updateCombatant", async function (combatant, data, options, userId) {
 
 function getNotificationRecipients(actor) {
   const ownerIds = Object.entries(actor.ownership ?? {})
-    .filter(([uid, lvl]) => lvl >= 3 && uid !== 'default')
+    .filter(([uid, lvl]) => lvl >= 3 && uid !== "default")
     .map(([uid]) => uid);
   const gmIds = game.users.filter((u) => u.isGM).map((u) => u.id);
   return { ownerIds, gmIds };
@@ -196,7 +222,7 @@ const cubRemove = (name, token) => {
 // ─── Combat conditions ────────────────────────────────────────────────────────
 
 // Defense counter: add "Ha defendido" or increment its SIC counter (max 3)
-Hooks.on('animabf.defenseSent', async (defenderToken, defenseResult) => {
+Hooks.on("animabf.defenseSent", async (defenderToken, defenseResult) => {
   if (!game.user.isGM) return;
   if (!defenseResult.increaseDefenseCounter) return;
   const token = defenderToken?.object ?? defenderToken;
@@ -204,7 +230,9 @@ Hooks.on('animabf.defenseSent', async (defenderToken, defenseResult) => {
   const actor = token.actor;
   if (!actor) return;
 
-  const effect = actor.effects.find(e => (e.name ?? e.label) === CONT_DEFENSAS);
+  const effect = actor.effects.find(
+    (e) => (e.name ?? e.label) === CONT_DEFENSAS,
+  );
 
   if (!effect) {
     // First defense this round — add via CUB (SIC counter auto-starts at 1)
@@ -223,47 +251,58 @@ Hooks.on('animabf.defenseSent', async (defenderToken, defenseResult) => {
 const _contAtaquesGuard = new Set();
 
 // Attack counter: add "Cont. Ataques" or decrement its SIC counter
-Hooks.on('animabf.combatAttackSent', async (attackerToken, _attackResult, { ataquePrincipal = 1, maniobras = 0 } = {}) => {
-  if (!game.user.isGM) return;
-  const token = attackerToken?.object ?? attackerToken;
-  if (!token) return;
-  const actor = token.actor;
-  if (!actor) return;
+Hooks.on(
+  "animabf.combatAttackSent",
+  async (
+    attackerToken,
+    _attackResult,
+    { ataquePrincipal = 1, maniobras = 0 } = {},
+  ) => {
+    if (!game.user.isGM) return;
+    const token = attackerToken?.object ?? attackerToken;
+    if (!token) return;
+    const actor = token.actor;
+    if (!actor) return;
 
-  const total = ataquePrincipal + maniobras;
-  if (total <= 1) return;
+    const total = ataquePrincipal + maniobras;
+    if (total <= 1) return;
 
-  // Deduplicate: ignore a second call for the same token within 300ms
-  if (_contAtaquesGuard.has(token.id)) return;
-  _contAtaquesGuard.add(token.id);
-  setTimeout(() => _contAtaquesGuard.delete(token.id), 300);
+    // Deduplicate: ignore a second call for the same token within 300ms
+    if (_contAtaquesGuard.has(token.id)) return;
+    _contAtaquesGuard.add(token.id);
+    setTimeout(() => _contAtaquesGuard.delete(token.id), 300);
 
-  const effect = actor.effects.find(e => (e.name ?? e.label) === CONT_ATAQUES);
+    const effect = actor.effects.find(
+      (e) => (e.name ?? e.label) === CONT_ATAQUES,
+    );
 
-  if (!effect) {
-    cubAdd(CONT_ATAQUES, token);
-    const initialCount = total - 1;
-    if (initialCount > 1) {
-      setTimeout(async () => {
-        const addedEffect = actor.effects.find(e => (e.name ?? e.label) === CONT_ATAQUES);
-        if (!addedEffect) return;
-        const ctr = window.ActiveEffectCounter?.getCounter(addedEffect);
-        if (ctr) await ctr.setValue(initialCount, addedEffect);
-      }, 500);
-    }
-  } else {
-    const ctr = window.ActiveEffectCounter?.getCounter(effect);
-    const currentCount = ctr ? (ctr.getValue(effect) ?? 1) : 1;
-    if (currentCount > 1) {
-      await ctr?.setValue(currentCount - 1, effect);
+    if (!effect) {
+      cubAdd(CONT_ATAQUES, token);
+      const initialCount = total - 1;
+      if (initialCount > 1) {
+        setTimeout(async () => {
+          const addedEffect = actor.effects.find(
+            (e) => (e.name ?? e.label) === CONT_ATAQUES,
+          );
+          if (!addedEffect) return;
+          const ctr = window.ActiveEffectCounter?.getCounter(addedEffect);
+          if (ctr) await ctr.setValue(initialCount, addedEffect);
+        }, 500);
+      }
     } else {
-      cubRemove(CONT_ATAQUES, token);
+      const ctr = window.ActiveEffectCounter?.getCounter(effect);
+      const currentCount = ctr ? (ctr.getValue(effect) ?? 1) : 1;
+      if (currentCount > 1) {
+        await ctr?.setValue(currentCount - 1, effect);
+      } else {
+        cubRemove(CONT_ATAQUES, token);
+      }
     }
-  }
-});
+  },
+);
 
 // Acorralado: add when attack beats defense
-Hooks.on('animabf.combatResolved', (defenderToken, result) => {
+Hooks.on("animabf.combatResolved", (defenderToken, result) => {
   if (!game.user.isGM) return;
   if (result.defenseSucceeded) return;
   const token = defenderToken?.object ?? defenderToken;
@@ -322,7 +361,8 @@ Hooks.on("animabf.mysticSpellCast", (actor) => {
 // ─── Energy condition: re-check when technique, ki maintenance or spell maintenance changes
 Hooks.on("updateItem", (item, updateData) => {
   if (!game.user.isGM) return;
-  if (!['technique', 'kiMaintenance', 'spellMaintenance'].includes(item.type)) return;
+  if (!["technique", "kiMaintenance", "spellMaintenance"].includes(item.type))
+    return;
   const actor = item.actor;
   if (!actor) return;
   syncCondition(actor);
@@ -364,14 +404,21 @@ function syncSinReservas(actor) {
     return;
   }
 
-  const desiredCount = 1 + (kiCondition && kiCurrent === 0 ? 1 : 0) + (zeonCondition && zeonCurrent === 0 ? 1 : 0);
-  const effect = actor.effects.find(e => (e.name ?? e.label) === SIN_RESERVAS);
+  const desiredCount =
+    1 +
+    (kiCondition && kiCurrent === 0 ? 1 : 0) +
+    (zeonCondition && zeonCurrent === 0 ? 1 : 0);
+  const effect = actor.effects.find(
+    (e) => (e.name ?? e.label) === SIN_RESERVAS,
+  );
 
   if (!effect) {
     cubAdd(SIN_RESERVAS, token);
     if (desiredCount > 1) {
       setTimeout(async () => {
-        const addedEffect = actor.effects.find(e => (e.name ?? e.label) === SIN_RESERVAS);
+        const addedEffect = actor.effects.find(
+          (e) => (e.name ?? e.label) === SIN_RESERVAS,
+        );
         if (!addedEffect) return;
         const ctr = window.ActiveEffectCounter?.getCounter(addedEffect);
         if (ctr) await ctr.setValue(desiredCount, addedEffect);
@@ -429,9 +476,12 @@ async function applyZeonCleanup(actor) {
 
   // Deactivate any "Aguantando:" maintenance items — their zeon is now gone
   for (const m of actor.system?.mystic?.spellMaintenances ?? []) {
-    if (m.system?.active?.value !== false && m.name?.startsWith('Aguantando:')) {
+    if (
+      m.system?.active?.value !== false &&
+      m.name?.startsWith("Aguantando:")
+    ) {
       const inst = actor.items.get(m._id);
-      if (inst) await inst.update({ 'system.active.value': false });
+      if (inst) await inst.update({ "system.active.value": false });
     }
   }
   // syncCondition fires automatically via updateActor hook after the update above
@@ -455,8 +505,10 @@ Hooks.on("deleteCombat", async (combat) => {
 // ─── Ki helpers ───────────────────────────────────────────────────────────────
 function getTotalKiAccumulated(actor) {
   return KI_STATS.reduce(
-    (s, stat) => s + (actor.system?.domine?.kiAccumulation?.[stat]?.accumulated?.value ?? 0),
-    0
+    (s, stat) =>
+      s +
+      (actor.system?.domine?.kiAccumulation?.[stat]?.accumulated?.value ?? 0),
+    0,
   );
 }
 
@@ -465,7 +517,12 @@ function getActorRoundKiUpkeep(actor) {
     .filter((m) => m.system?.active?.value !== false)
     .reduce((s, m) => s + (Number(m.system?.roundCost?.value) || 0), 0);
   const fromTechniques = (actor.items ?? [])
-    .filter((i) => i.type === 'technique' && i.system?.active?.value && i.system?.roundCost?.value > 0)
+    .filter(
+      (i) =>
+        i.type === "technique" &&
+        i.system?.active?.value &&
+        i.system?.roundCost?.value > 0,
+    )
     .reduce((s, i) => s + (Number(i.system?.roundCost?.value) || 0), 0);
   return fromMaintenances + fromTechniques;
 }
@@ -474,7 +531,12 @@ async function applyKiUpkeep(actor) {
   const total = getActorRoundKiUpkeep(actor);
   if (total <= 0) return;
   const currentKi = actor.system?.domine?.kiAccumulation?.generic?.value ?? 0;
-  await actor.update({ "system.domine.kiAccumulation.generic.value": Math.max(0, currentKi - total) });
+  await actor.update({
+    "system.domine.kiAccumulation.generic.value": Math.max(
+      0,
+      currentKi - total,
+    ),
+  });
   const { ownerIds, gmIds } = getNotificationRecipients(actor);
   ChatMessage.create({
     content: `<i class="fas fa-yin-yang"></i> <b>${actor.name}</b>: Mantenimiento Ki aplicado (−${total} ki).`,
@@ -488,7 +550,10 @@ async function applyKiCleanup(actor) {
     updateData[`system.domine.kiAccumulation.${stat}.accumulated.value`] = 0;
   }
   const currentKi = actor.system?.domine?.kiAccumulation?.generic?.value ?? 0;
-  updateData["system.domine.kiAccumulation.generic.value"] = Math.max(0, currentKi - 1);
+  updateData["system.domine.kiAccumulation.generic.value"] = Math.max(
+    0,
+    currentKi - 1,
+  );
   await actor.update(updateData);
   // syncCondition fires automatically via updateActor hook after the update above
 
@@ -514,19 +579,25 @@ async function applyKiPartialPenalty(combat) {
     const updateData = {};
     let changed = false;
     for (const stat of KI_STATS) {
-      const accumulated = actor.system?.domine?.kiAccumulation?.[stat]?.accumulated?.value ?? 0;
+      const accumulated =
+        actor.system?.domine?.kiAccumulation?.[stat]?.accumulated?.value ?? 0;
       if (accumulated <= 0) continue;
-      const accRate = actor.system?.domine?.kiAccumulation?.[stat]?.final?.value ?? 0;
+      const accRate =
+        actor.system?.domine?.kiAccumulation?.[stat]?.final?.value ?? 0;
       const reduction = Math.floor(accRate / KI_ROUND_REDUCTION_DIVISOR);
       if (reduction <= 0) continue;
       const lockedStat = locked[stat] ?? 0;
       const free = Math.max(0, accumulated - lockedStat);
       const newAcc = lockedStat + Math.max(0, free - reduction);
       if (newAcc === accumulated) continue;
-      updateData[`system.domine.kiAccumulation.${stat}.accumulated.value`] = newAcc;
+      updateData[`system.domine.kiAccumulation.${stat}.accumulated.value`] =
+        newAcc;
       changed = true;
       const loss = accumulated - newAcc;
-      const lossEntry = kiLossMap.get(actor.id) ?? { kiAccLost: 0, kiAccLostStats: [] };
+      const lossEntry = kiLossMap.get(actor.id) ?? {
+        kiAccLost: 0,
+        kiAccLostStats: [],
+      };
       lossEntry.kiAccLost += loss;
       lossEntry.kiAccLostStats.push({ label: KI_STAT_LABELS[stat], loss });
       kiLossMap.set(actor.id, lossEntry);
@@ -553,7 +624,8 @@ function _collectEnergyActors(combat, kiLossMap) {
     const actor = combatant.actor;
     if (!actor || !token) continue;
     if (!cubHas(USANDO_ENERGIA, token)) continue;
-    const { kiAccLost = 0, kiAccLostStats = [] } = kiLossMap.get(actor.id) ?? {};
+    const { kiAccLost = 0, kiAccLostStats = [] } =
+      kiLossMap.get(actor.id) ?? {};
     collected.push({ actor, token, kiAccLost, kiAccLostStats });
   }
   return collected;
@@ -576,19 +648,27 @@ function _buildReminderEntry({ actor, token, kiAccLost, kiAccLostStats }) {
   const isConcentrado = cubHas("Concentrado", token);
 
   const heldKiTechniques = (actor.system?.domine?.kiMaintenances ?? [])
-    .filter(m => m.system?.active?.value !== false && m.system?.techniqueId?.value)
-    .map(m => {
-      const tech = actor.items.find(i => i.id === m.system.techniqueId.value);
-      return { name: tech?.name ?? m.name, level: Number(tech?.system?.level?.value) || 0 };
+    .filter(
+      (m) => m.system?.active?.value !== false && m.system?.techniqueId?.value,
+    )
+    .map((m) => {
+      const tech = actor.items.find((i) => i.id === m.system.techniqueId.value);
+      return {
+        name: tech?.name ?? m.name,
+        level: Number(tech?.system?.level?.value) || 0,
+      };
     });
   const heldZeonSpells = (actor.system?.mystic?.spellMaintenances ?? [])
-    .filter(m => m.system?.active?.value !== false && m.name?.startsWith('Aguantando:'))
-    .map(m => {
+    .filter(
+      (m) =>
+        m.system?.active?.value !== false && m.name?.startsWith("Aguantando:"),
+    )
+    .map((m) => {
       const spellId = m.system?.spellId?.value;
-      const grade = m.system?.grade?.value ?? 'base';
-      const spell = spellId ? actor.items.find(i => i.id === spellId) : null;
+      const grade = m.system?.grade?.value ?? "base";
+      const spell = spellId ? actor.items.find((i) => i.id === spellId) : null;
       const zeonCost = spell?.system?.grades?.[grade]?.zeon?.value ?? 0;
-      return { name: m.name.replace('Aguantando: ', ''), grade, zeonCost };
+      return { name: m.name.replace("Aguantando: ", ""), grade, zeonCost };
     });
 
   const hasKiAccLost = kiAccLost > 0;
@@ -599,30 +679,52 @@ function _buildReminderEntry({ actor, token, kiAccLost, kiAccLostStats }) {
   // Button slots — ordered independently per column so row 1 always pairs
   // the first available upkeep with the first available cleanup, regardless of resource type.
   const upkeepSlots = [];
-  if (kiUpkeep > 0) upkeepSlots.push({
-    action: 'ki-apply-upkeep', iconClass: 'fas fa-yin-yang', colorClass: 'gzr-icon--ki',
-    value: kiUpkeep, tooltip: 'Pagar costes de mantenimiento',
-  });
-  if (zeonUpkeep > 0) upkeepSlots.push({
-    action: 'apply-upkeep', iconClass: 'fas fa-hat-wizard', colorClass: 'gzr-icon--zeon',
-    value: zeonUpkeep, tooltip: 'Pagar costes de mantenimiento',
-  });
+  if (kiUpkeep > 0)
+    upkeepSlots.push({
+      action: "ki-apply-upkeep",
+      iconClass: "fas fa-yin-yang",
+      colorClass: "gzr-icon--ki",
+      value: kiUpkeep,
+      tooltip: "Pagar costes de mantenimiento",
+    });
+  if (zeonUpkeep > 0)
+    upkeepSlots.push({
+      action: "apply-upkeep",
+      iconClass: "fas fa-hat-wizard",
+      colorClass: "gzr-icon--zeon",
+      value: zeonUpkeep,
+      tooltip: "Pagar costes de mantenimiento",
+    });
 
   const cleanupSlots = [];
-  if (kiAcc > 0) cleanupSlots.push({
-    action: 'ki-cleanup', iconClass: 'fas fa-yin-yang', colorClass: 'gzr-icon--ki',
-    acc: kiAcc, hasPenalty: true, penalty: 1,
-    tooltip: 'Limpiar ki acumulado.\nSi el turno anterior hemos lanzado alguna técnica o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.\nPerdemos 1 ki de la reserva por tener ki sobrante al dejar de acumular.',
-  });
-  if (zeonAcc > 0) cleanupSlots.push({
-    action: 'zeon-cleanup', iconClass: 'fas fa-hat-wizard', colorClass: 'gzr-icon--zeon',
-    acc: zeonAcc, hasPenalty: pureLeftoverWarn, penalty: 10,
-    tooltip: `Limpiar zeon acumulado.\nSi el turno anterior hemos lanzado algún conjuro o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.${pureLeftoverWarn ? '\nPerdemos 10 zeon de la reserva por tener zeon sobrante al dejar de acumular.' : ''}`,
-  });
+  if (kiAcc > 0)
+    cleanupSlots.push({
+      action: "ki-cleanup",
+      iconClass: "fas fa-yin-yang",
+      colorClass: "gzr-icon--ki",
+      acc: kiAcc,
+      hasPenalty: true,
+      penalty: 1,
+      tooltip:
+        "Limpiar ki acumulado.\nSi el turno anterior hemos lanzado alguna técnica o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.\nPerdemos 1 ki de la reserva por tener ki sobrante al dejar de acumular.",
+    });
+  if (zeonAcc > 0)
+    cleanupSlots.push({
+      action: "zeon-cleanup",
+      iconClass: "fas fa-hat-wizard",
+      colorClass: "gzr-icon--zeon",
+      acc: zeonAcc,
+      hasPenalty: pureLeftoverWarn,
+      penalty: 10,
+      tooltip: `Limpiar zeon acumulado.\nSi el turno anterior hemos lanzado algún conjuro o hemos dejado de acumular, al final del turno debemos perder lo que nos quede.${pureLeftoverWarn ? "\nPerdemos 10 zeon de la reserva por tener zeon sobrante al dejar de acumular." : ""}`,
+    });
 
   const buttonRows = Array.from(
     { length: Math.max(upkeepSlots.length, cleanupSlots.length) },
-    (_, i) => ({ upkeep: upkeepSlots[i] ?? null, cleanup: cleanupSlots[i] ?? null }),
+    (_, i) => ({
+      upkeep: upkeepSlots[i] ?? null,
+      cleanup: cleanupSlots[i] ?? null,
+    }),
   );
 
   return {
@@ -661,10 +763,11 @@ function _buildReminderContext(collected) {
     const entry = _buildReminderEntry(record);
     // Ownership: use the player who has this actor as their default character, if online
     const defaultPlayer = game.users.find(
-      u => !u.isGM && u.active && u.character?.id === record.actor.id
+      (u) => !u.isGM && u.active && u.character?.id === record.actor.id,
     );
     if (defaultPlayer) {
-      if (!playerActors.has(defaultPlayer.id)) playerActors.set(defaultPlayer.id, []);
+      if (!playerActors.has(defaultPlayer.id))
+        playerActors.set(defaultPlayer.id, []);
       playerActors.get(defaultPlayer.id).push(entry);
     } else {
       gmOnlyEntries.push(entry);
@@ -688,12 +791,18 @@ async function sendRoundReminder(combat, kiLossMap = new Map()) {
   const round = combat.round ?? 0;
 
   for (const [userId, entries] of playerActors) {
-    const content = await renderTemplate(ROUND_REMINDER_TEMPLATE, { entries, round });
+    const content = await renderTemplate(ROUND_REMINDER_TEMPLATE, {
+      entries,
+      round,
+    });
     ChatMessage.create({ content, whisper: [...new Set([userId, ...gmIds])] });
   }
 
   if (gmOnlyEntries.length > 0) {
-    const content = await renderTemplate(ROUND_REMINDER_TEMPLATE, { entries: gmOnlyEntries, round });
+    const content = await renderTemplate(ROUND_REMINDER_TEMPLATE, {
+      entries: gmOnlyEntries,
+      round,
+    });
     ChatMessage.create({ content, whisper: gmIds });
   }
 }
@@ -701,20 +810,20 @@ async function sendRoundReminder(combat, kiLossMap = new Map()) {
 Hooks.on("renderChatMessage", (msg, html) => {
   // dfce-cm-bottom / whisper class on the <li> constrains width; fix both
   // levels after all other module hooks (chat-portrait, dfce) have settled.
-  if (html.find('.gzr-card').length) {
+  if (html.find(".gzr-card").length) {
     setTimeout(() => {
       const li = html[0];
       if (li) {
-        li.style.setProperty('display', 'flex', 'important');
-        li.style.setProperty('flex-direction', 'column', 'important');
-        li.style.setProperty('width', '100%', 'important');
-        li.style.setProperty('box-sizing', 'border-box', 'important');
+        li.style.setProperty("display", "flex", "important");
+        li.style.setProperty("flex-direction", "column", "important");
+        li.style.setProperty("width", "100%", "important");
+        li.style.setProperty("box-sizing", "border-box", "important");
       }
-      const mc = html.find('.message-content')[0];
+      const mc = html.find(".message-content")[0];
       if (mc) {
-        mc.style.setProperty('display', 'block', 'important');
-        mc.style.setProperty('width', '100%', 'important');
-        mc.style.setProperty('box-sizing', 'border-box', 'important');
+        mc.style.setProperty("display", "block", "important");
+        mc.style.setProperty("width", "100%", "important");
+        mc.style.setProperty("box-sizing", "border-box", "important");
       }
     }, 0);
   }

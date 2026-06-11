@@ -163,7 +163,7 @@
   <div class="combat-summary-bar">
     <span class="summary-item">
       <span class="summary-label">HA</span>
-      <span class="summary-value">{{this.ui.activeSummary.haFinal}}</span>
+      <span class="summary-value {{#if this.attacker.counterAttackBonus}}summary-ha--counter{{/if}}">{{this.ui.activeSummary.haFinal}}</span>
     </span>
     <span class="summary-item">
       <span class="summary-label">Daño Base</span>

@@ -64,6 +64,7 @@ export class ChatCombatManager {
     async _updateCardWithTargets(message, flags, targetInfos) {
         const displayData = {
             attacker: flags.attackerInfo,
+            attackerTokenId: flags.attackerTokenId,
             attackType: flags.attackType,
             attackTotal: flags.attackTotal,
             attackBase: flags.attackBase ?? flags.attackTotal,
@@ -273,6 +274,7 @@ export class ChatCombatManager {
         if (!flags) return;
 
         if (flags.cardType === 'attack') {
+            html.find('.message-portrait').hide();
             this._attachAttackCardListeners(message, html);
         } else if (flags.cardType === 'spell') {
             this._attachSpellCardListeners(message, html);
@@ -282,90 +284,198 @@ export class ChatCombatManager {
     }
 
     /**
-     * Attach click handlers to attack card buttons
+     * Attach click handlers to attack card buttons.
+     * Resolves token names, shows/hides owner-only elements per client.
      * @param {ChatMessage} message
      * @param {jQuery} html
      */
     _attachAttackCardListeners(message, html) {
-        // Hide GM-only action buttons from non-GM users
-        if (!game.user.isGM) {
-            html.find('.chat-combat-apply-damage, .chat-combat-undo-damage, .chat-combat-apply-shield, .chat-combat-undo-shield').remove();
+        const flags = message.flags['animabf-guote'].chatCombat;
+
+        // --- Attacker name + portrait ---
+        const attackerToken = canvas.tokens.get(flags.attackerTokenId);
+        html.find('.chat-combat-attacker-name-display').text(
+            this._getTokenDisplayName(attackerToken) ?? flags.attackerInfo?.name ?? '???'
+        );
+
+        // Inject attacker portrait via JS (bypasses Foundry sanitizer which strips src on paths with spaces).
+        // Use stored flags.attackerInfo.img — canvas.tokens.get() returns a Token placeable whose
+        // .texture is a PIXI.Texture (no .src), not a TokenDocument.
+        const attackerImg = flags.attackerInfo?.img || attackerToken?.document?.texture?.src || attackerToken?.actor?.img;
+        if (attackerImg) {
+            const $row = html.find('.chat-combat-attacker-row');
+            let $portrait = $row.find('.chat-combat-portrait');
+            if (!$portrait.length) {
+                $portrait = $('<img class="chat-combat-portrait" alt="" />');
+                $row.prepend($portrait);
+            }
+            $portrait.attr('src', attackerImg);
         }
 
-        // Per-target defend buttons — hide for users who don't own the token
-        html.find('.chat-combat-pending-defend').each((_, btn) => {
+        // --- Attacker details accordion: show only if owner ---
+        const attackerIsOwner = game.user.isGM ||
+            attackerToken?.actor?.testUserPermission(game.user, 'OWNER');
+        if (attackerIsOwner) {
+            html.find('.chat-combat-owner-details').show();
+        }
+
+        // --- Pending targets: hide defend button for non-owners, resolve names ---
+        html.find('.chat-combat-pending-target').each((_, chip) => {
+            const $chip = $(chip);
+            const btn = $chip.find('.chat-combat-pending-defend')[0];
+            if (!btn) return;
             const token = canvas.tokens.get(btn.dataset.defenderId);
-            const isOwner = game.user.isGM || token?.actor?.id === game.user.character?.id;
-            if (!isOwner) btn.remove();
+            const isOwner = game.user.isGM || token?.actor?.testUserPermission(game.user, 'OWNER');
+            if (!isOwner) $chip.find('.chat-combat-pending-defend').remove();
+            $chip.find('.chat-combat-pending-name-display').text(
+                this._getTokenDisplayName(token) ?? $chip.find('.chat-combat-pending-name-display').text()
+            );
         });
 
-        // Per-target defend button click
         html.find('.chat-combat-pending-defend').click(async (ev) => {
             ev.preventDefault();
             const defenderTokenId = ev.currentTarget.dataset.defenderId;
-            const flags = message.flags['animabf-guote'].chatCombat;
             await this._openDefenseDialogForToken(message.id, flags, defenderTokenId);
         });
 
-        // Defend button
+        // --- Per-defender result entries ---
+        html.find('.chat-combat-result-entry').each((_, row) => {
+            const $row = $(row);
+            const defenderTokenId = row.dataset.defenderId;
+            const token = canvas.tokens.get(defenderTokenId);
+            const isOwner = game.user.isGM || token?.actor?.testUserPermission(game.user, 'OWNER');
+
+            // Resolve defender display name
+            $row.find('.chat-combat-defender-name-display').text(
+                this._getTokenDisplayName(token) ?? $row.find('.chat-combat-defender-name-display').text()
+            );
+
+            if (isOwner) {
+                // Show owner button, hide plain span
+                $row.find('.chat-combat-outcome-btn').show();
+                $row.find('.chat-combat-outcome-span').hide();
+
+                // Show defender details accordion (inside same entry div)
+                html.find(`.chat-combat-result-entry[data-defender-id="${defenderTokenId}"] .chat-combat-defender-details`).show();
+
+                // Shield button: compute live values and show if applicable
+                const applyShieldBtn = $row.find('.chat-combat-apply-shield-btn');
+                if (applyShieldBtn.length && token?.actor) {
+                    const currentShield = token.actor.system?.mystic?.shield?.value || 0;
+                    if (currentShield > 0) {
+                        const entry = flags.results.find(r => r.defenderTokenId === defenderTokenId);
+                        const ignoredTA = Math.max(0, (entry?.defenderTA || 0) - (entry?.effectiveTA || 0));
+                        const shieldDmg = calculateShieldDamage(flags.baseDamage, ignoredTA);
+                        const shieldBreaks = currentShield <= shieldDmg;
+
+                        if (shieldBreaks) {
+                            const hpDmg = shieldDmg - currentShield;
+                            let html = `<div class="chat-combat-shield-row chat-combat-shield-broken"><i class="fas fa-shield-virus"></i> ${currentShield}</div>`;
+                            if (hpDmg > 0) html += `<div class="chat-combat-shield-row"><i class="fas fa-heart-broken"></i> ${hpDmg}</div>`;
+                            applyShieldBtn.html(html);
+                        } else {
+                            applyShieldBtn.html(`<div class="chat-combat-shield-row"><i class="fas fa-shield-virus"></i> ${shieldDmg}</div>`);
+                        }
+                        applyShieldBtn.show();
+                    }
+                }
+
+                // Undo-shield: always show for owners when it's in the applied state
+                $row.find('.chat-combat-undo-shield-btn').show();
+            }
+        });
+
+        // --- Defend button ---
         html.find('.chat-combat-defend-button').click((ev) => {
             ev.preventDefault();
             this._onDefendButtonClick(message);
         });
 
-        // Apply damage buttons (GM only)
-        html.find('.chat-combat-apply-damage').click(async (ev) => {
+        // --- Apply damage (outcome cell button, not applied) ---
+        html.find('.chat-combat-damage-btn:not(.chat-combat-applied)').click(async (ev) => {
             ev.preventDefault();
-            if (!game.user.isGM) return;
             const defenderTokenId = ev.currentTarget.dataset.defenderId;
+            const token = canvas.tokens.get(defenderTokenId);
+            if (!game.user.isGM && !token?.actor?.testUserPermission(game.user, 'OWNER')) return;
             await this._onApplyDamageClick(message, defenderTokenId);
         });
 
-        // Undo damage buttons (GM only)
-        html.find('.chat-combat-undo-damage').click(async (ev) => {
+        // --- Undo damage (outcome cell button, applied state) ---
+        html.find('.chat-combat-damage-btn.chat-combat-applied').click(async (ev) => {
             ev.preventDefault();
-            if (!game.user.isGM) return;
             const defenderTokenId = ev.currentTarget.dataset.defenderId;
+            const token = canvas.tokens.get(defenderTokenId);
+            if (!game.user.isGM && !token?.actor?.testUserPermission(game.user, 'OWNER')) return;
             await this._onUndoDamageClick(message, defenderTokenId);
         });
 
-        // Undo shield buttons (GM only)
-        html.find('.chat-combat-undo-shield').click(async (ev) => {
+        // --- Counterattack button ---
+        html.find('.chat-combat-counter-btn').click(async (ev) => {
             ev.preventDefault();
-            if (!game.user.isGM) return;
+            const { defenderId, attackerTokenId, counterBonus } = ev.currentTarget.dataset;
+            const token = canvas.tokens.get(defenderId);
+            if (!game.user.isGM && !token?.actor?.testUserPermission(game.user, 'OWNER')) return;
+            await this._onCounterAttackClick(token?.document, attackerTokenId, parseInt(counterBonus) || 0);
+        });
+
+        // --- Apply to shield ---
+        html.find('.chat-combat-apply-shield-btn').click(async (ev) => {
+            ev.preventDefault();
             const defenderTokenId = ev.currentTarget.dataset.defenderId;
+            const token = canvas.tokens.get(defenderTokenId);
+            if (!game.user.isGM && !token?.actor?.testUserPermission(game.user, 'OWNER')) return;
+            await this._onApplyShieldClick(message, defenderTokenId);
+        });
+
+        // --- Undo shield ---
+        html.find('.chat-combat-undo-shield-btn').click(async (ev) => {
+            ev.preventDefault();
+            const defenderTokenId = ev.currentTarget.dataset.defenderId;
+            const token = canvas.tokens.get(defenderTokenId);
+            if (!game.user.isGM && !token?.actor?.testUserPermission(game.user, 'OWNER')) return;
             await this._onUndoShieldClick(message, defenderTokenId);
         });
+    }
 
-        // Apply to shield buttons (GM only) — two-click confirmation
-        html.find('.chat-combat-apply-shield').click(async (ev) => {
-            ev.preventDefault();
-            if (!game.user.isGM) return;
-            const btn = ev.currentTarget;
-            const defenderTokenId = btn.dataset.defenderId;
+    /**
+     * Get the display name for a canvas token, respecting module overrides and permission settings.
+     * Falls back to '???' when the current user lacks Observer or higher permission.
+     * @param {Token|null} token - canvas Token placeable
+     * @returns {string}
+     */
+    _getTokenDisplayName(token) {
+        if (!token) return '???';
+        // Use nameplate text when available — respects modules like Illandril's Token Name Display
+        if (token.nameplate?.text) return token.nameplate.text;
+        const isObserver = game.user.isGM || token.actor?.testUserPermission(game.user, 'OBSERVER');
+        return isObserver ? (token.document?.name ?? '???') : '???';
+    }
 
-            if (btn.dataset.pending === 'true') {
-                btn.dataset.pending = '';
-                await this._onApplyShieldClick(message, defenderTokenId);
-            } else {
-                const flags = message.flags['animabf-guote'].chatCombat;
-                const entry = flags.results.find(r => r.defenderTokenId === defenderTokenId);
-                const ignoredTA = Math.max(0, entry.defenderTA - entry.effectiveTA);
-                const shieldDamage = calculateShieldDamage(flags.baseDamage, ignoredTA);
+    /**
+     * Open a counterattack dialog: the former defender attacks back at the original attacker.
+     * @param {TokenDocument} defenderToken - the new attacker (was defending)
+     * @param {string} attackerTokenId - token ID of the original attacker (new target)
+     * @param {number} counterBonus
+     */
+    async _onCounterAttackClick(defenderToken, attackerTokenId, counterBonus) {
+        if (!defenderToken) {
+            ui.notifications.warn(game.i18n.localize('anima.chat.combat.selectDefender'));
+            return;
+        }
+        const attackerPlaceable = canvas.tokens.get(attackerTokenId);
+        const targetToken = attackerPlaceable?.document ?? defenderToken;
 
-                btn.dataset.pending = 'true';
-                btn.innerHTML = `<i class="fas fa-shield-alt"></i> -${shieldDamage}`;
-
-                const cancel = (e) => {
-                    if (!btn.contains(e.target)) {
-                        btn.dataset.pending = '';
-                        btn.innerHTML = '<i class="fas fa-shield-alt"></i>';
-                        document.removeEventListener('click', cancel);
-                    }
-                };
-                setTimeout(() => document.addEventListener('click', cancel), 0);
+        new CombatAttackDialog(
+            defenderToken,
+            targetToken,
+            { onAttack: async () => {} },
+            {
+                allowed: true,
+                closeOnSend: true,
+                counterAttackBonus: counterBonus,
+                counterAttackOnly: true
             }
-        });
+        );
     }
 
     /**
