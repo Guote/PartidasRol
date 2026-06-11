@@ -338,3 +338,43 @@ select.input.abf-input-modified {
   color: #1565c0;
   font-weight: bold;
 }
+
+/* --------------------------------
+   Defense notification (scroll-to-card pill)
+   -------------------------------- */
+
+.chat-combat-notification {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82em;
+  color: #666;
+  padding: 1px 2px;
+}
+
+.chat-combat-notification i {
+  color: #6e2917;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.chat-combat-scroll-btn {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  margin-left: auto;
+  font-size: 0.8em;
+  background: rgba(110, 41, 23, 0.08);
+  border: 1px solid rgba(110, 41, 23, 0.35) !important;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 1.5;
+  color: #6e2917;
+  white-space: nowrap;
+}
+
+.chat-combat-scroll-btn:hover {
+  background: rgba(110, 41, 23, 0.18);
+}

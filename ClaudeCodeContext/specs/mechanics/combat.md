@@ -34,18 +34,53 @@ Applied automatically when `!defenseSucceeded` (attack beat the defense):
 
 `multipleDefensesPenalty` — separate from Ha Defendido. This is a per-session dialog value (not persisted as condition). Manually set by the defender in the dialog. Shown as "Def. múlt" in the roll formula.
 
+## Acumulación (Resistance) Defense
+
+Actors with `defenseType === "resistance"` (also referred to as "acumulación") do not roll an active physical defense. They use the **Acumulación tab** in `ChatCombatDefenseDialog`, which is set as their default tab.
+
+Behavior differences from normal defenders:
+- `withoutRoll` defaults to `true` (no dice roll; the formula replaces `1d100xa` with `0`)
+- The tab shows only the **"Está sorprendido"** checkbox instead of a weapon selector
+- The shared "Modificadores de Defensa" section and HD/TA summary are still shown below
+- Other tabs (Armas, Hechizos, etc.) remain accessible
+- Acorralado condition is **never applied** to resistance actors (skipped in guote-module)
+
+### Sorprendido — TA Halving Order
+
+When "Está sorprendido" is checked, the defender's effective TA is halved **before** the attacker's `taReduction` is applied:
+
+```
+effectiveTA = clamp(floor(baseTA / 2) + taReduction, 0, 10)
+```
+
+Example: dragon with base TA 10, attacker weapon has `taReduction = -2`, defender is sorprendido:
+1. Halve: `floor(10 / 2) = 5`
+2. Apply reduction: `5 + (-2) = 3`
+3. Final effective TA: 3
+
+The `surprised` flag travels from `defenseResult.surprised` through `ChatCombatManager._calculateResult()`, which performs the halving before clamping and adding `taReduction`. `calculateDamage` receives the already-adjusted `at` value (no `halvedAbsorption` param needed).
+
 ## Masa (group) combat
 
 - Masa actors use `"mass"` defense type (`system.general.settings.defenseType.value`)
 - Attack dialog uses `withoutRoll = true` for masa defenders
 - Mass attack bonus: extra damage based on number of living members still in attack accumulation
 
+## Multiple Attacks
+
+Dialog tabs in attack/defense dialogs are labelled: "Armas", "Hechizos", "Poderes Psí.", "Invocaciones".
+
+The combat tab exposes "Ataque principal" + "Maniobras" inputs for declaring multiple attacks per round. Penalty is driven by `maniobras` only (`×20` normal / `×10` cadencia), committed to `modManiobras.ha` on first attack. Values persist via `macroCookies.combatAttackDialog` and clear at round start.
+
+See `specs/mechanics/weapons.md` for the full spec (penalty formula, cadencia, CONT_ATAQUES condition, hook payload).
+
 ## Key Hooks
 
 | Hook | Fired from | Used for |
 |------|-----------|---------|
-| `animabf.defenseSent` | `ChatCombatDefenseDialog._sendCombatDefense()` (combat tab, both standalone and chat-combat) | Ha Defendido condition |
+| `animabf.defenseSent` | `ChatCombatDefenseDialog._sendCombatDefense()` (combat and accumulation tabs, both standalone and chat-combat) | Ha Defendido condition |
 | `animabf.combatResolved` | `ChatCombatManager._processDefense()` | Acorralado condition |
+| `animabf.combatAttackSent` | `CombatAttackDialog.js` after successful combat-tab attack send | Cont. Ataques condition (CONT_ATAQUES) in guote-module |
 | `animabf.mysticSpellCast` | attack/defense dialogs after consuming zeon | guote-module Usando Energía sync |
 
 ## Related files

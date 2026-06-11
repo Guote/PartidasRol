@@ -1,0 +1,15 @@
+{{!-- ═══ TAB CONTENTS: Acumulación Defense ═══ --}}
+<div class="dialog-section">
+  <div class="combat-dialog-grid">
+    <div class="combat-grid-full">
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.macros.combat.dialog.surprised.title')
+      disabled=this.defenseSent
+      inputType="checkbox"
+      inputName="defender.resistance.surprised"
+      inputValue=(is 'eq' this.defender.resistance.surprised true)
+      }}
+    </div>
+  </div>
+</div>

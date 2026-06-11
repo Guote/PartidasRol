@@ -31,7 +31,12 @@
         "transfer": true
       },
       "options": {
-        "outputChat": true
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false,
+        "blindToken": false,
+        "markInvisible": false
       },
       "isNew": false,
       "isChanged": false,
@@ -172,7 +177,12 @@
         "transfer": true
       },
       "options": {
-        "outputChat": true
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false,
+        "blindToken": false,
+        "markInvisible": false
       },
       "isNew": false,
       "isChanged": false,
@@ -212,7 +222,12 @@
       },
       "macros": [],
       "options": {
-        "outputChat": true
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false,
+        "blindToken": false,
+        "markInvisible": false
       },
       "isNew": false,
       "isChanged": false,
@@ -255,7 +270,12 @@
         "transfer": true
       },
       "options": {
-        "outputChat": true
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false,
+        "blindToken": false,
+        "markInvisible": false
       },
       "isNew": false,
       "isChanged": false,
@@ -754,7 +774,12 @@
         "transfer": true
       },
       "options": {
-        "outputChat": true
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false,
+        "blindToken": false,
+        "markInvisible": false
       },
       "isNew": false,
       "isChanged": false,

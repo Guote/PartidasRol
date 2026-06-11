@@ -25,10 +25,13 @@ const getInitialData = (attackMessage, defenderToken, options = {}) => {
     const isGM = !!game.user?.isGM;
     const defenderActor = defenderToken.actor;
     const attackFlags = attackMessage ? attackMessage.flags['animabf-guote'].chatCombat : null;
+    const macroCookies = defenderActor.system?.macroCookies?.chatCombatDefenseDialog;
 
-    const activeTab = defenderActor.system.general.settings.defenseType.value === 'resistance'
-        ? 'damageResistance'
-        : options.spellUsed ? 'mystic' : 'combat';
+    const savedTab = macroCookies?.initialTab === 'damageResistance' ? 'accumulation' : macroCookies?.initialTab;
+    const isResistance = defenderActor.system.general.settings.defenseType.value === 'resistance';
+    const activeTab = isResistance
+        ? (savedTab ?? 'accumulation')
+        : (options.spellUsed ? 'mystic' : (savedTab ?? 'combat'));
 
     return {
         ui: {
@@ -47,48 +50,49 @@ const getInitialData = (attackMessage, defenderToken, options = {}) => {
             token: defenderToken,
             actor: defenderActor,
             showRoll: !isGM || showRollByDefault,
-            withoutRoll: defenderActor.system.general.settings.defenseType.value === 'mass',
+            withoutRoll: defenderActor.system.general.settings.defenseType.value === 'mass'
+                || defenderActor.system.general.settings.defenseType.value === 'resistance',
             combat: {
                 fatigue: 0,
                 multipleDefensesPenalty: 0,
-                modifier: 0,
-                weaponUsed: undefined,
+                modifier: macroCookies?.combat?.modifier ?? 0,
+                weaponUsed: macroCookies?.combat?.weaponUsed ?? undefined,
                 weapon: undefined,
                 unarmed: false,
-                defenseType: 'dodge',
-                increaseDefenseCounter: true,
+                defenseType: macroCookies?.combat?.defenseType ?? 'dodge',
+                increaseDefenseCounter: macroCookies?.combat?.increaseDefenseCounter ?? true,
                 at: {
                     type: attackFlags?.damageType || '',
-                    special: 0,
+                    special: macroCookies?.combat?.atSpecial ?? 0,
                     final: 0
                 }
             },
             mystic: {
-                modifier: 0,
-                spellUsed: options.spellUsed ?? undefined,
-                spellGrade: options.spellGrade ?? 'base',
-                consumeZeon: true,
-                zeonMod: 0,
-                addToActiveSpells: false,
+                modifier: macroCookies?.mystic?.modifier ?? 0,
+                spellUsed: options.spellUsed ?? macroCookies?.mystic?.spellUsed ?? undefined,
+                spellGrade: options.spellGrade ?? macroCookies?.mystic?.spellGrade ?? 'base',
+                consumeZeon: macroCookies?.mystic?.consumeZeon ?? true,
+                zeonMod: macroCookies?.mystic?.zeonMod ?? 0,
+                addToActiveSpells: macroCookies?.mystic?.addToActiveSpells ?? false,
             },
             psychic: {
-                modifier: 0,
+                modifier: macroCookies?.psychic?.modifier ?? 0,
                 psychicPotential: {
-                    special: 0,
+                    special: macroCookies?.psychic?.potentialSpecial ?? 0,
                     final: defenderActor.system.psychic.psychicPotential.final.value
                 },
                 psychicProjection: defenderActor.system.psychic.psychicProjection.imbalance.defensive.final.value,
-                cvPotencial: 0,
-                cvProyeccion: 0,
-                powerUsed: undefined,
+                cvPotencial: macroCookies?.psychic?.cvPotencial ?? 0,
+                cvProyeccion: macroCookies?.psychic?.cvProyeccion ?? 0,
+                powerUsed: macroCookies?.psychic?.powerUsed ?? undefined,
                 potentialResult: null
             },
             resistance: {
                 surprised: false
             },
             summon: {
-                modifier: 0,
-                summonUsed: undefined,
+                modifier: macroCookies?.summon?.modifier ?? 0,
+                summonUsed: macroCookies?.summon?.summonUsed ?? undefined,
                 powerUsed: 0,
                 summon: undefined,
                 summonsList: [],
@@ -100,9 +104,9 @@ const getInitialData = (attackMessage, defenderToken, options = {}) => {
                 summonDificultad: 0,
                 summoningRolled: false,
                 summoningResult: null,
-                consumeZeon: true
+                consumeZeon: macroCookies?.summon?.consumeZeon ?? true
             },
-            damageModifier: 0
+            damageModifier: macroCookies?.damageModifier ?? 0
         },
         defenseSent: false,
         selectedPresetId: ''
@@ -133,18 +137,22 @@ export class ChatCombatDefenseDialog extends FormApplication {
             this.render(true);
         };
 
-        // Initialize weapon
+        // Initialize weapon (only if no cookie value was restored)
         const { weapons } = this.defenderActor.system.combat;
         if (weapons.length > 0) {
-            this.modalData.defender.combat.weaponUsed = weapons[0]._id;
+            if (!this.modalData.defender.combat.weaponUsed) {
+                this.modalData.defender.combat.weaponUsed = weapons[0]._id;
+            }
         } else {
             this.modalData.defender.combat.unarmed = true;
         }
 
-        // Auto-preselect block vs dodge (whichever is higher)
-        const dodgeVal = this.defenderActor.system.combat.dodge.final.value;
-        const blockVal = this.defenderActor.system.combat.block.final.value;
-        this.modalData.defender.combat.defenseType = dodgeVal >= blockVal ? 'dodge' : 'block';
+        // Auto-preselect block vs dodge (only if no saved preference)
+        if (!defenderToken.actor.system?.macroCookies?.chatCombatDefenseDialog?.combat?.defenseType) {
+            const dodgeVal = this.defenderActor.system.combat.dodge.final.value;
+            const blockVal = this.defenderActor.system.combat.block.final.value;
+            this.modalData.defender.combat.defenseType = dodgeVal >= blockVal ? 'dodge' : 'block';
+        }
 
         this.render(true);
     }
@@ -228,9 +236,10 @@ export class ChatCombatDefenseDialog extends FormApplication {
             e.preventDefault();
             if (this._sending) return;
             this._sending = true;
+            this._saveCookies();
             this.close({ force: true });
             const tab = this.modalData.ui.activeTab;
-            if (tab === 'combat') this._sendCombatDefense();
+            if (tab === 'combat' || tab === 'accumulation') this._sendCombatDefense();
             else if (tab === 'mystic') this._sendMysticDefense();
             else if (tab === 'psychic') this._sendPsychicDefense();
             else if (tab === 'summon') this._sendSummonDefense();
@@ -317,15 +326,6 @@ export class ChatCombatDefenseDialog extends FormApplication {
             }
 
             this.render();
-        });
-
-        // Damage resistance defense
-        html.find('.send-defense-damage-resistance').click((e) => {
-            e.preventDefault();
-            if (this._sending) return;
-            this._sending = true;
-            this.close({ force: true });
-            this._sendDamageResistanceDefense();
         });
 
         // Load preset selector handler
@@ -424,6 +424,9 @@ export class ChatCombatDefenseDialog extends FormApplication {
             increaseDefenseCounter: increaseDefenseCounter !== false,
             damageModifier: this.modalData.defender.damageModifier || 0,
             at: at.final,
+            surprised: this.modalData.ui.activeTab === 'accumulation'
+                ? (this.modalData.defender.resistance?.surprised ?? false)
+                : false,
             armorValues: this.getArmorValues()
         };
 
@@ -526,29 +529,6 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 });
             }
             Hooks.callAll('animabf.mysticSpellCast', this.defenderActor);
-        }
-
-    }
-
-    /**
-     * Send damage resistance defense (no active defense, just take damage)
-     */
-    async _sendDamageResistanceDefense() {
-        const { at } = this.modalData.defender.combat;
-        const { surprised } = this.modalData.defender.resistance;
-
-        const defenseResult = {
-            type: 'resistance',
-            total: 0,
-            surprised,
-            at: at.final,
-            armorValues: this.getArmorValues()
-        };
-
-        if (this.standalone) {
-            await this._postStandaloneDefenseResult(defenseResult);
-        } else {
-            this.hooks.onDefense(defenseResult);
         }
 
     }
@@ -844,6 +824,13 @@ export class ChatCombatDefenseDialog extends FormApplication {
             damageModifier
         };
 
+        const surprised = this.modalData.defender.resistance?.surprised ?? false;
+        this.modalData.defender.resistance.summary = {
+            hdFinal: combatD.summary.hdFinal,
+            taFinal: surprised ? Math.floor(atFinal / 2) : atFinal,
+            damageModifier
+        };
+
         const { values: mysticDefModTermValues } = getModifierTerms(this.defenderActor.system, "general-negative");
         const mysticDefModTermSum = mysticDefModTermValues.reduce((a, b) => a + b, 0);
         const magicProj = this.defenderActor.system.mystic.magicProjection.imbalance.defensive.final.value;
@@ -898,15 +885,19 @@ export class ChatCombatDefenseDialog extends FormApplication {
 
         // Expose active-tab values for unified template rendering
         const activeTab = this.modalData.ui.activeTab;
+        const dataTab = activeTab === 'accumulation' ? 'combat' : activeTab;
         const tabModifierPath = {
-            combat:  'defender.combat.modifier',
-            mystic:  'defender.mystic.modifier',
-            psychic: 'defender.psychic.modifier',
-            summon:  'defender.summon.modifier',
+            combat:      'defender.combat.modifier',
+            accumulation:'defender.combat.modifier',
+            mystic:      'defender.mystic.modifier',
+            psychic:     'defender.psychic.modifier',
+            summon:      'defender.summon.modifier',
         };
         this.modalData.ui.activeModifierInputName = tabModifierPath[activeTab] ?? '';
-        this.modalData.ui.activeModifierValue     = this.modalData.defender[activeTab]?.modifier ?? 0;
-        this.modalData.ui.activeSummary           = this.modalData.defender[activeTab]?.summary ?? null;
+        this.modalData.ui.activeModifierValue     = this.modalData.defender[dataTab]?.modifier ?? 0;
+        this.modalData.ui.activeSummary           = activeTab === 'accumulation'
+            ? (this.modalData.defender.resistance?.summary ?? null)
+            : (this.modalData.defender[dataTab]?.summary ?? null);
 
         this.modalData.config = ABFConfig;
         this.modalData.standalone = this.standalone;
@@ -936,6 +927,43 @@ export class ChatCombatDefenseDialog extends FormApplication {
             html.find(`select[name="${name}"]`).each((_, el) => {
                 el.classList.toggle('abf-input-modified', parseInt(el.value) !== 0);
             });
+        });
+    }
+
+    _saveCookies() {
+        const { combat, mystic, psychic, summon, damageModifier } = this.modalData.defender;
+        this.defenderActor.update({
+            'system.macroCookies.chatCombatDefenseDialog': {
+                initialTab: this.modalData.ui.activeTab,
+                damageModifier: damageModifier || 0,
+                combat: {
+                    weaponUsed: combat.weaponUsed,
+                    modifier: combat.modifier,
+                    defenseType: combat.defenseType,
+                    increaseDefenseCounter: combat.increaseDefenseCounter,
+                    atSpecial: combat.at.special,
+                },
+                mystic: {
+                    modifier: mystic.modifier,
+                    spellUsed: mystic.spellUsed,
+                    spellGrade: mystic.spellGrade,
+                    consumeZeon: mystic.consumeZeon,
+                    zeonMod: mystic.zeonMod,
+                    addToActiveSpells: mystic.addToActiveSpells,
+                },
+                psychic: {
+                    modifier: psychic.modifier,
+                    powerUsed: psychic.powerUsed,
+                    cvPotencial: psychic.cvPotencial,
+                    cvProyeccion: psychic.cvProyeccion,
+                    potentialSpecial: psychic.psychicPotential.special,
+                },
+                summon: {
+                    modifier: summon.modifier,
+                    summonUsed: summon.summonUsed,
+                    consumeZeon: summon.consumeZeon,
+                },
+            },
         });
     }
 

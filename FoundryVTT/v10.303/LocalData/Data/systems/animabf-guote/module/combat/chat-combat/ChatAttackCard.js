@@ -380,7 +380,7 @@ export class ChatAttackCard {
             canCounter: result.canCounterAttack,
             counterBonus: result.counterAttackBonus || 0,
             damage,
-            taReductionDisplay: Math.max(0, baseDamage - damage),
+            damageModifier: result.damageModifier || 0,
             defenseSucceeded: result.defenseSucceeded ?? false,
             damageApplied: false,
             shieldApplied: false,

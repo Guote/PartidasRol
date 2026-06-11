@@ -462,14 +462,15 @@ img {
 .abf.sheet.actor .rollable {
   cursor: pointer;
 }
-.abf.sheet.actor .rollable:hover, .abf.sheet.actor .rollable:focus {
+.abf.sheet.actor .rollable:hover,
+.abf.sheet.actor .rollable:focus {
   text-shadow: 0 0 8px #6e2917;
 }
 .abf.sheet.actor .input {
   font-family: inherit;
   border: none;
 }
-.abf.sheet.actor .input[type=select] {
+.abf.sheet.actor .input[type="select"] {
   height: 1.5rem;
 }
 .abf.sheet.actor .input ::-webkit-input-placeholder {
@@ -478,7 +479,8 @@ img {
 .abf.sheet.actor .input:hover {
   box-shadow: 0 0 5px #6e2917;
 }
-.abf.sheet.actor #context-menu.expand-up, .abf.sheet.actor #context-menu.expand-down {
+.abf.sheet.actor #context-menu.expand-up,
+.abf.sheet.actor #context-menu.expand-down {
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
@@ -559,7 +561,6 @@ img {
   background: #dcd7b7;
   border-radius: 10px;
   position: relative;
-  z-index: 1;
   margin-top: -1.5rem;
   padding: 2rem 0.5rem 0.5rem;
   min-height: 3.5rem;
@@ -598,7 +599,8 @@ img {
 .common-titled-input.vertical .label .rollable {
   cursor: pointer;
 }
-.common-titled-input.vertical .label .rollable:hover, .common-titled-input.vertical .label .rollable:focus {
+.common-titled-input.vertical .label .rollable:hover,
+.common-titled-input.vertical .label .rollable:focus {
   text-shadow: 0 0 8px #ff0000;
 }
 .common-titled-input .label {
@@ -657,7 +659,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: auto !important;   /* override Foundry global button { width: 100% } */
+  width: auto !important; /* override Foundry global button { width: 100% } */
   flex-shrink: 0;
   padding: 0 6px;
   border-radius: 8px;
@@ -754,16 +756,16 @@ img {
   display: flex;
   flex-direction: column;
 }
-.actor-sheet .sheet-tabs .item[data-tab=settings],
-.actor-sheet .mystic-tabs .item[data-tab=settings],
-.actor-sheet .psychic-tabs .item[data-tab=settings],
-.actor-sheet .general-tabs .item[data-tab=settings] {
+.actor-sheet .sheet-tabs .item[data-tab="settings"],
+.actor-sheet .mystic-tabs .item[data-tab="settings"],
+.actor-sheet .psychic-tabs .item[data-tab="settings"],
+.actor-sheet .general-tabs .item[data-tab="settings"] {
   flex: 0.5;
 }
-.actor-sheet .sheet-tabs .item[data-tab=settings] img,
-.actor-sheet .mystic-tabs .item[data-tab=settings] img,
-.actor-sheet .psychic-tabs .item[data-tab=settings] img,
-.actor-sheet .general-tabs .item[data-tab=settings] img {
+.actor-sheet .sheet-tabs .item[data-tab="settings"] img,
+.actor-sheet .mystic-tabs .item[data-tab="settings"] img,
+.actor-sheet .psychic-tabs .item[data-tab="settings"] img,
+.actor-sheet .general-tabs .item[data-tab="settings"] img {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
@@ -809,7 +811,8 @@ img {
   border: none;
   background: transparent;
 }
-.actor-header .header-top .actor-name-input:hover, .actor-header .header-top .actor-name-input:focus {
+.actor-header .header-top .actor-name-input:hover,
+.actor-header .header-top .actor-name-input:focus {
   box-shadow: none;
 }
 .actor-header .header-top .dices {
@@ -835,9 +838,8 @@ img {
 }
 .actor-header .modifiers .first-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr; 
-  grid-template-areas:
-  "a a a . b b";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "a a a . b b";
   align-items: center;
   grid-row-gap: 0.2rem;
 }
@@ -849,87 +851,87 @@ img {
   grid-auto-rows: auto;
   row-gap: 0.3rem;
   grid-template-areas:
-  ". ma mb"
-  "mc md me"
-  "mf mg mh"
-  "mfinal mfinalfis mfinalsob";
+    ". ma mb"
+    "mc md me"
+    "mf mg mh"
+    "mfinal mfinalfis mfinalsob";
   width: max-content;
   max-width: 100%;
   padding: 5px 5px 5px 0px;
 }
-.ma{
+.ma {
   font-weight: bold;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: ma
+  grid-area: ma;
 }
-.mb{
+.mb {
   font-weight: bold;
-  display:flex;
+  display: flex;
   justify-content: center;
-  grid-area: mb
+  grid-area: mb;
 }
-.mc{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  grid-area: mc
-}
-.md{
-  display:flex;
+.mc {
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: md
+  grid-area: mc;
 }
-.me{
-  display:flex;
+.md {
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: me
+  grid-area: md;
 }
-.mf{
-  display:flex;
+.me {
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: mf
+  grid-area: me;
 }
-.mg{
-  display:flex;
+.mf {
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: mg
+  grid-area: mf;
 }
-.mh{
-  display:flex;
+.mg {
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: mh
+  grid-area: mg;
 }
-.mfinalfis{
-  display:flex;
+.mh {
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: mfinalfis
+  grid-area: mh;
 }
-.mfinal{
+.mfinalfis {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: mfinalfis;
+}
+.mfinal {
   font-weight: bold;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: mfinal
+  grid-area: mfinal;
 }
-.mfinalsob{
-  display:flex;
+.mfinalsob {
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: mfinalsob
+  grid-area: mfinalsob;
 }
 .modGridb {
   grid-area: b;
   display: flex;
   flex-direction: column;
-  padding-left: 2rem
+  padding-left: 2rem;
 }
 .modGridc {
   grid-area: c;
@@ -1060,7 +1062,12 @@ img {
   padding: 0.25rem 0.5rem;
 }
 .general .first-tab .experience .group-body .experience-bar,
-.general .first-tab .experience .group-body .experience-bar .current-experience {
+.general
+  .first-tab
+  .experience
+  .group-body
+  .experience-bar
+  .current-experience {
   height: 0.5rem;
   border-radius: 0.25rem;
 }
@@ -1069,7 +1076,12 @@ img {
   background-color: #e7e5da;
   overflow: hidden;
 }
-.general .first-tab .experience .group-body .experience-bar .current-experience {
+.general
+  .first-tab
+  .experience
+  .group-body
+  .experience-bar
+  .current-experience {
   position: absolute;
   left: 0;
   top: 0;
@@ -1159,9 +1171,23 @@ img {
   grid-column-gap: 0.5rem;
 }
 .general .second-tab .elan .group-body .elan-row .base .name .input-container,
-.general .second-tab .elan .group-body .elan-row .base .elan-power-name .input-container,
+.general
+  .second-tab
+  .elan
+  .group-body
+  .elan-row
+  .base
+  .elan-power-name
+  .input-container,
 .general .second-tab .elan .group-body .elan-row .powers .name .input-container,
-.general .second-tab .elan .group-body .elan-row .powers .elan-power-name .input-container {
+.general
+  .second-tab
+  .elan
+  .group-body
+  .elan-row
+  .powers
+  .elan-power-name
+  .input-container {
   width: 100%;
 }
 .general .second-tab .elan .group-body .elan-row .powers .input-container {
@@ -1173,17 +1199,34 @@ img {
   grid-template-columns: 1fr 2fr 2fr 2fr;
   grid-column-gap: 0.25rem;
 }
-.general .second-tab .regeneration .group-body .regeneration-row .info-container .input-container {
+.general
+  .second-tab
+  .regeneration
+  .group-body
+  .regeneration-row
+  .info-container
+  .input-container {
   width: 10rem;
 }
 .general .second-tab .regeneration .group-body .regeneration-second-row {
   margin-top: 0.75rem;
 }
-.general .second-tab .regeneration .group-body .regeneration-second-row .info-container {
+.general
+  .second-tab
+  .regeneration
+  .group-body
+  .regeneration-second-row
+  .info-container {
   margin: auto;
   width: 90%;
 }
-.general .second-tab .regeneration .group-body .regeneration-second-row .info-container .input-container {
+.general
+  .second-tab
+  .regeneration
+  .group-body
+  .regeneration-second-row
+  .info-container
+  .input-container {
   width: 90%;
 }
 .general .second-tab .contacts .group-body .contact-row:first-child {
@@ -1196,7 +1239,13 @@ img {
   grid-column-gap: 0.5rem;
 }
 .general .second-tab .contacts .group-body .contact-row .name .input-container,
-.general .second-tab .contacts .group-body .contact-row .description .input-container {
+.general
+  .second-tab
+  .contacts
+  .group-body
+  .contact-row
+  .description
+  .input-container {
   width: 100%;
 }
 .general .second-tab .titles .group-body .title-row:first-child {
@@ -1228,7 +1277,11 @@ img {
   grid-template-columns: 1fr 2fr;
   grid-column-gap: 1rem;
 }
-.general .third-tab .inventory-items .group-body .inventory-item-row:first-child {
+.general
+  .third-tab
+  .inventory-items
+  .group-body
+  .inventory-item-row:first-child {
   margin-top: 0;
 }
 .general .third-tab .inventory-items .group-body .inventory-item-row {
@@ -1237,7 +1290,13 @@ img {
   grid-template-columns: 3fr 1fr 1fr;
   grid-column-gap: 0.5rem;
 }
-.general .third-tab .inventory-items .group-body .inventory-item-row .name .input-container {
+.general
+  .third-tab
+  .inventory-items
+  .group-body
+  .inventory-item-row
+  .name
+  .input-container {
   width: 100%;
 }
 
@@ -1489,8 +1548,20 @@ img {
 .mystic .mystic-main-tab .spheres .spheres-container .used .label {
   color: white;
 }
-.mystic .mystic-main-tab .spheres .spheres-container .total .input-container .input,
-.mystic .mystic-main-tab .spheres .spheres-container .used .input-container .input {
+.mystic
+  .mystic-main-tab
+  .spheres
+  .spheres-container
+  .total
+  .input-container
+  .input,
+.mystic
+  .mystic-main-tab
+  .spheres
+  .spheres-container
+  .used
+  .input-container
+  .input {
   height: 1.3rem;
 }
 .mystic .mystic-main-tab .spheres .spheres-container .sphere {
@@ -1528,7 +1599,11 @@ img {
   top: 43.4%;
   left: 61.4%;
 }
-.mystic .mystic-main-tab .spheres .spheres-container .sphere.destruction-sphere {
+.mystic
+  .mystic-main-tab
+  .spheres
+  .spheres-container
+  .sphere.destruction-sphere {
   top: 58%;
   left: 25.2%;
 }
@@ -1563,7 +1638,10 @@ img {
   text-align: center;
   font-weight: bold;
 }
-.mystic .mystic-main-tab .spell-maintenances .spell-maintenance-row:first-child {
+.mystic
+  .mystic-main-tab
+  .spell-maintenances
+  .spell-maintenance-row:first-child {
   margin-top: 0;
 }
 .mystic .mystic-main-tab .spell-maintenances .spell-maintenance-row {
@@ -1572,7 +1650,12 @@ img {
   grid-template-columns: 2fr 1fr;
   grid-column-gap: 0.1rem;
 }
-.mystic .mystic-main-tab .spell-maintenances .spell-maintenance-row .name .input-container {
+.mystic
+  .mystic-main-tab
+  .spell-maintenances
+  .spell-maintenance-row
+  .name
+  .input-container {
   width: 100%;
 }
 
@@ -1689,7 +1772,12 @@ img {
   grid-template-columns: 2fr 1fr;
   grid-column-gap: 0.1rem;
 }
-.mystic .mystic-main-tab .selected-spells .selected-spell-row .name .input-container {
+.mystic
+  .mystic-main-tab
+  .selected-spells
+  .selected-spell-row
+  .name
+  .input-container {
   width: 100%;
 }
 .mystic .mystic-main-tab .summons .summon-row:first-child {
@@ -1739,7 +1827,14 @@ img {
 .mystic .mystic-spells-tab .spells .spell-row .spell-header .first-row {
   width: 100%;
 }
-.mystic .mystic-spells-tab .spells .spell-row .spell-header .first-row .name .input-container {
+.mystic
+  .mystic-spells-tab
+  .spells
+  .spell-row
+  .spell-header
+  .first-row
+  .name
+  .input-container {
   width: 100%;
 }
 .mystic .mystic-spells-tab .spells .spell-row .spell-header .second-row {
@@ -1747,10 +1842,32 @@ img {
   display: flex;
   justify-content: space-between;
 }
-.mystic .mystic-spells-tab .spells .spell-row .spell-header .second-row .level .input, .mystic .mystic-spells-tab .spells .spell-row .spell-header .second-row .via .input {
+.mystic
+  .mystic-spells-tab
+  .spells
+  .spell-row
+  .spell-header
+  .second-row
+  .level
+  .input,
+.mystic
+  .mystic-spells-tab
+  .spells
+  .spell-row
+  .spell-header
+  .second-row
+  .via
+  .input {
   height: 1.5rem;
 }
-.mystic .mystic-spells-tab .spells .spell-row .spell-header .second-row .via .input-container {
+.mystic
+  .mystic-spells-tab
+  .spells
+  .spell-row
+  .spell-header
+  .second-row
+  .via
+  .input-container {
   width: 8rem;
 }
 .mystic .mystic-spells-tab .spells .spell-row .base-grade {
@@ -1769,13 +1886,25 @@ img {
   display: flex;
   justify-content: start;
 }
-.mystic .mystic-spells-tab .spells .spell-row .grade-row .int-required .input-container {
+.mystic
+  .mystic-spells-tab
+  .spells
+  .spell-row
+  .grade-row
+  .int-required
+  .input-container {
   width: 3.5rem;
 }
 .mystic .mystic-spells-tab .spells .spell-row .grade-row .description {
   width: 100%;
 }
-.mystic .mystic-spells-tab .spells .spell-row .grade-row .description .input-container {
+.mystic
+  .mystic-spells-tab
+  .spells
+  .spell-row
+  .grade-row
+  .description
+  .input-container {
   width: 100%;
 }
 .mystic .mystic-spells-tab .spells .spell-row .spell-footer {
@@ -1910,19 +2039,34 @@ img {
 .domine-tab .ki-accumulation .group-body .accumulation-row .input-container {
   width: 2.5rem;
 }
-.domine-tab .ki-accumulation .group-body .accumulation-row .input-container.big {
+.domine-tab
+  .ki-accumulation
+  .group-body
+  .accumulation-row
+  .input-container.big {
   width: 4rem;
 }
 .domine-tab .ki-accumulation .group-body .accumulation-row:last-child {
   margin-bottom: 0;
 }
-.domine-tab .ki-accumulation .group-body .accumulation-row.generic-accumulation-row {
+.domine-tab
+  .ki-accumulation
+  .group-body
+  .accumulation-row.generic-accumulation-row {
   height: 1.5rem;
 }
-.domine-tab .ki-accumulation .group-body .accumulation-row.generic-accumulation-row .input-container.big {
+.domine-tab
+  .ki-accumulation
+  .group-body
+  .accumulation-row.generic-accumulation-row
+  .input-container.big {
   width: 6rem;
 }
-.domine-tab .ki-accumulation .group-body .accumulation-row.generic-accumulation-row .accumulation-row-title {
+.domine-tab
+  .ki-accumulation
+  .group-body
+  .accumulation-row.generic-accumulation-row
+  .accumulation-row-title {
   width: auto;
   padding-right: 1.1rem;
   font-size: 1.1rem;
@@ -1931,10 +2075,19 @@ img {
   background-color: #6e2917;
   border-radius: 1rem;
 }
-.domine-tab .ki-accumulation .group-body .accumulation-row .input-container .input {
+.domine-tab
+  .ki-accumulation
+  .group-body
+  .accumulation-row
+  .input-container
+  .input {
   height: 1rem;
 }
-.domine-tab .ki-accumulation .group-body .accumulation-row .accumulation-row-title {
+.domine-tab
+  .ki-accumulation
+  .group-body
+  .accumulation-row
+  .accumulation-row-title {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1944,7 +2097,11 @@ img {
   width: 2rem;
   margin: 0;
 }
-.domine-tab .ki-accumulation .group-body .accumulation-row .accumulation-row-accumulation {
+.domine-tab
+  .ki-accumulation
+  .group-body
+  .accumulation-row
+  .accumulation-row-accumulation {
   margin-left: 1.5rem;
   margin-right: 3rem;
 }
@@ -2020,7 +2177,13 @@ img {
   width: 100%;
   padding-left: 0.5rem;
 }
-.domine-tab .techniques .technique-row .technique .technique-header .name .input-container {
+.domine-tab
+  .techniques
+  .technique-row
+  .technique
+  .technique-header
+  .name
+  .input-container {
   width: 100%;
 }
 .domine-tab .techniques .technique-row .technique .technique-header .input {
@@ -2033,7 +2196,12 @@ img {
   display: flex;
   justify-content: space-between;
 }
-.domine-tab .techniques .technique-row .technique .technique-footer .input-container {
+.domine-tab
+  .techniques
+  .technique-row
+  .technique
+  .technique-footer
+  .input-container {
   width: 2rem;
 }
 
@@ -2068,7 +2236,10 @@ img {
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 1rem;
 }
-.psychic .psychic-main-tab .psychic-disciplines .psychic-discipline-row:first-child {
+.psychic
+  .psychic-main-tab
+  .psychic-disciplines
+  .psychic-discipline-row:first-child {
   margin-top: 0;
 }
 .psychic .psychic-main-tab .psychic-disciplines .psychic-discipline-row {
@@ -2090,7 +2261,11 @@ img {
   grid-template-columns: 2fr 1fr 1fr;
   grid-column-gap: 0.1rem;
 }
-.psychic .psychic-main-tab .mental-patterns .mental-pattern-row .input-container {
+.psychic
+  .psychic-main-tab
+  .mental-patterns
+  .mental-pattern-row
+  .input-container {
   width: 100%;
 }
 .psychic .psychic-main-tab .mental-patterns .mental-pattern-row .input {
@@ -2099,10 +2274,16 @@ img {
   font-weight: bold;
   padding: 0.25rem 0.5rem;
 }
-.psychic .psychic-main-tab .innate-psychic-powers .innate-psychic-power-row:first-child {
+.psychic
+  .psychic-main-tab
+  .innate-psychic-powers
+  .innate-psychic-power-row:first-child {
   margin-top: 0;
 }
-.psychic .psychic-main-tab .innate-psychic-powers .innate-psychic-power-row:last-child {
+.psychic
+  .psychic-main-tab
+  .innate-psychic-powers
+  .innate-psychic-power-row:last-child {
   margin-bottom: 0.5rem;
 }
 .psychic .psychic-main-tab .innate-psychic-powers .innate-psychic-power-row {
@@ -2111,7 +2292,11 @@ img {
   grid-template-columns: 2fr 3fr 1fr;
   grid-column-gap: 0.1rem;
 }
-.psychic .psychic-main-tab .innate-psychic-powers .innate-psychic-power-row .input-container {
+.psychic
+  .psychic-main-tab
+  .innate-psychic-powers
+  .innate-psychic-power-row
+  .input-container {
   width: 100%;
 }
 .psychic .psychic-main-tab .innate-psychic-powers .group-footer {
@@ -2133,24 +2318,57 @@ img {
 .psychic .psychic-powers-tab .psychic-powers .psychic-power-row .input {
   height: 1.25rem;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .effect-row:first-child {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .effect-row:first-child {
   margin-top: 0;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .effect-row:last-child {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .effect-row:last-child {
   margin-bottom: 0.5rem;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .effect-row {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .effect-row {
   display: flex;
   margin-top: 0.5rem;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .effect-row .difficulty {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .effect-row
+  .difficulty {
   margin-right: 0.5rem;
   width: 3rem;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .effect-row .description {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .effect-row
+  .description {
   width: 100%;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .effect-row .input {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .effect-row
+  .input {
   border-radius: 10px;
   background: #e7e5da;
   font-weight: bold;
@@ -2158,34 +2376,86 @@ img {
   text-align: center;
   height: 1rem;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-header {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-header {
   padding-right: 0.5rem;
   padding-left: 0.5rem;
   width: 100%;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-header .first-row {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-header
+  .first-row {
   width: 100%;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-header .first-row .name .input-container {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-header
+  .first-row
+  .name
+  .input-container {
   width: 100%;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-header .second-row {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-header
+  .second-row {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-header .second-row .level .input,
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-header .second-row .action-type .input {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-header
+  .second-row
+  .level
+  .input,
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-header
+  .second-row
+  .action-type
+  .input {
   height: 1.5rem;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-footer {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-footer {
   width: 100%;
   display: flex;
   justify-content: space-between;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
-.psychic .psychic-powers-tab .psychic-powers .psychic-power-row .psychic-power .psychic-power-footer .input {
+.psychic
+  .psychic-powers-tab
+  .psychic-powers
+  .psychic-power-row
+  .psychic-power
+  .psychic-power-footer
+  .input {
   height: 1.5rem;
 }
 
@@ -2504,19 +2774,45 @@ img {
   padding-left: 0.5rem;
   width: 100%;
 }
-.base-item .psychic-power-item-dialog .psychic-power .psychic-power-header .first-row {
+.base-item
+  .psychic-power-item-dialog
+  .psychic-power
+  .psychic-power-header
+  .first-row {
   width: 100%;
 }
-.base-item .psychic-power-item-dialog .psychic-power .psychic-power-header .first-row .name .input-container {
+.base-item
+  .psychic-power-item-dialog
+  .psychic-power
+  .psychic-power-header
+  .first-row
+  .name
+  .input-container {
   width: 100%;
 }
-.base-item .psychic-power-item-dialog .psychic-power .psychic-power-header .second-row {
+.base-item
+  .psychic-power-item-dialog
+  .psychic-power
+  .psychic-power-header
+  .second-row {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.base-item .psychic-power-item-dialog .psychic-power .psychic-power-header .second-row .level .input,
-.base-item .psychic-power-item-dialog .psychic-power .psychic-power-header .second-row .action-type .input {
+.base-item
+  .psychic-power-item-dialog
+  .psychic-power
+  .psychic-power-header
+  .second-row
+  .level
+  .input,
+.base-item
+  .psychic-power-item-dialog
+  .psychic-power
+  .psychic-power-header
+  .second-row
+  .action-type
+  .input {
   height: 1.5rem;
 }
 .base-item .psychic-power-item-dialog .psychic-power .psychic-power-footer {
@@ -2526,7 +2822,11 @@ img {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
-.base-item .psychic-power-item-dialog .psychic-power .psychic-power-footer .input {
+.base-item
+  .psychic-power-item-dialog
+  .psychic-power
+  .psychic-power-footer
+  .input {
   height: 1.5rem;
 }
 .base-item .psychic-power-item-dialog .base-item-image {
@@ -2569,16 +2869,29 @@ img {
   align-items: center;
   max-width: 5rem;
 }
-.combat-result-message .abf-chat-message-body .combatants .combatant-profile .image {
+.combat-result-message
+  .abf-chat-message-body
+  .combatants
+  .combatant-profile
+  .image {
   margin-bottom: 0.5rem;
 }
-.combat-result-message .abf-chat-message-body .combatants .combatant-profile .image img {
+.combat-result-message
+  .abf-chat-message-body
+  .combatants
+  .combatant-profile
+  .image
+  img {
   height: 5rem;
   width: 5rem;
   background-color: #6e2917;
   border-radius: 50%;
 }
-.combat-result-message .abf-chat-message-body .combatants .combatant-profile .name {
+.combat-result-message
+  .abf-chat-message-body
+  .combatants
+  .combatant-profile
+  .name {
   margin: 0;
   font-size: 1rem;
   font-weight: bold;
@@ -2614,10 +2927,12 @@ img {
   width: 3.2rem;
   height: 3.2rem;
 }
-.custom-action-bar .macros .custom-macro:hover img, .custom-action-bar .macros .custom-macro.hover img {
+.custom-action-bar .macros .custom-macro:hover img,
+.custom-action-bar .macros .custom-macro.hover img {
   filter: invert(1);
 }
-.custom-action-bar .macros .custom-macro:hover .shortcut, .custom-action-bar .macros .custom-macro.hover .shortcut {
+.custom-action-bar .macros .custom-macro:hover .shortcut,
+.custom-action-bar .macros .custom-macro.hover .shortcut {
   background-color: black;
   color: white;
   opacity: 1;
@@ -2716,8 +3031,18 @@ img {
 }
 .gm-combat-dialog .combatants .group-body .values .fatigue .input-container,
 .gm-combat-dialog .combatants .group-body .values .at-value .input-container,
-.gm-combat-dialog .combatants .group-body .values .defense-count .input-container,
-.gm-combat-dialog .combatants .group-body .values .weapon-quality .input-container {
+.gm-combat-dialog
+  .combatants
+  .group-body
+  .values
+  .defense-count
+  .input-container,
+.gm-combat-dialog
+  .combatants
+  .group-body
+  .values
+  .weapon-quality
+  .input-container {
   width: 2.25rem;
 }
 .gm-combat-dialog .combatants .group-body .values .modifier,
@@ -2738,14 +3063,34 @@ img {
 .gm-combat-dialog .combatants .group-body .values .dodge-value .input-container,
 .gm-combat-dialog .combatants .group-body .values .block-value .input-container,
 .gm-combat-dialog .combatants .group-body .values .critic .input-container,
-.gm-combat-dialog .combatants .group-body .values .psychic-projection .input-container,
-.gm-combat-dialog .combatants .group-body .values .magic-projection .input-container,
-.gm-combat-dialog .combatants .group-body .values .psychic-potential .input-container,
+.gm-combat-dialog
+  .combatants
+  .group-body
+  .values
+  .psychic-projection
+  .input-container,
+.gm-combat-dialog
+  .combatants
+  .group-body
+  .values
+  .magic-projection
+  .input-container,
+.gm-combat-dialog
+  .combatants
+  .group-body
+  .values
+  .psychic-potential
+  .input-container,
 .gm-combat-dialog .combatants .group-body .values .damage .input-container,
 .gm-combat-dialog .combatants .group-body .values .roll .input-container,
 .gm-combat-dialog .combatants .group-body .values .total .input-container,
 .gm-combat-dialog .combatants .group-body .values .spell-grade .input-container,
-.gm-combat-dialog .combatants .group-body .values .weapon-attack .input-container {
+.gm-combat-dialog
+  .combatants
+  .group-body
+  .values
+  .weapon-attack
+  .input-container {
   width: 3rem;
 }
 .gm-combat-dialog .combatants .group-body .waiting-row {
@@ -2782,7 +3127,11 @@ img {
 .gm-combat-dialog .combat-result .group-body .ready-buttons {
   display: flex;
 }
-.gm-combat-dialog .combat-result .group-body .ready-buttons .dialog-button.warn {
+.gm-combat-dialog
+  .combat-result
+  .group-body
+  .ready-buttons
+  .dialog-button.warn {
   background-color: #6e2917;
   color: white;
 }
@@ -3221,7 +3570,11 @@ img {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.25rem 1rem;
-  background: linear-gradient(135deg, rgba(110, 41, 23, 0.12) 0%, rgba(110, 41, 23, 0.06) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(110, 41, 23, 0.12) 0%,
+    rgba(110, 41, 23, 0.06) 100%
+  );
   border: 1px solid rgba(110, 41, 23, 0.35);
   border-radius: 6px;
   padding: 0.35rem 0.75rem;
@@ -3266,7 +3619,7 @@ img {
 
 /* Summoning result bar uses same layout but blue-tinted */
 .summoning-result-bar {
-  background: rgba(41, 85, 110, 0.10) !important;
+  background: rgba(41, 85, 110, 0.1) !important;
   border-color: rgba(41, 85, 110, 0.3) !important;
 }
 .summoning-result-bar .summary-label {
@@ -3275,7 +3628,7 @@ img {
 
 /* Potential result bar (psychic) uses teal tint */
 .potential-result-bar {
-  background: rgba(30, 100, 80, 0.10) !important;
+  background: rgba(30, 100, 80, 0.1) !important;
   border-color: rgba(30, 100, 80, 0.3) !important;
 }
 .potential-result-bar .summary-label {
@@ -3527,18 +3880,21 @@ img {
   margin-top: 0 !important;
 }
 
-.confirmation-dialog, .prompt-dialog {
+.confirmation-dialog,
+.prompt-dialog {
   height: 100%;
   width: 100%;
 }
-.confirmation-dialog .title, .prompt-dialog .title {
+.confirmation-dialog .title,
+.prompt-dialog .title {
   margin: 0;
   margin-bottom: 1rem;
   font-size: 2rem;
   text-align: center;
   font-weight: 600;
 }
-.confirmation-dialog .body, .prompt-dialog .body {
+.confirmation-dialog .body,
+.prompt-dialog .body {
   padding: 1rem;
   margin-bottom: 2.5rem;
   width: 100%;
@@ -3621,7 +3977,9 @@ img {
 }
 
 @keyframes chat-combat-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .chat-combat-pending-name {
@@ -3814,7 +4172,8 @@ img {
 .chat-combat-results-header {
   display: flex;
   align-items: center;
-  background: rgba(110, 41, 23, 0.65);
+  background: rgba(110, 41, 23, 0.85);
+  border-radius: 4px;
   color: #fff;
   font-weight: 600;
   font-size: 0.85em;
@@ -3856,7 +4215,6 @@ img {
   flex: 0 0 45px;
   text-align: center;
   font-weight: 600;
-  color: #555;
   white-space: nowrap;
 }
 
@@ -4047,7 +4405,9 @@ img {
   color: #444;
   border: none;
   border-radius: 0;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   user-select: none;
   line-height: 1.3;
 }
@@ -4108,6 +4468,5 @@ img {
   justify-content: center;
   gap: 4px;
 }
-
 
 /*# sourceMappingURL=animabf-guote.css.map */

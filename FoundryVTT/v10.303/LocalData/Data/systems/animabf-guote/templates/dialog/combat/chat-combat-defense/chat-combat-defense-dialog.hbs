@@ -27,10 +27,9 @@
 
       <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
         {{#if (is 'eq' this.defender.actor.system.general.settings.defenseType.value 'resistance')}}
-          <a class="item" data-tab="damageResistance">{{localize "anima.ui.tabs.damageResistance"}}</a>
-        {{else}}
-          <a class="item" data-tab="combat">Armas</a>
+          <a class="item" data-tab="accumulation">Acumulación</a>
         {{/if}}
+        <a class="item" data-tab="combat">Armas</a>
         {{#if this.ui.hasMysticSpells}}
           <a class="item" data-tab="mystic">Hechizos</a>
         {{/if}}
@@ -43,12 +42,12 @@
       </nav>
 
       <section class="sheet-body">
-        <div class="tab combat" data-group="primary" data-tab="combat">
-          {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/combat.hbs' this=this}}
+        <div class="tab accumulation" data-group="primary" data-tab="accumulation">
+          {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/accumulation.hbs' this=this}}
         </div>
 
-        <div class="tab damageResistance" data-group="primary" data-tab="damageResistance">
-          {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/damage-resistance.hbs' this=this}}
+        <div class="tab combat" data-group="primary" data-tab="combat">
+          {{> 'systems/animabf-guote/templates/dialog/combat/chat-combat-defense/parts/combat.hbs' this=this}}
         </div>
 
         <div class="tab mystic" data-group="primary" data-tab="mystic">
@@ -65,7 +64,6 @@
       </section>
 
       {{!-- ═══ DEFENSE DETAILS (shared, rendered once to avoid duplicate inputs) ═══ --}}
-      {{#if (is 'neq' this.ui.activeTab 'damageResistance')}}
       {{#unless this.defenseSent}}
       <div class="dialog-section attack-details-section">
         <div class="dialog-section-label">
@@ -136,10 +134,8 @@
         </div>
       </div>
       {{/unless}}
-      {{/if}}
 
       {{!-- ═══ RESUMEN ═══ --}}
-      {{#if (is 'neq' this.ui.activeTab 'damageResistance')}}
       {{#unless this.defenseSent}}
       {{#if this.ui.activeSummary}}
       <div class="combat-summary-bar">
@@ -160,7 +156,6 @@
       </div>
       {{/if}}
       {{/unless}}
-      {{/if}}
 
       {{!-- ═══ FOOTER ═══ --}}
       {{#if this.defenseSent}}
@@ -170,7 +165,7 @@
           {{localize 'anima.macros.combat.dialog.defenseSent.title'}}
         </p>
       </div>
-      {{else if (is 'neq' this.ui.activeTab 'damageResistance')}}
+      {{else}}
       <div class="dialog-footer-row">
         <select class="input preset-selector load-defense-preset">
           <option value="">-- {{localize 'anima.ui.combat.newDefense'}} --</option>

@@ -1317,6 +1317,33 @@
   text-decoration: underline;
 }
 
+/* Stacked variant: base+temporal on row 1, final centered on row 2 */
+.v2-btfs--stacked {
+  flex-direction: column;
+  gap: 3px;
+  width: auto;
+}
+
+.v2-btfs--stacked .v2-btfs__row {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  justify-content: center;
+}
+
+.v2-btfs__final--stacked {
+  font-size: 15px;
+  text-align: center;
+  width: 100%;
+  flex: none;
+}
+
+/* Cancel the global width: auto !important for stacked inputs so flex: 1 controls sizing */
+.actor-sheet-v2 .v2-btfs--stacked .v2-btfs__input,
+.spellbook .v2-btfs--stacked .v2-btfs__input {
+  width: 100% !important;
+}
+
 /* --------------------------------
    Compact Stat Block
    -------------------------------- */

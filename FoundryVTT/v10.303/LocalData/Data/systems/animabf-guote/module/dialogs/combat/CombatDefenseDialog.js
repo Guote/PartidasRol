@@ -16,10 +16,11 @@ const getInitialData = (attacker, defender) => {
   const isGM = !!game.user?.isGM;
   const attackerActor = attacker.token.actor;
   const defenderActor = defender.actor;
+  const macroCookies = defenderActor.system?.macroCookies?.combatDefenseDialog;
   const activeTab =
     defenderActor.system.general.settings.defenseType.value === "resistance"
       ? "damageResistance"
-      : "combat";
+      : (macroCookies?.initialTab ?? "combat");
   return {
     ui: {
       isGM,
@@ -42,32 +43,32 @@ const getInitialData = (attacker, defender) => {
       combat: {
         fatigue: 0,
         multipleDefensesPenalty: 0,
-        ignoreDefenseCount: false,
-        modifier: 0,
-        weaponUsed: undefined,
+        ignoreDefenseCount: macroCookies?.combat?.ignoreDefenseCount ?? false,
+        modifier: macroCookies?.combat?.modifier ?? 0,
+        weaponUsed: macroCookies?.combat?.weaponUsed ?? undefined,
         weapon: undefined,
         unarmed: false,
         at: {
-          special: 0,
+          special: macroCookies?.combat?.atSpecial ?? 0,
           final: 0,
         },
       },
       mystic: {
-        modifier: 0,
+        modifier: macroCookies?.mystic?.modifier ?? 0,
         magicProjectionType: "normal",
-        spellUsed: undefined,
-        spellGrade: "base",
+        spellUsed: macroCookies?.mystic?.spellUsed ?? undefined,
+        spellGrade: macroCookies?.mystic?.spellGrade ?? "base",
       },
       psychic: {
-        modifier: 0,
+        modifier: macroCookies?.psychic?.modifier ?? 0,
         psychicPotential: {
-          special: 0,
+          special: macroCookies?.psychic?.potentialSpecial ?? 0,
           final: defenderActor.system.psychic.psychicPotential.final.value,
         },
         psychicProjection:
           defenderActor.system.psychic.psychicProjection.imbalance.defensive
             .final.value,
-        powerUsed: undefined,
+        powerUsed: macroCookies?.psychic?.powerUsed ?? undefined,
       },
       resistance: {
         surprised: false,
@@ -84,9 +85,12 @@ export class CombatDefenseDialog extends FormApplication {
       this.modalData.ui.activeTab = tabName;
       this.render(true);
     };
+    this._tabs[0].active = this.modalData.ui.activeTab;
     const { weapons } = this.defenderActor.system.combat;
     if (weapons.length > 0) {
-      this.modalData.defender.combat.weaponUsed = weapons[0]._id;
+      if (!this.modalData.defender.combat.weaponUsed) {
+        this.modalData.defender.combat.weaponUsed = weapons[0]._id;
+      }
     } else {
       this.modalData.defender.combat.unarmed = true;
     }
@@ -134,6 +138,7 @@ export class CombatDefenseDialog extends FormApplication {
       () => html.find('[name="defender.mystic.spellUsed"]').val());
 
     html.find(".send-defense").click((e) => {
+      this._saveCookies();
       const {
         fatigue,
         modifier,
@@ -233,6 +238,7 @@ export class CombatDefenseDialog extends FormApplication {
       this.render();
     });
     html.find(".send-defense-damage-resistance").click(() => {
+      this._saveCookies();
       const { at } = this.modalData.defender.combat;
       const { surprised } = this.modalData.defender.resistance;
       this.hooks.onDefense({
@@ -247,6 +253,7 @@ export class CombatDefenseDialog extends FormApplication {
       this.render();
     });
     html.find(".send-mystic-defense").click(() => {
+      this._saveCookies();
       const { modifier, spellUsed, spellGrade } =
         this.modalData.defender.mystic;
       const { at } = this.modalData.defender.combat;
@@ -304,6 +311,7 @@ export class CombatDefenseDialog extends FormApplication {
       }
     });
     html.find(".send-psychic-defense").click(() => {
+      this._saveCookies();
       const { psychicProjection, psychicPotential, powerUsed, modifier } =
         this.modalData.defender.psychic;
       const { at } = this.modalData.defender.combat;
@@ -359,6 +367,30 @@ export class CombatDefenseDialog extends FormApplication {
       }
     });
   }
+  _saveCookies() {
+    const { combat, mystic, psychic } = this.modalData.defender;
+    this.defenderActor.update({
+      'system.macroCookies.combatDefenseDialog': {
+        initialTab: this.modalData.ui.activeTab,
+        combat: {
+          weaponUsed: combat.weaponUsed,
+          modifier: combat.modifier,
+          ignoreDefenseCount: combat.ignoreDefenseCount,
+          atSpecial: combat.at.special,
+        },
+        mystic: {
+          modifier: mystic.modifier,
+          spellUsed: mystic.spellUsed,
+          spellGrade: mystic.spellGrade,
+        },
+        psychic: {
+          modifier: psychic.modifier,
+          powerUsed: psychic.powerUsed,
+          potentialSpecial: psychic.psychicPotential.special,
+        },
+      },
+    });
+  }
   getData() {
     this.modalData.ui.hasFatiguePoints =
       this.defenderActor.system.characteristics.secondaries.fatigue.value > 0;
@@ -384,6 +416,15 @@ export class CombatDefenseDialog extends FormApplication {
     if (at !== undefined) {
       this.modalData.defender.combat.at.final =
         this.modalData.defender.combat.at.special + at;
+    }
+    // Auto-select first power/spell when none is chosen (prevents desync between DOM default and modalData)
+    if (!this.modalData.defender.psychic.powerUsed) {
+      const powers = this.defenderActor.system.psychic.psychicPowers;
+      if (powers.length > 0) this.modalData.defender.psychic.powerUsed = powers[0]._id;
+    }
+    if (!this.modalData.defender.mystic.spellUsed) {
+      const spells = this.defenderActor.system.mystic.spells;
+      if (spells.length > 0) this.modalData.defender.mystic.spellUsed = spells[0]._id;
     }
     const { combat } = this.modalData.defender;
     const { weapons } = this.defenderActor.system.combat;

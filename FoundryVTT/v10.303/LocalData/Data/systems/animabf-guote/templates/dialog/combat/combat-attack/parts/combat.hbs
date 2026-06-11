@@ -52,5 +52,17 @@
       <p class='label no-fatigue'>{{localize 'anima.macros.combat.dialog.notEnoughFatigue.title'}}</p>
       {{/if}}
     </div>
+
+    {{!-- Counter-attack bonus (only present when attacking after a successful counter) --}}
+    {{#if this.attacker.counterAttackBonus}}
+    <div class="combat-grid-half">
+      {{>
+      "systems/animabf-guote/templates/common/ui/horizontal-titled-input.hbs"
+      title=(localize 'anima.macros.combat.dialog.counterAttackBonus.title')
+      disabled=true
+      inputValue=this.attacker.counterAttackBonus
+      }}
+    </div>
+    {{/if}}
   </div>
 </div>

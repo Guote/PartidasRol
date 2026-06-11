@@ -79,3 +79,16 @@ Foundry's input rules use attribute selectors — `input[type="number"]` has spe
 ```
 
 See `.agents/styles.md` → "Foundry Input Width Override" for full explanation.
+
+## Removing a feature/tab: always search before deleting
+
+Before removing a template section, tab, method, or file, run a grep for its name across the full codebase. In this project, a single tab can have references in:
+- The `.hbs` template (nav + section body + conditional guards)
+- `preloadTemplates.js` — explicit path registration
+- `constants.js` — path constant
+- The dialog JS class — click handlers + send methods
+- `lang/es.json` — localization keys
+
+If you remove only the template reference but leave the JS handler, the partial registration, the dead method, and the template conditions, the code is still broken and messy. Clean all of them in the same change.
+
+Exception: some names are shared between the chat-combat and the non-chat `CombatDefenseDialog` paths — grep both to distinguish which references are which system before deleting anything.

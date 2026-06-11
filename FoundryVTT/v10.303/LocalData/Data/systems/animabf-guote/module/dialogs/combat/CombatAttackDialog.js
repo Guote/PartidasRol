@@ -643,6 +643,15 @@ export class CombatAttackDialog extends FormApplication {
     const activeTab = this._tabs[0]?.active ?? 'combat';
     const attackSent = this.modalData.attackSent;
     ui.activeTab = activeTab;
+    // Auto-select first power/spell when none is chosen (prevents desync between DOM default and modalData)
+    if (!psychic.powerUsed) {
+      const powers = this.attackerActor.system.psychic.psychicPowers;
+      if (powers.length > 0) psychic.powerUsed = powers[0]._id;
+    }
+    if (!mystic.spellUsed) {
+      const spells = this.attackerActor.system.mystic.spells;
+      if (spells.length > 0) mystic.spellUsed = spells[0]._id;
+    }
     {
       const activePower = this.attackerActor.system.psychic.psychicPowers.find(p => p._id === psychic.powerUsed);
       const powerBonus = activePower?.system.bonus.value || 0;

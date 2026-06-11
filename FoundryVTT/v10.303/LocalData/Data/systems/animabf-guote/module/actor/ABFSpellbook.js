@@ -288,6 +288,8 @@ export default class ABFSpellbook extends Application {
   activateListeners(html) {
     super.activateListeners(html);
 
+    html.find('input, textarea').on('focus', function () { this.select(); });
+
     // Zeon accumulation calculator
     html.find('[data-action="open-zeon-calculator"]').click(() => {
       ZeonCalculatorDialog.openForActor(this.actor);

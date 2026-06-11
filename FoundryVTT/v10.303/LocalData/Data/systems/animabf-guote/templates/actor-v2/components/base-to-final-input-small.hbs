@@ -12,11 +12,51 @@
   - showTemporal: Show temporal input even without temporalName (for JS-handled inputs)
   - finalValue: Final computed value (read-only, red, slightly larger)
   - width: Total component width in px — 70 (ki acc), 80 (stats), 90 (skills). Default 90.
+  - stacked: When true, renders base+temporal on row 1 and final centered on row 2.
   - rollable: Whether the final span triggers a roll on click
   - rollLabel: Roll dialog label
   - rollFormula: Custom roll formula (default "1d100xa")
   - modifierType: data-modifier-type for _onRoll
 --}}
+{{#if stacked}}
+<div class="v2-btfs v2-btfs--stacked">
+  <div class="v2-btfs__row">
+    {{#if baseReadonly}}
+    <span class="v2-btfs__display v2-btfs__display--base" title="Base">{{baseValue}}</span>
+    {{else}}
+    <input type="number" class="v2-btfs__input v2-btfs__input--base"
+           {{#if baseName}}name="{{baseName}}"{{/if}}
+           value="{{baseValue}}"
+           title="Base">
+    {{/if}}
+
+    {{#if temporalName}}
+    <input type="number"
+           class="v2-btfs__input v2-btfs__input--temporal {{#unless temporalValue}}v2-btfs__input--zero{{/unless}}"
+           name="{{temporalName}}"
+           value="{{temporalValue}}"
+           placeholder="·"
+           title="Temporal">
+    {{else}}
+    {{#if showTemporal}}
+    <input type="number"
+           class="v2-btfs__input v2-btfs__input--temporal {{#unless temporalValue}}v2-btfs__input--zero{{/unless}}"
+           value="{{temporalValue}}"
+           placeholder="·"
+           title="Temporal">
+    {{/if}}
+    {{/if}}
+  </div>
+  <span title="Final" class="v2-btfs__final v2-btfs__final--stacked{{#if rollable}} rollable{{/if}}"
+    {{#if rollable}}
+    data-roll="{{#if rollFormula}}{{rollFormula}}{{else}}1d100xa{{/if}}"
+    data-rollvalue="{{baseValue}}"
+    data-temporalvalue="{{temporalValue}}"
+    data-label="{{rollLabel}}"
+    {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
+    {{/if}}>{{finalValue}}</span>
+</div>
+{{else}}
 <div class="v2-btfs" style="--btfs-w:{{#if width}}{{width}}{{else}}90{{/if}}px">
   {{#if baseReadonly}}
   <span class="v2-btfs__display v2-btfs__display--base" title="Base">{{baseValue}}</span>
@@ -53,3 +93,4 @@
     {{#if modifierType}}data-modifier-type="{{modifierType}}"{{/if}}
     {{/if}}>{{finalValue}}</span>
 </div>
+{{/if}}

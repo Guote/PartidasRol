@@ -164,7 +164,7 @@ export const buildActorData = (parsed) => {
   const hasPsychic = psychic.psychicPoints > 0 || psychic.psychicProjection > 0;
 
   // Determine defense type
-  const defenseType = isDamageResistance ? "damageresistance" : "";
+  const defenseType = isDamageResistance ? "resistance" : "";
 
   const actorData = {
     system: {
@@ -185,7 +185,6 @@ export const buildActorData = (parsed) => {
             max: general.lifePoints,
             lpMultiplier: 1,
           },
-          defenseType: { value: defenseType },
           initiative: {
             base: { value: combat.naturalInitiative + 20 },
           },
@@ -212,6 +211,9 @@ export const buildActorData = (parsed) => {
         aspect: {
           race: { value: general.race },
           size: { value: general.size },
+        },
+        settings: {
+          defenseType: { value: defenseType },
         },
       },
       combat: {

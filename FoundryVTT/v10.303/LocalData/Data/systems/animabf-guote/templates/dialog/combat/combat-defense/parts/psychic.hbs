@@ -32,7 +32,7 @@ disabled=this.defenseSent
 inputName='defender.psychic.powerUsed'
 }}
 {{#each this.defender.actor.system.psychic.psychicPowers}}
-<option {{#if (is "eq" this._id ../this.attacker.psychic.powerUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}
+<option {{#if (is "eq" this._id ../this.defender.psychic.powerUsed)}}selected{{/if}} value='{{this._id}}'>{{this.name}}
   (+{{this.system.bonus.value}})</option>
 {{/each}}
 {{/'systems/animabf-guote/templates/common/ui/custom-select.hbs'}}

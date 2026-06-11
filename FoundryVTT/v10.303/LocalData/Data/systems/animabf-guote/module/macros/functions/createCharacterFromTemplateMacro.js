@@ -134,7 +134,7 @@ const calculateStats = (level = 1, lpMultiplier = 1, subsystems = {}) => {
     defense: baseDefense,
     secondary: baseSecondary,
     extraDamage: extraDamage,
-    defenseType: lpMultiplier > 1 ? "damageresistance" : "",
+    defenseType: lpMultiplier > 1 ? "resistance" : "",
     // Mystic
     zeon: { value: zeonMax, max: zeonMax },
     magicProjection: magicProjection,

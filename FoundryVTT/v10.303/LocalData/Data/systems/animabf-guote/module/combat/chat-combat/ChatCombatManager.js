@@ -276,6 +276,13 @@ export class ChatCombatManager {
         if (flags.cardType === 'attack') {
             html.find('.message-portrait').hide();
             this._attachAttackCardListeners(message, html);
+        } else if (flags.cardType === 'defenseNotification') {
+            html.find('.chat-combat-scroll-btn').click((ev) => {
+                ev.preventDefault();
+                const targetId = ev.currentTarget.dataset.targetMessageId;
+                const el = document.querySelector(`#chat-log [data-message-id="${targetId}"]`);
+                el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
         } else if (flags.cardType === 'spell') {
             this._attachSpellCardListeners(message, html);
         } else if (flags.cardType === 'psychicPower') {
@@ -549,14 +556,16 @@ export class ChatCombatManager {
 
         // Build extended result with defense data
         const defenderTA = defenseResult.at ?? 0;
-        const effectiveTA = Math.max(0, Math.min(10, defenderTA + attackFlags.taReduction));
+        const atAfterSurprise = defenseResult.surprised ? Math.floor(defenderTA / 2) : defenderTA;
+        const effectiveTA = Math.max(0, Math.min(10, atAfterSurprise + attackFlags.taReduction));
 
         const result = {
             ...combatResult,
             defenseTotal: Math.max(0, defenseResult.total),
             defenderTA: defenderTA,
             effectiveTA: effectiveTA,
-            defenseSucceeded: Math.max(0, defenseResult.total) > Math.max(0, attackFlags.attackTotal)
+            defenseSucceeded: Math.max(0, defenseResult.total) > Math.max(0, attackFlags.attackTotal),
+            damageModifier: defenseResult.damageModifier || 0
         };
 
         Hooks.callAll('animabf.combatResolved', defenderToken, result);
@@ -571,6 +580,9 @@ export class ChatCombatManager {
         if (canUpdateDirectly) {
             // We have permission - update directly
             const newMessageId = await ChatAttackCard.addDefenderResult(attackMessageId, defenderToken, result, sessionId);
+
+            // Post a scroll-to-card notification so the card doesn't get lost in chat
+            await this._postDefenseNotification(defenderToken, newMessageId);
 
             // Notify other clients
             game.socket.emit('system.animabf-guote', {
@@ -609,24 +621,15 @@ export class ChatCombatManager {
         const attack = Math.max(0, attackFlags.attackTotal);
         const defense = Math.max(0, defenseResult.total);
 
-        // Get appropriate TA based on damage type
-        const at = Math.max(0, Math.min(10,
-            (defenseResult.at ?? 0)
-            + attackFlags.taReduction
-        ));
+        // Halve AT if surprised BEFORE applying attacker's taReduction
+        const atBase = defenseResult.at ?? 0;
+        const atAfterSurprise = defenseResult.surprised ? Math.floor(atBase / 2) : atBase;
+        const at = Math.max(0, Math.min(10, atAfterSurprise + attackFlags.taReduction));
 
-        // For resistance defense, "surprised" means halved absorption
-        const halvedAbsorption = defenseResult.type === 'resistance'
-            ? defenseResult.surprised
-            : false;
+        // damageModifier reduces the attacker's base damage before the % formula
+        const effectiveBaseDamage = attackFlags.baseDamage + (defenseResult.damageModifier || 0);
 
-        return calculateCombatResult(
-            attack,
-            defense,
-            at,
-            attackFlags.baseDamage,
-            halvedAbsorption
-        );
+        return calculateCombatResult(attack, defense, at, effectiveBaseDamage);
     }
 
     /**
@@ -721,6 +724,35 @@ export class ChatCombatManager {
      */
     _handleDamageUndone(payload) {
         this._rerenderMessage(payload.attackMessageId);
+    }
+
+    /**
+     * Post a minimal notification message with a scroll-to-card button.
+     * Called after a defense is resolved so the updated attack card can be found
+     * even if it has been pushed up the chat log by subsequent dice rolls.
+     * @param {TokenDocument|{id:string,name:string}} defenderToken
+     * @param {string} attackMessageId
+     */
+    async _postDefenseNotification(defenderToken, attackMessageId) {
+        // Prefer the live canvas token document so getSpeaker resolves portrait/scene correctly
+        const tokenDoc = canvas.tokens.get(defenderToken.id)?.document ?? defenderToken;
+        const speaker = ChatMessage.getSpeaker({ token: tokenDoc });
+        const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
+
+        const content = `<div class="chat-combat-notification"><i class="fas fa-shield-alt"></i><span>${defenderToken.name} respondió al ataque.</span><button class="chat-combat-scroll-btn" data-target-message-id="${attackMessageId}"><i class="fas fa-arrow-up"></i> Ver tarjeta</button></div>`;
+        await ChatMessage.create({
+            content,
+            speaker,
+            whisper: gmIds,
+            flags: {
+                'animabf-guote': {
+                    chatCombat: {
+                        cardType: 'defenseNotification',
+                        targetMessageId: attackMessageId
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -1027,6 +1059,9 @@ export class ChatCombatManager {
             result,
             sessionId
         );
+
+        // Post a scroll-to-card notification so the card doesn't get lost in chat
+        await this._postDefenseNotification(defenderTokenData, newMessageId);
 
         // Notify all clients that defense was added
         game.socket.emit('system.animabf-guote', {

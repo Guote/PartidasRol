@@ -44,7 +44,6 @@
         <div class="chat-combat-pending-target">
           <div class="chat-combat-portrait-wrap">
             <img src="{{img}}" class="chat-combat-portrait-tiny" title="{{name}}" />
-            <div class="chat-combat-portrait-spinner"></div>
           </div>
           <span class="chat-combat-pending-name chat-combat-pending-name-display" data-token-id="{{tokenId}}">{{name}}</span>
           <button type="button" class="chat-combat-pending-defend" data-defender-id="{{tokenId}}" title="{{localize 'anima.chat.combat.defend'}}">
@@ -122,10 +121,10 @@
                   <span class="chat-combat-label">TA efectiva</span>
                   <span class="chat-combat-value">{{effectiveTA}}</span>
                 </div>
-                {{#if (is "gt" taReductionDisplay 0)}}
+                {{#if damageModifier}}
                 <div class="chat-combat-value-row">
                   <span class="chat-combat-label">Reducción de daño</span>
-                  <span class="chat-combat-value">{{taReductionDisplay}}</span>
+                  <span class="chat-combat-value">{{damageModifier}}</span>
                 </div>
                 {{/if}}
               </div>

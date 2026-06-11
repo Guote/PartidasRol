@@ -31,6 +31,21 @@ const KI_STAT_LABELS = {
   power: "Pod",
 };
 
+// ─── Re-entrancy guards ───────────────────────────────────────────────────────
+// Prevents cascades where actor.update() → updateActor → cubAdd/Remove →
+// deleteActiveEffect → updateActor → syncCondition fires again for the same actor.
+const _syncActorCooldown = new Map(); // actorId → lastSyncMs
+function _isSyncCooling(actorId) {
+  const now = Date.now();
+  if (now - (_syncActorCooldown.get(actorId) ?? 0) < 200) return true;
+  _syncActorCooldown.set(actorId, now);
+  return false;
+}
+
+// Prevents applySurprise from firing multiple times per round when DAE effect
+// deletions trigger updateCombatant hooks mid-burst.
+let _lastSurpriseApplied = 0;
+
 function getHeldKiPerStat(actor) {
   return KI_STATS.reduce((acc, s) => {
     acc[s] = (actor.system?.domine?.kiMaintenances ?? [])
@@ -106,6 +121,10 @@ const triggerMacroIfActiveEffect = async ({
 };
 
 const applySurprise = (combat) => {
+  const now = Date.now();
+  if (now - _lastSurpriseApplied < 100) return;
+  _lastSurpriseApplied = now;
+
   const effectName = "Sorpresa";
   const preveerName = "Preveer Sorpresa";
 
@@ -301,12 +320,14 @@ Hooks.on(
   },
 );
 
-// Acorralado: add when attack beats defense
+// Acorralado: add when attack beats defense, skip for resistance/masa actors
 Hooks.on("animabf.combatResolved", (defenderToken, result) => {
   if (!game.user.isGM) return;
   if (result.defenseSucceeded) return;
   const token = defenderToken?.object ?? defenderToken;
   if (!token) return;
+  const defenseType = token.actor?.system?.general?.settings?.defenseType?.value;
+  if (defenseType === "resistance" || defenseType === "mass") return;
   cubAdd(ACORRALADO, token);
 });
 
@@ -343,10 +364,14 @@ Hooks.on("updateActor", (actor, updateData) => {
     }
   }
 
-  // Usando Energía + Sin reservas sync — only when domine/mystic changed
+  // Usando Energía + Sin reservas sync — only when domine/mystic changed.
+  // Cooldown guard prevents the re-entrant updateActor fired by cubAdd/cubRemove
+  // from triggering a second sync for the same actor within 200 ms.
   if (updateData.system?.mystic || updateData.system?.domine) {
-    syncCondition(actor);
-    syncSinReservas(actor);
+    if (!_isSyncCooling(actor.id)) {
+      syncCondition(actor);
+      syncSinReservas(actor);
+    }
   }
 });
 
