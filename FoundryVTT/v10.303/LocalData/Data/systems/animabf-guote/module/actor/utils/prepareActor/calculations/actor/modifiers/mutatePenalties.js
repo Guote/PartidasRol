@@ -92,13 +92,13 @@ export const mutatePenalties = (data, actor) => {
       getMaxAndMin(modSobArray).min +
       getMaxAndMin(modSobArray).max,
     ataque:
-      (data.general.modifiers?.modManiobras?.ha ?? 0) +
+      (Number(data.general.modifiers?.modManiobras?.ha) || 0) +
       getMaxAndMin(modAttackFisArray).min +
       getMaxAndMin(modAttackFisArray).max +
       getMaxAndMin(modAttackSobArray).min +
       getMaxAndMin(modAttackSobArray).max,
     defense:
-      (data.general.modifiers?.modManiobras?.hd ?? 0) +
+      (Number(data.general.modifiers?.modManiobras?.hd) || 0) +
       getMaxAndMin(modDefenseFisArray).min +
       getMaxAndMin(modDefenseFisArray).max +
       getMaxAndMin(modDefenseSobArray).min +

@@ -10,6 +10,9 @@ export class ChatAttackCard {
     /** @type {Map<string, string>} Maps sessionId to current messageId */
     static _sessionMap = new Map();
 
+    /** @type {Map<string, {entries: Array, resolvers: Array, timer: number}>} Pending micro-batch per session */
+    static _pendingBatch = new Map();
+
     /**
      * Create an attack card from attack dialog result
      * @param {TokenDocument} attackerToken - The attacking token
@@ -106,24 +109,49 @@ export class ChatAttackCard {
 
     /**
      * Add a defender result to the attack card.
-     * Deletes the old message and creates a new one at the bottom of chat.
-     * Uses session tracking to handle multiple simultaneous defenders.
+     * Batches concurrent calls (same event-loop tick) into a single card update,
+     * so N simultaneous defenses produce 1 message.update() instead of N.
      * @param {string} attackMessageId - ID of the attack chat message
      * @param {TokenDocument} defenderToken - The defending token
      * @param {Object} result - Combat result with defense data
      * @param {string} [sessionId] - Optional session ID for tracking
      * @returns {Promise<string>} The new message ID
      */
-    static async addDefenderResult(attackMessageId, defenderToken, result, sessionId = null) {
-        // Try to find the message - first by ID, then by session
+    static addDefenderResult(attackMessageId, defenderToken, result, sessionId = null) {
+        const key = sessionId || attackMessageId;
+        return new Promise((resolve, reject) => {
+            let batch = this._pendingBatch.get(key);
+            if (!batch) {
+                batch = { entries: [], resolvers: [] };
+                this._pendingBatch.set(key, batch);
+            }
+            batch.entries.push({ defenderToken, result });
+            batch.resolvers.push({ resolve, reject });
+
+            clearTimeout(batch.timer);
+            batch.timer = setTimeout(() => this._flushBatch(attackMessageId, key, sessionId), 0);
+        });
+    }
+
+    static async _flushBatch(attackMessageId, key, sessionId) {
+        const batch = this._pendingBatch.get(key);
+        if (!batch) return;
+        this._pendingBatch.delete(key);
+
+        try {
+            const msgId = await this._doAddMultipleResults(attackMessageId, batch.entries, sessionId);
+            batch.resolvers.forEach(({ resolve }) => resolve(msgId));
+        } catch (err) {
+            batch.resolvers.forEach(({ reject }) => reject(err));
+        }
+    }
+
+    static async _doAddMultipleResults(attackMessageId, entries, sessionId) {
         let attackMessage = game.messages.get(attackMessageId);
 
         if (!attackMessage && sessionId) {
-            // Message was deleted/recreated, find current one by session
             const currentMessageId = this._sessionMap.get(sessionId);
-            if (currentMessageId) {
-                attackMessage = game.messages.get(currentMessageId);
-            }
+            if (currentMessageId) attackMessage = game.messages.get(currentMessageId);
         }
 
         if (!attackMessage) {
@@ -132,23 +160,16 @@ export class ChatAttackCard {
         }
 
         const flags = attackMessage.flags['animabf-guote'].chatCombat;
-        const newEntry = this._createResultEntry(defenderToken, result, flags.attackerTokenId, flags.baseDamage);
+        let updatedResults = [...flags.results];
 
-        // Check if defender already exists (update instead of add)
-        const existingIndex = flags.results.findIndex(
-            r => r.defenderTokenId === defenderToken.id
-        );
-
-        let updatedResults;
-        if (existingIndex >= 0) {
-            updatedResults = [...flags.results];
-            updatedResults[existingIndex] = newEntry;
-        } else {
-            updatedResults = [...flags.results, newEntry];
+        for (const { defenderToken, result } of entries) {
+            const newEntry = this._createResultEntry(defenderToken, result, flags.attackerTokenId, flags.baseDamage);
+            const existingIndex = updatedResults.findIndex(r => r.defenderTokenId === defenderToken.id);
+            if (existingIndex >= 0) updatedResults[existingIndex] = newEntry;
+            else updatedResults.push(newEntry);
         }
 
         await this._updateCard(attackMessage, flags, updatedResults);
-
         return attackMessage.id;
     }
 

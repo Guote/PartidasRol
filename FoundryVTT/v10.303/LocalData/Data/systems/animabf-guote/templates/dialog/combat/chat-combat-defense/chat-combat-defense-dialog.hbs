@@ -13,17 +13,15 @@
       <div class="chat-combat-defender-summary">
         <img src="{{this.defender.token.texture.src}}" class="chat-combat-portrait-dialog" alt="{{this.defender.token.name}}" />
         <span class="chat-combat-defender-name-dialog">{{this.defender.token.name}}</span>
+        {{!-- Attacker info (hidden in standalone mode) --}}
+        {{#unless this.standalone}}
+        <span class="chat-combat-attacker-summary">
+          <span class="chat-combat-vs-label">{{localize 'anima.chat.combat.defense.vsLabel'}}</span>
+          <img src="{{this.attacker.img}}" class="chat-combat-portrait-mini" alt="{{this.attacker.name}}" />
+          <span class="chat-combat-attacker-name">{{this.attacker.name}}</span>
+        </span>
+        {{/unless}}
       </div>
-
-      {{!-- Attacker info (hidden in standalone mode) --}}
-      {{#unless this.standalone}}
-      <div class="chat-combat-attacker-summary">
-        <img src="{{this.attacker.img}}" class="chat-combat-portrait-mini" alt="{{this.attacker.name}}" />
-        <span class="chat-combat-vs-label">{{localize 'anima.chat.combat.defense.vsLabel'}}</span>
-        <span class="chat-combat-attacker-name">{{this.attacker.name}}</span>
-        <span class="chat-combat-attack-value">({{this.attacker.attackTotal}})</span>
-      </div>
-      {{/unless}}
 
       <nav class="abf-tabs sheet-tabs tabs" data-group="primary">
         {{#if (is 'eq' this.defender.actor.system.general.settings.defenseType.value 'resistance')}}

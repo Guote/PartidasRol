@@ -408,7 +408,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
-            await waitForDice();
+            if (!this.modalData.defender.withoutRoll) await waitForDice();
         }
 
         const rolled = roll.total - rollModifiers.reduce((a, b) => a + b, 0);
@@ -421,7 +421,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
             fatigue,
             modifier,
             multipleDefensesPenalty,
-            increaseDefenseCounter: increaseDefenseCounter !== false,
+            increaseDefenseCounter: this.modalData.ui.activeTab !== 'accumulation' && increaseDefenseCounter !== false,
             damageModifier: this.modalData.defender.damageModifier || 0,
             at: at.final,
             surprised: this.modalData.ui.activeTab === 'accumulation'
@@ -485,7 +485,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
-            await waitForDice();
+            if (!this.modalData.defender.withoutRoll) await waitForDice();
         }
 
         const rolled = roll.total - mysticRollModifiers.reduce((a, b) => a + b, 0);
@@ -569,7 +569,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
-            await waitForDice();
+            if (!this.modalData.defender.withoutRoll) await waitForDice();
         }
 
         const rolled = roll.total - psychicRollModifiers.reduce((a, b) => a + b, 0);
@@ -648,7 +648,7 @@ export class ChatCombatDefenseDialog extends FormApplication {
                 speaker: ChatMessage.getSpeaker({ token: this.defenderToken }),
                 flavor
             });
-            await waitForDice();
+            if (!this.modalData.defender.withoutRoll) await waitForDice();
         }
 
         const rolled = roll.total - summonRollModifiers.reduce((a, b) => a + b, 0);

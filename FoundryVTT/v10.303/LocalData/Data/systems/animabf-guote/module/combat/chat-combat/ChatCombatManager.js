@@ -4,7 +4,6 @@ import { calculateShieldDamage } from '../utils/calculateShieldDamage.js';
 import { ChatAttackCard } from './ChatAttackCard.js';
 import { CombatAttackDialog } from '../../dialogs/combat/CombatAttackDialog.js';
 import { getPsychichPowerEffect } from '../utils/getPsychichPowerEffect.js';
-import { waitForDice } from '../utils/waitForDice.js';
 
 /**
  * Main controller for the chat-based combat system.
@@ -48,9 +47,6 @@ export class ChatCombatManager {
 
         const targetInfos = flags.targetInfos || [];
         if (targetInfos.length === 0) return;
-
-        // Wait for Dice So Nice 3D animations before prompting defenders
-        await waitForDice();
 
         this._promptTargetedDefenders(message.id, flags, targetInfos.map(t => t.tokenId));
     }
@@ -1048,9 +1044,6 @@ export class ChatCombatManager {
             texture: { src: defenderTokenImg },
             actor: { img: defenderTokenImg }
         };
-
-        // Wait for any in-progress 3D dice animation before updating the card
-        await waitForDice();
 
         // Update the card
         const newMessageId = await ChatAttackCard.addDefenderResult(
